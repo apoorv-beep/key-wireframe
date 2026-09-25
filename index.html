@@ -5092,6 +5092,41 @@ portWire = function(){
   const mq = phone.querySelector("#mmq"); if (mq) mq.oninput = ()=>{ STATE.mmQ = mq.value; const pos = mq.selectionStart; render(); const n = phone.querySelector("#mmq"); if (n) { n.focus(); n.setSelectionRange(pos,pos); } };
 };
 
+/* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
+   Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
+   Restart clears it. Starts clean when the page is driven by a test (navigator.webdriver) unless the URL has ?keep, and always with ?fresh.
+   A save made against an older build (any change to the page's script) is dropped, so a republish never loads stale state. Must be the last module. ==== */
+const DATA_KEY = "key-wireframe-save";
+const DATA_SKIP = /^(push|quick|sheet|listening|callActive|callMin|callSeconds)$|Timer$|Dismiss$/;
+const DATA_SEED = (()=>{ const t=Array.from(document.scripts).map(x=>x.text).join(""); let h=0; for (let i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))|0; return h+":"+t.length; })();
+const DATA_ON = (()=>{ try { const q=new URLSearchParams(location.search); if (q.has("fresh")) { localStorage.removeItem(DATA_KEY); return false; } return q.has("keep") || !navigator.webdriver; } catch(e) { return false; } })();
+
+function dataState(){ const o={}; Object.keys(STATE).forEach(k=>{ if(!DATA_SKIP.test(k)) o[k]=STATE[k]; }); return o; }
+function dataSave(){
+  if (!DATA_ON || dataOff) return;
+  try { localStorage.setItem(DATA_KEY, JSON.stringify({ seed:DATA_SEED, at:Date.now(), mseq:MSEQ, db:DB, state:dataState() }, (k,v)=>typeof v==="function"?undefined:v)); } catch(e) {}
+}
+function dataLoad(){
+  if (!DATA_ON) return false;
+  let s=null; try { s=JSON.parse(localStorage.getItem(DATA_KEY)); } catch(e) {}
+  if (!s) return false;
+  if (s.seed!==DATA_SEED) { try { localStorage.removeItem(DATA_KEY); } catch(e) {} STATE.dataStale=true; return false; }
+  Object.keys(DB).forEach(k=>{ if(!(k in s.db)) delete DB[k]; }); Object.assign(DB, s.db);
+  Object.assign(STATE, s.state); MSEQ = s.mseq||MSEQ;
+  // pushes held for another phone lose their buttons in the save; keep the words, open that phone's inbox
+  Object.values(STATE.pushQ||{}).forEach(q=>q.forEach(p=>{ p[2]=[["Open",()=>go("inbox")]]; }));
+  return true;
+}
+function dataReset(){ dataOff=true; try { localStorage.removeItem(DATA_KEY); } catch(e) {} location.href = location.href.replace(/[?#].*$/,""); }
+
+let dataTimer=null, dataOff=false;
+const _dataRender = render; render = function(){ _dataRender.apply(this, arguments); clearTimeout(dataTimer); dataTimer=setTimeout(dataSave, 250); };
+restart = dataReset;
+window.addEventListener("pagehide", dataSave);
+
+if (dataLoad()) setTimeout(()=>toast("Picked up where you left off. Restart clears it."), 400);
+else if (STATE.dataStale) { delete STATE.dataStale; setTimeout(()=>toast("The prototype was updated, so this is a fresh start."), 400); }
+
 /* ---- Out of scope ---- */
 function sOOS(s) {
   const map = { events:["Events","Everything this week across your families, with who to meet on every event."], you:["You","What Kai knows, line by line. Rules. Your people. Connectors."], };
