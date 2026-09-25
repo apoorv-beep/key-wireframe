@@ -890,6 +890,1274 @@
   .evx-first { display:flex; justify-content:center; margin:14px 0 4px; } .evx-first .chip { font-size:13px; }
   /* a mode switch inside the composer, so it is a segmented control, not tabs (nav layers rule) */
   .evx-mode { display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; margin:0 0 8px; font-size:12.5px; } .evx-mode div { padding:5px 12px; color:var(--ink2); cursor:pointer; } .evx-mode div.on { background:var(--ink); color:#fff; font-weight:600; }
+  /* ---- event themes and effects: effects.css from the events branch (web app/events-review), comments stripped ---- */
+
+.ev-canvas {
+  position: relative;
+  isolation: isolate;
+  background: var(--ev-canvas);
+  color: var(--ev-ink);
+}
+.ev-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ev-scrim, transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+.ev-canvas > .fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.ev-canvas > .fx > * {
+  position: absolute;
+  display: block;
+}
+.ev-canvas > *:not(.fx):not(.ev-layer) {
+  position: relative;
+  z-index: 1;
+}
+.fx-drift {
+  inset: -12%;
+  background: var(--ev-canvas);
+  will-change: transform;
+  animation: fx-drift 26s ease-in-out infinite alternate;
+}
+@keyframes fx-drift {
+  from {
+    transform: translate3d(-2%, -1.5%, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(2%, 1.5%, 0) scale(1.1);
+  }
+}
+.fx-mote {
+  bottom: -8px;
+  border-radius: 50%;
+  background: var(--ev-ink);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-mote;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-mote {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  25% {
+    transform: translate3d(var(--dx), calc(var(--rise) * -0.25), 0);
+    opacity: calc(var(--ev-fx-alpha) * 0.707);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--rise) * -0.5), 0);
+    opacity: var(--ev-fx-alpha);
+  }
+  75% {
+    transform: translate3d(calc(var(--dx) * -1), calc(var(--rise) * -0.75), 0);
+    opacity: calc(var(--ev-fx-alpha) * 0.707);
+  }
+  100% {
+    transform: translate3d(0, calc(var(--rise) * -1), 0);
+    opacity: 0;
+  }
+}
+.fx-veil {
+  left: -30%;
+  width: 160%;
+  height: 42%;
+  filter: blur(48px);
+  will-change: transform;
+  animation-name: fx-veil;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-veil--a {
+  top: 6%;
+  background: linear-gradient(90deg, transparent, rgb(var(--ev-ink-rgb)), transparent);
+  opacity: calc(var(--ev-fx-alpha) * 1.6);
+  animation-duration: 34s; 
+}
+.fx-veil--b {
+  top: 52%;
+  background: linear-gradient(90deg, transparent, rgb(var(--ev-accent-fill-rgb)), transparent);
+  opacity: calc(var(--ev-fx-alpha) * 1.6);
+  animation-duration: 40s;
+}
+@keyframes fx-veil {
+  from {
+    transform: translate3d(-14%, -6%, 0) rotate(-4deg);
+  }
+  to {
+    transform: translate3d(14%, 6%, 0) rotate(4deg);
+  }
+}
+.fx-orb {
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.05);
+  filter: blur(30px);
+  will-change: transform;
+  animation-name: fx-orb;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-orb--accent {
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.3);
+}
+@keyframes fx-orb {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1.14);
+  }
+}
+.fx-beam {
+  top: -22%;
+  width: 130px;
+  height: 150%;
+  transform-origin: top left;
+  background: linear-gradient(to bottom, rgb(var(--ev-accent-fill-rgb)), transparent 75%);
+  opacity: calc(var(--ev-fx-alpha) * 1.35);
+  filter: blur(22px);
+  will-change: transform;
+  animation-name: fx-beam;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-beam--ink {
+  background: linear-gradient(to bottom, rgb(var(--ev-ink-rgb)), transparent 75%);
+  opacity: calc(var(--ev-fx-alpha) * 1);
+}
+@keyframes fx-beam {
+  from {
+    transform: rotate(var(--a0));
+  }
+  to {
+    transform: rotate(var(--a1));
+  }
+}
+.fx-blob {
+  border-radius: 46% 54% 58% 42% / 52% 44% 56% 48%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.05);
+  filter: blur(34px);
+  will-change: transform;
+  animation-name: fx-blob;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-blob--accent {
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.3);
+  border-radius: 58% 42% 40% 60% / 46% 60% 40% 54%;
+}
+@keyframes fx-blob {
+  from {
+    transform: translate3d(0, 0, 0) rotate(var(--r0)) scale(1);
+  }
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--r1)) scale(1.16);
+  }
+}
+.fx-glint {
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-glint;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-glint {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: calc(var(--ev-fx-alpha) * 2.2);
+    transform: scale(1);
+  }
+}
+.fx-grid {
+  inset: -26px 0 0 -26px;
+  opacity: calc(var(--ev-fx-alpha) * 0.7);
+  background-image: radial-gradient(rgb(var(--ev-ink-rgb)) 1.2px, transparent 1.4px);
+  background-size: 26px 26px;
+  will-change: transform;
+  animation-name: fx-grid;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-grid {
+  to {
+    transform: translate3d(26px, 26px, 0);
+  }
+}
+.fx-diag {
+  inset: -48px;
+  opacity: calc(var(--ev-fx-alpha) * 0.55);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(var(--ev-ink-rgb)) 0 14px,
+    transparent 14px 46px
+  );
+  will-change: transform;
+  animation-name: fx-diag;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-diag--alt {
+  opacity: calc(var(--ev-fx-alpha) * 0.26);
+  animation-direction: reverse;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(var(--ev-accent-fill-rgb)) 0 10px,
+    transparent 10px 52px
+  );
+}
+@keyframes fx-diag {
+  to {
+    transform: translate3d(42.43px, 42.43px, 0);
+  }
+}
+.fx-circuit-bg {
+  position: absolute;
+  inset: 0;
+  opacity: calc(var(--ev-fx-alpha) * 0.42);
+  background-image:
+    repeating-linear-gradient(0deg, rgb(var(--ev-ink-rgb)) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, rgb(var(--ev-ink-rgb)) 0 1px, transparent 1px 64px);
+}
+.fx-pulse {
+  width: 5px;
+  height: 5px;
+  margin: -2px;
+  border-radius: 50%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  box-shadow: 0 0 8px 2px rgb(var(--ev-accent-fill-rgb) / 0.7);
+  opacity: calc(var(--ev-fx-alpha) * 3);
+  will-change: transform;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-pulse--h {
+  left: -10px;
+  animation-name: fx-pulse-h;
+}
+.fx-pulse--v {
+  top: -10px;
+  animation-name: fx-pulse-v;
+}
+@keyframes fx-pulse-h {
+  to {
+    transform: translate3d(var(--run), 0, 0);
+  }
+}
+@keyframes fx-pulse-v {
+  to {
+    transform: translate3d(0, var(--run), 0);
+  }
+}
+.fx-nn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.fx-nn-link {
+  fill: none;
+  stroke: rgb(var(--ev-ink-rgb));
+  stroke-width: 0.18;
+  stroke-dasharray: 1.6 2.4;
+  vector-effect: non-scaling-stroke;
+  opacity: calc(var(--ev-fx-alpha) * 1.4);
+}
+.fx-node {
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  box-shadow: 0 0 10px 2px rgb(var(--ev-accent-fill-rgb) / 0.6);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-glint;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.fx-bits {
+  top: -300px;
+  font: 600 10px/1.7 var(--font-mono, ui-monospace, Menlo, monospace);
+  color: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.1);
+  letter-spacing: 0.04em;
+  text-align: center;
+  white-space: pre;
+  will-change: transform;
+  animation-name: fx-fall-plain;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-star {
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 2);
+  will-change: transform;
+  animation-name: fx-star;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-star--tw {
+  animation-name: fx-star, fx-glint;
+  animation-timing-function: linear, ease-in-out;
+  animation-direction: alternate, normal;
+}
+@keyframes fx-star {
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0);
+  }
+}
+.fx-snow {
+  top: -12px;
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 2.4);
+  filter: blur(0.5px);
+  will-change: transform;
+  animation-name: fx-sway-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-rain {
+  top: -80px;
+  width: 1.5px;
+  border-radius: 99px;
+  background: linear-gradient(to bottom, transparent, rgb(var(--ev-ink-rgb)));
+  opacity: calc(var(--ev-fx-alpha) * 1.6);
+  will-change: transform;
+  animation-name: fx-rain;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-rain {
+  from {
+    transform: rotate(9deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: rotate(9deg) translate3d(0, var(--fall), 0);
+  }
+}
+.fx-meteor {
+  width: 2px;
+  height: 92px;
+  border-radius: 99px;
+  background: linear-gradient(to bottom, rgb(var(--ev-ink-rgb)), transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-meteor;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-meteor {
+  0% {
+    transform: rotate(38deg) translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  6% {
+    opacity: calc(var(--ev-fx-alpha) * 3);
+  }
+  18%,
+  100% {
+    transform: rotate(38deg) translate3d(0, var(--fall), 0);
+    opacity: 0;
+  }
+}
+.fx-bub {
+  bottom: -40px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(var(--ev-ink-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-rise-fade;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-bub--accent {
+  border-color: rgb(var(--ev-accent-fill-rgb));
+}
+.fx-bub--fill {
+  border: none;
+  background: rgb(var(--ev-accent-fill-rgb));
+}
+.fx-fly {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  box-shadow: 0 0 10px 2px rgb(var(--ev-accent-fill-rgb) / 0.8);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-fly;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-fly {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: calc(var(--ev-fx-alpha) * 3.5);
+  }
+  40% {
+    transform: translate3d(var(--dx), calc(var(--dy) * 0.5), 0);
+  }
+  60% {
+    opacity: calc(var(--ev-fx-alpha) * 2.5);
+  }
+  80% {
+    transform: translate3d(calc(var(--dx) * -0.5), var(--dy), 0);
+    opacity: calc(var(--ev-fx-alpha) * 3);
+  }
+}
+.fx-ripple {
+  border: 1.5px solid rgb(var(--ev-ink-rgb));
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-ripple;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+@keyframes fx-ripple {
+  0% {
+    transform: scale(0.12);
+    opacity: calc(var(--ev-fx-alpha) * 2.6);
+  }
+  70% {
+    opacity: calc(var(--ev-fx-alpha) * 0.9);
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+.fx-wave {
+  left: -52%;
+  bottom: -116%;
+  width: 204%;
+  height: 160%;
+  border-radius: 44%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 0.8);
+  will-change: transform;
+  animation-name: fx-spin;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-wave--accent {
+  border-radius: 47%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1);
+}
+@keyframes fx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.fx-conf {
+  top: -16px;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 2.2);
+  will-change: transform;
+  animation-name: fx-tumble;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-conf--accent {
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 2.8);
+}
+.fx-conf--round {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.fx-balloon {
+  bottom: -140px;
+  border-radius: 50% / 56% 56% 44% 44%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-rise-fade;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.fx-balloon--ink {
+  background: rgb(var(--ev-ink-rgb));
+}
+.fx-balloon::after {
+  content: "";
+  position: absolute;
+  top: 99%;
+  left: 50%;
+  width: 1px;
+  height: 30px;
+  background: rgb(var(--ev-ink-rgb) / 0.5);
+}
+.fx-heart {
+  bottom: -40px;
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-heart;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.fx-heart--ink {
+  background: rgb(var(--ev-ink-rgb));
+}
+.fx-heart::before,
+.fx-heart::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+}
+.fx-heart::before {
+  top: -50%;
+  left: 0;
+}
+.fx-heart::after {
+  top: 0;
+  left: -50%;
+}
+@keyframes fx-heart {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(45deg) scale(0.7);
+    opacity: 0;
+  }
+  12% {
+    opacity: calc(var(--ev-fx-alpha) * 2.6);
+  }
+  55% {
+    transform: translate3d(var(--dx), calc(var(--rise) * -0.5), 0) rotate(45deg) scale(1);
+  }
+  100% {
+    transform: translate3d(calc(var(--dx) * -0.6), calc(var(--rise) * -1), 0) rotate(45deg)
+      scale(0.85);
+    opacity: 0;
+  }
+}
+.fx-petal {
+  top: -18px;
+  width: 10px;
+  height: 14px;
+  border-radius: 70% 30% 70% 30%;
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 2.8);
+  will-change: transform;
+  animation-name: fx-tumble;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.fx-petal--ink {
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.8);
+}
+.fx-petal {
+  --spin: 540deg;
+}
+.fx-square {
+  bottom: -80px;
+  border-radius: 4px;
+  border: 1.5px solid rgb(var(--ev-ink-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-square;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-square--accent {
+  border-color: rgb(var(--ev-accent-fill-rgb));
+}
+@keyframes fx-square {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--ev-fx-alpha) * 1.8);
+  }
+  90% {
+    opacity: calc(var(--ev-fx-alpha) * 1.1);
+  }
+  100% {
+    transform: translate3d(0, calc(var(--rise) * -1), 0) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+.fx-streak {
+  top: -400px;
+  width: 3px;
+  border-radius: 99px;
+  background: linear-gradient(to bottom, transparent, rgb(var(--ev-accent-fill-rgb)), transparent);
+  opacity: calc(var(--ev-fx-alpha) * 1.8);
+  will-change: transform;
+  animation-name: fx-fall-plain;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-streak--ink {
+  background: linear-gradient(to bottom, transparent, rgb(var(--ev-ink-rgb)), transparent);
+  opacity: calc(var(--ev-fx-alpha) * 1.2);
+}
+@keyframes fx-fall-plain {
+  to {
+    transform: translate3d(0, var(--fall), 0);
+  }
+}
+@keyframes fx-sway-fall {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(var(--dx), calc(var(--fall) * 0.5), 0);
+  }
+  100% {
+    transform: translate3d(calc(var(--dx) * -0.4), var(--fall), 0);
+  }
+}
+@keyframes fx-rise-fade {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: calc(var(--ev-fx-alpha) * 2.4);
+  }
+  50% {
+    transform: translate3d(var(--dx), calc(var(--rise) * -0.5), 0);
+  }
+  80% {
+    opacity: calc(var(--ev-fx-alpha) * 1.7);
+  }
+  100% {
+    transform: translate3d(calc(var(--dx) * -0.7), calc(var(--rise) * -1), 0);
+    opacity: 0;
+  }
+}
+@keyframes fx-tumble {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+  100% {
+    transform: translate3d(var(--dx), var(--fall), 0) rotate(var(--spin));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx > *,
+  .fx > * ::before,
+  .fx > * ::after {
+    animation: none !important;
+  }
+  .fx-mote,
+  .fx-bub,
+  .fx-balloon,
+  .fx-heart,
+  .fx-square {
+    opacity: var(--ev-fx-alpha);
+    transform: translate3d(0, calc(var(--rise) * -0.5), 0);
+  }
+  .fx-glint,
+  .fx-node {
+    opacity: calc(var(--ev-fx-alpha) * 1.6);
+    transform: scale(0.9);
+  }
+  .fx-fly {
+    opacity: calc(var(--ev-fx-alpha) * 2.4);
+  }
+  .fx-ripple {
+    opacity: calc(var(--ev-fx-alpha) * 1.4);
+    transform: scale(1.6);
+  }
+  .fx-meteor {
+    opacity: calc(var(--ev-fx-alpha) * 1.6);
+    transform: rotate(38deg);
+  }
+  .fx-conf,
+  .fx-petal {
+    transform: translate3d(0, calc(var(--fall) * 0.45), 0) rotate(28deg);
+  }
+  .fx-snow,
+  .fx-bits,
+  .fx-streak {
+    transform: translate3d(0, calc(var(--fall) * 0.45), 0);
+  }
+  .fx-rain {
+    transform: rotate(9deg) translate3d(0, calc(var(--fall) * 0.45), 0);
+  }
+  .fx-drift {
+    transform: scale(1.08);
+  }
+  .fx-veil,
+  .fx-orb,
+  .fx-blob,
+  .fx-beam,
+  .fx-grid,
+  .fx-diag,
+  .fx-star,
+  .fx-wave,
+  .fx-pulse {
+    transform: none;
+  }
+}
+.ev-surface {
+  background: var(--ev-surface);
+  border: 1px solid rgb(var(--ev-ink-rgb) / 0.14);
+  border-radius: 16px;
+}
+.ev-link {
+  color: var(--ev-accent-text);
+}
+.ev-kai-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 5px;
+  background: var(--gradient-kai);
+  box-shadow: 0 0 0 1px rgb(var(--ev-ink-rgb) / 0.35);
+  color: var(--key-0);
+}
+@media (forced-colors: active) {
+  .ev-kai-mark {
+    background: CanvasText;
+    box-shadow: none;
+  }
+}
+.ev-canvas[data-ev-accent-mono="true"] .ev-link {
+  text-decoration: underline;
+  text-decoration-color: var(--ev-accent-fill);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+}
+.fx-aurora {
+  inset: -40%;
+  background: var(--ev-canvas);
+  mix-blend-mode: overlay;
+  opacity: calc(var(--ev-canvas-fx-alpha) * 2.6);
+  filter: blur(40px);
+  will-change: transform;
+  animation-name: fx-aurora;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-aurora--1 {
+  mix-blend-mode: soft-light;
+  opacity: calc(var(--ev-canvas-fx-alpha) * 3.4);
+}
+.fx-aurora--2 {
+  mix-blend-mode: overlay;
+  opacity: calc(var(--ev-canvas-fx-alpha) * 2);
+}
+@keyframes fx-aurora {
+  from {
+    transform: rotate(var(--r0)) scale(var(--scale));
+  }
+  to {
+    transform: rotate(var(--r1)) scale(calc(var(--scale) * 1.18));
+  }
+}
+@media (forced-colors: active) {
+  .fx-aurora {
+    display: none;
+  }
+}
+.fx-mesh {
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: calc(var(--ev-fx-alpha) * 1.5);
+  will-change: transform;
+  animation-name: fx-mesh;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-mesh--0 {
+  background: rgb(var(--ev-accent-fill-rgb));
+}
+.fx-mesh--1 {
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.1);
+}
+.fx-mesh--2 {
+  background: rgb(var(--ev-ink-inverse-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.3);
+}
+@keyframes fx-mesh {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1.22);
+  }
+}
+.fx-breathe {
+  inset: -6%;
+  background: var(--ev-canvas);
+  will-change: transform;
+  animation-name: fx-breathe;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-breathe {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.055);
+  }
+}
+.fx-gather {
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: fx-gather;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-iteration-count: infinite;
+}
+@keyframes fx-gather {
+  0% {
+    transform: translate3d(var(--fx), var(--fy), 0) scale(0.4);
+    opacity: 0;
+  }
+  18% {
+    opacity: calc(var(--ev-fx-alpha) * 2.2);
+  }
+  55%,
+  82% {
+    transform: translate3d(var(--tx), var(--ty), 0) scale(1);
+    opacity: calc(var(--ev-fx-alpha) * 2.6);
+  }
+  100% {
+    transform: translate3d(var(--tx), var(--ty), 0) scale(0.8);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-aurora,
+  .fx-mesh,
+  .fx-breathe {
+    transform: none;
+  }
+  .fx-gather {
+    opacity: calc(var(--ev-fx-alpha) * 2.6);
+    transform: translate3d(var(--tx), var(--ty), 0);
+  }
+}
+.pk-fx-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-bottom: 0;
+}
+.pk-fx-note {
+  display: block;
+  padding: 0 9px 8px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-tertiary);
+  text-align: left;
+}
+.pk-fx-sig {
+  display: inline-flex;
+  color: var(--violet);
+}
+.fx-nn--signal .fx-nn-link {
+  stroke-dasharray: none;
+  stroke-width: 0.5;
+  opacity: calc(var(--ev-fx-alpha) * 3.4);
+}
+.fx-nn--signal ~ .fx-node {
+  box-shadow: 0 0 14px 3px rgb(var(--ev-accent-fill-rgb) / 0.75);
+}
+.fx-sheen {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(var(--ev-ink-rgb) / 0.55) 45%,
+    rgb(var(--ev-ink-rgb) / 0.55) 55%,
+    transparent
+  );
+  opacity: calc(var(--ev-fx-alpha) * 1.2);
+  filter: blur(34px);
+  transform: rotate(14deg);
+  will-change: transform;
+  animation-name: fx-sheen;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.3, 1);
+  animation-iteration-count: infinite;
+}
+@keyframes fx-sheen {
+  from {
+    transform: rotate(14deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: rotate(14deg) translate3d(var(--run), 0, 0);
+  }
+}
+.fx-tide {
+  background: linear-gradient(to bottom, transparent, rgb(var(--ev-ink-rgb) / 0.5), transparent);
+  opacity: calc(var(--ev-fx-alpha) * 0.75);
+  filter: blur(26px);
+  will-change: transform;
+  animation-name: fx-tide;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-tide {
+  to {
+    transform: translate3d(0, calc(var(--rise) * -1), 0);
+  }
+}
+.fx-bokeh {
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.15);
+  filter: blur(10px);
+  will-change: transform;
+  animation-name: fx-bokeh;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-bokeh--accent {
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.5);
+}
+@keyframes fx-bokeh {
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1.18);
+  }
+}
+.fx-dust {
+  width: 1.5px;
+  height: 1.5px;
+  border-radius: 50%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.6);
+  will-change: transform;
+  animation-name: fx-dust;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-dust {
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0);
+  }
+}
+.fx-halftone {
+  background-image: radial-gradient(rgb(var(--ev-ink-rgb)) 1.1px, transparent 1.5px);
+  background-size: 14px 14px;
+  opacity: calc(var(--ev-fx-alpha) * 2);
+  -webkit-mask-image: radial-gradient(
+    closest-side,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.6) 42%,
+    rgb(0 0 0 / 0) 76%
+  );
+  mask-image: radial-gradient(
+    closest-side,
+    rgb(0 0 0 / 1) 0%,
+    rgb(0 0 0 / 0.6) 42%,
+    rgb(0 0 0 / 0) 76%
+  );
+  will-change: transform;
+  animation-name: fx-halftone;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-halftone {
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0);
+  }
+}
+.fx-riso {
+  inset: -6%;
+  background-size: 9px 9px;
+  will-change: transform;
+  animation-name: fx-riso;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-riso--ink {
+  background-image: radial-gradient(rgb(var(--ev-ink-rgb)) 1px, transparent 1.4px);
+  opacity: calc(var(--ev-fx-alpha) * 0.5);
+}
+.fx-riso--accent {
+  background-image: radial-gradient(rgb(var(--ev-accent-fill-rgb)) 1px, transparent 1.4px);
+  opacity: calc(var(--ev-fx-alpha) * 0.85);
+}
+@keyframes fx-riso {
+  to {
+    transform: translate3d(2px, 1.5px, 0);
+  }
+}
+.fx-hatch {
+  inset: -22%;
+  opacity: calc(var(--ev-fx-alpha) * 0.5);
+  will-change: transform;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.fx-hatch--a {
+  background-image: repeating-linear-gradient(
+    38deg,
+    rgb(var(--ev-ink-rgb)) 0 1px,
+    transparent 1px 9px
+  );
+  animation-name: fx-hatch-a;
+}
+.fx-hatch--b {
+  background-image: repeating-linear-gradient(
+    -38deg,
+    rgb(var(--ev-ink-rgb)) 0 1px,
+    transparent 1px 11px
+  );
+  animation-name: fx-hatch-b;
+}
+@keyframes fx-hatch-a {
+  to {
+    transform: translate3d(7.09px, 5.54px, 0);
+  }
+}
+@keyframes fx-hatch-b {
+  to {
+    transform: translate3d(8.67px, -6.77px, 0);
+  }
+}
+.fx-contour {
+  border-radius: 50%;
+  background-image: repeating-radial-gradient(
+    circle,
+    transparent 0 13px,
+    rgb(var(--ev-ink-rgb) / 0.55) 13px 14.4px
+  );
+  opacity: calc(var(--ev-fx-alpha) * 0.45);
+  will-change: transform;
+  animation-name: fx-contour;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-contour {
+  to {
+    transform: scale(1.035);
+  }
+}
+.fx-fleck {
+  border-radius: 40% 60% 55% 45%;
+  background: rgb(var(--ev-ink-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.3);
+  will-change: transform;
+  animation-name: fx-fleck;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fx-fleck--accent {
+  background: rgb(var(--ev-accent-fill-rgb));
+  opacity: calc(var(--ev-fx-alpha) * 1.8);
+}
+@keyframes fx-fleck {
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--spin));
+  }
+}
+.fx-moire {
+  inset: -45%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgb(var(--ev-ink-rgb)) 0 1px,
+    transparent 1px 6px
+  );
+  opacity: calc(var(--ev-fx-alpha) * 0.5);
+}
+.fx-moire--b {
+  will-change: transform;
+  animation-name: fx-moire;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes fx-moire {
+  from {
+    transform: rotate(0.5deg);
+  }
+  to {
+    transform: rotate(1.9deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fx-sheen {
+    transform: rotate(14deg) translate3d(calc(var(--run) * 0.45), 0, 0);
+  }
+  .fx-tide {
+    transform: translate3d(0, calc(var(--rise) * -0.4), 0);
+  }
+  .fx-bokeh,
+  .fx-dust,
+  .fx-fleck {
+    transform: translate3d(calc(var(--dx) * 0.5), calc(var(--dy) * 0.5), 0);
+  }
+  .fx-halftone {
+    transform: translate3d(calc(var(--dx) * 0.5), calc(var(--dy) * 0.5), 0) scale(1.06);
+  }
+  .fx-contour {
+    transform: scale(1.08);
+  }
+  .fx-moire--b {
+    transform: rotate(2.4deg);
+  }
+  .fx-riso--accent {
+    transform: translate3d(3px, 2px, 0);
+  }
+}
+  /* ---- themed event screens: the theme engine sets --ev-* on .evt-screen; the wireframe's own tokens follow them inside it ---- */
+  .evt-screen { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; overflow:hidden;
+    --ink:var(--ev-ink); --ink2:rgb(var(--ev-ink-rgb) / .78); --ink3:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); --line:rgb(var(--ev-ink-rgb) / .16); --fill:rgb(var(--ev-ink-rgb) / .08); --fill2:rgb(var(--ev-ink-rgb) / .14); --paper:transparent; }
+  .evt-screen .hdr, .evt-screen .hdr.chdr { background:transparent; border-bottom:0; }
+  .evt-screen .hdr .back, .evt-screen .hdr .icon { background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); color:var(--ev-ink); border-radius:50%; -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
+  .evt-screen .body, .evt-screen .body.chatbody { background:transparent; }
+  .evt-screen .btn { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .btn.sec { background:var(--ev-plate); color:var(--ev-ink); border-color:var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  .evt-screen .avatar, .evt-screen .bav, .evt-screen .hav { background:rgb(var(--ev-ink-rgb) / .14); border:0; color:var(--ev-ink); }
+  .evt-screen .chip, .evt-screen .pill { background:var(--ev-plate); border-color:var(--ev-plate-edge, transparent); color:var(--ev-ink); }
+  .evt-screen .chip.on, .evt-screen .pill.on { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .input, .evt-screen .seg { background:var(--ev-plate); border-color:var(--ev-plate-edge, transparent); color:var(--ev-ink); }
+  .evt-screen .seg div.on { background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .input::placeholder, .evt-screen .ci::placeholder { color:rgb(var(--ev-ink-rgb) / .6); }
+  .evt-screen .evx-tog i { background:rgb(var(--ev-ink-rgb) / .2); } .evt-screen .evx-tog i.on { background:var(--ev-ink); }
+  .evt-screen .evx-radio.on { border-color:var(--ev-ink); }
+  /* the chat, themed */
+  .evt-screen .bub { background:var(--ev-plate); color:var(--ev-ink); border:1px solid var(--ev-plate-edge, transparent); box-shadow:none; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); border-radius:16px; }
+  .evt-screen .bub.me { background:var(--ev-ink); color:var(--ev-ink-inverse); border-color:transparent; }
+  .evt-screen .bub .bf { color:inherit; opacity:.7; }
+  .evt-screen .dsep span, .evt-screen .syspill span { background:var(--ev-plate); color:var(--ev-ink); border-radius:999px; }
+  .evt-screen .foot { background:var(--ev-plate); border-top:1px solid var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(18px) saturate(1.4); backdrop-filter:blur(18px) saturate(1.4); }
+  .evt-screen .cpill { background:rgb(var(--ev-ink-rgb) / .08); } .evt-screen .ci { color:var(--ev-ink); }
+  .evt-screen .cmic { border-color:var(--ev-ink); color:var(--ev-ink); } .evt-screen .csend { background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .pinbar, .evt-screen .evx-up, .evt-screen .evx-q { background:var(--ev-plate); border-color:var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); }
+  .evt-screen .evx-up { box-shadow:inset 3px 0 0 var(--ev-accent-fill); }
+  .evt-screen .evx-tag { background:rgb(var(--ev-ink-rgb) / .1); border-color:transparent; color:var(--ev-ink); }
+  .evt-screen .evx-tag.host { background:var(--ev-accent-fill); color:var(--ev-ink-inverse); }
+  .evt-screen .evx-tag.go, .evt-screen .evx-vote.on { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .evx-vote { background:rgb(var(--ev-ink-rgb) / .08); border-color:transparent; color:var(--ev-ink); } .evt-screen .evx-vote b { color:inherit; }
+  .evt-screen .evx-mode { border-color:var(--ev-plate-edge, transparent); } .evt-screen .evx-mode div.on { background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  /* the page */
+  .evt-hdr { padding:8px 16px 6px; }
+  .evt-body { padding:4px 20px 190px; }
+  .evt-poster { position:relative; width:100%; aspect-ratio:1; border-radius:26px; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 1px 2px rgba(0,0,0,.08), 0 22px 44px -22px rgba(0,0,0,.55); }
+  .evt-poster::after { content:""; position:absolute; inset:0; background:radial-gradient(120% 80% at 20% 0%, rgba(255,255,255,.28), transparent 55%); pointer-events:none; }
+  .evt-emoji { font-size:104px; line-height:1; filter:drop-shadow(0 12px 18px rgba(0,0,0,.28)); animation:evtFloat 5s ease-in-out infinite; }
+  @keyframes evtFloat { 0%,100% { transform:translateY(0) rotate(-4deg); } 50% { transform:translateY(-8px) rotate(4deg); } }
+  .evt-stamp { position:absolute; top:14px; right:14px; transform:rotate(6deg); background:var(--ev-ink); color:var(--ev-ink-inverse); font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:7px 11px; border-radius:10px; box-shadow:0 6px 16px -6px rgba(0,0,0,.45); z-index:1; }
+  .evt-title { font-size:42px; line-height:1; font-weight:800; letter-spacing:-.035em; margin:22px 0 12px; text-wrap:balance; color:var(--ev-ink); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .evt-host { display:flex; align-items:center; gap:14px; font-size:14px; font-weight:600; color:var(--ink2); }
+  .evt-by { display:inline-flex; align-items:center; gap:8px; cursor:pointer; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .evt-bav { width:24px; height:24px; border-radius:50%; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; font-style:normal; font-size:9px; font-weight:800; background:rgb(var(--ev-ink-rgb) / .16); color:var(--ev-ink); }
+  .evt-follow { flex:0 0 auto; margin-left:auto; font-size:13px; font-weight:700; padding:6px 12px; border-radius:999px; background:var(--ev-ink); color:var(--ev-ink-inverse); cursor:pointer; }
+  .evt-follow.on { background:var(--ev-plate); color:var(--ev-ink); }
+  .evt-when { display:flex; align-items:center; gap:8px; margin:18px 0; min-width:0; }
+  .evt-chip { height:44px; display:inline-flex; align-items:center; padding:0 14px; border-radius:14px; background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); font-size:15px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; flex:0 1 auto; cursor:pointer; }
+  .evt-by .evt-ct { width:24px; height:24px; border-radius:7px; box-shadow:0 0 0 1px rgb(var(--ev-ink-rgb) / .25); } .evt-by .evt-ct i { display:none; }
+  .evt-fact { display:flex; align-items:center; gap:12px; } .evt-fact .a { font-size:15.5px; font-weight:700; } .evt-fact .b { font-size:13.5px; color:var(--ink2); }
+  .evt-cal { width:44px; height:44px; border-radius:13px; flex:0 0 auto; display:grid; place-items:center; align-content:center; background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); line-height:1; }
+  .evt-cal b { font-size:10px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--ev-accent-text); } .evt-cal span { font-size:19px; font-weight:800; margin-top:2px; }
+  .evt-pinbox { font-size:20px; }
+  .evt-going { display:flex; align-items:center; gap:12px; margin:4px 0 18px; cursor:pointer; } .evt-going b { display:block; font-size:15.5px; font-weight:800; } .evt-going span { font-size:13px; color:var(--ink2); }
+  .evt-faces { display:flex; padding-left:10px; } .evt-faces i { width:36px; height:36px; border-radius:50%; margin-left:-10px; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:11px; font-weight:800; background:rgb(var(--ev-plate-rgb) / .92); color:var(--ev-ink); box-shadow:0 0 0 2px rgb(var(--ev-ink-rgb) / .12); }
+  .evt-faces i:nth-child(odd) { background:rgb(var(--ev-accent-fill-rgb) / .9); color:var(--ev-ink-inverse); }
+  .evt-faces i.me { background:var(--ev-ink); color:var(--ev-ink-inverse); z-index:1; } .evt-faces i.pop { animation:evtPop 700ms cubic-bezier(.2,1.6,.4,1) 900ms both; }
+  @keyframes evtPop { 0% { transform:translateY(-60px) scale(.4); opacity:0; } 100% { transform:none; opacity:1; } }
+  .evt-duo { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 14px; } .evt-duo .btn { border-radius:15px; padding:13px 10px; font-size:15px; font-weight:700; }
+  .evt-note { display:flex; align-items:center; gap:8px; padding:12px 14px; border-radius:15px; background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); font-size:14.5px; font-weight:700; margin:0 0 14px; -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); cursor:default; }
+  .evt-note span { margin-left:auto; font-size:13px; text-decoration:underline; cursor:pointer; color:var(--ink2); font-weight:600; }
+  .evt-note[data-evgo] { cursor:pointer; }
+  .evt-chat { padding:14px; border-radius:24px; background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(18px) saturate(1.4); backdrop-filter:blur(18px) saturate(1.4); cursor:pointer; }
+  .evt-chat-h { display:flex; align-items:center; justify-content:space-between; font-size:14px; font-weight:800; margin-bottom:10px; }
+  .evt-new { font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:999px; background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-b { display:flex; align-items:flex-end; gap:8px; margin:6px 0; } .evt-b.me { justify-content:flex-end; }
+  .evt-bt { background:rgb(var(--ev-ink-rgb) / .08); border-radius:16px 16px 16px 5px; padding:8px 12px; font-size:14px; line-height:1.35; max-width:86%; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-b.me .evt-bt { background:var(--ev-ink); color:var(--ev-ink-inverse); border-radius:16px 16px 5px 16px; }
+  .evt-pinmark { margin-right:4px; }
+  .evt-react { display:flex; align-items:center; gap:6px; margin-top:12px; }
+  .evt-react button { width:40px; height:40px; flex:0 0 auto; border-radius:50%; border:0; background:rgb(var(--ev-ink-rgb) / .08); font-size:19px; cursor:pointer; transition:transform 160ms cubic-bezier(.2,.8,.2,1); }
+  .evt-react button:active { transform:scale(1.3) rotate(-8deg); }
+  .evt-say { flex:1; min-width:0; height:40px; border-radius:999px; background:rgb(var(--ev-ink-rgb) / .08); display:flex; align-items:center; padding:0 14px; font-size:14px; color:var(--ink2); cursor:text; }
+  .evt-chat-locked { cursor:default; } .evt-blur { filter:blur(4px); opacity:.75; pointer-events:none; user-select:none; }
+  .evt-lockline { text-align:center; font-size:13.5px; font-weight:800; margin-top:10px; }
+  .evt-photos { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-bottom:12px; }
+  .evt-photos i { aspect-ratio:1; border-radius:12px; background:repeating-linear-gradient(135deg, rgb(var(--ev-ink-rgb) / .14) 0 8px, rgb(var(--ev-ink-rgb) / .08) 8px 16px); display:flex; align-items:center; justify-content:center; font-style:normal; font-size:13px; font-weight:800; }
+  .evt-sec { font-size:19px; font-weight:800; letter-spacing:-.015em; color:var(--ev-ink); margin:30px 0 12px; }
+  .evt-people, .evt-more { display:flex; gap:10px; overflow-x:auto; margin:0 -20px; padding:0 20px 4px; scrollbar-width:none; }
+  .evt-person { flex:0 0 136px; display:grid; justify-items:center; align-content:start; gap:4px; text-align:center; padding:16px 12px 14px; border-radius:22px; background:var(--ev-plate); border:1px solid var(--ev-plate-edge, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); cursor:pointer; }
+  .evt-pav { position:relative; width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:18px; font-weight:800; background:rgb(var(--ev-accent-fill-rgb) / .9); color:var(--ev-ink-inverse); margin-bottom:4px; }
+  .evt-pav em { position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); font-style:normal; font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-person b { font-size:15px; font-weight:800; } .evt-person span { font-size:12.5px; color:var(--ink2); line-height:1.3; min-height:2.6em; }
+  .evt-person .btn.sm { margin-top:6px; padding:8px 12px; font-size:13px; border-radius:999px; }
+  .evt-about { font-size:15px; line-height:1.5; margin:26px 0 0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; cursor:pointer; } .evt-about.open { -webkit-line-clamp:unset; display:block; }
+  .evt-mini { flex:0 0 128px; cursor:pointer; display:grid; gap:4px; } .evt-mini b { font-size:13.5px; font-weight:800; line-height:1.25; } .evt-mini span { font-size:12px; color:var(--ink2); }
+  .evt-mini-p { aspect-ratio:1; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:48px; box-shadow:0 14px 28px -16px rgba(0,0,0,.5); margin-bottom:4px; }
+  .evt-screen.ev-canvas > .evx-cta.evx-cta { position:absolute; z-index:5; }
+  .evt-screen .evx-cta .btn { transition:transform 250ms cubic-bezier(.2,1.6,.4,1); } .evt-screen .evx-cta .btn:active { transform:scale(.95); }
+  .evt-rsvp { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .evt-act { display:flex; align-items:center; gap:8px; font-size:13.5px; margin:0 0 8px; } .evt-act b { font-weight:800; }
+  .evt-roll { position:relative; aspect-ratio:1; display:grid; grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; gap:6px; border-radius:26px; overflow:hidden; cursor:pointer; box-shadow:0 22px 44px -22px rgba(0,0,0,.55); }
+  .evt-roll i { position:relative; display:flex; align-items:center; justify-content:center; font-style:normal; } .evt-roll i:first-child { grid-row:span 2; }
+  .evt-roll i:nth-child(2) { filter:saturate(1.3) brightness(.92); } .evt-roll i:nth-child(3) { filter:hue-rotate(-18deg) brightness(.85); }
+  .evt-roll i:nth-child(3)::after { content:""; position:absolute; inset:0; background:rgba(0,0,0,.3); } .evt-roll b { position:relative; z-index:1; font-size:22px; font-weight:800; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.35); }
+  .evt-emofx i { bottom:-48px; font-style:normal; font-size:var(--s); opacity:.24; animation:evtRise var(--d) linear var(--dl) infinite; }
+  @keyframes evtRise { to { transform:translate(var(--dx), -1000px) rotate(var(--r)); } }
+  .evt-screen .evx-cta .btn { border-radius:18px; padding:16px; font-size:16.5px; font-weight:800; box-shadow:0 1px 2px rgba(0,0,0,.1), 0 16px 32px -12px rgba(0,0,0,.55); }
+  .evt-screen.ev-canvas > .evt-burst.evt-burst { position:absolute; inset:0; z-index:8; pointer-events:none; overflow:hidden; }
+  .evt-burst i { position:absolute; top:-14px; width:8px; height:12px; border-radius:2px; animation:evtFall 1.7s cubic-bezier(.2,.6,.4,1) forwards; }
+  @keyframes evtFall { to { transform:translate(var(--dx), 900px) rotate(var(--r)); opacity:.9; } }
+  /* the look sheet: ten themes, the effects, and a shuffle */
+  .evt-swatches { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:14px 0 6px; }
+  .evt-sw { display:grid; gap:5px; justify-items:center; font-size:11.5px; color:var(--ink2); cursor:pointer; } .evt-sw i { width:100%; aspect-ratio:1; border-radius:50%; box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); }
+  .evt-sw.on i { outline:3px solid var(--ink); outline-offset:2px; } .evt-sw.on { color:var(--ink); font-weight:700; }
+  .evt-fxs { display:flex; flex-wrap:wrap; gap:8px; } .evt-fxs .chip { font-size:13px; padding:7px 12px; }
+  .evx-emo { position:absolute; top:6px; right:7px; z-index:1; font-size:20px; line-height:1; filter:drop-shadow(0 2px 4px rgba(0,0,0,.25)); }
+  @media (prefers-reduced-motion: reduce) { .evt-emoji, .evt-faces i.pop { animation:none; } .evt-react button, .evt-screen .evx-cta .btn { transition:none; } }
+  .evt-screen .input.evt-name { background:transparent; border:0; padding:0; margin:18px 0 8px; font:inherit; font-size:30px; font-weight:800; letter-spacing:-.025em; color:var(--ev-ink); outline:none; width:100%; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -4120,6 +5388,1174 @@ const _mPortWire = portWire; portWire = function(){ _mPortWire(); phone.querySel
    Overrides: evThumb, evStatus, evCard, rsvp, sEvents, sEventDetail, sCalendar, sCalendars. Adds sheets ev* and wiring data-ev*.
    Routes reuse existing ones: eventd:<id>, eventd:new, eventd:manage.<id>, cal:<id>, cal:<id>.manage, calendars. ==== */
 
+/* ---- event themes and effects: the theme engine from the events branch (web lib/events-review), types stripped ---- */
+const EVT = (function(){
+const hexToRgb = (h) => {
+    let hex = String(h).replace("#", "");
+    if (hex.length === 3)
+        hex = hex
+            .split("")
+            .map((c) => c + c)
+            .join("");
+    return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+};
+const rgbToHex = (rgb) => "#" +
+    rgb
+        .map((v) => Math.max(0, Math.min(255, Math.round(v)))
+        .toString(16)
+        .padStart(2, "0"))
+        .join("")
+        .toUpperCase();
+const relLuminance = (rgb) => {
+    const a = rgb.map((v) => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+};
+const contrast = (a, b) => {
+    const l1 = relLuminance(a);
+    const l2 = relLuminance(b);
+    const hi = Math.max(l1, l2);
+    const lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+};
+const over = (src, alpha, dst) => dst.map((v, i) => v * (1 - alpha) + src[i] * alpha);
+const rgbToHsl = ([r, g, b]) => {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    const mx = Math.max(r, g, b);
+    const mn = Math.min(r, g, b);
+    let h = 0;
+    let s = 0;
+    const l = (mx + mn) / 2;
+    if (mx !== mn) {
+        const d = mx - mn;
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        h /= 6;
+    }
+    return [h, s, l];
+};
+const hslToRgb = ([h, s, l]) => {
+    if (s === 0)
+        return [l * 255, l * 255, l * 255];
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    const f = (t) => {
+        if (t < 0)
+            t += 1;
+        if (t > 1)
+            t -= 1;
+        if (t < 1 / 6)
+            return p + (q - p) * 6 * t;
+        if (t < 1 / 2)
+            return q;
+        if (t < 2 / 3)
+            return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+    };
+    return [f(h + 1 / 3) * 255, f(h) * 255, f(h - 1 / 3) * 255];
+};
+const SAMPLES_PER_SEGMENT = 16;
+function sampleGradient(stops, per = SAMPLES_PER_SEGMENT) {
+    const rgb = stops.map(hexToRgb);
+    if (rgb.length === 1)
+        return rgb;
+    const out = [];
+    for (let i = 0; i < rgb.length - 1; i++) {
+        const a = rgb[i];
+        const b = rgb[i + 1];
+        const last = i === rgb.length - 2;
+        for (let s = 0; s < per + (last ? 1 : 0); s++) {
+            const t = s / per;
+            out.push(a.map((v, k) => v + (b[k] - v) * t));
+        }
+    }
+    return out;
+}
+const SURFACE = {
+    dark: { rgb: [255, 255, 255], alpha: 0.09 },
+    light: { rgb: [255, 255, 255], alpha: 0.66 }
+};
+const AA_BODY = 4.5;
+const AA_LARGE = 3.0;
+const KAI_STOPS = ["#7B5CF0", "#D563F7", "#1580FA"];
+const KAI_INK = "#4C3BC4";
+function worstAcross(inkRgb, samples, scrimRgb, scrimA, surface) {
+    let worstCanvas = Infinity;
+    let worstSurface = Infinity;
+    let atCanvas = null;
+    let atSurface = null;
+    for (const s of samples) {
+        const base = scrimA > 0 && scrimRgb ? over(scrimRgb, scrimA, s) : s;
+        const cCanvas = contrast(inkRgb, base);
+        if (cCanvas < worstCanvas) {
+            worstCanvas = cCanvas;
+            atCanvas = base;
+        }
+        const inSurface = over(surface.rgb, surface.alpha, base);
+        const cSurface = contrast(inkRgb, inSurface);
+        if (cSurface < worstSurface) {
+            worstSurface = cSurface;
+            atSurface = inSurface;
+        }
+    }
+    return {
+        worstCanvas,
+        worstSurface,
+        worst: Math.min(worstCanvas, worstSurface),
+        atCanvas,
+        atSurface
+    };
+}
+function ensureInSurface(hex, samples, scrimRgb, scrimA, surface, target) {
+    const bgAt = (s) => {
+        const base = scrimA > 0 && scrimRgb ? over(scrimRgb, scrimA, s) : s;
+        return over(surface.rgb, surface.alpha, base);
+    };
+    const measure = (rgb) => samples.reduce((w, s) => Math.min(w, contrast(rgb, bgAt(s))), Infinity);
+    const start = hexToRgb(hex);
+    if (measure(start) >= target)
+        return { hex: hex.toUpperCase(), adjusted: false, ratio: measure(start) };
+    const worstBg = samples.map(bgAt).sort((a, b) => relLuminance(b) - relLuminance(a))[0];
+    const goDarker = relLuminance(worstBg) > 0.18;
+    let [h, sat, l] = rgbToHsl(start);
+    for (let i = 0; i < 50; i++) {
+        l += goDarker ? -0.02 : 0.02;
+        l = Math.max(0, Math.min(1, l));
+        const cand = hslToRgb([h, sat, l]);
+        if (measure(cand) >= target)
+            return { hex: rgbToHex(cand), adjusted: true, ratio: measure(cand) };
+        if (l === 0 || l === 1)
+            break;
+    }
+    const fb = measure([17, 17, 20]) >= measure([255, 255, 255]) ? "#111114" : "#FFFFFF";
+    return { hex: fb, adjusted: true, ratio: measure(hexToRgb(fb)), collapsed: true };
+}
+function deriveTokens(theme, opts = {}) {
+    var _a;
+    const target = (_a = opts.target) !== null && _a !== void 0 ? _a : AA_BODY;
+    const samples = sampleGradient(theme.stops);
+    const INK_DARK = [17, 17, 20];
+    const INK_LIGHT = [255, 255, 255];
+    const surfaceFor = (ink) => (ink === INK_LIGHT ? SURFACE.dark : SURFACE.light);
+    const dark = worstAcross(INK_LIGHT, samples, null, 0, SURFACE.dark);
+    const light = worstAcross(INK_DARK, samples, null, 0, SURFACE.light);
+    let ink = dark.worst >= light.worst ? INK_LIGHT : INK_DARK;
+    let surface = surfaceFor(ink);
+    let best = ink === INK_LIGHT ? dark : light;
+    const scrimRgb = ink === INK_LIGHT ? [0, 0, 0] : [255, 255, 255];
+    let scrimA = 0;
+    if (best.worst < target) {
+        for (let a = 0.02; a <= 0.75; a += 0.02) {
+            const w = worstAcross(ink, samples, scrimRgb, a, surface);
+            if (w.worst >= target) {
+                scrimA = +a.toFixed(2);
+                best = w;
+                break;
+            }
+        }
+        if (!scrimA) {
+            scrimA = 0.75;
+            best = worstAcross(ink, samples, scrimRgb, scrimA, surface);
+        }
+    }
+    const accText = ensureInSurface(theme.accent, samples, scrimRgb, scrimA, surface, target);
+    const accFill = ensureInSurface(theme.accent, samples, scrimRgb, scrimA, surface, AA_LARGE);
+    const fxAlpha = solveEffectAlpha(ink, samples, scrimRgb, scrimA, FX_MIN_RATIO);
+    const worstBgFor = (stopHex) => {
+        const s = hexToRgb(stopHex);
+        let w = Infinity;
+        for (const px of samples) {
+            const base = scrimA > 0 ? over(scrimRgb, scrimA, px) : px;
+            w = Math.min(w, contrast(s, over(surface.rgb, surface.alpha, base)));
+        }
+        return w;
+    };
+    const kaiWorst = Math.min(...KAI_STOPS.map(worstBgFor));
+    const kaiSolidCandidate = ensureInSurface(KAI_INK, samples, scrimRgb, scrimA, surface, target);
+    const inkInverse = ink === INK_LIGHT ? INK_DARK : INK_LIGHT;
+    const canvasPx = samples.map((s) => (scrimA > 0 ? over(scrimRgb, scrimA, s) : s));
+    const separationAt = (a) => Math.min(...canvasPx.map((p) => contrast(over(inkInverse, a, p), p)));
+    let plateAlpha = PLATE_MAX;
+    for (let a = PLATE_MIN; a <= PLATE_MAX; a += 0.01) {
+        if (separationAt(a) >= PLATE_SEPARATION) {
+            plateAlpha = +a.toFixed(2);
+            break;
+        }
+    }
+    const plateSeparation = separationAt(plateAlpha);
+    const inkMute = (() => {
+        for (let a = MUTE_FLOOR; a <= 1.001; a += 0.01) {
+            const worst = Math.min(...canvasPx.map((p) => contrast(over(ink, a, p), p)));
+            if (worst >= target)
+                return +a.toFixed(2);
+        }
+        return 1;
+    })();
+    const plateRatio = Math.min(...canvasPx.map((p) => {
+        const plate = over(inkInverse, plateAlpha, p);
+        return contrast(over(ink, TEXT_TERTIARY_ALPHA, plate), plate);
+    }));
+    return {
+        kaiGradientAtDisplay: kaiWorst >= AA_LARGE,
+        kaiGradientAtBody: kaiWorst >= target,
+        kaiWorstStopRatio: +kaiWorst.toFixed(2),
+        kaiSolid: kaiSolidCandidate.hex,
+        ink: rgbToHex(ink),
+        inkIsLight: ink === INK_LIGHT,
+        scrim: scrimA ? { color: rgbToHex(scrimRgb), alpha: scrimA } : null,
+        accentText: accText.hex,
+        accentFill: accFill.hex,
+        accentIsMono: accText.hex === rgbToHex(ink),
+        accentAdjusted: accText.adjusted || accFill.adjusted,
+        surface: { color: "#FFFFFF", alpha: surface.alpha },
+        plate: {
+            color: rgbToHex(inkInverse),
+            alpha: plateAlpha,
+            needsEdge: plateSeparation < PLATE_SEPARATION
+        },
+        inkMute,
+        fxAlpha,
+        canvasFxAlpha: +(fxAlpha * Math.max(0, Math.min(1, (best.worstCanvas / target - 1) / CANVAS_FX_HEADROOM))).toFixed(4),
+        evidence: {
+            plateRatio: +plateRatio.toFixed(2),
+            plateSeparation: +plateSeparation.toFixed(2),
+            worst: +best.worst.toFixed(2),
+            worstOnCanvas: +best.worstCanvas.toFixed(2),
+            worstInSurface: +best.worstSurface.toFixed(2),
+            accentTextRatio: +accText.ratio.toFixed(2),
+            accentFillRatio: +accFill.ratio.toFixed(2),
+            passes: best.worst >= target && accText.ratio >= target && accFill.ratio >= AA_LARGE
+        }
+    };
+}
+const FX_MIN_RATIO = 1.35;
+const FX_MAX_ALPHA = 0.34;
+const PLATE_MIN = 0.4;
+const PLATE_MAX = 0.92;
+const PLATE_SEPARATION = 1.1;
+const TEXT_TERTIARY_ALPHA = 0.78;
+const MUTE_FLOOR = 0.6;
+const CANVAS_FX_HEADROOM = 0.6;
+function solveEffectAlpha(inkRgb, samples, scrimRgb, scrimA, target) {
+    for (let a = 0.06; a <= FX_MAX_ALPHA; a += 0.02) {
+        let worst = Infinity;
+        for (const s of samples) {
+            const base = scrimA > 0 && scrimRgb ? over(scrimRgb, scrimA, s) : s;
+            const mark = over(inkRgb, a, base);
+            worst = Math.min(worst, contrast(mark, base));
+        }
+        if (worst >= target)
+            return +a.toFixed(2);
+    }
+    return FX_MAX_ALPHA;
+}
+function verify(theme, opts = {}) {
+    var _a;
+    const target = (_a = opts.target) !== null && _a !== void 0 ? _a : AA_BODY;
+    const t = deriveTokens(theme, opts);
+    const samples = sampleGradient(theme.stops);
+    const inkRgb = hexToRgb(t.ink);
+    const scrimRgb = t.scrim ? hexToRgb(t.scrim.color) : null;
+    const scrimA = t.scrim ? t.scrim.alpha : 0;
+    const surface = { rgb: [255, 255, 255], alpha: t.surface.alpha };
+    let failures = 0;
+    let worst = Infinity;
+    let worstAt = null;
+    samples.forEach((s, i) => {
+        const base = scrimA && scrimRgb ? over(scrimRgb, scrimA, s) : s;
+        for (const bg of [base, over(surface.rgb, surface.alpha, base)]) {
+            const c = contrast(inkRgb, bg);
+            if (c < worst) {
+                worst = c;
+                worstAt = { pos: +(i / (samples.length - 1)).toFixed(2), bg: rgbToHex(bg) };
+            }
+            if (c < target)
+                failures++;
+        }
+    });
+    return {
+        theme: theme.id,
+        tokens: t,
+        samples: samples.length * 2,
+        failures,
+        worst: +worst.toFixed(2),
+        worstAt,
+        passes: failures === 0
+    };
+}
+const PRESETS = [
+    {
+        id: "graphite",
+        name: "Graphite",
+        stops: ["#F4F4F5", "#E7E7EA"],
+        angle: 160,
+        accent: "#111114",
+        mono: true
+    },
+    {
+        id: "aurora",
+        name: "Aurora",
+        stops: ["#1580FA", "#3A7AF9", "#D563F7", "#FF7700"],
+        angle: 130,
+        accent: "#FFD9B0"
+    },
+    {
+        id: "dawn",
+        name: "Dawn",
+        stops: ["#FFE9C7", "#FFC79A", "#F79BB0"],
+        angle: 150,
+        accent: "#8A3B2E"
+    },
+    {
+        id: "sage",
+        name: "Sage",
+        stops: ["#EDF3E7", "#CFE0C6", "#A9C7A0"],
+        angle: 150,
+        accent: "#2E4A2B"
+    },
+    {
+        id: "sand",
+        name: "Sand",
+        stops: ["#F7F0E3", "#EAD9BB", "#D9BE93"],
+        angle: 150,
+        accent: "#6B4E1F"
+    },
+    {
+        id: "petal",
+        name: "Petal",
+        stops: ["#FBE9F0", "#F3BCD3", "#E58BB2"],
+        angle: 150,
+        accent: "#7C2748"
+    },
+    {
+        id: "tide",
+        name: "Tide",
+        stops: ["#0E3A5C", "#1B6E8F", "#3E918E"],
+        angle: 140,
+        accent: "#BFEDEA"
+    },
+    {
+        id: "ember",
+        name: "Ember",
+        stops: ["#2B1B1B", "#8C3B2E", "#E5591C"],
+        angle: 140,
+        accent: "#FFC9A3"
+    },
+    {
+        id: "dusk",
+        name: "Dusk",
+        stops: ["#3B2A5A", "#7A4E8C", "#C76782"],
+        angle: 140,
+        accent: "#F3CFE0"
+    },
+    {
+        id: "midnight",
+        name: "Midnight",
+        stops: ["#0B0B14", "#15152B", "#232347"],
+        angle: 150,
+        accent: "#9FB4FF"
+    }
+];
+const DENSITY_K = 96000;
+const DENSITY_MIN = 5;
+const DENSITY_MAX = 28;
+const particleCount = (w, h) => Math.max(DENSITY_MIN, Math.min(DENSITY_MAX, Math.round((w * h) / DENSITY_K)));
+function seedFor(i) {
+    let h = ((i + 1) * 2654435761) >>> 0;
+    const next = () => {
+        h = (h ^ (h << 13)) >>> 0;
+        h = (h ^ (h >>> 17)) >>> 0;
+        h = (h ^ (h << 5)) >>> 0;
+        return h / 4294967296;
+    };
+    return { x: next(), size: next(), dur: next(), delay: next(), phase: next() };
+}
+const EFFECTS = [
+    { id: "none", name: "None", group: "None", voice: "quiet", motion: false },
+    {
+        id: "aurora",
+        name: "Aurora",
+        group: "Canvas",
+        voice: "quiet",
+        density: 0,
+        note: "the colours fold through each other"
+    },
+    {
+        id: "mesh",
+        name: "Mesh",
+        group: "Canvas",
+        voice: "quiet",
+        density: 0.2,
+        max: 5,
+        note: "soft masses of the theme’s own colours"
+    },
+    {
+        id: "breathe",
+        name: "Breathe",
+        group: "Canvas",
+        voice: "quiet",
+        density: 0,
+        note: "the whole wall, in and out, once every twelve seconds"
+    },
+    {
+        id: "sheen",
+        name: "Sheen",
+        group: "Canvas",
+        voice: "quiet",
+        density: 0,
+        note: "a slow band of light crossing the wall"
+    },
+    {
+        id: "tide",
+        name: "Tide",
+        group: "Canvas",
+        voice: "quiet",
+        density: 0.16,
+        min: 3,
+        max: 6,
+        note: "soft horizontal bands, rising"
+    },
+    {
+        id: "gather",
+        name: "Gather",
+        group: "Signal",
+        voice: "quiet",
+        signal: true,
+        note: "a speck per guest, drawing in. It fills as they say yes"
+    },
+    {
+        id: "constellation",
+        name: "Constellation",
+        group: "Signal",
+        voice: "quiet",
+        signal: true,
+        note: "a node per guest, linked. It grows as they say yes"
+    },
+    {
+        id: "drift",
+        name: "Drift",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0,
+        note: "the canvas itself, very slowly"
+    },
+    {
+        id: "motes",
+        name: "Motes",
+        group: "Quiet",
+        voice: "quiet",
+        density: 1,
+        note: "rising specks of ink"
+    },
+    {
+        id: "veil",
+        name: "Veil",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0,
+        note: "soft light crossing the room"
+    },
+    {
+        id: "orbs",
+        name: "Orbs",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0.18,
+        max: 5,
+        note: "out-of-focus bokeh"
+    },
+    {
+        id: "beams",
+        name: "Beams",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0.13,
+        max: 4,
+        note: "light through a high window"
+    },
+    {
+        id: "blobs",
+        name: "Blobs",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0.16,
+        max: 4,
+        note: "slow organic masses"
+    },
+    {
+        id: "glints",
+        name: "Glints",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0.8,
+        note: "a quiet twinkle"
+    },
+    {
+        id: "stars",
+        name: "Stars",
+        group: "Quiet",
+        voice: "quiet",
+        density: 1.1,
+        max: 34,
+        note: "a slow drifting starfield"
+    },
+    {
+        id: "waves",
+        name: "Waves",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0,
+        note: "a turning waterline"
+    },
+    {
+        id: "bokeh",
+        name: "Bokeh",
+        group: "Quiet",
+        voice: "quiet",
+        density: 0.5,
+        min: 4,
+        max: 10,
+        note: "out-of-focus lights, drifting"
+    },
+    {
+        id: "dust",
+        name: "Dust",
+        group: "Quiet",
+        voice: "quiet",
+        density: 1.6,
+        max: 34,
+        note: "the finest motes this library has"
+    },
+    {
+        id: "halftone",
+        name: "Halftone",
+        group: "Pattern",
+        voice: "quiet",
+        density: 0.3,
+        min: 4,
+        max: 7,
+        note: "a printed dot field whose density drifts"
+    },
+    {
+        id: "riso",
+        name: "Riso",
+        group: "Pattern",
+        voice: "quiet",
+        density: 0,
+        note: "two colour plates, slightly out of register"
+    },
+    {
+        id: "crosshatch",
+        name: "Crosshatch",
+        group: "Pattern",
+        voice: "quiet",
+        density: 0,
+        note: "pen hatching, in two directions"
+    },
+    {
+        id: "contour",
+        name: "Contour",
+        group: "Pattern",
+        voice: "quiet",
+        density: 0.12,
+        min: 2,
+        max: 4,
+        note: "topographic rings, breathing outward"
+    },
+    {
+        id: "terrazzo",
+        name: "Terrazzo",
+        group: "Pattern",
+        voice: "quiet",
+        density: 4,
+        max: 64,
+        note: "scattered flecks, set in the surface"
+    },
+    {
+        id: "moire",
+        name: "Moire",
+        group: "Technical",
+        voice: "quiet",
+        density: 0,
+        note: "two rulings, one turning against the other"
+    },
+    {
+        id: "grid",
+        name: "Grid",
+        group: "Technical",
+        voice: "quiet",
+        density: 0,
+        note: "a panning dot field"
+    },
+    {
+        id: "diagonals",
+        name: "Diagonals",
+        group: "Technical",
+        voice: "quiet",
+        density: 0,
+        note: "two stripe layers, crossing"
+    },
+    {
+        id: "circuit",
+        name: "Circuit",
+        group: "Technical",
+        voice: "lively",
+        density: 0.3,
+        max: 8,
+        note: "traces with travelling pulses"
+    },
+    {
+        id: "neural",
+        name: "Neural",
+        group: "Technical",
+        voice: "lively",
+        density: 0.35,
+        max: 9,
+        note: "nodes and links"
+    },
+    {
+        id: "bits",
+        name: "Bits",
+        group: "Technical",
+        voice: "lively",
+        density: 0.3,
+        max: 8,
+        note: "falling ones and zeroes"
+    },
+    {
+        id: "snow",
+        name: "Snow",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.9,
+        note: "falling with a sway"
+    },
+    {
+        id: "rain",
+        name: "Rain",
+        group: "Seasonal",
+        voice: "lively",
+        density: 1.2,
+        max: 34,
+        note: "thin angled drops"
+    },
+    {
+        id: "petals",
+        name: "Petals",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.8,
+        note: "blossom, tumbling"
+    },
+    {
+        id: "meteors",
+        name: "Meteors",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.3,
+        max: 7,
+        note: "occasional shooting streaks"
+    },
+    {
+        id: "fireflies",
+        name: "Fireflies",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.4,
+        max: 10,
+        note: "summer evenings"
+    },
+    {
+        id: "bubbles",
+        name: "Bubbles",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.7,
+        note: "rising rings"
+    },
+    {
+        id: "ripples",
+        name: "Ripples",
+        group: "Seasonal",
+        voice: "lively",
+        density: 0.3,
+        max: 7,
+        note: "expanding rings"
+    },
+    { id: "confetti", name: "Confetti", group: "Celebration", voice: "loud", density: 1.1, max: 34 },
+    { id: "balloons", name: "Balloons", group: "Celebration", voice: "loud", density: 0.3, max: 8 },
+    { id: "hearts", name: "Hearts", group: "Celebration", voice: "loud", density: 0.5, max: 12 },
+    { id: "squares", name: "Squares", group: "Celebration", voice: "loud", density: 0.6 },
+    { id: "streaks", name: "Streaks", group: "Celebration", voice: "loud", density: 0.5, max: 12 }
+];
+const EFFECT_GROUPS = [
+    "Canvas",
+    "Signal",
+    "Quiet",
+    "Pattern",
+    "Technical",
+    "Seasonal",
+    "Celebration"
+];
+function shuffleEffect(current) {
+    const pool = EFFECTS.filter((e) => e.id !== "none" && e.id !== current);
+    const i = Math.floor(Math.random() * pool.length);
+    return pool[i].id;
+}
+const effectById = (id) => EFFECTS.find((e) => e.id === id) || EFFECTS[0];
+function applyTheme(el, theme) {
+    const t = deriveTokens(theme);
+    const s = el.style;
+    s.setProperty("--ev-canvas", `linear-gradient(${theme.angle}deg, ${theme.stops.join(", ")})`);
+    s.setProperty("--ev-ink", t.ink);
+    s.setProperty("--ev-ink-rgb", hexToRgb(t.ink).join(" "));
+    s.setProperty("--ev-ink-inverse", t.plate.color);
+    s.setProperty("--ev-ink-inverse-rgb", hexToRgb(t.plate.color).join(" "));
+    s.setProperty("--ev-scrim", t.scrim ? `rgb(${hexToRgb(t.scrim.color).join(" ")} / ${t.scrim.alpha})` : "transparent");
+    s.setProperty("--ev-accent-text", t.accentText);
+    s.setProperty("--ev-accent-fill", t.accentFill);
+    s.setProperty("--ev-accent-fill-rgb", hexToRgb(t.accentFill).join(" "));
+    s.setProperty("--ev-surface", `rgb(255 255 255 / ${t.surface.alpha})`);
+    s.setProperty("--ev-plate-rgb", hexToRgb(t.plate.color).join(" "));
+    s.setProperty("--ev-plate-alpha", String(t.plate.alpha));
+    s.setProperty("--ev-plate", `rgb(${hexToRgb(t.plate.color).join(" ")} / ${t.plate.alpha})`);
+    s.setProperty("--ev-ink-mute", String(t.inkMute));
+    s.setProperty("--ev-fx-alpha", String(t.fxAlpha));
+    s.setProperty("--ev-canvas-fx-alpha", String(t.canvasFxAlpha));
+    s.setProperty("--ev-kai-solid", t.kaiSolid);
+    el.dataset.evInk = t.inkIsLight ? "light" : "dark";
+    el.dataset.evAccentMono = String(t.accentIsMono);
+    el.dataset.evPlateEdge = String(t.plate.needsEdge);
+    return t;
+}
+function ensureLayer(root) {
+    let layer = root.querySelector(":scope > .fx");
+    if (!layer) {
+        layer = document.createElement("div");
+        layer.className = "fx";
+        layer.setAttribute("aria-hidden", "true");
+        root.prepend(layer);
+    }
+    return layer;
+}
+const DRIFT_SEC = 26, VEIL_A_SEC = 34, VEIL_B_SEC = 40, VEIL_B_PHASE = 0.35;
+const SIGNAL_MAX = 40;
+const freeze = (delaySec, freezeAt) => freezeAt === null
+    ? `animation-delay:-${delaySec.toFixed(3)}s`
+    : `animation-delay:-${(delaySec + freezeAt).toFixed(3)}s;animation-play-state:paused`;
+function emit(layer, cls, css, dur, phase, freezeAt, tag = "i") {
+    const el = document.createElement(tag);
+    el.className = cls;
+    el.style.cssText =
+        (css ? css + ";" : "") +
+            `animation-duration:${dur.toFixed(3)}s;` +
+            freeze(phase * dur, freezeAt);
+    layer.append(el);
+    return el;
+}
+const pct = (v) => (v * 100).toFixed(2) + "%";
+const BUILD = {
+    drift: (layer, { freezeAt }) => {
+        emit(layer, "fx-drift", "", DRIFT_SEC, 0, freezeAt, "div");
+        return 1;
+    },
+    aurora: (layer, { freezeAt }) => {
+        const specs = [
+            [54, 0, 1.5, -8, 10],
+            [72, 0.33, 1.7, 12, -14],
+            [96, 0.66, 1.35, -18, 6]
+        ];
+        specs.forEach(([sec, phase, scale, r0, r1], i) => {
+            emit(layer, `fx-aurora fx-aurora--${i}`, `--scale:${scale};--r0:${r0}deg;--r1:${r1}deg`, sec, phase, freezeAt, "div");
+        });
+        return 3;
+    },
+    mesh: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = Math.round(Math.max(w, h) * (0.5 + s.size * 0.35));
+            emit(layer, `fx-mesh fx-mesh--${i % 3}`, `left:${pct(s.x * 0.9 - 0.2)};top:${pct(s.phase * 0.9 - 0.2)};` +
+                `width:${sz}px;height:${sz}px;` +
+                `--dx:${(w * (0.1 + s.size * 0.12) * (i % 2 ? -1 : 1)).toFixed(1)}px;` +
+                `--dy:${(h * (0.1 + s.dur * 0.1) * (i % 3 ? 1 : -1)).toFixed(1)}px`, 28 + s.dur * 22, s.delay, freezeAt);
+        }
+        return n;
+    },
+    breathe: (layer, { freezeAt }) => {
+        emit(layer, "fx-breathe", "", 12, 0, freezeAt, "div");
+        return 1;
+    },
+    sheen: (layer, { w, h, freezeAt }) => {
+        const band = Math.round(Math.max(w, h) * 0.4);
+        emit(layer, "fx-sheen", `width:${band}px;height:${Math.round(h * 2.4)}px;top:${-h * 0.7}px;` +
+            `--run:${(w + band * 2).toFixed(0)}px;left:${-band * 1.4}px`, 36, 0, freezeAt, "div");
+        return 1;
+    },
+    tide: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-tide", `left:${-w * 0.1}px;width:${Math.round(w * 1.2)}px;` +
+                `height:${Math.round(h * (0.14 + s.size * 0.12))}px;` +
+                `top:${pct(0.1 + s.x * 0.85)};--rise:${(h * (0.22 + s.phase * 0.2)).toFixed(0)}px`, 46 + s.dur * 24, s.delay, freezeAt, "div");
+        }
+        return n;
+    },
+    gather: (layer, { w, h, freezeAt, signal }) => {
+        const n = Math.min(SIGNAL_MAX, Math.max(1, signal.going));
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const a = s.x * Math.PI * 2, r = 0.55 + s.size * 0.35;
+            emit(layer, "fx-gather", `left:50%;top:50%;width:${(2.5 + s.size * 2).toFixed(1)}px;` +
+                `height:${(2.5 + s.size * 2).toFixed(1)}px;` +
+                `--fx:${(Math.cos(a) * w * r).toFixed(1)}px;--fy:${(Math.sin(a) * h * r).toFixed(1)}px;` +
+                `--tx:${(Math.cos(a) * w * 0.08).toFixed(1)}px;--ty:${(Math.sin(a) * h * 0.08).toFixed(1)}px`, 16 + s.dur * 10, s.delay, freezeAt);
+        }
+        layer.dataset.signalCount = String(n);
+        return n;
+    },
+    constellation: (layer, { w, h, freezeAt, signal }) => {
+        const n = Math.min(SIGNAL_MAX, Math.max(2, signal.going));
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const a = (i / n) * Math.PI * 2 + (s.x - 0.5) * 0.5;
+            const r = 22 + s.size * 20;
+            pts.push([50 + Math.cos(a) * r * (w > h ? 1.4 : 1), 50 + Math.sin(a) * r]);
+        }
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("class", "fx-nn fx-nn--signal");
+        svg.setAttribute("viewBox", "0 0 100 100");
+        svg.setAttribute("preserveAspectRatio", "none");
+        let d = "";
+        pts.forEach(([x, y], i) => {
+            const [nx, ny] = pts[(i + 1) % pts.length];
+            d += `M${x.toFixed(1)} ${y.toFixed(1)}L${nx.toFixed(1)} ${ny.toFixed(1)}`;
+        });
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", d);
+        path.setAttribute("class", "fx-nn-link");
+        svg.append(path);
+        layer.append(svg);
+        pts.forEach(([x, y], i) => {
+            emit(layer, "fx-node", `left:${pct(x / 100)};top:${pct(y / 100)};width:7px;height:7px`, 3.2, i / n, freezeAt);
+        });
+        layer.dataset.signalCount = String(n);
+        return n + 1;
+    },
+    motes: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), size = 2 + s.size * 3, dur = 14 + s.dur * 8;
+            emit(layer, "fx-mote", `left:${pct(s.x * 0.96)};width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;` +
+                `--rise:${Math.round(h + 16)}px;--dx:${(w * 0.06).toFixed(1)}px`, dur, s.delay, freezeAt);
+        }
+        return n;
+    },
+    veil: (layer, { freezeAt }) => {
+        emit(layer, "fx-veil fx-veil--a", "", VEIL_A_SEC, 0, freezeAt);
+        emit(layer, "fx-veil fx-veil--b", "", VEIL_B_SEC, VEIL_B_PHASE, freezeAt);
+        return 2;
+    },
+    orbs: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = Math.round(Math.min(w, h) * (0.22 + s.size * 0.2));
+            emit(layer, `fx-orb${i % 2 ? " fx-orb--accent" : ""}`, `left:${pct(s.x * 0.8)};top:${pct(s.phase * 0.7)};width:${sz}px;height:${sz}px;` +
+                `--dx:${(w * 0.07).toFixed(1)}px;--dy:${(-h * 0.09).toFixed(1)}px`, 16 + s.dur * 12, s.delay, freezeAt);
+        }
+        return n;
+    },
+    beams: (layer, { n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, `fx-beam${i % 2 ? " fx-beam--ink" : ""}`, `left:${pct(-0.08 + s.x * 0.5)};--a0:${(10 + s.size * 10).toFixed(1)}deg;` +
+                `--a1:${(26 + s.phase * 12).toFixed(1)}deg`, 18 + s.dur * 10, s.delay, freezeAt);
+        }
+        return n;
+    },
+    blobs: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = Math.round(Math.min(w, h) * (0.34 + s.size * 0.26));
+            emit(layer, `fx-blob${i % 2 ? " fx-blob--accent" : ""}`, `left:${pct(s.x * 0.74)};top:${pct(s.phase * 0.62)};width:${sz}px;height:${Math.round(sz * 0.74)}px;` +
+                `--dx:${(w * 0.06).toFixed(1)}px;--dy:${(-h * 0.05).toFixed(1)}px;` +
+                `--r0:${(i % 2 ? -14 : 8).toFixed(0)}deg;--r1:${(i % 2 ? 12 : -18).toFixed(0)}deg`, 22 + s.dur * 16, s.delay, freezeAt);
+        }
+        return n;
+    },
+    glints: (layer, { n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-glint", `left:${pct(s.x * 0.97)};top:${pct(s.phase * 0.92)};` +
+                `width:${(3 + s.size * 2).toFixed(1)}px;height:${(3 + s.size * 2).toFixed(1)}px`, 2.6 + s.dur * 3, s.delay, freezeAt);
+        }
+        return n;
+    },
+    bokeh: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const sz = Math.round(Math.min(w, h) * (0.07 + s.size * 0.1));
+            emit(layer, `fx-bokeh${i % 3 === 0 ? " fx-bokeh--accent" : ""}`, `left:${pct(s.x * 0.92)};top:${pct(s.phase * 0.9)};width:${sz}px;height:${sz}px;` +
+                `--dx:${(w * (0.04 + s.dur * 0.05)).toFixed(1)}px;--dy:${(-h * 0.06).toFixed(1)}px`, 52 + s.dur * 30, s.delay, freezeAt, "div");
+        }
+        return n;
+    },
+    dust: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-dust", `left:${pct(s.x)};top:${pct(s.phase)};` +
+                `--dx:${(w * 0.16 * (s.size > 0.5 ? 1 : -1)).toFixed(1)}px;` +
+                `--dy:${(-h * (0.2 + s.size * 0.14)).toFixed(1)}px`, 64 + s.dur * 40, s.delay, freezeAt);
+        }
+        return n;
+    },
+    halftone: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const sz = Math.round(Math.max(w, h) * (0.85 + s.size * 0.55));
+            emit(layer, "fx-halftone", `left:${pct(-0.25 + s.x * 0.5)};top:${pct(-0.25 + s.phase * 0.5)};` +
+                `width:${sz}px;height:${sz}px;` +
+                `--dx:${(w * 0.035).toFixed(1)}px;--dy:${(h * 0.028 * (i % 2 ? 1 : -1)).toFixed(1)}px`, 62 + s.dur * 30, s.delay, freezeAt, "div");
+        }
+        return n;
+    },
+    riso: (layer, { freezeAt }) => {
+        emit(layer, "fx-riso fx-riso--ink", "", 46, 0, freezeAt, "div");
+        emit(layer, "fx-riso fx-riso--accent", "", 58, 0.4, freezeAt, "div");
+        return 2;
+    },
+    crosshatch: (layer, { freezeAt }) => {
+        emit(layer, "fx-hatch fx-hatch--a", "", 70, 0, freezeAt, "div");
+        emit(layer, "fx-hatch fx-hatch--b", "", 92, 0.5, freezeAt, "div");
+        return 2;
+    },
+    contour: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const sz = Math.round(Math.max(w, h) * (0.9 + s.size * 0.7));
+            emit(layer, "fx-contour", `left:${pct(-0.3 + s.x * 0.6)};top:${pct(-0.3 + s.phase * 0.6)};` +
+                `width:${sz}px;height:${sz}px`, 74 + s.dur * 40, s.delay, freezeAt, "div");
+        }
+        return n;
+    },
+    terrazzo: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const sz = 5 + Math.round(s.size * 8);
+            emit(layer, `fx-fleck${i % 4 === 0 ? " fx-fleck--accent" : ""}`, `left:${pct(s.x)};top:${pct(s.phase)};width:${sz}px;height:${Math.round(sz * 0.7)}px;` +
+                `--spin:${(s.dur * 40 - 20).toFixed(0)}deg;` +
+                `--dx:${(w * 0.035).toFixed(1)}px;--dy:${(h * 0.03).toFixed(1)}px`, 76 + s.dur * 40, s.delay, freezeAt, "div");
+        }
+        return n;
+    },
+    moire: (layer, { freezeAt }) => {
+        emit(layer, "fx-moire fx-moire--a", "", 1, 0, freezeAt, "div");
+        emit(layer, "fx-moire fx-moire--b", "", 110, 0, freezeAt, "div");
+        return 2;
+    },
+    grid: (layer, { freezeAt }) => {
+        emit(layer, "fx-grid", "", 3.5, 0, freezeAt, "div");
+        return 1;
+    },
+    diagonals: (layer, { freezeAt }) => {
+        emit(layer, "fx-diag", "", 9, 0, freezeAt, "div");
+        emit(layer, "fx-diag fx-diag--alt", "", 13, 0.5, freezeAt, "div");
+        return 2;
+    },
+    circuit: (layer, { w, h, n, freezeAt }) => {
+        const bg = document.createElement("div");
+        bg.className = "fx-circuit-bg";
+        layer.append(bg);
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), horiz = i % 2 === 0;
+            emit(layer, `fx-pulse fx-pulse--${horiz ? "h" : "v"}`, horiz
+                ? `top:${Math.round((s.x * h) / 64) * 64}px;--run:${Math.round(w + 40)}px`
+                : `left:${Math.round((s.x * w) / 64) * 64}px;--run:${Math.round(h + 40)}px`, 6 + s.dur * 6, s.delay, freezeAt);
+        }
+        return n + 1;
+    },
+    neural: (layer, { n, freezeAt }) => {
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("class", "fx-nn");
+        svg.setAttribute("viewBox", "0 0 100 100");
+        svg.setAttribute("preserveAspectRatio", "none");
+        const nodes = [];
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            nodes.push([8 + s.x * 84, 8 + s.phase * 84]);
+        }
+        let d = "";
+        nodes.forEach(([x, y], i) => {
+            const [nx, ny] = nodes[(i + 1) % nodes.length];
+            d += `M${x.toFixed(1)} ${y.toFixed(1)}L${nx.toFixed(1)} ${ny.toFixed(1)}`;
+        });
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", d);
+        path.setAttribute("class", "fx-nn-link");
+        svg.append(path);
+        layer.append(svg);
+        nodes.forEach(([x, y], i) => {
+            const s = seedFor(i);
+            emit(layer, "fx-node", `left:${pct(x / 100)};top:${pct(y / 100)};width:6px;height:6px`, 2.4 + s.dur * 2.4, s.delay, freezeAt);
+        });
+        return n + 1;
+    },
+    bits: (layer, { h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            const el = emit(layer, "fx-bits", `left:${pct(s.x * 0.95)};--fall:${Math.round(h + 320)}px`, 9 + s.dur * 7, s.delay, freezeAt, "span");
+            let text = "";
+            for (let k = 0; k < 16; k++)
+                text += Math.floor(seedFor(i * 31 + k).x * 2) + "\n";
+            el.textContent = text;
+        }
+        return n;
+    },
+    stars: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 1.4 + s.size * 2;
+            emit(layer, `fx-star${i % 4 === 1 ? " fx-star--tw" : ""}`, `left:${pct(s.x * 0.99)};top:${pct(s.phase * 0.95)};width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;` +
+                `--dx:${(-w * 0.09).toFixed(1)}px;--dy:${(h * 0.07).toFixed(1)}px`, 30 + s.dur * 40, s.delay, freezeAt);
+        }
+        return n;
+    },
+    snow: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 2.5 + s.size * 3.5;
+            emit(layer, "fx-snow", `left:${pct(s.x * 0.98)};width:${sz.toFixed(1)}px;height:${sz.toFixed(1)}px;` +
+                `--fall:${Math.round(h + 24)}px;--dx:${(w * 0.05).toFixed(1)}px`, 11 + s.dur * 9, s.delay, freezeAt);
+        }
+        return n;
+    },
+    rain: (layer, { h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-rain", `left:${pct(s.x * 0.99)};height:${(26 + s.size * 26).toFixed(0)}px;--fall:${Math.round(h + 80)}px`, 0.9 + s.dur * 0.7, s.delay, freezeAt);
+        }
+        return n;
+    },
+    meteors: (layer, { h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-meteor", `left:${pct(s.x * 0.9)};top:${pct(s.phase * 0.4)};--fall:${Math.round(h * 0.6)}px`, 7 + s.dur * 8, s.delay, freezeAt);
+        }
+        return n;
+    },
+    bubbles: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 7 + s.size * 14;
+            emit(layer, `fx-bub${i % 3 === 1 ? " fx-bub--accent" : ""}${i % 4 === 3 ? " fx-bub--fill" : ""}`, `left:${pct(s.x * 0.96)};width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;` +
+                `--rise:${Math.round(h + 40)}px;--dx:${(w * 0.04).toFixed(1)}px`, 13 + s.dur * 9, s.delay, freezeAt);
+        }
+        return n;
+    },
+    fireflies: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, "fx-fly", `left:${pct(0.04 + s.x * 0.88)};top:${pct(0.08 + s.phase * 0.78)};` +
+                `--dx:${(w * 0.09).toFixed(1)}px;--dy:${(-h * 0.12).toFixed(1)}px`, 7 + s.dur * 6, s.delay, freezeAt);
+        }
+        return n;
+    },
+    ripples: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = Math.round(Math.min(w, h) * 0.18);
+            emit(layer, "fx-ripple", `left:${pct(s.x * 0.84)};top:${pct(s.phase * 0.8)};width:${sz}px;height:${sz}px`, 6 + s.dur * 5, s.delay, freezeAt);
+        }
+        return n;
+    },
+    waves: (layer, { freezeAt }) => {
+        emit(layer, "fx-wave", "", 26, 0, freezeAt);
+        emit(layer, "fx-wave fx-wave--accent", "", 34, 0.4, freezeAt);
+        return 2;
+    },
+    confetti: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, `fx-conf${i % 3 === 1 ? " fx-conf--accent" : ""}${i % 4 === 2 ? " fx-conf--round" : ""}`, `left:${pct(s.x * 0.98)};--fall:${Math.round(h + 40)}px;--dx:${(w * 0.06).toFixed(1)}px;` +
+                `--spin:${Math.round(360 + s.phase * 400)}deg`, 7 + s.dur * 6, s.delay, freezeAt);
+        }
+        return n;
+    },
+    balloons: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 20 + s.size * 16;
+            emit(layer, `fx-balloon${i % 2 ? " fx-balloon--ink" : ""}`, `left:${pct(0.05 + s.x * 0.85)};width:${sz.toFixed(0)}px;height:${(sz * 1.16).toFixed(0)}px;` +
+                `--rise:${Math.round(h + 120)}px;--dx:${(w * 0.04).toFixed(1)}px`, 18 + s.dur * 10, s.delay, freezeAt);
+        }
+        return n;
+    },
+    hearts: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 8 + s.size * 7;
+            emit(layer, `fx-heart${i % 2 ? " fx-heart--ink" : ""}`, `left:${pct(s.x * 0.94)};width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;` +
+                `--rise:${Math.round(h + 40)}px;--dx:${(w * 0.05).toFixed(1)}px`, 10 + s.dur * 8, s.delay, freezeAt);
+        }
+        return n;
+    },
+    petals: (layer, { w, h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, `fx-petal${i % 3 === 2 ? " fx-petal--ink" : ""}`, `left:${pct(s.x * 0.97)};--fall:${Math.round(h + 40)}px;--dx:${(w * 0.07).toFixed(1)}px`, 11 + s.dur * 8, s.delay, freezeAt);
+        }
+        return n;
+    },
+    squares: (layer, { h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i), sz = 10 + s.size * 22;
+            emit(layer, `fx-square${i % 2 ? " fx-square--accent" : ""}`, `left:${pct(s.x * 0.94)};width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;` +
+                `--rise:${Math.round(h + 80)}px;--spin:${Math.round(300 + s.phase * 400)}deg`, 14 + s.dur * 10, s.delay, freezeAt);
+        }
+        return n;
+    },
+    streaks: (layer, { h, n, freezeAt }) => {
+        for (let i = 0; i < n; i++) {
+            const s = seedFor(i);
+            emit(layer, `fx-streak${i % 2 ? " fx-streak--ink" : ""}`, `left:${pct(s.x * 0.98)};height:${(120 + s.size * 160).toFixed(0)}px;--fall:${Math.round(h + 400)}px`, 4 + s.dur * 5, s.delay, freezeAt);
+        }
+        return n;
+    }
+};
+function mountEffects(root, effectId, { freezeAt = null, signal = { going: 8, capacity: 40 } } = {}) {
+    const layer = ensureLayer(root);
+    let raf = 0;
+    const build = () => {
+        var _a, _b, _c;
+        const { width: w, height: h } = root.getBoundingClientRect();
+        layer.replaceChildren();
+        layer.dataset.fx = effectId;
+        const fx = effectById(effectId);
+        layer.dataset.fxVoice = fx.voice;
+        const fn = BUILD[effectId];
+        if (!w || !h || !fn)
+            return 0;
+        const base = particleCount(w, h);
+        const scaled = Math.round(base * ((_a = fx.density) !== null && _a !== void 0 ? _a : 1));
+        const n = Math.max(fx.density === 0 ? 0 : ((_b = fx.min) !== null && _b !== void 0 ? _b : 2), Math.min((_c = fx.max) !== null && _c !== void 0 ? _c : DENSITY_MAX, scaled));
+        return fn(layer, { w, h, n, freezeAt, signal });
+    };
+    build();
+    const ro = new ResizeObserver(() => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => setTimeout(build, 120));
+    });
+    ro.observe(root);
+    return {
+        count: () => layer.children.length,
+        set: (id) => {
+            effectId = id;
+            build();
+        },
+        destroy: () => {
+            ro.disconnect();
+            layer.remove();
+        }
+    };
+}
+
+return { PRESETS, EFFECTS, EFFECT_GROUPS, applyTheme, mountEffects, deriveTokens, effectById };
+})();
+
 const EV_ME = "priya";
 /* ---- data: extend the seed, never replace it ---- */
 (function evSeed(){
@@ -4159,7 +6595,13 @@ const EV_ME = "priya";
 
 const EV_THEMES = { gold:["Gold plate","linear-gradient(135deg,#D9BC6E,#A87F2A)"], ink:["Ink","linear-gradient(135deg,#3B4652,#12161A)"], dusk:["Dusk","linear-gradient(135deg,#8A7A9E,#2E2A3A)"], sage:["Sage","linear-gradient(135deg,#9DB3A3,#40584A)"], harbour:["Harbour","linear-gradient(135deg,#7E9DB5,#27394A)"], photo:["Photo","repeating-linear-gradient(135deg,#9AA3AD 0 10px,#8A939D 10px 20px)"] };
 const EV_MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], EV_DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const evBg = t => (EV_THEMES[t]||EV_THEMES.gold)[1];
+const EV_OLD = { gold:"sand", ink:"midnight", dusk:"dusk", sage:"sage", harbour:"tide", photo:"graphite" };
+const evPreset = t => EVT.PRESETS.find(p=>p.id===(EV_OLD[t]||t)) || EVT.PRESETS[4];
+const evBg = t => { const p=evPreset(t); return `linear-gradient(${p.angle}deg, ${p.stops.join(", ")})`; };
+const EV_LOOK = { e1:["ember","glints","🍝"], e0:["sand","dust","🤖"], e2:["midnight","constellation","🧠"], e3:["sage","petals","🌿"], e4:["dusk","grid","🔍"], e5:["tide","waves","🛠️"], e6:["dawn","breathe","🌱"], e7:["aurora","confetti","🚀"], e8:["midnight","beams","🪑"], e9:["ember","fireflies","🔥"], e10:["sand","emoji","☕"], e11:["graphite","bits","✍️"], e12:["dusk","bokeh","🥂"], e13:["petal","halftone","🎨"] };
+const EV_FX_PICK = ["none","emoji","aurora","mesh","breathe","sheen","glints","bokeh","stars","fireflies","petals","snow","grid","constellation","confetti","balloons","hearts"];
+const evFxName = f => f==="emoji" ? "Emoji" : EVT.effectById(f).name;
+DB.fevents.forEach(e=>{ const l=EV_LOOK[e.id]; e.theme = l?l[0]:(EV_OLD[e.theme]||e.theme||"sand"); e.fx = e.fx || (l?l[1]:"breathe"); e.emoji = e.emoji || (l?l[2]:"✨"); });
 const evE = id => DB.fevents.find(x=>x.id===id);
 const evC = id => DB.calendars.find(x=>x.id===id);
 const evFirst = id => (DB.people[id]||{name:"Someone"}).name.split(" ")[0];
@@ -4181,7 +6623,7 @@ function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="back
 
 /* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
 function evCover(e, cls, inner){ return `<div class="evx-cov ${cls||""}" style="background:${evBg(e.theme)}">${inner||""}</div>`; }
-evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th" style="background:${evBg(e.theme)}"><span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
+evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th" style="background:${evBg(e.theme)}">${e.emoji?`<span class="evx-emo">${e.emoji}</span>`:""}<span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
 /* One state field with four labels that repeat everywhere (card, event page, Manage), like the mission kickers.
    No label means it's your move, so the card carries the one action instead. */
 function evState(e){ if (e.past) return ""; if (evLocked(e)) return "Members only"; return { invited:"Invited", going:"Going", hosting:"Hosting", pending:"Waiting", waitlist:"Waiting" }[e.reg] || ""; }
@@ -4219,12 +6661,12 @@ function evFamilyWeek(famId){
 /* ---- register, cancel, follow ---- */
 rsvp = function(id, on){ const e=evE(id); if (on) { openSheet("evreg", id); return; } e.reg="none"; e.rsvp=false; e.going=Math.max(0,e.going-1); render(); toast("Cancelled. The host sees a status line, nothing else."); };
 function evRegister(id){
-  const e=evE(id); e.reg = e.approval ? "pending" : "going"; e.rsvp = e.reg==="going"; if (e.rsvp) e.going++;
+  const e=evE(id); e.reg = e.approval ? "pending" : "going"; e.rsvp = e.reg==="going"; if (e.rsvp) { e.going++; STATE.evJustIn=id; setTimeout(()=>{ STATE.evJustIn=null; }, 1500); }
   const note = ((document.getElementById("evnote")||{}).value||"").trim();
   if (note && e.rsvp) evRoom(e).msgs.push(M(EV_ME, note, { day:"Today", time:nowTime(), evType:"intro" }));
   const home=evC(e.cal); STATE.sheet=null;
   if (home && !evFollows(home) && !STATE.evAsked[home.id]) { STATE.evAsked[home.id]=true; openSheet("evfollow", `${home.id}|${e.id}`); return; }
-  render(); toast(e.reg==="going"?"You're in. Ticket and event chat are ready.":"Request sent. You'll hear once, either way.");
+  render(); toast(e.reg==="going"?"You're in 🎉":"Request sent. You'll hear once, either way."); if (e.reg==="going") setTimeout(evBurst, 40);
 }
 function evToggleFollow(cid){ const c=evC(cid); if (evIsAdmin(c)) { toast("You run this calendar."); return; } const on=evFollows(c);
   if (on) { c.subscribed=false; if (c.auto) c.unfollowed=true; c.subs--; toast(`Unfollowed ${c.name}.${evMemberOf(c)?" You stay a member.":""}`); }
@@ -4303,63 +6745,102 @@ function evSwap(dir){
 
 /* ---- event page, host and manage share the eventd: route ---- */
 const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"Chris vouched for her. Her cofounder intent matches yours.", sana:"On the Perplexity hiring panel. Posted the role you're tracking.", ana:"Hiring a platform PM. You've met twice.", kate:"Michigan alum, growth PM at Duolingo." };
+/* ---- event page: the event's theme paints the whole screen and its effect runs behind it (events branch, themed-page).
+   Few words: a poster, the title, two facts, faces, the chat, people. The sticky button does the rest. ---- */
+const EV_WHY_SHORT = { rahul:"Hiring senior PMs", maya:"Wants a technical cofounder", sana:"On Perplexity's hiring panel", ana:"Hiring a platform PM", kate:"Growth PM at Duolingo", chris:"Runs Xoogler dinners" };
+const EV_REACT = ["👋","🔥","🎉","🙌"];
+const EV_FACES = ["RM","MC","SI","AR","DP","JT","CF","KL"];
+let evtMount = null;
+function evScreen(e, inner){ return `<div class="evt-screen ev-canvas" data-evt-theme="${e.theme}" data-evt-fx="${e.fx||"none"}" data-evt-emoji="${e.emoji||"✨"}" data-evt-going="${e.going||1}" data-evt-cap="${e.cap||40}">${inner}</div>`; }
+function evPoster(e, stamp){ const p=evPreset(e.theme); return `<div class="evt-poster" style="background:linear-gradient(${p.angle+180}deg, ${p.stops.join(", ")})"><span class="evt-emoji">${e.emoji||"✨"}</span>${stamp?`<span class="evt-stamp">${stamp}</span>`:""}</div>`; }
+function evRoll(e, stamp){ const p=evPreset(e.theme); const n=Math.max(12, evRoom(e).msgs.length*3);
+  return `<div class="evt-roll" data-evroom="${e.id}">${[0,1,2].map(i=>`<i style="background:linear-gradient(${p.angle+i*70}deg, ${p.stops.join(", ")})">${i===0?`<span class="evt-emoji">${e.emoji||"✨"}</span>`:""}${i===2?`<b>+${n}</b>`:""}</i>`).join("")}${stamp?`<span class="evt-stamp">${stamp}</span>`:""}</div>`; }
+function evTime(e){ const t = /\d(am|pm)$/.test(e.when) ? e.when.split(", ").pop() : ""; return t ? `${t}${e.end?` – ${e.end}`:""}` : (e.end?`Until ${e.end}`:""); }
+function evBubble(m, opts){ const p=P(m.from); const me=m.from===EV_ME; const txt = m.text || "📸 Shared photos";
+  return `<div class="evt-b ${me?'me':''}">${me?"":`<i class="evt-bav">${p.initials}</i>`}<div class="evt-bt">${opts&&opts.pin?`<span class="evt-pinmark">📌</span>`:""}${me?"":`<b>${p.name.split(" ")[0]}</b> `}${txt}</div></div>`; }
+function evChatCard(e, live, locked){
+  if (locked) return "";
+  const c = evRoom(e); const ups = evUps(c); const latest = ups[ups.length-1];
+  const talk = c.msgs.filter(m=>!m.sys && !m.deleted && m.evType!=="update" && m.evType!=="question").slice(-2);
+  const inRoom = ["going","hosting"].includes(e.reg) || live;
+  const head = n => `<div class="evt-chat-h"><span>💬 Event chat</span>${n?`<span class="evt-new">${n}</span>`:""}</div>`;
+  const joiner = STATE.evJustIn===e.id ? null : (e.goingList||[]).filter(x=>x!==EV_ME).slice(-1)[0];
+  const act = STATE.evJustIn===e.id ? `<div class="evt-act"><i class="evt-bav">${DB.user.initials}</i><span><b>You</b> joined 🙌</span></div>` : joiner ? `<div class="evt-act"><i class="evt-bav">${P(joiner).initials}</i><span><b>${evFirst(joiner)}</b> joined 🙌</span></div>` : "";
+  if (e.past) return `<div class="evt-chat" data-evroom="${e.id}">${head("")}${talk.map(m=>evBubble(m)).join("")}</div>`;
+  if (e.reg==="pending"||e.reg==="waitlist") return `<div class="evt-chat">${head("")}${latest?evBubble(latest,{pin:true}):""}<div class="evt-lockline">🔒 Opens when you're in</div></div>`;
+  if (!inRoom) return `<div class="evt-chat evt-chat-locked">${head(`${c.msgs.length} message${c.msgs.length===1?"":"s"}`)}${act}<div class="evt-blur">${(latest?[latest]:[]).concat(talk).slice(0,3).map(m=>evBubble(m)).join("")}</div><div class="evt-lockline">🔒 Register to join the chat</div></div>`;
+  return `<div class="evt-chat" data-evroom="${e.id}">${head(`${Math.min(12,c.msgs.length)} new`)}${act}${latest?evBubble(latest,{pin:true}):""}${talk.slice(-1).map(m=>evBubble(m)).join("")}
+    <div class="evt-react">${EV_REACT.map(r=>`<button data-evreact="${e.id}|${r}" aria-label="Send ${r}">${r}</button>`).join("")}<div class="evt-say" data-evroom="${e.id}|focus">Say hi…</div></div></div>`;
+}
+function evStateRow(e, live, locked){
+  if (locked) return `<div class="evt-note">🔒 For ${evC(e.cal).famExt||"family"} members</div>`;
+  if (e.reg==="pending") return `<div class="evt-note">⏳ ${evFirst(e.host)} is reviewing your request <span data-evunrsvp="${e.id}">Withdraw</span></div>`;
+  if (e.reg==="waitlist") return `<div class="evt-note">⏳ #${e.wait||1} on the waitlist <span data-evunrsvp="${e.id}">Leave</span></div>`;
+  if (e.reg==="hosting") return `<div class="evt-duo"><button class="btn sec" data-evpost="${e.id}">📣 Post update</button><button class="btn sec" data-evsheet="evshare|${e.id}">↗ Share</button></div>${(e.requests||[]).length?`<div class="evt-note" data-evgo="eventd:manage.${e.id}">🙋 ${e.requests.length} waiting for your yes <span>Review</span></div>`:""}`;
+  if (e.past) return "";
+  if (e.reg==="going" || live) return `<div class="evt-duo"><button class="btn sec" data-evsheet="evticket|${e.id}">🎟 Ticket</button><button class="btn sec" data-evsheet="evaddcal|${e.id}">📅 Calendar</button></div>`;
+  return "";
+}
 const _evBaseDetail = sEventDetail;
 sEventDetail = function(id){
   if (id==="new") return evCreate();
   if (id.startsWith("manage.")) return evManage(id.slice(7));
   const e = evE(id); if (!e) return _evBaseDetail(id);
-  if (e.draft) { STATE.evDraft = { name:e.name, theme:e.theme, fmt:e.fmt, cal:e.cal, approval:e.approval, paid:false, vis:e.vis, cap:e.cap, desc:e.details, from:e.id }; return evCreate(); }
+  if (e.draft) { STATE.evDraft = { name:e.name, theme:e.theme, fx:e.fx, fmt:e.fmt, cal:e.cal, approval:e.approval, paid:false, vis:e.vis, cap:e.cap, desc:e.details, from:e.id }; return evCreate(); }
   const home = evC(e.cal); const host = DB.people[e.host]||DB.people.chris; const live = STATE.eventDay && e.id==="e1" && !e.past; const locked = evLocked(e);
-  const others = (e.listed||[]).map(evC).filter(Boolean);
-  let block = "";
-  if (locked) block = `<div class="evx-sect"><div class="name">Members only</div><div class="sub" style="margin:4px 0 10px">For members of ${home.famExt||evKind(home)}. You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div></div>`;
-  else if (e.past) block = `<div class="evx-sect"><div class="name">You went</div><div class="sub" style="margin-top:2px">${e.met&&e.met.length?`Met ${e.met.map(x=>DB.people[x].name).join(", ")}. Logged from your debrief.`:"No debrief logged."}</div></div>`;
-  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">Hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><button class="btn sec" data-evsheet="evshare|${e.id}">Share</button></div>`;
-  else if (live) block = `<div class="evx-sect evx-now"><div class="row" style="gap:8px"><span class="live"></span><div class="name">Tonight</div></div><div class="sub" style="margin-top:4px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div></div>`;
-  else if (e.reg==="invited") block = `<div class="evx-sect"><div class="name">Invited</div><div class="sub" style="margin:4px 0 10px">${evFirst(e.host)} invited you. Only invited people can see this event.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evinvite="${e.id}|yes">Going</button><button class="btn sec" style="flex:1" data-evinvite="${e.id}|no">Can't go</button></div></div>`;
-  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">Going</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><button class="btn sec" style="margin-top:10px" data-evsheet="evticket|${e.id}">Ticket</button><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
-  else if (e.reg==="pending") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing your request. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
-  else if (e.reg==="waitlist") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">#${e.wait||1} on the waitlist. If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
-  const meet = (!locked && !e.past && e.reg!=="hosting") ? (e.meet||[]).map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
-    return `<div class="evx-sect evx-li" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${EV_WHY[pid]||"Going, and in your family."}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("") : "";
-  const guests = (e.reg==="going"||e.reg==="hosting"||live) ? `<div class="lbl">Going</div><div><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","CF"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}${e.going>7?`<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span>`:""}</div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking.</div></div>` : (!locked&&!e.past?`<div class="xs faint" style="margin-top:14px">${e.going} going. The guest list opens to registered guests.</div>`:"");
+  const stamp = e.past?"Went":e.reg==="hosting"?"Hosting":live?"Tonight":e.reg==="going"?"Going":e.reg==="invited"?"Invited":(e.reg==="pending"||e.reg==="waitlist")?"Waiting":locked?"Members only":"";
+  const d = evDate(e);
+  const names = (e.meet||[]).concat(e.goingList||[]).filter((x,i,a)=>x!==EV_ME&&a.indexOf(x)===i).slice(0,2).map(evFirst);
+  const people = locked ? [] : e.past ? (e.met||[]) : e.reg==="hosting" ? [] : (e.meet||[]);
+  const moreFrom = home ? home.events.map(evE).filter(x=>x&&x.id!==e.id&&!x.past&&!x.draft).slice(0,4) : [];
   const cta = evCta(e, live, locked);
-  const moreFrom = home ? home.events.map(evE).filter(x=>x&&x.id!==e.id&&!x.past).slice(0,2) : [];
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evshare|${e.id}">···</div></div>
-  <div class="body">
-    ${evCover(e,"hero", `<span class="evx-date">${evDayLabel(e)}</span><div class="evx-htitle">${locked?"🔒 ":""}${e.name}</div>`)}
-    <div class="evx-meta"><div>${evWhen(e)}</div><div>${e.fmt==="online"?"Online · link after you register":e.vis==="invite"?`${e.where} · invite only`:e.where}${e.price?` · $${e.price}`:""}</div></div>
-    ${home?`<div class="evx-home" data-cal="${home.id}">${evCalThumb(home)}<div style="flex:1;min-width:0"><div class="a">${home.name}</div><div class="xs muted">${evKind(home)} · hosted by ${e.host===EV_ME?"you":host.name}${others.length?` · also on ${others.map(c=>c.name).join(", ")}`:""}</div></div>${evIsAdmin(home)?"":`<span class="chip ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?'Following':'Follow'}</span>`}</div>`:""}
-    ${block}
-    ${evPeek(e, live, locked)}
-    ${meet?`<div class="lbl">Who to meet${e.reg==="going"?"":" if you go"}</div>${meet}`:""}
-    ${!locked&&e.details?`<div class="lbl">Details</div><p class="evx-p">${e.details}</p>`:""}
-    ${guests}
-    ${e.past&&e.met&&e.met.length?`<div class="lbl">From your debrief</div>${e.met.map(x=>{const p=DB.people[x];return `<div class="rowitem" data-profile="${x}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">Talked at ${e.name}. Follow-up sent, replied.</div></div><div class="s">edge</div></div>`}).join("")}`:""}
-    ${moreFrom.length?`<div class="lbl">More from ${home.name}</div>${moreFrom.map(x=>evCard(x,"row",{fam:false})).join("")}`:""}
+  const where = e.fmt==="online" ? "Online" : e.where;
+  const whereSub = e.fmt==="online" ? (e.reg==="going"?"Link in your ticket":"Link after you register") : (["going","hosting"].includes(e.reg)||live) ? "Directions" : "Address after you register";
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">🎨</div><div class="icon" data-evsheet="evshare|${e.id}">···</div></div>
+  <div class="body evt-body">
+    ${e.past ? evRoll(e, stamp) : evPoster(e, stamp)}
+    <h1 class="evt-title">${e.name}</h1>
+    <div class="evt-host">${home?`<span ${home.kind==="personal"?`data-cal="${home.id}"`:`data-profile="${e.host}"`} class="evt-by"><i class="evt-bav">${host.initials}</i>${e.host===EV_ME?"You":host.name.split(" ")[0]}</span>${home.kind==="personal"?"":`<span data-cal="${home.id}" class="evt-by">${evCalThumb(home,"evt-ct")}${home.name}</span>`}${evIsAdmin(home)?"":`<span class="evt-follow ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?"Following":"+ Follow"}</span>`}`:""}</div>
+    <div class="evt-when">
+      <div class="evt-cal"><b>${EV_MON[d.getMonth()]}</b><span>${d.getDate()}</span></div>
+      <span class="evt-chip">${/\d(am|pm)$/.test(e.when) ? `${["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()]} ${evTime(e)}` : ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()]}</span>
+      <span class="evt-chip" onclick="toast('${whereSub}')">${e.fmt==="online"?"💻":"📍"} ${where}</span>
+    </div>
+    ${locked?"":`<div class="evt-going" onclick="toast('${["going","hosting"].includes(e.reg)||e.past?"Guest list: names only, no ranking.":"The full list opens when you register."}')"><div class="evt-faces">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(5,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.going} ${e.past?"went":"going"}</b>${names.length&&e.going>2?`<span>${names.join(", ")} +${e.going-names.length}</span>`:""}</div></div>`}
+    ${evStateRow(e, live, locked)}
+    ${evChatCard(e, live, locked)}
+    ${people.length?`<div class="evt-sec">${e.past?"You met":"Who to meet"}</div><div class="evt-people">${people.map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
+      return `<div class="evt-person" data-profile="${pid}"><i class="evt-pav">${p.initials}${here?'<em>Here</em>':''}</i><b>${p.name.split(" ")[0]}</b><span>${EV_WHY_SHORT[pid]||p.title}</span>${e.past?"":live?`<button class="btn sm sec" data-opener="${e.id}|${pid}">👋 Find</button>`:`<button class="btn sm ${(e.booped||{})[pid]?"sec":""}" data-evboop="${e.id}|${pid}">${(e.booped||{})[pid]?"☕ Sent":"☕ Meet?"}</button>`}</div>`; }).join("")}</div>`:""}
+    ${!locked&&e.details?`<p class="evt-about" onclick="this.classList.toggle('open')">${e.details}</p>`:""}
+    ${moreFrom.length?`<div class="evt-sec">More from ${home.name}</div><div class="evt-more">${moreFrom.map(x=>`<div class="evt-mini" data-evgo="eventd:${x.id}"><div class="evt-mini-p" style="background:${evBg(x.theme)}">${x.emoji||"✨"}</div><b>${x.name}</b><span>${evDayLabel(x)}</span></div>`).join("")}</div>`:""}
   </div>
-  ${cta?`<div class="evx-cta"><button class="btn" ${cta[2]}${cta[1]?` onclick="${cta[1]}"`:""}>${cta[0]}${cta[3]?`<small>${cta[3]}</small>`:""}</button></div>`:""}
-  ${navHTML("events")}`;
+  ${e.reg==="invited"&&!locked?`<div class="evx-cta evt-rsvp"><button class="btn" data-evinvite="${e.id}|yes">🎉 I'm in</button><button class="btn sec" data-evinvite="${e.id}|no">😢 Can't go</button></div>`:""}
+  ${cta?`<div class="evx-cta"><button class="btn" ${cta[2]}${cta[1]?` onclick="${cta[1]}"`:""}>${cta[0]}${cta[3]?`<small>${cta[3]}</small>`:""}</button></div>`:""}`)
+  + navHTML("events");
 };
+function evBurst(){ const scr=phone.querySelector(".evt-screen"); if (!scr || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const b=document.createElement("div"); b.className="evt-burst"; const cols=["var(--ev-accent-fill)","#ff5a5f","#ffc93c","#3ecf8e","#4d9fff","#b76cff"];
+  b.innerHTML = Array.from({length:46},(_,i)=>`<i style="left:${Math.random()*100}%;background:${cols[i%cols.length]};--dx:${Math.round(Math.random()*120-60)}px;--r:${Math.round(Math.random()*720-360)}deg;animation-delay:${Math.round(Math.random()*260)}ms;${i%3?"":"border-radius:50%;height:8px;"}"></i>`).join("");
+  scr.appendChild(b); setTimeout(()=>b.remove(), 2200); }
 
 /* ---- host: create on any calendar. The calendar comes first because it decides who approves. ---- */
-function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"dusk", fmt:"in_person", cal:"cal-me", approval:false, paid:false, vis:"public", cap:20, desc:"" }; return STATE.evDraft; }
+function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"dusk", fx:"breathe", emoji:"🎨", fmt:"in_person", cal:"cal-me", approval:false, paid:false, vis:"public", cap:20, desc:"" }; return STATE.evDraft; }
 function evCreate(){
   const d = evDraft(); const cal = evC(d.cal);
   const now = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
   const ask = DB.calendars.filter(c=>!evIsAdmin(c) && ((c.accepts==="members" && evMemberOf(c)) || c.accepts==="anyone"));
   const calRow = c => `<div class="rowitem" data-evcalpick="${c.id}">${evCalThumb(c)}<div class="m"><div class="a">${c.kind==="personal"&&evIsAdmin(c)?"Your calendar":c.name}</div><div class="b">${evApprover(c)?`${evKind(c)} · ${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it`:`${evKind(c)} · publishes now`}</div></div><span class="evx-radio ${d.cal===c.id?'on':''}"></span></div>`;
-  const pseudo = { theme:d.theme, sort:1016 };
   const appr = evApprover(cal);
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t">Host an event</div></div>
-  <div class="body">
-    ${evCover(pseudo,"hero", `<span class="evx-date">Fri, Oct 16</span><div class="evx-htitle">${d.name||"Your event"}</div>`)}
+  return evScreen({ theme:d.theme, fx:d.fx, going:1, cap:d.cap }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t">Host an event</div></div>
+  <div class="body evt-body" style="padding-bottom:120px">
+    ${evPoster({ theme:d.theme, emoji:d.emoji })}
+    <input class="input evt-title evt-name" id="evname" value="${d.name}" placeholder="Name your event">
+    <div class="evt-swatches">${EVT.PRESETS.map(t=>`<div class="evt-sw ${evPreset(d.theme).id===t.id?'on':''}" data-evtheme="${t.id}"><i style="background:linear-gradient(${t.angle}deg, ${t.stops.join(", ")})"></i>${t.name}</div>`).join("")}</div>
+    <div class="evt-fxs">${EV_FX_PICK.slice(0,9).map(f=>`<span class="chip ${d.fx===f?'on':''}" data-evdfx="${f}">${evFxName(f)}</span>`).join("")}<span class="chip" data-evdfx="shuffle">🎲</span></div>
     <div class="lbl">On which calendar</div>
     <div class="evx-grp">Publishes now</div>${now.map(calRow).join("")}
     <div class="evx-grp">Someone approves it first</div>${ask.map(calRow).join("")}
     <div class="xs faint" style="margin-top:6px">${appr?`${appr} see it before anyone else does. You can still invite people directly while it waits.`:"It goes live the moment you publish."}</div>
-    <div class="lbl">Theme</div><div class="evx-themes">${Object.entries(EV_THEMES).map(([k,[l,bg]])=>`<div class="evx-sw ${d.theme===k?'on':''}" data-evtheme="${k}"><i style="background:${bg}"></i><span>${l}</span></div>`).join("")}</div>
-    <div class="lbl">Name</div><input class="input" id="evname" value="${d.name}" placeholder="Product teardown: Figma">
     <div class="lbl">When</div><div class="input evx-field">Fri, Oct 16 · 6:00–8:00 PM <span class="xs muted">PT</span></div>
     <div class="lbl">Where</div><div class="seg">${[["in_person","In person"],["online","Online"],["tbd","Decide later"]].map(([k,l])=>`<div class="${d.fmt===k?'on':''}" data-evfmt="${k}">${l}</div>`).join("")}</div>
     <div class="input evx-field">${d.fmt==="online"?"Google Meet link, made when you publish":d.fmt==="tbd"?"Kai reminds you at 30 days":"Search a place"}</div>
@@ -4373,12 +6854,12 @@ function evCreate(){
     <div class="input evx-field" style="margin-top:8px">Capacity: ${d.cap} · waitlist on when full</div>
     <button class="btn" style="margin-top:18px" data-evpublish="1">${appr?`Send to ${appr.replace(", who runs it","")}`:"Publish"}</button>
     <button class="btn ghost" data-evsavedraft="1">Save draft</button>
-  </div>`;
+  </div>`);
 }
 function evPublish(){
   const d = evDraft(); const name = (document.getElementById("evname")||{}).value || d.name || "Product teardown: Figma";
   const id = "e" + (100 + DB.fevents.length); const c = evC(d.cal); const appr = evApprover(c);
-  DB.fevents.push({ id, name, when:"Fri, Oct 16, 6pm", end:"8pm", day:"Oct 16", where:d.fmt==="online"?"Online":"Mountain View", going:1, rsvp:true, family:c&&c.family||null, host:EV_ME, bucket:"upcoming", cal:c.id, listed:[], pending:[], theme:d.theme, fmt:d.fmt, cap:d.cap, approval:d.approval, vis:d.vis==="public"?"public":(c.kind==="personal"?"invite":"members"), price:d.paid?20:0, sort:1016, reg:"hosting", details:d.desc, meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], awaiting:appr, checkedIn:false, past:false });
+  DB.fevents.push({ id, name, when:"Fri, Oct 16, 6pm", end:"8pm", day:"Oct 16", where:d.fmt==="online"?"Online":"Mountain View", going:1, rsvp:true, family:c&&c.family||null, host:EV_ME, bucket:"upcoming", cal:c.id, listed:[], pending:[], theme:d.theme, fx:d.fx, emoji:d.emoji, fmt:d.fmt, cap:d.cap, approval:d.approval, vis:d.vis==="public"?"public":(c.kind==="personal"?"invite":"members"), price:d.paid?20:0, sort:1016, reg:"hosting", details:d.desc, meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], awaiting:appr, checkedIn:false, past:false });
   c.events.push(id); if (d.from) DB.fevents.splice(DB.fevents.findIndex(x=>x.id===d.from),1);
   STATE.evDraft = null; STATE.evMtab="guests"; go("eventd:manage."+id);
   toast(appr ? `Sent. ${appr.replace(", who runs it","")} approve${appr.endsWith("s")?"":"s"} it before it goes live.` : `Published on ${c.kind==="personal"?"your calendar":c.name}.`);
@@ -4483,6 +6964,10 @@ function evSheet(type, id){
     ${opts.map(c=>{ const st=(e.listed||[]).includes(c.id)?"Listed":(e.pending||[]).includes(c.id)?"Waiting":""; return `<div class="rowitem">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${c.subs.toLocaleString()} followers · ${evApprover(c)?`${evApprover(c)} approve`:"publishes now"}</div></div>${st?`<span class="xs muted">${st}</span>`:`<button class="btn sm" data-evsubmitok="${id}|${c.id}">${evApprover(c)?"Submit":"Add"}</button>`}</div>`; }).join("")}`; }
   if (type==="evdecline") { return `<h2>Decline ${evFirst(id.split("|")[1])}?</h2><p class="sm muted">${evFirst(id.split("|")[1])} sees "Not approved for this one." Your reason stays with you and your cohosts.</p>
     ${["Full for this one","Not the right fit","Missing information"].map(r=>`<div class="rowitem" data-evdeclineok="${id}"><div class="m"><div class="a">${r}</div></div></div>`).join("")}<button class="btn ghost" onclick="closeSheet()">Keep for now</button>`; }
+  if (type==="evlook") { const e=evE(id); return `<h2>Look</h2>
+    <div class="evt-swatches">${EVT.PRESETS.map(t=>`<div class="evt-sw ${evPreset(e.theme).id===t.id?'on':''}" data-evlook="${id}|${t.id}"><i style="background:linear-gradient(${t.angle}deg, ${t.stops.join(", ")})"></i>${t.name}</div>`).join("")}</div>
+    <div class="lbl">Effect</div><div class="evt-fxs">${EV_FX_PICK.map(f=>`<span class="chip ${e.fx===f?'on':''}" data-evfx="${id}|${f}">${evFxName(f)}</span>`).join("")}<span class="chip" data-evfx="${id}|shuffle">🎲 Surprise me</span></div>
+    ${e.reg==="hosting"?"":`<div class="xs faint" style="margin-top:12px">Demo. Hosts pick the look when they create the event.</div>`}`; }
   if (type==="evroomnotif") { const c=convOf(id); const cur=c.evNotif||"key"; return `<h2>Notifications for this event</h2><p class="sm muted">The chat stays quiet unless something is for you.</p>
     ${[["key","Updates and replies to you","Host updates, answers to your questions, replies to you"],["all","Every message",""],["off","Off","You still see everything when you open it"]].map(([k,a,b])=>`<div class="rowitem" data-evnotif="${id}|${k}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="evx-radio ${cur===k?'on':''}"></span></div>`).join("")}
     <div class="xs faint" style="margin-top:10px">Everything else arrives as one digest the morning of the event.</div>`; }
@@ -4555,6 +7040,20 @@ portWire = function(){
   q("[data-evnotif]", el=>{ const [cid,k]=el.dataset.evnotif.split("|"); convOf(cid).evNotif=k; STATE.sheet=null; render(); toast({ key:"Updates and replies to you.", all:"Every message.", off:"Off for this event." }[k]); });
   q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]="Hi all, Priya here. PM on Google Cloud, hoping to meet people building AI products."; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
   q("[data-evphotos]", el=>{ const e=evE(el.dataset.evphotos); const c=evRoom(e); c.msgs.push(M(EV_ME, "", { day:"Today", time:nowTime(), att:[{t:"img",n:4}] })); go("dm:"+c.id); toast("Four photos added. Everyone who went sees them."); });
+  if (evtMount) { evtMount.destroy(); evtMount = null; }
+  const scr = phone.querySelector(".evt-screen"), screenEl = phone.querySelector(".screen");
+  if (scr) { const t = EVT.applyTheme(scr, evPreset(scr.dataset.evtTheme)); const pad = screenEl ? parseFloat(getComputedStyle(screenEl).paddingTop)||0 : 0;
+    if (pad) { scr.style.marginTop = -pad+"px"; scr.style.paddingTop = pad+"px"; } if (t.inkIsLight && screenEl) screenEl.classList.add("dark-status");
+    const fx = scr.dataset.evtFx; evtMount = EVT.mountEffects(scr, fx==="emoji"?"none":fx, { signal:{ going:+scr.dataset.evtGoing, capacity:+scr.dataset.evtCap } });
+    if (fx==="emoji" && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const l=document.createElement("div"); l.className="fx evt-emofx";
+      l.innerHTML = Array.from({length:12},(_,i)=>`<i style="left:${(i*8.3+Math.random()*6).toFixed(1)}%;--s:${18+(i*7)%22}px;--d:${16+(i*5)%14}s;--dl:-${(i*2.7).toFixed(1)}s;--dx:${(i%2?1:-1)*(10+i*3)}px;--r:${(i%2?1:-1)*40}deg">${scr.dataset.evtEmoji}</i>`).join("");
+      scr.prepend(l); } }
+  q("[data-evreact]", el=>{ const [eid,r]=el.dataset.evreact.split("|"); evRoom(evE(eid)).msgs.push(M(EV_ME, r, { day:"Today", time:nowTime() })); evKeep(); });
+  q("[data-evboop]", el=>{ const [eid,pid]=el.dataset.evboop.split("|"); const e=evE(eid); e.booped=e.booped||{}; if (e.booped[pid]) return; e.booped[pid]=true; render(); toast(`☕ Sent to ${evFirst(pid)}`); });
+  q("[data-evpost]", el=>{ STATE.evRoomType="update"; evOpenRoom(el.dataset.evpost, true); });
+  q("[data-evlook]", el=>{ const [eid,t]=el.dataset.evlook.split("|"); evE(eid).theme=t; render(); });
+  q("[data-evfx]", el=>{ const [eid,f]=el.dataset.evfx.split("|"); const e=evE(eid); e.fx = f==="shuffle" ? EV_FX_PICK.filter(x=>x!==e.fx&&x!=="none")[Math.floor(Math.random()*(EV_FX_PICK.length-2))] : f; render(); });
+  q("[data-evdfx]", el=>{ const d=evDraft(); d.name=(document.getElementById("evname")||{}).value||d.name; const f=el.dataset.evdfx; d.fx = f==="shuffle" ? EV_FX_PICK.filter(x=>x!==d.fx&&x!=="none")[Math.floor(Math.random()*(EV_FX_PICK.length-2))] : f; render(); });
   const cta = phone.querySelector(".evx-cta"), eb = cta && phone.querySelector(".body");
   if (eb) { let y0 = eb.scrollTop; eb.addEventListener("scroll", ()=>{ const y=eb.scrollTop; if (Math.abs(y-y0)<8) return; cta.classList.toggle("hid", y>y0 && y>80); y0=y; }, { passive:true }); }
   phone.querySelectorAll(".evx-month [data-ev]").forEach(el=>el.onclick=()=>go("eventd:"+el.dataset.ev));
@@ -4631,7 +7130,7 @@ chatScreen = function(id){
   const ph = { message:"Message everyone going", question:"Ask the host. Others can upvote it.", update:"Update everyone going. It pins and pushes." }[mode];
   const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>`
     : composerBar(c).replace('<div class="foot cbar">', `<div class="foot cbar"><div class="evx-mode">${modes.map(([k,l])=>`<div class="${mode===k?'on':''}" data-evmode="${k}">${l}</div>`).join("")}</div>`).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
-  return `${hdr}<div class="body chatbody">${pin}${chips}<div class="evx-list">${empty}${evRoomMsgs(c, e, list, f!=="all")}</div>${first}</div>${bar}`;
+  return evScreen(e, `${hdr}<div class="body chatbody">${pin}${chips}<div class="evx-list">${empty}${evRoomMsgs(c, e, list, f!=="all")}</div>${first}</div>${bar}`);
 };
 const _evSend = sendMsg;
 sendMsg = function(cid, k, confirmed){
@@ -4643,31 +7142,14 @@ sendMsg = function(cid, k, confirmed){
   toast(t==="update" ? `Pinned and pushed to ${c.members} going.` : "Asked. The host sees it; others can upvote it.");
 };
 
-/* ---- the chat on the event page: the same room, previewed where people decide ---- */
-function evPeek(e, live, locked){
-  if (locked) return "";
-  const c = evRoom(e); const ups = evUps(c), qs = evQs(c); const latest = ups[ups.length-1];
-  const talk = c.msgs.filter(m=>!m.sys && !m.deleted && m.evType!=="update" && m.evType!=="question").slice(-2);
-  const inRoom = ["going","hosting"].includes(e.reg) || live;
-  const upRow = latest ? `<div class="evx-cr" data-evroom="${e.id}"><span class="evx-tag host">Update</span><div class="m"><div class="sm ell">${latest.text}</div><div class="xs faint">${P(latest.from).name} · ${latest.day==="Today"?latest.time:latest.day.replace(", 2026","")}</div></div></div>` : "";
-  const head = `<div class="lbl evx-lh"><span>Event chat</span>${inRoom?`<span class="xs faint" data-evroom="${e.id}">Open ›</span>`:""}</div>`;
-  if (e.past) return `${head}<div class="evx-cr" data-evroom="${e.id}"><div class="m"><div class="sm">${c.msgs.length} ${c.msgs.length===1?"post":"posts"} from the night</div><div class="xs faint">Photos and updates stay. Read-only a week after.</div></div><span class="xs muted">›</span></div>`;
-  if (e.reg==="pending"||e.reg==="waitlist") return `${head}${upRow}<div class="xs faint evx-note">You see the host's updates while you wait. The chat opens when you're in.</div>`;
-  if (!inRoom) { const faces = [P(e.host).initials].concat(["RM","MC","SI"]).slice(0,Math.min(4,e.going)).map(x=>`<i>${x}</i>`).join("");
-    return `${head}<div class="evx-cr evx-tease"><div class="evx-faces">${faces}</div><div class="m"><div class="sm">${e.going} going are in the chat</div><div class="xs faint">${ups.length} ${ups.length===1?"update":"updates"} from ${evFirst(e.host)}${qs.length?` and ${qs.length} questions`:""} so far. Opens when you register.</div></div></div>`; }
-  const talkRows = talk.map(m=>{ const p=P(m.from); return `<div class="evx-cr" data-evroom="${e.id}"><div class="bav">${p.initials}</div><div class="m"><div class="sm ell"><b>${m.from===EV_ME?"You":p.name.split(" ")[0]}</b> ${m.evType==="intro"?"is going: ":""}${m.text||"Shared photos"}</div></div></div>`; }).join("");
-  const open = qs.filter(m=>!m.answer).length;
-  return `${head}${upRow}${talkRows}${qs.length?`<div class="evx-cr" data-evroomq="${e.id}"><div class="m"><div class="sm">${qs.length} ${qs.length===1?"question":"questions"}${open?`, ${open} open`:""}</div></div><span class="xs muted">›</span></div>`:""}
-    <div class="evx-say" data-evroom="${e.id}|focus">Say something to the room</div>`;
-}
 /* one sticky action per state; hides while you scroll down (Luma, Partiful). Invited and waiting states act inside their section. */
 function evCta(e, live, locked){
-  if (locked) return [`Apply to join`, `toast('Application opens. Tabs stay open while it\\'s pending.')`, ""];
-  if (e.past) return ["Add photos", "", `data-evphotos="${e.id}"`];
-  if (e.reg==="hosting") return ["Manage", "", `data-evgo="eventd:manage.${e.id}"`];
-  if (live && !e.checkedIn) return ["Check in", "", `data-checkin="${e.id}"`];
-  if (e.reg==="going" || live) return ["Open event chat", "", `data-evroom="${e.id}"`];
-  if (e.reg==="none") return [`${e.approval?"Request to join":"Register"} · ${e.price?`$${e.price}`:"free"}`, "", `data-evrsvp="${e.id}"`, e.approval?`${evFirst(e.host)} approves each guest.`:""];
+  if (locked) return [`🔒 Apply to join`, `toast('Application opens. Tabs stay open while it\\'s pending.')`, ""];
+  if (e.past) return ["📸 Add photos", "", `data-evphotos="${e.id}"`];
+  if (e.reg==="hosting") return ["⚙️ Manage", "", `data-evgo="eventd:manage.${e.id}"`];
+  if (live && !e.checkedIn) return ["📍 Check in", "", `data-checkin="${e.id}"`];
+  if (e.reg==="going" || live) return ["💬 Open event chat", "", `data-evroom="${e.id}"`];
+  if (e.reg==="none") return [`${e.approval?"🙋 Request to join":"🎉 Register"} · ${e.price?`$${e.price}`:"free"}`, "", `data-evrsvp="${e.id}"`, e.approval?`${evFirst(e.host)} approves each guest`:""];
   return null;
 }
 
