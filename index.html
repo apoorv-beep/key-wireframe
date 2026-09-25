@@ -829,7 +829,6 @@
   .evx-tabs div.on { color:var(--ink); font-weight:800; border-bottom-color:var(--ink); }
   .evx-chips { padding-top:2px; } .evx-chips .pill { font-size:13px; padding:6px 12px; }
   .evx-grp { font-size:12px; font-weight:700; color:var(--ink3); margin:14px 0 2px; }
-  .row > .btn.sec { margin-top:0; } /* base .sec (section rule) was pushing paired secondary buttons down */
   /* no boxes inside pages: states, people and details are sections split by hairlines; only the event tile is a card */
   .evx-sect { padding:14px 0; border-bottom:1px solid var(--line); }
   .evx-sect .name { font-size:16px; font-weight:800; } .evx-sect .sub { font-size:13.5px; color:var(--ink2); line-height:1.4; }
@@ -3522,7 +3521,10 @@ DB.pool.push(
   { kind:"offer", title:"Resume and portfolio reviews for PMs", org:"Ana Ruiz", via:"ana", fam:"Xoogler", when:"Sep 10", why:"Matches your role mission", facts:[["For","Members moving into AI"],["Slots","3 left this month"]] },
   { kind:"offer", title:"Office hours for first-time founders", org:"Neha Rao", via:"neha", fam:"Desi Founders", when:"Weekly", why:"Useful for your cofounder mission", facts:[["When","Wednesdays, 30 minutes"],["For","Pre-seed and seed founders"]] },
   { kind:"resource", title:"$5k cloud credits for member startups", org:"Program", via:"chris", fam:"Xoogler", when:"Sep 1", why:"Worth having once your cofounder mission lands", facts:[["What","$5k credits for 12 months"],["How","Chris sends the code"]] },
-  { kind:"post", title:"How I got into Sierra", org:"Post", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Chris"]] }
+  { kind:"post", ptype:"article", title:"How I got into Sierra", org:"Article", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Chris"]] },
+  { kind:"post", ptype:"announcement", title:"Xoogler dinners move to Thursdays from October", org:"Announcement", via:"chris", fam:"Xoogler", when:"Yesterday", why:"You're going Thursday", facts:[["From","the organizers"]] },
+  { kind:"post", ptype:"win", title:"Signed my first two design partners", org:"Win", via:"maya", fam:"Xoogler", when:"2 days ago", why:"Maya is on one of your paths", facts:[["In","#wins"]] },
+  { kind:"post", ptype:"question", title:"Which AI companies actually let PMs ship?", org:"Question", via:"sana", fam:"Michigan", when:"3 days ago", why:"Matches your mission", facts:[["In","#jobs"]] }
 );
 DB.pool.forEach((x,i)=>{ x.id=x.id||"pl"+i; if(x.kind==="person") x.pid=(Object.values(DB.people).find(p=>p.name===x.org)||{}).id; });
 Object.assign(DB.poolCounts, { deal:23, ask:38, offer:19, post:112 });
@@ -3536,12 +3538,13 @@ function poolRow(x) {
 function sPool(kind) {
   const K=PKIND[kind]; const f=STATE.poolFam||"all";
   const fams=[...new Set(DB.pool.filter(x=>x.kind===kind).map(x=>x.fam))];
-  const list=DB.pool.filter(x=>x.kind===kind&&!x.hidden&&(f==="all"||(f==="saved"?x.saved:x.fam===f)));
+  const pt=STATE.poolType||"all"; const PT=[["all","All"],["announcement","Announcements"],["article","Articles"],["win","Wins"],["question","Questions"]];
+  const list=DB.pool.filter(x=>x.kind===kind&&!x.hidden&&(f==="all"||(f==="saved"?x.saved:x.fam===f))&&(kind!=="post"||pt==="all"||x.ptype===pt));
   const canPost = kind!=="person"&&kind!=="post";
-  return `<div class="hdr"><div class="back" onclick="STATE.poolFam='all';goBack()">‹</div><div class="t" style="flex:1">${K.pl}</div>${canPost?`<span class="chip" style="font-size:12px" onclick="openSheet('ppost','${kind}')">Post</span>`:""}</div>
+  return `<div class="hdr"><div class="back" onclick="STATE.poolFam='all';STATE.poolType='all';goBack()">‹</div><div class="t" style="flex:1">${K.pl}</div>${canPost?`<span class="chip" style="font-size:12px" onclick="openSheet('ppost','${kind}')">Post</span>`:""}</div>
   <div class="body">
     <p class="sm muted" style="margin-top:6px">${DB.poolCounts[kind]} across your families, newest first. Every one reaches you through a member${kind==="deal"?". Deals show only to members with Investing on":""}.</p>
-    <div class="pills" style="margin:10px 0 4px">${[["all","All"],...fams.map(x=>[x,x]),["saved","Saved"]].map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolFam='${k}';render()">${l}</div>`).join("")}</div>
+    <div class="pills" style="margin:10px 0 4px">${[["all","All"],...fams.map(x=>[x,x]),["saved","Saved"]].map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolFam='${k}';render()">${l}</div>`).join("")}${kind==="post"?`<span style="width:1px;background:var(--line);margin:2px 4px;align-self:stretch"></span>${PT.map(([k,l])=>`<div class="pill ${pt===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolType='${k}';render()">${l}${k==="all"?"":` <span style="opacity:.6">${DB.pool.filter(x=>x.kind==="post"&&x.ptype===k).length}</span>`}</div>`).join("")}`:""}</div>
     ${list.length?list.map(poolRow).join(""):`<div class="estate" style="padding-top:32px"><div class="et">${f==="saved"?"Nothing saved yet":"Nothing here yet"}</div><div class="es">${f==="saved"?"Save anything in the pool and it waits here.":"Kai adds new ones as members post them."}</div></div>`}
     <p class="xs faint" style="margin-top:14px">Showing the newest ${list.length}. The rest load as you scroll.</p>
   </div>`;
