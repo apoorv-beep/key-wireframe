@@ -838,6 +838,7 @@
   .evx-li { cursor:pointer; }
   .evx-p { font-size:14.5px; line-height:1.5; margin:4px 0 0; color:var(--ink); }
   .evx-field { color:var(--ink2); }
+  .evx-card .evx-rsvp { margin-left:auto; padding:6px 14px; font-size:13px; border-radius:999px; flex:0 0 auto; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -876,6 +877,12 @@
   .cm-badges { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; } .cm-badges span { font-size:12px; font-weight:600; border-radius:6px; padding:2px 8px; background:var(--fill); color:var(--ink2); }
   .cm-stats { display:flex; gap:22px; } .cm-stats b { display:block; font-size:26px; font-weight:800; } .cm-stats span { font-size:12px; color:var(--ink2); }
   .cm-faces { display:flex; } .cm-faces .avatar + .avatar { margin-left:-8px; }
+  .cm-meta { font-size:12px; color:var(--ink3); margin-top:4px; }
+  .cm-done { flex:0 0 auto; font-size:13px; color:var(--ink3); }
+  .cm-btn.q { border-color:var(--line); }
+  .cm-tab { position:relative; } .cm-dot { position:absolute; top:9px; right:-7px; width:6px; height:6px; border-radius:50%; background:var(--ink); }
+  .cm-live .ck { display:flex; align-items:center; gap:6px; color:var(--ink); }
+  .cm-livedot { width:8px; height:8px; border-radius:50%; background:#B23B3B; }
 </style>
 </head>
 <body>
@@ -4067,18 +4074,15 @@ function evApprover(c){ if (!c || evIsAdmin(c)) return null; if (c.kind==="famil
 /* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
 function evCover(e, cls, inner){ return `<div class="evx-cov ${cls||""}" style="background:${evBg(e.theme)}">${inner||""}</div>`; }
 evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th" style="background:${evBg(e.theme)}"><span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
-function evTag(e){
-  if (evLocked(e)) return `<span class="evx-tag lock">Members only</span>`;
-  if (e.past) return "";
-  return { going:`<span class="evx-tag go">Going</span>`, hosting:`<span class="evx-tag host">Hosting</span>`, pending:`<span class="evx-tag wait">Requested</span>`, waitlist:`<span class="evx-tag wait">Waitlist #${e.wait||1}</span>` }[e.reg] || (e.approval?`<span class="evx-tag">Approval</span>`:e.price?`<span class="evx-tag">$${e.price}</span>`:"");
-}
+/* One state field with four labels that repeat everywhere (card, event page, Manage), like the mission kickers.
+   No label means it's your move, so the card carries the one action instead. */
+function evState(e){ if (e.past) return ""; if (evLocked(e)) return "Members only"; return { going:"Going", hosting:"Hosting", pending:"Waiting", waitlist:"Waiting" }[e.reg] || ""; }
+function evTag(e){ const st=evState(e); return st?`<span class="evx-tag ${{Going:"go",Hosting:"host",Waiting:"wait","Members only":"lock"}[st]}">${st}</span>`:""; }
+/* Fable round 12's status formula: going count, then how many Kai thinks you should meet. Nothing else. */
 evStatus = function(e){
   if (e.past) return e.met&&e.met.length?`You met ${e.met.map(evFirst).join(", ")}`:"You went";
-  if (evLocked(e)) return `For members of ${evKind(evC(e.cal)).replace(" family","")}`;
-  if (e.reg==="hosting") return `${e.going} going${(e.requests||[]).length?` · ${e.requests.length} to review`:""}`;
-  if (e.reg==="pending") return "The host is reviewing";
-  if (e.reg==="waitlist") return "A spot opens automatically";
-  const meet=(e.meet||[]).length; return `${e.going} going${meet?` · ${meet} you should meet`:""}`;
+  const meet = e.reg==="hosting"||evLocked(e) ? 0 : (e.meet||[]).length;
+  return `${e.going} going${meet?` · ${meet} to meet`:""}`;
 };
 function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
 function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}"><i style="background:${evBg(c.theme)}">${c.name[0]}</i>${c.name}</span>`:""; }
@@ -4086,9 +4090,9 @@ evCard = function(e, size, opts){
   opts=opts||{}; const time=(e.when||"").split(", ").slice(-1)[0]; const home=evC(e.cal);
   return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}">${evThumb(e,"evx-thumb")}
     <div class="evx-cm"><div class="evx-t">${evLocked(e)?"🔒 ":""}${e.name}</div>
-      <div class="evx-s">${time}${e.end?`–${e.end}`:""} · ${e.fmt==="online"?"Online":e.where}</div>
+      <div class="evx-s">${time}${e.end?`–${e.end}`:""} · ${e.fmt==="online"?"Online":e.where}${e.price?` · $${e.price}`:""}</div>
       <div class="evx-s2">${evFaces(e)}<span>${evStatus(e)}</span></div>
-      <div class="evx-foot">${opts.fam===false||(home&&home.id===opts.here)?"":evPill(home)}${evTag(e)}</div></div></div>`;
+      <div class="evx-foot">${opts.fam===false||(home&&home.id===opts.here)?"":evPill(home)}${evTag(e)||(e.past||evLocked(e)?"":`<button class="btn sm evx-rsvp" data-evrsvp="${e.id}">${e.approval?"Request":"RSVP"}</button>`)}</div></div></div>`;
 };
 function evByDate(list, empty, here){
   if (!list.length) return `<div class="empty">${empty}</div>`;
@@ -4184,13 +4188,13 @@ sEventDetail = function(id){
   const home = evC(e.cal); const host = DB.people[e.host]||DB.people.chris; const live = STATE.eventDay && e.id==="e1" && !e.past; const locked = evLocked(e);
   const others = (e.listed||[]).map(evC).filter(Boolean);
   let block = "";
-  if (locked) block = `<div class="evx-sect"><div class="name">For members of ${home.famExt||evKind(home)}</div><div class="sub" style="margin:4px 0 10px">You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div><button class="btn" onclick="toast('Application to ${home.famExt||"the family"} opens. Tabs stay open while it\\'s pending.')">Apply to join</button></div>`;
+  if (locked) block = `<div class="evx-sect"><div class="name">Members only</div><div class="sub" style="margin:4px 0 10px">For members of ${home.famExt||evKind(home)}. You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div><button class="btn" onclick="toast('Application to ${home.famExt||"the family"} opens. Tabs stay open while it\\'s pending.')">Apply to join</button></div>`;
   else if (e.past) block = `<div class="evx-sect"><div class="name">You went</div><div class="sub" style="margin-top:2px">${e.met&&e.met.length?`Met ${e.met.map(x=>DB.people[x].name).join(", ")}. Logged from your debrief.`:"No debrief logged."}</div></div>`;
-  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">You're hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evgo="eventd:manage.${e.id}">Manage</button><button class="btn sec" style="flex:1" data-evsheet="evshare|${e.id}">Share</button></div></div>`;
-  else if (live) block = `<div class="evx-sect live"><div class="row" style="gap:8px"><span class="live"></span><div class="name">It's tonight</div></div><div class="sub" style="margin:4px 0 10px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div>${e.checkedIn?`<button class="btn sec" onclick="go('eventchat')">Open event chat</button>`:`<button class="btn" data-checkin="${e.id}">Check in</button>`}</div>`;
-  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">You're in</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sec" style="flex:1" data-evsheet="evticket|${e.id}">Ticket</button><button class="btn sec" style="flex:1" onclick="go('eventchat')">Event chat</button></div><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
-  else if (e.reg==="pending") block = `<div class="evx-sect"><div class="name">Request sent</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
-  else if (e.reg==="waitlist") block = `<div class="evx-sect"><div class="name">On the waitlist, #${e.wait||1}</div><div class="sub" style="margin:4px 0 8px">If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
+  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">Hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evgo="eventd:manage.${e.id}">Manage</button><button class="btn sec" style="flex:1" data-evsheet="evshare|${e.id}">Share</button></div></div>`;
+  else if (live) block = `<div class="evx-sect live"><div class="row" style="gap:8px"><span class="live"></span><div class="name">Tonight</div></div><div class="sub" style="margin:4px 0 10px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div>${e.checkedIn?`<button class="btn sec" onclick="go('eventchat')">Open event chat</button>`:`<button class="btn" data-checkin="${e.id}">Check in</button>`}</div>`;
+  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">Going</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sec" style="flex:1" data-evsheet="evticket|${e.id}">Ticket</button><button class="btn sec" style="flex:1" onclick="go('eventchat')">Event chat</button></div><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
+  else if (e.reg==="pending") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing your request. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
+  else if (e.reg==="waitlist") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">#${e.wait||1} on the waitlist. If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
   else block = `<button class="btn" style="margin-top:12px" data-evrsvp="${e.id}">${e.approval?"Request to join":"Register"}${e.price?` · $${e.price}`:""}</button>${e.approval?`<div class="xs faint" style="margin-top:6px;text-align:center">${evFirst(e.host)} approves each guest.</div>`:""}`;
   const meet = (!locked && !e.past && e.reg!=="hosting") ? (e.meet||[]).map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
     return `<div class="evx-sect evx-li" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${EV_WHY[pid]||"Going, and in your family."}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("") : "";
@@ -4280,7 +4284,7 @@ function evManage(id){
       <div class="lbl">Settings</div>` + [["Edit event","Name, time, place, cover"],["Tickets and capacity",`${e.price?`$${e.price}`:"Free"} · ${e.cap||"unlimited"} spots`],["Registration questions","One question, Kai prefills from profiles"],["Reminders","Day before and 3 hours before, on"],["Cohosts","Add someone to run it with you"],["Move to another calendar","Only you, the creator, can move it"],["Analytics","Registrations, check-ins, feedback"],["Duplicate",""],["Cancel event","Guests get one note and a refund if paid"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}. Same fields as today; fuller on web.')"><div class="m"><div class="a" ${a==="Cancel event"?'style="color:var(--danger)"':''}>${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="xs muted">›</span></div>`).join(""); }
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><span class="xs muted" style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.name}</span></div>
   <div class="body">
-    ${e.awaiting?`<div class="evx-sect"><div class="name">Waiting for ${e.awaiting.replace(", who runs it","")}</div><div class="sub" style="margin-top:4px">Only you can see it until they approve. You can invite people directly in the meantime.</div>${STATE.evDemo!==false?`<div class="xs" style="margin-top:8px;text-decoration:underline;cursor:pointer" data-evapproveevent="${id}">(Demo) They approved it</div>`:""}</div>`:""}
+    ${e.awaiting?`<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin-top:4px">${e.awaiting.replace(", who runs it","")} approve it before it goes live. Only you can see it until then. You can invite people directly in the meantime.</div>${STATE.evDemo!==false?`<div class="xs" style="margin-top:8px;text-decoration:underline;cursor:pointer" data-evapproveevent="${id}">(Demo) They approved it</div>`:""}</div>`:""}
     <div class="evx-tabs">${[["guests","Guests"],["door","Door"],["broadcast","Broadcast"],["more","More"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
     ${body}
   </div>`;
@@ -4445,7 +4449,8 @@ famTop = function(){ return _cFamTop().replace(/<div class="m">([^<]*)<\/div><\/
 /* ---- tabs (move between places) ---- */
 const C_TABS = [["week","This week"],["chat","Channels"],["people","People"],["fevents","Events"],["posts","Posts"]];
 famPills = function(on){
-  return `<div class="cm-tabs sticky" role="tablist">${C_TABS.map(([id,l])=>`<div class="cm-tab ${on===id?'on':''}" role="tab" aria-selected="${on===id}" data-ctab="${id}">${l}</div>`).join("")}</div>`;
+  const dot = id => id==="chat" && on!=="chat" && (DB.channels[cF().id]||[]).some(c=>c.joined&&c.unread) ? '<i class="cm-dot"></i>' : '';
+  return `<div class="cm-tabs sticky" role="tablist">${C_TABS.map(([id,l])=>`<div class="cm-tab ${on===id?'on':''}" role="tab" aria-selected="${on===id}" data-ctab="${id}">${l}${dot(id)}</div>`).join("")}</div>`;
 };
 function cChips(list, cur, attr){
   return `<div class="cm-chips">${list.map(x=> x==="|" ? `<span class="cm-div"></span>` : `<span class="cm-chip ${cur===x[0]?'on':''}" data-${attr}="${x[0]}">${x[1]}${x[2]!==undefined?` <b>${x[2]}</b>`:''}</span>`).join("")}</div>`;
@@ -4462,22 +4467,16 @@ render = function(){
 
 /* ---- This week ---- */
 function cWeek(){
-  const f = cF(); const chs = DB.channels[f.id]||[];
-  const newcomers = ["dev","jordan"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name) && !(STATE.cGreeted||{})[p.id]);
-  const q = DB.posts.find(p=>p.fam===f.id && p.type==="question");
-  const needs = newcomers.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name} joined this week</div><div class="b">${p.title}, ${p.company}. Not greeted yet</div></div><span class="cm-btn" data-cgreet="${p.id}">Say hi</span></div>`).join("")
-    + (q?`<div class="cm-row" data-cgo="posts">${av("AR")}<div class="m"><div class="a">${q.who.split(",")[0]} asked: ${q.title}</div><div class="b">${q.replies||0} replies. You've interviewed at Figma</div></div><span class="cm-btn">Reply</span></div>`:'');
-  const tl = (DB.cweek[f.id] || [["This week", `${chs.filter(c=>c.unread).length} channels have new messages`, "fchannels"]]);
+  const f = cF();
+  const joined = ["dev","jordan"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
+  const rows = joined.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${p.title}, ${p.company}</div></div>${(STATE.cGreeted||{})[p.id]?'<span class="cm-done">Greeted</span>':`<span class="cm-btn" data-cgreet="${p.id}">Say hi</span>`}</div>`).join("");
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("week")}
-    ${f.pinned?`<div class="cm-sec"><div class="cm-lbl">Pinned by ${f.pinned.who}</div><div class="cm-text">${f.pinned.text}</div></div>`:''}
-    ${needs?`<div class="cm-sec"><div class="cm-lbl">Needs you</div>${needs}</div>`:''}
+    ${f.pinned?`<div class="cm-sec"><div class="cm-lbl">Pinned</div><div class="cm-text">${f.pinned.text}</div><div class="cm-meta">${f.pinned.who}</div></div>`:''}
+    ${rows?`<div class="cm-sec"><div class="cm-lbl">New members</div>${rows}</div>`:''}
     <div class="cm-sec"><div class="cm-lbl">Coming up</div>${typeof evFamilyWeek==="function"?evFamilyWeek(f.id):''}</div>
-    <div class="cm-sec"><div class="cm-lbl">This week, newest first</div>
-      <div class="tline">${tl.map(([w,t,to],i)=>`<div class="tli ${i===0?'now':''}" data-cgo="${to}"><div class="td"></div><div class="th"><b>${w}</b></div><div class="cm-text">${t}</div></div>`).join("")}</div>
-    </div>
-    <div class="cm-row cm-inv" data-csheet="cinvite">${av("+")}<div class="m"><div class="a">Invite someone to ${f.name}</div><div class="b">Any member can. Say why they belong; organizers see it</div></div><span class="s">›</span></div>
+    <div class="cm-row cm-inv" data-csheet="cinvite">${av("+")}<div class="m"><div class="a">Invite someone</div></div><span class="s">›</span></div>
   </div>
   ${navHTML("families")}`;
 }
@@ -4506,12 +4505,14 @@ sPosts = function(){
   const f = cF(); const all = DB.posts.filter(p=>(p.fam||"xoogler")===f.id);
   const list = STATE.postType==="All" ? all : all.filter(p=>p.type===STATE.postType);
   const label = t => (C_TYPES.find(x=>x[0]===t)||["","Post"])[1].replace(/s$/,"");
-  const row = p => `<div class="cm-post"><div class="ck">${p.pinned?'Pinned · ':''}${label(p.type)}${p.tag?` · ${p.tag}`:''}</div><div class="ct">${p.title}</div><div class="cx">${p.text}</div><div class="cm">${p.who} · ${p.when}${p.read?` · ${p.read} read`:''}${p.type==="question"?` · ${p.replies||0} replies`:''}</div></div>`;
+  const row = p => `<div class="cm-post"><div class="ck">${label(p.type)}${p.pinned?' · Pinned':''}</div><div class="ct">${p.title}</div><div class="cx">${p.text}</div><div class="cm">${p.who.split(",")[0]} · ${p.when}</div></div>`;
+  const live = STATE.liveBroadcast ? `<div class="cm-post cm-live"><div class="ck"><span class="cm-livedot"></span>Live now</div><div class="ct">Office hours with ${f.id==="desi"?"Neha":"Chris"}</div><div class="cx">41 members listening. Kai keeps the follow-ups for you.</div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
   const chips = cChips([["All","All"],"|",...C_TYPES.map(([id,l])=>[id,l])], STATE.postType, "cptype");
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     <div class="cm-bar">${famPills("posts")}${chips}</div>
-    <div class="cm-row cm-inv" data-csheet="cnewpost">${av(DB.user.initials)}<div class="m"><div class="a">Write a post</div><div class="b">A question or a win goes up at once. Articles and announcements wait for an organizer</div></div></div>
+    <div class="cm-row cm-inv" data-csheet="cnewpost">${av(DB.user.initials)}<div class="m"><div class="a">Write a post</div></div>${cOrg()?`<span class="cm-btn q" data-clive="1">${STATE.liveBroadcast?"End live":"Go live"}</span>`:''}</div>
+    ${STATE.postType==="All"||STATE.postType==="announcement"?live:""}
     ${list.map(row).join("") || `<div class="empty">No ${STATE.postType==="All"?"posts":label(STATE.postType).toLowerCase()+"s"} yet.</div>`}
   </div>
   ${navHTML("families")}`;
@@ -4639,6 +4640,7 @@ portWire = function(){
   q("[data-csheet]", el=>openSheet(el.dataset.csheet, ""));
   q("[data-cnewtype]", el=>{ STATE.cNewType=el.dataset.cnewtype; render(); });
   q("[data-cgreet]", el=>{ const p=DB.people[el.dataset.cgreet]; STATE.cGreeted=Object.assign(STATE.cGreeted||{}, {[p.id]:true}); go("channel:introductions"); toast(`Kai drafted a hello to ${p.name.split(" ")[0]} in #introductions. Send it when it reads right.`); });
+  q("[data-clive]", ()=>{ STATE.liveBroadcast=!STATE.liveBroadcast; render(); });
   q("[data-cleave]", el=>cLeave(el.dataset.cleave));
   q("[data-cdecr]", el=>{ STATE.cDec.reason=el.dataset.cdecr; render(); });
   q("[data-cdeca]", el=>{ STATE.cDec.again=el.dataset.cdeca; render(); });
