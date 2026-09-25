@@ -724,9 +724,9 @@
     <div class="sgrp"><span class="sgl">Key AI · lo-fi</span><button onclick="restart()">Restart</button><button onclick="jump('home')">Skip to home</button><button onclick="jump('family')">Skip to family</button><button onclick="STATE.orgStep=0;go('orgconnect')">Organizer: new family</button></div>
     <div class="sgrp"><span class="sgl">Entry</span><button onclick="STATE.entry='invite';DB.user.invitedBy='Chris Fong';go('signin')">Invite</button><button onclick="STATE.entry='event';DB.user.invitedBy=null;go('signin')">Event</button><button onclick="STATE.entry='cold';DB.user.invitedBy=null;go('signin')">Cold</button></div>
     <div class="sgrp"><span class="sgl">Time</span><button onclick="advanceWeek()">Advance a week ▸</button><span class="xs" id="weekLbl" style="color:#8a8a8a"></span></div>
-    <div class="sgrp"><span class="sgl">View as</span><button id="orgToggle" onclick="STATE.asOrganizer=!STATE.asOrganizer;render()">Organizer</button><button id="personaBtn" onclick="STATE.persona=STATE.persona==='priya'?'chris':'priya';STATE.inboxView='requests';go('inbox')">Chris</button></div>
+    <div class="sgrp"><span class="sgl">View as</span><button id="orgToggle" onclick="STATE.asOrganizer=!STATE.asOrganizer;render()">Organizer</button><button id="personaBtn" onclick="cyclePersona()">Chris</button></div>
     <div class="sgrp"><span class="sgl">Play</span><button id="simBtn" onclick="simulate()">Simulate next ▸</button><button id="netBtn" onclick="STATE.offline=!STATE.offline;render()">Network: on</button><button onclick="openSheet('metrics')">Metrics</button></div>
-    <div class="sgrp"><span class="sgl">Ported</span><button onclick="portJump('inbox')">Messages</button><button onclick="portJump('dm:d3')">Chat</button><button onclick="portJump('channel:jobs')">Channel</button><button onclick="portJump('notifications')">Bell</button><button onclick="portJump('explore')">Pool</button><button onclick="portJump(null)">What changed</button></div>
+    <div class="sgrp"><span class="sgl">Ported</span><button onclick="portJump('inbox')">Messages</button><button onclick="portJump('dm:d3')">Chat</button><button onclick="portJump('channel:jobs')">Channel</button><button onclick="portJump('notifications')">Bell</button><button onclick="portJump('explore')">Pool</button><button onclick="portJump('mission:m2');openSheet('cyclenotes')">The cycle</button><button onclick="portJump(null)">What changed</button></div>
   </div>
   <div class="phone" id="phone"></div>
 </div>
@@ -2384,7 +2384,7 @@ function sInbox() {
   const actHTML = "";
   if (!STATE.member) return `${topHdr("Messages")}<div class="body"><div class="empty" style="margin-top:8px">Messages open when you're in a family. Requests and chats all happen between members.</div></div>${navHTML("inbox")}`;
   const chatsHTML = chatsListHTML();
-  if (STATE.inboxView==="requests") return `<div class="hdr"><div class="back" onclick="STATE.inboxView=null;render()">‹</div><div class="t">Requests${STATE.persona==="chris"?' <span class="xs faint">as Chris</span>':''}</div></div><div class="body">${coach("requests","People asking you for something: to vouch for them, to talk, to refer. Each is a yes or a no. Yes opens a conversation; no is never shown to them. Kai caps these at your capacity, three a week.")}${asksHTML}</div>${navHTML("inbox")}`;
+  if (STATE.inboxView==="requests") return `<div class="hdr"><div class="back" onclick="STATE.inboxView=null;render()">‹</div><div class="t">Requests${STATE.persona!=="priya"?' <span class="xs faint">as '+me().name.split(" ")[0]+'</span>':''}</div></div><div class="body">${coach("requests","People asking you for something: to vouch for them, to talk, to refer. Each is a yes or a no. Yes opens a conversation; no is never shown to them. Kai caps these at your capacity, three a week.")}${asksHTML}</div>${navHTML("inbox")}`;
   return `${topHdr("Messages", STATE.persona==="chris"?'<span class="xs faint" style="margin-right:6px">as Chris</span>':'')}
   <div class="body">${inboxCoach}
     ${chatsHTML}
@@ -2896,7 +2896,7 @@ const QUICK = ["👍🏻","👎🏻","😊","🎉","🔥","❤️"];
 const MORE_EMO = ["😂","🙏","👏","💯","🚀","👀","✅","🙌","🤝","💡","😮","😢","🥳","☕","📌","🧠","⚡","🌉"];
 const CH_EMO = { general:"💬", introductions:"👋", announcements:"📣", jobs:"💼", cofounders:"🤝", fundraising:"💰", "hiring-managers":"🧑‍💼", sf:"🌉", nyc:"🗽", london:"🎡", "ai-agents":"🤖", parents:"🍼", climbing:"🧗", "d-general":"💬", "d-cities":"🌏", "d-raising":"💰", "d-hiring":"💼", "m-general":"💬", "m-jobs":"💼", "m-annarbor":"🏈" };
 const CH_DESC = { jobs:"Roles members are hiring for or can refer into. Say whether you're the hiring manager, on the panel, or a referrer.", cofounders:"Looking for a cofounder, or know someone who is.", general:"Anything for the whole family.", introductions:"New members say hello here. Chris greets everyone on Mondays.", announcements:"From the organizers. Only organizers post here.", sf:"Who's in SF this week, and where to meet.", "ai-agents":"Building with agents: evals, tool use, infra." };
-const meId = () => STATE.persona==="chris" ? "chris" : "priya";
+const meId = () => STATE.persona || "priya";
 const P = id => DB.people[id] || { id, name:id, initials:(id||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() };
 const first = id => P(id).name.split(" ")[0];
 let MSEQ = 1; const mid = () => "m"+(MSEQ++);
@@ -3526,6 +3526,280 @@ function vouchDo(k, id) {
   a.asked=true; render(); toast(`Sent to ${from}.`);
 }
 
+
+/* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Chris decides, Maya answers.
+   Rule from wireframe-audit/path-endings.md and Fable round 16: status is shown, words are sent. Kai proposes, a person taps. ==== */
+const PERSONAS = { priya:null, chris:{ name:"Chris Fong", initials:"CF" }, maya:{ name:"Maya Chen", initials:"MC" } };
+const PERSONA_ORDER = ["priya","chris","maya"];
+me = function(){ return STATE.persona==="priya" ? DB.user : PERSONAS[STATE.persona]; };
+
+/* Maya's copy of the request: hidden until Chris forwards. The nameless pre-check is a separate ask. */
+DB.asks.push(
+  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Chris introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. I worked with her at Google and she's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", receipts:[["Vouched","Chris forwarded this with a vouch: they worked together at Google","Chris"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
+  { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", receipts:[["Rule","Chris is checking before naming anyone. A no here tells nobody anything","Chris"]], state:"open", when:"now", hidden:true }
+);
+const _myAsks = myAsks; myAsks = function(){ return _myAsks().filter(a=>!a.hidden); };
+const _convRows = convRows; convRows = function(){ return STATE.persona==="priya" ? _convRows() : _convRows().filter(r=>(DB.dms.find(d=>d.id===r.id)||{}).owner===STATE.persona); };
+const _conversations = conversations; conversations = function(){
+  const list=_conversations();
+  myAsks().filter(a=>a.kind==="forwarded"&&a.state==="done").forEach(a=>{ const f=DB.people[a.from]; list.push({ id:"req:"+a.id, with:a.from, name:f.name, ini:f.initials, last:`${a.outcomeLine||"Closed"}. Nothing else is sent.`, when:a.when||"now", unread:0, kind:"intro" }); });
+  return list;
+};
+const _notifs = notifs; notifs = function(){ return _notifs().filter(n=>(n.who||"priya")===STATE.persona); };
+
+/* Pushes wait for the phone they belong to. Switching persona is picking up that phone. */
+function queuePush(who, title, body, actions){ STATE.pushQ=STATE.pushQ||{}; (STATE.pushQ[who]=STATE.pushQ[who]||[]).push([title,body,actions]); seedNotifs(); DB.notifs.unshift({ id:"c"+Date.now()+Math.random(), who, type:"kai", fam:"xoogler", ava:"kai", title, body, when:"now", unread:true, to:(actions&&actions[0]&&actions[0][2])||"inbox", filt:"paths" }); }
+function cyclePersona(to){
+  STATE.persona = to || PERSONA_ORDER[(PERSONA_ORDER.indexOf(STATE.persona)+1)%PERSONA_ORDER.length]; STATE.sheet=null; STATE.push=null;
+  if (STATE.persona==="chris") { STATE.inboxView="requests"; go("inbox"); } else if (STATE.persona==="maya") { STATE.inboxView=null; STATE.convFilter="All"; go("inbox"); } else { STATE.inboxView=null; go("home"); }
+  const q=(STATE.pushQ||{})[STATE.persona]; if (q&&q.length) { const [t,b,a]=q.shift(); setTimeout(()=>pushNote(t,b,(a||[]).map(x=>[x[0],x[1]])), 250); }
+}
+function cyclePersonaLabel(){ const pb=document.getElementById("personaBtn"); if(!pb) return; const next=PERSONA_ORDER[(PERSONA_ORDER.indexOf(STATE.persona)+1)%PERSONA_ORDER.length]; pb.textContent = next==="priya" ? "Back to Priya" : PERSONAS[next].name.split(" ")[0]; pb.classList.toggle("on", STATE.persona!=="priya"); }
+
+/* ---- helpers ---- */
+const o2 = () => DB.opps.find(o=>o.id==="o2"); const ask = id => DB.asks.find(a=>a.id===id);
+function pathAsks(o){ return o.id==="o2" ? { c:ask("c1"), t:ask("t1") } : { c:null, t:null }; }
+function holderHas(a){ return a && !a.hidden && (a.state==="open"||a.state==="pending"||a.state==="waiting"); }
+function setStatus(a, word, extra){ if(!a) return; a.state="done"; a.outcomeLine=word+(extra?". "+extra:""); a.when="now"; a.hidden=false; }
+function renameVia(o, name){ if(!o.timeline) return; o.timeline.forEach(t=>{ t[0]=t[0].replace(/^Asked \w+$/,"Asked "+name).replace(/^\w+ agreed$/,name+" agreed"); }); }
+
+/* ---- Priya's side: what Chris's five decisions do to her path ---- */
+const _forwardSend = forwardSend; forwardSend = function(id){
+  const a=ask(id); const passed = a.strength==="none";
+  _forwardSend(id);
+  if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { if (passed) { o.log.pop(); o.log.push(["Chris","passed your note to Maya without vouching. Her call entirely.","+1d"]); } }
+    if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Chris passed Priya's note to you"; t.receipts[0]=["Passed along","Chris forwarded this without vouching","Chris"]; } }
+    queuePush("priya", passed?"Chris passed your note along":"Chris said yes", passed?"He forwarded it to Maya without a vouch. Maya has it now.":"He forwarded your note to Maya with a line of his own. Maya has it now.", [["See path", ()=>go("path:o2"), "path:o2"]]);
+    queuePush("maya", passed?"Chris passed a note to you":"Chris introduced you to Priya", "Priya Sharma, senior PM at Google Cloud, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
+};
+const _askDecline = askDecline; askDecline = function(id, why){
+  _askDecline(id, why);
+  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { o.state="yourmove"; o.phase="blocked"; o.viaAgreed=false; o.log.push(["Chris","can't take this one. No reason is shown to you.","now"]); queuePush("priya","Chris can't take this one","No reason is given. The path is still yours: another route, go direct, or close.", [["See options", ()=>go("path:o2"), "path:o2"]]); } }
+  if (id==="t0") { const c=ask("c1"); if (c) { c.checking=false; c.checkNo=true; c.state="open"; queuePush("chris","Maya isn't open to this right now","She wasn't told who asked. Priya hasn't been told anything. Your call on the request.", [["Open", ()=>go("req:c1"), "req:c1"]]); } }
+  if (id==="t1") targetDecline("t1");
+};
+const _askRedirect = askRedirect; askRedirect = function(id, toName){
+  _askRedirect(id, toName);
+  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { const p=personByName(toName)||DB.people.sana; o.via=p.id; o.viaAgreed=false; renameVia(o, firstName(p)); o.log.push(["Chris",`moved this to ${firstName(p)}, who knows Maya better. ${firstName(p)} has your ask now.`,"now"]); queuePush("priya",`Your ask moved to ${firstName(p)}`,`Chris passed it to ${firstName(p)}, not why. ${firstName(p)} sees Chris suggested it.`, [["See path", ()=>go("path:o2"), "path:o2"]]); } }
+};
+const _vouchDo = vouchDo; vouchDo = function(k, id){
+  _vouchDo(k, id);
+  if (id!=="c1") return; const o=o2(); const t0=ask("t0");
+  if (k==="check") { if (o) { o.checking=true; o.log.push(["Chris","is checking with Maya first, without your name.","now"]); } if (t0) { t0.hidden=false; t0.state="open"; t0.when="now"; } queuePush("maya","Chris has a quick question","Open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", [["Open", ()=>go("req:t0"), "req:t0"]]); }
+  if (k==="ask") { if (o) { o.asked="What are you hoping to get from Maya, in a line?"; o.log.push(["Chris","asked you a question before deciding.","now"]); } queuePush("priya","Chris asked you something","Before he decides: what are you hoping to get from Maya, in a line?", [["Reply", ()=>openSheet("creply","o2"), "path:o2"]]); }
+};
+const _replyAskSend = replyAskSend; replyAskSend = function(id){
+  const draft = (document.getElementById("draft")||{}).value||"";
+  _replyAskSend(id);
+  const a=ask(id); const o=o2();
+  if (id==="t1" && o) { o.state="yourmove"; o.phase="replied"; o.replyText=`Maya: ${draft.replace(/^Hi Priya,?\s*/i,"").split(". ").slice(0,2).join(". ")||"Chris mentioned you. Coffee next week?"}`; o.checking=false; lit(o,"Maya replied","now"); o.log.push(["Maya","replied.","now"]); a.outcomeLine="Now a chat"; if(!DB.dms.some(d=>d.id==="d-t1")) DB.dms.unshift({ id:"d-t1", with:"priya", owner:"maya", last:"You: "+draft.slice(0,60), when:"now", path:true, unread:0 }); queuePush("priya","Maya replied", o.replyText.replace(/^Maya: /,""), [["Reply", ()=>openSheet("reply","o2"), "path:o2"]]); const c=ask("c1"); if (c) queuePush("chris","Maya said yes to Priya","They're talking. You're out of the thread. You'll be told once when it ends.", [["See", ()=>go("req:c1"), "req:c1"]]); }
+  if (id==="t0") { const c=ask("c1"); if (c) { c.checking=false; c.checkOk=true; c.state="open"; a.outcomeLine="You said yes. Chris decides next"; } queuePush("chris","Maya is open to it","She said yes without a name. Forward Priya's note when you're ready.", [["Forward", ()=>openSheet("forward","c1"), "req:c1"]]); }
+  if (id==="a3") { /* Jordan, Priya's own intro; base behaviour */ }
+};
+function targetDecline(id){ const a=ask(id); if(!a) return; a.state="declined"; a.when="now"; STATE.sheet=null; if (id==="t1") { const o=o2(); const c=ask("c1"); if (o && o.state!=="done") { o.state="yourmove"; o.phase="declined"; o.log.push(["Maya","isn't available right now. That's all you're shown.","now"]); queuePush("priya","Maya isn't available right now","No reason is given. Close the path, try another route, or ask again in a month.", [["See options", ()=>go("path:o2"), "path:o2"]]); } if (c && c.state==="waiting") { setStatus(c,"Closed","Maya wasn't available. That's all you're told"); } } render(); toast("Done. Priya sees: not available right now."); }
+function targetLater(id){ const a=ask(id); if(!a) return; a.later=true; a.when="now"; STATE.sheet=null; STATE.push=null; if (id==="t1") { const o=o2(); if (o) { o.later=true; o.log.push(["Maya","said later. Kai asks her again in a month; nothing else is sent.","now"]); } } render(); toast("Later. Kai brings it back in a month. Priya sees: waiting."); }
+
+/* ---- Priya's card faces for the new states ---- */
+const _kickerOf = kickerOf; kickerOf = function(o){
+  if (o.state!=="done") { if (o.phase==="blocked") return [`${firstName(viaOf(o)||DB.people.chris)} can't`,"grey"]; if (o.phase==="declined") return ["Not available","grey"]; if (o.checking) return ["Checking first","grey"]; if (o.asked) return ["Question for you","green"]; if (o.later && o.state==="waiting") return ["Said later","grey"]; }
+  return _kickerOf(o);
+};
+const _vcard = vcard; vcard = function(o){
+  if (o.state==="done" || !(o.phase==="blocked"||o.phase==="declined"||o.asked)) return _vcard(o);
+  const t=targetOf(o); const c=viaOf(o)||DB.people.chris; const f=firstName; const [k,dot]=kickerOf(o);
+  const sub = o.phase==="blocked" ? `${f(c)} couldn't take this one. No reason is given. Still your path.` : o.phase==="declined" ? `${f(t)} isn't available right now. That's all you're shown.` : `${f(c)}: “${o.asked}”`;
+  const acts = o.asked ? `<div class="acts"><button class="btn" onclick="openSheet('creply','${o.id}')">Reply to ${f(c)}</button></div>`
+    : o.phase==="blocked" ? `<div class="acts"><button class="btn" data-exit="${o.id}|other">Ask ${o.roleTitle?"":"Sana instead"}${o.roleTitle?"Apply directly":""}</button><div class="sec2" data-exit="${o.id}|direct">Go direct</div><div class="sec2" data-exit="${o.id}|close">Close</div></div>`
+    : `<div class="acts"><button class="btn sec" data-exit="${o.id}|close" style="margin:0;flex:1">Close</button><div class="sec2" data-exit="${o.id}|other">Another route</div><div class="sec2" data-exit="${o.id}|snooze">Ask in a month</div></div>`;
+  return `<div class="vcard you" data-opp="${o.id}"><div class="kicker"><span class="d ${dot}"></span>${k}${routeOf(o)}</div>
+    <div class="id">${av(t.initials,"lg")}<div style="min-width:0"><div class="n" data-profile="${o.personId}">${t.name}</div><div class="s">${sub}</div></div></div>${acts}</div>`;
+};
+
+/* ---- Endings: the confirm names who sees what; words only if Priya taps them ---- */
+function seesWhat(o, ending){
+  const c=viaOf(o), t=targetOf(o); const {c:ca, t:ta}=pathAsks(o); const word = ending==="withdraw"?"Withdrawn":ending==="archive"?"Expired":ending==="direct"||ending==="other"?"Moved":"Closed";
+  const rows=[];
+  if (c) { const has = o.id==="o2" ? holderHas(ca) : !o.viaAgreed || true; rows.push([firstName(c), has ? word : `nothing more. ${firstName(c)} already stepped out`]); }
+  if (ending!=="direct" && ending!=="other") rows.push([firstName(t), (o.id==="o2" ? holderHas(ta) : (!c || o.viaAgreed)) ? word : `nothing. ${firstName(t)} never had it`]);
+  rows.push(["You", ending==="withdraw"||ending==="close"||ending==="archive" ? "Done. Reopen any time; the record stays." : "The path continues"]);
+  return rows;
+}
+function pendSheet(id, ending){
+  const o=DB.opps.find(x=>x.id===id); const c=viaOf(o), t=targetOf(o); const {c:ca}=pathAsks(o);
+  const title = ending==="withdraw" ? `Withdraw the ask to ${firstName(c&&!o.viaAgreed?c:t)}?` : ending==="archive" ? `Archive ${o.roleTitle||firstName(t)}?` : `Close this path?`;
+  const why = ending==="withdraw" ? "No reason is given. The path closes." : ending==="archive" ? "Two weeks quiet, nudged once. The record stays." : "Nothing came of it. Logged, so Kai shows fewer like this.";
+  const thanks = c && (o.viaAgreed || (ca&&ca.state==="waiting")) ? `<div class="lbl">Also a line to ${firstName(c)}? Optional</div><div class="toggle ${STATE.pendThanks?'on':''}" style="border:0;padding:8px 0" onclick="STATE.pendThanks=!STATE.pendThanks;render()"><div><div style="font-size:14px;font-weight:600">Send ${firstName(c)} a thank-you</div><div class="xs muted">Drafted in your voice. Nothing goes unless this is on.</div></div><div class="sw"></div></div>${STATE.pendThanks?`<textarea class="input" id="pendline" rows="2">${firstName(c)}, thanks for forwarding me to ${firstName(t)}. It didn't connect this time, but I appreciate you making the ask.</textarea>`:''}` : "";
+  return `<h2>${title}</h2><p class="sm muted">${why}</p>
+    <div class="lbl">Who sees what</div>${seesWhat(o,ending).map(([w,s])=>`<div class="rc"><span class="ty">${w}</span><span>${s}</span></div>`).join("")}
+    <p class="xs faint" style="margin:8px 0 0">A status, not a message. Nobody gets words from you unless you send them.</p>
+    ${thanks}
+    <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec" style="flex:1" onclick="STATE.pendThanks=false;closeSheet()">Keep it open</button><button class="btn" style="flex:1;${ending==="withdraw"?"background:var(--danger);border-color:var(--danger)":""}" onclick="endPath('${id}','${ending}')">${ending==="withdraw"?"Withdraw":ending==="archive"?"Archive":"Close"}</button></div>`;
+}
+function endPath(id, ending){
+  const o=DB.opps.find(x=>x.id===id); const c=viaOf(o), t=targetOf(o); const {c:ca, t:ta}=pathAsks(o); const word = ending==="withdraw"?"Withdrawn":ending==="archive"?"Expired":"Closed";
+  const line = STATE.pendThanks && document.getElementById("pendline") ? document.getElementById("pendline").value : null;
+  o.state="done"; o.outcome="closed"; o.journalDue=false; o.nudgeDraft=false; o.asked=null; o.log.push(["You", ending==="withdraw"?"withdrew.":ending==="archive"?"archived.":"closed it: nothing came of it.","now"]);
+  if (c) o.log.push(["Kai", `${firstName(c)} sees: ${holderHas(ca)||o.id!=="o2"?word:"nothing more"}.${line?" You sent a line of thanks.":""}`,"now"]);
+  if (holderHas(ca)) setStatus(ca, word, line?`Priya sent thanks: “${line.slice(0,60)}${line.length>60?"…":""}”`:null); if (ca&&line) ca.thanks=line;
+  if (holderHas(ta)) setStatus(ta, word);
+  STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!==id); STATE.pendThanks=false; STATE.sheet=null; if (STATE.screen==="path:"+id) STATE.backNav=true;
+  render(); toast(`${word}. ${c?firstName(c)+" sees a status, no words.":"Reopen from Done any time."}`);
+}
+function thankSheet(id){
+  const o=DB.opps.find(x=>x.id===id); const c=viaOf(o), t=targetOf(o);
+  return `<h2>Thank ${firstName(c)}</h2><p class="sm muted">${firstName(c)} already sees: Landed. This is the one line in your voice, if you want to send it.</p>
+    ${msgComposer({ id:"thankline", draft:`${firstName(c)}, your intro landed. ${firstName(t)} and I are talking every week now. Thank you for making the ask.`, spoken:`(Spoken) ${firstName(c)}, the ${firstName(t)} intro landed, thank you.`, sendAttr:`onclick="thankSend('${id}')"`, disclosure:`Goes to ${firstName(c)} as you. ${firstName(t)} isn't told.` })}`;
+}
+function thankSend(id){ const o=DB.opps.find(x=>x.id===id); const c=viaOf(o); const line=(document.getElementById("thankline")||{}).value||""; o.thanked=true; o.log.push(["You",`thanked ${firstName(c)}.`,"now"]); const {c:ca}=pathAsks(o); if (ca) { ca.thanks=line; ca.outcomeLine=`Landed. Priya thanked you: “${line.slice(0,70)}${line.length>70?"…":""}”`; } STATE.thankOffer=null; STATE.sheet=null; render(); toast(`Sent to ${firstName(c)}.`); }
+function crepySheet(id){
+  const o=DB.opps.find(x=>x.id===id); const c=viaOf(o)||DB.people.chris; const t=targetOf(o);
+  return `<h2>${firstName(c)} asked</h2><div class="msg k" style="margin:6px 0 10px">${o.asked}</div>
+    ${msgComposer({ id:"crepline", draft:`Twenty minutes to hear how ${firstName(t)} thinks about agents infra, and whether she'd want a product partner. If it's a no from her, that's fine.`, spoken:`(Spoken) Just twenty minutes on how she thinks about agents infra.`, sendAttr:`onclick="crepSend('${id}')"`, disclosure:`Goes to ${firstName(c)} only. ${firstName(t)} isn't told anything yet.` })}`;
+}
+function crepSend(id){ const o=DB.opps.find(x=>x.id===id); const line=(document.getElementById("crepline")||{}).value||""; o.asked=null; o.log.push(["You",`answered ${firstName(viaOf(o)||DB.people.chris)}'s question.`,"now"]); const c=ask("c1"); if (c) { c.asked=false; c.answer=line; } queuePush("chris","Priya answered", line.slice(0,90), [["Open", ()=>go("req:c1"), "req:c1"]]); STATE.sheet=null; render(); toast("Sent to Chris."); }
+
+/* Priya's quick actions carry the sync; the base handler is replaced after wire() */
+function cycleExit(id, k){
+  const o=DB.opps.find(x=>x.id===id); const t=targetOf(o), c=viaOf(o); const {c:ca, t:ta}=pathAsks(o);
+  if (k==="nudge") { openSheet("preview", o.id); return; }
+  if (k==="withdraw"||k==="close") { STATE.pendThanks=false; openSheet("pend", id+"|"+k); return; }
+  if (k==="thank") { openSheet("thank", id); return; }
+  if (k==="direct") { const prevVia=c; o.via=null; o.route="direct"; o.viaAgreed=false; o.phase=null; o.state="waiting"; o.checking=false; o.log.push(["You",`went direct to ${firstName(t)}. ${prevVia?firstName(prevVia)+" sees: Moved.":""}`,"now"]);
+    if (holderHas(ca)) setStatus(ca,"Moved","Priya went another way. Your queue is clear");
+    if (ta) { ta.hidden=false; ta.kind="direct"; ta.via=null; ta.state="open"; ta.when="now"; ta.what="wants a cofounder conversation with you"; ta.note="Hi Maya, Chris mentioned your infra work in #cofounders. I'm a PM at Google Cloud looking for a technical cofounder for an agents idea. Would you be open to twenty minutes? No worries at all if not."; ta.receipts=[["Rule","Under your cofounder rule, direct asks are open. 2 slots left this month","your rules"],["Shared","Both at Xoogler dinner and the AI meetup","events"]]; queuePush("maya","Priya asked you for twenty minutes","A cofounder conversation. Drafted with Kai, Priya approved it.", [["Open", ()=>go("req:t1"), "req:t1"]]); }
+    STATE.sheet=null; render(); toast(`Direct. ${firstName(t)} has your note now.${prevVia?" "+firstName(prevVia)+" sees: Moved.":""}`); return; }
+  if (k==="other") { if (o.roleTitle) { const prev=c; o.via=null; o.route="cold"; o.viaAgreed=false; o.state="waiting"; o.stale=false; o.log.push(["You",`applied directly. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!==id); STATE.sheet=null; render(); toast(`Applied. ${prev?firstName(prev)+" sees: Moved. No words.":""}`); return; }
+    const alt = (c&&c.id==="sana") ? DB.people.rushal||DB.people.rahul : DB.people.sana; const prev=c; o.via=alt.id; o.viaAgreed=false; o.phase=null; o.checking=false; o.state="waiting"; o.later=false; renameVia(o, firstName(alt)); o.log.push(["You",`asked ${firstName(alt)} to vouch instead. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]);
+    if (holderHas(ca)) setStatus(ca,"Moved","Priya asked someone else. Your queue is clear"); if (ta && holderHas(ta) && ta.kind==="forwarded") { ta.hidden=true; }
+    STATE.sheet=null; render(); toast(`${firstName(alt)} has it now.${prev?" "+firstName(prev)+" sees: Moved.":""}`); return; }
+  if (k==="snooze") { const prev=o.state; o.state="candidate"; o.phase=null; STATE.sheet=null; render(); toast(o.later||o.phase==="declined"?"Set aside. Kai asks again in a month.":"Snoozed. Comes back once, then expires.", ()=>{ o.state=prev; }); return; }
+  if (k==="move") { openSheet("move", id); return; }
+  if (k==="met") { o.met=true; o.state="conversation"; o.updateDue=false; lit(o,"In conversation","now"); o.log.push(["You","marked as met","now"]); STATE.sheet=null; render(); toast("Marked as met. Kai asks how it went in a week."); return; }
+  if (k==="thread") { const d=DB.dms.find(x=>x.with===o.personId&&(x.owner||"priya")==="priya"); STATE.sheet=null; if(d) go("dm:"+d.id); else { DB.dms.unshift({ id:"d-"+o.personId, with:o.personId, last:"You: "+((o.log.find(l=>/replied|sent/.test(l[1]))||["","Sent a note"])[1]), when:"now", path:true, unread:0 }); go("dm:d-"+o.personId); } return; }
+  if (k==="self") { o.self=true; o.log.push(["You","handling this outside Key","now"]); STATE.sheet=null; render(); toast("Kai stops acting. It'll ask once how it went."); return; }
+  if (k==="reopen") { o.state=o.log&&o.log.length>1?"conversation":"new"; o.outcome=null; o.phase=null; STATE.sheet=null; render(); toast("Reopened. Nobody is told until you act."); return; }
+}
+
+/* Went well: the connector sees Landed. The thank-you is Priya's to send. */
+const _logOutcome = logOutcome; logOutcome = function(id, v){
+  _logOutcome(id, v);
+  const o=DB.opps.find(x=>x.id===id); if (!o || v==="no") return; const via=viaOf(o); const {c:ca, t:ta}=pathAsks(o);
+  if (via) { const i=o.log.findIndex(l=>/^Kai, for/.test(l[0])&&/told/.test(l[1])); if (i>=0) o.log.splice(i,1); o.log.push(["Kai",`${firstName(via)} sees: ${v==="good"?"Landed":"Closed"}. Nothing more unless you send it.`,"+7d"]); if (ca&&ca.state!=="done") setStatus(ca, v==="good"?"Landed":"Closed"); }
+  if (ta && holderHas(ta)) setStatus(ta, v==="good"?"Landed":"Closed");
+  if (v==="good" && via && !o.thanked) STATE.thankOffer=o.id;
+  render();
+};
+
+/* Kai's check-ins that were missing: a mid-conversation update, the connector's question, the thank-you offer */
+function cycleAsks(mid){
+  const out=[]; const os=DB.opps.filter(o=>o.missionId===mid&&o.state!=="done"&&o.state!=="dropped"); const card=(k,inner)=>`<div class="vcard" style="border-color:var(--ink)"><div class="kicker"><span class="d ${k}"></span>Kai asks<span class="t">now</span></div>${inner}</div>`;
+  os.filter(o=>o.updateDue).forEach(o=>{ const t=firstName(targetOf(o)); out.push(card("", `<div class="id">${av("K","lg")}<div><div class="n">Still talking with ${t}?</div><div class="s">Ten days since the thread opened, no meeting on your calendar. One tap; nothing is sent.</div></div></div><div class="acts"><button class="btn sec" style="margin:0;flex:1;height:44px" data-exit="${o.id}|met">We met</button><button class="btn sec" style="margin:0;flex:1;height:44px" onclick="(function(){ const x=DB.opps.find(z=>z.id==='${o.id}'); x.updateDue=false; x.log.push(['You','still talking. Kai checks again in two weeks.','now']); })();render();toast('Okay. Kai asks again in two weeks.')">Still talking</button><div class="sec2" data-exit="${o.id}|close">It fizzled</div></div>`)); });
+  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===mid&&viaOf(o)&&!o.thanked) { const c=firstName(viaOf(o)); out.push(card("gold", `<div class="id">${av("K","lg")}<div><div class="n">Thank ${c}?</div><div class="s">${c} sees: Landed. A line in your voice is drafted. Only you send it.</div></div></div><div class="acts"><button class="btn" style="margin:0;flex:1;height:44px" onclick="openSheet('thank','${o.id}')">Preview</button><div class="sec2" onclick="STATE.thankOffer=null;render()">Not now</div></div>`)); } }
+  return out;
+}
+const _sMission = sMission; sMission = function(id){
+  let h=_sMission(id); const qs=cycleAsks(id); if (qs.length && STATE.member) h=h.replace('<div class="body">', `<div class="body"><div style="margin:0 -16px 12px;padding:10px 16px 4px;background:linear-gradient(180deg,var(--fill),transparent)"><div class="lbl" style="margin:0 0 8px">Kai asks · ${qs.length}</div>${qs.join("<div style='height:8px'></div>")}</div>`);
+  // the archive card gets the fourteen-day third option: another route
+  h=h.replace(/(Archive<\/button>)(<div class="sec2" onclick="\(function\(\)\{ const x=DB\.opps\.find\(z=>z\.id==='(o\d+|op-[\w-]+)'\);[^"]*\}\)\(\);render\(\)">Keep waiting<\/div>)/g, (m,a,b,oid)=>{ const o=DB.opps.find(z=>z.id===oid); return `${a}${b}<div class="sec2" data-exit="${oid}|other">${o&&o.roleTitle?"Apply directly":"Another route"}</div>`; });
+  h=h.replace(/Archiving tells (\w+) nothing and keeps the record\./g, (m,n)=>{ return `${n} sees: Expired, no words. The record stays.`; });
+  return h;
+};
+const _todayItems = todayItems; todayItems = function(){
+  const items=_todayItems(); if (STATE.persona!=="priya") return items;
+  DB.opps.filter(o=>o.updateDue&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av("K")}<div class="m"><div class="a">Still talking with ${firstName(targetOf(o))}?</div><div class="b">Ten days, no meeting seen. One tap.</div></div><button class="btn sm sec" onclick="event.stopPropagation();go('mission:${o.missionId}')">Answer</button></div>`));
+  DB.opps.filter(o=>o.asked&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av(DB.people.chris.initials)}<div class="m"><div class="a">Chris asked you something</div><div class="b">${o.asked}</div></div><button class="btn sm sec" onclick="event.stopPropagation();openSheet('creply','${o.id}')">Reply</button></div>`));
+  DB.opps.filter(o=>(o.phase==="blocked"||o.phase==="declined")&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av(targetOf(o).initials)}<div class="m"><div class="a">${o.phase==="blocked"?`${firstName(viaOf(o)||DB.people.chris)} can't take the ${firstName(targetOf(o))} ask`:`${firstName(targetOf(o))} isn't available right now`}</div><div class="b">No reason given. Another route, direct, or close.</div></div><button class="btn sm sec" onclick="event.stopPropagation();go('path:${o.id}')">Options</button></div>`));
+  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&viaOf(o)&&!o.thanked) items.push(`<div class="trow" data-opp="${o.id}">${av("K")}<div class="m"><div class="a">Thank ${firstName(viaOf(o))}?</div><div class="b">His intro landed. A line is drafted for you.</div></div><button class="btn sm sec" onclick="event.stopPropagation();openSheet('thank','${o.id}')">Preview</button></div>`); }
+  return items;
+};
+
+/* Closing a mission closes its open paths: listed first, one tap, statuses to whoever held a piece */
+closeMissionSheet = function(mid){
+  const m=DB.missions.find(x=>x.id===mid); const open=DB.opps.filter(o=>o.missionId===mid&&o.state!=="done"&&o.state!=="dropped"&&o.state!=="candidate");
+  const rows = open.map(o=>{ const c=viaOf(o), t=targetOf(o); const {c:ca,t:ta}=pathAsks(o); const who=[]; if (c&&(o.id!=="o2"||holderHas(ca))) who.push(`${firstName(c)} sees Closed`); if (o.id==="o2"?holderHas(ta):(!c||o.viaAgreed)) who.push(`${firstName(t)} sees Closed`); return `<div class="rc"><span class="ty">${o.roleTitle||firstName(t)}</span><span>${kickerOf(o)[0]}. ${who.join(", ")||"Nobody else held it"}</span></div>`; }).join("");
+  return `<h2>Close ${m.name}?</h2><p class="sm muted">${m.done}. Closing moves it to Completed with what came of it. Reopen any time, nothing is lost.</p>
+    ${open.length?`<div class="lbl">${open.length===1?"One open path closes with it":open.length+" open paths close with it"}</div>${rows}<p class="xs faint" style="margin:6px 0 0">A status each, no words. Reopening the mission brings them back.</p>`:''}
+    <div class="stack" style="margin-top:12px">
+      <button class="btn" data-closefinal="${mid}|got">Got it. Close it${open.length?" and the "+(open.length===1?"path":"paths"):""}.</button>
+      <button class="btn sec" data-closefinal="${mid}|notyet">Not done yet, keep going</button>
+      <button class="btn ghost" onclick="openSheet('confirm','irrelevant|${mid}')">No longer relevant</button>
+    </div>
+    <div class="lbl">What came of it?</div>
+    <div class="composer"><textarea class="input" rows="2" placeholder="Twenty seconds. This is your record."></textarea><div class="mic">${MIC_SVG}</div></div>`;
+};
+const _closeMission = closeMission; closeMission = function(mid, how){
+  if (how!=="notyet") { DB.opps.filter(o=>o.missionId===mid&&o.state!=="done"&&o.state!=="dropped"&&o.state!=="candidate").forEach(o=>{ const {c:ca,t:ta}=pathAsks(o); o.state="done"; o.outcome="closed"; o.log.push(["You","closed with the mission.","now"]); if (holderHas(ca)) setStatus(ca,"Closed","The mission ended"); if (holderHas(ta)) setStatus(ta,"Closed"); }); }
+  _closeMission(mid, how);
+};
+
+/* ---- The other two phones ---- */
+const _sReqThread2 = sReqThread; sReqThread = function(aid){
+  const a=ask(aid); let h=_sReqThread2(aid); if (!a) return h;
+  if (a.kind==="forwarded") {
+    if (aid==="t1") { const o=o2(); h=h.replace("Hi Jordan, happy to help. Friday at 11?", (o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Chris mentioned you. Coffee next week?")).replace('<div class="msg k"><span class="xs faint">Jordan</span><br>Friday at eleven works, thank you!</div>', o&&(o.state==="conversation"||o.state==="done")?'<div class="msg k"><span class="xs faint">Priya</span><br>Thursday 3pm works. Happy to come to you.</div>':'').replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Friday at 11 works\?/g, "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace("worked with "+firstName(DB.people[a.from])+" at Google. Strong.", a.strength==="none"?"passed this along without vouching.":a.strength==="strong"?"knows Priya well. Strong.":a.strength==="light"?"has met Priya. Light.":"worked with Priya at Google. Strong."); }
+    if (a.state==="open") h=h.replace(/No accept step\. (\w+) already vouched\./, (m,v)=>`No accept step. ${v} ${a.strength==="none"?"passed it along":"already vouched"}. Or: <span style="text-decoration:underline" onclick="openSheet('tdecline','${aid}')">not now</span> · <span style="text-decoration:underline" onclick="targetLater('${aid}')">later</span>.`);
+    if (a.later && a.state==="open") h=h.replace('<div class="foot">', `<div class="msg sys" style="margin:10px auto">You said later. Kai brings this back in a month. ${firstName(DB.people[a.from])} sees: waiting.</div><div class="foot">`);
+    if (a.state==="declined") h=h.replace('<div class="foot">', `<div class="msg sys" style="margin:10px auto">You said not now. ${firstName(DB.people[a.from])} sees: not available right now.</div><div class="foot" hidden>`);
+    if (a.state==="done") h=h.replace('<div class="foot">', `<div class="msg sys" style="margin:10px auto">${a.outcomeLine||"Closed"}. Nothing else was sent.</div><div class="foot" hidden>`);
+    return h;
+  }
+  if (a.state==="done" && a.outcomeLine) { h=h.replace("Request, accepted", "Request, "+a.outcomeLine.split(".")[0].toLowerCase()).replace(/Ended well\. \w+ thanked you/, a.thanks?`Landed. Priya thanked you`:"Landed. That's all you're told").replace("Ended. That's all you're told", `${a.outcomeLine.split(".")[0]}. That's all you're told`); if (a.thanks) h=h.replace('<div class="foot">', `<div class="thread" style="margin-top:12px"><div class="msg k"><span class="xs faint">Priya</span><br>${a.thanks}</div></div><div class="foot">`); if (a.state==="done" && a.kind==="connector" && !h.includes("Where this is")) h=h.replace(/<div class="msg sys" style="margin:14px auto">[^<]*<\/div>/, `<div class="msg sys" style="margin:14px auto">${a.outcomeLine}. That's all you're told.</div>`); }
+  if (aid==="c1" && (a.state==="open"||a.state==="pending")) {
+    const st = a.checkOk ? `<div class="msg sys" style="margin:14px auto">Maya said yes to a nameless check. Forward when you're ready.</div>` : a.checkNo ? `<div class="msg sys" style="margin:14px auto">Maya isn't open to this right now. She wasn't told who asked, and Priya hasn't been told anything.</div>` : a.answer ? `<div class="thread" style="margin-top:10px"><div class="msg k"><span class="xs faint">You asked</span><br>What are you hoping to get from Maya, in a line?</div><div class="msg k"><span class="xs faint">Priya</span><br>${a.answer}</div></div>` : "";
+    if (st) h=h.replace(/(<div class="lbl" style="margin-top:14px">Before you vouch<\/div>)/, st+"$1");
+  }
+  if (aid==="t0") h=h.replace("Accept and reply", "Yes, open to it").replace(/Counts as one of your 3 this week/, "Counts as nothing until a name is on it");
+  return h;
+};
+const _replyAskSheet = replyAskSheet; replyAskSheet = function(id){
+  let h=_replyAskSheet(id);
+  if (id==="t1") h=h.replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Thursday at the Xoogler dinner works, or a call Friday\. Which is easier\?/, "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace(/Hey Priya, happy to\. Friday at eleven\?/,"Hey Priya, coffee next week?");
+  if (id==="t0") h=h.replace(/Hi Chris, sure\. Send it over and I'll mark it up, then let's do 20 minutes\. Friday 11 works\./, "Sure, open to it. Send the name over.").replace(/Sent as you\. Chris sees you wrote it\./, "Goes to Chris only. Nobody else knows yet.");
+  return h;
+};
+const _askNoSheet = askNoSheet; askNoSheet = function(id){ const a=ask(id); if (a&&a.kind==="forwarded") return tdeclineSheet(id); return _askNoSheet(id); };
+function tdeclineSheet(id){ const a=ask(id); const from=firstName(DB.people[a.from]); const v=a.via?firstName(DB.people[a.via]):null; return `<h2>Not now</h2><p class="sm muted">${from} sees “not available right now.” No reason, no guilt.${v?` ${v} sees: Closed, nothing more.`:""}</p><div class="stack" style="margin-top:12px">${["Not the right time","Not what I'm looking for","Too many asks this month"].map(w=>`<button class="btn sec" onclick="targetDecline('${id}')">${w}</button>`).join("")}<button class="btn ghost" onclick="targetDecline('${id}')">Skip the reason</button></div><div class="xs faint" style="margin-top:10px">The reason stays with Kai. Nobody reads it.</div>`; }
+
+/* ---- The scripted month plays every side ---- */
+const _advanceWeek = advanceWeek; advanceWeek = function(){
+  const before=STATE.week||0; _advanceWeek(); const wk=STATE.week; if (wk===before) return;
+  const o=o2(); const c=ask("c1"); const t=ask("t1"); const c2=ask("c2");
+  if (wk===2 && o && o.viaAgreed) { if (c && (c.state==="open"||c.state==="pending"||c.hidden)) { c.state="waiting"; c.when="-3d"; c.strength=c.strength||"worked"; } if (t && t.hidden) { t.hidden=false; t.state="open"; t.when="-3d"; t.strength=c?c.strength:"worked"; } }
+  if (wk===3 && o && o.phase==="replied") { if (t && t.state!=="done") { t.state="waiting"; t.when="-2d"; t.outcomeLine="Now a chat"; } }
+  if (wk===4) { if (o && o.state==="conversation" && !o.met) { o.updateDue=true; o.log.push(["Kai","ten days in the thread, no meeting on the calendar. Asking, not assuming.","now"]); }
+    if (c2 && (c2.state==="open"||c2.state==="pending")) { setStatus(c2,"Expired","21 days, no decision. Dev sees: expired, no words"); c2.when="now"; }
+    const o3=DB.opps.find(x=>x.id==="o3"); if (o3 && o3.state==="done" && o3.outcome==="closed") { const i=o3.log.findIndex(l=>/archived after two weeks quiet/.test(l[1])); if (i>=0) o3.log.splice(i+1,0,["Kai","Sana sees: Expired. No words.","-2d"]); } }
+};
+
+/* ---- Sheets and wiring ---- */
+const _portSheet = portSheet; portSheet = function(type, id){
+  if (type==="pend") { const [oid,ending]=id.split("|"); return pendSheet(oid, ending); }
+  if (type==="thank") return thankSheet(id);
+  if (type==="creply") return crepySheet(id);
+  if (type==="tdecline") return tdeclineSheet(id);
+  if (type==="cyclenotes") return cycleNotes();
+  return _portSheet(type, id);
+};
+const _portWire = portWire; portWire = function(){
+  _portWire();
+  phone.querySelectorAll("[data-exit]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); const [id,k]=el.dataset.exit.split("|"); cycleExit(id,k); });
+  cyclePersonaLabel();
+};
+const _sendAsk = sendAsk; sendAsk = function(id){
+  _sendAsk(id);
+  const o=DB.opps.find(x=>x.id===id); if (!o || o.state!=="waiting") return;
+  if (id==="o2") queuePush("chris","Priya asked you for an intro","To Maya Chen. Her note, and why Kai thinks it fits. A yes or a no, no reason needed.", [["Open", ()=>{ STATE.inboxView="requests"; go("req:c1"); }, "req:c1"],["Not now", ()=>openSheet("askno","c1")]]);
+};
+
+function cycleNotes(){
+  const li = a => `<ul class="pn">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  return `<h2>The mission cycle, end to end</h2><p class="sm muted">One introduction, three phones. Use the persona button above the phone: Priya asks, Chris decides, Maya answers. Each switch delivers the push that phone was owed. The scripted month (Advance a week) still plays the happy path; every other ending is a tap away.</p>
+    <div class="lbl">Priya, the asker</div>${li(["Sends the ask from the path sheet; Chris's phone gets a push with Yes and Not now on the lock screen","Sees what Chris did: forwarded with a vouch, passed along without one, checking with Maya first, a question back, moved to Sana, or can't take it","When Chris can't: the card says so with no reason, and offers Sana, going direct, or closing","When Maya isn't available: close, another route, or ask again in a month","Every ending is a confirm that lists who sees what, plus an optional drafted line to the connector","Went well: Chris sees Landed; a thank-you is drafted, Priya sends it","Kai's check-ins: nudge draft at six days, archive or another route at two weeks, still talking at ten days, did you talk a week after meeting, close when the done condition looks met","Closing the mission lists the open paths and closes them with it"])}
+    <div class="lbl">Chris, the connector</div>${li(["Requests row and badge in Messages, a push, and a bell row when the ask arrives","Before you vouch, five decisions; a check comes back as Maya's yes or no with nobody else told","His record shows a status when the path ends: Landed, Closed, Withdrawn, Moved, Expired. Never why","Priya's answer to his question, and her thank-you if she sent one, appear in the request thread","Dev's request expires after 21 days as a status"])}
+    <div class="lbl">Maya, the target</div>${li(["The intro lands as a chat with Chris's vouch and its strength; no accept step","Not now, later, or reply. Not now shows Priya “not available right now” and Chris “Closed”","A nameless check from Chris is a request she can take or decline without anyone learning who asked","Going direct puts Priya's own note in her Requests"])}
+    <div class="lbl">Calls for you</div>${li(["Cadence: your wireframe says “next pass Friday”; the research says a daily batch of up to three with an honest empty day. Left as Friday until you pick","Nudge day: the card says six days, the loop says a week","Expiry: two weeks to archive, 21 days to expire. Both guesses until missions are live","A connector who forwarded gets Closed when the target never replies. Built as yes"])}`;
+}
+
 /* ---- Out of scope ---- */
 function sOOS(s) {
   const map = { events:["Events","Everything this week across your families, with who to meet on every event."], you:["You","What Kai knows, line by line. Rules. Your people. Connectors."], };
@@ -3746,7 +4020,7 @@ function logOutcome(id, v) { { const o=DB.opps.find(x=>x.id===id); if (o) { cons
   DB.episodes.unshift({ d:"Today", t:"journal", what:`You answered: ${v==="good"?"talk with":"not a fit with"} ${firstName(t)}`, learned:[v==="good"?`${firstName(t)} is a warm tie; more like this`:`Fewer like ${firstName(t)}`], sent:["who",0] }); o.log.push(["You", v==="good"?"logged: went well.":"logged: not a fit.","+7d"]);
   if (via) o.log.push([`Kai, for ${firstName(via)}`, v==="good"?`told ${firstName(via)}: your intro of Priya to ${firstName(t)} led to a meeting.`:`told ${firstName(via)}: the intro happened. No further detail.`,"+7d"]);
   STATE.sheet=null; render();
-  toast(v==="good" ? (via?`Logged. ${firstName(via)} was told his intro landed.`:"Logged. Kai will look for more like this.") : "Logged. Kai will show fewer like this.");
+  toast(v==="good" ? (via?`Logged. ${firstName(via)} sees: Landed. Thank him from the path if you like.`:"Logged. Kai will look for more like this.") : (via?`Logged. ${firstName(via)} sees: Closed. No words.`:"Logged. Kai will show fewer like this."));
 }
 function closeMissionSheet(mid) {
   const m = DB.missions.find(x=>x.id===mid);
@@ -4023,7 +4297,7 @@ function wire() {
   phone.querySelectorAll("[data-passed]").forEach(el=>el.onclick=()=>openSheet("passed"));
   phone.querySelectorAll("[data-undopass]").forEach(el=>el.onclick=()=>undoPass(el.dataset.undopass));
   phone.querySelectorAll("[data-replyask]").forEach(el=>el.onclick=()=>replyAskSend(el.dataset.replyask));
-  const pb=document.getElementById("personaBtn"); if(pb){ pb.textContent = STATE.persona==="priya" ? "Chris" : "Back to Priya"; pb.classList.toggle("on", STATE.persona!=="priya"); }
+  cyclePersonaLabel();
   phone.querySelectorAll("[data-push]").forEach(el=>el.onclick=()=>{ const a=STATE.push.actions[+el.dataset.push]; STATE.push=null; a[1](); });
   phone.querySelectorAll("[data-nudge]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); openSheet("preview", el.dataset.nudge); });
   phone.querySelectorAll("[data-reply]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); openSheet("reply", el.dataset.reply); });
