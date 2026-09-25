@@ -156,7 +156,7 @@
   .funnel { display:flex; gap:6px; margin:4px 0 10px; } .funnel > div { flex:1; background:var(--fill); border-radius:10px; padding:8px 4px; text-align:center; } .funnel b { display:block; font-size:16px; letter-spacing:-.02em; } .funnel span { font-size:10px; color:var(--ink3); }
   .ctxcard { border:1px solid var(--line); border-radius:14px; padding:10px 12px; background:var(--fill); margin:10px 0; }
   .pid { display:flex; align-items:center; gap:14px; } .pid .avatar.lg { width:56px; height:56px; font-size:18px; } .pidn { font-size:22px; font-weight:800; letter-spacing:-.02em; line-height:1.1; cursor:pointer; } .pidc { font-size:16px; color:var(--ink3); font-weight:400; } .pidt { font-size:14px; color:var(--ink2); margin-top:3px; }
-  .sec { margin-top:18px; padding-top:14px; border-top:1px solid var(--line); } .sech { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink3); margin-bottom:10px; }
+  .sec:not(.btn) { margin-top:18px; padding-top:14px; border-top:1px solid var(--line); } .sech { font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--ink3); margin-bottom:10px; }
   .stp { display:flex; gap:4px; } .stpseg { flex:1; height:6px; border-radius:3px; background:var(--line); } .stpseg.on { background:var(--ink); } .stpseg.now { background:var(--ink); box-shadow:0 0 0 2px #fff inset; }
   .secl { font-size:14px; margin-top:10px; line-height:1.45; } .seclog { margin-top:8px; } .secrow { display:flex; gap:10px; align-items:flex-start; font-size:14px; line-height:1.4; padding:7px 0; border-bottom:1px solid var(--line); } .secrow:last-child { border-bottom:0; }
   .rty { flex:0 0 auto; font-size:11px; font-weight:700; border:1px solid var(--line); border-radius:5px; padding:1px 6px; background:var(--fill); color:var(--ink2); margin-top:2px; } .rty.gold { color:#8F7527; border-color:#E6D39A; background:#fff; }
@@ -767,26 +767,18 @@
   .evx-cov .evx-tag { position:absolute; top:8px; right:8px; }
   .evx-htitle { font-size:22px; font-weight:800; color:#fff; line-height:1.15; letter-spacing:-.01em; text-shadow:0 1px 8px rgba(0,0,0,.25); }
   .evx-th { color:#fff; } .evthumb.evx-th .evd { color:#fff; background:rgba(0,0,0,.4); border:0; font-weight:800; font-size:10px; line-height:1.2; padding:2px 6px; border-radius:999px; text-shadow:none; white-space:nowrap; }
-  .evx-tile { flex:0 0 200px; cursor:pointer; }
-  .evx-tb { padding:8px 2px 0; } .evx-tb .evn { font-weight:700; font-size:14px; }
-  .evx-via { font-size:11px; color:var(--ink3); margin-top:3px; }
   .evx-tag { display:inline-block; font-size:10.5px; font-weight:700; border-radius:999px; padding:3px 8px; background:#fff; color:var(--ink); border:1px solid var(--line); white-space:nowrap; flex:0 0 auto; }
   .evx-tag.go { background:var(--ink); color:#fff; border-color:var(--ink); }
   .evx-tag.host { background:#F1E8CF; border-color:#E2D2A6; color:#6B5317; }
   .evx-tag.wait { border-style:dashed; color:var(--ink2); }
   .evx-tag.lock { background:var(--fill); color:var(--ink2); }
   .evx-locked .a { color:var(--ink2); }
-  .evx-seg { margin-top:4px; }
-  .chip.evx-host { font-size:13px; padding:6px 11px; font-weight:600; }
   .evx-cav { width:36px; height:36px; border-radius:10px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:14px; }
   .evx-ico { width:36px; height:36px; border-radius:10px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:var(--fill); font-weight:700; }
-  .evx-sugg, .evx-syncrow { margin-top:16px; cursor:pointer; }
+  .evx-sugg { margin-top:18px; padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); cursor:pointer; } .evx-sugg .name { font-size:15px; font-weight:700; } .evx-sugg .sub { font-size:13px; color:var(--ink2); }
   .evx-meta { display:grid; gap:2px; font-size:14px; color:var(--ink); margin:12px 0 4px; } .evx-meta div + div { color:var(--ink2); font-size:13px; }
   .evx-home { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin:8px 0 4px; cursor:pointer; } .evx-home .a { font-weight:700; font-size:14px; }
-  .evx-hostcard, .evx-ticket, .evx-state, .evx-lockcard { margin-top:12px; }
-  .evx-hostcard { border-color:#E2D2A6; }
-  .evx-lockcard { border-style:dashed; }
-  .evx-counts { display:flex; gap:8px; margin-top:4px; } .evx-counts div { flex:1; border:1px solid var(--line); border-radius:12px; padding:10px; background:#fff; display:grid; } .evx-counts b { font-size:22px; font-variant-numeric:tabular-nums; } .evx-counts span { font-size:12px; color:var(--ink3); }
+  .evx-counts { display:flex; gap:8px; margin-top:4px; } .evx-counts div { flex:1; padding:4px 0 10px; display:grid; } .evx-counts div + div { border-left:1px solid var(--line); padding-left:14px; } .evx-counts b { font-size:22px; font-variant-numeric:tabular-nums; } .evx-counts span { font-size:12px; color:var(--ink3); }
   .evx-stats { display:flex; gap:14px; flex-wrap:wrap; font-size:13px; color:var(--ink2); margin-top:6px; } .evx-stats b { color:var(--ink); }
   .evx-themes { display:flex; gap:10px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
   .evx-sw { flex:0 0 auto; display:grid; gap:4px; justify-items:center; cursor:pointer; font-size:11px; color:var(--ink2); }
@@ -804,9 +796,49 @@
   .evx-month span.has { background:var(--ink); color:#fff; font-weight:700; cursor:pointer; }
   .evx-month span i { position:absolute; bottom:3px; left:50%; width:4px; height:4px; margin-left:-2px; border-radius:50%; background:#E8CD82; }
   .evx-tkt { border-radius:16px; padding:18px 16px; margin-top:4px; }
-  .evx-kai { font-size:13px; margin:10px 0; } .evx-kai .ty { font-weight:700; margin-right:6px; }
+  .evx-kai { font-size:13px; line-height:1.4; margin:12px 0; padding-left:10px; border-left:2px solid var(--ink); } .evx-kai .ty { font-weight:700; margin-right:6px; }
   .evx-fw { display:grid; gap:10px; } .evx-fwh { display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer; } .evx-fwh .a { font-weight:700; }
   .evx-hdr { position:relative; z-index:2; }
+  /* v2: one card everywhere. Big dated thumbnail, title, time and place, faces, then the calendar pill. */
+  .evx-card { display:flex; gap:12px; padding:10px; margin-top:10px; background:#fff; border-radius:20px; box-shadow:0 1px 2px rgba(20,20,20,.05),0 6px 18px rgba(20,20,20,.06); cursor:pointer; }
+  .evx-card.past, .evx-card.locked { box-shadow:none; background:var(--fill); }
+  .evx-thumb { width:96px; height:96px; border-radius:14px; flex:0 0 auto; position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:8px; }
+  .evx-thumb::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.45)); }
+  .evx-dd { position:relative; z-index:1; color:#fff; display:grid; line-height:1; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+  .evx-dd b { font-size:30px; font-weight:800; letter-spacing:-.02em; margin-bottom:2px; }
+  .evx-cm { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; padding-top:2px; }
+  .evx-t { font-weight:800; font-size:15.5px; line-height:1.25; letter-spacing:-.01em; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .evx-s { font-size:13px; color:var(--ink2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .evx-s2 { display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink2); min-width:0; } .evx-s2 span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .evx-faces { display:flex; flex:0 0 auto; } .evx-faces i { width:20px; height:20px; border-radius:50%; background:var(--fill2); border:1.5px solid #fff; font-style:normal; font-size:8px; font-weight:700; display:flex; align-items:center; justify-content:center; color:var(--ink2); margin-left:-5px; } .evx-faces i:first-child { margin-left:0; }
+  .evx-foot { display:flex; align-items:center; gap:6px; margin-top:auto; padding-top:4px; min-width:0; }
+  .evx-pill { display:inline-flex; align-items:center; gap:5px; max-width:100%; min-width:0; font-size:11.5px; font-weight:600; color:var(--ink); background:var(--fill); border-radius:999px; padding:3px 9px 3px 3px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .evx-pill i { width:16px; height:16px; border-radius:50%; flex:0 0 auto; font-style:normal; color:#fff; font-size:9px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .evx-card .evx-tag { margin-left:auto; }
+  .evx-dh { font-size:13px; font-weight:800; color:var(--ink); margin:18px 0 -2px; letter-spacing:-.005em; }
+  /* calendar strip: yours first, then what you follow */
+  .evx-strip { display:flex; gap:12px; overflow-x:auto; padding:5px 4px 12px; margin:0 -4px; scrollbar-width:none; align-items:flex-start; }
+  .evx-si { flex:0 0 auto; width:56px; display:grid; justify-items:center; gap:5px; cursor:pointer; font-size:11px; color:var(--ink2); text-align:center; } .evx-si span { max-width:56px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .evx-sq { width:52px; height:52px; border-radius:16px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:17px; }
+  .evx-sq.mine { box-shadow:0 0 0 2px #fff,0 0 0 4px #C9A64B; }
+  .evx-sq.all { background:#fff; color:var(--ink2); border:1px solid var(--line); }
+  .evx-sep { flex:0 0 1px; align-self:stretch; background:var(--line); margin:4px 0 22px; }
+  /* tabs move between places (bold plus underline, no fill); filters use the base pills */
+  .evx-tabs { display:flex; gap:22px; border-bottom:1px solid var(--line); margin:2px 0 10px; position:sticky; top:0; z-index:3; background:var(--paper); }
+  .evx-tabs div { padding:10px 0 9px; font-size:14.5px; color:var(--ink3); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; }
+  .evx-tabs div.on { color:var(--ink); font-weight:800; border-bottom-color:var(--ink); }
+  .evx-chips { padding-top:2px; } .evx-chips .pill { font-size:13px; padding:6px 12px; }
+  .evx-grp { font-size:12px; font-weight:700; color:var(--ink3); margin:14px 0 2px; }
+  .row > .btn.sec { margin-top:0; } /* base .sec (section rule) was pushing paired secondary buttons down */
+  /* no boxes inside pages: states, people and details are sections split by hairlines; only the event tile is a card */
+  .evx-sect { padding:14px 0; border-bottom:1px solid var(--line); }
+  .evx-sect .name { font-size:16px; font-weight:800; } .evx-sect .sub { font-size:13.5px; color:var(--ink2); line-height:1.4; }
+  .evx-sect.live .name { font-size:18px; }
+  .evx-sect .top { display:flex; gap:10px; align-items:center; }
+  .evx-sect .act { display:flex; gap:10px; align-items:center; margin-top:10px; } .evx-sect .act .no { color:var(--ink2); font-size:14px; padding:8px; cursor:pointer; }
+  .evx-li { cursor:pointer; }
+  .evx-p { font-size:14.5px; line-height:1.5; margin:4px 0 0; color:var(--ink); }
+  .evx-field { color:var(--ink2); }
 </style>
 </head>
 <body>
@@ -3930,11 +3962,15 @@ function missionTimeline(m, os){
   return `<div class="tline">${shown.map(r=>`<div class="tli ${cls(r)}"><div class="td"></div><div class="th"><b>${r.who}${r.path?` · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer" onclick="go('path:${r.path}')">${r.name}</span>`:""}</b><span>${r.when}</span></div><div class="tt ${r.who==="Kai"?"k":""}">${r.text}</div></div>`).join("")}${list.length>6&&!open?`<div class="tmore" onclick="STATE.tlineAll='${m.id}';render()">Everything since the start · ${list.length}</div>`:""}</div>`;
 }
 
-/* ==== EVENTS AND CALENDARS, 25 Sep 2026 (events thread). One Events tab: For you, Going, Calendars.
-   Calendars are where events come from; events are what you see, once each. Host and manage live one tap from the event.
+/* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
+   Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
+   with one card design everywhere. Calendars live in a strip at the top, on their own pages, and on the Calendars screen.
+   Every calendar kind is covered: your own, ones you run, your families', other people's, and city calendars.
+   Where an event lives decides who approves it: your calendars publish at once; anyone else's calendar approves it first.
    Overrides: evThumb, evStatus, evCard, rsvp, sEvents, sEventDetail, sCalendar, sCalendars. Adds sheets ev* and wiring data-ev*.
-   Routes reuse existing ones: eventd:<id>, eventd:new (host), eventd:manage.<id>, cal:<id>, calendars. ==== */
+   Routes reuse existing ones: eventd:<id>, eventd:new, eventd:manage.<id>, cal:<id>, cal:<id>.manage, calendars. ==== */
 
+const EV_ME = "priya";
 /* ---- data: extend the seed, never replace it ---- */
 (function evSeed(){
   const X = (id, o) => { const e = DB.fevents.find(x=>x.id===id); if (e) Object.assign(e, o); };
@@ -3942,72 +3978,89 @@ function missionTimeline(m, os){
   X("e2", { cal:"cal-xt", listed:[], theme:"ink", fmt:"in_person", end:"8pm", price:0, cap:14, vis:"members", reg:"none", approval:true, sort:1007 });
   X("e3", { cal:"cal-mp", listed:[], theme:"sage", fmt:"in_person", end:"9pm", price:25, cap:80, vis:"public", reg:"none", approval:false, sort:1010 });
   X("e0", { cal:"cal-xd", listed:[], theme:"gold", fmt:"in_person", end:"9pm", price:0, cap:50, vis:"public", reg:"going", approval:false, sort:716 });
-  const add = e => { if (!DB.fevents.some(x=>x.id===e.id)) DB.fevents.push(Object.assign({ checkedIn:false, past:false, meet:[], details:"", listed:[], price:0, approval:false, vis:"public", fmt:"in_person" }, e)); };
-  add({ id:"e5", name:"AI infra office hours", when:"Sat, Sep 26, 10am", day:"Sat", where:"Online", going:57, rsvp:false, family:null, host:"ana", bucket:"week", cal:"cal-pa", theme:"harbour", fmt:"online", end:"11am", sort:926, reg:"none", details:"Ana answers infra questions for PMs for an hour. Google Meet link after you register." });
-  add({ id:"e4", name:"Product teardown: Linear", when:"Fri, Oct 9, 6pm", day:"Oct 9", where:"Mountain View", going:12, rsvp:true, family:"xoogler", host:"priya", bucket:"upcoming", cal:"cal-xt", theme:"dusk", end:"8pm", cap:20, approval:true, vis:"members", sort:1009, reg:"hosting", details:"Twenty PMs pull apart one product for an hour. Bring one screen you'd change.",
-        requests:["dev","jordan","sana"], goingList:["rahul","ana","maya","chris","kate"], checked:{}, broadcasts:[], orgApproved:true });
-  add({ id:"e6", name:"Climate capital breakfast", when:"Fri, Oct 2, 8am", day:"Oct 2", where:"SF", going:22, rsvp:false, family:"desi", host:"neha", bucket:"upcoming", cal:"cal-dn", theme:"sage", end:"10am", approval:true, vis:"public", sort:1002, reg:"pending", details:"Neha hosts founders and two climate funds. Requests close Tuesday." });
-  add({ id:"e7", name:"Demo night", when:"Thu, Oct 15, 7pm", day:"Oct 15", where:"Palo Alto", going:60, rsvp:false, family:"xoogler", host:"chris", bucket:"upcoming", cal:"cal-xd", theme:"gold", end:"10pm", cap:60, vis:"public", sort:1015, reg:"waitlist", wait:3, details:"Eight demos, five minutes each. Sold out; spots open when people drop." });
-  add({ id:"e8", name:"Board night", when:"Tue, Oct 6, 7pm", day:"Oct 6", where:"Menlo Park", going:30, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", theme:"ink", vis:"members", sort:1006, reg:"none", details:"" });
-  add({ id:"e9", name:"Founder fireside: pricing", when:"Tue, Oct 13, 6pm", day:"Oct 13", where:"Stanford", going:88, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", theme:"dusk", vis:"public", sort:1013, reg:"none", details:"Two founders on their first pricing change, and what it cost them.", listed:["cal-pa"] });
+  const add = e => { if (!DB.fevents.some(x=>x.id===e.id)) DB.fevents.push(Object.assign({ checkedIn:false, past:false, meet:[], details:"", listed:[], pending:[], price:0, approval:false, vis:"public", fmt:"in_person", requests:[], goingList:[], checked:{}, broadcasts:[] }, e)); };
+  add({ id:"e5", name:"AI infra office hours", when:"Sat, Sep 26, 10am", day:"Sat", where:"Online", going:57, rsvp:false, family:null, host:"ana", bucket:"week", cal:"cal-ai", listed:["cal-pa"], theme:"harbour", fmt:"online", end:"11am", sort:926, reg:"none", meet:["ana"], details:"Ana answers infra questions for PMs for an hour. Google Meet link after you register." });
+  add({ id:"e4", name:"Product teardown: Linear", when:"Fri, Oct 9, 6pm", day:"Oct 9", where:"Mountain View", going:12, rsvp:true, family:"xoogler", host:EV_ME, bucket:"upcoming", cal:"cal-pt", listed:["cal-xt"], pending:["cal-pa"], theme:"dusk", end:"8pm", cap:20, approval:true, vis:"public", sort:1009, reg:"hosting",
+        details:"Twenty PMs pull apart one product for an hour. Bring one screen you'd change.", requests:["dev","jordan","sana"], goingList:["rahul","ana","maya","chris","kate"] });
+  add({ id:"e10", name:"Coffee with new PMs", when:"Thu, Oct 1, 8am", day:"Oct 1", where:"Blue Bottle, Palo Alto", going:3, rsvp:true, family:null, host:EV_ME, bucket:"upcoming", cal:"cal-me", theme:"photo", end:"9am", cap:6, vis:"invite", sort:1001, reg:"hosting", details:"Small table for PMs in their first year. Invite only.", goingList:["jordan","kate"] });
+  add({ id:"e6", name:"Climate capital breakfast", when:"Fri, Oct 2, 8am", day:"Oct 2", where:"SF", going:22, rsvp:false, family:"desi", host:"neha", bucket:"upcoming", cal:"cal-dn", theme:"sage", end:"10am", approval:true, sort:1002, reg:"pending", details:"Neha hosts founders and two climate funds. Requests close Tuesday." });
+  add({ id:"e7", name:"Demo night", when:"Thu, Oct 15, 7pm", day:"Oct 15", where:"Palo Alto", going:60, rsvp:false, family:"xoogler", host:"chris", bucket:"upcoming", cal:"cal-xd", theme:"gold", end:"10pm", cap:60, sort:1015, reg:"waitlist", wait:3, meet:["rahul"], details:"Eight demos, five minutes each. Full; spots open when people drop." });
+  add({ id:"e8", name:"Board night", when:"Tue, Oct 6, 7pm", day:"Oct 6", where:"Menlo Park", going:30, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", theme:"ink", vis:"members", sort:1006, reg:"none" });
+  add({ id:"e9", name:"Founder fireside: pricing", when:"Tue, Oct 13, 6pm", day:"Oct 13", where:"Stanford", going:88, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", listed:["cal-pa"], theme:"dusk", sort:1013, reg:"none", meet:["maya"], details:"Two founders on their first pricing change, and what it cost them." });
+  add({ id:"e11", name:"Angel check-writing 101", when:"Wed, Oct 14, 6pm", day:"Oct 14", where:"SF", going:26, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-cf", theme:"gold", sort:1014, reg:"none", details:"Chris walks through his first twenty checks. Twelve seats." });
   const C = (id, o) => { const c = DB.calendars.find(x=>x.id===id); if (c) Object.assign(c, o); };
-  C("cal-xd", { kind:"family", auto:true, theme:"gold", events:["e1","e0","e7"] });
-  C("cal-xt", { kind:"family", auto:false, theme:"ink", events:["e2","e4"], admin:false });
-  C("cal-mp", { kind:"family", auto:true, theme:"sage" });
-  C("cal-ai", { kind:"family", auto:false, theme:"harbour" });
-  const addc = c => { if (!DB.calendars.some(x=>x.id===c.id)) DB.calendars.push(Object.assign({ subscribed:false, sync:false, events:[] }, c)); };
-  addc({ id:"cal-dn", name:"Desi Founders", family:"desi", host:"neha", subs:150, kind:"family", auto:true, theme:"sage", about:"Breakfasts and investor office hours, SF and NYC.", events:["e6"] });
-  addc({ id:"cal-pa", name:"Palo Alto Events", family:null, host:null, subs:1840, kind:"city", theme:"harbour", about:"Every public Key event near Palo Alto. Hosts submit, Key's team approves.", events:["e5","e1","e9"] });
-  addc({ id:"cal-spc", name:"Founders Table", family:null, famExt:"Stanford GSB Founders", host:"chris", subs:410, members:640, kind:"family", theme:"dusk", subscribed:true, about:"Stanford GSB Founders' calendar. Firesides are open; board nights are for members.", events:["e8","e9"] });
-  DB.fevents.forEach(e=>{ if (e.reg===undefined) e.reg = e.rsvp ? "going" : "none"; });
+  C("cal-xd", { kind:"family", main:true, auto:true, theme:"gold", admins:["chris"], accepts:"members", events:["e1","e0","e7"] });
+  C("cal-xt", { kind:"family", auto:false, theme:"ink", admins:["rahul"], accepts:"members", events:["e2"] });
+  C("cal-mp", { kind:"family", main:true, auto:true, theme:"sage", admins:["kate"], accepts:"members" });
+  C("cal-ai", { kind:"user", family:null, theme:"harbour", admins:["ana"], accepts:"anyone", about:"Ana's calendar for AI PMs across families. Anyone can submit; Ana approves.", events:["e5"] });
+  const addc = c => { if (!DB.calendars.some(x=>x.id===c.id)) DB.calendars.push(Object.assign({ subscribed:false, sync:false, events:[], requests:[], admins:[], accepts:"admins" }, c)); };
+  addc({ id:"cal-me", name:"Priya Sharma", family:null, host:EV_ME, subs:31, kind:"personal", theme:"photo", admins:[EV_ME], accepts:"admins", about:"Priya's own events.", events:["e10"] });
+  addc({ id:"cal-pt", name:"PM Teardowns", family:null, host:EV_ME, subs:74, kind:"user", theme:"dusk", admins:[EV_ME,"rahul"], accepts:"anyone", about:"One product, twenty PMs, an hour. Started by Priya; Rahul co-runs it.", events:["e4"], requests:[{ id:"rq1", from:"dev", name:"Agents in prod: a teardown", when:"Tue, Oct 20" }] });
+  addc({ id:"cal-dn", name:"Desi Founders", family:"desi", host:"neha", subs:150, kind:"family", main:true, auto:true, theme:"sage", admins:["neha"], accepts:"members", about:"Breakfasts and investor office hours, SF and NYC.", events:["e6"] });
+  addc({ id:"cal-pa", name:"Palo Alto Events", family:null, host:null, subs:1840, kind:"city", theme:"harbour", accepts:"anyone", about:"Public Key events near Palo Alto from every family. Hosts submit; Key's team approves.", events:["e5","e1","e9","e4"] });
+  addc({ id:"cal-spc", name:"Founders Table", family:null, famExt:"Stanford GSB Founders", host:"chris", subs:410, members:640, kind:"family", main:true, theme:"dusk", subscribed:true, admins:["chris"], accepts:"members", about:"Stanford GSB Founders' calendar. Firesides are open; board nights are for members.", events:["e8","e9"] });
+  addc({ id:"cal-cf", name:"Chris Fong", family:null, host:"chris", subs:212, kind:"personal", theme:"gold", admins:["chris"], accepts:"admins", about:"Chris's own events.", events:["e11"] });
+  DB.fevents.forEach(e=>{ if (e.reg===undefined) e.reg = e.rsvp ? "going" : "none"; if (!e.listed) e.listed=[]; if (!e.pending) e.pending=[]; });
   if (!DB.people.neha) DB.people.neha = { id:"neha", name:"Neha Rao", initials:"NR", title:"Founder", company:"Desi Founders", families:["Desi Founders"], openTo:[] };
-  STATE.evSeg = STATE.evSeg || "foryou"; STATE.evAsked = STATE.evAsked || {}; STATE.evMtab = STATE.evMtab || "guests";
+  STATE.evSeg = STATE.evSeg || "foryou"; STATE.evMine = STATE.evMine || "upcoming"; STATE.evAsked = STATE.evAsked || {}; STATE.evMtab = STATE.evMtab || "guests";
 })();
 
 const EV_THEMES = { gold:["Gold plate","linear-gradient(135deg,#D9BC6E,#A87F2A)"], ink:["Ink","linear-gradient(135deg,#3B4652,#12161A)"], dusk:["Dusk","linear-gradient(135deg,#8A7A9E,#2E2A3A)"], sage:["Sage","linear-gradient(135deg,#9DB3A3,#40584A)"], harbour:["Harbour","linear-gradient(135deg,#7E9DB5,#27394A)"], photo:["Photo","repeating-linear-gradient(135deg,#9AA3AD 0 10px,#8A939D 10px 20px)"] };
+const EV_MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], EV_DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const evBg = t => (EV_THEMES[t]||EV_THEMES.gold)[1];
 const evE = id => DB.fevents.find(x=>x.id===id);
 const evC = id => DB.calendars.find(x=>x.id===id);
 const evFirst = id => (DB.people[id]||{name:"Someone"}).name.split(" ")[0];
 const evMyFams = () => DB.families.map(f=>f.id);
-function evFollows(c){ return !!c && (c.subscribed || (c.kind==="family" && c.auto && c.family && evMyFams().includes(c.family) && c.unfollowed!==true)); }
-function evLocked(e){ const c=evC(e.cal); return e.vis==="members" && !!c && !(c.family && evMyFams().includes(c.family)); }
-function evHomeLabel(e){ const c=evC(e.cal); if(!c) return ""; return c.famExt || (c.family ? (DB.families.find(f=>f.id===c.family)||{}).name : c.name); }
-function evVia(e){ const home=evC(e.cal); if (evFollows(home)) return home; return (e.listed||[]).map(evC).find(evFollows) || home; }
+const evDate = e => { const m=Math.floor(e.sort/100), d=e.sort%100; return new Date(2026, m-1, d); };
+const evDayLabel = e => { const d=evDate(e); return `${EV_DOW[d.getDay()]}, ${EV_MON[d.getMonth()]} ${d.getDate()}`; };
+function evIsAdmin(c){ return !!c && (c.admins||[]).includes(EV_ME); }
+function evFollows(c){ return !!c && (evIsAdmin(c) || c.subscribed || (c.auto && c.family && evMyFams().includes(c.family) && c.unfollowed!==true)); }
+function evMemberOf(c){ return !!c && !!c.family && evMyFams().includes(c.family); }
+function evLocked(e){ const c=evC(e.cal); return e.vis==="members" && !!c && !evMemberOf(c); }
+function evKind(c){ if(!c) return ""; if (c.kind==="personal") return evIsAdmin(c)?"Your calendar":`${evFirst(c.host)}'s calendar`; if (c.kind==="city") return "City calendar"; if (c.kind==="user") return evIsAdmin(c)?"You run it":`Run by ${(DB.people[c.admins[0]]||{}).name||"a member"}`; return `${c.famExt || (DB.families.find(f=>f.id===c.family)||{}).name} family`; }
 function evWhen(e){ return `${e.when}${e.end?`–${e.end}`:""}`; }
+/* who approves an event placed on calendar c by me */
+function evApprover(c){ if (!c || evIsAdmin(c)) return null; if (c.kind==="family") return `${c.famExt||(DB.families.find(f=>f.id===c.family)||{}).name} organizers`; if (c.kind==="city") return "Key's team"; return `${evFirst(c.admins[0])}, who runs it`; }
 
-/* ---- the card, shared by Events, family, calendar, profile and search ---- */
+/* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
 function evCover(e, cls, inner){ return `<div class="evx-cov ${cls||""}" style="background:${evBg(e.theme)}">${inner||""}</div>`; }
-evThumb = function(e, cls){ return `<div class="${cls} evx-th" style="background:${evBg(e.theme)}"><span class="evd">${e.day}</span></div>`; };
+evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th" style="background:${evBg(e.theme)}"><span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
 function evTag(e){
-  if (evLocked(e)) return `<span class="evx-tag lock">Members</span>`;
+  if (evLocked(e)) return `<span class="evx-tag lock">Members only</span>`;
   if (e.past) return "";
-  return { going:`<span class="evx-tag go">Going</span>`, hosting:`<span class="evx-tag host">Hosting</span>`, pending:`<span class="evx-tag wait">Requested</span>`, waitlist:`<span class="evx-tag wait">Waitlist${e.wait?` #${e.wait}`:""}</span>` }[e.reg] || "";
+  return { going:`<span class="evx-tag go">Going</span>`, hosting:`<span class="evx-tag host">Hosting</span>`, pending:`<span class="evx-tag wait">Requested</span>`, waitlist:`<span class="evx-tag wait">Waitlist #${e.wait||1}</span>` }[e.reg] || (e.approval?`<span class="evx-tag">Approval</span>`:e.price?`<span class="evx-tag">$${e.price}</span>`:"");
 }
 evStatus = function(e){
-  const meet=(e.meet||[]).length;
   if (e.past) return e.met&&e.met.length?`You met ${e.met.map(evFirst).join(", ")}`:"You went";
-  if (evLocked(e)) return `Members of ${evHomeLabel(e)}`;
-  if (e.reg==="hosting") return `<b>You're hosting</b>. ${e.going} going${(e.requests||[]).length?`, ${(e.requests||[]).length} to review`:""}`;
-  if (e.reg==="pending") return "Request sent. The host is reviewing";
-  if (e.reg==="waitlist") return `Waitlist #${e.wait||1}. A spot opens automatically`;
-  if (e.reg==="going") return `<b>Going</b>${meet?`. ${meet} to meet`:""}${e.checkedIn?". Checked in":""}`;
-  return `${e.going} going${meet?`. ${meet} to meet`:""}${e.price?`. $${e.price}`:""}`;
+  if (evLocked(e)) return `For members of ${evKind(evC(e.cal)).replace(" family","")}`;
+  if (e.reg==="hosting") return `${e.going} going${(e.requests||[]).length?` · ${e.requests.length} to review`:""}`;
+  if (e.reg==="pending") return "The host is reviewing";
+  if (e.reg==="waitlist") return "A spot opens automatically";
+  const meet=(e.meet||[]).length; return `${e.going} going${meet?` · ${meet} you should meet`:""}`;
 };
+function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
+function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}"><i style="background:${evBg(c.theme)}">${c.name[0]}</i>${c.name}</span>`:""; }
 evCard = function(e, size, opts){
-  opts=opts||{}; const when=(e.when||"").split(", ").slice(-1)[0]||e.when||""; const via=evVia(e);
-  const viaLine = opts.fam===false||!via ? "" : `<div class="evx-via">via ${via.name}</div>`;
-  if (size==="tile") return `<div class="evx-tile" data-ev="${e.id}">${evCover(e,"", `<span class="evx-date">${e.day}</span>${evTag(e)}`)}<div class="evx-tb"><div class="evn">${e.name}</div><div class="xs muted">${when}${e.where?` · ${e.where}`:""}</div><div class="xs" style="margin-top:2px">${evStatus(e)}</div>${viaLine}</div></div>`;
-  const action = opts.noAction||e.past||evLocked(e)||e.reg!=="none" ? evTag(e) : `<button class="btn sm" data-evrsvp="${e.id}" onclick="event.stopPropagation()">${e.approval?"Request":"Register"}</button>`;
-  return `<div class="evrow ${evLocked(e)?"evx-locked":""}" data-ev="${e.id}">${evThumb(e,"evthumb sm")}<div class="m"><div class="a">${evLocked(e)?"🔒 ":""}${e.name}</div><div class="b">${when}${e.where?`, ${e.where}`:""}</div><div class="xs" style="margin-top:3px">${evStatus(e)}</div>${viaLine}</div>${action}</div>`;
+  opts=opts||{}; const time=(e.when||"").split(", ").slice(-1)[0]; const home=evC(e.cal);
+  return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}">${evThumb(e,"evx-thumb")}
+    <div class="evx-cm"><div class="evx-t">${evLocked(e)?"🔒 ":""}${e.name}</div>
+      <div class="evx-s">${time}${e.end?`–${e.end}`:""} · ${e.fmt==="online"?"Online":e.where}</div>
+      <div class="evx-s2">${evFaces(e)}<span>${evStatus(e)}</span></div>
+      <div class="evx-foot">${opts.fam===false||(home&&home.id===opts.here)?"":evPill(home)}${evTag(e)}</div></div></div>`;
 };
+function evByDate(list, empty, here){
+  if (!list.length) return `<div class="empty">${empty}</div>`;
+  const out=[]; let last=""; list.forEach(e=>{ const k=evDayLabel(e); if (k!==last) { out.push(`<div class="evx-dh">${k}</div>`); last=k; } out.push(evCard(e,"row",{here})); });
+  return out.join("");
+}
 /* family's week slot (community thread calls this from the Family tab) */
 function evFamilyWeek(famId){
-  const c = DB.calendars.find(x=>x.family===famId && x.kind==="family" && x.auto) || DB.calendars.find(x=>x.family===famId);
-  const evs = DB.fevents.filter(e=>!e.past && (e.family===famId || (c&&c.events.includes(e.id)))).sort((a,b)=>a.sort-b.sort).slice(0,4);
+  const c = DB.calendars.find(x=>x.family===famId && x.main) || DB.calendars.find(x=>x.family===famId);
   if (!c) return "";
-  return `<div class="evx-fw"><div class="evx-fwh" data-cal="${c.id}"><div><div class="a">${c.name}</div><div class="xs muted">${evFollows(c)?"Following":"Not following"} · ${c.subs} followers</div></div><span class="chip ${evFollows(c)?"on":""}" data-evfollow="${c.id}">${evFollows(c)?"Following":"Follow"}</span></div>
-    ${evs.length?`<div class="evrail">${evs.map(e=>evCard(e,"tile",{fam:false})).join("")}</div>`:`<div class="empty">Nothing on the calendar yet. Members can host with organizer approval.</div>`}</div>`;
+  const evs = DB.fevents.filter(e=>!e.past && (c.events.includes(e.id)||(e.listed||[]).includes(c.id))).sort((a,b)=>a.sort-b.sort).slice(0,3);
+  return `<div class="evx-fw"><div class="evx-fwh" data-cal="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div style="flex:1;min-width:0"><div class="a">${c.name}</div><div class="xs muted">${c.subs} followers</div></div><span class="chip ${evFollows(c)?"on":""}" data-evfollow="${c.id}">${evFollows(c)?"Following":"Follow"}</span></div>
+    ${evs.length?evs.map(e=>evCard(e,"row",{fam:false})).join(""):`<div class="empty">Nothing on the calendar yet. Members can host; an organizer approves.</div>`}</div>`;
 }
 
 /* ---- register, cancel, follow ---- */
@@ -4018,18 +4071,24 @@ function evRegister(id){
   if (home && !evFollows(home) && !STATE.evAsked[home.id]) { STATE.evAsked[home.id]=true; openSheet("evfollow", `${home.id}|${e.id}`); return; }
   render(); toast(e.reg==="going"?"You're in. Ticket and event chat are ready.":"Request sent. You'll hear once, either way.");
 }
-function evToggleFollow(cid){ const c=evC(cid); const on=evFollows(c);
-  if (on) { c.subscribed=false; if (c.auto) c.unfollowed=true; c.subs--; toast(`Unfollowed ${c.name}.${c.family&&evMyFams().includes(c.family)?" You stay a member.":""}`); }
+function evToggleFollow(cid){ const c=evC(cid); if (evIsAdmin(c)) { toast("You run this calendar."); return; } const on=evFollows(c);
+  if (on) { c.subscribed=false; if (c.auto) c.unfollowed=true; c.subs--; toast(`Unfollowed ${c.name}.${evMemberOf(c)?" You stay a member.":""}`); }
   else { c.subscribed=true; c.unfollowed=false; c.subs++; toast(`Following ${c.name}. Its events show in For you.`); }
   render(); }
 
-/* ---- Events tab ---- */
+/* ---- Events tab: events only. Calendars are the strip on top. ---- */
 const _evBaseEvents = sEvents;
+const EV_PLUS = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`;
+function evStrip(){
+  const mine = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
+  const fol = DB.calendars.filter(c=>!evIsAdmin(c) && evFollows(c));
+  const item = c => `<div class="evx-si" data-cal="${c.id}"><div class="evx-sq ${evIsAdmin(c)?"mine":""}" style="background:${evBg(c.theme)}">${c.kind==="personal"&&evIsAdmin(c)?DB.user.initials:c.name[0]}</div><span>${c.kind==="personal"&&evIsAdmin(c)?"You":c.name.split(" ")[0]}</span></div>`;
+  return `<div class="evx-strip">${mine.map(item).join("")}<i class="evx-sep"></i>${fol.map(item).join("")}<div class="evx-si" data-evgo="calendars"><div class="evx-sq all">···</div><span>All</span></div></div>`;
+}
 sEvents = function(){
   if (!STATE.member) return _evBaseEvents();
-  const seg = STATE.evSeg;
-  const segs = [["foryou","For you"],["going","Going"],["cal","Calendars"]];
-  const head = `${topHdr("Events", `<span class="chip evx-host" data-evgo="eventd:new">+ Host</span>`)}`;
+  const seg = STATE.evSeg==="going"||STATE.evSeg==="mine" ? "mine" : "foryou";
+  const head = topHdr("Events", `<div class="icon" data-evgo="eventd:new" title="Host an event">${EV_PLUS}</div>`);
   let body = "";
   if (seg==="foryou") {
     const e1=evE("e1"); const rows=[];
@@ -4037,40 +4096,42 @@ sEvents = function(){
     if(e1&&STATE.eventDay&&e1.checkedIn&&!e1.past) rows.push(`<div class="trow" data-debrief="e1">${av("K")}<div class="m"><div class="a">Who did you talk to last night?</div><div class="b">Tap faces. Twenty seconds.</div></div><button class="btn sm sec" data-debrief="e1">Answer</button></div>`);
     if(STATE.intakeDone&&STATE.connect.calendar&&!STATE.eventDay) rows.push(`<div class="trow" data-brief="rahul">${av("RM")}<div class="m"><div class="a">Rahul, tomorrow 10am</div><div class="b">From your calendar · brief ready</div></div><button class="btn sm sec" data-brief="rahul">Brief</button></div>`);
     const seen = new Set(); const feed = [];
-    DB.calendars.filter(evFollows).forEach(c=>c.events.forEach(id=>{ const e=evE(id); if (e && !e.past && !seen.has(id)) { seen.add(id); feed.push(e); } }));
+    DB.calendars.filter(evFollows).forEach(c=>DB.fevents.filter(e=>c.events.includes(e.id)||(e.listed||[]).includes(c.id)).forEach(e=>{ if (!e.past && !seen.has(e.id)) { seen.add(e.id); feed.push(e); } }));
     DB.fevents.filter(e=>!e.past && e.reg!=="none" && !seen.has(e.id)).forEach(e=>{ seen.add(e.id); feed.push(e); });
     feed.sort((a,b)=>a.sort-b.sort);
-    const fams = ["All", ...new Set(feed.map(e=>evVia(e)).filter(Boolean).map(c=>c.name))];
-    const f = fams.includes(STATE.evFilter)?STATE.evFilter:"All";
-    const list = feed.filter(e=>f==="All"||(evVia(e)||{}).name===f);
-    const week = list.filter(e=>e.sort<=930 && !evLocked(e)), later = list.filter(e=>!week.includes(e));
     const pa = evC("cal-pa");
     body = `${rows.length?`<div class="lbl" style="margin-top:4px">Your time</div><div class="today">${rows.join("")}</div>`:""}
-      <div class="pills" style="margin-top:2px">${fams.map(x=>`<div class="pill ${f===x?'on':''}" style="font-size:13px;padding:6px 11px" data-evfilter="${x}">${x}</div>`).join("")}</div>
-      ${week.length?`<div class="lbl" style="margin-top:6px">This week</div><div class="evrail">${week.map(e=>evCard(e,"tile")).join("")}</div>`:""}
-      ${later.length?`<div class="lbl">Coming up</div>${later.map(e=>evCard(e,"row")).join("")}`:""}
-      ${!list.length?`<div class="empty">Nothing from the calendars you follow. Follow one under Calendars.</div>`:""}
-      ${pa&&!evFollows(pa)?`<div class="card evx-sugg" data-cal="cal-pa"><div class="row" style="gap:10px"><div class="evx-cav" style="background:${evBg(pa.theme)}">P</div><div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every family.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
-  } else if (seg==="going") {
-    const mine = DB.fevents.filter(e=>!e.past && e.reg!=="none").sort((a,b)=>a.sort-b.sort);
-    const past = DB.fevents.filter(e=>e.past && (e.reg==="going"||e.rsvp)).sort((a,b)=>b.sort-a.sort);
-    body = `<div class="lbl" style="margin-top:4px">Upcoming</div>${mine.map(e=>evCard(e,"row",{noAction:true})).join("")||'<div class="empty">Nothing yet. Events you register for or host land here.</div>'}
-      ${past.length?`<div class="lbl">Past</div>${past.map(e=>evCard(e,"row",{noAction:true})).join("")}`:""}
-      <div class="card evx-syncrow" data-evsheet="evsync|me"><div class="row" style="gap:10px"><div class="evx-ico">⇅</div><div style="flex:1"><div class="name">Add Going to your calendar</div><div class="sub">One feed of what you host and register for. Each event once, updated when hosts change it.</div></div><span class="xs muted">›</span></div></div>`;
+      ${evByDate(feed, "Nothing from the calendars you follow. Tap All to find some.")}
+      ${pa&&!evFollows(pa)?`<div class="evx-sugg" data-cal="cal-pa"><div class="row" style="gap:10px"><div class="evx-cav" style="background:${evBg(pa.theme)}">P</div><div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every family.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
   } else {
-    const follow = DB.calendars.filter(evFollows);
-    const fam = DB.calendars.filter(c=>!evFollows(c) && c.family && evMyFams().includes(c.family));
-    const more = DB.calendars.filter(c=>!evFollows(c) && !fam.includes(c));
-    const crow = c => `<div class="rowitem" data-cal="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${c.kind==="city"?"City calendar":c.famExt?`${c.famExt} · you're not a member`:`${evHomeLabel({cal:c.id})} family`} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed?" · as a member":""}</div></div><span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span></div>`;
-    body = `<div class="lbl" style="margin-top:4px">Following</div>${follow.map(crow).join("")||'<div class="empty">You follow nothing yet.</div>'}
-      ${fam.length?`<div class="lbl">In your families</div>${fam.map(crow).join("")}`:""}
-      ${more.length?`<div class="lbl">Near you</div>${more.map(crow).join("")}`:""}
-      <div class="xs faint" style="margin-top:12px">Members follow their family's main calendar automatically. Unfollow any time; you stay a member.</div>
-      <button class="btn sec" style="margin-top:14px" onclick="toast('New calendar: name, cover, who can add events. Personal calendars publish at once.')">Create a calendar</button>`;
+    const m = STATE.evMine;
+    const pick = m==="hosting" ? DB.fevents.filter(e=>!e.past && e.reg==="hosting") : m==="past" ? DB.fevents.filter(e=>e.past && (e.reg==="going"||e.rsvp||e.reg==="hosting")).sort((a,b)=>b.sort-a.sort) : DB.fevents.filter(e=>!e.past && e.reg!=="none");
+    if (m!=="past") pick.sort((a,b)=>a.sort-b.sort);
+    body = `<div class="pills evx-chips">${[["upcoming","Upcoming"],["hosting","Hosting"],["past","Past"]].map(([k,l])=>`<div class="pill ${m===k?'on':''}" data-evmine="${k}">${l}</div>`).join("")}</div>
+      ${evByDate(pick, m==="hosting"?"You're not hosting anything. Tap + to host on your calendar or one you follow.":m==="past"?"Nothing yet.":"Nothing yet. Events you register for or host land here.")}
+      ${m!=="past"?`<div class="evx-sugg" data-evsheet="evsync|me"><div class="row" style="gap:10px"><div class="evx-ico">⇅</div><div style="flex:1"><div class="name">Add My events to your calendar</div><div class="sub">What you host and register for, each event once, kept up to date.</div></div><span class="xs muted">›</span></div></div>`:""}`;
   }
-  return `${head}<div class="body"><div class="seg evx-seg">${segs.map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div>${body}</div>${navHTML("events")}`;
+  return `${head}<div class="body">${evStrip()}<div class="evx-tabs">${[["foryou","For you"],["mine","My events"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div>${body}</div>${navHTML("events")}`;
 };
-sCalendars = function(){ STATE.evSeg="cal"; return sEvents(); };
+
+/* ---- Calendars screen: every calendar you have a relationship with, and making a new one ---- */
+sCalendars = function(){
+  const mine = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
+  const fol = DB.calendars.filter(c=>!evIsAdmin(c) && evFollows(c));
+  const fam = DB.calendars.filter(c=>!evFollows(c) && evMemberOf(c));
+  const more = DB.calendars.filter(c=>!evFollows(c) && !evMemberOf(c) && !evIsAdmin(c));
+  const crow = c => `<div class="rowitem" data-cal="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.kind==="personal"&&evIsAdmin(c)?DB.user.initials:c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${evKind(c)} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed&&!evIsAdmin(c)?" · as a member":""}${evIsAdmin(c)&&(c.requests||[]).length?` · ${c.requests.length} to review`:""}</div></div>${evIsAdmin(c)?`<span class="xs muted">${c.kind==="personal"?"Owner":"Admin"}</span>`:`<span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span>`}</div>`;
+  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
+  <div class="body">
+    <div class="lbl" style="margin-top:4px">Yours</div>${mine.map(crow).join("")}
+    <div class="xs faint" style="margin-top:6px">Events you put on these publish at once.</div>
+    <div class="lbl">Following</div>${fol.map(crow).join("")||'<div class="empty">Nothing yet.</div>'}
+    ${fam.length?`<div class="lbl">In your families</div>${fam.map(crow).join("")}`:""}
+    ${more.length?`<div class="lbl">Discover</div>${more.map(crow).join("")}`:""}
+    <div class="xs faint" style="margin-top:12px">Members follow their family's main calendar automatically and can unfollow. Anyone can follow a public calendar without joining the family.</div>
+    <button class="btn sec" style="margin-top:14px" data-evsheet="evnewcal|x">New calendar</button>
+  </div>`;
+};
 
 /* ---- event page, host and manage share the eventd: route ---- */
 const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"Chris vouched for her. Her cofounder intent matches yours.", sana:"On the Perplexity hiring panel. Posted the role you're tracking.", ana:"Hiring a platform PM. You've met twice.", kate:"Michigan alum, growth PM at Duolingo." };
@@ -4082,26 +4143,26 @@ sEventDetail = function(id){
   const home = evC(e.cal); const host = DB.people[e.host]||DB.people.chris; const live = STATE.eventDay && e.id==="e1" && !e.past; const locked = evLocked(e);
   const others = (e.listed||[]).map(evC).filter(Boolean);
   let block = "";
-  if (locked) block = `<div class="card evx-lockcard"><div class="name">For members of ${evHomeLabel(e)}</div><div class="sub" style="margin:4px 0 10px">You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div><button class="btn" onclick="toast('Application to ${evHomeLabel(e)} opens. Tabs stay open while it's pending.')">Apply to join ${evHomeLabel(e)}</button></div>`;
-  else if (e.past) block = `<div class="card" style="margin-top:10px"><div class="name">You went</div><div class="sub" style="margin-top:2px">${e.met&&e.met.length?`Met ${e.met.map(x=>DB.people[x].name).join(", ")}. Logged from your debrief.`:"No debrief logged."}</div></div>`;
-  else if (e.reg==="hosting") block = `<div class="card evx-hostcard"><div class="row" style="gap:8px"><div class="name" style="flex:1">You're hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}. ${e.orgApproved?`Approved by a ${evHomeLabel(e)} organizer.`:`Waiting for a ${evHomeLabel(e)} organizer. Only you can see it.`}</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evgo="eventd:manage.${e.id}">Manage</button><button class="btn sec" style="flex:1" data-evsheet="evshare|${e.id}">Share</button></div></div>`;
-  else if (live) block = `<div class="card" style="margin-top:10px;border-color:var(--ink)"><div class="row" style="gap:8px"><span class="live"></span><div class="name">It's tonight</div></div><div class="sub" style="margin:4px 0 10px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div>${e.checkedIn?`<button class="btn sec" onclick="go('eventchat')">Open event chat</button>`:`<button class="btn" data-checkin="${e.id}">Check in</button>`}</div>`;
-  else if (e.reg==="going") block = `<div class="card evx-ticket"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">You're in</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sec" style="flex:1" data-evsheet="evticket|${e.id}">Ticket</button><button class="btn sec" style="flex:1" onclick="go('eventchat')">Event chat</button></div><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
-  else if (e.reg==="pending") block = `<div class="card evx-state"><div class="name">Request sent</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
-  else if (e.reg==="waitlist") block = `<div class="card evx-state"><div class="name">On the waitlist, #${e.wait||1}</div><div class="sub" style="margin:4px 0 8px">If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
+  if (locked) block = `<div class="evx-sect"><div class="name">For members of ${home.famExt||evKind(home)}</div><div class="sub" style="margin:4px 0 10px">You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div><button class="btn" onclick="toast('Application to ${home.famExt||"the family"} opens. Tabs stay open while it\\'s pending.')">Apply to join</button></div>`;
+  else if (e.past) block = `<div class="evx-sect"><div class="name">You went</div><div class="sub" style="margin-top:2px">${e.met&&e.met.length?`Met ${e.met.map(x=>DB.people[x].name).join(", ")}. Logged from your debrief.`:"No debrief logged."}</div></div>`;
+  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">You're hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evgo="eventd:manage.${e.id}">Manage</button><button class="btn sec" style="flex:1" data-evsheet="evshare|${e.id}">Share</button></div></div>`;
+  else if (live) block = `<div class="evx-sect live"><div class="row" style="gap:8px"><span class="live"></span><div class="name">It's tonight</div></div><div class="sub" style="margin:4px 0 10px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div>${e.checkedIn?`<button class="btn sec" onclick="go('eventchat')">Open event chat</button>`:`<button class="btn" data-checkin="${e.id}">Check in</button>`}</div>`;
+  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">You're in</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sec" style="flex:1" data-evsheet="evticket|${e.id}">Ticket</button><button class="btn sec" style="flex:1" onclick="go('eventchat')">Event chat</button></div><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
+  else if (e.reg==="pending") block = `<div class="evx-sect"><div class="name">Request sent</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
+  else if (e.reg==="waitlist") block = `<div class="evx-sect"><div class="name">On the waitlist, #${e.wait||1}</div><div class="sub" style="margin:4px 0 8px">If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
   else block = `<button class="btn" style="margin-top:12px" data-evrsvp="${e.id}">${e.approval?"Request to join":"Register"}${e.price?` · $${e.price}`:""}</button>${e.approval?`<div class="xs faint" style="margin-top:6px;text-align:center">${evFirst(e.host)} approves each guest.</div>`:""}`;
   const meet = (!locked && !e.past && e.reg!=="hosting") ? (e.meet||[]).map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
-    return `<div class="card" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${EV_WHY[pid]||"Going, and in your family."}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("") : "";
-  const guests = (e.reg==="going"||e.reg==="hosting"||live) ? `<div class="lbl">Going</div><div class="card" style="padding:10px 14px"><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","CF"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}${e.going>7?`<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span>`:""}</div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking.</div></div>` : (!locked&&!e.past?`<div class="xs faint" style="margin-top:14px">${e.going} going. The guest list opens to registered guests.</div>`:"");
+    return `<div class="evx-sect evx-li" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${EV_WHY[pid]||"Going, and in your family."}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("") : "";
+  const guests = (e.reg==="going"||e.reg==="hosting"||live) ? `<div class="lbl">Going</div><div><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","CF"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}${e.going>7?`<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span>`:""}</div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking.</div></div>` : (!locked&&!e.past?`<div class="xs faint" style="margin-top:14px">${e.going} going. The guest list opens to registered guests.</div>`:"");
   const moreFrom = home ? home.events.map(evE).filter(x=>x&&x.id!==e.id&&!x.past).slice(0,2) : [];
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evshare|${e.id}">···</div></div>
   <div class="body">
-    ${evCover(e,"hero", `<span class="evx-date">${e.day}</span><div class="evx-htitle">${locked?"🔒 ":""}${e.name}</div>`)}
-    <div class="evx-meta"><div>${evWhen(e)}</div><div>${e.fmt==="online"?"Online · link after you register":locked?"Menlo Park":e.where}${e.price?` · $${e.price}`:""}</div></div>
-    ${home?`<div class="evx-home" data-cal="${home.id}"><div class="evx-cav" style="background:${evBg(home.theme)}">${home.name[0]}</div><div style="flex:1;min-width:0"><div class="a">${home.name}</div><div class="xs muted">Hosted by ${host.name}${others.length?` · also on ${others.map(c=>c.name).join(", ")}`:""}</div></div><span class="chip ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?'Following':'Follow'}</span></div>`:""}
+    ${evCover(e,"hero", `<span class="evx-date">${evDayLabel(e)}</span><div class="evx-htitle">${locked?"🔒 ":""}${e.name}</div>`)}
+    <div class="evx-meta"><div>${evWhen(e)}</div><div>${e.fmt==="online"?"Online · link after you register":e.vis==="invite"?`${e.where} · invite only`:e.where}${e.price?` · $${e.price}`:""}</div></div>
+    ${home?`<div class="evx-home" data-cal="${home.id}"><div class="evx-cav" style="background:${evBg(home.theme)}">${home.kind==="personal"&&evIsAdmin(home)?DB.user.initials:home.name[0]}</div><div style="flex:1;min-width:0"><div class="a">${home.name}</div><div class="xs muted">${evKind(home)} · hosted by ${e.host===EV_ME?"you":host.name}${others.length?` · also on ${others.map(c=>c.name).join(", ")}`:""}</div></div>${evIsAdmin(home)?"":`<span class="chip ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?'Following':'Follow'}</span>`}</div>`:""}
     ${block}
     ${meet?`<div class="lbl">Who to meet${e.reg==="going"?"":" if you go"}</div>${meet}`:""}
-    ${!locked&&e.details?`<div class="lbl">Details</div><div class="card"><p class="sm" style="margin:0">${e.details}</p></div>`:""}
+    ${!locked&&e.details?`<div class="lbl">Details</div><p class="evx-p">${e.details}</p>`:""}
     ${guests}
     ${e.past&&e.met&&e.met.length?`<div class="lbl">From your debrief</div>${e.met.map(x=>{const p=DB.people[x];return `<div class="rowitem" data-profile="${x}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">Talked at ${e.name}. Follow-up sent, replied.</div></div><div class="s">edge</div></div>`}).join("")}`:""}
     ${moreFrom.length?`<div class="lbl">More from ${home.name}</div>${moreFrom.map(x=>evCard(x,"row",{fam:false})).join("")}`:""}
@@ -4109,49 +4170,51 @@ sEventDetail = function(id){
   ${navHTML("events")}`;
 };
 
-/* ---- host: create ---- */
-function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"gold", fmt:"in_person", cal:"cal-xt", approval:true, paid:false, vis:"members", cap:20, desc:"" }; return STATE.evDraft; }
+/* ---- host: create on any calendar. The calendar comes first because it decides who approves. ---- */
+function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"dusk", fmt:"in_person", cal:"cal-me", approval:false, paid:false, vis:"public", cap:20, desc:"" }; return STATE.evDraft; }
 function evCreate(){
-  const d = evDraft(); const cals = DB.calendars.filter(c=>c.kind==="family" && c.family && evMyFams().includes(c.family));
-  const pseudo = { theme:d.theme, day:"Oct 16" };
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div class="t">Host an event</div></div>
+  const d = evDraft(); const cal = evC(d.cal);
+  const now = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
+  const ask = DB.calendars.filter(c=>!evIsAdmin(c) && ((c.accepts==="members" && evMemberOf(c)) || c.accepts==="anyone"));
+  const calRow = c => `<div class="rowitem" data-evcalpick="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.kind==="personal"&&evIsAdmin(c)?DB.user.initials:c.name[0]}</div><div class="m"><div class="a">${c.kind==="personal"&&evIsAdmin(c)?"Your calendar":c.name}</div><div class="b">${evApprover(c)?`${evKind(c)} · ${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it`:`${evKind(c)} · publishes now`}</div></div><span class="evx-radio ${d.cal===c.id?'on':''}"></span></div>`;
+  const pseudo = { theme:d.theme, sort:1016 };
+  const appr = evApprover(cal);
+  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t">Host an event</div></div>
   <div class="body">
-    ${evCover(pseudo,"hero", `<span class="evx-date">Oct 16</span><div class="evx-htitle">${d.name||"Your event"}</div>`)}
+    ${evCover(pseudo,"hero", `<span class="evx-date">Fri, Oct 16</span><div class="evx-htitle">${d.name||"Your event"}</div>`)}
+    <div class="lbl">On which calendar</div>
+    <div class="evx-grp">Publishes now</div>${now.map(calRow).join("")}
+    <div class="evx-grp">Someone approves it first</div>${ask.map(calRow).join("")}
+    <div class="xs faint" style="margin-top:6px">${appr?`${appr} see it before anyone else does. You can still invite people directly while it waits.`:"It goes live the moment you publish."}</div>
     <div class="lbl">Theme</div><div class="evx-themes">${Object.entries(EV_THEMES).map(([k,[l,bg]])=>`<div class="evx-sw ${d.theme===k?'on':''}" data-evtheme="${k}"><i style="background:${bg}"></i><span>${l}</span></div>`).join("")}</div>
-    <div class="xs faint" style="margin-top:6px">The theme colours the cover, the event page and the ticket. Lists stay plain.</div>
     <div class="lbl">Name</div><input class="input" id="evname" value="${d.name}" placeholder="Product teardown: Figma">
-    <div class="lbl">When</div><div class="card evx-field">Fri, Oct 16 · 6:00–8:00 PM <span class="xs muted">PT</span></div>
+    <div class="lbl">When</div><div class="input evx-field">Fri, Oct 16 · 6:00–8:00 PM <span class="xs muted">PT</span></div>
     <div class="lbl">Where</div><div class="seg">${[["in_person","In person"],["online","Online"],["tbd","Decide later"]].map(([k,l])=>`<div class="${d.fmt===k?'on':''}" data-evfmt="${k}">${l}</div>`).join("")}</div>
-    <div class="card evx-field">${d.fmt==="online"?"Google Meet link, made when you publish":d.fmt==="tbd"?"Kai reminds you at 30 days":"Search a place"}</div>
+    <div class="input evx-field">${d.fmt==="online"?"Google Meet link, made when you publish":d.fmt==="tbd"?"Kai reminds you at 30 days":"Search a place"}</div>
     <div class="lbl">About</div><textarea class="input" id="evdesc" rows="3" placeholder="What happens, who it's for">${d.desc}</textarea>
     <div class="kaiact" style="margin-top:6px"><span class="chip" data-evkaidesc="1">Kai: draft this</span></div>
-    <div class="lbl">Calendar</div>
-    ${cals.map(c=>`<div class="rowitem" data-evcalpick="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${evHomeLabel({cal:c.id})} · an organizer approves it</div></div><span class="evx-radio ${d.cal===c.id?'on':''}"></span></div>`).join("")}
-    <div class="rowitem" data-evcalpick="personal"><div class="evx-cav" style="background:${evBg("photo")}">P</div><div class="m"><div class="a">Your calendar</div><div class="b">Publishes now · only people you invite see it</div></div><span class="evx-radio ${d.cal==="personal"?'on':''}"></span></div>
     <div class="lbl">Who can come</div>
-    <div class="evx-tog" data-evtog="vis"><span>Members of the family only</span><i class="${d.vis==="members"?'on':''}"></i></div>
+    <div class="evx-tog" data-evtog="vis"><span>${cal&&cal.kind==="personal"?"Invite only":cal&&evMemberOf(cal)?"Members of the family only":"Only people I approve can see it"}</span><i class="${d.vis!=="public"?'on':''}"></i></div>
     <div class="evx-tog" data-evtog="approval"><span>I approve each guest</span><i class="${d.approval?'on':''}"></i></div>
     <div class="evx-tog" data-evtog="paid"><span>Paid tickets</span><i class="${d.paid?'on':''}"></i></div>
     ${d.paid?`<div class="xs faint" style="margin:4px 0 0">Price, refunds and payouts are set once on web. Guests pay in the app.</div>`:""}
-    <div class="card evx-field" style="margin-top:8px">Capacity: ${d.cap} · waitlist on when full</div>
-    ${d.vis==="members"?`<div class="xs faint" style="margin-top:8px">Members-only events stay on their family's calendar. They can't be listed on city calendars.</div>`:""}
-    <button class="btn" style="margin-top:18px" data-evpublish="1">${d.cal==="personal"?"Publish":"Send to organizers"}</button>
+    <div class="input evx-field" style="margin-top:8px">Capacity: ${d.cap} · waitlist on when full</div>
+    <button class="btn" style="margin-top:18px" data-evpublish="1">${appr?`Send to ${appr.replace(", who runs it","")}`:"Publish"}</button>
     <button class="btn ghost" onclick="toast('Saved as a draft. Only you can see it.')">Save draft</button>
   </div>`;
 }
 function evPublish(){
   const d = evDraft(); const name = (document.getElementById("evname")||{}).value || d.name || "Product teardown: Figma";
-  const id = "e" + (100 + DB.fevents.length); const c = evC(d.cal);
-  DB.fevents.push({ id, name, when:"Fri, Oct 16, 6pm", end:"8pm", day:"Oct 16", where:d.fmt==="online"?"Online":"Mountain View", going:1, rsvp:true, family:c?c.family:null, host:"priya", bucket:"upcoming", cal:c?c.id:null, listed:[], theme:d.theme, fmt:d.fmt, cap:d.cap, approval:d.approval, vis:d.vis, price:d.paid?20:0, sort:1016, reg:"hosting", details:d.desc, meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], orgApproved:!c, checkedIn:false, past:false });
-  if (c) c.events.push(id);
-  STATE.evDraft = null; go("eventd:manage."+id);
-  toast(c ? `Sent to ${evHomeLabel({cal:c.id})} organizers. It goes live when one approves.` : "Published on your calendar.");
+  const id = "e" + (100 + DB.fevents.length); const c = evC(d.cal); const appr = evApprover(c);
+  DB.fevents.push({ id, name, when:"Fri, Oct 16, 6pm", end:"8pm", day:"Oct 16", where:d.fmt==="online"?"Online":"Mountain View", going:1, rsvp:true, family:c&&c.family||null, host:EV_ME, bucket:"upcoming", cal:c.id, listed:[], pending:[], theme:d.theme, fmt:d.fmt, cap:d.cap, approval:d.approval, vis:d.vis==="public"?"public":(c.kind==="personal"?"invite":"members"), price:d.paid?20:0, sort:1016, reg:"hosting", details:d.desc, meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], awaiting:appr, checkedIn:false, past:false });
+  c.events.push(id);
+  STATE.evDraft = null; STATE.evMtab="guests"; go("eventd:manage."+id);
+  toast(appr ? `Sent. ${appr.replace(", who runs it","")} approve${appr.endsWith("s")?"":"s"} it before it goes live.` : `Published on ${c.kind==="personal"?"your calendar":c.name}.`);
 }
 
 /* ---- host: manage (runs the day on the phone; the rest is one level deeper and fuller on web) ---- */
 function evManage(id){
   const e = evE(id); const t = STATE.evMtab; const req = e.requests||[]; const gl = e.goingList||[];
-  const tabs = [["guests",`Guests`],["door","Door"],["broadcast","Broadcast"],["more","More"]];
   let body = "";
   if (t==="guests") body = `<div class="evx-counts"><div><b>${e.going}</b><span>going</span></div><div><b>${req.length}</b><span>to review</span></div><div><b>${e.cap?Math.max(0,e.cap-e.going):"∞"}</b><span>spots left</span></div></div>
     ${req.length?`<div class="lbl">To review</div>${req.map(pid=>{const p=DB.people[pid]; return `<div class="rowitem" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${p.title}, ${p.company}</div></div><button class="btn sm sec" data-evdecline="${id}|${pid}" onclick="event.stopPropagation()">Decline</button><button class="btn sm" data-evapprove="${id}|${pid}" onclick="event.stopPropagation()">Approve</button></div>`;}).join("")}`:""}
@@ -4166,65 +4229,92 @@ function evManage(id){
     <div class="kaiact" style="margin-top:6px"><span class="chip" data-evkaibc="1">Kai: draft a reminder</span></div>
     <button class="btn" style="margin-top:12px" data-evbcsend="${id}">Send</button>
     <div class="xs faint" style="margin-top:6px">Push and email to ${(STATE.evAud||"going")==="page"?"no one; it shows on the event page":(STATE.evAud==="all"?`${e.going+req.length} people`:`${e.going} going`)}. Nothing goes out until you tap Send.</div>
-    ${(e.broadcasts||[]).length?`<div class="lbl">Sent</div>${e.broadcasts.map(b=>`<div class="card"><p class="sm" style="margin:0">${b}</p></div>`).join("")}`:""}`;
-  else body = [["Edit event","Name, time, place, cover"],["Tickets and capacity",`${e.price?`$${e.price}`:"Free"} · ${e.cap||"unlimited"} spots`],["Registration questions","One question, Kai prefills from profiles"],["Reminders","Day before and 3 hours before, on"],["Cohosts","Add someone to run it with you"],["List on another calendar",e.vis==="members"?"Members-only events stay home":"Palo Alto Events and others, with their approval"],["Analytics","Registrations, check-ins, feedback"],["Duplicate",""],["Cancel event","Guests get one note and a refund if paid"]].map(([a,b])=>`<div class="rowitem" ${a==="List on another calendar"&&e.vis!=="members"?`data-evsheet="evsubmit|${id}"`:`onclick="toast('${a}. Same fields as today; fuller on web.')"`}><div class="m"><div class="a" ${a==="Cancel event"?'style="color:var(--danger)"':''}>${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="xs muted">›</span></div>`).join("");
+    ${(e.broadcasts||[]).length?`<div class="lbl">Sent</div>${e.broadcasts.slice().reverse().map((b,i)=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="evx-p" style="margin:0">${b}</div><div class="b">${i?"Earlier":"Just now"} · push and email</div></div></div>`).join("")}`:""}`;
+  else { const home=evC(e.cal);
+    body = `<div class="lbl" style="margin-top:4px">Where it's listed</div>
+      <div class="rowitem" data-cal="${home.id}"><div class="evx-cav" style="background:${evBg(home.theme)}">${home.name[0]}</div><div class="m"><div class="a">${home.kind==="personal"&&evIsAdmin(home)?"Your calendar":home.name}</div><div class="b">Home · guests and payments live here</div></div><span class="xs muted">${e.awaiting?"Waiting":"Live"}</span></div>
+      ${(e.listed||[]).map(evC).map(c=>`<div class="rowitem" data-cal="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">Listed · its followers see it</div></div><span class="xs muted">Live</span></div>`).join("")}
+      ${(e.pending||[]).map(evC).map(c=>`<div class="rowitem" data-cal="${c.id}"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${evApprover(c)} deciding</div></div><span class="xs muted">Waiting</span></div>`).join("")}
+      ${e.vis==="public"?`<button class="btn sec" style="margin-top:10px" data-evsheet="evsubmit|${id}">List on another calendar</button>`:`<div class="xs faint" style="margin-top:8px">${e.vis==="invite"?"Invite-only":"Members-only"} events stay on their home calendar.</div>`}
+      <div class="lbl">Settings</div>` + [["Edit event","Name, time, place, cover"],["Tickets and capacity",`${e.price?`$${e.price}`:"Free"} · ${e.cap||"unlimited"} spots`],["Registration questions","One question, Kai prefills from profiles"],["Reminders","Day before and 3 hours before, on"],["Cohosts","Add someone to run it with you"],["Move to another calendar","Only you, the creator, can move it"],["Analytics","Registrations, check-ins, feedback"],["Duplicate",""],["Cancel event","Guests get one note and a refund if paid"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}. Same fields as today; fuller on web.')"><div class="m"><div class="a" ${a==="Cancel event"?'style="color:var(--danger)"':''}>${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="xs muted">›</span></div>`).join(""); }
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><span class="xs muted" style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.name}</span></div>
   <div class="body">
-    ${!e.orgApproved?`<div class="card evx-state"><div class="name">Waiting for an organizer</div><div class="sub" style="margin-top:4px">A ${evHomeLabel(e)} organizer approves member-hosted events. Only you can see it until then.</div></div>`:""}
-    <div class="seg evx-seg">${tabs.map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
+    ${e.awaiting?`<div class="evx-sect"><div class="name">Waiting for ${e.awaiting.replace(", who runs it","")}</div><div class="sub" style="margin-top:4px">Only you can see it until they approve. You can invite people directly in the meantime.</div>${STATE.evDemo!==false?`<div class="xs" style="margin-top:8px;text-decoration:underline;cursor:pointer" data-evapproveevent="${id}">(Demo) They approved it</div>`:""}</div>`:""}
+    <div class="evx-tabs">${[["guests","Guests"],["door","Door"],["broadcast","Broadcast"],["more","More"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
     ${body}
   </div>`;
 }
 
-/* ---- calendar page ---- */
+/* ---- calendar page, and calendar admin for the ones you run ---- */
 sCalendar = function(id){
-  const c = evC(id); const on = evFollows(c); const host = c.host?DB.people[c.host]:null; const seg = STATE.evCalSeg||"up";
-  const evs = c.events.map(evE).filter(Boolean).sort((a,b)=>a.sort-b.sort);
-  const nonMember = c.famExt || (c.family && !evMyFams().includes(c.family));
-  const kind = c.kind==="city" ? "City calendar · hosts submit, Key approves" : `${evHomeLabel({cal:c.id})} family calendar${host?` · run by ${host.name}`:""}`;
-  const admin = STATE.asOrganizer && c.family && evMyFams().includes(c.family);
+  if (id.endsWith(".manage")) return evCalManage(id.slice(0,-7));
+  const c = evC(id); if (!c) return `<div class="body"><div class="empty">Calendar not found.</div></div>`;
+  const on = evFollows(c); const admin = evIsAdmin(c); const seg = STATE.evCalSeg||"up";
+  const evs = DB.fevents.filter(e=>c.events.includes(e.id)||(e.listed||[]).includes(c.id)).sort((a,b)=>a.sort-b.sort);
+  const nonMember = c.kind==="family" && !evMemberOf(c);
+  const own = c.kind==="personal" && admin;
   let list = "";
-  if (seg==="up") list = evs.filter(e=>!e.past).map(e=>evCard(e,"row",{fam:false})).join("") || '<div class="empty">Nothing scheduled.</div>';
-  else if (seg==="past") list = evs.filter(e=>e.past).map(e=>evCard(e,"row",{fam:false})).join("") || '<div class="empty">No past events yet.</div>';
+  if (seg==="up") list = evByDate(evs.filter(e=>!e.past), "Nothing scheduled.", c.id);
+  else if (seg==="past") list = evByDate(evs.filter(e=>e.past).reverse(), "No past events yet.", c.id);
   else { const days = new Map(evs.filter(e=>e.sort>1000&&e.sort<1100).map(e=>[e.sort-1000,e]));
     list = `<div class="evx-month"><div class="evx-mh">October 2026</div>${["M","T","W","T","F","S","S"].map(d=>`<span class="dn">${d}</span>`).join("")}${'<span></span>'.repeat(3)}${Array.from({length:31},(_,i)=>{const e=days.get(i+1); return `<span class="${e?'has':''}" ${e?`data-ev="${e.id}"`:""}>${i+1}${e?'<i></i>':''}</span>`;}).join("")}</div>`; }
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evsync|${c.id}">⇅</div></div>
+  const actions = admin
+    ? `<button class="btn" style="flex:1" data-evnewon="${c.id}">Add event</button><button class="btn sec" style="flex:1" data-evgo="cal:${c.id}.manage">Manage${(c.requests||[]).length?` · ${c.requests.length}`:""}</button>`
+    : `<button class="btn ${on?'sec':''}" style="flex:1" data-evfollow="${c.id}">${on?'Following ✓':'Follow'}</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}`;
+  const submit = !admin && (c.accepts==="anyone" || (c.accepts==="members" && evMemberOf(c)));
+  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evsync|${c.id}">⇅</div></div>
   <div class="body">
-    ${evCover({theme:c.theme},"hero cal", `<div class="evx-htitle">${c.name}</div>`)}
-    <div class="xs muted" style="margin-top:10px">${kind}</div>
-    <div class="evx-stats"><span><b>${c.subs.toLocaleString()}</b> followers</span>${c.members||c.family?`<span><b>${(c.members||(DB.families.find(f=>f.id===c.family)||{}).members||0).toLocaleString()}</b> members</span>`:""}<span><b>${evs.filter(e=>!e.past).length}</b> upcoming</span></div>
+    ${evCover({theme:c.theme},"hero cal", `${c.kind==="personal"?`<span class="evx-date">${own?"Your calendar":"Personal calendar"}</span>`:""}<div class="evx-htitle">${c.name}</div>`)}
+    <div class="xs muted" style="margin-top:10px">${evKind(c)} · key.ai/${c.name.toLowerCase().replace(/[^a-z0-9]+/g,"")}</div>
+    <div class="evx-stats"><span><b>${c.subs.toLocaleString()}</b> followers</span>${c.kind==="family"?`<span><b>${(c.members||(DB.families.find(f=>f.id===c.family)||{}).members||0).toLocaleString()}</b> members</span>`:""}<span><b>${evs.filter(e=>!e.past).length}</b> upcoming</span></div>
     <p class="sm" style="margin:8px 0 12px">${c.about}</p>
-    <div class="row" style="gap:8px"><button class="btn ${on?'sec':''}" style="flex:1" data-evfollow="${c.id}">${on?'Following ✓':'Follow'}</button>${nonMember&&c.kind!=="city"?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||evHomeLabel({cal:c.id})} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}</div>
-    ${on&&c.auto&&!c.subscribed?`<div class="xs faint" style="margin-top:8px">Following because you're a member. New events and changes, at most two pushes a day.</div>`:on?`<div class="xs faint" style="margin-top:8px">New events and changes, at most two pushes a day.</div>`:""}
-    ${admin?`<div class="card" style="margin-top:12px"><div class="row" style="gap:10px"><div style="flex:1"><div class="name">2 events to review</div><div class="sub">Submitted by members. Approve and they go live here.</div></div><button class="btn sm" onclick="toast('Review queue: approve or decline, one line to the host either way.')">Review</button></div></div>`
-      : c.kind==="city"||on?`<div class="xs" style="margin-top:12px;text-decoration:underline;cursor:pointer" onclick="toast('Pick one of your public events. ${c.name} admins approve it.')">Submit an event to this calendar</div>`:""}
-    <div class="seg evx-seg" style="margin-top:14px">${[["up","Upcoming"],["past","Past"],["month","Month"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evcalseg="${k}">${l}</div>`).join("")}</div>
+    <div class="row" style="gap:8px">${actions}</div>
+    ${admin?`<div class="xs faint" style="margin-top:8px">${own?"Your calendar. What you put here publishes at once. People can follow it from your profile.":"You run this calendar. Your events publish at once; others' wait for you or a co-admin."}</div>`
+      : on&&c.auto&&!c.subscribed?`<div class="xs faint" style="margin-top:8px">Following because you're a member. New events and changes, at most two pushes a day.</div>`:on?`<div class="xs faint" style="margin-top:8px">New events and changes, at most two pushes a day.</div>`:""}
+    ${submit?`<div class="xs" style="margin-top:12px;text-decoration:underline;cursor:pointer" data-evnewon="${c.id}">Host an event on ${c.name}</div><div class="xs faint">${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it first.</div>`:""}
+    <div class="pills evx-chips" style="margin-top:14px">${[["up","Upcoming"],["past","Past"],["month","Month"]].map(([k,l])=>`<div class="pill ${seg===k?'on':''}" data-evcalseg="${k}">${l}</div>`).join("")}</div>
     ${list}
   </div>`;
 };
+function evCalManage(id){
+  const c = evC(id); const t = STATE.evCtab||"requests"; const req=c.requests||[];
+  let body="";
+  if (t==="requests") body = req.length ? req.map(r=>`<div class="rowitem" style="cursor:default">${av(DB.people[r.from].initials)}<div class="m"><div class="a">${r.name}</div><div class="b">${DB.people[r.from].name} · ${r.when}</div></div><button class="btn sm sec" data-evcalreq="${id}|${r.id}|no">Decline</button><button class="btn sm" data-evcalreq="${id}|${r.id}|yes">Approve</button></div>`).join("") + `<div class="xs faint" style="margin-top:8px">The host sees Approved or Not listed, never a reason.</div>` : `<div class="empty">Nothing to review.</div>`;
+  else if (t==="events") body = evByDate(DB.fevents.filter(e=>c.events.includes(e.id)||(e.listed||[]).includes(c.id)).filter(e=>!e.past).sort((a,b)=>a.sort-b.sort), "No events yet.", c.id);
+  else if (t==="people") body = `<div class="lbl" style="margin-top:4px">Admins</div>${c.admins.map(a=>`<div class="rowitem">${av(DB.people[a].initials)}<div class="m"><div class="a">${a===EV_ME?"You":DB.people[a].name}</div><div class="b">${a===c.host?"Created it":"Co-admin"}</div></div></div>`).join("")}<button class="btn sec" style="margin-top:8px" onclick="toast('Add an admin by name. They can approve events and edit the calendar.')">Add admin</button>
+    <div class="lbl">Followers · ${c.subs}</div>${["rahul","maya","sana","jordan"].map(p=>`<div class="rowitem">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div><div class="b">${DB.people[p].title}</div></div><span class="xs muted" onclick="toast('Removed. They aren\\'t told.')">Remove</span></div>`).join("")}`;
+  else body = [["Name and cover",c.name],["Theme",(EV_THEMES[c.theme]||[])[0]],["Who can add events",c.accepts==="anyone"?"Anyone; you approve":c.accepts==="members"?"Members; you approve":"Only admins"],["Visibility","Public · key.ai link"],["Delete calendar",c.kind==="personal"?"Your personal calendar can't be deleted":"Only the creator"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}.')"><div class="m"><div class="a" ${a==="Delete calendar"?'style="color:var(--danger)"':''}>${a}</div><div class="b">${b}</div></div><span class="xs muted">›</span></div>`).join("");
+  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
+  <div class="body"><div class="evx-tabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div>${body}</div>`;
+}
 
 /* ---- sheets ---- */
 function evSheet(type, id){
   if (type==="evreg") { const e=evE(id); return `<h2>${e.approval?"Request to join":"Register"}</h2><p class="sm muted">${e.name} · ${e.when}</p>
-    <div class="lbl">Ticket</div><div class="card evx-field"><div class="row"><span style="flex:1">${e.ticket||"Standard"}</span><b>${e.price?`$${e.price}`:"Free"}</b></div></div>
+    <div class="lbl">Ticket</div><div class="input evx-field"><div class="row"><span style="flex:1">${e.ticket||"Standard"}</span><b>${e.price?`$${e.price}`:"Free"}</b></div></div>
     ${e.approval?`<div class="lbl">${evFirst(e.host)} asks: what do you want out of it?</div><textarea class="input" rows="2">Ship notes from a PM who's run two AI launches. Happy to share mine.</textarea><div class="xs faint" style="margin-top:4px">Kai filled this from your profile. Edit or clear it.</div>`:""}
     <div class="xs faint" style="margin:12px 0">${evFirst(e.host)} sees your name, title and ${e.approval?"answer":"that you're going"}.${e.price?" You pay now; refunds follow the host's policy.":""}</div>
     <button class="btn" data-evregok="${id}">${e.approval?"Send request":e.price?`Pay $${e.price}`:"Register"}</button><button class="btn ghost" onclick="closeSheet()">Not now</button>`; }
   if (type==="evfollow") { const [cid,eid]=id.split("|"); const c=evC(cid); const e=evE(eid); return `<h2>${e.reg==="going"?"You're in.":"Request sent."} Follow ${c.name}?</h2><p class="sm muted">Its next events show in For you. At most two pushes a day, and you can unfollow any time.</p>
-    <button class="btn" data-evfollowok="${cid}">Follow</button><button class="btn ghost" onclick="closeSheet();toast('${e.reg==="going"?"You're in. Ticket and event chat are ready.":"Request sent."}')">Not now</button><div class="xs faint" style="text-align:center">Asked once. Kai won't ask again for this calendar.</div>`; }
+    <button class="btn" data-evfollowok="${cid}">Follow</button><button class="btn ghost" onclick="closeSheet();toast('${e.reg==="going"?"You\\'re in. Ticket and event chat are ready.":"Request sent."}')">Not now</button><div class="xs faint" style="text-align:center">Asked once. Kai won't ask again for this calendar.</div>`; }
   if (type==="evticket") { const e=evE(id); return `<div class="evx-tkt" style="background:${evBg(e.theme)}"><div class="evx-htitle" style="position:static">${e.name}</div><div class="xs" style="color:#fff;opacity:.85">${e.when} · ${e.where}</div></div>
     <div class="qr"><div class="qrbox"></div><div class="xs faint">${DB.user.name} · ${e.ticket||"Standard"}</div></div>
     <button class="btn" onclick="toast('Added to Apple Wallet. It updates if the host changes the time.')">Add to Wallet</button><button class="btn sec" style="margin-top:8px" data-evsheet="evaddcal|${id}">Add to calendar</button><button class="btn ghost" onclick="toast('Directions open in Maps.')">Directions</button>`; }
-  if (type==="evaddcal") { const e=evE(id); return `<h2>Add ${e.name}</h2><p class="sm muted">One event. To get everything you're going to, add Going instead.</p>${[["Apple Calendar","Adds it now"],["Google Calendar","Opens Google"],["Download .ics","Outlook and others"]].map(([a,b])=>`<div class="rowitem" onclick="closeSheet();toast('${a}: ${e.name} added.')"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}<div class="rowitem" data-evsheet="evsync|me"><div class="m"><div class="a">Add all of Going</div><div class="b">One feed, kept up to date</div></div><span class="xs muted">›</span></div>`; }
-  if (type==="evsync") { const c=id==="me"?null:evC(id); const nm=c?c.name:"Going"; return `<h2>Add ${nm} to your calendar</h2><p class="sm muted">${c?"Every public event on this calendar, updated when hosts change them.":"What you host and register for, each event once."}</p>
+  if (type==="evaddcal") { const e=evE(id); return `<h2>Add ${e.name}</h2><p class="sm muted">One event. To get everything you're going to, add My events instead.</p>${[["Apple Calendar","Adds it now"],["Google Calendar","Opens Google"],["Download .ics","Outlook and others"]].map(([a,b])=>`<div class="rowitem" onclick="closeSheet();toast('${a}: ${e.name} added.')"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}<div class="rowitem" data-evsheet="evsync|me"><div class="m"><div class="a">Add all of My events</div><div class="b">One feed, kept up to date</div></div><span class="xs muted">›</span></div>`; }
+  if (type==="evsync") { const c=id==="me"?null:evC(id); const nm=c?c.name:"My events"; return `<h2>Add ${nm} to your calendar</h2><p class="sm muted">${c?"Every public event on this calendar, updated when hosts change them.":"What you host and register for, each event once."}</p>
     ${[["Apple Calendar","Subscribes on this phone and your Mac"],["Google Calendar","Opens Google in the browser. Google's app can't subscribe"],["Copy link","For Outlook and others"]].map(([a,b])=>`<div class="rowitem" onclick="closeSheet();toast('${a==="Copy link"?"Link copied.":a+": subscribed to "+nm+"."}')"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}
     <div class="xs faint" style="margin-top:10px">Calendar apps check for changes every few hours. Your ticket in the app is always current.</div>`; }
-  if (type==="evshare") { const e=evE(id); const host = e.reg==="hosting"; return `<h2>${e.name}</h2>${[["Copy link",`key.ai/${e.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/-$/,"")}`,"toast('Link copied.')"],["Share to a chat","Pick a DM, group or channel","toast('Pick where to share. Nothing sends until you tap Send.')"],["Add to calendar","","STATE.sheet=null;openSheet('evaddcal','"+id+"')"],...(host&&e.vis!=="members"?[["List on another calendar","Their admins approve it","STATE.sheet=null;openSheet('evsubmit','"+id+"')"]]:[]),...(host?[]:[["Report","Tell Key, not the host","toast('Report sent to Key. The host isn\\'t told.')"]])].map(([a,b,f])=>`<div class="rowitem" onclick="${f}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div></div>`).join("")}`; }
-  if (type==="evsubmit") { const e=evE(id); const opts = DB.calendars.filter(c=>c.id!==e.cal && (c.kind==="city" || (c.family&&evMyFams().includes(c.family)))); return `<h2>List on another calendar</h2><p class="sm muted">${e.name} stays on ${evC(e.cal)?evC(e.cal).name:"your calendar"}. Guests and payments stay with you. The other calendar's admins approve the listing.</p>
-    <div class="card evx-kai"><span class="ty">Kai</span> Palo Alto Events has 1,840 followers near the venue. Nine of them are in your missions.</div>
-    ${opts.map(c=>`<div class="rowitem"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${c.subs.toLocaleString()} followers</div></div><button class="btn sm ${(e.listed||[]).includes(c.id)?'sec':''}" data-evsubmitok="${id}|${c.id}">${(e.listed||[]).includes(c.id)?"Requested":"Submit"}</button></div>`).join("")}`; }
-  if (type==="evdecline") { const [eid,pid]=id.split("|"); return `<h2>Decline ${evFirst(pid)}?</h2><p class="sm muted">${evFirst(pid)} sees "Not approved for this one." Your reason stays with you and your cohosts.</p>
+  if (type==="evshare") { const e=evE(id); const host = e.reg==="hosting"; return `<h2>${e.name}</h2>${[["Copy link",`key.ai/${e.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/-$/,"")}`,"toast('Link copied.')"],["Share to a chat","Pick a DM, group or channel","toast('Pick where to share. Nothing sends until you tap Send.')"],["Add to calendar","","STATE.sheet=null;openSheet('evaddcal','"+id+"')"],...(host&&e.vis==="public"?[["List on another calendar","Their admins approve it","STATE.sheet=null;openSheet('evsubmit','"+id+"')"]]:[]),...(host?[]:[["Report","Tell Key, not the host","toast('Report sent to Key. The host isn\\'t told.')"]])].map(([a,b,f])=>`<div class="rowitem" onclick="${f}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div></div>`).join("")}`; }
+  if (type==="evsubmit") { const e=evE(id); const opts = DB.calendars.filter(c=>c.id!==e.cal && (c.accepts==="anyone" || (c.accepts==="members"&&evMemberOf(c)) || evIsAdmin(c))); return `<h2>List on another calendar</h2><p class="sm muted">${e.name} stays on ${evC(e.cal).name}. Guests and payments stay with you. Each calendar's admins approve the listing, unless you run it.</p>
+    <div class="evx-kai"><span class="ty">Kai</span> Palo Alto Events has 1,840 followers near the venue. Nine of them are in your missions.</div>
+    ${opts.map(c=>{ const st=(e.listed||[]).includes(c.id)?"Listed":(e.pending||[]).includes(c.id)?"Waiting":""; return `<div class="rowitem"><div class="evx-cav" style="background:${evBg(c.theme)}">${c.name[0]}</div><div class="m"><div class="a">${c.name}</div><div class="b">${c.subs.toLocaleString()} followers · ${evApprover(c)?`${evApprover(c)} approve`:"publishes now"}</div></div>${st?`<span class="xs muted">${st}</span>`:`<button class="btn sm" data-evsubmitok="${id}|${c.id}">${evApprover(c)?"Submit":"Add"}</button>`}</div>`; }).join("")}`; }
+  if (type==="evdecline") { return `<h2>Decline ${evFirst(id.split("|")[1])}?</h2><p class="sm muted">${evFirst(id.split("|")[1])} sees "Not approved for this one." Your reason stays with you and your cohosts.</p>
     ${["Full for this one","Not the right fit","Missing information"].map(r=>`<div class="rowitem" data-evdeclineok="${id}"><div class="m"><div class="a">${r}</div></div></div>`).join("")}<button class="btn ghost" onclick="closeSheet()">Keep for now</button>`; }
+  if (type==="evnewcal") return `<h2>New calendar</h2><p class="sm muted">For a series you run, like a dinner club or a talk series. You already have your own calendar; this is another.</p>
+    <div class="lbl">Name</div><input class="input" id="evcalname" placeholder="AI Founders Breakfast">
+    <div class="lbl">Who can add events</div>${[["admins","Only admins"],["anyone","Anyone; you approve each one"]].map(([k,l])=>`<div class="rowitem" data-evcalacc="${k}"><div class="m"><div class="a">${l}</div></div><span class="evx-radio ${(STATE.evCalAcc||"admins")===k?'on':''}"></span></div>`).join("")}
+    <div class="xs faint" style="margin:10px 0">Public: anyone with the link can follow it. Family calendars are made by organizers in Manage.</div>
+    <button class="btn" data-evcalcreate="1">Create</button>`;
   return null;
 }
 const _evPortSheet = portSheet;
@@ -4236,32 +4326,40 @@ portWire = function(){
   _evPortWire();
   const q = (sel, fn) => phone.querySelectorAll(sel).forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); fn(el, ev); });
   q("[data-evseg]", el=>{ STATE.evSeg=el.dataset.evseg; render(); });
-  q("[data-evfilter]", el=>{ STATE.evFilter=el.dataset.evfilter; render(); });
+  q("[data-evmine]", el=>{ STATE.evMine=el.dataset.evmine; render(); });
   q("[data-evfollow]", el=>evToggleFollow(el.dataset.evfollow));
-  q("[data-evgo]", el=>go(el.dataset.evgo));
+  q("[data-evgo]", el=>{ if (el.dataset.evgo==="eventd:new"||el.dataset.evgo==="calendars") STATE.evBack=STATE.screen; go(el.dataset.evgo); });
   q("[data-evsheet]", el=>{ const [t,i]=el.dataset.evsheet.split("|"); STATE.sheet=null; openSheet(t,i); });
   q("[data-evrsvp]", el=>rsvp(el.dataset.evrsvp, true));
   q("[data-evunrsvp]", el=>rsvp(el.dataset.evunrsvp, false));
   q("[data-evregok]", el=>evRegister(el.dataset.evregok));
   q("[data-evfollowok]", el=>{ const c=evC(el.dataset.evfollowok); c.subscribed=true; c.unfollowed=false; c.subs++; STATE.sheet=null; render(); toast(`Following ${c.name}.`); });
   q("[data-evcalseg]", el=>{ STATE.evCalSeg=el.dataset.evcalseg; render(); });
+  q("[data-evctab]", el=>{ STATE.evCtab=el.dataset.evctab; render(); });
+  q("[data-evnewon]", el=>{ STATE.evDraft=null; evDraft().cal=el.dataset.evnewon; STATE.evBack=STATE.screen; go("eventd:new"); });
   q("[data-evtheme]", el=>{ evDraft().name=(document.getElementById("evname")||{}).value||evDraft().name; evDraft().theme=el.dataset.evtheme; render(); });
   q("[data-evfmt]", el=>{ evDraft().fmt=el.dataset.evfmt; render(); });
-  q("[data-evcalpick]", el=>{ const d=evDraft(); d.cal=el.dataset.evcalpick; if (d.cal==="personal") d.vis="public"; render(); });
-  q("[data-evtog]", el=>{ const d=evDraft(), k=el.dataset.evtog; if (k==="vis") d.vis = d.vis==="members"?"public":"members"; else d[k]=!d[k]; render(); });
+  q("[data-evcalpick]", el=>{ const d=evDraft(); d.name=(document.getElementById("evname")||{}).value||d.name; d.cal=el.dataset.evcalpick; render(); });
+  q("[data-evtog]", el=>{ const d=evDraft(), k=el.dataset.evtog; if (k==="vis") d.vis = d.vis==="public"?"private":"public"; else d[k]=!d[k]; render(); });
   q("[data-evkaidesc]", ()=>{ const d=evDraft(); d.name=(document.getElementById("evname")||{}).value||d.name; d.desc="Twenty PMs pull apart one product for an hour. Bring one screen you'd change. No slides."; render(); toast("Kai drafted it. Edit anything."); });
   q("[data-evpublish]", ()=>evPublish());
   q("[data-evmtab]", el=>{ STATE.evMtab=el.dataset.evmtab; render(); });
   q("[data-evapprove]", el=>{ const [eid,pid]=el.dataset.evapprove.split("|"); const e=evE(eid); e.requests=e.requests.filter(x=>x!==pid); e.goingList.push(pid); e.going++; render(); toast(`${evFirst(pid)} is in. They get a ticket and join the event chat.`); });
+  q("[data-evapproveevent]", el=>{ const e=evE(el.dataset.evapproveevent); const who=e.awaiting; e.awaiting=null; render(); toast(`${who.replace(", who runs it","")} approved it. It's live and followers see it.`); });
   q("[data-evdecline]", el=>openSheet("evdecline", el.dataset.evdecline));
   q("[data-evdeclineok]", el=>{ const [eid,pid]=el.dataset.evdeclineok.split("|"); const e=evE(eid); e.requests=e.requests.filter(x=>x!==pid); STATE.sheet=null; render(); toast(`Declined. ${evFirst(pid)} sees a status line, not your reason.`); });
   q("[data-evdoor]", el=>{ const [eid,pid]=el.dataset.evdoor.split("|"); const e=evE(eid); e.checked=e.checked||{}; e.checked[pid]=!e.checked[pid]; render(); });
   q("[data-evaud]", el=>{ STATE.evBcDraft=(document.getElementById("evbc")||{}).value||""; STATE.evAud=el.dataset.evaud; render(); });
   q("[data-evkaibc]", ()=>{ STATE.evBcDraft="See you Friday at 6. We're on the second floor; the side door is open."; render(); });
   q("[data-evbcsend]", el=>{ const e=evE(el.dataset.evbcsend); const v=(document.getElementById("evbc")||{}).value; if(!v){ toast("Write something first."); return; } e.broadcasts.unshift(v); STATE.evBcDraft=""; render(); toast((STATE.evAud||"going")==="page"?"Posted on the event page.":"Sent."); });
-  q("[data-evsubmitok]", el=>{ const [eid,cid]=el.dataset.evsubmitok.split("|"); const e=evE(eid); e.listed=e.listed||[]; if(!e.listed.includes(cid)){ e.listed.push(cid); } STATE.sheet=null; render(); toast(`Submitted to ${evC(cid).name}. It shows there once an admin approves.`); });
+  q("[data-evsubmitok]", el=>{ const [eid,cid]=el.dataset.evsubmitok.split("|"); const e=evE(eid); const c=evC(cid); if (evApprover(c)) { if(!e.pending.includes(cid)) e.pending.push(cid); } else if(!e.listed.includes(cid)) e.listed.push(cid); STATE.sheet=null; render(); toast(evApprover(c)?`Submitted to ${c.name}. It shows there once ${evApprover(c).replace(", who runs it","")} approve${evApprover(c).endsWith("s")?"":"s"}.`:`Added to ${c.name}.`); });
+  q("[data-evcalreq]", el=>{ const [cid,rid,ok]=el.dataset.evcalreq.split("|"); const c=evC(cid); const r=c.requests.find(x=>x.id===rid); c.requests=c.requests.filter(x=>x.id!==rid);
+    if (ok==="yes") { const nid="e"+(100+DB.fevents.length); DB.fevents.push({ id:nid, name:r.name, when:r.when+", 6pm", day:"Oct 20", where:"Mountain View", going:4, rsvp:false, family:null, host:r.from, bucket:"upcoming", cal:cid, listed:[], pending:[], theme:c.theme, fmt:"in_person", sort:1020, reg:"none", meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], details:"", checkedIn:false, past:false }); c.events.push(nid); }
+    render(); toast(ok==="yes"?`Approved. ${evFirst(r.from)} is told it's live; followers see it.`:`Not listed. ${evFirst(r.from)} sees that, without a reason.`); });
+  q("[data-evcalacc]", el=>{ STATE.evCalAcc=el.dataset.evcalacc; render(); });
+  q("[data-evcalcreate]", ()=>{ const nm=(document.getElementById("evcalname")||{}).value||"AI Founders Breakfast"; const id="cal-n"+DB.calendars.length; DB.calendars.push({ id, name:nm, family:null, host:EV_ME, subs:0, kind:"user", theme:"sage", admins:[EV_ME], accepts:STATE.evCalAcc||"admins", about:"New calendar. Add a line about what happens here.", events:[], requests:[], subscribed:false, sync:false }); STATE.sheet=null; go("cal:"+id); toast(`${nm} is ready. Add your first event.`); });
   phone.querySelectorAll(".evx-month [data-ev]").forEach(el=>el.onclick=()=>go("eventd:"+el.dataset.ev));
-  phone.querySelectorAll(".evx-tile[data-ev]").forEach(el=>el.onclick=(ev)=>{ if(ev.target.closest("[data-evrsvp]")) return; go("eventd:"+el.dataset.ev); });
+  phone.querySelectorAll(".evx-pill[data-cal], .evx-si[data-cal]").forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); STATE.evBack=STATE.screen; go("cal:"+el.dataset.cal); });
 };
 
 /* ---- Out of scope ---- */
