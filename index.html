@@ -717,6 +717,46 @@
   .stage.ctl::before { content:""; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:1001; }
 }
 
+/* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
+.mbrief { padding:2px 0 0; }
+.mbrief .kline { margin:0 0 8px; font-size:14px; color:var(--ink); }
+.mbrief p { margin:0; color:var(--ink); font-size:15px; line-height:1.45; }
+.mbrief .mdone { display:block; margin-top:6px; font-size:13px; color:var(--ink3); }
+.mbrief .chips { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.mbrief .chips .chip { font-size:12px; padding:4px 10px; }
+.mbrief .medit { font-size:13px; color:var(--ink2); margin-top:10px; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.mlog { display:flex; gap:8px; align-items:center; margin:14px 0 0; }
+.mlog .input { flex:1; min-height:44px; }
+.mlog .mic { width:44px; height:44px; }
+.mlog .mk { width:44px; height:44px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; cursor:pointer; flex:0 0 auto; }
+.mlog .mk.off { background:var(--fill); color:var(--ink3); }
+.mlog-hint { font-size:12px; color:var(--ink3); margin-top:6px; }
+.mlog-hint span { cursor:pointer; text-decoration:underline; text-underline-offset:3px; margin-right:10px; }
+.msec { margin-top:20px; padding-top:14px; border-top:1px solid var(--line); }
+.msec .lbl { margin-top:0; }
+.tline { position:relative; padding-left:22px; margin-top:4px; }
+.tline:before { content:""; position:absolute; left:6px; top:8px; bottom:8px; width:1px; background:var(--line); }
+.tli { position:relative; padding:0 0 16px; }
+.tli:last-child { padding-bottom:4px; }
+.tli .td { position:absolute; left:-20px; top:5px; width:9px; height:9px; border-radius:50%; background:var(--ink3); border:2px solid #fff; box-shadow:0 0 0 1px var(--line); }
+.tli.you .td { background:var(--ink); }
+.tli.kai .td { background:#fff; border-color:var(--ink); }
+.tli.now .td { background:#C9A227; }
+.tli .th { display:flex; justify-content:space-between; gap:10px; font-size:12px; color:var(--ink3); }
+.tli .th b { color:var(--ink2); font-weight:600; }
+.tli .tt { font-size:14px; color:var(--ink); margin-top:2px; line-height:1.4; }
+.tli .tt.q { color:var(--ink2); }
+.tli .tt.k { padding-left:10px; border-left:2px solid var(--line); margin-top:6px; }
+.tline .tmore { font-size:13px; color:var(--ink2); cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+/* profiles: sections, not tiles */
+.bento { display:block; margin-top:6px; }
+.bt, .bt.wide, .bt.words, .bt.conn, .bt.help, .bt.look, .bt.look.locked, .bt.gold, .bt.kai, .bt.only { background:none !important; border:0 !important; border-bottom:1px solid var(--line) !important; border-radius:0; padding:16px 0 18px; min-height:0; }
+.bt:last-child { border-bottom:0 !important; }
+.bt .tw { font-size:19px; line-height:1.4; margin-top:6px; }
+.bt .frail { margin:10px 0 0; padding:0; }
+.bt.kai .tl:before { content:"✦ "; }
+.bt.look.locked .ts { font-style:italic; }
+
   /* ==== EVENTS AND CALENDARS, 25 Sep 2026 (events thread). Covers are the one expressive surface; lists stay plain. ==== */
   .evx-cov { position:relative; border-radius:14px; overflow:hidden; height:96px; display:flex; align-items:flex-end; padding:8px; }
   .evx-cov::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55)); pointer-events:none; }
@@ -1955,14 +1995,16 @@ function sMission(id) {
   <div class="body">
     ${qs.length?`<div style="margin:0 -16px 12px;padding:10px 16px 4px;background:linear-gradient(180deg,var(--fill),transparent)"><div class="lbl" style="margin:0 0 8px">Kai asks · ${qs.length}</div>${qs.join("<div style='height:8px'></div>")}</div>`:''}
     ${(function(){ const all=DB.opps.filter(o=>o.missionId===id&&o.state!=="dropped"); const shown=all.length; const acted=all.filter(o=>!isNewOf(o)).length; const replied=all.filter(o=>o.timeline&&o.timeline.some(x=>/Replied|agreed|Screen/.test(x[0])&&x[2])).length; const met=all.filter(o=>o.met||o.state==="conversation").length; const done=all.filter(o=>o.state==="done"&&o.outcome!=="closed").length; return shown?`<div class="funnel"><div><b>${shown}</b><span>shown</span></div><div><b>${acted}</b><span>acted on</span></div><div><b>${replied}</b><span>replied</span></div><div><b>${met}</b><span>met</span></div><div><b>${done}</b><span>outcomes</span></div></div>`:""; })()}
-    <div class="briefcard" data-kaibrief="${id}"><div class="kline" style="margin:0 0 8px;font-size:14px;color:var(--ink)"><span class="live small" style="${m.status!=='active'?'background:var(--ink3);animation:none':''}"></span>${st}</div><p class="sm" style="margin:0;color:var(--ink)">${m.brief||"Kai is looking across your families."} <span class="xs faint">${m.standing?"Standing, no end date.":"Done when: "+m.done+"."}</span></p><div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px">${m.constraints.map(c=>`<span class="chip" style="font-size:12px;padding:4px 10px">${c}</span>`).join("")}</div><div class="bcomp"><span class="bt">Ask Kai about this mission, or log what happened</span><span class="bk">K</span></div></div>
+    <div class="mbrief"><div class="kline"><span class="live small" style="${m.status!=='active'?'background:var(--ink3);animation:none':''}"></span>${st}</div><p>${m.brief||"Kai is looking across your families."}</p>${/done when/i.test(m.brief||"")?"":`<span class="mdone">${m.standing?"Standing, no end date.":"Done when: "+m.done+"."}</span>`}${m.constraints.length?`<div class="chips">${m.constraints.map(c=>`<span class="chip">${c}</span>`).join("")}</div>`:""}<div class="medit" data-kaibrief="${id}">Change the brief with Kai</div></div>
+    <div class="mlog"><input class="input" id="mupd" placeholder="Log what happened, or ask Kai" onkeydown="if(event.key==='Enter'){missionSend('${id}')}"><div class="mic" onclick="toast('Hold to talk. Kai writes it down.')">🎙</div><div class="mk" onclick="missionSend('${id}')">K</div></div>
+    <div class="mlog-hint"><span onclick="document.getElementById('mupd').value='Met Rahul Thursday, went well';document.getElementById('mupd').focus()">Met someone</span><span onclick="document.getElementById('mupd').value='Got a recruiter screen at Perplexity';document.getElementById('mupd').focus()">Something moved</span><span onclick="document.getElementById('mupd').value='Why these picks?';document.getElementById('mupd').focus()">Why these picks?</span></div>
     ${STATE.filterNote?`<div class="xs muted" style="margin-top:10px">${STATE.filterNote}</div>`:''}
-    <div class="seg" style="margin-top:12px"><div class="${seg==='paths'?'on':''}" data-mseg="paths">Paths</div><div class="${seg==='activity'?'on':''}" data-mseg="activity">Activity</div></div>
-    ${seg==="paths"?`<div class="pills" style="margin-top:10px">${[["you","For you",counts.you],["them","Waiting",counts.them],["kai","In conversation",counts.kai],["done","Done",counts.done],["all","All",os.filter(o=>o.state!=="candidate").length]].map(([k,l,c])=>`<div class="pill ${f===k?'on':''}" style="font-size:13px;padding:6px 11px" data-mfilter="${k}">${l}${c?` <span style="opacity:.6">${c}</span>`:''}</div>`).join("")}</div>
+    <div class="msec"><div class="lbl">Paths</div></div>
+    ${true?`<div class="pills" style="margin-top:2px">${[["you","For you",counts.you],["them","Waiting",counts.them],["kai","In conversation",counts.kai],["done","Done",counts.done],["all","All",os.filter(o=>o.state!=="candidate").length]].map(([k,l,c])=>`<div class="pill ${f===k?'on':''}" style="font-size:13px;padding:6px 11px" data-mfilter="${k}">${l}${c?` <span style="opacity:.6">${c}</span>`:''}</div>`).join("")}</div>
       ${groups.filter(g=>g[1].length).map(([l,arr])=>`<div class="lbl">${l} · ${arr.length}</div>${arr.map(vcard).join("<div style='height:10px'></div>")}`).join("")||`<div class="empty" style="margin-top:12px">${f==="you"?"Nothing needs you. Kai's next pass is Friday.":f==="them"?"Nothing waiting on anyone.":f==="kai"?"No conversations yet.":f==="done"?"Nothing resolved yet.":"No paths yet."}</div>`}
       <div style="margin-top:12px"><button class="btn sec" onclick="STATE.back=STATE.screen;STATE.searchKind='${m.type==="Looking"?"role":m.type==="Cofounder"?"person":"all"}';STATE.searchFam=null;STATE.searchQ='';go('explore')">Browse more for this mission</button></div>`
-    : `<div class="composer" style="margin-top:12px"><input class="input" id="mupd" placeholder="Anything happen off Key? One line"><button class="btn sm" onclick="(function(){ const v=document.getElementById('mupd').value.trim(); if(!v) return; const m=DB.missions.find(z=>z.id==='${id}'); m.mlog=m.mlog||[['You','started this at sign-up','Tue']]; m.mlog.push(['You',v,'now']); if(/offer|accepted|signed|hired/i.test(v)) { STATE.closeProposed='${id}'; toast('Logged. That sounds like the done condition; Kai asks if you want to close.'); } else toast('Logged.'); render(); })()">Log</button></div>
-      <div class="card" style="padding:4px 14px;font-size:13px;margin-top:12px">${mlog.slice().reverse().map(l=>`<div class="rowitem" style="padding:7px 0;cursor:default"><div class="m"><div class="a" style="font-weight:600;font-size:13px">${l[0]}</div><div class="b" style="font-size:13px">${l[1]}</div></div><div class="s">${l[2]}</div></div>`).join("")}</div>`}
+    : ``}
+    <div class="msec"><div class="lbl">Activity · ${mlog.length}</div>${missionTimeline(m, os)}</div>
     <div style="height:8px"></div>
   </div>
   ${navHTML("missions")}`;
@@ -3864,6 +3906,30 @@ const _oppSheetV3 = oppSheetV3; oppSheetV3 = function(id){
   return h;
 };
 
+/* ==== MISSION PAGE (25 Sep, missions thread): brief section, live log/ask composer, activity timeline */
+function missionLogAdd(m, who, text, when){ m.mlog = m.mlog || [["You","started this at sign-up","Tue"],["Kai","first pass. Found "+DB.opps.filter(o=>o.missionId===m.id&&o.state!=="dropped").length+" paths.","Tue"]]; m.mlog.push([who,text,when||"now"]); }
+function missionSend(id){
+  const el = [...document.querySelectorAll("#mupd")].pop(); const v = el ? el.value.trim() : ""; if (!v) { STATE.kaiScope=null; openSheet("kai"); return; }
+  const m = DB.missions.find(z=>z.id===id); if (!m) return;
+  const isAsk = /\?$/.test(v) || /^(what|who|why|how|can|could|should|is|are|do|does|when|where|show|find|pause|only)\b/i.test(v);
+  if (isAsk) { STATE.kaiScope = kaiScopeFor(); STATE.kaiMsgs = STATE.kaiMsgs||[]; STATE.sheet={type:"kai",id:null}; STATE.sheetFull=false; render(); kaiAsk(v); return; }
+  missionLogAdd(m, "You", v);
+  const done = /offer|accepted|signed|hired|term sheet/i.test(v); const met = /met|coffee|talked|call with|spoke/i.test(v);
+  const k = done ? "That sounds like the done condition. Close the mission?" : met ? "Noted. I'll ask how it went in a week." : "Noted. Nothing else changes.";
+  missionLogAdd(m, "Kai", k);
+  if (done) STATE.closeProposed = id;
+  if (typeof journal === "function") journal("told", "You logged: "+v, [], null);
+  toast("Logged."); render();
+}
+function missionTimeline(m, os){
+  const own = m.mlog || [["You","started this at sign-up","Tue"],["Kai","first pass. Found "+os.length+" path"+(os.length===1?"":"s")+".","Tue"]];
+  const rows = own.map(l=>({ who:l[0], text:l[1], when:l[2], path:null })).concat(os.flatMap(o=>(o.log||[]).slice(1).map(l=>({ who:l[0], text:l[1], when:l[2], path:o.id, name:(!!o.roleTitle?o.roleTitle:DB.people[o.personId].name.split(" ")[0]) }))));
+  const list = rows.slice().reverse();
+  const open = STATE.tlineAll===m.id; const shown = open ? list : list.slice(0,6);
+  const cls = r => (r.who==="You"?"you":r.who==="Kai"?"kai":"them") + (r.when==="now"?" now":"");
+  return `<div class="tline">${shown.map(r=>`<div class="tli ${cls(r)}"><div class="td"></div><div class="th"><b>${r.who}${r.path?` · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer" onclick="go('path:${r.path}')">${r.name}</span>`:""}</b><span>${r.when}</span></div><div class="tt ${r.who==="Kai"?"k":""}">${r.text}</div></div>`).join("")}${list.length>6&&!open?`<div class="tmore" onclick="STATE.tlineAll='${m.id}';render()">Everything since the start · ${list.length}</div>`:""}</div>`;
+}
+
 /* ==== EVENTS AND CALENDARS, 25 Sep 2026 (events thread). One Events tab: For you, Going, Calendars.
    Calendars are where events come from; events are what you see, once each. Host and manage live one tap from the event.
    Overrides: evThumb, evStatus, evCard, rsvp, sEvents, sEventDetail, sCalendar, sCalendars. Adds sheets ev* and wiring data-ev*.
@@ -4495,7 +4561,7 @@ function kaiAsk(t) {
   if (/start the conversation/i.test(t)) { STATE.sheet=null; startCall(); return; }
   const scope0 = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
   if (scope0 && scope0.kind==="mission" && /^log what happened$/i.test(t)) { STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:t}); STATE.kaiMsgs.push({who:"k",text:"Go ahead. One line is enough, or hold the mic. I'll file it under the mission and adjust the paths.",chips:["Met Rahul Thursday, went well","Got a recruiter screen at Perplexity","Nothing this week"]}); STATE.logMode=scope0.id; render(); return; }
-  if (STATE.logMode) { const m=DB.missions.find(x=>x.id===STATE.logMode); if (m) { m.mlog=m.mlog||[["You","started this at sign-up","Tue"]]; m.mlog.push(["You",t,"now"]); STATE.kaiMsgs.push({who:"u",text:t}); const done=/offer|accepted|signed|hired|term sheet/i.test(t); if (done) STATE.closeProposed=m.id; const met=/met|coffee|talked|call with/i.test(t); STATE.kaiMsgs.push({who:"k",text: done?"Logged. That sounds like the done condition. I'll ask on the mission whether to close it.": met?"Logged. I'll ask how it went in a week.":"Logged. Nothing else changes."}); STATE.logMode=null; render(); journal("told", "You logged: "+t, [], /help|reviewed|referred|introduced/i.test(t)?{ text:"Add \u201chelps members with PM hiring loops\u201d to what you can help with", why:"You've logged helping twice. This is how members find you.", src:"your journal", apply:()=>{ if(!DB.contextV2.offer.some(x=>/hiring/i.test(x[0]))) DB.contextV2.offer.push(["PM hiring loops","your journal","today","help nudges",true]); } }:null); return; } }
+  if (STATE.logMode) { const m=DB.missions.find(x=>x.id===STATE.logMode); if (m) { missionLogAdd(m,"You",t); STATE.kaiMsgs.push({who:"u",text:t}); const done=/offer|accepted|signed|hired|term sheet/i.test(t); if (done) STATE.closeProposed=m.id; const met=/met|coffee|talked|call with/i.test(t); STATE.kaiMsgs.push({who:"k",text: done?"Logged. That sounds like the done condition. I'll ask on the mission whether to close it.": met?"Logged. I'll ask how it went in a week.":"Logged. Nothing else changes."}); STATE.logMode=null; render(); journal("told", "You logged: "+t, [], /help|reviewed|referred|introduced/i.test(t)?{ text:"Add \u201chelps members with PM hiring loops\u201d to what you can help with", why:"You've logged helping twice. This is how members find you.", src:"your journal", apply:()=>{ if(!DB.contextV2.offer.some(x=>/hiring/i.test(x[0]))) DB.contextV2.offer.push(["PM hiring loops","your journal","today","help nudges",true]); } }:null); return; } }
   STATE.kaiMsgs = STATE.kaiMsgs||[];
   const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
   if (scope && scope.kind==="mission") { STATE.kaiMsgs.push({who:"u",text:t}); const mm=DB.missions.find(x=>x.id===scope.id); const before=(mm.mlog||[]).length; missionSay(scope.id, t); const kaiLine=(mm.mlog||[]).slice(before+1).find(l=>l[0]==="Kai"); STATE.kaiMsgs.push({who:"k",text:(kaiLine?kaiLine[1]:"Noted.")+" Written to the mission's activity."}); render(); return; }
