@@ -5092,6 +5092,55 @@ portWire = function(){
   const mq = phone.querySelector("#mmq"); if (mq) mq.oninput = ()=>{ STATE.mmQ = mq.value; const pos = mq.selectionStart; render(); const n = phone.querySelector("#mmq"); if (n) { n.focus(); n.setSelectionRange(pos,pos); } };
 };
 
+/* ==== REPLIES FROM RULES (25 Sep, "Mock database" thread). Replaces the fixed script for asks you send.
+   Whoever decides answers from their own profile: the connector first (open to intros?), then the person (open to this kind of ask,
+   not a "not now", a slot left this week). Yes becomes a reply, no becomes the existing "can't" / "not available" status, full becomes "said later".
+   Replies arrive on their own a few seconds after you send, or on the next load if the page was closed; "Simulate next" delivers the next one now.
+   Slots refill when you advance a week. Paths the cycle plays by hand (o2, Chris and Maya's phones) are left to whoever plays them.
+   Off in test runs (navigator.webdriver) unless the URL has ?live; "Simulate next" still uses the rules there. ==== */
+const RULE_TOPIC = { Looking:["Hiring conversations","Referrals"], Hiring:["Hiring conversations"], Cofounder:["Cofounder conversations"], Raising:["Investing","Office hours"], Investing:["Investing"], Learning:["Product advice","Advice","Office hours"], "The people":["Intros","Advice","Product advice"] };
+const RULE_YES = { Hiring:"Happy to chat about the team. Does Thursday afternoon work?", Cofounder:"Yes, I'd like to hear what you're building. Coffee next week?", Referrals:"Passed your note to our recruiter, she'll reach out about a screen.", Investing:"Send me the deck and let's find 30 minutes.", Office:"Grab a slot in my office hours this week.", Advice:"Sure, happy to help. Send me a couple of times?" };
+const RULE_LIVE = (()=>{ try { return new URLSearchParams(location.search).has("live") || !navigator.webdriver; } catch(e) { return true; } })();
+
+const ruleWord = s => s.toLowerCase().split(" ")[0];
+const ruleHas = (list, topics) => (list||[]).some(x=>topics.some(t=>x.toLowerCase().includes(ruleWord(t))));
+function ruleTopics(o){ if (o.roleTitle) return ["Referrals","Hiring conversations"]; const m=DB.missions.find(x=>x.id===o.missionId); return RULE_TOPIC[m&&m.type]||RULE_TOPIC["The people"]; }
+function ruleDecide(pid, topics){
+  const p=DB.people[pid]; if (!p) return "yes";
+  if (ruleHas(p.notNow, topics)) return "no";
+  if (!ruleHas(p.openTo, topics) && !ruleHas(p.openTo, ["Intros","Advice"])) return "no";
+  const n=/(\d+) slots? left/.exec(p.slots||""); DB.ruleUsed=DB.ruleUsed||{};
+  if (n && (DB.ruleUsed[pid]||0) >= +n[1]) return "later";
+  DB.ruleUsed[pid]=(DB.ruleUsed[pid]||0)+1; return "yes";
+}
+function ruleYesText(p, topics){ const k=Object.keys(RULE_YES).find(k=>ruleHas(p.openTo,[k])&&topics.some(t=>ruleWord(t)===k.toLowerCase())) || (topics[0]==="Referrals"?"Referrals":"Advice"); return `${firstName(p)}: "${RULE_YES[k]}"`; }
+function ruleTell(title, body, to){ const act=[["See path", ()=>go("path:"+to), "path:"+to]]; if (STATE.persona==="priya") pushNote(title, body, act); else queuePush("priya", title, body, act); }
+function ruleOwned(o){ return o.state==="waiting" && !o.later && !pathAsks(o).c; }
+
+function ruleStep(o){
+  const via=viaOf(o), t=targetOf(o), topics=ruleTopics(o); o.ruleAt=null;
+  if (via && !o.viaAgreed) {
+    const d=ruleDecide(via.id, o.roleTitle?["Referrals"]:["Intros"]);
+    if (d==="yes") { o.viaAgreed=true; lit(o, o.roleTitle?"Referred":o.timeline[2][0], "now"); o.log.push([`Kai, for ${firstName(via)}`,"delivered the ask under their rules.","now"]); o.log.push([firstName(via), o.roleTitle?"referred you.":`said yes and forwarded your note to ${firstName(t)}.`,"now"]); o.ruleAt=Date.now()+9000; ruleTell(`${firstName(via)} said yes`, o.roleTitle?`Referred you for ${o.roleTitle} at ${o.roleCompany}.`:`Forwarded your note to ${firstName(t)}.`, o.id); }
+    else if (d==="no") { o.state="yourmove"; o.phase="blocked"; o.log.push([firstName(via),"can't take this one. No reason is shown to you.","now"]); ruleTell(`${firstName(via)} can't take this one`, "No reason is given. The path is still yours: another route, go direct, or close.", o.id); }
+    else { o.later=true; o.log.push([firstName(via),"said later. Kai asks again next week; nothing else is sent.","now"]); ruleTell(`${firstName(via)} said later`, "Full this week. Kai asks again next week.", o.id); }
+    return;
+  }
+  const d=ruleDecide(t.id, topics);
+  if (d==="yes") { o.state="yourmove"; o.phase="replied"; o.action=`Reply to ${firstName(t)}`; lit(o, o.roleTitle?"Screen":(via?o.timeline[3][0]:"Replied"), "now"); o.replyText=ruleYesText(t, topics); o.log.push([firstName(t),"replied.","now"]); if (STATE.persona==="priya") pushNote(`${firstName(t)} replied`, o.replyText.replace(/^[^:]+: /,""), [["Reply", ()=>openSheet("reply",o.id)]]); else queuePush("priya", `${firstName(t)} replied`, o.replyText.replace(/^[^:]+: /,""), [["Reply", ()=>go("path:"+o.id), "path:"+o.id]]); }
+  else if (d==="no") { o.state="yourmove"; o.phase="declined"; o.log.push([firstName(t),"isn't available right now. That's all you're shown.","now"]); ruleTell(`${firstName(t)} isn't available right now`, "No reason is given. Close the path, try another route, or ask again in a month.", o.id); }
+  else { o.later=true; o.log.push([firstName(t),"said later. Kai asks again next week; nothing else is sent.","now"]); ruleTell(`${firstName(t)} said later`, "No slots left this week. Kai asks again next week.", o.id); }
+}
+function ruleTick(){
+  if (!STATE.member || STATE.offline || STATE.sheet) return;
+  const now=Date.now(); DB.opps.filter(ruleOwned).forEach(o=>{ if (!o.ruleAt) o.ruleAt=now+6000; });
+  const due=DB.opps.find(o=>ruleOwned(o) && o.ruleAt<=now); if (due) { ruleStep(due); render(); }
+}
+
+const _ruleSimulate = simulate; simulate = function(){ const o=STATE.member && DB.opps.find(ruleOwned); if (o) { ruleStep(o); render(); return; } _ruleSimulate(); };
+const _ruleAdvanceWeek = advanceWeek; advanceWeek = function(){ DB.ruleUsed={}; DB.opps.filter(o=>o.later&&o.state==="waiting"&&!pathAsks(o).c).forEach(o=>{ o.later=false; o.ruleAt=Date.now()+4000; o.log.push(["Kai","asked again: a new week.","now"]); }); _ruleAdvanceWeek(); };
+if (RULE_LIVE) setInterval(ruleTick, 1500);
+
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
    Restart clears it. Starts clean when the page is driven by a test (navigator.webdriver) unless the URL has ?keep, and always with ?fresh.
