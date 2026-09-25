@@ -846,7 +846,7 @@
   /* no boxes inside pages: states, people and details are sections split by hairlines; only the event tile is a card */
   .evx-sect { padding:14px 0; border-bottom:1px solid var(--line); }
   .evx-sect .name { font-size:16px; font-weight:800; } .evx-sect .sub { font-size:13.5px; color:var(--ink2); line-height:1.4; }
-  .evx-sect.live .name { font-size:18px; }
+  .evx-sect.evx-now .name { font-size:18px; }
   .evx-sect .top { display:flex; gap:10px; align-items:center; }
   .evx-sect .act { display:flex; gap:10px; align-items:center; margin-top:10px; } .evx-sect .act .no { color:var(--ink2); font-size:14px; padding:8px; cursor:pointer; }
   .evx-li { cursor:pointer; }
@@ -862,6 +862,34 @@
   .evx-list.in-f { animation:evxFade 180ms ease-out; }
   @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l, .evx-list.in-f { animation:none; } }
   .body:has(.evx-pane) { overflow-x:hidden; }
+  /* event chat on the page: rows on the ground, the same room previewed */
+  .evx-lh { display:flex; align-items:center; justify-content:space-between; } .evx-lh .xs { cursor:pointer; font-weight:600; }
+  .evx-cr { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); cursor:pointer; min-width:0; } .evx-cr .m { flex:1; min-width:0; }
+  .evx-cr .bav { border-radius:50%; } .evx-tease { cursor:default; } .evx-tease .evx-faces { padding-left:5px; }
+  .evx-say { margin-top:10px; padding:10px 14px; border:1px solid var(--line); border-radius:999px; font-size:14px; color:var(--ink3); cursor:text; background:#fff; }
+  .evx-note { margin-top:8px; }
+  /* one sticky action; slides away while you scroll down */
+  .evx-cta { position:absolute; left:16px; right:16px; bottom:98px; z-index:9; transition:transform 220ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease; }
+  .evx-cta .btn { box-shadow:0 1px 2px rgba(20,20,20,.08),0 10px 26px -8px rgba(20,20,20,.35); } .evx-cta small { display:block; font-size:11.5px; font-weight:500; opacity:.75; margin-top:1px; }
+  .evx-cta.hid { transform:translateY(14px); opacity:0; pointer-events:none; }
+  .body:has(~ .evx-cta) { padding-bottom:176px; }
+  @media (prefers-reduced-motion: reduce) { .evx-cta { transition:none; } }
+  /* the room: updates, questions and intros are marked rows inside the chat, not cards */
+  .evx-rthumb { width:34px; height:34px; border-radius:9px; flex:0 0 auto; cursor:pointer; }
+  .evx-pin { gap:8px; } .evx-rchips { padding:10px 0 2px; } .evx-rchips .pill { font-size:13px; padding:6px 12px; }
+  .evx-bh { display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink2); flex-wrap:wrap; } .evx-bh b { color:var(--ink); font-size:13.5px; } .evx-bh .evx-tag { margin-left:0; }
+  .evx-bt { font-size:14.5px; line-height:1.45; margin-top:4px; color:var(--ink); }
+  .evx-bf { font-size:12px; color:var(--ink3); margin-top:6px; } .evx-bf span { text-decoration:underline; cursor:pointer; color:var(--ink2); }
+  .evx-up { background:#fff; margin:10px -10px; padding:12px 14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); box-shadow:inset 3px 0 0 #C9A64B; }
+  .evx-up.hl { background:#FBF6E8; }
+  .evx-q { display:flex; gap:10px; align-items:flex-start; background:#fff; margin:10px -10px; padding:12px 14px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); } .evx-q .m { flex:1; min-width:0; } .evx-q .btn.sm { margin-top:8px; }
+  .evx-vote { display:grid; justify-items:center; gap:1px; width:36px; padding:6px 0; border:1px solid var(--line); border-radius:10px; background:#fff; font:inherit; color:var(--ink2); cursor:pointer; flex:0 0 auto; } .evx-vote span { font-size:10px; } .evx-vote b { font-size:13px; color:var(--ink); }
+  .evx-vote.on { background:var(--ink); border-color:var(--ink); color:#fff; } .evx-vote.on b { color:#fff; }
+  .evx-ans { margin-top:8px; padding-left:10px; border-left:2px solid var(--ink); font-size:14px; line-height:1.4; } .evx-ans span { font-size:11.5px; color:var(--ink3); }
+  .evx-intro { display:flex; gap:10px; align-items:center; margin:10px 0; padding:4px 0; } .evx-intro .m { flex:1; min-width:0; } .evx-intro .bav { border-radius:50%; width:28px; height:28px; } .evx-intro .evx-bt { font-style:italic; font-size:14px; } .evx-intro .chip { font-size:13px; padding:6px 10px; flex:0 0 auto; } .evx-intro .chip.on { color:var(--ink3); }
+  .evx-first { display:flex; justify-content:center; margin:14px 0 4px; } .evx-first .chip { font-size:13px; }
+  /* a mode switch inside the composer, so it is a segmented control, not tabs (nav layers rule) */
+  .evx-mode { display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; margin:0 0 8px; font-size:12.5px; } .evx-mode div { padding:5px 12px; color:var(--ink2); cursor:pointer; } .evx-mode div.on { background:var(--ink); color:#fff; font-weight:600; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -4154,6 +4182,8 @@ function evFamilyWeek(famId){
 rsvp = function(id, on){ const e=evE(id); if (on) { openSheet("evreg", id); return; } e.reg="none"; e.rsvp=false; e.going=Math.max(0,e.going-1); render(); toast("Cancelled. The host sees a status line, nothing else."); };
 function evRegister(id){
   const e=evE(id); e.reg = e.approval ? "pending" : "going"; e.rsvp = e.reg==="going"; if (e.rsvp) e.going++;
+  const note = ((document.getElementById("evnote")||{}).value||"").trim();
+  if (note && e.rsvp) evRoom(e).msgs.push(M(EV_ME, note, { day:"Today", time:nowTime(), evType:"intro" }));
   const home=evC(e.cal); STATE.sheet=null;
   if (home && !evFollows(home) && !STATE.evAsked[home.id]) { STATE.evAsked[home.id]=true; openSheet("evfollow", `${home.id}|${e.id}`); return; }
   render(); toast(e.reg==="going"?"You're in. Ticket and event chat are ready.":"Request sent. You'll hear once, either way.");
@@ -4244,18 +4274,18 @@ sEventDetail = function(id){
   const home = evC(e.cal); const host = DB.people[e.host]||DB.people.chris; const live = STATE.eventDay && e.id==="e1" && !e.past; const locked = evLocked(e);
   const others = (e.listed||[]).map(evC).filter(Boolean);
   let block = "";
-  if (locked) block = `<div class="evx-sect"><div class="name">Members only</div><div class="sub" style="margin:4px 0 10px">For members of ${home.famExt||evKind(home)}. You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div><button class="btn" onclick="toast('Application to ${home.famExt||"the family"} opens. Tabs stay open while it\\'s pending.')">Apply to join</button></div>`;
+  if (locked) block = `<div class="evx-sect"><div class="name">Members only</div><div class="sub" style="margin:4px 0 10px">For members of ${home.famExt||evKind(home)}. You follow their calendar, so you see it's on. Details, the guest list and registration open to members.</div></div>`;
   else if (e.past) block = `<div class="evx-sect"><div class="name">You went</div><div class="sub" style="margin-top:2px">${e.met&&e.met.length?`Met ${e.met.map(x=>DB.people[x].name).join(", ")}. Logged from your debrief.`:"No debrief logged."}</div></div>`;
-  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">Hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evgo="eventd:manage.${e.id}">Manage</button><button class="btn sec" style="flex:1" data-evsheet="evshare|${e.id}">Share</button></div></div>`;
-  else if (live) block = `<div class="evx-sect live"><div class="row" style="gap:8px"><span class="live"></span><div class="name">Tonight</div></div><div class="sub" style="margin:4px 0 10px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div>${e.checkedIn?`<button class="btn sec" onclick="go('eventchat')">Open event chat</button>`:`<button class="btn" data-checkin="${e.id}">Check in</button>`}</div>`;
+  else if (e.reg==="hosting") block = `<div class="evx-sect"><div class="row" style="gap:8px"><div class="name" style="flex:1">Hosting</div>${(e.requests||[]).length?`<span class="evx-tag wait">${e.requests.length} to review</span>`:""}</div><div class="sub" style="margin:4px 0 10px">${e.going} going of ${e.cap||"unlimited"}${(e.pending||[]).length?`. Waiting on ${e.pending.map(evC).map(c=>c.name).join(", ")} to list it`:""}.</div><button class="btn sec" data-evsheet="evshare|${e.id}">Share</button></div>`;
+  else if (live) block = `<div class="evx-sect evx-now"><div class="row" style="gap:8px"><span class="live"></span><div class="name">Tonight</div></div><div class="sub" style="margin-top:4px">${e.checkedIn?"You're checked in. Rahul and Maya are here.":"Show your ticket at the door. Kai tells you when people you should meet arrive."}</div></div>`;
   else if (e.reg==="invited") block = `<div class="evx-sect"><div class="name">Invited</div><div class="sub" style="margin:4px 0 10px">${evFirst(e.host)} invited you. Only invited people can see this event.</div><div class="row" style="gap:8px"><button class="btn" style="flex:1" data-evinvite="${e.id}|yes">Going</button><button class="btn sec" style="flex:1" data-evinvite="${e.id}|no">Can't go</button></div></div>`;
-  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">Going</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sec" style="flex:1" data-evsheet="evticket|${e.id}">Ticket</button><button class="btn sec" style="flex:1" onclick="go('eventchat')">Event chat</button></div><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
+  else if (e.reg==="going") block = `<div class="evx-sect"><div class="row" style="gap:10px"><div class="evx-ico">✓</div><div style="flex:1"><div class="name">Going</div><div class="sub">${e.ticket||"Standard"} · ${e.price?`$${e.price}`:"free"}</div></div></div><button class="btn sec" style="margin-top:10px" data-evsheet="evticket|${e.id}">Ticket</button><div class="xs faint" style="margin-top:8px"><span style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Can't make it</span></div></div>`;
   else if (e.reg==="pending") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">${evFirst(e.host)} is reviewing your request. You'll hear once, either way.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Withdraw request</span></div>`;
   else if (e.reg==="waitlist") block = `<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin:4px 0 8px">#${e.wait||1} on the waitlist. If a spot opens it's yours automatically, and you get one push.</div><span class="xs" style="text-decoration:underline;cursor:pointer" data-evunrsvp="${e.id}">Leave the waitlist</span></div>`;
-  else block = `<button class="btn" style="margin-top:12px" data-evrsvp="${e.id}">${e.approval?"Request to join":"Register"}${e.price?` · $${e.price}`:""}</button>${e.approval?`<div class="xs faint" style="margin-top:6px;text-align:center">${evFirst(e.host)} approves each guest.</div>`:""}`;
   const meet = (!locked && !e.past && e.reg!=="hosting") ? (e.meet||[]).map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
     return `<div class="evx-sect evx-li" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${EV_WHY[pid]||"Going, and in your family."}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("") : "";
   const guests = (e.reg==="going"||e.reg==="hosting"||live) ? `<div class="lbl">Going</div><div><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","CF"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}${e.going>7?`<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span>`:""}</div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking.</div></div>` : (!locked&&!e.past?`<div class="xs faint" style="margin-top:14px">${e.going} going. The guest list opens to registered guests.</div>`:"");
+  const cta = evCta(e, live, locked);
   const moreFrom = home ? home.events.map(evE).filter(x=>x&&x.id!==e.id&&!x.past).slice(0,2) : [];
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evshare|${e.id}">···</div></div>
   <div class="body">
@@ -4263,12 +4293,14 @@ sEventDetail = function(id){
     <div class="evx-meta"><div>${evWhen(e)}</div><div>${e.fmt==="online"?"Online · link after you register":e.vis==="invite"?`${e.where} · invite only`:e.where}${e.price?` · $${e.price}`:""}</div></div>
     ${home?`<div class="evx-home" data-cal="${home.id}">${evCalThumb(home)}<div style="flex:1;min-width:0"><div class="a">${home.name}</div><div class="xs muted">${evKind(home)} · hosted by ${e.host===EV_ME?"you":host.name}${others.length?` · also on ${others.map(c=>c.name).join(", ")}`:""}</div></div>${evIsAdmin(home)?"":`<span class="chip ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?'Following':'Follow'}</span>`}</div>`:""}
     ${block}
+    ${evPeek(e, live, locked)}
     ${meet?`<div class="lbl">Who to meet${e.reg==="going"?"":" if you go"}</div>${meet}`:""}
     ${!locked&&e.details?`<div class="lbl">Details</div><p class="evx-p">${e.details}</p>`:""}
     ${guests}
     ${e.past&&e.met&&e.met.length?`<div class="lbl">From your debrief</div>${e.met.map(x=>{const p=DB.people[x];return `<div class="rowitem" data-profile="${x}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">Talked at ${e.name}. Follow-up sent, replied.</div></div><div class="s">edge</div></div>`}).join("")}`:""}
     ${moreFrom.length?`<div class="lbl">More from ${home.name}</div>${moreFrom.map(x=>evCard(x,"row",{fam:false})).join("")}`:""}
   </div>
+  ${cta?`<div class="evx-cta"><button class="btn" ${cta[2]}${cta[1]?` onclick="${cta[1]}"`:""}>${cta[0]}${cta[3]?`<small>${cta[3]}</small>`:""}</button></div>`:""}
   ${navHTML("events")}`;
 };
 
@@ -4326,12 +4358,12 @@ function evManage(id){
     body = `<div class="evx-counts"><div><b>${n}</b><span>checked in</span></div><div><b>${gl.length}</b><span>expected</span></div></div>
     <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="toast('Camera opens. Reads the app ticket and Wallet passes.')">Scan tickets</button><button class="btn sec" style="flex:1" onclick="toast('Walk-in: name and email, then free or paid at the door.')">Walk-in</button></div>
     <div class="lbl">Guest list</div>${gl.map(pid=>{const p=DB.people[pid]; const on=e.checked&&e.checked[pid]; return `<div class="rowitem">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${on?"Checked in":"Not yet"}</div></div><button class="btn sm ${on?'sec':''}" data-evdoor="${id}|${pid}">${on?"Undo":"Check in"}</button></div>`;}).join("")}`; }
-  else if (t==="broadcast") body = `<div class="lbl">To</div><div class="seg">${[["going","Going"],["all","Everyone invited"],["page","Event page only"]].map(([k,l])=>`<div class="${(STATE.evAud||"going")===k?'on':''}" data-evaud="${k}">${l}</div>`).join("")}</div>
+  else if (t==="broadcast") body = `<div class="lbl">To</div><div class="seg">${[["going","Going"],["all","Going and waiting"]].map(([k,l])=>`<div class="${(STATE.evAud||"going")===k?'on':''}" data-evaud="${k}">${l}</div>`).join("")}</div>
     <textarea class="input" id="evbc" rows="3" placeholder="Room moved to the second floor.">${STATE.evBcDraft||""}</textarea>
     <div class="kaiact" style="margin-top:6px"><span class="chip" data-evkaibc="1">Kai: draft a reminder</span></div>
     <button class="btn" style="margin-top:12px" data-evbcsend="${id}">Send</button>
-    <div class="xs faint" style="margin-top:6px">Push and email to ${(STATE.evAud||"going")==="page"?"no one; it shows on the event page":(STATE.evAud==="all"?`${e.going+req.length} people`:`${e.going} going`)}. Nothing goes out until you tap Send.</div>
-    ${(e.broadcasts||[]).length?`<div class="lbl">Sent</div>${e.broadcasts.slice().reverse().map((b,i)=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="evx-p" style="margin:0">${b}</div><div class="b">${i?"Earlier":"Just now"} · push and email</div></div></div>`).join("")}`:""}`;
+    <div class="xs faint" style="margin-top:6px">Pins in the event chat and on the event page, and pushes to ${STATE.evAud==="all"?`${e.going+req.length} people`:`${e.going} going`}. Nothing goes out until you tap Send.</div>
+    ${evUps(evRoom(e)).length?`<div class="lbl">Sent</div>${evUps(evRoom(e)).slice().reverse().map(m=>`<div class="rowitem" data-evroom="${e.id}"><div class="m"><div class="evx-p" style="margin:0">${m.text}</div><div class="b">${m.day==="Today"?"Today":m.day.replace(", 2026","")} · pinned and pushed</div></div></div>`).join("")}`:""}`;
   else { const home=evC(e.cal);
     body = `<div class="lbl" style="margin-top:4px">Where it's listed</div>
       <div class="rowitem" data-cal="${home.id}">${evCalThumb(home)}<div class="m"><div class="a">${home.kind==="personal"&&evIsAdmin(home)?"Your calendar":home.name}</div><div class="b">Home · guests and payments live here</div></div><span class="xs muted">${e.awaiting?"Waiting":"Live"}</span></div>
@@ -4342,7 +4374,7 @@ function evManage(id){
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><span class="xs muted" style="max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.name}</span></div>
   <div class="body">
     ${e.awaiting?`<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin-top:4px">${e.awaiting.replace(", who runs it","")} approve it before it goes live. Only you can see it until then. You can invite people directly in the meantime.</div>${STATE.evDemo!==false?`<div class="xs" style="margin-top:8px;text-decoration:underline;cursor:pointer" data-evapproveevent="${id}">(Demo) They approved it</div>`:""}</div>`:""}
-    <div class="evx-tabs">${[["guests","Guests"],["door","Door"],["broadcast","Broadcast"],["more","More"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
+    <div class="evx-tabs">${[["guests","Guests"],["door","Door"],["broadcast","Updates"],["more","More"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
     <div class="evx-pane">${body}</div>
   </div>`;
 }
@@ -4395,6 +4427,7 @@ function evSheet(type, id){
   if (type==="evreg") { const e=evE(id); return `<h2>${e.approval?"Request to join":"Register"}</h2><p class="sm muted">${e.name} · ${e.when}</p>
     <div class="lbl">Ticket</div><div class="input evx-field"><div class="row"><span style="flex:1">${e.ticket||"Standard"}</span><b>${e.price?`$${e.price}`:"Free"}</b></div></div>
     ${e.approval?`<div class="lbl">${evFirst(e.host)} asks: what do you want out of it?</div><textarea class="input" rows="2">Ship notes from a PM who's run two AI launches. Happy to share mine.</textarea><div class="xs faint" style="margin-top:4px">Kai filled this from your profile. Edit or clear it.</div>`:""}
+    ${e.approval?"":`<div class="lbl">Say hi to the room <span class="faint" style="font-weight:500">optional</span></div><textarea class="input" id="evnote" rows="2" placeholder="What you're hoping to get out of it"></textarea><div class="xs faint" style="margin-top:4px">Posts in the event chat. Everyone going sees it.</div>`}
     <div class="xs faint" style="margin:12px 0">${evFirst(e.host)} sees your name, title and ${e.approval?"answer":"that you're going"}.${e.price?" You pay now; refunds follow the host's policy.":""}</div>
     <button class="btn" data-evregok="${id}">${e.approval?"Send request":e.price?`Pay $${e.price}`:"Register"}</button><button class="btn ghost" onclick="closeSheet()">Not now</button>`; }
   if (type==="evfollow") { const [cid,eid]=id.split("|"); const c=evC(cid); const e=evE(eid); return `<h2>${e.reg==="going"?"You're in.":"Request sent."} Follow ${c.name}?</h2><p class="sm muted">Its next events show in For you. At most two pushes a day, and you can unfollow any time.</p>
@@ -4412,6 +4445,13 @@ function evSheet(type, id){
     ${opts.map(c=>{ const st=(e.listed||[]).includes(c.id)?"Listed":(e.pending||[]).includes(c.id)?"Waiting":""; return `<div class="rowitem">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${c.subs.toLocaleString()} followers · ${evApprover(c)?`${evApprover(c)} approve`:"publishes now"}</div></div>${st?`<span class="xs muted">${st}</span>`:`<button class="btn sm" data-evsubmitok="${id}|${c.id}">${evApprover(c)?"Submit":"Add"}</button>`}</div>`; }).join("")}`; }
   if (type==="evdecline") { return `<h2>Decline ${evFirst(id.split("|")[1])}?</h2><p class="sm muted">${evFirst(id.split("|")[1])} sees "Not approved for this one." Your reason stays with you and your cohosts.</p>
     ${["Full for this one","Not the right fit","Missing information"].map(r=>`<div class="rowitem" data-evdeclineok="${id}"><div class="m"><div class="a">${r}</div></div></div>`).join("")}<button class="btn ghost" onclick="closeSheet()">Keep for now</button>`; }
+  if (type==="evroomnotif") { const c=convOf(id); const cur=c.evNotif||"key"; return `<h2>Notifications for this event</h2><p class="sm muted">The chat stays quiet unless something is for you.</p>
+    ${[["key","Updates and replies to you","Host updates, answers to your questions, replies to you"],["all","Every message",""],["off","Off","You still see everything when you open it"]].map(([k,a,b])=>`<div class="rowitem" data-evnotif="${id}|${k}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="evx-radio ${cur===k?'on':''}"></span></div>`).join("")}
+    <div class="xs faint" style="margin-top:10px">Everything else arrives as one digest the morning of the event.</div>`; }
+  if (type==="evanswer") { const [cid,mid]=id.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); return `<h2>Answer ${P(m.from).name.split(" ")[0]}</h2><p class="sm muted">${m.text}</p>
+    <textarea class="input" id="evans" rows="3" placeholder="Your answer"></textarea>
+    <div class="xs faint" style="margin:8px 0 12px">Shows under the question. ${P(m.from).name.split(" ")[0]} and everyone who upvoted get a push.</div>
+    <button class="btn" data-evansok="${id}">Post answer</button>`; }
   if (type==="evnewcal") return `<h2>New calendar</h2><p class="sm muted">For a series you run, like a dinner club or a talk series. You already have your own calendar; this is another.</p>
     <div class="lbl">Name</div><input class="input" id="evcalname" placeholder="AI Founders Breakfast">
     <div class="lbl">Who can add events</div>${[["admins","Only admins"],["anyone","Anyone; you approve each one"]].map(([k,l])=>`<div class="rowitem" data-evcalacc="${k}"><div class="m"><div class="a">${l}</div></div><span class="evx-radio ${(STATE.evCalAcc||"admins")===k?'on':''}"></span></div>`).join("")}
@@ -4459,16 +4499,139 @@ portWire = function(){
   q("[data-evdoor]", el=>{ const [eid,pid]=el.dataset.evdoor.split("|"); const e=evE(eid); e.checked=e.checked||{}; e.checked[pid]=!e.checked[pid]; render(); });
   q("[data-evaud]", el=>{ STATE.evBcDraft=(document.getElementById("evbc")||{}).value||""; STATE.evAud=el.dataset.evaud; render(); });
   q("[data-evkaibc]", ()=>{ STATE.evBcDraft="See you Friday at 6. We're on the second floor; the side door is open."; render(); });
-  q("[data-evbcsend]", el=>{ const e=evE(el.dataset.evbcsend); const v=(document.getElementById("evbc")||{}).value; if(!v){ toast("Write something first."); return; } e.broadcasts.unshift(v); STATE.evBcDraft=""; render(); toast((STATE.evAud||"going")==="page"?"Posted on the event page.":"Sent."); });
+  q("[data-evbcsend]", el=>{ const e=evE(el.dataset.evbcsend); const v=(document.getElementById("evbc")||{}).value; if(!v){ toast("Write something first."); return; } evRoom(e).msgs.push(M(EV_ME, v, { day:"Today", time:nowTime(), evType:"update" })); STATE.evBcDraft=""; render(); toast("Sent. Pinned in the event chat and pushed."); });
   q("[data-evsubmitok]", el=>{ const [eid,cid]=el.dataset.evsubmitok.split("|"); const e=evE(eid); const c=evC(cid); if (evApprover(c)) { if(!e.pending.includes(cid)) e.pending.push(cid); } else if(!e.listed.includes(cid)) e.listed.push(cid); STATE.sheet=null; render(); toast(evApprover(c)?`Submitted to ${c.name}. It shows there once ${evApprover(c).replace(", who runs it","")} approve${evApprover(c).endsWith("s")?"":"s"}.`:`Added to ${c.name}.`); });
   q("[data-evcalreq]", el=>{ const [cid,rid,ok]=el.dataset.evcalreq.split("|"); const c=evC(cid); const r=c.requests.find(x=>x.id===rid); c.requests=c.requests.filter(x=>x.id!==rid);
     if (ok==="yes") { const nid="e"+(100+DB.fevents.length); DB.fevents.push({ id:nid, name:r.name, when:r.when+", 6pm", day:"Oct 20", where:"Mountain View", going:4, rsvp:false, family:null, host:r.from, bucket:"upcoming", cal:cid, listed:[], pending:[], theme:c.theme, fmt:"in_person", sort:1020, reg:"none", meet:[], requests:[], goingList:[], checked:{}, broadcasts:[], details:"", checkedIn:false, past:false }); c.events.push(nid); }
     render(); toast(ok==="yes"?`Approved. ${evFirst(r.from)} is told it's live; followers see it.`:`Not listed. ${evFirst(r.from)} sees that, without a reason.`); });
   q("[data-evcalacc]", el=>{ STATE.evCalAcc=el.dataset.evcalacc; render(); });
   q("[data-evcalcreate]", ()=>{ const nm=(document.getElementById("evcalname")||{}).value||"AI Founders Breakfast"; const id="cal-n"+DB.calendars.length; DB.calendars.push({ id, name:nm, family:null, host:EV_ME, subs:0, kind:"user", theme:"sage", admins:[EV_ME], accepts:STATE.evCalAcc||"admins", about:"New calendar. Add a line about what happens here.", events:[], requests:[], subscribed:false, sync:false }); STATE.sheet=null; go("cal:"+id); toast(`${nm} is ready. Add your first event.`); });
+  q("[data-evroom]", el=>{ const [id,f]=el.dataset.evroom.split("|"); evOpenRoom(id, f==="focus"); });
+  q("[data-evroomq]", el=>{ evOpenRoom(el.dataset.evroomq); STATE.evRf[evRoomId(evE(el.dataset.evroomq))]="q"; render(); });
+  q("[data-evrf]", el=>{ const cid=STATE.screen.split(":")[1]; STATE.evRf=STATE.evRf||{}; const f=el.dataset.evrf; STATE.evRf[cid]=f; render(); const b=phone.querySelector(".chatbody"); if (b) b.scrollTop = f==="all"?b.scrollHeight:0; const l=phone.querySelector(".evx-list"); if (l) l.classList.add("in-f"); });
+  q("[data-evmode]", el=>{ const t=phone.querySelector("#ci"); const k=t&&t.dataset.k; if (k) { STATE.drafts=STATE.drafts||{}; STATE.drafts[k]=t.value; } STATE.evRoomType=el.dataset.evmode; evKeep(); const nt=phone.querySelector("#ci"); if (nt) nt.focus(); });
+  q("[data-evvote]", el=>{ const [cid,mid]=el.dataset.evvote.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); m.votes=m.votes||[]; const i=m.votes.indexOf(EV_ME); if (i<0) m.votes.push(EV_ME); else m.votes.splice(i,1); evKeep(); });
+  q("[data-evwave]", el=>{ const [cid,mid]=el.dataset.evwave.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); if (m.waved) return; m.waved=true; evKeep(); toast(`Waved. ${P(m.from).name.split(" ")[0]} sees it once.`); });
+  q("[data-evanswer]", el=>openSheet("evanswer", el.dataset.evanswer));
+  q("[data-evansok]", el=>{ const [cid,mid]=el.dataset.evansok.split("|"); const v=((document.getElementById("evans")||{}).value||"").trim(); if (!v) { toast("Write an answer first."); return; } convOf(cid).msgs.find(x=>x.id===mid).answer={ from:EV_ME, text:v }; STATE.sheet=null; evKeep(); toast("Answered. They get a push."); });
+  q("[data-evnotif]", el=>{ const [cid,k]=el.dataset.evnotif.split("|"); convOf(cid).evNotif=k; STATE.sheet=null; render(); toast({ key:"Updates and replies to you.", all:"Every message.", off:"Off for this event." }[k]); });
+  q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]="Hi all, Priya here. PM on Google Cloud, hoping to meet people building AI products."; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
+  q("[data-evphotos]", el=>{ const e=evE(el.dataset.evphotos); const c=evRoom(e); c.msgs.push(M(EV_ME, "", { day:"Today", time:nowTime(), att:[{t:"img",n:4}] })); go("dm:"+c.id); toast("Four photos added. Everyone who went sees them."); });
+  const cta = phone.querySelector(".evx-cta"), eb = cta && phone.querySelector(".body");
+  if (eb) { let y0 = eb.scrollTop; eb.addEventListener("scroll", ()=>{ const y=eb.scrollTop; if (Math.abs(y-y0)<8) return; cta.classList.toggle("hid", y>y0 && y>80); y0=y; }, { passive:true }); }
   phone.querySelectorAll(".evx-month [data-ev]").forEach(el=>el.onclick=()=>go("eventd:"+el.dataset.ev));
   phone.querySelectorAll(".evx-pill[data-cal], .evx-si[data-cal]").forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); STATE.evBack=STATE.screen; go("cal:"+el.dataset.cal); });
 };
+
+/* ---- event chat: one room per event. Chat, host updates and questions live together; chips filter them.
+   Research: Meetup folded event comments into one chat (2024); Slido/Zoom rank questions by votes; Apple Invites posts the RSVP note. ---- */
+const EV_ROOM = { e1:"g-dinner" };
+const evRoomId = e => EV_ROOM[e.id] || "ev-"+e.id;
+function evRoom(e){
+  seedChats(); const rid = evRoomId(e); let c = DB.chat[rid];
+  if (!c) c = DB.chat[rid] = { id:rid, kind:"event", title:e.name, ini:"EV", memberIds:[e.host].concat(e.goingList||[]), members:e.going, createdBy:e.host, created:"Sep 20, 2026", desc:"", msgs:[
+    M(e.host, e.past?"Thanks for coming. Drop your photos here.":`Welcome in. Updates go here, and I answer questions before ${e.day}.`, { day:e.past?"Jul 16, 2026":"Sep 22, 2026", time:"10:00 AM", evType:"update" }) ] };
+  c.ev = e.id;
+  if (e.past && !c.evSeeded) { c.evSeeded = true; c.msgs.push(M("rahul","",{ day:"Jul 16, 2026", time:"9:40 PM", att:[{t:"img",n:3}] }), M("maya","Great meeting everyone. My slides are in the thread.",{ day:"Jul 17, 2026", time:"8:12 AM" }), M("chris","Next one is Sep 24. Same room.",{ day:"Jul 17, 2026", time:"10:30 AM" })); }
+  if (e.id==="e1" && !c.evSeeded) { c.evSeeded = true;
+    const up = M("chris","Table cards go by interest: AI, climate, hiring. Reply with yours and I'll seat you.",{ day:"Sep 21, 2026", time:"10:02 AM", evType:"update" });
+    up.thread = [M("rahul","AI please.",{ day:"Sep 21, 2026", time:"10:20 AM" }), M("maya","AI, next to anyone hiring engineers.",{ day:"Sep 21, 2026", time:"11:05 AM" })]; up.threadCount = 9;
+    c.msgs.unshift(up,
+      M("maya","Looking for a technical cofounder for a health-data company. Happy to swap notes on hiring.",{ day:"Sep 22, 2026", time:"9:14 AM", evType:"intro" }),
+      M("rahul","Anyone driving down from SF? Two seats in my car.",{ day:"Sep 22, 2026", time:"6:30 PM", react:{"🙌":["sana"]} }),
+      Object.assign(M("kate","Is there parking near the venue?",{ day:"Sep 23, 2026", time:"9:02 AM", evType:"question" }), { votes:["rahul","sana"], answer:{ from:"chris", text:"The garage on Hamilton is free after 6." } }),
+      Object.assign(M("sana","Can we bring a plus-one who isn't on Key?",{ day:"Sep 23, 2026", time:"4:40 PM", evType:"question" }), { votes:["rahul","maya","ana","jordan","kate"] }));
+    const doors = c.msgs.find(m=>/^Doors at 7/.test(m.text)); if (doors) doors.evType = "update";
+  }
+  return c;
+}
+function evOpenRoom(id, focus){ const e=evE(id); const c=evRoom(e); STATE.evRf=STATE.evRf||{}; STATE.evRf[c.id]="all"; go("dm:"+c.id); if (focus) { const t=phone.querySelector("#ci"); if (t) t.focus(); } }
+function evKeep(){ const b=phone.querySelector(".body"); const y=b?b.scrollTop:0; render(); const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=y; }
+const evUps = c => c.msgs.filter(m=>m.evType==="update"&&!m.deleted);
+const evQs = c => c.msgs.filter(m=>m.evType==="question"&&!m.deleted);
+
+function evRoomBlock(c, e, m){
+  const p = P(m.from); const host = e.host===EV_ME; const when = `${m.day==="Today"?"":m.day.replace(", 2026","")+" · "}${m.time}`;
+  if (m.evType==="update") { const n = m.thread?(m.threadCount||m.thread.length):0;
+    return `<div class="evx-up${STATE.hl===m.id?' hl':''}" data-lp="${c.id}|${m.id}|"><div class="evx-bh"><span class="evx-tag host">Update</span><b>${p.name}</b><span>${when}</span></div><div class="evx-bt">${fmtText(m.text)}</div><div class="evx-bf">Sent to everyone going · <span onclick="event.stopPropagation();go('thread:${c.id}:${m.id}')">${n?`${n} ${n===1?"reply":"replies"}`:"Reply"}</span></div></div>`; }
+  if (m.evType==="question") { const v = m.votes||[]; const on = v.includes(EV_ME);
+    return `<div class="evx-q" data-lp="${c.id}|${m.id}|"><button class="evx-vote ${on?'on':''}" data-evvote="${c.id}|${m.id}" aria-label="Upvote"><span>▲</span><b>${v.length}</b></button><div class="m"><div class="evx-bh"><b>${p.name}</b><span>asks · ${when}</span>${m.answer?'<span class="evx-tag go">Answered</span>':'<span class="evx-tag">Open</span>'}</div><div class="evx-bt">${fmtText(m.text)}</div>
+      ${m.answer?`<div class="evx-ans"><b>${P(m.answer.from).name}</b> <span>host</span><div>${fmtText(m.answer.text)}</div></div>`:host?`<button class="btn sm" data-evanswer="${c.id}|${m.id}">Answer</button>`:""}</div></div>`; }
+  if (m.evType==="intro") { const me = m.from===EV_ME;
+    return `<div class="evx-intro" data-lp="${c.id}|${m.id}|"><div class="bav" data-profile="${p.id}">${p.initials}</div><div class="m"><div class="evx-bh"><b>${me?"You":p.name}</b><span>${me?"are":"is"} going · ${when}</span></div><div class="evx-bt">${fmtText(m.text)}</div></div>${me?"":`<span class="chip ${m.waved?'on':''}" data-evwave="${c.id}|${m.id}">${m.waved?"Waved":"👋 Wave"}</span>`}</div>`; }
+  return "";
+}
+function evRoomMsgs(c, e, list, flat){
+  let out="", prevDay=null, prev=null;
+  list.forEach(m=>{
+    if (!flat && m.day!==prevDay) { out += `<div class="dsep"><span>${m.day}</span></div>`; prevDay=m.day; prev=null; }
+    if (m.sys) { out += `<div class="syspill"><span>${m.sys}</span></div>`; return; }
+    if (m.evType) { out += evRoomBlock(c, e, m); prev=null; return; }
+    out += bubbleHTML(c, m, !prev || prev.from!==m.from); prev=m;
+  });
+  return out;
+}
+const EV_BELL = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 003.4 0"/></svg>`;
+const _evBaseChat = chatScreen;
+chatScreen = function(id){
+  seedChats(); if (!DB.chat[id] && /^ev-/.test(id) && evE(id.slice(3))) evRoom(evE(id.slice(3)));
+  const c = convOf(id); const e = c && c.kind==="event" && evE(c.ev || (id==="g-dinner"?"e1":""));
+  if (!e || STATE.editMsg) return _evBaseChat(id);
+  evRoom(e); const host = e.host===EV_ME; const f = (STATE.evRf||{})[id]||"all";
+  const ups = evUps(c), qs = evQs(c), open = qs.filter(m=>!m.answer).length;
+  const closed = e.past && e.id!=="e1";
+  const list = f==="q" ? qs.slice().sort((a,b)=>(!!a.answer-!!b.answer)||((b.votes||[]).length-(a.votes||[]).length)) : f==="up" ? ups.slice().reverse() : c.msgs;
+  const latest = ups[ups.length-1];
+  const pin = latest && f==="all" ? `<div class="pinbar evx-pin" data-evrf="up"><span class="evx-tag host">Update</span><div class="m"><div class="sm ell">${latest.text}</div></div>${ups.length>1?`<span class="xs faint">${ups.length-1} more</span>`:""}</div>` : "";
+  const chips = `<div class="pills evx-rchips">${[["all","All"],["q",`Questions${qs.length?` · ${open?open+" open":qs.length}`:""}`],["up",`Updates${ups.length?` · ${ups.length}`:""}`]].map(([k,l])=>`<div class="pill ${f===k?'on':''}" data-evrf="${k}">${l}</div>`).join("")}</div>`;
+  const mine = c.msgs.some(m=>m.from===EV_ME);
+  const first = !mine && !closed && f==="all" && !((STATE.drafts||{})[id]) ? `<div class="evx-first"><span class="chip sug" data-evhi="${id}">Say what you're hoping to get out of it</span></div>` : "";
+  const empty = !list.length ? `<div class="estate"><div class="et">${f==="q"?"No questions yet":"No updates yet"}</div><div class="es">${f==="q"?"Ask the host anything. Others can upvote it.":"The host's updates pin here and reach everyone going."}</div></div>` : "";
+  const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb" style="background:${evBg(e.theme)}" onclick="go('eventd:${e.id}')"></div><div class="hm" onclick="go('eventd:${e.id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${EV_BELL}</div><div class="icon" onclick="openSheet('conv','${id}')">···</div></div>`;
+  const mode = STATE.evRoomType||"message";
+  const modes = [["message","Message"],["question","Question"]].concat(host?[["update","Update"]]:[]);
+  const ph = { message:"Message everyone going", question:"Ask the host. Others can upvote it.", update:"Update everyone going. It pins and pushes." }[mode];
+  const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>`
+    : composerBar(c).replace('<div class="foot cbar">', `<div class="foot cbar"><div class="evx-mode">${modes.map(([k,l])=>`<div class="${mode===k?'on':''}" data-evmode="${k}">${l}</div>`).join("")}</div>`).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
+  return `${hdr}<div class="body chatbody">${pin}${chips}<div class="evx-list">${empty}${evRoomMsgs(c, e, list, f!=="all")}</div>${first}</div>${bar}`;
+};
+const _evSend = sendMsg;
+sendMsg = function(cid, k, confirmed){
+  const c = convOf(cid); const n = c ? c.msgs.length : 0; _evSend(cid, k, confirmed);
+  const t = STATE.evRoomType||"message";
+  if (!c || c.kind!=="event" || String(k||"").includes("::") || t==="message" || c.msgs.length===n) return;
+  const m = c.msgs[c.msgs.length-1]; m.evType = t; if (t==="question") m.votes = [];
+  STATE.evRoomType = "message"; render(); scrollChat();
+  toast(t==="update" ? `Pinned and pushed to ${c.members} going.` : "Asked. The host sees it; others can upvote it.");
+};
+
+/* ---- the chat on the event page: the same room, previewed where people decide ---- */
+function evPeek(e, live, locked){
+  if (locked) return "";
+  const c = evRoom(e); const ups = evUps(c), qs = evQs(c); const latest = ups[ups.length-1];
+  const talk = c.msgs.filter(m=>!m.sys && !m.deleted && m.evType!=="update" && m.evType!=="question").slice(-2);
+  const inRoom = ["going","hosting"].includes(e.reg) || live;
+  const upRow = latest ? `<div class="evx-cr" data-evroom="${e.id}"><span class="evx-tag host">Update</span><div class="m"><div class="sm ell">${latest.text}</div><div class="xs faint">${P(latest.from).name} · ${latest.day==="Today"?latest.time:latest.day.replace(", 2026","")}</div></div></div>` : "";
+  const head = `<div class="lbl evx-lh"><span>Event chat</span>${inRoom?`<span class="xs faint" data-evroom="${e.id}">Open ›</span>`:""}</div>`;
+  if (e.past) return `${head}<div class="evx-cr" data-evroom="${e.id}"><div class="m"><div class="sm">${c.msgs.length} ${c.msgs.length===1?"post":"posts"} from the night</div><div class="xs faint">Photos and updates stay. Read-only a week after.</div></div><span class="xs muted">›</span></div>`;
+  if (e.reg==="pending"||e.reg==="waitlist") return `${head}${upRow}<div class="xs faint evx-note">You see the host's updates while you wait. The chat opens when you're in.</div>`;
+  if (!inRoom) { const faces = [P(e.host).initials].concat(["RM","MC","SI"]).slice(0,Math.min(4,e.going)).map(x=>`<i>${x}</i>`).join("");
+    return `${head}<div class="evx-cr evx-tease"><div class="evx-faces">${faces}</div><div class="m"><div class="sm">${e.going} going are in the chat</div><div class="xs faint">${ups.length} ${ups.length===1?"update":"updates"} from ${evFirst(e.host)}${qs.length?` and ${qs.length} questions`:""} so far. Opens when you register.</div></div></div>`; }
+  const talkRows = talk.map(m=>{ const p=P(m.from); return `<div class="evx-cr" data-evroom="${e.id}"><div class="bav">${p.initials}</div><div class="m"><div class="sm ell"><b>${m.from===EV_ME?"You":p.name.split(" ")[0]}</b> ${m.evType==="intro"?"is going: ":""}${m.text||"Shared photos"}</div></div></div>`; }).join("");
+  const open = qs.filter(m=>!m.answer).length;
+  return `${head}${upRow}${talkRows}${qs.length?`<div class="evx-cr" data-evroomq="${e.id}"><div class="m"><div class="sm">${qs.length} ${qs.length===1?"question":"questions"}${open?`, ${open} open`:""}</div></div><span class="xs muted">›</span></div>`:""}
+    <div class="evx-say" data-evroom="${e.id}|focus">Say something to the room</div>`;
+}
+/* one sticky action per state; hides while you scroll down (Luma, Partiful). Invited and waiting states act inside their section. */
+function evCta(e, live, locked){
+  if (locked) return [`Apply to join`, `toast('Application opens. Tabs stay open while it\\'s pending.')`, ""];
+  if (e.past) return ["Add photos", "", `data-evphotos="${e.id}"`];
+  if (e.reg==="hosting") return ["Manage", "", `data-evgo="eventd:manage.${e.id}"`];
+  if (live && !e.checkedIn) return ["Check in", "", `data-checkin="${e.id}"`];
+  if (e.reg==="going" || live) return ["Open event chat", "", `data-evroom="${e.id}"`];
+  if (e.reg==="none") return [`${e.approval?"Request to join":"Register"} · ${e.price?`$${e.price}`:"free"}`, "", `data-evrsvp="${e.id}"`, e.approval?`${evFirst(e.host)} approves each guest.`:""];
+  return null;
+}
 
 /* ==== COMMUNITY: the family tab, v1 25 Sep 2026 (community thread).
    Apoorv's calls of 25 Sep: the family opens on This week; tabs move between places, chips filter (nav-layers-rule.md);
