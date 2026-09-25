@@ -763,6 +763,9 @@
 .bt .frail { margin:10px 0 0; padding:0; }
 .bt.kai .tl:before { content:"✦ "; }
 .bt.look.locked .ts { font-style:italic; }
+@keyframes kfade { from { opacity:0; } to { opacity:1; } }
+.mlist.in-f, .plist.in-f { animation:kfade 180ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .mlist.in-f, .plist.in-f { animation:none; } }
 
   /* ==== EVENTS AND CALENDARS, 25 Sep 2026 (events thread). Covers are the one expressive surface; lists stay plain. ==== */
   .evx-cov { position:relative; border-radius:14px; overflow:hidden; height:96px; display:flex; align-items:flex-end; padding:8px; }
@@ -851,6 +854,14 @@
   .evx-field { color:var(--ink2); }
   .evx-card .evx-rsvp { margin-left:auto; padding:6px 14px; font-size:13px; border-radius:999px; flex:0 0 auto; }
   .evx-search { margin:2px 0 6px; padding:10px 12px; font-size:14px; }
+  /* tab switch: only the content below the tabs moves, in from the side you're heading to (shared timing: 260ms, ease-out) */
+  @keyframes evxInR { from { transform:translateX(28px); opacity:0; } to { transform:none; opacity:1; } }
+  @keyframes evxInL { from { transform:translateX(-28px); opacity:0; } to { transform:none; opacity:1; } }
+  @keyframes evxFade { from { opacity:0; } to { opacity:1; } }
+  .evx-pane.in-r { animation:evxInR 260ms cubic-bezier(.2,.8,.2,1); } .evx-pane.in-l { animation:evxInL 260ms cubic-bezier(.2,.8,.2,1); }
+  .evx-list.in-f { animation:evxFade 180ms ease-out; }
+  @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l, .evx-list.in-f { animation:none; } }
+  .body:has(.evx-pane) { overflow-x:hidden; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -895,6 +906,12 @@
   .cm-tab { position:relative; } .cm-dot { position:absolute; top:9px; right:-7px; width:6px; height:6px; border-radius:50%; background:var(--ink); }
   .cm-live .ck { display:flex; align-items:center; gap:6px; color:var(--ink); }
   .cm-livedot { width:8px; height:8px; border-radius:50%; background:#B23B3B; }
+  .cm-pane { overflow-x:clip; }
+  .cm-pane.cm-in-l { animation:cmInL .24s cubic-bezier(.2,0,0,1); }
+  .cm-pane.cm-in-r { animation:cmInR .24s cubic-bezier(.2,0,0,1); }
+  @keyframes cmInL { from { transform:translateX(28%); opacity:0; } to { transform:none; opacity:1; } }
+  @keyframes cmInR { from { transform:translateX(-28%); opacity:0; } to { transform:none; opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { .cm-pane.cm-in-l, .cm-pane.cm-in-r { animation:none; } }
 </style>
 </head>
 <body>
@@ -2089,7 +2106,7 @@ function sMission(id) {
     ${STATE.filterNote?`<div class="xs muted" style="margin-top:10px">${STATE.filterNote}</div>`:''}
     <div class="msec"><div class="lbl">Paths</div></div>
     ${true?`<div class="pills" style="margin-top:2px">${[["you","For you",counts.you],["them","Waiting",counts.them],["kai","In conversation",counts.kai],["done","Done",counts.done],["all","All",os.filter(o=>o.state!=="candidate").length]].map(([k,l,c])=>`<div class="pill ${f===k?'on':''}" style="font-size:13px;padding:6px 11px" data-mfilter="${k}">${l}${c?` <span style="opacity:.6">${c}</span>`:''}</div>`).join("")}</div>
-      ${groups.filter(g=>g[1].length).map(([l,arr])=>`<div class="lbl">${l} · ${arr.length}</div>${arr.map(vcard).join("<div style='height:10px'></div>")}`).join("")||`<div class="empty" style="margin-top:12px">${f==="you"?"Nothing needs you. Kai's next pass is Friday.":f==="them"?"Nothing waiting on anyone.":f==="kai"?"No conversations yet.":f==="done"?"Nothing resolved yet.":"No paths yet."}</div>`}
+      <div class="mlist">${groups.filter(g=>g[1].length).map(([l,arr])=>`<div class="lbl">${l} · ${arr.length}</div>${arr.map(vcard).join("<div style='height:10px'></div>")}`).join("")||`<div class="empty" style="margin-top:12px">${f==="you"?"Nothing needs you. Kai's next pass is Friday.":f==="them"?"Nothing waiting on anyone.":f==="kai"?"No conversations yet.":f==="done"?"Nothing resolved yet.":"No paths yet."}</div>`}</div>
       <div style="margin-top:12px"><button class="btn sec" onclick="STATE.back=STATE.screen;STATE.searchKind='${m.type==="Looking"?"role":m.type==="Cofounder"?"person":"all"}';STATE.searchFam=null;STATE.searchQ='';go('explore')">Browse more for this mission</button></div>`
     : ``}
     <div class="msec"><div class="lbl">Activity · ${mlog.length}</div>${missionTimeline(m, os)}</div>
@@ -3601,8 +3618,8 @@ function sPool(kind) {
   return `<div class="hdr"><div class="back" onclick="STATE.poolFam='all';STATE.poolType='all';goBack()">‹</div><div class="t" style="flex:1">${K.pl}</div>${canPost?`<span class="chip" style="font-size:12px" onclick="openSheet('ppost','${kind}')">Post</span>`:""}</div>
   <div class="body">
     <p class="sm muted" style="margin-top:6px">${DB.poolCounts[kind]} across your families, newest first. Every one reaches you through a member${kind==="deal"?". Deals show only to members with Investing on":""}.</p>
-    <div class="pills" style="margin:10px 0 4px">${[["all","All"],...fams.map(x=>[x,x]),["saved","Saved"]].map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolFam='${k}';render()">${l}</div>`).join("")}${kind==="post"?`<span style="width:1px;background:var(--line);margin:2px 4px;align-self:stretch"></span>${PT.map(([k,l])=>`<div class="pill ${pt===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolType='${k}';render()">${l}${k==="all"?"":` <span style="opacity:.6">${DB.pool.filter(x=>x.kind==="post"&&x.ptype===k).length}</span>`}</div>`).join("")}`:""}</div>
-    ${list.length?list.map(poolRow).join(""):`<div class="estate" style="padding-top:32px"><div class="et">${f==="saved"?"Nothing saved yet":"Nothing here yet"}</div><div class="es">${f==="saved"?"Save anything in the pool and it waits here.":"Kai adds new ones as members post them."}</div></div>`}
+    <div class="pills" style="margin:10px 0 4px">${[["all","All"],...fams.map(x=>[x,x]),["saved","Saved"]].map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolFam='${k}';chipFade('.plist')">${l}</div>`).join("")}${kind==="post"?`<span style="width:1px;background:var(--line);margin:2px 4px;align-self:stretch"></span>${PT.map(([k,l])=>`<div class="pill ${pt===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.poolType='${k}';chipFade('.plist')">${l}${k==="all"?"":` <span style="opacity:.6">${DB.pool.filter(x=>x.kind==="post"&&x.ptype===k).length}</span>`}</div>`).join("")}`:""}</div>
+    <div class="plist">${list.length?list.map(poolRow).join(""):`<div class="estate" style="padding-top:32px"><div class="et">${f==="saved"?"Nothing saved yet":"Nothing here yet"}</div><div class="es">${f==="saved"?"Save anything in the pool and it waits here.":"Kai adds new ones as members post them."}</div></div>`}</div>
     <p class="xs faint" style="margin-top:14px">Showing the newest ${list.length}. The rest load as you scroll.</p>
   </div>`;
 }
@@ -4022,6 +4039,10 @@ function missionTimeline(m, os){
   return `<div class="tline">${shown.map(r=>`<div class="tli ${cls(r)}"><div class="td"></div><div class="th"><b>${r.who}${r.path?` · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer" onclick="go('path:${r.path}')">${r.name}</span>`:""}</b><span>${r.when}</span></div><div class="tt ${r.who==="Kai"?"k":""}">${r.text}</div></div>`).join("")}${list.length>6&&!open?`<div class="tmore" onclick="STATE.tlineAll='${m.id}';render()">Everything since the start · ${list.length}</div>`:""}</div>`;
 }
 
+/* shared motion rule (25 Sep): filter chips only fade the list, 180ms; tabs slide the pane 28px over 260ms (see SHARED.md) */
+function chipFade(sel){ const b=phone.querySelector(".body"); const keep=b?b.scrollTop:0; render(); const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=keep; const l=phone.querySelector(sel); if (l) l.classList.add("in-f"); }
+const _mPortWire = portWire; portWire = function(){ _mPortWire(); phone.querySelectorAll("[data-mfilter]").forEach(el=>el.onclick=()=>{ STATE.mfilter=el.dataset.mfilter; STATE.filterAuto=false; STATE.filterNote=null; chipFade(".mlist"); }); };
+
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
    with one card design everywhere. Calendars live in a strip at the top, on their own pages, and on the Calendars screen.
@@ -4172,10 +4193,10 @@ sEvents = function(){
     const pick = m==="drafts" ? drafts : m==="past" ? DB.fevents.filter(e=>e.past && (e.reg==="going"||e.rsvp||e.reg==="hosting")).sort((a,b)=>b.sort-a.sort) : DB.fevents.filter(e=>!e.past && !e.draft && e.reg!=="none");
     if (m!=="past") pick.sort((a,b)=>a.sort-b.sort);
     body = `<div class="pills evx-chips">${[["upcoming","Upcoming"],["past","Past"],...(drafts.length?[["drafts",`Drafts · ${drafts.length}`]]:[])].map(([k,l])=>`<div class="pill ${m===k?'on':''}" data-evmine="${k}">${l}</div>`).join("")}</div>
-      ${evByDate(pick, m==="drafts"?"No drafts.":m==="past"?"Nothing yet.":"Nothing yet. Events you register for or host land here.")}
+      <div class="evx-list">${evByDate(pick, m==="drafts"?"No drafts.":m==="past"?"Nothing yet.":"Nothing yet. Events you register for or host land here.")}</div>
       ${m==="upcoming"?`<div class="evx-sugg" data-evsheet="evsync|me"><div class="row" style="gap:10px"><div class="evx-ico">⇅</div><div style="flex:1"><div class="name">Add My events to your calendar</div><div class="sub">What you host and register for, each event once, kept up to date.</div></div><span class="xs muted">›</span></div></div>`:""}`;
   }
-  return `${head}<div class="body">${evStrip()}<div class="evx-tabs">${[["foryou","For you"],["mine","My events"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div>${body}</div>${navHTML("events")}`;
+  return `${head}<div class="body">${evStrip()}<div class="evx-tabs">${[["foryou","For you"],["mine","My events"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>${navHTML("events")}`;
 };
 
 /* ---- Calendars screen: every calendar you have a relationship with, and making a new one ---- */
@@ -4200,6 +4221,14 @@ sCalendars = function(){
 
 /* search, like each of today's calendar tabs; filters in place so the keyboard stays up */
 function evCalFilter(v){ v=v.trim().toLowerCase(); phone.querySelectorAll(".body .rowitem[data-cal]").forEach(r=>{ r.style.display = !v || r.textContent.toLowerCase().includes(v) ? "" : "none"; }); }
+
+/* Re-render, keep the scroll where the tabs are, and animate only the pane: r slides in from the right, l from the left, f fades (chips). */
+function evSwap(dir){
+  const b=phone.querySelector(".body"); const tabs=b&&b.querySelector(".evx-tabs,.evx-chips"); const keep=b?Math.min(b.scrollTop, tabs?tabs.offsetTop:0):0;
+  render();
+  const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=keep;
+  const pane=phone.querySelector(dir==="f"?".evx-list":".evx-pane"); if (pane) pane.classList.add("in-"+dir);
+}
 
 /* ---- event page, host and manage share the eventd: route ---- */
 const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"Chris vouched for her. Her cofounder intent matches yours.", sana:"On the Perplexity hiring panel. Posted the role you're tracking.", ana:"Hiring a platform PM. You've met twice.", kate:"Michigan alum, growth PM at Duolingo." };
@@ -4311,7 +4340,7 @@ function evManage(id){
   <div class="body">
     ${e.awaiting?`<div class="evx-sect"><div class="name">Waiting</div><div class="sub" style="margin-top:4px">${e.awaiting.replace(", who runs it","")} approve it before it goes live. Only you can see it until then. You can invite people directly in the meantime.</div>${STATE.evDemo!==false?`<div class="xs" style="margin-top:8px;text-decoration:underline;cursor:pointer" data-evapproveevent="${id}">(Demo) They approved it</div>`:""}</div>`:""}
     <div class="evx-tabs">${[["guests","Guests"],["door","Door"],["broadcast","Broadcast"],["more","More"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evmtab="${k}">${l}</div>`).join("")}</div>
-    ${body}
+    <div class="evx-pane">${body}</div>
   </div>`;
 }
 
@@ -4343,7 +4372,7 @@ sCalendar = function(id){
       : on&&c.auto&&!c.subscribed?`<div class="xs faint" style="margin-top:8px">Following because you're a member. New events and changes, at most two pushes a day.</div>`:on?`<div class="xs faint" style="margin-top:8px">New events and changes, at most two pushes a day.</div>`:""}
     ${submit?`<div class="xs" style="margin-top:12px;text-decoration:underline;cursor:pointer" data-evnewon="${c.id}">Host an event on ${c.name}</div><div class="xs faint">${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it first.</div>`:""}
     <div class="pills evx-chips" style="margin-top:14px">${[["up","Upcoming"],["past","Past"],["month","Month"]].map(([k,l])=>`<div class="pill ${seg===k?'on':''}" data-evcalseg="${k}">${l}</div>`).join("")}</div>
-    ${list}
+    <div class="evx-list">${list}</div>
   </div>`;
 };
 function evCalManage(id){
@@ -4355,7 +4384,7 @@ function evCalManage(id){
     <div class="lbl">Followers · ${c.subs}</div>${["rahul","maya","sana","jordan"].map(p=>`<div class="rowitem">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div><div class="b">${DB.people[p].title}</div></div><span class="xs muted" onclick="toast('Removed. They aren\\'t told.')">Remove</span></div>`).join("")}`;
   else body = [["Name and cover",c.name],["Theme",(EV_THEMES[c.theme]||[])[0]],["Who can add events",c.accepts==="anyone"?"Anyone; you approve":c.accepts==="members"?"Members; you approve":"Only admins"],["Visibility","Public · key.ai link"],["Delete calendar",c.kind==="personal"?"Your personal calendar can't be deleted":"Only the creator"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}.')"><div class="m"><div class="a" ${a==="Delete calendar"?'style="color:var(--danger)"':''}>${a}</div><div class="b">${b}</div></div><span class="xs muted">›</span></div>`).join("");
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
-  <div class="body"><div class="evx-tabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div>${body}</div>`;
+  <div class="body"><div class="evx-tabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>`;
 }
 
 /* ---- sheets ---- */
@@ -4395,8 +4424,10 @@ const _evPortWire = portWire;
 portWire = function(){
   _evPortWire();
   const q = (sel, fn) => phone.querySelectorAll(sel).forEach(el=>el.onclick=(ev)=>{ ev.stopPropagation(); fn(el, ev); });
-  q("[data-evseg]", el=>{ STATE.evSeg=el.dataset.evseg; render(); });
-  q("[data-evmine]", el=>{ STATE.evMine=el.dataset.evmine; render(); });
+  q("[data-evseg]", el=>evTab(el, "evSeg", "evseg"));
+  const evTab = (el, key, attr) => { const tabs=[...el.parentNode.children]; const from=tabs.findIndex(t=>t.classList.contains("on")), to=tabs.indexOf(el); if (from===to) return;
+    STATE[key]=el.dataset[attr]; evSwap(to>from?"r":"l"); };
+  q("[data-evmine]", el=>{ STATE.evMine=el.dataset.evmine; evSwap("f"); });
   q("[data-evinvite]", el=>{ const [id,a]=el.dataset.evinvite.split("|"); const e=evE(id); if (a==="yes") { e.reg="none"; evRegister(id); } else { e.reg="none"; render(); toast(`${evFirst(e.host)} sees "Can't make it." Nothing else.`); } });
   q("[data-evsavedraft]", ()=>{ const d=evDraft(); d.name=(document.getElementById("evname")||{}).value||d.name||"Untitled event"; const src=d.from&&evE(d.from);
     if (src) src.name=d.name; else DB.fevents.push({ id:"e"+(100+DB.fevents.length), name:d.name, when:"Fri, Oct 16, 6pm", end:"8pm", day:"Oct 16", where:"Mountain View", going:0, rsvp:false, family:null, host:EV_ME, bucket:"upcoming", cal:d.cal, listed:[], pending:[], theme:d.theme, fmt:d.fmt, cap:d.cap, approval:d.approval, vis:d.vis, sort:1016, reg:"hosting", draft:true, meet:[], requests:[], goingList:[], details:d.desc, past:false, checkedIn:false, price:0 });
@@ -4408,8 +4439,8 @@ portWire = function(){
   q("[data-evunrsvp]", el=>rsvp(el.dataset.evunrsvp, false));
   q("[data-evregok]", el=>evRegister(el.dataset.evregok));
   q("[data-evfollowok]", el=>{ const c=evC(el.dataset.evfollowok); c.subscribed=true; c.unfollowed=false; c.subs++; STATE.sheet=null; render(); toast(`Following ${c.name}.`); });
-  q("[data-evcalseg]", el=>{ STATE.evCalSeg=el.dataset.evcalseg; render(); });
-  q("[data-evctab]", el=>{ STATE.evCtab=el.dataset.evctab; render(); });
+  q("[data-evcalseg]", el=>{ STATE.evCalSeg=el.dataset.evcalseg; evSwap("f"); });
+  q("[data-evctab]", el=>evTab(el, "evCtab", "evctab"));
   q("[data-evnewon]", el=>{ STATE.evDraft=null; evDraft().cal=el.dataset.evnewon; STATE.evBack=STATE.screen; go("eventd:new"); });
   q("[data-evtheme]", el=>{ evDraft().name=(document.getElementById("evname")||{}).value||evDraft().name; evDraft().theme=el.dataset.evtheme; render(); });
   q("[data-evfmt]", el=>{ evDraft().fmt=el.dataset.evfmt; render(); });
@@ -4417,7 +4448,7 @@ portWire = function(){
   q("[data-evtog]", el=>{ const d=evDraft(), k=el.dataset.evtog; if (k==="vis") d.vis = d.vis==="public"?"private":"public"; else d[k]=!d[k]; render(); });
   q("[data-evkaidesc]", ()=>{ const d=evDraft(); d.name=(document.getElementById("evname")||{}).value||d.name; d.desc="Twenty PMs pull apart one product for an hour. Bring one screen you'd change. No slides."; render(); toast("Kai drafted it. Edit anything."); });
   q("[data-evpublish]", ()=>evPublish());
-  q("[data-evmtab]", el=>{ STATE.evMtab=el.dataset.evmtab; render(); });
+  q("[data-evmtab]", el=>evTab(el, "evMtab", "evmtab"));
   q("[data-evapprove]", el=>{ const [eid,pid]=el.dataset.evapprove.split("|"); const e=evE(eid); e.requests=e.requests.filter(x=>x!==pid); e.goingList.push(pid); e.going++; render(); toast(`${evFirst(pid)} is in. They get a ticket and join the event chat.`); });
   q("[data-evapproveevent]", el=>{ const e=evE(el.dataset.evapproveevent); const who=e.awaiting; e.awaiting=null; render(); toast(`${who.replace(", who runs it","")} approved it. It's live and followers see it.`); });
   q("[data-evdecline]", el=>openSheet("evdecline", el.dataset.evdecline));
@@ -4486,13 +4517,36 @@ function cChips(list, cur, attr){
 }
 
 /* The family tab opens on This week; Channels is its own screen so Back returns to it. */
+const C_TAB_SCR = ["family","fchannels","people","fevents","posts"];
 const _cRender = render;
 render = function(){
   const S = STATE.screen;
-  if (S!=="fchannels") { _cRender(); return; }
-  STATE.screen = "family"; STATE._cCh = true;
-  try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; }
+  if (S!=="fchannels") _cRender();
+  else { STATE.screen = "family"; STATE._cCh = true; try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; } }
+  if (C_TAB_SCR.includes(S)) cPane();
 };
+/* Switching family tabs: the header, cover and tabs stay put; only the content under the tabs slides in from the side you moved toward. */
+const _cTabIndexOf = tabIndexOf;
+tabIndexOf = function(scr){ return scr==="fchannels" ? 3 : _cTabIndexOf(scr); };
+const _cGo = go;
+go = function(s){
+  const from = STATE.screen;
+  if (suppressNav || s===from || !C_TAB_SCR.includes(from) || !C_TAB_SCR.includes(s)) { _cGo(s); return; }
+  const body = phone.querySelector(".view .body"); const y = body ? body.scrollTop : 0;
+  STATE.cPane = { dir: C_TAB_SCR.indexOf(s) > C_TAB_SCR.indexOf(from) ? "l" : "r", y };
+  STATE.anim = ""; STATE.backNav = false; STATE.screen = s; STATE.sheet = null;
+  render();
+};
+function cPane(){
+  const bar = phone.querySelector(".view .body > .cm-bar, .view .body > .cm-tabs"); if (!bar) return;
+  const body = bar.parentElement; const pane = document.createElement("div"); pane.className = "cm-pane";
+  while (bar.nextSibling) pane.appendChild(bar.nextSibling);
+  body.appendChild(pane);
+  pane.style.minHeight = Math.max(0, body.clientHeight - bar.offsetHeight) + "px";
+  const t = STATE.cPane; STATE.cPane = null; if (!t) return;
+  body.scrollTop = Math.min(t.y, bar.offsetTop);
+  pane.classList.add(t.dir==="l" ? "cm-in-l" : "cm-in-r");
+}
 
 /* ---- This week ---- */
 function cWeek(){
