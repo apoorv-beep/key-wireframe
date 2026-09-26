@@ -733,6 +733,14 @@ body:has(.push) .ctlbtn { display:none; }
 .bx code, .bub code { font:12.5px/1.4 ui-monospace, Menlo, monospace; background:rgba(0,0,0,.06); border-radius:4px; padding:0 4px; }
 .bx .quo, .bub .quo { display:block; border-left:2px solid var(--line); padding-left:8px; color:var(--ink2); }
 .fmtbar span:active { background:var(--ink); color:#fff; }
+/* For later */
+.xrow.later .sico { font-size:16px; } .xrow .b.ell { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:230px; }
+.lrow .sico { padding:6px; color:var(--ink2); cursor:pointer; } .lrow.un .a { font-weight:700; }
+.schedstrip { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink2); padding:6px 10px; border:1px dashed var(--line); border-radius:10px; margin-bottom:8px; cursor:pointer; } .schedstrip .m { flex:1; }
+.alsorow { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink2); margin-bottom:8px; } .alsorow .ck { width:18px; height:18px; border:1.5px solid var(--ink3); border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; } .alsorow .ck.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+.tfaces { display:inline-flex; margin-right:6px; } .tfaces .tf { width:18px; height:18px; border-radius:5px; background:var(--fill); border:1px solid #fff; font-size:8px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:-4px; color:var(--ink2); }
+.bub .svd { font-size:10px; margin-right:4px; }
+.citabs span b { font-weight:700; margin-left:2px; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -3273,6 +3281,7 @@ function render() {
   else if (S==="kaihistory") html = sKaiHistory();
   else if (S==="messages") { STATE.inboxView=null; html = sInbox(); }
   else if (S==="notifications") html = sNotifications();
+  else if (S==="later") html = sLater();
   else if (S.startsWith("dm:")) html = chatScreen(S.split(":")[1]);
   else if (S.startsWith("req:")) html = sReqThread(S.split(":")[1]);
   else if (S.startsWith("sent:")) html = sSentThread(S.split(":")[1]);
@@ -5616,6 +5625,86 @@ render = function(){
   const nsb = phone.querySelector("#sheet .sb"); if (nsb && sy && sy.y && STATE.sheet && STATE.sheet.type===sy.type && nsb.scrollTop===0) nsb.scrollTop = sy.y;
 };
 function keepScroll(fn){ (fn||render)(); }
+
+/* ---------- For later: saved, scheduled, drafts, mentions, threads (26 Sep; key-conversations has GET /v1/saved, /reminders, /scheduled, /drafts, /mentions, /threads/followed, all person-wide, no client calls them yet) ---------- */
+function laterSeed() {
+  if (DB.saved) return; seedChats();
+  const jobs = convOf("jobs"); const sana = jobs && jobs.msgs.find(m=>m.from==="sana");
+  DB.saved = sana ? [{ cid:"jobs", mid:sana.id, parent:"", at:"Yesterday", remind:"Tomorrow 9:00" }] : [];
+  DB.scheduled = []; STATE.threadFollow = STATE.threadFollow||{}; STATE.mentionsRead = STATE.mentionsRead||{}; STATE.alsoChannel = STATE.alsoChannel||{};
+}
+function allMsgs() { seedChats(); const out=[]; Object.values(DB.chat).forEach(c=>{ (c.msgs||[]).forEach(m=>{ if (m.sys) return; out.push({ c, m, parent:"" }); (m.thread||[]).forEach(r=>out.push({ c, m:r, parent:m.id })); }); }); return out; }
+function mentionsOf() { const me=P(meId()); return allMsgs().filter(x=>x.m.from!==meId() && !x.m.deleted && x.m.text && (x.m.text.includes("@"+me.name) || x.m.text.includes("@channel"))).reverse(); }
+function draftsOf() { return Object.entries(STATE.drafts||{}).filter(([k,v])=>v&&v.trim()).map(([k,v])=>{ const [cid,pid]=k.split("::"); const c=convOf(cid); return c ? { k, cid, pid, c, text:v.trim() } : null; }).filter(Boolean); }
+function threadsOf() { laterSeed(); return allMsgs().filter(x=>!x.parent && x.m.thread && x.m.thread.length && (STATE.threadFollow[x.c.id+"::"+x.m.id] || x.m.thread.some(r=>r.from===meId()))).map(x=>{ const last=x.m.thread[x.m.thread.length-1]; const seen=(STATE.threadSeen||{})[x.c.id+"::"+x.m.id]||0; return Object.assign(x, { last, unread: x.m.thread.length>seen }); }); }
+function laterCounts() { laterSeed(); return { saved:DB.saved.length, scheduled:DB.scheduled.length, drafts:draftsOf().length, mentions:mentionsOf().filter(x=>!STATE.mentionsRead[x.m.id]).length, threads:threadsOf().filter(x=>x.unread).length }; }
+function laterRow() {
+  const n = laterCounts(); const parts=[]; if (n.saved) parts.push(`${n.saved} saved`); if (n.scheduled) parts.push(`${n.scheduled} scheduled`); if (n.drafts) parts.push(`${n.drafts} draft${n.drafts>1?'s':''}`); if (n.mentions) parts.push(`${n.mentions} mention${n.mentions>1?'s':''}`); if (n.threads) parts.push(`${n.threads} thread${n.threads>1?'s':''} with replies`);
+  return `<div class="xrow later" onclick="go('later')"><span class="sico">🔖</span><div class="m"><div class="a">Saved, scheduled and drafts</div><div class="b">${parts.join(" · ")||"Nothing waiting"}</div></div><span class="s">›</span></div>`;
+}
+const _laterChats = chatsListHTML;
+chatsListHTML = function(){ const h=_laterChats(); const mark=`<div class="icon" onclick="openSheet('newchat')">+</div></div>`; return h.includes(mark) ? h.replace(mark, mark+laterRow()) : laterRow()+h; };
+function convName(c) { return c.kind==="channel" ? "#"+c.title : convTitle(c); }
+function openAt(cid, mid, parent) { STATE.hl = mid; STATE.backNav=false; if (parent) go(`thread:${cid}:${parent}`); else if (convOf(cid).kind==="channel") go("channel:"+cid); else go("dm:"+cid); }
+function sLater() {
+  laterSeed(); const tab = STATE.laterTab||"saved"; const n = laterCounts();
+  const tabs = [["saved","Saved",DB.saved.length],["scheduled","Scheduled",DB.scheduled.length],["drafts","Drafts",n.drafts],["mentions","Mentions",n.mentions],["threads","Threads",n.threads]];
+  const empty = (t,s)=>`<div class="estate"><div class="et">${t}</div><div class="es">${s}</div></div>`;
+  const mrow = (x, trail, sub) => { const p=P(x.m.from); return `<div class="xrow lrow" onclick="openAt('${x.c.id}','${x.m.id}','${x.parent||''}')">${av(p.initials,"sm")}<div class="m"><div class="a">${p.name} <span class="faint">in ${convName(x.c)}</span></div><div class="b ell">${x.m.deleted?'This message was deleted':previewOf(x.m)}</div>${sub||''}</div>${trail||''}</div>`; };
+  let body = "";
+  if (tab==="saved") body = DB.saved.length ? DB.saved.map((s,i)=>{ const c=convOf(s.cid); const m=findMsg(c,s.mid,s.parent||null); if(!m) return ""; return mrow({c,m,parent:s.parent}, `<span class="sico" onclick="event.stopPropagation();openSheet('remind','${i}')">${s.remind?'⏰':'⏱'}</span><span class="sico" onclick="event.stopPropagation();unsaveMsg(${i})">×</span>`, s.remind?`<div class="xs" style="margin-top:3px">Reminder · ${s.remind}</div>`:''); }).join("") : empty("Nothing saved","Long-press a message and tap Save. Add a reminder and Kai brings it back at that time.");
+  else if (tab==="scheduled") body = DB.scheduled.length ? DB.scheduled.map((s,i)=>{ const c=convOf(s.cid); return `<div class="xrow lrow" onclick="schedEdit(${i})"><span class="sico">🕒</span><div class="m"><div class="a">To ${convName(c)} <span class="faint">· ${s.when}</span></div><div class="b ell">${s.text||(s.att&&s.att.length?'Attachment':'')}</div></div><span class="sico" onclick="event.stopPropagation();schedSendNow(${i})">↑</span><span class="sico" onclick="event.stopPropagation();schedDelete(${i})">×</span></div>`; }).join("") : empty("Nothing scheduled","Hold the send button in any chat to pick a time.");
+  else if (tab==="drafts") { const ds=draftsOf(); body = ds.length ? ds.map(d=>`<div class="xrow lrow" onclick="STATE.backNav=false;${d.pid?`go('thread:${d.cid}:${d.pid}')`:d.c.kind==="channel"?`go('channel:${d.cid}')`:`go('dm:${d.cid}')`}"><span class="sico">✎</span><div class="m"><div class="a">${convName(d.c)}${d.pid?' <span class="faint">· thread</span>':''}</div><div class="b ell">${d.text}</div></div><span class="sico" onclick="event.stopPropagation();STATE.drafts['${d.k}']='';render()">×</span></div>`).join("") : empty("No drafts","Anything you type and leave stays in that chat's composer, and shows here."); }
+  else if (tab==="mentions") { const ms=mentionsOf(); body = (ms.length ? `<div class="row" style="justify-content:flex-end;margin:0 0 4px"><span class="xs" style="text-decoration:underline" onclick="mentionsOf().forEach(x=>STATE.mentionsRead[x.m.id]=1);render()">Mark all read</span></div>` : "") + (ms.length ? ms.map(x=>mrow(x, `<div class="s"><div class="xs">${x.m.time}</div>${STATE.mentionsRead[x.m.id]?'':'<div class="unread" style="width:8px;height:8px;min-width:0;padding:0;margin-left:auto"></div>'}</div>`)).join("") : empty("No mentions","When someone @mentions you or @channel in a group you're in, it lands here.")); }
+  else { const ts=threadsOf(); body = ts.length ? ts.map(x=>{ const faces=[...new Set(x.m.thread.map(r=>r.from))].slice(0,3).map(id=>av(P(id).initials,"sm")).join(""); return `<div class="xrow lrow ${x.unread?'un':''}" onclick="openAt('${x.c.id}','${x.m.id}','')"><span class="sico">⌗</span><div class="m"><div class="a ${x.unread?'':''}">${convName(x.c)} <span class="faint">· ${x.m.thread.length} ${x.m.thread.length===1?'reply':'replies'} · last ${x.last.time}</span></div><div class="b ell">${previewOf(x.m)}</div><div class="row" style="gap:2px;margin-top:4px">${faces}<span class="xs faint" style="margin-left:6px">${first(x.last.from)}: ${previewOf(x.last)}</span></div></div>${x.unread?'<div class="unread" style="width:8px;height:8px;min-width:0;padding:0"></div>':''}<span class="sico" onclick="event.stopPropagation();threadFollow('${x.c.id}','${x.m.id}',false)">×</span></div>`; }).join("") : empty("No threads","Threads you replied to or follow show here, with the newest reply."); }
+  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1"><div style="font-size:18px;font-weight:700">For later</div><div class="xs faint">Across all your families</div></div></div>
+  <div class="citabs">${tabs.map(([k,l,c])=>`<span class="${tab===k?'on':''}" onclick="STATE.laterTab='${k}';render()">${l}${c?` <b>${c}</b>`:''}</span>`).join("")}</div>
+  <div class="body" style="padding-top:8px">${body}</div>`;
+}
+/* Save, remind (message sheet) */
+function savedIndex(cid, mid) { laterSeed(); return DB.saved.findIndex(s=>s.cid===cid&&s.mid===mid); }
+function toggleSave(cid, mid, parent) { laterSeed(); const i=savedIndex(cid,mid); if (i>=0) { DB.saved.splice(i,1); STATE.sheet=null; render(); toast("Removed from Saved"); } else { DB.saved.unshift({ cid, mid, parent:parent||"", at:"now", remind:"" }); STATE.sheet=null; render(); toast("Saved. Find it under Saved, scheduled and drafts.", ()=>{ DB.saved.shift(); render(); }); } }
+function unsaveMsg(i) { DB.saved.splice(i,1); render(); toast("Removed from Saved"); }
+function setRemind(i, when) { const s=DB.saved[i]; s.remind=when; STATE.sheet=null; render(); toast(when?`Kai brings it back ${when.toLowerCase()}`:"Reminder removed"); }
+function remindFor(cid, mid, parent) { laterSeed(); let i=savedIndex(cid,mid); if (i<0) { DB.saved.unshift({ cid, mid, parent:parent||"", at:"now", remind:"" }); i=0; } openSheet("remind", String(i)); }
+/* Schedule (hold the send button) */
+function scheduleMsg(cid, k, when) { laterSeed(); const ta=phone.querySelector("#ci"); const text=(ta?ta.value:(STATE.drafts||{})[k]||"").trim(); const att=((STATE.pending||{})[k]||[]).slice(); if (!text&&!att.length) { toast("Type the message first"); return; } DB.scheduled.push({ id:"s"+Date.now(), cid, k, text, att, when }); STATE.drafts[k]=""; if (STATE.pending) STATE.pending[k]=[]; STATE.sheet=null; render(); toast(`Scheduled for ${when}. Change it under Saved, scheduled and drafts.`); }
+function schedSendNow(i) { const s=DB.scheduled.splice(i,1)[0]; STATE.drafts=STATE.drafts||{}; STATE.drafts[s.k]=s.text; STATE.pending=STATE.pending||{}; STATE.pending[s.k]=s.att; sendMsg(s.cid, s.k, true); toast(`Sent to ${convName(convOf(s.cid))}`); }
+function schedEdit(i) { const s=DB.scheduled.splice(i,1)[0]; STATE.drafts=STATE.drafts||{}; STATE.drafts[s.k]=s.text; STATE.pending=STATE.pending||{}; STATE.pending[s.k]=s.att; STATE.backNav=false; const [cid,pid]=s.k.split("::"); if (pid) go(`thread:${cid}:${pid}`); else go((convOf(cid).kind==="channel"?"channel:":"dm:")+cid); toast("Back in the composer. Hold send to schedule again."); }
+function schedDelete(i) { const s=DB.scheduled.splice(i,1)[0]; render(); toast("Scheduled message deleted", ()=>{ DB.scheduled.splice(i,0,s); render(); }); }
+const _laterComposer = composerBar;
+composerBar = function(c, target) { laterSeed(); const k=target||c.id; const sch=DB.scheduled.filter(s=>s.k===k); const [cid,pid]=k.split("::");
+  const also = pid && c.kind!=="dm" ? `<div class="alsorow"><span class="ck ${STATE.alsoChannel[k]?'on':''}" onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">${STATE.alsoChannel[k]?'✓':''}</span><span onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">Also send to ${convName(c)}</span></div>` : "";
+  const strip = sch.length ? `<div class="schedstrip" onclick="STATE.laterTab='scheduled';go('later')"><span>🕒</span><span class="m">${sch.length===1?`Scheduled for ${sch[0].when}`:`${sch.length} scheduled`}</span><span class="s">›</span></div>` : "";
+  const h=_laterComposer(c, target); return h.replace('<div class="foot cbar">', `<div class="foot cbar">${strip}${also}`); };
+const _laterSend = sendMsg;
+sendMsg = function(cid, k, confirmed) { laterSeed(); const c=convOf(cid); const [,pid]=k.split("::"); const before=c.msgs.length; const ta=phone.querySelector("#ci"); const text=(ta?ta.value:(STATE.drafts||{})[k]||"").trim();
+  _laterSend(cid, k, confirmed);
+  if (pid) { const pm=c.msgs.find(x=>x.id===pid); if (pm && pm.thread && pm.thread.length && pm.thread[pm.thread.length-1].from===meId()) { STATE.threadFollow[cid+"::"+pid]=true; STATE.threadSeen=STATE.threadSeen||{}; STATE.threadSeen[cid+"::"+pid]=pm.thread.length; if (STATE.alsoChannel[k] && text) { const r=pm.thread[pm.thread.length-1]; c.msgs.push(Object.assign({}, r, { id:mid(), alsoFrom:pid, att:[] })); STATE.alsoChannel[k]=false; render(); scrollChat(); } } }
+};
+function threadFollow(cid, pid, on) { laterSeed(); STATE.threadFollow[cid+"::"+pid]=on; render(); toast(on?"Following this thread. New replies land in Threads.":"Unfollowed. It stays if you reply again."); }
+const _laterThread = sThread;
+sThread = function(cid, pid) { laterSeed(); const c=convOf(cid); const pm=c.msgs.find(m=>m.id===pid); STATE.threadSeen=STATE.threadSeen||{}; STATE.threadSeen[cid+"::"+pid]=(pm.thread||[]).length; const on=!!STATE.threadFollow[cid+"::"+pid] || (pm.thread||[]).some(r=>r.from===meId());
+  const who=[...new Set((pm.thread||[]).map(r=>r.from))]; const faces=who.slice(0,3).map(id=>av(P(id).initials,"sm")).join("");
+  const h=_laterThread(cid, pid);
+  return h.replace(`<div class="xs faint">in ${c.kind==="channel"?"#"+c.title:convTitle(c)}</div></div></div>`, `<div class="xs faint">in ${c.kind==="channel"?"#"+c.title:convTitle(c)} · ${who.length} ${who.length===1?'person':'people'}</div></div><span class="chip ${on?'on':''}" style="margin-left:8px" onclick="threadFollow('${cid}','${pid}',${on?'false':'true'})">${on?'Following':'Follow'}</span></div>`); };
+const _laterBubble = bubbleHTML;
+bubbleHTML = function(c, m, firstOfRun, opts={}) { let h=_laterBubble(c, m, firstOfRun, opts); const n=m.thread?(m.threadCount||m.thread.length):0;
+  if (n && !opts.inThread && m.thread.length) { const last=m.thread[m.thread.length-1]; const faces=[...new Set(m.thread.map(r=>r.from))].slice(0,3).map(id=>`<span class="tf">${P(id).initials}</span>`).join(""); h=h.replace(/⌗ View \d+ (reply|replies)<\/div>/, `<span class="tfaces">${faces}</span>${n} ${n===1?'reply':'replies'} <span class="faint">· ${last.time}</span></div>`); }
+  if (m.alsoFrom) h=h.replace('<div class="bx">', `<div class="xs faint" style="margin-bottom:2px">Also sent from a thread</div><div class="bx">`);
+  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', '<div class="bf"><span class="svd">🔖</span>');
+  return h; };
+const _laterSheet = portSheet;
+portSheet = function(type, id) {
+  if (type==="msg") { const [cid,m_id,parent]=id.split("|"); const h=_laterSheet(type,id); const saved=savedIndex(cid,m_id)>=0; const i=h.indexOf("</div>")+6;
+    const rows = `<div class="xrow" onclick="toggleSave('${cid}','${m_id}','${parent||''}')"><span class="sico">🔖</span><div class="m"><div class="a">${saved?'Remove from Saved':'Save'}</div></div></div><div class="xrow" onclick="remindFor('${cid}','${m_id}','${parent||''}')"><span class="sico">⏰</span><div class="m"><div class="a">Remind me</div></div></div>`;
+    return h.slice(0,i)+rows+h.slice(i); }
+  if (type==="remind") { const s=DB.saved[+id]; if (!s) return ""; return `<h2>Remind me</h2><div class="xs faint" style="margin-bottom:8px">Kai brings the message back as a bell row.</div>${["In 1 hour","Tomorrow 9:00","Monday 9:00","Next week"].map(w=>`<div class="xrow" onclick="setRemind(${id},'${w}')"><div class="m"><div class="a">${w}</div></div>${s.remind===w?'<span class="s">✓</span>':''}</div>`).join("")}${s.remind?`<div class="xrow" onclick="setRemind(${id},'')"><div class="m"><div class="a" style="color:var(--danger)">Remove reminder</div></div></div>`:''}`; }
+  if (type==="sched") { const [cid,k]=id.split("|"); return `<h2>Send later</h2><div class="xs faint" style="margin-bottom:8px">Sends itself at that time. Edit or cancel it under Saved, scheduled and drafts.</div>${["Tomorrow 9:00","Monday 9:00","Tonight 20:00"].map(w=>`<div class="xrow" onclick="scheduleMsg('${cid}','${k}','${w}')"><span class="sico">🕒</span><div class="m"><div class="a">${w}</div></div></div>`).join("")}<div class="xrow" onclick="scheduleMsg('${cid}','${k}','Fri 26 Sep 17:30')"><span class="sico">📅</span><div class="m"><div class="a">Pick a date and time</div></div></div>`; }
+  return _laterSheet(type, id);
+};
+const _laterWire = portWire;
+portWire = function(){ _laterWire(); const s=phone.querySelector(".csend"); if (s && !s.dataset.lp2) { s.dataset.lp2="1"; let t=null; s.addEventListener("pointerdown", ()=>{ t=setTimeout(()=>{ t=null; const ta=phone.querySelector("#ci"); if (ta && !(STATE.editMsg&&STATE.editMsg.k===ta.dataset.k)) { window._lpAt=Date.now(); openSheet("sched", ta.dataset.c+"|"+ta.dataset.k); } }, 500); }); ["pointerup","pointercancel","pointerleave"].forEach(ev=>s.addEventListener(ev, ()=>{ if (t) clearTimeout(t); })); s.addEventListener("contextmenu", e=>e.preventDefault()); } };
 
 
 /* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Daniel decides, Maya answers.
