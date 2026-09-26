@@ -3379,7 +3379,7 @@ function advanceWeek() {
     if (o1&&isNewOf(o1)) { o1.state="waiting"; lit(o1,"Asked","-6d"); o1.log.push(["You","said hi to Rahul","-6d"]); }
     if (o1) { o1.state="yourmove"; o1.phase="replied"; o1.replyText="Rahul: Happy to chat. Thursday afternoon?"; lit(o1,"Replied","-1d"); o1.log.push(["Rahul","replied","-1d"]); if (STATE.connect.calendar) { o1.logPrompt="Tuesday with Rahul, anything come of it?"; } }
     if (o2&&isNewOf(o2)) { o2.state="waiting"; lit(o2,"Asked","-5d"); o2.log.push(["You","asked Daniel to intro you to Maya","-5d"]); o2.log.push(["Daniel","agreed and forwarded your note","-3d"]); o2.viaAgreed=true; lit(o2,"Daniel agreed","-3d"); }
-    if (o3) { o3.state="waiting"; lit(o3,"Asked","-6d"); o3.log.push(["You","asked Sana to refer you","-6d"]); o3.log.push(["Kai","no reply from Sana in 6 days. Drafted a nudge for you to send.","-1d"]); o3.nudgeDraft=true; }
+    if (o3) { o3.state="waiting"; lit(o3,"Asked","-8d"); o3.log.push(["You","asked Sana to refer you","-8d"]); o3.log.push(["Kai","day 7, no reply from Sana. Drafted a nudge for you to send.","-1d"]); o3.nudgeDraft=true; }
     go("home"); pushNote("This week", "Rahul replied. Daniel forwarded your note to Maya. Sana hasn't answered; Kai drafted a nudge for you.", [["Open", ()=>go("home")]]);
     if (o1&&o1.logPrompt) { DB.activity.unshift({ cat:"foryou", who:"Kai", ini:"K", text:o1.logPrompt+" Tap to answer.", when:"now", to:"mission:m1", needs:true }); setTimeout(()=>pushNote("Quick one", o1.logPrompt, [["Answer", ()=>go("mission:m1")]]), 900); }
     return; }
@@ -3387,11 +3387,11 @@ function advanceWeek() {
     const o1=DB.opps.find(o=>o.id==="o1"); const o2=DB.opps.find(o=>o.id==="o2"); const o3=DB.opps.find(o=>o.id==="o3");
     if (o1) { o1.state="conversation"; o1.met=true; o1.phase=null; lit(o1,"In conversation","-4d"); o1.log.push(["You","met Rahul Thursday","-4d"]); o1.journalDue=true; }
     if (o2) { o2.state="yourmove"; o2.phase="replied"; o2.replyText="Maya: Daniel mentioned you. Coffee next week?"; lit(o2,"Replied","-2d"); o2.log.push(["Maya","replied","-2d"]); }
-    if (o3) { o3.stale=true; o3.log.push(["Kai","two weeks, no reply. Proposing to archive.","now"]); }
+    if (o3) { o3.stale=true; o3.log.push(["Kai","day 21, still quiet after one nudge. Proposing to archive. Sana would see Expired, no words.","now"]); }
     STATE.archiveProposed = o3 ? [o3.id] : [];
     go("home"); pushNote("Two things", "Kai wants to know how Rahul went, and one path went quiet. One tap each.", [["Open", ()=>go("mission:m1")]]); return; }
   if (wk===4) { const o1=DB.opps.find(o=>o.id==="o1"); if (o1&&o1.state!=="done") { o1.state="done"; o1.outcome="good"; o1.journalDue=false; lit(o1,"Resolved","-3d"); o1.log.push(["You","logged: went well. Rahul is referring you.","-3d"]); }
-    const o3=DB.opps.find(o=>o.id==="o3"); if (o3&&o3.stale&&o3.state!=="done") { o3.state="done"; o3.outcome="closed"; o3.log.push(["You","archived after two weeks quiet","-2d"]); STATE.archiveProposed=null; }
+    const o3=DB.opps.find(o=>o.id==="o3"); if (o3&&o3.stale&&o3.state!=="done") { o3.state="done"; o3.outcome="closed"; o3.log.push(["You","archived after three weeks quiet","-2d"]); STATE.archiveProposed=null; }
     STATE.closeProposed="m1"; go("mission:m1"); pushNote("Looks done", "Senior PM role: Rahul is referring you and one offer is in motion. Close it, or keep going?", [["Review", ()=>go("mission:m1")]]); return; }
   toast("End of the scripted month. Reset to run it again.");
 }
@@ -6216,7 +6216,7 @@ function seesWhat(o, ending){
 function pendSheet(id, ending){
   const o=DB.opps.find(x=>x.id===id); const c=viaOf(o), t=targetOf(o); const {c:ca}=pathAsks(o);
   const title = ending==="withdraw" ? `Withdraw the ask to ${firstName(c&&!o.viaAgreed?c:t)}?` : ending==="archive" ? `Archive ${o.roleTitle||firstName(t)}?` : `Close this path?`;
-  const why = ending==="withdraw" ? "No reason is given. The path closes." : ending==="archive" ? "Two weeks quiet, nudged once. The record stays." : "Nothing came of it. Logged, so Kai shows fewer like this.";
+  const why = ending==="withdraw" ? "No reason is given. The path closes." : ending==="archive" ? "Three weeks quiet, nudged once. The record stays." : "Nothing came of it. Logged, so Kai shows fewer like this.";
   const thanks = c && (o.viaAgreed || (ca&&ca.state==="waiting")) ? `<div class="lbl">Also a line to ${firstName(c)}? Optional</div><div class="toggle ${STATE.pendThanks?'on':''}" style="border:0;padding:8px 0" onclick="STATE.pendThanks=!STATE.pendThanks;render()"><div><div style="font-size:14px;font-weight:600">Send ${firstName(c)} a thank-you</div><div class="xs muted">Drafted in your voice. Nothing goes unless this is on.</div></div><div class="sw"></div></div>${STATE.pendThanks?`<textarea class="input" id="pendline" rows="2">${firstName(c)}, thanks for forwarding me to ${firstName(t)}. It didn't connect this time, but I appreciate you making the ask.</textarea>`:''}` : "";
   return `<h2>${title}</h2><p class="sm muted">${why}</p>
     <div class="lbl">Who sees what</div>${seesWhat(o,ending).map(([w,s])=>`<div class="rc"><span class="ty">${w}</span><span>${s}</span></div>`).join("")}
@@ -6358,7 +6358,7 @@ const _advanceWeek = advanceWeek; advanceWeek = function(){
   if (wk===3 && o && o.phase==="replied") { if (t && t.state!=="done") { t.state="waiting"; t.when="-2d"; t.outcomeLine="Now a chat"; } }
   if (wk===4) { if (o && o.state==="conversation" && !o.met) { o.updateDue=true; o.log.push(["Kai","ten days in the thread, no meeting on the calendar. Asking, not assuming.","now"]); }
     if (c2 && (c2.state==="open"||c2.state==="pending")) { setStatus(c2,"Expired","21 days, no decision. Dev sees: expired, no words"); c2.when="now"; }
-    const o3=DB.opps.find(x=>x.id==="o3"); if (o3 && o3.state==="done" && o3.outcome==="closed") { const i=o3.log.findIndex(l=>/archived after two weeks quiet/.test(l[1])); if (i>=0) o3.log.splice(i+1,0,["Kai","Sana sees: Expired. No words.","-2d"]); } }
+    const o3=DB.opps.find(x=>x.id==="o3"); if (o3 && o3.state==="done" && o3.outcome==="closed") { const i=o3.log.findIndex(l=>/archived after three weeks quiet/.test(l[1])); if (i>=0) o3.log.splice(i+1,0,["Kai","Sana sees: Expired. No words.","-2d"]); } }
 };
 
 /* ---- Sheets and wiring ---- */
@@ -6456,7 +6456,7 @@ function scStatus(o){
     if (o.later && own==="them") return `${f1(scHolder(o))} said later. Kai asks again in a month`;
   }
   if (own==="you") { if (o.phase==="replied") return o.replyText ? o.replyText.replace(/^[^:]+: /,"").replace(/^"|"$/g,"") : `${f1(t)} replied`; if (o.phase==="followup") return o.followNote||"You talked last night. Warm now"; return scWhy(o); }
-  if (own==="them") { const h=f1(scHolder(o)); return `${h} has it${since?" since "+since:""}${o.quiet?". Nudged once":o.nudgeDraft?". Nudge drafted for you":o.stale?". Quiet two weeks":". Kai drafts a nudge Friday"}`; }
+  if (own==="them") { const h=f1(scHolder(o)); return `${h} has it${since?" since "+since:""}${o.quiet?". Nudged once":o.nudgeDraft?". Nudge drafted for you":o.stale?". Quiet three weeks":". Kai drafts a nudge Friday"}`; }
   if (own==="kai") return o.met ? "You met. Kai asks how it went in a week" : "Talking in Messages";
   return o.outcome==="good" ? (c ? `${f1(c)} sees: Landed` : "Logged") : o.outcome==="nofit" ? "Logged. Fewer like this" : "Closed. Reopen any time";
 }
@@ -6507,7 +6507,7 @@ todayItems = function(){
     const closable = STATE.closeProposed ? DB.missions.find(m=>m.id===STATE.closeProposed&&m.status==="active") : null;
     if (closable) items.push(row(`data-mission="${closable.id}"`, av("K"), `${closable.name} looks done`, "Close it and log what came of it?", mini(`data-close="${closable.id}"`,"Review")));
     if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&viaOf(o)&&!o.thanked) items.push(row(`data-opp="${o.id}"`, av("K"), `Thank ${f1(viaOf(o))}?`, "The intro landed. A line is drafted", mini(`onclick="event.stopPropagation();openSheet('thank','${o.id}')"`,"Preview"))); }
-    DB.opps.filter(o=>o.state==="waiting"&&(o.nudgeDraft||o.stale)&&!o.quiet).forEach(o=>{ const w=scHolder(o); items.push(row(`data-opp="${o.id}"`, av(w.initials), `${f1(w)} has your ask`, o.nudgeDraft?"Nudge drafted, waiting for your yes":"Quiet two weeks", mini(`data-nudge="${o.id}"`, o.nudgeDraft?"Review":"Nudge"))); });
+    DB.opps.filter(o=>o.state==="waiting"&&(o.nudgeDraft||o.stale)&&!o.quiet).forEach(o=>{ const w=scHolder(o); items.push(row(`data-opp="${o.id}"`, av(w.initials), `${f1(w)} has your ask`, o.nudgeDraft?"Nudge drafted, waiting for your yes":"Quiet three weeks", mini(`data-nudge="${o.id}"`, o.nudgeDraft?"Review":"Nudge"))); });
   }
   const e1 = DB.fevents.find(x=>x.id==="e1");
   if (e1 && STATE.eventDay && e1.checkedIn && !e1.past) items.unshift(row(`data-debrief="e1"`, av("K"), "Who did you talk to last night?", "Tap faces. Twenty seconds", mini(`data-debrief="e1"`,"Answer")));
@@ -6571,7 +6571,7 @@ function scKaiAsks(id, m, os){
   os.filter(o=>o.state==="conversation"&&o.meetProposed&&!o.met).forEach(o=>card("green", `Meeting ${f1(targetOf(o))} Thursday 3pm?`, "From your calendar", sec(`data-metyes="${o.id}"`,"Yes")+q(fix(o.id,"x.meetProposed=true; x.met=false;"),"No")));
   os.filter(o=>o.nudgeDraft&&o.state!=="done").forEach(o=>card("grey", `Nudge ${f1(targetOf(o))}?`, "Six days quiet. One line, drafted in your voice", pri(`onclick="STATE.sheet={type:'preview',id:'${o.id}'};render()"`,"Preview")+q(fix(o.id,"x.nudgeDraft=false; x.log.push(['You','let it be','now']);"),"Let it be")));
   os.filter(o=>o.logPrompt&&o.state!=="done").forEach(o=>card("green", o.logPrompt, "From your calendar", sec(`${fix(o.id,"x.log.push(['You','we talked. Logged from the prompt.','now']); if(x.state==='waiting'||x.state==='yourmove'){ x.state='conversation'; x.met=true; lit(x,'In conversation','now'); } x.logPrompt=null;").replace(/render\(\)"$/,"render();toast('Logged. Kai asks how it went in a week.')\"")}`,"We talked")+sec(`${fix(o.id,"x.log.push(['You','nothing yet','now']); x.logPrompt=null;").replace(/render\(\)"$/,"render();toast('Okay. Kai asks again if it moves.')\"")}`,"Nothing yet")+q(fix(o.id,"x.logPrompt=null;"),"Not related")));
-  os.filter(o=>o.stale&&o.state!=="done"&&(STATE.archiveProposed||[]).includes(o.id)).forEach(o=>card("grey", `Archive ${o.roleTitle||f1(targetOf(o))}?`, `Two weeks quiet, nudged once. ${f1(scHolder(o))} sees: Expired, no words`, sec(`${fix(o.id,`x.state='done'; x.outcome='closed'; x.log.push(['You','archived','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`).replace(/render\(\)"$/,"render();toast('Archived. Reopen from Done any time.')\"")}`,"Archive")+q(`data-exit="${o.id}|other"`, o.roleTitle?"Apply directly":"Another route")+q(fix(o.id,`x.log.push(['You','keep waiting','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`),"Keep waiting")));
+  os.filter(o=>o.stale&&o.state!=="done"&&(STATE.archiveProposed||[]).includes(o.id)).forEach(o=>card("grey", `Archive ${o.roleTitle||f1(targetOf(o))}?`, `Three weeks quiet, nudged once. ${f1(scHolder(o))} sees: Expired, no words`, sec(`${fix(o.id,`x.state='done'; x.outcome='closed'; x.log.push(['You','archived','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`).replace(/render\(\)"$/,"render();toast('Archived. Reopen from Done any time.')\"")}`,"Archive")+q(`data-exit="${o.id}|other"`, o.roleTitle?"Apply directly":"Another route")+q(fix(o.id,`x.log.push(['You','keep waiting','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`),"Keep waiting")));
   os.filter(o=>o.updateDue&&o.state!=="done").forEach(o=>card("green", `Still talking with ${f1(targetOf(o))}?`, "Ten days, no meeting on your calendar", sec(`data-exit="${o.id}|met"`,"We met")+sec(`${fix(o.id,"x.updateDue=false; x.log.push(['You','still talking. Kai checks again in two weeks.','now']);").replace(/render\(\)"$/,"render();toast('Okay. Kai asks again in two weeks.')\"")}`,"Still talking")+q(`data-exit="${o.id}|close"`,"It fizzled")));
   if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===id&&viaOf(o)&&!o.thanked) card("gold", `Thank ${f1(viaOf(o))}?`, `${f1(viaOf(o))} sees: Landed. A line in your voice is drafted`, pri(`onclick="openSheet('thank','${o.id}')"`,"Preview")+q(`onclick="STATE.thankOffer=null;render()"`,"Not now")); }
   if (STATE.closeProposed===id) card("gold", "Close this mission?", `${m.done}. Reopen any time`, pri(`data-close="${id}"`,"Close it")+q(`onclick="STATE.closeProposed=null;render()"`,"Not yet"));
@@ -6586,7 +6586,8 @@ function scPathRow(o){
 function scLogRows(m, os, limit){
   const own = m.mlog || [["You","started this at sign-up","Tue"],["Kai","first pass. Found "+os.length+" path"+(os.length===1?"":"s")+".","Tue"]];
   const rows = own.map(l=>({ who:l[0], text:l[1], when:l[2], path:null })).concat(os.flatMap(o=>(o.log||[]).slice(1).map(l=>({ who:l[0].split(",")[0], text:l[1], when:l[2], path:o.id, name:(o.roleTitle||f1(targetOf(o))) }))));
-  const list=rows.slice().reverse(); const open=STATE.tlineAll===m.id; const shown=open?list:list.slice(0,limit);
+  const tk=w=>{ if (!w||w==="now"||w==="today") return 0; const d=/^([+-])(\d+)d$/.exec(w); if (d) return (d[1]==="-"?-1:1)*+d[2]; return -10; };
+  const list=rows.map((r,i)=>Object.assign(r,{i})).sort((a,b)=>(tk(b.when)-tk(a.when))||(b.i-a.i)); const open=STATE.tlineAll===m.id; const shown=open?list:list.slice(0,limit);
   return { n:list.length, html:`<div class="rows">${shown.map(r=>`<div class="lrow"><span class="when">${r.when}</span><span><b>${r.who}</b>${r.path?` <span class="pn" onclick="go('path:${r.path}')">${r.name}</span>`:""} ${r.text}</span></div>`).join("")}</div>${list.length>limit&&!open?`<div class="row" onclick="STATE.tlineAll='${m.id}';render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Everything since the start · ${list.length}</div></div><span class="chev">›</span></div>`:""}` };
 }
 sMission = function(id){
@@ -6729,7 +6730,7 @@ whySheet = function(id){
 pendSheet = function(id, ending){
   const o=DB.opps.find(x=>x.id===id); const c=viaOf(o), t=targetOf(o); const {c:ca}=pathAsks(o);
   const title = ending==="withdraw" ? `Withdraw the ask to ${f1(scHolder(o))}?` : ending==="archive" ? `Archive ${o.roleTitle||f1(t)}?` : `Close this path?`;
-  const why = ending==="withdraw" ? "No reason is given. The path closes" : ending==="archive" ? "Two weeks quiet, nudged once. The record stays" : "Nothing came of it. Kai shows fewer like this";
+  const why = ending==="withdraw" ? "No reason is given. The path closes" : ending==="archive" ? "Three weeks quiet, nudged once. The record stays" : "Nothing came of it. Kai shows fewer like this";
   const thanks = c && (o.viaAgreed || (ca&&ca.state==="waiting")) ? `<div class="toggle" onclick="STATE.pendThanks=!STATE.pendThanks;render()"><div><div class="n15">Send ${f1(c)} a thank-you</div><div class="m12">Drafted in your voice. Goes only if this is on</div></div><div class="sw ${STATE.pendThanks?'on':''}" style="${STATE.pendThanks?'background:var(--ink)':''}"></div></div>${STATE.pendThanks?`<textarea class="input" id="pendline" rows="2">${f1(c)}, thanks for forwarding me to ${f1(t)}. It didn't connect this time, but I appreciate you making the ask.</textarea>`:''}` : "";
   return scSheet(title, why, `<div class="sl">Who sees what</div><div class="rows">${seesWhat(o,ending).map(([w,s])=>`<div class="fr ${w==="You"?"you":""}"><span class="who">${w}</span><span>${s}</span></div>`).join("")}</div>
     ${thanks}
@@ -7046,6 +7047,175 @@ function dSheet(id){
   return "";
 }
 const _dPortSheet = portSheet; portSheet = function(type, id){ if (type==="dsheet") return dSheet(id); return _dPortSheet(type, id); };
+
+/* ==== ACTIVE JOURNAL, RESOURCE AND PLUG PATHS (26 Sep, missions thread, his 06:25 calls)
+   Journal (research memo Q1): two-layer capture, one tap for the outcome then an optional note pre-filled
+   with what Kai already knows; one ask per event, one follow-up in the weekly review, then stop; after a
+   week of silence the prompts pause and say so; every note pays back before the next conversation.
+   Resource and plug (prod kinds v2 had only in the pool): drawn as paths with a Source receipt. */
+
+/* ---- outcome: "Not yet" twice ends the asking; a real outcome opens the keep step ---- */
+const _jLogOutcome = logOutcome; logOutcome = function(id, v){
+  const o = DB.opps.find(x=>x.id===id); if (!o) return _jLogOutcome(id, v);
+  const t = targetOf(o);
+  if (v==="no") {
+    _jLogOutcome(id, v);
+    o.jSkips = (o.jSkips||0)+1; o.jWeekly = o.jSkips<2;
+    const i = o.log.map(l=>l[1]).lastIndexOf("not yet. Kai asks again next week.");
+    if (o.jSkips>=2) { if (i>=0) o.log[i][1] = "not yet, twice. Kai stopped asking about this one."; STATE.toast=null; toast(`Not logged. Kai won't ask about ${f1(t)} again. Log it from the path any time.`); }
+    else { if (i>=0) o.log[i][1] = "not yet. Kai asks once more in the weekly review, then stops."; STATE.toast=null; toast("Okay. One more ask in your weekly review, then Kai stops."); }
+    render(); return;
+  }
+  o.jWeekly = false;
+  _jLogOutcome(id, v);
+  STATE.jPick = []; STATE.jNext = null;
+  STATE.sheet = { type:"jsheet", id:"keep|"+id }; render();
+};
+
+/* what Kai already knows about this person, offered as one-tap notes */
+function jKnown(o){
+  const t = targetOf(o); const n = f1(t);
+  if (o.roleTitle) return [`${n} said the ${o.roleTitle} team is still deciding`, `${n} wants a work sample`, `Not the right time on their side`];
+  return [`${n} is hiring, not looking for a cofounder`, `${n} wants to talk again after ${o.personId==="maya"?"her design partners ship":"a few weeks"}`, `${n} offered to intro me to someone`, `Not the right fit for what I'm building`];
+}
+const J_NEXT = [["week","Follow up in a week"],["send","Send them something"],["intro","Ask for the intro they offered"],["none","Nothing for now"]];
+function jToggle(i){ const p=STATE.jPick||[]; STATE.jPick = p.includes(i) ? p.filter(x=>x!==i) : p.concat([i]); render(); }
+function jKeepSheet(id){
+  const o = DB.opps.find(x=>x.id===id); const t=targetOf(o); const c=viaOf(o); const pick=STATE.jPick||[];
+  const known = jKnown(o).map((k,i)=>`<div class="xrow" onclick="jToggle(${i})"><div class="m"><div class="a">${k}</div></div><span class="selc ${pick.includes(i)?'on':''}">${pick.includes(i)?LI("check",12):''}</span></div>`).join("");
+  const next = J_NEXT.map(([k,l])=>`<div class="pill ${STATE.jNext===k?'on':''}" style="font-size:12px;padding:5px 10px" onclick="STATE.jNext='${k}';render()">${l}</div>`).join("");
+  return scSheet("Anything worth keeping?", c?`For you and Kai. ${f1(c)} was told the outcome, nothing else`:"For you and Kai. Nobody else reads it", `
+    <div class="sl">Tap what's true</div><div class="rows">${known}</div>
+    <div class="composer" style="margin-top:8px"><textarea class="input" id="jnote" rows="2" placeholder="Or say it. Twenty seconds"></textarea><div class="mic" onclick="document.getElementById('jnote').value='(Spoken) ${f1(t)} is deep in a launch until November. Keen after that.'">${MIC_SVG}</div></div>
+    <div class="sl">Next step</div><div class="pills" style="margin:4px 0 0">${next}</div>
+    <div class="acts" style="margin-top:14px"><button class="btn" onclick="jKeep('${id}')">Keep</button><span class="quiet" onclick="jSkipKeep('${id}')">Skip</span></div>
+    <div class="m12" style="text-align:center;margin-top:8px">Kai shows this back to you before you next talk to ${f1(t)}</div>`);
+}
+function jKeep(id){
+  const o = DB.opps.find(x=>x.id===id); const t=targetOf(o);
+  const el = document.getElementById("jnote"); const typed = el ? el.value.trim().replace(/^\(Spoken\) /,"") : "";
+  const picks = (STATE.jPick||[]).map(i=>jKnown(o)[i]);
+  const note = [].concat(picks, typed?[typed]:[]).join(". ");
+  const nx = STATE.jNext && STATE.jNext!=="none" ? J_NEXT.find(x=>x[0]===STATE.jNext)[1] : null;
+  if (!note && !nx) { jSkipKeep(id); return; }
+  o.journal = { note, next:nx, when:"now" };
+  if (note) o.log.push(["You", "kept: "+note+".", "now"]);
+  if (nx) { o.nextStep = nx; o.log.push(["Kai", `${nx.replace(/^Follow up in a week/,"reminds you in a week").replace(/^Send them something/,"reminds you to send it").replace(/^Ask for the intro they offered/,"drafts the ask for the intro")}. Nothing goes out without you.`, "now"]); }
+  const m = DB.missions.find(x=>x.id===o.missionId); if (m && note) missionLogAdd(m, "You", `kept a note on ${f1(t)}: ${note}`);
+  STATE.sheet=null; STATE.jPick=[]; STATE.jNext=null; STATE.metrics.journal++; render();
+  toast(nx ? `Kept. Kai brings it up before you next talk to ${f1(t)}, and ${nx.toLowerCase().replace(/^follow up in a week/,"reminds you in a week")}.` : `Kept. Kai brings it up before you next talk to ${f1(t)}.`);
+}
+function jSkipKeep(id){ STATE.sheet=null; STATE.jPick=[]; STATE.jNext=null; render(); toast("Logged. Add a note from the path any time."); }
+
+/* ---- weekly review: the one follow-up, progress first (goal gradient), then stop ---- */
+function jWeek(){
+  const os = DB.opps.filter(o=>o.missionId && o.state!=="candidate" && o.state!=="dropped");
+  const talked = os.filter(o=>o.met || o.state==="conversation" || (o.state==="done" && o.outcome && o.outcome!=="closed"));
+  const logged = talked.filter(o=>o.state==="done" && o.outcome && o.outcome!=="closed" || o.journal);
+  const due = os.filter(o=>o.jWeekly && o.state!=="done");
+  const kept = os.filter(o=>o.journal && o.journal.note);
+  return { talked, logged, due, kept };
+}
+function jReviewSheet(){
+  const w = jWeek();
+  if (STATE.jPaused) return jPausedSheet();
+  const prog = w.talked.length ? `<div class="funnel-l" style="margin-top:2px">${w.logged.length} of ${w.talked.length} conversations logged this week</div>` : "";
+  const dueRows = w.due.map(o=>{ const t=targetOf(o); return `<div class="row" data-opp="${o.id}"><div class="m"><div class="a">Did you and ${f1(t)} talk?</div><div class="b">Last ask. Kai stops after this</div></div><div class="r" style="display:flex;gap:6px"><button class="mini" data-outcome="${o.id}|good">Yes</button><button class="mini sec" data-outcome="${o.id}|no">No</button></div></div>`; }).join("");
+  const keptRows = w.kept.map(o=>`<div class="lrow"><span class="when">${o.journal.when}</span><span><b>${f1(targetOf(o))}</b> ${o.journal.note}${o.journal.next?` <span class="m12">· ${o.journal.next}</span>`:""}</span></div>`).join("");
+  return scSheet("Your week", "Twenty seconds. Kai asks once a week, only when something happened", `${prog}
+    ${dueRows?`<div class="sl">Still open</div><div class="rows">${dueRows}</div>`:""}
+    ${keptRows?`<div class="sl">What you kept</div><div class="rows">${keptRows}</div>`:""}
+    ${!dueRows&&!keptRows?`<div class="m12" style="padding:8px 0">Nothing to log. Kai only asks when a meeting happened.</div>`:""}
+    <div class="acts" style="margin-top:14px"><button class="btn sec" onclick="jReviewDone()">That's the week</button></div>
+    <div class="m12" style="text-align:center;margin-top:8px">Missed a week? Kai pauses these and says so. Resume is one tap</div>`);
+}
+function jReviewDone(){ const w=jWeek(); w.due.forEach(o=>{ o.jWeekly=false; o.jSkips=2; o.log.push(["You","review closed without an answer. Kai stopped asking about this one.","now"]); }); STATE.sheet=null; render(); toast(w.due.length?"Closed. Kai won't ask about those again.":"Closed for the week."); }
+function jPausedSheet(){
+  return scSheet("Journal prompts are paused", "A week went by with no answers, so Kai stopped asking. Nothing was lost", `<div class="rows"><div class="fr"><span>Paths keep moving. Only the “did you talk” asks are off</span></div><div class="fr"><span>Resume brings back one weekly review, not a backlog</span></div></div>
+    <div class="acts" style="margin-top:14px"><button class="btn" onclick="jResume()">Resume</button><span class="quiet" onclick="closeSheet()">Leave them off</span></div>`);
+}
+function jPause(){ STATE.jPaused=true; DB.opps.forEach(o=>{ if (o.jWeekly||o.journalDue) { o.jWeekly=false; o.journalDue=false; o.jSkips=0; } }); DB.missions.forEach(m=>{ if (m.status==="active") missionLogAdd(m, "Kai", "a week of silence on the journal. Paused the asks. Resume from home any time."); }); }
+function jResume(){ STATE.jPaused=false; STATE.sheet=null; render(); toast("Resumed. One weekly review, no backlog."); }
+
+/* ---- home: the review row and the paused row; journal rows hidden while paused ---- */
+const _jToday = todayItems; todayItems = function(){
+  let items = _jToday();
+  if (STATE.persona!=="priya") return items;
+  if (STATE.jPaused) { items = items.filter(h=>!/data-journal=/.test(h)); items.push(`<div class="trow sc" onclick="openSheet('jsheet','review')">${av("K")}<div class="m"><div class="a">Journal prompts paused</div><div class="b">A week of silence. Resume is one tap</div></div><button class="mini sec" onclick="event.stopPropagation();jResume()">Resume</button></div>`); return items; }
+  const w = jWeek();
+  if (w.due.length) items.push(`<div class="trow sc" onclick="openSheet('jsheet','review')">${av("K")}<div class="m"><div class="a">Your week</div><div class="b">${w.logged.length} of ${w.talked.length} conversations logged · ${w.due.length===1?"one":w.due.length} to answer</div></div><button class="mini" onclick="event.stopPropagation();openSheet('jsheet','review')">Review</button></div>`);
+  return items;
+};
+
+/* ---- a week of silence pauses the asks (Duolingo precedent, Fogg) ---- */
+const _jAdvance = advanceWeek; advanceWeek = function(){
+  const before = STATE.week||0; _jAdvance(); if ((STATE.week||0)===before) return;
+  const unanswered = DB.opps.filter(o=>o.jWeekly && o.state!=="done");
+  if (unanswered.length && STATE.jSilent) { jPause(); STATE.jSilent=false; }
+  else STATE.jSilent = unanswered.length>0;
+  const due = DB.opps.filter(o=>o.journalDue && o.state!=="done" && !o.jWeekly);
+  if (STATE.jPaused) due.forEach(o=>{ o.journalDue=false; });
+};
+
+/* ---- payback: what you kept, shown before the next conversation ---- */
+function jLastBlock(o){
+  if (!o.journal || !(o.journal.note||o.journal.next)) return "";
+  const t=targetOf(o);
+  return `<div class="sl">Last time, ${f1(t)}</div><div class="rows">${o.journal.note?`<div class="fr you"><span>${o.journal.note}</span></div>`:""}${o.journal.next?`<div class="fr"><span>Next: ${o.journal.next}. Kai reminds you</span></div>`:""}</div>`;
+}
+const _jPathBody = scPathBody; scPathBody = function(id, asSheet){
+  let h = _jPathBody(id, asSheet); const o = DB.opps.find(x=>x.id===id); if (!o) return h;
+  const block = jLastBlock(o); if (!block) return h;
+  const marks = ['<div class="sl">Why Kai picked this</div>', '<div class="row" data-sctog="hist:', '</div><div class="sbar sc">'];
+  for (const mk of marks) { const i=h.indexOf(mk); if (i>=0) return h.slice(0,i)+block+h.slice(i); }
+  return h;
+};
+const _jAsk = askSheet; askSheet = function(id){
+  const o = DB.opps.find(x=>x.id===id); let h = _jAsk(id);
+  if (o && (o.kind==="resource"||o.kind==="offer")) return jTakeSheet(o);
+  if (o && o.journal && o.journal.note) h = h.replace('<div class="draftbox">', `<div class="rows" style="margin:6px 0 10px"><div class="fr you"><span>You kept: ${o.journal.note}</span></div></div><div class="draftbox">`);
+  return h;
+};
+
+/* ---- mission page: log chips that name what to log, and the week row ---- */
+const _jMission = sMission; sMission = function(id){
+  let h = _jMission(id);
+  const chip=(v,l)=>`<span onclick="const t=document.getElementById('mupd');t.value='${v}';t.dispatchEvent(new Event('input'));t.focus()">${l}</span>`;
+  h = h.replace(chip("Met Rahul Thursday, went well","Met someone"), chip("Met Rahul Thursday, went well","Met someone")+chip("Learned: Perplexity wants PMs who have shipped agents","Learned something")).replace(chip("Got a recruiter screen at Perplexity","Something moved"), chip("Got a recruiter screen at Perplexity","Something moved")+chip("I would take a Series A now, not just seed","Changed my mind"));
+  const w = jWeek(); const m = DB.missions.find(x=>x.id===id);
+  if (m && STATE.persona==="priya" && (w.due.some(o=>o.missionId===id) || STATE.jPaused)) h = h.replace('<div class="sl">Log<span', `<div class="row" onclick="openSheet('jsheet','review')"><div class="m"><div class="a plain">${STATE.jPaused?"Journal prompts paused":"Your week"}</div><div class="b">${STATE.jPaused?"Resume is one tap":`${w.logged.length} of ${w.talked.length} logged · ${w.due.filter(o=>o.missionId===id).length===1?"one":w.due.filter(o=>o.missionId===id).length} to answer`}</div></div><span class="chev">›</span></div><div class="sl">Log<span`);
+  return h;
+};
+const _jMissionSend = missionSend; missionSend = function(id){
+  const el = [...document.querySelectorAll("#mupd")].pop(); const v = el ? el.value.trim() : "";
+  const m = DB.missions.find(z=>z.id===id);
+  if (m && v && /^(learned|i'd take|i would take|changed my mind|i now|turns out)/i.test(v)) { missionLogAdd(m, "You", v); missionLogAdd(m, "Kai", "Kept. It changes what clears the bar on the next pass, and I'll say so on the receipts."); m.jLearned=(m.jLearned||0)+1; if (typeof journal==="function") journal("told", "You logged: "+v, [], null); toast("Kept. Kai uses it on the next pass."); render(); return; }
+  _jMissionSend(id);
+};
+
+/* ---- resource and plug as paths (prod's resource and plug postings, from Slack and WhatsApp) ---- */
+const _jApply = applyIntake; applyIntake = function(){
+  _jApply.apply(this, arguments);
+  const m2 = DB.missions.find(m=>m.id==="m2"&&m.type==="Cofounder"); if (!m2 || STATE.persona!=="priya") return;
+  if (!DB.opps.some(o=>o.id==="o7")) DB.opps.push(opp("o7", m2.id, "resource", "chris", "direct", [ ["Source","Posted in #resources on the Xoogler Slack, Sep 20. Kai read it there","slack"], ["What","$5k cloud credits for 12 months, for member startups","program"], ["How","A programme with a form. Daniel sends the code once you ask","Daniel"], ["Why you","You're building. Credits stretch the first months","mission"] ], "Ask Daniel for it", "new", { roleTitle:"$5k cloud credits", roleCompany:"Xoogler programme", source:"slack" }));
+  if (!DB.opps.some(o=>o.id==="o8")) DB.opps.push(opp("o8", m2.id, "offer", "neha", "direct", [ ["Source","Neha offered it in the Desi Founders WhatsApp group, Sep 22. Kai read it there","whatsapp"], ["What","Office hours for first-time founders. Wednesdays, 30 minutes","Neha"], ["Left","Two slots this month. Informal, no form, her call","Neha"], ["Why you","You're starting a company and haven't raised","mission"] ], "Take Neha up on it", "new", { roleTitle:"Founder office hours", roleCompany:"Neha Rao", source:"whatsapp" }));
+};
+const _jVerb = scVerb; scVerb = function(o){
+  if (o && (o.kind==="resource"||o.kind==="offer") && ownerOf(o)==="you" && isNewOf(o)) return [o.kind==="resource"?`Ask ${f1(targetOf(o))} for it`:`Take ${f1(targetOf(o))} up on it`, `data-act="${o.id}"`];
+  return _jVerb(o);
+};
+function jTakeSheet(o){
+  const t=targetOf(o); const res = o.kind==="resource";
+  const draft = res ? `Hi ${f1(t)}, could I get the ${o.roleTitle.toLowerCase()} you posted in #resources? We're pre-seed, two of us, building agents for ops teams. Happy to fill in whatever the programme needs.` : `Hi ${f1(t)}, I'd love to take you up on the founder office hours you mentioned in the group. Is a Wednesday in the next two weeks open? Twenty minutes on how to think about a first raise.`;
+  return scSheet(res?`Ask ${f1(t)} for it`:`Take ${f1(t)} up on it`, `To ${t.name}${res?". A programme with a form: Kai fills what it can after the yes":". Informal: her call, no form"}`, `<div class="draftbox"><textarea id="draft">${draft}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span><span class="mini sec" onclick="toast('Kai rewrote it shorter.')">Shorter</span>${scDraftMic("draft", `(Spoken) Hey ${f1(t)}, it's Priya. Quick one: `)}</div></div>
+    <div class="acts"><button class="btn" data-send="${o.id}">Send to ${f1(t)}</button><span class="quiet" onclick="openSheet('opp','${o.id}')">Back</span></div>`);
+}
+
+/* ---- sheets ---- */
+const _jPortSheet = portSheet; portSheet = function(type, id){
+  if (type==="jsheet") { const [k,oid] = String(id).split("|"); if (k==="keep") return jKeepSheet(oid); if (k==="review") return jReviewSheet(); if (k==="paused") return jPausedSheet(); }
+  return _jPortSheet(type, id);
+};
 
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
@@ -11182,7 +11352,7 @@ function sendAsk(id) {
   const o = DB.opps.find(x=>x.id===id);
   o.state = "waiting"; o.timeline[1][1]="today"; o.timeline[1][2]=true;
   o.log.push(["You", `approved and sent the note to ${firstName(viaOf(o)||targetOf(o))}.`, "today"]);
-  o.log.push([`Kai, for ${firstName(viaOf(o)||targetOf(o))}`, "will deliver it as an ask under their rules. Nudge scheduled Friday.", "today"]);
+  o.log.push([`Kai, for ${firstName(viaOf(o)||targetOf(o))}`, "will deliver it as an ask under their rules. Kai drafts a nudge on day 7 if it's quiet.", "today"]);
   if (id==="o2") { const a=DB.asks.find(x=>x.id==="c1"); if(a){ a.state="open"; a.when="now"; } }
   if (STATE.screen.startsWith("mission:")) { const os=DB.opps.filter(x=>x.missionId===o.missionId&&x.state!=="dropped"&&x.state!=="candidate"); if(!os.some(x=>ownerOf(x)==="you")) { STATE.filterAuto=false; STATE.mfilter="them"; STATE.filterNote="For you is clear. Showing Waiting."; } }
   STATE.sheet = {type:"sent", id}; render();
