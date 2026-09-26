@@ -741,7 +741,7 @@ body:has(.push) .ctlbtn { display:none; }
 .tfaces { display:inline-flex; margin-right:6px; } .tfaces .tf { width:18px; height:18px; border-radius:5px; background:var(--fill); border:1px solid #fff; font-size:8px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-right:-4px; color:var(--ink2); }
 .bub .svd { font-size:10px; margin-right:4px; }
 .citabs span b { font-weight:700; margin-left:2px; }
-.citabs.later { overflow-x:auto; white-space:nowrap; scrollbar-width:none; } .citabs.later::-webkit-scrollbar { display:none; } .citabs.later span { flex:0 0 auto; }
+.citabs.later { overflow-x:auto; white-space:nowrap; scrollbar-width:none; } .citabs.later::-webkit-scrollbar { display:none; } .citabs.later span { flex:0 0 auto; margin-right:16px; }
 .lrow .m .a .faint { font-weight:400; font-size:12px; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
@@ -8795,6 +8795,37 @@ function cBrowse(){
   </div>${navHTML("families")}`;
 }
 
+/* ---- Channel details, channels only (the coordinator cleared it; port.js keeps DMs, groups and event groups).
+   Adds what prod has and the wireframe lacked (channels-parity.md): every pinned message, not just the first, copy link,
+   the channel's ritual, Edit for organizers, and add or remove members for organizers only. ---- */
+const _cChatInfo = sChatInfo;
+sChatInfo = function(cid){
+  const c = convOf(cid);
+  if (!c || c.kind!=="channel") return _cChatInfo(cid);
+  const tab = STATE.ciTab||"about"; const pinsOn = tab==="pinned";
+  if (pinsOn) STATE.ciTab = "about";
+  let h = _cChatInfo(cid);
+  if (pinsOn) STATE.ciTab = "pinned";
+  const f = cF(); const org = cOrg(); const ch = c.ch||{}; const gone = STATE.chRemoved||{};
+  const pins = (c.pins||[]).map(id=>c.msgs.find(m=>m.id===id)).filter(Boolean);
+  h = h.replace(/<div class="citabs">[\s\S]*?<\/div>/, `<div class="citabs">${[["about","About"],["pinned",`Pinned${pins.length?" "+pins.length:""}`],["media","Media"],["members","Members"]].map(([t,l])=>`<span class="${tab===t?'on':''}" onclick="STATE.ciTab='${t}';render()">${l}</span>`).join("")}</div>`);
+  if (pinsOn) {
+    const list = pins.map(m=>`<div class="cm-row cm-pin" onclick="STATE.hl='${m.id}';go('channel:${ch.id}')">${av(P(m.from).initials,"sm")}<div class="m"><div class="b"><b style="color:var(--ink)">${P(m.from).name}</b> · ${m.day||''}${m.time?" · "+m.time:""}</div><div class="cm-text">${m.text||"Attachment"}</div></div>${org?`<span class="cm-btn q" onclick="event.stopPropagation();togglePinMsg('${cid}','${m.id}')">Unpin</span>`:''}</div>`).join("");
+    return h.replace(/(<div class="body" style="padding-top:12px">)[\s\S]*$/, `$1${list||`<div class="empty">Nothing pinned yet.${org?" Pin a message from its menu.":" Organizers pin what everyone should see."}</div>`}</div>`);
+  }
+  if (tab==="about") {
+    const rit = cRituals(f).filter(r=>r[5]===ch.id).map(r=>`<div class="xrow" style="cursor:default"><div class="m"><div class="a">Ritual: ${r[1]}</div><div class="b">${r[4]} · Kai posts it; ${org?"you run it from Manage":"reply in the channel"}</div></div></div>`).join("");
+    h = h.replace(/(<div class="lbl">Settings<\/div>)/, `${rit?`<div class="lbl">Ritual here</div>${rit}`:''}$1${org?`<div class="xrow" data-csheet2="cedch|${ch.id}"><div class="m"><div class="a">Edit channel</div><div class="b">Name, emoji, description, who can post, private</div></div><span class="s">›</span></div>`:''}`)
+         .replace(/(<div class="xrow" onclick="openSheet\('report')/, `<div class="xrow" onclick="toast('Link to ${c.title.startsWith('#')?c.title:'#'+c.title} copied. Members of ${f.name} can open it.')"><div class="m"><div class="a">Copy link</div></div><span class="s">›</span></div>$1`);
+  }
+  if (tab==="members") {
+    if (!org) h = h.replace(/<div class="xrow" onclick="toast\('Add members[^"]*"><div class="m"><div class="a">\+ Add members<\/div><\/div><\/div>/, "");
+    h = h.replace(/<div class="prow" data-profile="([^"]+)">[\s\S]*?<div class="m">[\s\S]*?<\/div><\/div>(?:<span class="tag">Admin<\/span>)?<\/div>/g, (row, id) =>
+      gone[cid+"|"+id] ? "" : org && id!==meId() && id!==c.createdBy ? row.replace(/<\/div>$/, `<span class="cm-btn q" data-chrm="${cid}|${id}">Remove</span></div>`) : row);
+  }
+  return h;
+};
+
 /* ---- Posts: the prod library, shown here unchanged (settings/product_library): the family's own categories, the list card's fields,
    votes, comments, save and share; drafts; posts waiting for approval; approve or reject with a reason. One kind of object:
    a library post. Organizers pin announcements (Facebook's Featured, research-round4.md 5); the live state is Fable round 9. ---- */
@@ -9463,6 +9494,7 @@ portWire = function(){
   q("[data-cbvis]", el=>{ STATE.cbVis = STATE.cbVis===el.dataset.cbvis ? "any" : el.dataset.cbvis; render(); });
   q("[data-cchsortv]", el=>{ STATE.cbSort=el.dataset.cchsortv; STATE.sheet=null; render(); });
   q("[data-cnewch]", el=>{ const k=el.dataset.cnewch; STATE.cNewCh[k]=!STATE.cNewCh[k]; render(); });
+  q("[data-chrm]", el=>{ const [cid,id]=el.dataset.chrm.split("|"); STATE.chRemoved=Object.assign({}, STATE.chRemoved, {[el.dataset.chrm]:true}); render(); toast(`${P(id).name} removed from ${convOf(cid).title}. They can rejoin a public channel.`); });
   q("[data-chfold]", el=>{ const k=el.dataset.chfold; STATE.chShut=Object.assign({}, STATE.chShut); STATE.chShut[k]=!STATE.chShut[k]; render(); });
   q("[data-cedch]", el=>{ const k=el.dataset.cedch; STATE.cEdCh[k]=!STATE.cEdCh[k]; render(); });
   q("[data-cedpost]", el=>{ STATE.cEdCh.post=el.dataset.cedpost; render(); });
