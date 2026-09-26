@@ -2420,6 +2420,53 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-av .avatar.lg + .cm-on { width:13px; height:13px; right:2px; bottom:2px; }
   .cm-catn { cursor:pointer; text-decoration:underline dotted; text-underline-offset:3px; }
 
+/* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
+   One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
+   Tip surface = component.tip.bg (surface.default) at elevation 3; the target gets the focus ring. ==== */
+.edu { display:none !important; }
+.nav .kai.coach .ic { animation:none; }
+
+.tipx { position:absolute; z-index:26; left:16px; right:16px; max-width:340px; background:#fff; color:var(--ink); border-radius:16px; padding:12px 14px 12px; box-shadow:0 3px 6px rgba(11,14,17,.06), 0 18px 40px -16px rgba(11,14,17,.34), 0 0 0 1px rgba(11,14,17,.06); animation:tipIn .2s cubic-bezier(.2,.8,.2,1); transform-origin:var(--ax,50%) var(--ay,100%); }
+.tipx .ar { position:absolute; width:14px; height:14px; background:#fff; transform:rotate(45deg); box-shadow:2px 2px 0 0 rgba(11,14,17,.05); }
+.tipx.down .ar { bottom:-7px; } .tipx.up .ar { top:-7px; box-shadow:-1px -1px 0 0 rgba(11,14,17,.06); }
+.tipx .art { background:var(--fill); border-radius:12px; padding:10px; margin-bottom:10px; display:flex; flex-direction:column; gap:6px; }
+.tipx .tt { display:flex; align-items:baseline; gap:10px; }
+.tipx .tt b { flex:1; font-size:15px; font-weight:600; letter-spacing:-.01em; line-height:1.3; }
+.tipx .tt .n { font-size:12px; color:var(--ink3); }
+.tipx .tb { font-size:13px; line-height:1.4; color:var(--ink2); margin-top:2px; }
+.tipx .ok { display:flex; justify-content:flex-end; margin-top:8px; }
+.tipx .ok span { font-size:15px; font-weight:600; padding:6px 2px 2px 12px; cursor:pointer; }
+
+/* the thing the tip points at */
+.tip-on { position:relative; z-index:1; box-shadow:0 0 0 2px var(--ink), 0 0 0 6px rgba(18,22,26,.10) !important; animation:tipRing 1.8s ease-out infinite; }
+.nav .kai.tip-on { box-shadow:none !important; animation:none; } .nav .kai.tip-on .ic { box-shadow:0 0 0 3px #fff, 0 0 0 5px var(--ink) !important; animation:tipRing2 1.8s ease-out infinite; }
+@keyframes tipIn { from { opacity:0; transform:scale(.94); } to { opacity:1; transform:none; } }
+@keyframes tipRing { 0% { box-shadow:0 0 0 2px var(--ink), 0 0 0 2px rgba(18,22,26,.18); } 100% { box-shadow:0 0 0 2px var(--ink), 0 0 0 10px rgba(18,22,26,0); } }
+@keyframes tipRing2 { 0% { box-shadow:0 0 0 3px #fff, 0 0 0 5px var(--ink), 0 0 0 5px rgba(18,22,26,.2); } 100% { box-shadow:0 0 0 3px #fff, 0 0 0 5px var(--ink), 0 0 0 14px rgba(18,22,26,0); } }
+.tipx.still, .tip-on.still, .nav .kai.tip-on.still .ic { animation:none; }
+@media (prefers-reduced-motion: reduce) { .tipx, .tip-on, .nav .kai.tip-on .ic { animation:none; } }
+
+/* pictures: small copies of the real parts, not illustrations */
+.ea-row { display:flex; align-items:center; gap:8px; background:#fff; border-radius:10px; padding:7px 9px; font-size:12px; }
+.ea-row .av { width:22px; height:22px; border-radius:7px; background:var(--line); flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--ink2); }
+.ea-row .av.r { border-radius:50%; } .ea-row .av + .av { margin-left:-12px; box-shadow:0 0 0 2px #fff; }
+.ea-row .m { flex:1; min-width:0; } .ea-row .m i { display:block; font-style:normal; font-weight:600; font-size:12px; color:var(--ink); } .ea-row .m u { display:block; text-decoration:none; height:5px; border-radius:3px; background:var(--line); margin-top:4px; width:70%; }
+.ea-row .lab { font-size:11px; font-weight:600; color:var(--ink2); white-space:nowrap; }
+.ea-row.hi { box-shadow:0 0 0 1.5px var(--ink); }
+.ea-why { display:flex; gap:6px; align-items:center; font-size:11px; color:#8A6A16; } .ea-why:before { content:""; width:6px; height:6px; border-radius:50%; background:#DCB854; }
+.ea-pair { display:flex; gap:8px; } .ea-pair > div { flex:1; background:#fff; border-radius:10px; padding:8px; text-align:center; font-size:11px; color:var(--ink2); } .ea-pair b { display:block; font-size:12px; color:var(--ink); margin-bottom:2px; }
+.ea-pair .pri { background:var(--ink); color:#fff; } .ea-pair .pri b { color:#fff; }
+.ea-kai { display:flex; align-items:center; gap:12px; justify-content:center; }
+.ea-kai .k { width:40px; height:40px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }
+.ea-kai .g { background:#fff; border-radius:10px; padding:6px 10px; font-size:11px; color:var(--ink2); text-align:center; } .ea-kai .g b { display:flex; justify-content:center; color:var(--ink); margin-bottom:2px; }
+.ea-sw { position:relative; display:flex; border-radius:10px; overflow:hidden; background:var(--line); }
+.ea-sw .row0 { flex:1; transform:translateX(-64px); padding-left:64px; background:#fff; } .ea-sw .row0 .ea-row { border-radius:0; }
+.ea-sw .acts { position:absolute; right:0; top:0; bottom:0; width:64px; display:flex; } .ea-sw .acts span { flex:1; display:flex; align-items:center; justify-content:center; font-size:12px; }
+.ea-sw .hand { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:11px; font-weight:700; color:var(--ink); background:#fff; border-radius:999px; padding:2px 8px; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+.ea-card { background:#fff; border-radius:10px; padding:8px 0 2px; box-shadow:0 0 0 1.5px var(--ink); } .ea-card .ea-row { padding-top:4px; }
+.ea-k { display:block; padding:0 9px; font-size:10px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:#2E7D4F; }
+.ea-btn { background:var(--ink); color:#fff; border-radius:8px; padding:5px 9px; font-size:11px; font-weight:600; }
+
 /* ==== MOTION (26 Sep, "Motion design" thread, second pass). Sign-in story rendered in WebGL (three.js r128) and choreographed
    with one GSAP timeline scrubbed from a single clock; the Kai call globe is a shader sphere on the same renderer approach.
    Values from key-tokens.v2.json. Off under navigator.webdriver and prefers-reduced-motion: the libraries are not loaded and
@@ -8792,6 +8839,84 @@ portWire = function(){
   const rem = phone.querySelector("#cremr"); if (rem) rem.oninput = ()=>{ STATE.cRemR = rem.value; const b = phone.querySelector("#cremgo"); if (b) b.disabled = !rem.value.trim(); };
   const mq = phone.querySelector("#mmq"); if (mq) mq.oninput = ()=>{ STATE.mmQ = mq.value; const pos = mq.selectionStart; render(); const n = phone.querySelector("#mmq"); if (n) { n.focus(); n.setSelectionRange(pos,pos); } };
 };
+
+/* ==== EDU: first-run tips (education thread, 26 Sep) ====
+   Replaces every inline education banner (coach("inbox"), coach("requests"), coach("paths")), the "This is Kai" dimmed overlay, the
+   "Talk with Kai here" callout, and the swipe/channels footnote under Messages, with one pattern: an anchored tip.
+   - Floats above the screen and points at the thing it explains; nothing in the layout moves.
+   - One tip at a time, in order; told once (STATE.coached[key]); gone when you tap "Got it", tap the thing, or tap anywhere else.
+   - A small picture of the real part, a title of a few words, one line.
+   Tests: under navigator.webdriver tips do not mount unless the URL has ?tips, so the suites never tap through one. ==== */
+const EDU_ON = (()=>{ try { return !navigator.webdriver || new URLSearchParams(location.search).has("tips"); } catch(e){ return true; } })();
+const EDU_STILL = (()=>{ try { return !!navigator.webdriver; } catch(e){ return false; } })();
+
+const EDU_TIPS = [
+  { key:"kai", at:()=>STATE.screen==="home" && STATE.applied && !STATE.intakeDone && !STATE.overlaySeen, target:"#kaiBtn",
+    title:"This is Kai", body:"Tap to type. Hold to talk.",
+    art:()=>`<div class="ea-kai"><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg></b>Tap · type</div><div class="k">Kai</div><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></b>Hold · talk</div></div>` },
+  { key:"paths", at:()=>STATE.screen==="home" && STATE.member && DB.missions.some(m=>m.status!=="closed"), target:".body [data-opp]",
+    title:"Picks for your missions", body:"Each one says why. Nothing is sent without your yes.",
+    art:()=>`<div class="ea-card"><span class="ea-k">New pick</span><div class="ea-row"><div class="av r">RM</div><div class="m"><i>A person or a role</i><div class="ea-why">Why Kai picked them</div></div><span class="ea-btn">Say hi</span></div></div>` },
+  { key:"inbox", at:()=>STATE.screen==="inbox" && STATE.member && !STATE.inboxView && (STATE.convFilter||"All")!=="Archived", target:".reqrow",
+    title:"Requests wait here", body:"Members asking you for something. Kai never writes in a chat.",
+    art:()=>`<div class="ea-row hi"><div class="av r">MA</div><div class="av r">AV</div><div class="m"><i>Requests</i><u></u></div><span class="lab">Asks for you</span></div><div class="ea-row"><div class="av">DR</div><div class="m"><i>Chats</i><u></u></div><span class="lab">You and them</span></div>` },
+  { key:"swipe", at:()=>STATE.screen==="inbox" && STATE.member && !STATE.inboxView && STATE.coached.inbox, target:".convlist .swr",
+    title:"Swipe a chat", body:"Pin, mute or archive.",
+    art:()=>`<div class="ea-sw"><div class="row0"><div class="ea-row"><div class="av">DR</div><div class="m"><i>Daniel Reyes</i><u></u></div></div></div><div class="acts"><span>📌</span><span>⋮</span></div><span class="hand">← swipe</span></div>` },
+  { key:"requests", at:()=>STATE.screen==="inbox" && STATE.inboxView==="requests", target:".body [data-askyes]",
+    title:"Yes or not now", body:"Up to three a week. They never see a no.",
+    art:()=>`<div class="ea-pair"><div class="pri"><b>Yes</b>opens a chat</div><div><b>Not now</b>never shown</div></div>` },
+];
+
+coach = function(){ return ""; };
+const _eduNav = navHTML;
+navHTML = function(on){ return _eduNav(on).replace(/<div class="callout">[\s\S]*?<\/div>(?=<div class="nav">)/, ""); };
+const _eduHome = sHome;
+sHome = function(){ return _eduHome().replace(/<div class="overlay" onclick="STATE\.overlaySeen=true;render\(\)">[\s\S]*?Tap anywhere to dismiss<\/p><\/div><\/div>/, ""); };
+const _eduChats = chatsListHTML;
+chatsListHTML = function(){ return _eduChats().replace(/\s*<div class="xs faint" style="margin-top:12px">Channels live in each family's tab\.[^<]*<\/div>/, ""); };
+
+function eduDue(){
+  STATE.coached = STATE.coached || {};
+  if (!EDU_ON || STATE.sheet || STATE.push || STATE.callActive || STATE.quick) return null;
+  return EDU_TIPS.find(t=>!STATE.coached[t.key] && t.at() && phone.querySelector(t.target)) || null;
+}
+function eduSeen(key){ STATE.coached[key]=true; if (key==="kai") STATE.overlaySeen=true; eduClear(); }
+function eduClear(){ phone.querySelectorAll(".tipx").forEach(e=>e.remove()); phone.querySelectorAll(".tip-on").forEach(e=>e.classList.remove("tip-on","still")); }
+function eduPlace(){
+  const tip = phone.querySelector(".tipx"); if (!tip) return;
+  const t = phone.querySelector(".tip-on"); if (!t) return eduClear();
+  const pr = phone.getBoundingClientRect(), r = (t.querySelector(".ic")||t).getBoundingClientRect();
+  const tr = { top:r.top-pr.top, bottom:r.bottom-pr.top, cx:r.left-pr.left+r.width/2 };
+  const view = t.closest(".body"); const vr = view ? view.getBoundingClientRect() : pr;
+  if (view && (r.bottom < vr.top+8 || r.top > vr.bottom-8)) { tip.style.visibility="hidden"; return; }
+  tip.style.visibility="";
+  const h = tip.offsetHeight, w = tip.offsetWidth, below = tr.bottom + 12 + h < pr.height - 90;
+  tip.classList.toggle("up", below); tip.classList.toggle("down", !below);
+  tip.style.top = (below ? tr.bottom + 12 : tr.top - 12 - h) + "px";
+  const left = Math.max(16, Math.min(pr.width - 16 - w, tr.cx - w/2)); tip.style.left = left + "px"; tip.style.right = "auto";
+  const ax = Math.max(18, Math.min(w - 18, tr.cx - left)); tip.querySelector(".ar").style.left = (ax - 7) + "px";
+  tip.style.setProperty("--ax", ax+"px"); tip.style.setProperty("--ay", below ? "0%" : "100%");
+}
+function eduMount(){
+  eduClear();
+  const tip = eduDue(); if (!tip) return;
+  const t = phone.querySelector(tip.target); t.classList.add("tip-on"); if (EDU_STILL) t.classList.add("still");
+  const left = EDU_TIPS.filter(x=>!STATE.coached[x.key] && x.at && x.key!==tip.key && x.at()).length;
+  const el = document.createElement("div"); el.className = "tipx" + (EDU_STILL ? " still" : ""); el.dataset.tip = tip.key;
+  el.setAttribute("role","dialog"); el.setAttribute("aria-label", tip.title);
+  el.innerHTML = `<i class="ar"></i><div class="art">${tip.art()}</div><div class="tt"><b>${tip.title}</b>${left?`<span class="n">1 of ${left+1}</span>`:''}</div><div class="tb">${tip.body}</div><div class="ok"><span data-tipok="1">Got it</span></div>`;
+  phone.appendChild(el); eduPlace();
+  el.querySelector("[data-tipok]").onclick = (e)=>{ e.stopPropagation(); eduSeen(tip.key); eduMount(); };
+  el.onclick = e=>e.stopPropagation();
+}
+if (EDU_ON) {
+  phone.addEventListener("click", e=>{ const tip = phone.querySelector(".tipx"); if (tip && !tip.contains(e.target)) eduSeen(tip.dataset.tip); }, true);
+  phone.addEventListener("scroll", eduPlace, true);
+  window.addEventListener("resize", eduPlace);
+}
+const _eduRender = render;
+render = function(){ const r = _eduRender.apply(this, arguments); eduMount(); return r; };
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
