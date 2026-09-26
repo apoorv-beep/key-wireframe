@@ -3547,7 +3547,7 @@ function vizLoop() {
     const x = cx + Math.cos(a)*r, y = cy + Math.sin(a)*r;
     const size = mode==="user" ? 1.6+1.4*Math.abs(Math.sin(vizT*10+p.j)) : mode==="kai" ? 2.2 : 1.8;
     ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2);
-    ctx.fillStyle = mode==="kai" ? "rgba(255,255,255,.95)" : mode==="user" ? "rgba(140,220,170,.95)" : "rgba(255,255,255,.55)";
+    ctx.fillStyle = mode==="kai" ? "rgba(255,255,255,.95)" : mode==="user" ? "rgba(220,184,84,.95)" : "rgba(255,255,255,.55)";
     ctx.fill();
   }
   // soft core
@@ -4089,7 +4089,7 @@ function sInbox() {
   const actHTML = "";
   if (!STATE.member) return `${topHdr("Messages")}<div class="body"><div class="empty" style="margin-top:8px">Messages open when you're in a family. Requests and chats all happen between members.</div></div>${navHTML("inbox")}`;
   const chatsHTML = chatsListHTML();
-  if (STATE.inboxView==="requests") return `<div class="hdr"><div class="back" onclick="STATE.inboxView=null;render()">‹</div><div class="t">Requests${STATE.persona!=="priya"?' <span class="xs faint">as '+me().name.split(" ")[0]+'</span>':''}</div></div><div class="body">${coach("requests","People asking you for something: to vouch for them, to talk, to refer. Each is a yes or a no. Yes opens a conversation; no is never shown to them. Kai caps these at your capacity, three a week.")}${asksHTML}</div>${navHTML("inbox")}`;
+  if (STATE.inboxView==="requests") return `<div class="hdr"><div class="back" onclick="STATE.inboxView=null;render()">‹</div><div class="t">Requests${STATE.persona!=="priya"?' <span class="xs faint">as '+me().name.split(" ")[0]+'</span>':''}</div></div><div class="body">${coach("requests","People asking you for something: to vouch for them, to talk, to refer. Each is a yes or a no. Yes opens a conversation; no is never shown to them. Kai caps these at your capacity, "+(STATE.persona==="chris"?"eight":"three")+" a week.")}${asksHTML}</div>${navHTML("inbox")}`;
   return `${topHdr("Messages", STATE.persona==="chris"?'<span class="xs faint" style="margin-right:6px">as Daniel</span>':'')}
   <div class="body">${inboxCoach}
     ${chatsHTML}
