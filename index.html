@@ -749,6 +749,8 @@ body:has(.push) .ctlbtn { display:none; }
 .lrow .m .a .faint { font-weight:400; font-size:12px; }
 
   .li { flex:0 0 auto; vertical-align:-3px; } .sico .li, .xrow .li { vertical-align:middle; } .back .li { vertical-align:0; } .swa .li { display:block; margin:0 auto 2px; } .nbadge .li, .kbadge .li { vertical-align:-1px; }
+  /* Home indicator (journey guide, 26 Sep): the drawn bar sits 8px up and 5px tall, so every foot clears it. */
+  #phone:has(.ios-home) .foot { padding-bottom:26px; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -2592,6 +2594,17 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-cat > span[data-chfold] { cursor:pointer; }
   .cm-dtag { font-size:11px; font-weight:600; color:var(--ink2); background:var(--fill); border-radius:5px; padding:1px 6px; margin-left:4px; vertical-align:1px; }
   @media (prefers-reduced-motion: reduce) { .cm-fold { transition:none; } }
+  /* Lucide icons in place of glyphs on controls, 26 Sep */
+  .ch.slim .che i { width:14px; height:14px; border-radius:50%; background:var(--paper); display:flex; align-items:center; justify-content:center; color:var(--ink2); }
+  .avatar.cm-kaiav { background:var(--ink); color:#fff; border:0; }
+  .avatar.cm-addav { color:var(--ink); }
+  .cm-x { display:inline-flex; align-items:center; }
+  .cm-pillbar svg { vertical-align:-2px; margin-right:6px; }
+  .cm-sel { display:inline-flex; align-items:center; gap:4px; }
+  .cm-link svg { vertical-align:-2px; margin-left:2px; }
+  .cm-tags .add { display:inline-flex; align-items:center; gap:3px; }
+  .cm-box svg { stroke-width:3; }
+  .cm-chebig svg { color:var(--ink2); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -8594,7 +8607,7 @@ function evCta(e, live, locked){
       P({ id:"p3", cat:"Playbooks", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Last week", title:"How I got into Sierra", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know.", read:"5 min read", featured:true, img:true, up:64, cm:21, tags:["Interviews"] }),
       P({ id:"p4", cat:"Wins", who:"Rahul Mehta", ini:"RM", sub:"Engineering Director, Anthropic", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred her, Daniel vouched. Offer to signed in eleven days.", read:"1 min read", up:37, cm:9 }),
       P({ id:"p5", cat:"Questions", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Monday", title:"Who knows Figma's PM bar?", text:"Interviewing a candidate from Figma next week. What does a strong PM there look like?", read:"1 min read", up:12, cm:7 }),
-      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"✦", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Six new members, all greeted.", read:"1 min read", up:18, cm:3 }),
+      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Six new members, all greeted.", read:"1 min read", up:18, cm:3 }),
       P({ id:"p7", cat:"Playbooks", who:"Dev Patel", ini:"DP", sub:"Founder, Legal-tech agents", when:"2h", title:"Shipping tool use in legal agents: what broke", text:"Three months in production. Where the model over-called tools, and the eval that caught it.", read:"7 min read", st:"pending" }),
       P({ id:"p8", cat:"Questions", who:"Jordan Tan", ini:"JT", sub:"Product Manager, Ex-Google Maps", when:"5h", title:"Maps PM to AI PM: where would you start?", text:"Six years on Maps, two on ML ranking. Which of that counts in an AI PM loop?", read:"1 min read", st:"pending" }),
       P({ id:"p9", cat:"Questions", who:"Priya Sharma", ini:"PS", sub:"Senior PM, Google Cloud", when:"Edited 2d ago", title:"Anyone hiring senior PMs for agents?", text:"Looking at AI PM roles in the Bay Area. Happy to trade notes on loops.", read:"1 min read", st:"draft", mine:true })
@@ -8625,6 +8638,18 @@ const C_DOWN_SVG = C_SVG('<path d="M12 5v14M19 12l-7 7-7-7"/>', 16);
 const C_GRID_SVG = C_SVG('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>', 16);
 const C_LIST_SVG = C_SVG('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>', 16);
 const C_SPARK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg>';
+const C_LOCK_SVG = C_SVG('<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>', 9);
+const C_X_SVG = C_SVG('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 16);
+const C_PLUS_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 16);
+const C_PLUS_XS_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 11);
+const C_PLUS_SM_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 13);
+const C_REFRESH_SVG = C_SVG('<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>', 14);
+const C_EXT_SVG = C_SVG('<path d="M7 7h10v10"/><path d="M7 17 17 7"/>', 14);
+const C_CHECK_SVG = C_SVG('<path d="M20 6 9 17l-5-5"/>', 14);
+const C_MINUS_SVG = C_SVG('<path d="M5 12h14"/>', 14);
+const C_CHEVSM_SVG = C_SVG('<path d="m6 9 6 6 6-6"/>', 14);
+const C_SMILEPLUS_SVG = C_SVG('<path d="M22 11v1a10 10 0 1 1-9-10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/><path d="M16 5h6"/><path d="M19 2v6"/>', 22);
+const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
 const C_MUTE_SVG = C_SVG('<path d="M13.7 21a2 2 0 01-3.4 0M18.6 13A17.9 17.9 0 0118 8M6.3 6.3A6 6 0 006 8c0 7-3 9-3 9h14M18 8a6 6 0 00-9.3-5M2 2l20 20"/>', 14);
 /* one long press opens a row's menu; the click that follows it is swallowed so the sheet stays open */
 let cSwallowUntil = 0;
@@ -8801,7 +8826,7 @@ sFamilyEvents = function(){
     ${famTop()}
     <div class="cm-bar">${famPills("fevents")}${cChips([["up","Upcoming",up.length],["past","Past",past.length]], when, "cevw")}</div>
     ${cals.length?`<div class="cm-sec">${cHead(cals.length>1?"Calendars":"Calendar")}${cals.map(cal).join("")}</div>`:''}
-    <div class="cm-row cm-inv" data-evgo="eventd:new">${av("+")}<div class="m"><div class="a">Host an event</div><div class="b">${cOrg()?`Goes live on ${(cals[0]||{}).name||f.name} at once`:"An organizer approves it before it's listed"}</div></div><span class="s">›</span></div>
+    <div class="cm-row cm-inv" data-evgo="eventd:new"><div class="avatar cm-addav">${C_PLUS_SVG}</div><div class="m"><div class="a">Host an event</div><div class="b">${cOrg()?`Goes live on ${(cals[0]||{}).name||f.name} at once`:"An organizer approves it before it's listed"}</div></div><span class="s">›</span></div>
     ${body || `<div class="empty">${when==="up"?"Nothing coming up. Host the first one.":"No past events yet."}</div>`}
   </div>
   ${navHTML("families")}`;
@@ -8815,7 +8840,7 @@ const C_CH_DESC = { general:"Anything Xoogler", introductions:"Say who you are a
 const cSuggested = f => cChans(f).filter(c=>!c.joined && C_CH_WHY[c.id] && !(STATE.chDismissed||{})[c.id]);
 function cChRow(c){
   const muted = (STATE.chMute||{})[c.id];
-  return `<div class="ch slim ${c.unread&&!muted?'u':''}" data-channel="${c.id}" data-chl="${c.id}"><div class="che">${CH_EMO[c.id]||'#'}${c.private?'<i>🔒</i>':''}</div><div class="chn">${c.name.replace(/^#/,'')}${c.readonly?' <span class="xs faint">read only</span>':''}</div>${muted?`<span class="cm-muted">${C_MUTE_SVG}</span>`:c.unread?`<div class="unread">${c.unread}</div>`:''}</div>`;
+  return `<div class="ch slim ${c.unread&&!muted?'u':''}" data-channel="${c.id}" data-chl="${c.id}"><div class="che">${CH_EMO[c.id]||'#'}${c.private?'<i>${C_LOCK_SVG}</i>':''}</div><div class="chn">${c.name.replace(/^#/,'')}${c.readonly?' <span class="xs faint">read only</span>':''}</div>${muted?`<span class="cm-muted">${C_MUTE_SVG}</span>`:c.unread?`<div class="unread">${c.unread}</div>`:''}</div>`;
 }
 sFamily = function(){
   if (!STATE.member) return sPendingFamily();
@@ -8827,13 +8852,13 @@ sFamily = function(){
   const cats = [...new Set(all.map(c=>c.cat))];
   const pinned = keep.filter(c=>pins[c.id]);
   const shut = STATE.chShut || {};
-  const sec = (name, list, add) => list.length ? `<div class="cat cm-cat"><span class="cm-fold ${shut[name]?'shut':''}" data-chfold="${name}" aria-label="${shut[name]?'Show':'Hide'} ${name}">${C_CHEV_SVG}</span><span ${add&&cOrg()?`class="cm-catn" data-csheet2="chcat|${name}"`:`data-chfold="${name}"`}>${name}</span>${add&&cOrg()?`<span class="catadd" data-csheet="cnewch">+</span>`:''}<span class="xs faint" style="margin-left:auto">${shut[name]&&list.some(c=>c.unread)?`${list.filter(c=>c.unread).length} unread · `:''}${list.length}</span></div>${shut[name]?'':list.map(cChRow).join("")}` : "";
+  const sec = (name, list, add) => list.length ? `<div class="cat cm-cat"><span class="cm-fold ${shut[name]?'shut':''}" data-chfold="${name}" aria-label="${shut[name]?'Show':'Hide'} ${name}">${C_CHEV_SVG}</span><span ${add&&cOrg()?`class="cm-catn" data-csheet2="chcat|${name}"`:`data-chfold="${name}"`}>${name}</span>${add&&cOrg()?`<span class="catadd" data-csheet="cnewch" aria-label="New channel">${C_PLUS_SM_SVG}</span>`:''}<span class="xs faint" style="margin-left:auto">${shut[name]&&list.some(c=>c.unread)?`${list.filter(c=>c.unread).length} unread · `:''}${list.length}</span></div>${shut[name]?'':list.map(cChRow).join("")}` : "";
   const sug = cSuggested(f);
   const notJoined = all.length - mine.length;
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     <div class="cm-bar">${famPills("chat")}${cChips([["All","All",mine.length],["Unread","Unread",unread.length]], STATE.chFilter==="Unread"?"Unread":"All", "cchf")}</div>
-    <div class="cm-search cm-in"><input class="search" placeholder="Search channels and messages" onclick="toast('Searches channels and messages in ${f.name}')" readonly>${cOrg()?`<span class="cm-fbtn" data-csheet="cnewch" aria-label="New channel">+</span>`:''}</div>
+    <div class="cm-search cm-in"><input class="search" placeholder="Search channels and messages" onclick="toast('Searches channels and messages in ${f.name}')" readonly>${cOrg()?`<span class="cm-fbtn" data-csheet="cnewch" aria-label="New channel">${C_PLUS_SVG}</span>`:''}</div>
     ${STATE.chFilter!=="Unread"&&sug.length?`<div class="cm-row cm-kairow" data-cgo="manage:cbrowse"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">Suggested for you</div><div class="b">${sug.slice(0,2).map(c=>c.name).join(", ")}${sug.length>2?` and ${sug.length-2} more`:''}</div></div><span class="cm-btn q">See</span></div>`:''}
     ${sec("Pinned", pinned)}
     ${cats.map(cat=>sec(cat, keep.filter(c=>c.cat===cat && !pins[c.id]), true)).join("")}
@@ -8854,7 +8879,7 @@ function cBrowse(){
   list = list.slice().sort(by);
   const sug = sort==="rec" && w!=="mine" ? cSuggested(f).filter(c=>list.includes(c)) : [];
   const act = c => c.joined ? '<span class="cm-done">Joined</span>' : `<span class="cm-btn ${sug.includes(c)?'':'q'}" data-join="${c.id}">Join</span>`;
-  const row = (c, why) => `<div class="cm-row" data-channel="${c.id}" data-chl="${c.id}"><div class="cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}${c.private?' <span class="xs faint">private</span>':''}${c.auto?' <span class="cm-dtag">Default</span>':''}</div><div class="b">${why||`${c.cat} · ${c.members} members`}</div></div>${act(c)}${why?`<span class="cm-x" data-chdismiss="${c.id}" aria-label="Not interested">✕</span>`:''}</div>`;
+  const row = (c, why) => `<div class="cm-row" data-channel="${c.id}" data-chl="${c.id}"><div class="cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}${c.private?' <span class="xs faint">private</span>':''}${c.auto?' <span class="cm-dtag">Default</span>':''}</div><div class="b">${why||`${c.cat} · ${c.members} members`}</div></div>${act(c)}${why?`<span class="cm-x" data-chdismiss="${c.id}" aria-label="Not interested">${C_X_SVG}</span>`:''}</div>`;
   return `${famHeader("Browse channels","fchannels")}<div class="body" style="padding-top:0">
     <div class="cm-bar">${cBChips(w, v)}</div>
     <div class="cm-search cm-in"><input class="search" placeholder="Search ${all.filter(c=>!c.private||c.joined||cOrg()).length} channels" onclick="toast('Search channels in ${f.name}')" readonly></div>
@@ -8910,7 +8935,7 @@ function cBar(p){
 function cPostRow(p, mode){
   const k = p.approved&&STATE.postType==="requests" ? "Approved" : p.st==="draft" ? "Draft" : p.st==="pending" ? "Waiting for approval" : p.st==="rejected" ? "Rejected" : p.pinned ? "Pinned" : p.featured ? "Most popular" : "";
   return `<div class="cm-lp" data-cpost="${p.id}">
-    <div class="cm-lby">${av(p.ini,"sm")}<span class="n">${p.who.split(",")[0]}</span><span class="w">${p.when}</span><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
+    <div class="cm-lby">${cAv(p.ini,"sm")}<span class="n">${p.who.split(",")[0]}</span><span class="w">${p.when}</span><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k">${k?`<span class="${p.st==="live"?"":"st"}">${k}</span> · `:''}${p.cat} · ${p.read}</div>
     <div class="cm-lrow"><div class="m"><div class="t">${p.title}</div><div class="x">${p.text}</div></div>${p.img?'<div class="cm-limg"></div>':''}</div>
     ${p.tags.length?`<div class="cm-ltags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div>`:''}
@@ -8946,9 +8971,10 @@ sPosts = function(){
 /* one post (prod library detail): Kai summary, references, votes, save, report, comments, Ask Kai */
 function cPostDetail(){
   const f = cF(); const p = DB.posts.find(x=>x.id===STATE.cPostId) || cPosts(f)[0];
-  const cmts = [["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
+  const mine = ((STATE.cMyCmts||{})[p.id]||[]).map(t=>[DB.user.name,DB.user.initials,t,"Now"]);
+  const cmts = [...mine, ["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
   return `${famHeader(p.cat,"posts")}<div class="body cm-pd" style="padding-top:4px">
-    <div class="cm-lby">${av(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
+    <div class="cm-lby">${cAv(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k" style="margin-top:14px">${p.pinned?"Pinned · ":p.featured?"Most popular · ":""}${p.cat} · ${p.read}</div>
     <h2 class="cm-pt">${p.title}</h2>
     <div class="cm-meta">${p.up*9+40} views · ${p.cm} comments · ${Math.max(2,Math.round(p.cm/3))} voices</div>
@@ -8963,7 +8989,7 @@ function cPostDetail(){
       <div class="cm-row cm-more-row" onclick="toast('All ${p.cm} comments, oldest first')"><div class="m"><div class="a">See all ${p.cm} comments</div></div><span class="s">›</span></div></div>
     <div class="cm-row cm-kairow" onclick="toast('Ask Kai about this post: it answers from the post, the comments and the library.')"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">Ask Kai about this</div><div class="b">From this post, its comments and the library</div></div><span class="s">›</span></div>
   </div>
-  <div class="foot"><div class="cm-search" style="padding:0"><input class="search" placeholder="Add a comment" onclick="toast('Comment composer')" readonly></div></div>`;
+  ${keyComposer({ id:"ccmt", placeholder:"Add a comment", toolbar:true, fmtOpen:STATE.fmtOpen, sendAttr:`data-ccmt="${p.id}"` })}`;
 }
 
 /* ---- Manage: the organizer hub, opened from the hero's Manage button or the family menu; lists without card wrappers ---- */
@@ -9067,11 +9093,11 @@ function cMembers(tab){
   const waiting = cWaiting();
   const filtersOn = ["role","status","tags"].reduce((n,k)=>n+Object.keys(F[k]||{}).length, 0);
   const on = id => sel && sel[id];
-  const row = m => `<div class="cm-mm ${m.st==="declined"||m.st==="removed"?"off":""} ${on(m.id)?"sel":""}" ${sel?`data-mmpick="${m.id}"`:`data-mm="${m.id}" data-mml="${m.id}"`}>${sel?`<span class="cm-box ${on(m.id)?'on':''}">${on(m.id)?'✓':''}</span>`:''}<div class="cm-sq">${cIni(m.n)}</div><div class="m">
+  const row = m => `<div class="cm-mm ${m.st==="declined"||m.st==="removed"?"off":""} ${on(m.id)?"sel":""}" ${sel?`data-mmpick="${m.id}"`:`data-mm="${m.id}" data-mml="${m.id}"`}>${sel?`<span class="cm-box ${on(m.id)?'on':''}">${on(m.id)?C_CHECK_SVG:''}</span>`:''}<div class="cm-sq">${cIni(m.n)}</div><div class="m">
       <div class="a"><span class="nm">${m.n}</span>${cPillOf(m)?`<span class="cm-pill ${m.st==="active"?m.role:m.st}">${cPillOf(m)}</span>`:''}</div>
       <div class="b cm-mmb">${m.e}${m.wa?`<span class="ic">${C_WA_SVG}</span>`:''}${m.notes.length?`<span class="ic">· ${C_NOTE_SVG}${m.notes.length}</span>`:''}</div>
       ${m.sub?`<div class="b">${m.sub}</div>`:''}
-      ${m.st==="active"?`<div class="cm-tags">${m.tags.slice(0,2).map(x=>`<span>${x}</span>`).join("")}${m.tags.length>2?`<span>+${m.tags.length-2}</span>`:''}${sel?'':`<span class="add" data-mmtag="${m.id}">+ Tag</span>`}</div>`:''}
+      ${m.st==="active"?`<div class="cm-tags">${m.tags.slice(0,2).map(x=>`<span>${x}</span>`).join("")}${m.tags.length>2?`<span>+${m.tags.length-2}</span>`:''}${sel?'':`<span class="add" data-mmtag="${m.id}">${C_PLUS_XS_SVG}Tag</span>`}</div>`:''}
       ${t==="requests"&&!sel?`<div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" data-mmok="${m.id}">Approve</span><span class="cm-btn q" data-mmno="${m.id}">Decline</span></div>`:''}
     </div></div>`;
   const nSel = sel ? Object.keys(sel).length : 0;
@@ -9079,7 +9105,7 @@ function cMembers(tab){
     ? `<div class="hdr cm-selhdr"><span class="cm-link0" data-mmselect="0">Cancel</span><div class="t">${nSel}/${t==="requests"?waiting:cF().members} selected</div><span class="cm-link0" data-mmall="1">Select all</span></div>`
     : `<div class="hdr"><div class="back" onclick="STATE.backNav=true;STATE.mmSel=null;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Members</div>
       <div class="icon ${filtersOn?'on':''}" data-csheet="cmmfilter" aria-label="Filter">${C_FILTER_SVG}${filtersOn?`<span class="badge">${filtersOn}</span>`:''}</div><div class="icon" data-csheet="cinvite" aria-label="Invite">${C_MANAGE_SVG}</div><div class="icon" data-csheet="cmmmore" aria-label="More">${C_DOTS_SVG}</div></div>`;
-  const stale = STATE.mmStale!==false && !sel ? `<div class="cm-pillbar" data-mmrefresh="1">↻ Rahul approved Leo Park · Tap to update</div>` : "";
+  const stale = STATE.mmStale!==false && !sel ? `<div class="cm-pillbar" data-mmrefresh="1">${C_REFRESH_SVG}Rahul approved Leo Park · Tap to update</div>` : "";
   const bulk = sel ? `<div class="cm-bulk">${t==="requests"?`<button class="btn" ${nSel?'':'disabled'} data-csheet="cbulk">Approve ${nSel||""}</button>`:''}<button class="btn ${t==="requests"?"sec":""}" ${nSel?'':'disabled'} data-csheet="ctags">Add tags</button>${t==="requests"?'':`<button class="btn sec" data-mmselect="0">Clear</button>`}</div>` : "";
   return `${hdr}
     <div class="body" style="padding-top:0">
@@ -9101,7 +9127,7 @@ function cNotes(){
       <div class="cm-lockline">Visible to admins only. The member never sees notes.</div>
       ${m.notes.map(([by,when,text,edited],i)=>`<div class="cm-row" style="align-items:flex-start;cursor:default">${av(cIni(by),"sm")}<div class="m"><div class="b"><b style="color:var(--ink)">${by}</b> · ${when}${edited?" · Edited":""}</div><div class="cm-text">${text}</div></div><span class="cm-lmenu" onclick="toast('Edit or delete this note')">${C_DOTS_SVG}</span></div>`).join("") || '<div class="empty">No notes yet.</div>'}
     </div>
-    <div class="foot"><div class="cm-search" style="padding:0"><input class="search" id="cnote" placeholder="Add a note…"><span class="cm-fbtn" data-cnoteadd="1" aria-label="Save note">↑</span></div></div>`;
+    ${keyComposer({ id:"cnote", placeholder:"Add a note", sendAttr:'data-cnoteadd="1"' })}`;
 }
 function cAnswers(){
   const m = cMMOne(STATE.mmFor);
@@ -9111,7 +9137,7 @@ function cAnswers(){
 }
 /* G1 manage tags: tap a row for edit and delete (swipe in the app) */
 function cTagAdmin(){
-  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Manage tags</div><div class="icon" onclick="STATE.mmTagDefs.push(['New tag',0]);STATE.mmTagOpen=STATE.mmTagDefs.length-1;render()" aria-label="Add tag">+</div></div>
+  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Manage tags</div><div class="icon" onclick="STATE.mmTagDefs.push(['New tag',0]);STATE.mmTagOpen=STATE.mmTagDefs.length-1;render()" aria-label="Add tag">${C_PLUS_SVG}</div></div>
     <div class="body" style="padding-top:4px"><div class="cm-search" style="padding:6px 0 6px"><input class="search" placeholder="Search" readonly></div>
     ${cTagDefs().map(([t,n],i)=>`<div class="cm-row" data-ctagopen="${i}"><div class="m"><div class="a" style="font-weight:500">${t}</div><div class="b">${cPl(n,"member")}</div></div>${STATE.mmTagOpen===i?`<span class="cm-btn q" onclick="event.stopPropagation();toast('Rename ${t}')">Edit</span><span class="cm-btn q" style="color:var(--danger)" data-ctagdel="${i}">Delete</span>`:''}</div>`).join("")}
     <div class="cm-meta">Tags are for organizers. Members never see them.</div></div>`;
@@ -9233,7 +9259,7 @@ sPublicPage = function(){
       <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div>
       <div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>Run by ${who}</span></div></div>
     ${member?'':`<div class="cm-sec">${known.length?`<div class="cm-row" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div><div class="b">People you know. Others show only if they allow it.</div></div></div>`:''}
-      <div class="cm-row" style="cursor:default">${av(DB.user.invitedBy&&f.id==="xoogler"?"DR":"✦","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
+      <div class="cm-row" style="cursor:default">${cAv(DB.user.invitedBy&&f.id==="xoogler"?"DR":"kai","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
     <div class="cm-sec">${cHead("Who it's for")}<div class="cm-text">${d.forWho}</div></div>
     <div class="cm-sec">${cHead("What happens here")}
       ${d.out.length?`<div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta" style="margin-top:6px">Last quarter, from what members reported</div>`:''}
@@ -9244,7 +9270,7 @@ sPublicPage = function(){
     ${member?'':`<div class="cm-sec">${cHead("How joining works")}
       ${open ? step(1,"Join","You're in straight away")+step(2,"Say hi in the channels","Kai suggests who to meet first")
         : step(1,"Apply","About 8 minutes. Kai fills most of it from your profile.")+step(2,`${d.run[0][1].split(" ")[0]} reviews it`,`Reviews ${d.cadence}. Usually ${d.decide}.`)+step(3,"You're in","Channels, people and events open up")}</div>`}
-    ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link} ↗</span></div>`:''}
+    ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
   <div class="foot">${member?`<div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" data-cgo="family">Open ${f.name}</button><button class="btn" style="flex:1;margin:0" data-csheet="cinvite">Invite</button></div>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
@@ -9385,8 +9411,8 @@ function cSheet(type, id){
     const roleName = (C_ROLES.find(r=>r[0]===m.role)||C_ROLES[0])[1].replace("Community ","");
     return `<div class="cm-qv"><div class="cm-sq">${cIni(m.n)}</div><div class="m"><div class="a">${m.n}${cPillOf(m)?`<span class="cm-pill ${m.st==="active"?m.role:m.st}">${cPillOf(m)}</span>`:''}</div><div class="b">${m.e}</div><div class="b">${m.city}</div></div><span class="cm-lmenu" data-csheet2="cmmmenu|${m.id}" aria-label="More">${C_DOTS_SVG}</span></div>
       ${off?`<div class="cm-meta" style="margin-top:10px">${m.sub}</div><div class="cm-lock"><div class="xs faint">${m.reason[0]}</div><div>${m.reason[1]}</div></div>`
-        :`<div class="cm-qrole">${m.st==="active"?`<span class="cm-sel" data-csheet2="crole|${m.id}">${roleName} ▾</span>`:`<span class="cm-sel">Member ▾</span>`}<span class="b">${m.st==="pending"?m.sub:`Joined ${m.joined} · invited by ${m.id==="chris"?"no one, founder":"Daniel Reyes"}`}</span></div>`}
-      ${m.st==="active"?`<div class="cm-tags" style="margin:12px 0 4px">${m.tags.map(x=>`<span>${x}</span>`).join("")}<span class="add" data-mmtag="${m.id}">+ Tag</span></div>`:''}
+        :`<div class="cm-qrole">${m.st==="active"?`<span class="cm-sel" data-csheet2="crole|${m.id}">${roleName}${C_CHEVSM_SVG}</span>`:`<span class="cm-sel">Member${C_CHEVSM_SVG}</span>`}<span class="b">${m.st==="pending"?m.sub:`Joined ${m.joined} · invited by ${m.id==="chris"?"no one, founder":"Daniel Reyes"}`}</span></div>`}
+      ${m.st==="active"?`<div class="cm-tags" style="margin:12px 0 4px">${m.tags.map(x=>`<span>${x}</span>`).join("")}<span class="add" data-mmtag="${m.id}">${C_PLUS_XS_SVG}Tag</span></div>`:''}
       ${m.atm?`<div class="cm-atm"><b>At the moment</b><div>${m.atm}</div></div>`:''}
       <div class="cm-list" style="margin-top:6px"><div class="cm-row" data-mmgo="answers|${m.id}"><div class="m"><div class="a">Registration answers</div></div><span class="cm-done">5</span><span class="s">›</span></div>
         <div class="cm-row" data-mmgo="notes|${m.id}"><div class="m"><div class="a">Notes</div></div>${m.notes.length?`<span class="cm-done">${m.notes.length}</span>`:''}<span class="s">›</span></div></div>
@@ -9424,13 +9450,13 @@ function cSheet(type, id){
     const ids = STATE.mmSel ? Object.keys(STATE.mmSel) : [STATE.mmTagFor];
     const ms = ids.map(cMMOne); const pick = STATE.cTagPick || (STATE.cTagPick = Object.fromEntries(cTagDefs().map(([t])=>[t, ms.every(m=>m.tags.includes(t)) ? 1 : ms.some(m=>m.tags.includes(t)) ? .5 : 0])));
     return `<h2>Tags</h2><div class="cm-search" style="padding:0 0 6px"><input class="search" placeholder="Search tags…" readonly><span class="cm-fbtn" data-cgo="manage:tags" aria-label="Manage tags">${C_SVG('<circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>')}</span></div>
-      <div class="cm-list">${cTagDefs().map(([t,n])=>`<div class="cm-row" data-ctagpick="${t}"><span class="cm-box ${pick[t]===1?'on':pick[t]?'half':''}">${pick[t]===1?'✓':pick[t]?'–':''}</span><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-done">${n}</span></div>`).join("")}</div>
+      <div class="cm-list">${cTagDefs().map(([t,n])=>`<div class="cm-row" data-ctagpick="${t}"><span class="cm-box ${pick[t]===1?'on':pick[t]?'half':''}">${pick[t]===1?C_CHECK_SVG:pick[t]?C_MINUS_SVG:''}</span><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-done">${n}</span></div>`).join("")}</div>
       <button class="btn" data-ctagapply="1">Apply${ids.length>1?` to ${ids.length}`:''}</button>`;
   }
   /* E1 filter */
   if (type==="cmmfilter") {
     const F = STATE.mmF || (STATE.mmF = { role:{}, status:{}, tags:{} });
-    const grp = (h, k, opts) => `<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(([v,l])=>`<div class="cm-row" data-cmmf="${k}|${v}"><div class="m"><div class="a" style="font-weight:500">${l}</div></div><span class="cm-box ${F[k][v]?'on':''}">${F[k][v]?'✓':''}</span></div>`).join("")}</div>`;
+    const grp = (h, k, opts) => `<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(([v,l])=>`<div class="cm-row" data-cmmf="${k}|${v}"><div class="m"><div class="a" style="font-weight:500">${l}</div></div><span class="cm-box ${F[k][v]?'on':''}">${F[k][v]?C_CHECK_SVG:''}</span></div>`).join("")}</div>`;
     const n = cMM().filter(m=>(!Object.keys(F.role).length||(m.st==="active"&&F.role[m.role]))&&(!Object.keys(F.status).length||F.status[m.st])&&(!Object.keys(F.tags).length||m.tags.some(x=>F.tags[x]))).length;
     return `<div class="row" style="justify-content:space-between"><h2 style="margin:0">Filter</h2><span class="cm-link" data-cmmfclear="1">Clear all</span></div>
       ${grp("Roles","role",C_ROLES.map(r=>[r[0],r[1].replace("Community ","")]))}${grp("Status","status",[["active","Active"],["pending","Pending"],["declined","Declined"],["removed","Removed"]])}${grp("Tags","tags",cTagDefs().slice(0,6).map(([t])=>[t,t]))}
@@ -9495,7 +9521,7 @@ function cSheet(type, id){
   if (type==="cnewch") {
     const s = STATE.cNewCh || (STATE.cNewCh = { priv:false, def:false, cat:"General" });
     return `<h2>New channel</h2>
-      <div class="row" style="gap:12px;align-items:stretch"><div class="cm-che cm-chebig" aria-label="Pick an emoji">💬</div><div class="field" style="flex:1;margin:0"><div class="k">Name</div><div class="v faint">#new-channel</div></div></div>
+      <div class="row" style="gap:12px;align-items:stretch"><div class="cm-che cm-chebig" aria-label="Pick an emoji">${C_SMILEPLUS_SVG}</div><div class="field" style="flex:1;margin:0"><div class="k">Name</div><div class="v faint">#new-channel</div></div></div>
       <div class="field"><div class="k">Description</div><div class="v faint">What it's for, in one line</div></div>
       <div class="cm-lbl">Category</div>${cChips([...new Set(cChans(f).map(c=>c.cat))].map(x=>[x,x]), s.cat, "cnewchcat")}
       <div class="toggle ${s.priv?'on':''}" data-cnewch="priv"><div><div style="font-size:15px;font-weight:600">Private</div><div class="sm muted">Members ask to join; you approve</div></div><div class="sw"></div></div>
@@ -9509,7 +9535,7 @@ function cSheet(type, id){
     const facets = cOrg() ? [...C_PFACETS, C_PFACET_ORG] : C_PFACETS;
     const n = Math.max(3, 412 - Object.keys(on).length*137);
     return `<div class="row" style="justify-content:space-between"><h2 style="margin:0">Filter people</h2><span class="cm-link" data-cpfclear="1">Clear all</span></div>
-      ${facets.map(([h,opts])=>`<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(o=>`<div class="cm-row" data-cpf="${o}"><div class="m"><div class="a" style="font-weight:500">${o}</div></div><span class="cm-box ${on[o]?'on':''}">${on[o]?'✓':''}</span></div>`).join("")}</div>`).join("")}
+      ${facets.map(([h,opts])=>`<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(o=>`<div class="cm-row" data-cpf="${o}"><div class="m"><div class="a" style="font-weight:500">${o}</div></div><span class="cm-box ${on[o]?'on':''}">${on[o]?C_CHECK_SVG:''}</span></div>`).join("")}</div>`).join("")}
       <button class="btn" data-cpfapply="1">Show ${Object.keys(on).length?n:412} members</button>`;
   }
   return null;
@@ -9613,6 +9639,7 @@ portWire = function(){
   q("[data-cmmfclear]", ()=>{ STATE.mmF={ role:{}, status:{}, tags:{} }; render(); });
   q("[data-cmmfgo]", ()=>{ STATE.sheet=null; render(); });
   q("[data-cmmsort]", el=>{ STATE.mmSort=el.dataset.cmmsort; STATE.sheet=null; render(); });
+  q("[data-ccmt]", el=>{ const i=phone.querySelector("#ccmt"); const v=(i&&i.value||"").trim(); if (!v) return; const p=DB.posts.find(x=>x.id===el.dataset.ccmt); STATE.cMyCmts=STATE.cMyCmts||{}; (STATE.cMyCmts[p.id]=STATE.cMyCmts[p.id]||[]).unshift(v); p.cm++; render(); toast("Comment posted"); });
   q("[data-cnoteadd]", ()=>{ const i=phone.querySelector("#cnote"); const v=(i&&i.value||"").trim(); if (!v) return; const m=cMMOne(STATE.mmFor); cMMSet(m.id, {notes:[[DB.user.name,"Now",v], ...m.notes]}); render(); });
   q("[data-crep]", el=>{ STATE.cRepDone=true; render(); toast(el.dataset.crep==="keep"?"Kept. The reporters aren't told who decided.":"Message removed. Tom is told why."); });
   q("[data-cinsr]", el=>{ STATE.cInsR=el.dataset.cinsr; render(); });
