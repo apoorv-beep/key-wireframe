@@ -2719,30 +2719,35 @@ body:has(.push) .ctlbtn { display:none; }
 .screen:has(.mo-promo) ~ .ios-status { color:#fff; transition:color .3s var(--mo-std, ease); }
 .screen:has(.mo-promo) ~ .ios-status .sig i, .screen:has(.mo-promo) ~ .ios-status .bat i, .screen:has(.mo-promo) ~ .ios-status .bat::after { background:#fff; }
 .screen:has(.mo-promo) ~ .ios-status .bat { border-color:#fff; }
-.screen:has(.mo-promo[data-th="ev"]) ~ .ios-status { color:#12161A; }
-.screen:has(.mo-promo[data-th="ev"]) ~ .ios-status .sig i, .screen:has(.mo-promo[data-th="ev"]) ~ .ios-status .bat i, .screen:has(.mo-promo[data-th="ev"]) ~ .ios-status .bat::after { background:#12161A; }
-.screen:has(.mo-promo[data-th="ev"]) ~ .ios-status .bat { border-color:#12161A; }
+.screen:has(.mo-promo[data-th="light"]) ~ .ios-status { color:#12161A; }
+.screen:has(.mo-promo[data-th="light"]) ~ .ios-status .sig i, .screen:has(.mo-promo[data-th="light"]) ~ .ios-status .bat i, .screen:has(.mo-promo[data-th="light"]) ~ .ios-status .bat::after { background:#12161A; }
+.screen:has(.mo-promo[data-th="light"]) ~ .ios-status .bat { border-color:#12161A; }
 .mo-promo { position:relative; margin:0 -16px; height:440px; flex:0 0 auto; overflow:hidden; color:var(--mo-on-deep); cursor:pointer; isolation:isolate;
   background:radial-gradient(90% 60% at 50% 42%, #18202A 0%, #0E1217 55%, var(--mo-deep) 100%); border-radius:0 0 30px 30px; -webkit-tap-highlight-color:transparent;
-  --mo-ev-ink:#6B4E1F; }
+}
 .mo-promo * { box-sizing:border-box; }
 .mo-promo::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:2; background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
 .mo-gl { position:absolute; inset:0; z-index:1; }
 .mo-gl canvas { display:block; width:100% !important; height:100% !important; }
-/* the Xoogler dinner's own theme (sand) repaints the frame in beat 5; soft masses of its colours drift behind */
-.mo-theme { position:absolute; inset:0; z-index:3; overflow:hidden; background:linear-gradient(150deg,#F7F0E3,#EAD9BB 55%,#D9BE93); clip-path:circle(0% at 50% 64%); }
+/* each story carries its event's theme: story one the founders dinner (sand), story two AI infra office hours (tide) */
+.mo-s1 { --ev-bg:linear-gradient(150deg,#F7F0E3,#EAD9BB 55%,#D9BE93); --ev-m1:#F7F0E3; --ev-m2:#C9A36A; --ev-ink:#6B4E1F; --ev-card:rgba(255,252,246,.72); --ev-edge:rgba(255,255,255,.7);
+  --ev-pill:#6B4E1F; --ev-pill-ink:#F7F0E3; --ev-face:#FBF6EC; --ev-shadow:rgba(90,62,20,.55); --ev-cap:#6B4E1F; }
+.mo-s2 { --ev-bg:linear-gradient(140deg,#0E3A5C,#1B6E8F 55%,#3E918E); --ev-m1:#3E918E; --ev-m2:#0B2C47; --ev-ink:#EAF7F6; --ev-card:rgba(8,34,52,.46); --ev-edge:rgba(191,237,234,.18);
+  --ev-pill:#BFEDEA; --ev-pill-ink:#0E3A5C; --ev-face:#12405E; --ev-shadow:rgba(0,12,24,.6); --ev-cap:#F9FAFC; }
+/* the founders dinner's own theme (sand) repaints the frame in beat 5; soft masses of its colours drift behind */
+.mo-theme { position:absolute; inset:0; z-index:3; overflow:hidden; background:var(--ev-bg); clip-path:circle(0% at 50% 64%); }
 .mo-theme i { position:absolute; width:300px; height:300px; border-radius:50%; filter:blur(50px); opacity:.75; animation:mo-drift 7s ease-in-out infinite alternate; }
-.mo-theme i:first-child { left:-90px; top:40px; background:#F7F0E3; } .mo-theme i:last-child { right:-110px; bottom:-60px; background:#C9A36A; animation-delay:-3s; }
+.mo-theme i:first-child { left:-90px; top:40px; background:var(--ev-m1); } .mo-theme i:last-child { right:-110px; bottom:-60px; background:var(--ev-m2); animation-delay:-3s; }
 @keyframes mo-drift { to { transform:translate(60px,-40px) scale(1.15); } }
 
 .mo-top { position:absolute; left:20px; right:20px; top:60px; z-index:8; }
 .mo-bars { display:flex; gap:4px; }
 .mo-bars i { flex:1; height:2px; border-radius:1px; background:rgba(249,250,252,.2); overflow:hidden; position:relative; transition:background .3s; }
 .mo-bars i b { position:absolute; inset:0; background:var(--mo-on-deep); transform-origin:left; transform:scaleX(0); transition:background .3s; }
-.mo-cap { position:relative; height:26px; margin-top:12px; overflow:hidden; transition:color .3s; }
+.mo-cap { position:absolute; left:20px; right:20px; top:74px; z-index:8; height:26px; overflow:hidden; transition:color .3s; }
 .mo-cap span { position:absolute; left:0; top:0; font-size:17px; font-weight:700; letter-spacing:-.015em; white-space:nowrap; opacity:0; }
-.mo-promo[data-th="ev"] .mo-cap { color:var(--mo-ev-ink); }
-.mo-promo[data-th="ev"] .mo-bars i { background:rgba(107,78,31,.2); } .mo-promo[data-th="ev"] .mo-bars b { background:var(--mo-ev-ink); }
+.mo-promo[data-th="light"] .mo-s1 .mo-cap { color:var(--ev-cap); }
+.mo-promo[data-th="light"] .mo-bars i { background:rgba(107,78,31,.2); } .mo-promo[data-th="light"] .mo-bars b { background:#6B4E1F; }
 
 /* 1. the ask: the call's globe and its transcript, word by word */
 .mo-orbw { position:absolute; left:50%; top:104px; width:200px; height:200px; margin-left:-100px; z-index:4; opacity:0; --gold:0; }
@@ -2764,7 +2769,7 @@ body:has(.push) .ctlbtn { display:none; }
 .mo-chip em { display:block; font-style:normal; font-size:11.5px; font-weight:600; color:var(--mo-on-deep-muted); line-height:1.2; }
 .mo-chip b { display:block; font-size:14px; font-weight:700; line-height:1.25; }
 .mo-c1 { top:150px; }
-.mo-c2 { top:318px; background:var(--mo-deep); box-shadow:0 14px 30px -14px rgba(60,40,10,.6); }
+.mo-c2 { top:318px; background:var(--mo-deep); box-shadow:0 14px 30px -12px var(--ev-shadow); }
 
 /* 3. the push that says Daniel forwarded it */
 .mo-push { position:absolute; left:10px; right:10px; top:104px; z-index:7; display:flex; gap:10px; align-items:center; padding:11px 12px; border-radius:18px; opacity:0;
@@ -2790,7 +2795,7 @@ body:has(.push) .ctlbtn { display:none; }
 .mo-state span { position:absolute; left:0; top:0; display:flex; align-items:center; gap:6px; white-space:nowrap; opacity:0; transform:translateY(6px); transition:opacity .2s var(--mo-std), transform .26s var(--mo-std); }
 .mo-state span::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
 .mo-state .s-new, .mo-state .s-talking { color:#178A4A; } .mo-state .s-waiting { color:var(--mo-ink2); } .mo-state .s-well { color:#7E6011; }
-.mo-promo[data-st="new"] .s-new, .mo-promo[data-st="waiting"] .s-waiting, .mo-promo[data-st="talking"] .s-talking, .mo-promo[data-st="well"] .s-well { opacity:1; transform:none; }
+.mo-story[data-st="new"] .s-new, .mo-story[data-st="waiting"] .s-waiting, .mo-story[data-st="talking"] .s-talking, .mo-story[data-st="well"] .s-well { opacity:1; transform:none; }
 .mo-route { display:flex; align-items:center; font-size:9px; font-weight:700; color:var(--mo-ink2); }
 .mo-route i { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-style:normal; background:#E8ECF1; }
 .mo-route b { width:10px; height:1.5px; background:#C5CCD5; transform-origin:left; }
@@ -2820,42 +2825,54 @@ body:has(.push) .ctlbtn { display:none; }
 .mo-burst i { position:absolute; width:6px; height:6px; margin:-3px; border-radius:50%; background:radial-gradient(circle,#FFF4D0,#DCB854 60%,#A87F2A); opacity:0; }
 
 /* 5. the room: the event card in its theme */
-.mo-ev { position:absolute; left:16px; right:16px; top:140px; z-index:5; padding:16px; border-radius:22px; opacity:0; color:var(--mo-ev-ink);
-  background:rgba(255,252,246,.72); backdrop-filter:blur(16px) saturate(1.3); -webkit-backdrop-filter:blur(16px) saturate(1.3);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.7), 0 24px 48px -22px rgba(90,62,20,.55); }
+.mo-ev { position:absolute; left:16px; right:16px; top:140px; z-index:5; padding:16px; border-radius:22px; opacity:0; color:var(--ev-ink);
+  background:var(--ev-card); backdrop-filter:blur(16px) saturate(1.3); -webkit-backdrop-filter:blur(16px) saturate(1.3);
+  box-shadow:inset 0 0 0 1px var(--ev-edge), 0 24px 48px -22px var(--ev-shadow); }
 .mo-evk { font-size:12px; font-weight:700; letter-spacing:.02em; opacity:.75; }
 .mo-evt { margin-top:4px; font-size:26px; font-weight:800; letter-spacing:-.025em; line-height:1.1; }
 .mo-evm { margin-top:4px; font-size:14px; font-weight:600; opacity:.8; }
 .mo-evr { display:flex; align-items:center; justify-content:space-between; margin-top:16px; }
 .mo-faces { display:flex; }
-.mo-faces i { width:32px; height:32px; margin-right:-6px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:10.5px; font-weight:700;
-  background:#5B6673; color:#fff; box-shadow:0 0 0 2px #FBF6EC; }
+.mo-faces i { width:32px; height:32px; margin-right:-8px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:10.5px; font-weight:700;
+  background:#5B6673; color:#fff; box-shadow:0 0 0 2px var(--ev-face); }
 .mo-faces i:nth-child(2) { background:#7A6A55; }
-.mo-faces i.g { background:radial-gradient(circle at 35% 30%, #4A3F2A, #1F1A12 75%); color:#F7E7B8; box-shadow:0 0 0 2px #FBF6EC, 0 0 0 3.5px #DCB854; z-index:1; }
-.mo-faces i.n { background:#FBF6EC; color:var(--mo-ev-ink); box-shadow:inset 0 0 0 1px rgba(107,78,31,.3), 0 0 0 2px #FBF6EC; }
-.mo-going { position:relative; display:flex; align-items:center; gap:6px; height:34px; padding:0 14px 0 11px; border-radius:999px; background:var(--mo-ev-ink); color:#F7F0E3; font-size:14px; font-weight:700; opacity:0; }
+.mo-faces i.g { background:radial-gradient(circle at 35% 30%, #4A3F2A, #1F1A12 75%); color:#F7E7B8; box-shadow:0 0 0 2px var(--ev-face), 0 0 0 3.5px #DCB854; z-index:1; }
+.mo-faces i.n { background:var(--ev-face); color:var(--ev-ink); box-shadow:inset 0 0 0 1px var(--ev-edge), 0 0 0 2px var(--ev-face); }
+.mo-going { position:relative; display:flex; align-items:center; gap:6px; height:34px; padding:0 14px 0 11px; border-radius:999px; background:var(--ev-pill); color:var(--ev-pill-ink); font-size:14px; font-weight:700; opacity:0; }
 .mo-going svg { width:15px; height:15px; }
 .mo-conf { position:absolute; left:50%; top:50%; width:0; height:0; }
-.mo-conf i { position:absolute; width:6px; height:9px; margin:-4px -3px; border-radius:1.5px; opacity:0; background:#C9A36A; }
-.mo-conf i:nth-child(3n) { background:var(--mo-ev-ink); } .mo-conf i:nth-child(3n+1) { background:#F7E7B8; } .mo-conf i:nth-child(4n) { width:6px; height:6px; border-radius:50%; }
+.mo-conf i { position:absolute; width:6px; height:9px; margin:-4px -3px; border-radius:1.5px; opacity:0; background:var(--ev-m2); }
+.mo-conf i:nth-child(3n) { background:var(--ev-pill); } .mo-conf i:nth-child(3n+1) { background:#F7E7B8; } .mo-conf i:nth-child(4n) { width:6px; height:6px; border-radius:50%; }
 
-/* 6. your community: the intro becomes one point of light among the family */
-.mo-dot { position:absolute; left:50%; top:214px; width:12px; height:12px; margin:-6px; z-index:5; border-radius:50%; opacity:0;
+/* 6. it went well: the intro folds into a point of light */
+.mo-dot { position:absolute; left:50%; top:204px; width:12px; height:12px; margin:-6px; z-index:5; border-radius:50%; opacity:0;
   background:radial-gradient(circle,#FFF4D0,#DCB854 55%,rgba(168,127,42,0) 72%); box-shadow:0 0 24px 8px rgba(220,184,84,.45); }
-.mo-stats { position:absolute; left:20px; right:20px; bottom:34px; z-index:5; display:flex; gap:12px; }
+
+/* finale: the point becomes the glow behind the Key wordmark, the family's numbers count up, and it holds */
+.mo-fin { position:absolute; inset:0; z-index:5; pointer-events:none; }
+.mo-glow { position:absolute; left:50%; top:204px; width:312px; height:180px; margin:-90px 0 0 -156px; border-radius:50%; opacity:0;
+  background:radial-gradient(closest-side, rgba(255,244,208,.95), rgba(220,184,84,.55) 38%, rgba(168,127,42,.18) 66%, rgba(168,127,42,0) 100%); }
+/* Key's white logo (web public/static/images/light-full-logo.svg, cropped to the mark) as a mask, so the foil can pass through it */
+.mo-logo { position:absolute; left:50%; top:154px; width:184px; height:100px; margin-left:-92px; opacity:0;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2213 31 79 43%22%3E%3Cpath fill=%22%23000%22 d=%22M28.9509 51.1783L29.124 53.6382L28.9509 56.098L21.3936 64.0154H13L23.1803 53.7251L13.9531 44.3193H22.1545L28.9509 51.1783Z%22/%3E%3Cpath fill=%22%23000%22 d=%22M64.6586 44.9178C62.9276 44.0959 61.0305 43.6921 59.1178 43.7391C57.1181 43.6816 55.1379 44.1495 53.3719 45.0955C51.841 45.9462 50.584 47.2202 49.7504 48.7687C48.9011 50.3655 48.4713 52.1531 48.4986 53.9642C48.4324 55.9987 48.9362 58.0111 49.9516 59.7712C50.9022 61.3366 52.2864 62.5885 53.9355 63.3712C55.7326 64.214 57.696 64.6374 59.6775 64.61C61.1773 64.6309 62.6757 64.495 64.1482 64.2049C65.1416 64.0141 66.1012 63.6796 66.9972 63.2092C67.6192 62.8786 68.1853 62.4539 68.6787 61.9495L65.8623 57.4387C65.4831 57.7968 65.0533 58.0947 64.5871 58.326C63.9729 58.6383 63.325 58.88 62.6563 59.0473C61.8395 59.2472 61.002 59.3439 60.1618 59.3348C59.3074 59.3544 58.4582 59.1976 57.6674 58.8735C57.0116 58.5991 56.439 58.1548 56.0092 57.5864C55.6041 57.0389 55.3664 56.3842 55.3249 55.7034H69.489C69.5319 55.4512 69.5526 55.1951 69.5487 54.9377V54.168C69.5487 51.863 69.1241 49.9395 68.2736 48.3976C67.4556 46.8896 66.1934 45.6744 64.6599 44.9191L64.6586 44.9178ZM55.4924 51.8983C55.5235 51.3403 55.6859 50.798 55.9676 50.3145C56.2702 49.8036 56.7039 49.3841 57.2233 49.0993C57.8414 48.7687 58.5361 48.6066 59.2347 48.6302C59.9203 48.6014 60.5994 48.7726 61.1902 49.1241C61.6772 49.4273 62.0745 49.8585 62.3368 50.3707C62.5809 50.8424 62.7186 51.3625 62.7394 51.893L55.4924 51.897V51.8983ZM84.8919 44.3141L79.6005 57.7053L74.8765 44.3141H67.6542L75.8309 64.018L71.3043 74H78.5513L92 44.3141H84.8932H84.8919ZM52.1539 64.0154H43.7591L36.203 56.098V64.0154H28.9521V31H36.203V51.1783L42.9994 44.3193H51.2034L41.9736 53.725L52.1539 64.0154Z%22/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2213 31 79 43%22%3E%3Cpath fill=%22%23000%22 d=%22M28.9509 51.1783L29.124 53.6382L28.9509 56.098L21.3936 64.0154H13L23.1803 53.7251L13.9531 44.3193H22.1545L28.9509 51.1783Z%22/%3E%3Cpath fill=%22%23000%22 d=%22M64.6586 44.9178C62.9276 44.0959 61.0305 43.6921 59.1178 43.7391C57.1181 43.6816 55.1379 44.1495 53.3719 45.0955C51.841 45.9462 50.584 47.2202 49.7504 48.7687C48.9011 50.3655 48.4713 52.1531 48.4986 53.9642C48.4324 55.9987 48.9362 58.0111 49.9516 59.7712C50.9022 61.3366 52.2864 62.5885 53.9355 63.3712C55.7326 64.214 57.696 64.6374 59.6775 64.61C61.1773 64.6309 62.6757 64.495 64.1482 64.2049C65.1416 64.0141 66.1012 63.6796 66.9972 63.2092C67.6192 62.8786 68.1853 62.4539 68.6787 61.9495L65.8623 57.4387C65.4831 57.7968 65.0533 58.0947 64.5871 58.326C63.9729 58.6383 63.325 58.88 62.6563 59.0473C61.8395 59.2472 61.002 59.3439 60.1618 59.3348C59.3074 59.3544 58.4582 59.1976 57.6674 58.8735C57.0116 58.5991 56.439 58.1548 56.0092 57.5864C55.6041 57.0389 55.3664 56.3842 55.3249 55.7034H69.489C69.5319 55.4512 69.5526 55.1951 69.5487 54.9377V54.168C69.5487 51.863 69.1241 49.9395 68.2736 48.3976C67.4556 46.8896 66.1934 45.6744 64.6599 44.9191L64.6586 44.9178ZM55.4924 51.8983C55.5235 51.3403 55.6859 50.798 55.9676 50.3145C56.2702 49.8036 56.7039 49.3841 57.2233 49.0993C57.8414 48.7687 58.5361 48.6066 59.2347 48.6302C59.9203 48.6014 60.5994 48.7726 61.1902 49.1241C61.6772 49.4273 62.0745 49.8585 62.3368 50.3707C62.5809 50.8424 62.7186 51.3625 62.7394 51.893L55.4924 51.897V51.8983ZM84.8919 44.3141L79.6005 57.7053L74.8765 44.3141H67.6542L75.8309 64.018L71.3043 74H78.5513L92 44.3141H84.8932H84.8919ZM52.1539 64.0154H43.7591L36.203 56.098V64.0154H28.9521V31H36.203V51.1783L42.9994 44.3193H51.2034L41.9736 53.725L52.1539 64.0154Z%22/%3E%3C/svg%3E") center/contain no-repeat;
+  background:linear-gradient(100deg, rgba(249,250,252,0) 38%, #F7E7B8 46%, #DCB854 50%, #F7E7B8 54%, rgba(249,250,252,0) 62%) no-repeat, linear-gradient(#F9FAFC,#F9FAFC);
+  background-size:250% 100%, 100% 100%; background-position:130% 0, 0 0; }
+.mo-tag { position:absolute; left:0; right:0; top:272px; text-align:center; font-size:15px; font-weight:600; color:var(--mo-on-deep-muted); opacity:0; }
+.mo-stats { position:absolute; left:20px; right:20px; bottom:34px; display:flex; gap:12px; }
 .mo-stats > div { flex:1; opacity:0; }
-.mo-stats b { display:block; font-size:32px; font-weight:800; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
+.mo-stats b { display:block; font-size:28px; font-weight:800; letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums; }
 .mo-stats span { display:block; margin-top:6px; font-size:12.5px; font-weight:600; color:var(--mo-on-deep-muted); line-height:1.3; }
+.mo-stats em { display:block; font-style:normal; font-size:11.5px; color:var(--mo-on-deep-line); }
 
 /* still frame (reduced motion, tests, no libraries): the reply beat, composed, gone well */
 .mo-promo.still .mo-gl { background:
   radial-gradient(3px 3px at 22% 30%, rgba(247,231,184,.9), transparent 70%), radial-gradient(2px 2px at 70% 22%, rgba(249,250,252,.7), transparent 70%),
   radial-gradient(2px 2px at 84% 40%, rgba(249,250,252,.5), transparent 70%), radial-gradient(2px 2px at 12% 48%, rgba(249,250,252,.45), transparent 70%),
   radial-gradient(2.5px 2.5px at 58% 36%, rgba(249,250,252,.6), transparent 70%), radial-gradient(40% 30% at 50% 34%, rgba(249,250,252,.06), transparent 70%); }
-.mo-promo.still .mo-card, .mo-promo.still .mo-bub, .mo-promo.still .mo-cap span:nth-child(4) { opacity:1; }
+.mo-promo.still .mo-s1 .mo-card, .mo-promo.still .mo-s1 .mo-bub, .mo-promo.still .mo-s1 .mo-cap span:nth-child(4) { opacity:1; }
 .mo-promo.still .mo-why, .mo-promo.still .mo-act { height:0; margin-top:0; opacity:0; }
 .mo-promo.still .mo-bars b, .mo-promo.still .mo-prog b { transform:none; }
-.mo-promo.still .mo-av { --sweep:360deg; }
+.mo-promo.still .mo-s1 .mo-av { --sweep:360deg; }
 
 /* ---- The Kai call: deep surface, the globe, the transcript spoken word by word ---- */
 .call { background:var(--mo-deep); }
@@ -8641,7 +8658,6 @@ function evRoomMsgs(c, e, list, flat){
   });
   return out;
 }
-const EV_BELL = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 003.4 0"/></svg>`;
 const _evBaseChat = chatScreen;
 chatScreen = function(id){
   seedChats(); if (!DB.chat[id] && /^ev-/.test(id) && evE(id.slice(3))) evRoom(evE(id.slice(3)));
@@ -8657,7 +8673,7 @@ chatScreen = function(id){
   const mine = c.msgs.some(m=>m.from===EV_ME);
   const first = !mine && !closed && f==="all" && !((STATE.drafts||{})[id]) ? `<div class="evx-first"><span class="chip sug" data-evhi="${id}">Say what you're hoping to get out of it</span></div>` : "";
   const empty = !list.length ? `<div class="estate"><div class="et">${f==="q"?"No questions yet":"No updates yet"}</div><div class="es">${f==="q"?"Ask the host anything. Others can upvote it.":"The host's updates pin here and reach everyone going."}</div></div>` : "";
-  const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb" style="background:${evBg(e.theme)}" onclick="go('eventd:${e.id}')"></div><div class="hm" onclick="go('eventd:${e.id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${EV_BELL}</div><div class="icon" onclick="openSheet('conv','${id}')">···</div></div>`;
+  const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb evt-thumbgen" onclick="go('eventd:${e.id}')" aria-label="Event details">${evArtOf(e,"xs")}</div><div class="hm" onclick="go('eventd:${e.id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${evIc("bell")}</div><div class="icon" onclick="openSheet('conv','${id}')" aria-label="More">${evIc("ellipsis")}</div></div>`;
   const mode = STATE.evRoomType||"message";
   const modes = [["message","Message"]].concat(e.qaOff?[]:[["question","Question"]], host?[["update","Update"]]:[]);
   const ph = { message:"Message everyone going", question:"Ask the host. Others can upvote it.", update:"Update everyone going. It pins and pushes." }[mode];
@@ -10087,39 +10103,61 @@ function moLoad() {
 const MO_SPARK = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c.5 4.6 2.4 7 7 7.6-4.6.6-6.5 3-7 7.6-.5-4.6-2.4-7-7-7.6 4.6-.6 6.5-3 7-7.6z"/><path d="M19 15.5c.2 1.8 1 2.7 2.6 3-1.6.2-2.4 1.1-2.6 3-.2-1.9-1-2.8-2.6-3 1.6-.3 2.4-1.2 2.6-3z"/></svg>`;
 const MO_GLSL_SOFT = `varying vec3 vCol; varying float vA; void main(){ float r = length(gl_PointCoord - .5); float a = 1. - smoothstep(0., .5, r); gl_FragColor = vec4(vCol, a*a*vA); }`;
 
-/* ---- Sign-in reel, script A (Apoorv's pick, 26 Sep 02:16): a week on Key in 20 seconds, told with the product's own parts.
-   1 the ask (Kai call) · 2 the path (mission, vouched pick) · 3 the yes (Ask Daniel, forwarded) · 4 the reply · 5 the room (themed event) · 6 your community ---- */
-const MO_BEATS = [3.4, 3.6, 3.4, 3.0, 3.0, 3.6], MO_LOOP = 20, MO_CUTS = MO_BEATS.map((b,i)=>MO_BEATS.slice(0,i+1).reduce((a,x)=>a+x,0));
-const MO_CAPS = ["Tell Kai what you need", "Kai finds who can get you there", "Nothing goes without your yes", "They say yes", "Meet in person", "Your community on Key"];
-const MO_ASK = ["What are you looking for right now?", "A technical cofounder for an agents idea."];
-const MO_STATS = [[412, "Xoogler members"], [38, "intros last quarter"], [6, "hires"]];
+/* ---- Sign-in reel, script A (Apoorv's pick, 26 Sep 02:16; round 2 02:44): two weeks on Key told on the same screens, then Key itself.
+   Each story: 1 the ask (Kai call) · 2 the path (mission, vouched pick) · 3 the yes · 4 the reply · 5 the room (themed event) · 6 it went well,
+   and the intro folds into a point of light. Story one's point grows into story two's globe; story two's becomes the glow behind the Key
+   wordmark, which holds with the family's numbers, then gathers back into the globe. ---- */
+const MO_STORIES = [
+  { ask:["What are you looking for right now?", "A technical cofounder for an agents idea."], mission:"Find a cofounder",
+    p:{ ini:"MC", first:"Maya", name:"Maya Chen", role:"Head of Engineering, seed-stage" }, v:{ ini:"DR", first:"Daniel" }, why:"Daniel recommended her in #cofounders",
+    them:"Happy to talk. Coffee Thursday?", me:"Thursday works. See you there.",
+    ev:{ k:"Hosted by Daniel", t:"Founders dinner", m:"Thu · 7 pm · Atherton", faces:["AR","DP"], more:"+6" } },
+  { ask:["What would make this month a win?", "A product role at an AI lab."], mission:"Find a PM role",
+    p:{ ini:"SI", first:"Sana", name:"Sana Iqbal", role:"Product Lead, Perplexity" }, v:{ ini:"RM", first:"Rahul" }, why:"Rahul recommended her in #jobs",
+    them:"Loved your profile. Chat Friday?", me:"Friday works. Talk then.",
+    ev:{ k:"AI infra · Office hours", t:"AI infra office hours", m:"Sat · 10 am · Online", faces:["AR","RM"], more:"+54" } }
+];
+const MO_CAPS = ["Tell Kai what you need", "Kai finds who can get you there", "Nothing goes without your yes", "They say yes", "Meet in person", "Followed to what came of it"];
+// Real platform-wide figures from Outcomes (PostHog, 26 Sep): 11,026 approved members across 227 communities (Aug 2024 to Sep 2026) and
+// 3,327 check-ins at 212 events (Apr 2025 to Sep 2026), rounded down. Intros are not tracked, so that tile is illustrative (Apoorv's pick, 03:23). No community is named (Apoorv, 03:25).
+const MO_STATS = [[11000, "members", "+"], [3300, "event check-ins", "+"], [38, "intros", "", "Illustrative"]];
+// Story time is authored at pace 1 and played 15% slower (Apoorv, 02:44: slow enough to read and follow).
+const MO_SLOW = 1.15, MO_BEATS = [3.4, 3.6, 3.4, 3.0, 3.0, 2.9], MO_SN = 19.3, MO_SL = MO_SN*MO_SLOW, MO_FINLEN = 9.5, MO_SEG = MO_SL + MO_FINLEN, MO_LOOP = MO_STORIES.length*MO_SEG; // each story is followed by the Key finale (Apoorv, 04:27)
+const MO_CUTS = MO_STORIES.flatMap((S,k)=>MO_BEATS.slice(0,5).map((b,i)=>k*MO_SEG + MO_BEATS.slice(0,i+1).reduce((a,x)=>a+x,0)*MO_SLOW).concat([k*MO_SEG + MO_SL, (k+1)*MO_SEG]));
 let moT0 = null; // one clock for the reel, so a re-render or a remount continues it rather than restarting
 const moCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
 
-function moPromoHTML() {
-  const dots = n => Array.from({length:n},()=>`<i></i>`).join("");
-  return `<div class="mo-promo${MO_ON?'':' still'}" data-promo data-st="${MO_ON?'new':'well'}" role="img" aria-label="A week on Key: Priya tells Kai she needs a technical cofounder. Kai finds Maya through Daniel, who vouches for her. Priya taps Ask Daniel, Maya replies, they meet at the Xoogler dinner, and it went well.">
-    <div class="mo-gl"></div><div class="mo-theme"><i></i><i></i></div>
-    <div class="mo-top"><div class="mo-bars">${MO_BEATS.map(()=>`<i><b></b></i>`).join("")}</div>
-      <div class="mo-cap">${MO_CAPS.map(c=>`<span>${c}</span>`).join("")}</div></div>
+function moStoryHTML(S, n) {
+  const dots = k => Array.from({length:k},()=>`<i></i>`).join("");
+  return `<div class="mo-story mo-s${n}" data-st="${MO_ON?'new':'well'}">
+    <div class="mo-theme"><i></i><i></i></div>
+    <div class="mo-cap">${MO_CAPS.map(c=>`<span>${c}</span>`).join("")}</div>
     <div class="mo-orbw"><canvas class="mo-orb" width="200" height="200"></canvas></div>
-    <div class="mo-ask"><p class="k">${MO_ASK[0]}</p><p class="u">${MO_ASK[1]}</p></div>
-    <div class="mo-chip mo-c1"><span class="ks">${MO_SPARK}</span><span><em>Mission started</em><b>Find a cofounder</b></span></div>
-    <div class="mo-push"><span class="ic">K</span><span class="tx"><b>Daniel forwarded your intro</b><em>Maya has it now.</em></span><span class="tm">now</span></div>
-    <div class="mo-chat"><div class="mo-bub them"><span class="fc">MC</span><p>Happy to talk. Coffee Thursday?</p></div><div class="mo-bub me"><p>Thursday works. See you there.</p></div></div>
+    <div class="mo-ask"><p class="k">${S.ask[0]}</p><p class="u">${S.ask[1]}</p></div>
+    <div class="mo-chip mo-c1"><span class="ks">${MO_SPARK}</span><span><em>Mission started</em><b>${S.mission}</b></span></div>
+    <div class="mo-push"><span class="ic">K</span><span class="tx"><b>${S.v.first} forwarded your intro</b><em>${S.p.first} has it now.</em></span><span class="tm">now</span></div>
+    <div class="mo-chat"><div class="mo-bub them"><span class="fc">${S.p.ini}</span><p>${S.them}</p></div><div class="mo-bub me"><p>${S.me}</p></div></div>
     <div class="mo-card">
       <div class="mo-crow"><div class="mo-state"><span class="s-new">New pick</span><span class="s-waiting">Waiting</span><span class="s-talking">In conversation</span><span class="s-well">Went well</span></div>
-        <div class="mo-route"><i class="y">You</i><b></b><i class="g">DR</i><b></b><i>MC</i></div></div>
-      <div class="mo-who"><div class="mo-av"><div class="fc">MC</div><div class="mo-burst">${dots(12)}</div></div><div><div class="mo-nm">Maya Chen</div><div class="mo-ro">Head of Engineering, seed-stage</div></div></div>
-      <div class="mo-why"><span class="tg">Vouched</span><span>Daniel recommended her in #cofounders</span></div>
-      <div class="mo-act"><div class="mo-btn"><span class="b1">Ask Daniel</span><span class="b2">${moCheck}Asked Daniel</span></div><span class="mo-skip">Skip</span><div class="mo-tap"></div></div>
+        <div class="mo-route"><i class="y">You</i><b></b><i class="g">${S.v.ini}</i><b></b><i>${S.p.ini}</i></div></div>
+      <div class="mo-who"><div class="mo-av"><div class="fc">${S.p.ini}</div><div class="mo-burst">${dots(12)}</div></div><div><div class="mo-nm">${S.p.name}</div><div class="mo-ro">${S.p.role}</div></div></div>
+      <div class="mo-why"><span class="tg">Vouched</span><span>${S.why}</span></div>
+      <div class="mo-act"><div class="mo-btn"><span class="b1">Ask ${S.v.first}</span><span class="b2">${moCheck}Asked ${S.v.first}</span></div><span class="mo-skip">Skip</span><div class="mo-tap"></div></div>
       <div class="mo-prog">${'<i><b></b></i>'.repeat(5)}</div>
     </div>
-    <div class="mo-ev"><div class="mo-evk">Xoogler · Dinner club</div><div class="mo-evt">Xoogler dinner</div><div class="mo-evm">Thu · 7 pm · Palo Alto</div>
-      <div class="mo-evr"><div class="mo-faces"><i>AR</i><i>DP</i><i class="g">MC</i><i class="n">+9</i></div><div class="mo-going">${moCheck}Going<div class="mo-conf">${dots(16)}</div></div></div></div>
-    <div class="mo-chip mo-c2"><span class="ks">${MO_SPARK}</span><span><b>Maya is going too</b></span></div>
+    <div class="mo-ev"><div class="mo-evk">${S.ev.k}</div><div class="mo-evt">${S.ev.t}</div><div class="mo-evm">${S.ev.m}</div>
+      <div class="mo-evr"><div class="mo-faces">${S.ev.faces.map(f=>`<i>${f}</i>`).join("")}<i class="g">${S.p.ini}</i><i class="n">${S.ev.more}</i></div><div class="mo-going">${moCheck}Going<div class="mo-conf">${dots(16)}</div></div></div></div>
+    <div class="mo-chip mo-c2"><span class="ks">${MO_SPARK}</span><span><b>${S.p.first} is going too</b></span></div>
     <div class="mo-dot"></div>
-    <div class="mo-stats">${MO_STATS.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div>
+  </div>`;
+}
+function moPromoHTML() {
+  return `<div class="mo-promo${MO_ON?'':' still'}" data-promo role="img" aria-label="Two weeks on Key. Priya tells Kai she needs a technical cofounder; Kai finds Maya through Daniel, who vouches for her; Priya taps Ask Daniel, Maya replies, they meet at a founders dinner, and it went well. Then a PM role, through Rahul to Sana. Key: over 11,000 members and 3,300 event check-ins.">
+    <div class="mo-gl"></div>
+    <div class="mo-top"><div class="mo-bars">${MO_BEATS.map(()=>`<i><b></b></i>`).join("")}</div></div>
+    ${MO_STORIES.map((S,i)=>moStoryHTML(S, i+1)).join("")}
+    <div class="mo-fin"><div class="mo-glow"></div><div class="mo-logo" aria-hidden="true"></div><div class="mo-tag">People who vouch for each other</div>
+      <div class="mo-stats">${MO_STATS.map(([n,l,p,note])=>`<div><b>${n.toLocaleString("en-US")}${p}</b><span>${l}${note?`<em>${note}</em>`:""}</span></div>`).join("")}</div></div>
   </div>`;
 }
 
@@ -10153,44 +10191,44 @@ function moFieldBuild() {
   return MO_FIELD;
 }
 
-// The two lines of the ask, timed like speech (moSchedule) and fitted to their window in the beat.
+// The two lines of the ask, timed like speech (moSchedule) and fitted to their window in the beat (story time).
 function moLine(text, at, len) { const sc = moSchedule(text, 1), k = len/(sc.dur/1000); return sc.words.map(w=>({ s:at + w.s/1000*k, e:at + w.e/1000*k, syl:w.syl })); }
 function moLineAmp(words, t) {
   const w = words.find(x=>t>=x.s && t<x.e); if (!w) return 0;
   const ph = ((t-w.s)/(w.e-w.s)*w.syl) % 1; return 0.22 + 0.78*Math.pow(Math.sin(Math.PI*ph), 1.6);
 }
 
-function moTimeline(root) {
-  const q = sel => root.querySelectorAll(sel), one = sel => root.querySelector(sel), W = root.clientWidth || 390;
-  const V = { field:.55, dim:.35, camZ:10.5, gold:0, orb:0, count:0 };
-  const tl = gsap.timeline({ paused:true, defaults:{ ease:"expo.out" } }), again = { immediateRender:false };
-  const cap = q(".mo-cap span"); MO_CAPS.forEach((c,i)=>{ const at = i ? MO_CUTS[i-1] : 0;
-    tl.fromTo(cap[i], { y:16, opacity:0, filter:"blur(6px)" }, { y:0, opacity:1, filter:"blur(0px)", duration:.8 }, at + .1);
-    tl.to(cap[i], { y:-12, opacity:0, filter:"blur(6px)", duration:.3, ease:"power2.in" }, MO_CUTS[i] - .32); });
+// One story, authored in story time (0 to MO_SN); the caller slows it and places it on the reel.
+function moStoryTL(g, V, SV, W, k) {
+  const q = sel => g.querySelectorAll(sel), one = sel => g.querySelector(sel);
+  const tl = gsap.timeline({ defaults:{ ease:"expo.out" } }), again = { immediateRender:false };
+  const cap = q(".mo-cap span"), cuts = MO_BEATS.map((b,i)=>MO_BEATS.slice(0,i+1).reduce((a,x)=>a+x,0));
+  MO_CAPS.forEach((c,i)=>{ const at = i ? cuts[i-1] : 0;
+    tl.fromTo(cap[i], { y:16, opacity:0, filter:"blur(6px)" }, { y:0, opacity:1, filter:"blur(0px)", duration:.8 }, at + .15);
+    tl.to(cap[i], { y:-12, opacity:0, filter:"blur(6px)", duration:.3, ease:"power2.in" }, Math.min(cuts[i], MO_SN - .1) - .32); });
   const bars = q(".mo-prog b"), bar = (i, at) => tl.fromTo(bars[i], { scaleX:0 }, { scaleX:1, duration:.55, ease:"power2.inOut" }, at);
-  // 1. the ask: the globe breathes white while Kai asks, turns gold with her voice
+  // 1. the ask: the globe grows out of a point of light, breathes white while Kai asks, turns gold with the member's voice
   const orb = one(".mo-orbw"), ask = q(".mo-ask p");
-  tl.fromTo(orb, { scale:.6, opacity:0, x:0, y:0 }, { scale:1, opacity:1, duration:.9 }, 0);
-  tl.fromTo(V, { orb:0 }, { orb:1, duration:.3, ease:"none" }, 0);
+  tl.fromTo(orb, { scale:.06, opacity:0, x:0, y:0 }, { keyframes:[{ opacity:1, duration:.15, ease:"none" }, { scale:1, duration:1.1, ease:"expo.out" }] }, 0);
+  tl.fromTo(SV, { orb:0 }, { orb:1, duration:.2, ease:"none" }, 0);
   tl.fromTo(ask, { y:10, opacity:0 }, { y:0, opacity:1, duration:.5, stagger:1.6 }, .25);
-  tl.fromTo(V, { gold:0 }, { gold:1, duration:.35, ease:"power2.out" }, 1.85);
+  tl.fromTo(SV, { gold:0 }, { gold:1, duration:.35, ease:"power2.out" }, 1.85);
   // 2. the path: the globe folds into the Kai chip; the mission's first pick rises with its reason
   tl.to(ask, { y:-8, opacity:0, duration:.3, ease:"power2.in", stagger:.05 }, 3.3);
   tl.to(orb, { x:32 - W/2, y:-36, scale:.12, duration:.7, ease:"expo.inOut" }, 3.4);
   tl.to(orb, { opacity:0, duration:.2, ease:"none" }, 3.95);
-  tl.to(V, { orb:0, gold:0, duration:.2, ease:"none" }, 3.95);
+  tl.to(SV, { orb:0, gold:0, duration:.2, ease:"none" }, 3.95);
   const c1 = one(".mo-c1");
   tl.fromTo(c1, { scale:.4, opacity:0, x:-8 }, { scale:1, opacity:1, x:0, duration:.7, ease:"back.out(1.8)" }, 3.9);
   const card = one(".mo-card"), kids = card.querySelectorAll(":scope > *");
-  tl.fromTo(card, { y:280, opacity:1 }, { y:0, duration:1.0 }, 4.15);
+  tl.fromTo(card, { y:280, opacity:1, scale:1 }, { y:0, duration:1.0 }, 4.15);
   tl.fromTo(kids, { y:22, opacity:0 }, { y:0, opacity:1, duration:.7, stagger:.05 }, 4.2);
-  const rt = card.querySelectorAll(".mo-route i"), rl = card.querySelectorAll(".mo-route b");
-  tl.fromTo(rt, { scale:0 }, { scale:1, duration:.45, ease:"back.out(2.4)", stagger:.32 }, 4.75);
-  tl.fromTo(rl, { scaleX:0 }, { scaleX:1, duration:.3, ease:"power2.inOut", stagger:.32 }, 4.93);
+  tl.fromTo(card.querySelectorAll(".mo-route i"), { scale:0 }, { scale:1, duration:.45, ease:"back.out(2.4)", stagger:.32 }, 4.75);
+  tl.fromTo(card.querySelectorAll(".mo-route b"), { scaleX:0 }, { scaleX:1, duration:.3, ease:"power2.inOut", stagger:.32 }, 4.93);
   tl.fromTo(card.querySelector(".mo-why .tg"), { backgroundPosition:"120% 0" }, { backgroundPosition:"-60% 0", duration:1.1, ease:"power2.inOut" }, 5.6);
   bar(0, 5.3);
-  tl.fromTo(V, { field:.55, dim:.35, camZ:10.5 }, { field:1, dim:.22, camZ:9, duration:3, ease:"power2.inOut" }, 3.4);
-  // 3. the yes: her thumb taps Ask Daniel; the card settles from lifted to flat; Daniel's forward arrives
+  tl.fromTo(V, { field:.55, dim:.35, camZ:10.5 }, { field:1, dim:.22, camZ:9, duration:3, ease:"power2.inOut", immediateRender:!k }, 3.4);
+  // 3. the yes: the thumb taps Ask; the card settles from lifted to flat; the forward arrives
   tl.to(c1, { y:-10, opacity:0, duration:.3, ease:"power2.in" }, 7.0);
   const tap = one(".mo-tap"), btn = one(".mo-btn");
   tl.fromTo(tap, { scale:1.6, opacity:0 }, { scale:.78, opacity:1, duration:.2, ease:"power2.out" }, 7.4).to(tap, { scale:2.4, opacity:0, duration:.5, ease:"power2.out" }, 7.6);
@@ -10206,9 +10244,8 @@ function moTimeline(root) {
   tl.fromTo(push, { y:-120, opacity:0, scale:.96 }, { y:0, opacity:1, scale:1, duration:.8, ease:"back.out(1.5)" }, 8.5);
   bar(2, 8.9);
   tl.to(push, { y:-110, opacity:0, duration:.45, ease:"power3.in" }, 10.1);
-  // 4. the reply: the card folds to its compact form; Maya writes, Priya answers
-  const fold = card.querySelectorAll(".mo-why, .mo-act");
-  tl.fromTo(fold, { height:(i)=>i?44:18, marginTop:(i)=>i?12:10, opacity:1 }, { height:0, marginTop:0, opacity:0, duration:.55, ease:"power3.inOut" }, 10.4);
+  // 4. the reply: the card folds to its compact form; they write, the member answers
+  tl.fromTo(card.querySelectorAll(".mo-why, .mo-act"), { height:(i)=>i?44:18, marginTop:(i)=>i?12:10, opacity:1 }, { height:0, marginTop:0, opacity:0, duration:.55, ease:"power3.inOut" }, 10.4);
   const bub = q(".mo-bub");
   tl.fromTo(bub[0], { y:18, scale:.86, opacity:0 }, { y:0, scale:1, opacity:1, duration:.7, ease:"back.out(1.8)" }, 10.95);
   tl.fromTo(bub[1], { y:18, scale:.86, opacity:0 }, { y:0, scale:1, opacity:1, duration:.7, ease:"back.out(1.8)" }, 12.0);
@@ -10222,34 +10259,60 @@ function moTimeline(root) {
   const ev = one(".mo-ev");
   tl.fromTo(ev, { y:70, rotationX:38, opacity:0, transformPerspective:700 }, { y:0, rotationX:0, opacity:1, duration:1.0 }, 13.85);
   tl.fromTo(q(".mo-faces i"), { scale:0 }, { scale:1, duration:.45, ease:"back.out(2.6)", stagger:.09 }, 14.45);
-  const going = one(".mo-going");
-  tl.fromTo(going, { scale:.5, opacity:0 }, { scale:1, opacity:1, duration:.55, ease:"back.out(2.2)" }, 15.0);
+  tl.fromTo(one(".mo-going"), { scale:.5, opacity:0 }, { scale:1, opacity:1, duration:.55, ease:"back.out(2.2)" }, 15.0);
   q(".mo-conf i").forEach((el,i)=>{ const a = -Math.PI/2 + (i/15 - .5)*2.6, r = 40 + (i*13)%34;
     tl.fromTo(el, { x:0, y:0, rotation:0, opacity:0 }, { keyframes:[{ opacity:1, duration:.03 }, { x:Math.cos(a)*r, y:Math.sin(a)*r, rotation:(i%2?1:-1)*220, duration:.7, ease:"expo.out" }, { y:"+=26", opacity:0, duration:.5, ease:"power1.in" }] }, 15.05 + (i%4)*.02); });
   const c2 = one(".mo-c2");
   tl.fromTo(c2, { scale:.4, opacity:0, y:8 }, { scale:1, opacity:1, y:0, duration:.7, ease:"back.out(1.8)" }, 15.45);
-  // 6. your community: it went well, then the frame pulls back to the family it happened in
+  // 6. it went well; the intro folds into a point of light where the next globe, or the Key wordmark, begins
   tl.to(th, { clipPath:"circle(0% at 50% 64%)", duration:.6, ease:"power3.inOut" }, 16.35);
+  tl.to(V, { field:1, dim:.5, duration:.8, ease:"power2.out" }, 16.5);
   tl.to([ev, c2], { y:-16, opacity:0, duration:.35, ease:"power2.in" }, 16.3);
   tl.fromTo(card, { y:60, opacity:0, scale:1 }, { y:0, opacity:1, duration:.6, ...again }, 16.65);
   const av = one(".mo-av");
   tl.fromTo(av, { "--sweep":"0deg" }, { "--sweep":"360deg", duration:.9, ease:"power2.inOut" }, 17.0);
-  tl.fromTo(av, { scale:1 }, { scale:1.1, duration:.18, ease:"power2.out" }, 17.8).to(av, { scale:1, duration:.7, ease:"elastic.out(1,.4)" }, 17.98);
+  tl.fromTo(av, { scale:1 }, { scale:1.1, duration:.18, ease:"power2.out" }, 17.7).to(av, { scale:1, duration:.7, ease:"elastic.out(1,.4)" }, 17.88);
   q(".mo-burst i").forEach((el,i)=>{ const a = i/12*Math.PI*2 + (i%2)*.2, r = 34 + (i*7)%18;
-    tl.fromTo(el, { x:0, y:0, scale:1.2, opacity:0 }, { keyframes:[{ opacity:1, duration:.04 }, { x:Math.cos(a)*r, y:Math.sin(a)*r + 8, scale:.2, opacity:0, duration:1.1, ease:"expo.out" }] }, 17.85 + (i%3)*.03); });
-  bar(4, 17.75);
-  tl.to(card, { scale:.04, y:-150, opacity:0, duration:.6, ease:"power3.in" }, 18.4);
-  const dot = one(".mo-dot");
-  tl.fromTo(dot, { scale:0, opacity:0 }, { keyframes:[{ scale:1.6, opacity:1, duration:.25, ease:"power2.out" }, { scale:.7, duration:.7, ease:"power2.inOut" }, { opacity:0, duration:.4, ease:"power1.in" }] }, 18.9);
-  tl.to(V, { field:1, dim:1, camZ:14, duration:1.4, ease:"power2.inOut" }, 18.6);
-  const st = q(".mo-stats > div");
-  tl.fromTo(st, { y:14, opacity:0 }, { y:0, opacity:1, duration:.6, stagger:.12 }, 18.75);
-  tl.fromTo(V, { count:0 }, { count:1, duration:1.0, ease:"power2.out" }, 18.8);
-  // back to the call, continuously
-  tl.to(st, { opacity:0, duration:.3, ease:"power1.in" }, 19.65);
-  tl.to(V, { field:.55, dim:.35, camZ:10.5, duration:.35, ease:"power2.inOut" }, 19.65);
+    tl.fromTo(el, { x:0, y:0, scale:1.2, opacity:0 }, { keyframes:[{ opacity:1, duration:.04 }, { x:Math.cos(a)*r, y:Math.sin(a)*r + 8, scale:.2, opacity:0, duration:1.1, ease:"expo.out" }] }, 17.75 + (i%3)*.03); });
+  bar(4, 17.6);
+  tl.to(card, { scale:.04, y:-160, opacity:0, duration:.55, ease:"power3.in" }, 18.3);
+  tl.fromTo(one(".mo-dot"), { scale:0, opacity:0 }, { keyframes:[{ scale:1.6, opacity:1, duration:.25, ease:"power2.out" }, { scale:1, duration:.3, ease:"power2.inOut" }, { opacity:0, duration:.1, ease:"none" }] }, 18.75);
+  return tl;
+}
+
+// The finale, after each story: the point of light blooms into an oval glow centred on the Key logo, the logo resolves inside it, the numbers
+// count up; it holds while the glow breathes and the foil crosses, then everything contracts back to the point. Every tween is a fromTo, so
+// the second finale replays the first exactly.
+function moFinaleTL(tl, root, V, F, k) {
+  const one = sel => root.querySelector(sel), glow = one(".mo-glow"), logo = one(".mo-logo"), tag = one(".mo-tag"), st = root.querySelectorAll(".mo-stats > div"), bars = one(".mo-bars");
+  const ft = (el, from, to, at) => tl.fromTo(el, from, { ...to, immediateRender:false }, F + at); // the CSS holds the resting state until each tween starts
+  ft(glow, { scaleX:.04, scaleY:.067, opacity:0 }, { keyframes:[{ opacity:1, duration:.05, ease:"none" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.4, ease:"expo.out" }] }, -.05);
+  ft(bars, { opacity:1 }, { opacity:0, duration:.5, ease:"power2.out" }, .1);
+  ft(V, { field:1, dim:.5, camZ:9 }, { field:1, dim:1, camZ:14, duration:1.8, ease:"power2.inOut" }, 0);
+  ft(logo, { opacity:0, scale:1.12, filter:"blur(14px)" }, { opacity:1, scale:1, filter:"blur(0px)", duration:1.5, ease:"expo.out" }, .5);
+  ft(tag, { y:10, opacity:0 }, { y:0, opacity:1, duration:.8, ease:"expo.out" }, 1.3);
+  ft(st, { y:14, opacity:0 }, { y:0, opacity:1, duration:.7, stagger:.14, ease:"expo.out" }, 1.7);
+  ft(V, { count:0 }, { count:1, duration:1.4, ease:"power2.out" }, 1.8);
+  // hold: the glow breathes twice and swells as the foil crosses the logo
+  ft(glow, { scaleX:1, scaleY:1, opacity:.5 }, { keyframes:[{ scaleX:1.06, scaleY:1.08, opacity:.62, duration:1.1, ease:"sine.inOut" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.1, ease:"sine.inOut" },
+    { scaleX:1.1, scaleY:1.12, opacity:.72, duration:.9, ease:"sine.inOut" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.3, ease:"sine.inOut" }, { opacity:.5, duration:1.5, ease:"none" }] }, 1.8);
+  ft(logo, { backgroundPosition:"130% 0, 0% 0%" }, { backgroundPosition:"-30% 0, 0% 0%", duration:1.6, ease:"power2.inOut" }, 3.8);
+  ft(V, { camZ:14 }, { camZ:15.5, duration:6.1, ease:"sine.inOut" }, 1.8);
+  // exit: numbers settle away, the logo draws in, the glow contracts to the point, the camera flies back into the cloud
+  ft(st, { y:0, opacity:1 }, { y:10, opacity:0, duration:.45, ease:"power2.in", stagger:.06 }, 7.8);
+  ft(tag, { y:0, opacity:1 }, { y:6, opacity:0, duration:.4, ease:"power2.in" }, 7.95);
+  ft(logo, { scale:1, opacity:1, filter:"blur(0px)" }, { scale:.6, opacity:0, filter:"blur(8px)", duration:.6, ease:"power3.in" }, 8.1);
+  ft(glow, { scaleX:1, scaleY:1, opacity:.5 }, { keyframes:[{ scaleX:.04, scaleY:.067, opacity:1, duration:.6, ease:"power3.in" }, { scaleX:.02, scaleY:.034, opacity:0, duration:.35, ease:"power1.in" }] }, 8.3);
+  ft(V, { field:1, dim:1, camZ:15.5 }, { field:.55, dim:.35, camZ:10.5, duration:1.1, ease:"power2.inOut" }, 8.1);
+  ft(bars, { opacity:0 }, { opacity:1, duration:.4, ease:"power2.out" }, 9.0);
+}
+
+function moTimeline(root) {
+  const W = root.clientWidth || 390, V = { field:.55, dim:.35, camZ:10.5, count:0 }, SV = MO_STORIES.map(()=>({ orb:0, gold:0 }));
+  const tl = gsap.timeline({ paused:true });
+  root.querySelectorAll(".mo-story").forEach((g,k)=>{ tl.add(moStoryTL(g, V, SV[k], W, k).timeScale(1/MO_SLOW), k*MO_SEG); moFinaleTL(tl, root, V, k*MO_SEG + MO_SL, k); });
   tl.set({}, {}, MO_LOOP);
-  return { tl, V };
+  return { tl, V, SV };
 }
 
 function moPromoStill(root) { root.classList.add("still"); }
@@ -10257,20 +10320,22 @@ function moPromoMount(root) {
   if (root._mo) return; root._mo = true;
   if (!MO_ON) return moPromoStill(root);
   moLoad().then(() => { if (!root.isConnected) return;
-    const F = MO_FIELD || moFieldBuild(), gl = root.querySelector(".mo-gl"), { tl, V } = moTimeline(root);
+    const F = MO_FIELD || moFieldBuild(), gl = root.querySelector(".mo-gl"), { tl, V, SV } = moTimeline(root);
     gl.appendChild(F.renderer.domElement); root.classList.add("ready");
     if (moT0===null) moT0 = performance.now();
     root.onclick = () => { const t = ((performance.now()-moT0)/1000) % MO_LOOP; const c = MO_CUTS.find(x=>x>t+.05); moT0 -= (c - t)*1000; }; // tap skips to the next beat
-    const orb = root.querySelector(".mo-orb"), og = orb.getContext("2d"), dpr = Math.min(window.devicePixelRatio||1, 2), OS = Math.round(200*dpr);
-    orb.width = orb.height = OS;
-    const lines = Array.from(root.querySelectorAll(".mo-ask p")), words = [moLine(MO_ASK[0], .35, 1.4), moLine(MO_ASK[1], 1.95, 1.15)];
-    lines.forEach(el=>{ el.innerHTML = el.textContent.split(/\s+/).map(w=>`<span class="w">${w}</span>`).join(" "); });
-    const ws = lines.map(el=>Array.from(el.querySelectorAll(".w"))), shown = [-2,-2];
-    const bars = root.querySelectorAll(".mo-bars b"), nums = root.querySelectorAll(".mo-stats b");
+    const dpr = Math.min(window.devicePixelRatio||1, 2), OS = Math.round(200*dpr);
+    const stories = Array.from(root.querySelectorAll(".mo-story")).map((g,i)=>{
+      const orb = g.querySelector(".mo-orb"); orb.width = orb.height = OS;
+      const lines = Array.from(g.querySelectorAll(".mo-ask p")), S = MO_STORIES[i];
+      lines.forEach(el=>{ el.innerHTML = el.textContent.split(/\s+/).map(w=>`<span class="w">${w}</span>`).join(" "); });
+      return { g, orb, og:orb.getContext("2d"), words:[moLine(S.ask[0], .35, 1.4), moLine(S.ask[1], 1.95, 1.15)], ws:lines.map(el=>Array.from(el.querySelectorAll(".w"))), shown:[-2,-2] };
+    });
+    const bars = root.querySelectorAll(".mo-bars b"), nums = root.querySelectorAll(".mo-stats b"), cuts = MO_BEATS.map((b,i)=>MO_BEATS.slice(0,i).reduce((a,x)=>a+x,0));
     let lvl = 0, last = 0, rot = 0;
     const loop = now => {
       if (!root.isConnected) return;
-      const clock = (now - moT0)/1000, t = clock % MO_LOOP, dt = Math.min(.05, last ? (now-last)/1000 : .016); last = now;
+      const clock = (now - moT0)/1000, t = ((clock % MO_LOOP) + MO_LOOP) % MO_LOOP, dt = Math.min(.05, last ? (now-last)/1000 : .016); last = now;
       tl.time(t, false);
       const w = gl.clientWidth, h = gl.clientHeight;
       if (w !== F.w || h !== F.h) { F.w = w; F.h = h; F.renderer.setSize(w, h, false); F.camera.aspect = w/h; F.camera.updateProjectionMatrix(); }
@@ -10278,28 +10343,29 @@ function moPromoMount(root) {
       F.camera.position.set(Math.sin(clock*.11)*.35, Math.sin(clock*.17)*.12, V.camZ); F.camera.lookAt(0, 0, 0);
       F.group.rotation.y = .2*Math.sin(clock*.16) + clock*.02;
       if (V.field > .005) F.renderer.render(F.scene, F.camera); else F.renderer.clear();
+      const si = Math.max(0, Math.min(MO_STORIES.length-1, Math.floor(t/MO_SEG))), s = stories[si], u = t - si*MO_SEG, inStory = u < MO_SL, lt = inStory ? u/MO_SLOW : MO_SN + 1; // story time
       // the globe: the call's own renderer, driven by the two lines of the ask
-      const target = Math.max(moLineAmp(words[0], t), moLineAmp(words[1], t)) || (t < 3.4 ? .05 : 0);
+      const target = Math.max(moLineAmp(s.words[0], lt), moLineAmp(s.words[1], lt)) || (lt < 3.4 ? .05 : 0);
       lvl += (target - lvl) * (target > lvl ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7));
       rot += dt*.3;
-      const G = V.orb > .01 && moGlobeGL();
+      const sv = SV[si], G = sv.orb > .01 && moGlobeGL();
       if (G) { G.u.uTime.value = clock; G.u.uAmp.value = lvl; G.u.uThink.value = 0; G.pts.rotation.y = rot;
-        const c = MO_COL.kai.map((k,i)=>(k + (MO_COL.you[i]-k)*V.gold)/255); G.u.uColor.value.setRGB(c[0], c[1], c[2]);
-        G.renderer.render(G.scene, G.camera); og.clearRect(0,0,OS,OS); og.globalCompositeOperation = "lighter"; og.drawImage(G.renderer.domElement, 0, 0, OS, OS); }
-      orb.parentNode.style.setProperty("--gold", V.gold.toFixed(3));
-      words.forEach((line,j)=>{ let k = -1; line.forEach((x,i)=>{ if (t>=x.s) k=i; }); if (t >= 3.3) k = line.length-1;
-        if (k !== shown[j]) { shown[j] = k; ws[j].forEach((el,i)=>el.classList.toggle("off", i>k)); } });
-      nums.forEach((el,i)=>{ const n = String(Math.round(MO_STATS[i][0]*V.count)); if (el.textContent !== n) el.textContent = n; });
-      let acc = 0; bars.forEach((el,i)=>{ el.style.transform = `scaleX(${Math.max(0, Math.min(1, (t-acc)/MO_BEATS[i]))})`; acc += MO_BEATS[i]; });
-      const s = t < 7.57 ? "new" : t < 10.95 ? "waiting" : t < 17.0 ? "talking" : "well"; if (root.dataset.st !== s) root.dataset.st = s;
-      const ev = t > 13.6 && t < 16.55 ? "ev" : ""; if ((root.dataset.th||"") !== ev) root.dataset.th = ev;
+        const c = MO_COL.kai.map((k,i)=>(k + (MO_COL.you[i]-k)*sv.gold)/255); G.u.uColor.value.setRGB(c[0], c[1], c[2]);
+        G.renderer.render(G.scene, G.camera); s.og.clearRect(0,0,OS,OS); s.og.globalCompositeOperation = "lighter"; s.og.drawImage(G.renderer.domElement, 0, 0, OS, OS); }
+      s.orb.parentNode.style.setProperty("--gold", sv.gold.toFixed(3));
+      s.words.forEach((line,j)=>{ let k = -1; line.forEach((x,i)=>{ if (lt>=x.s) k=i; }); if (lt >= 3.3) k = line.length-1;
+        if (k !== s.shown[j]) { s.shown[j] = k; s.ws[j].forEach((el,i)=>el.classList.toggle("off", i>k)); } });
+      nums.forEach((el,i)=>{ const [v,,p] = MO_STATS[i], n = Math.round(v*V.count).toLocaleString("en-US") + p; if (el.textContent !== n) el.textContent = n; });
+      bars.forEach((el,i)=>{ el.style.transform = `scaleX(${inStory ? Math.max(0, Math.min(1, (lt-cuts[i])/MO_BEATS[i])) : 0})`; }); // empty again for the finale, ready for the next story
+      const st = lt < 7.57 ? "new" : lt < 10.95 ? "waiting" : lt < 17.0 ? "talking" : "well"; if (s.g.dataset.st !== st) s.g.dataset.st = st;
+      const th = si===0 && lt > 13.6 && lt < 16.55 ? "light" : ""; if ((root.dataset.th||"") !== th) root.dataset.th = th;
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
   }).catch(() => moPromoStill(root));
 }
-// The reel waits for Apoorv's yes on the preview (script A, 26 Sep 02:16); until then sign-in keeps its placeholder and only the globe ships.
-const MO_REEL = false;
+// The reel waits for Apoorv's yes on the preview (script A, round 2); until then sign-in keeps its placeholder and only the globe ships.
+const MO_REEL = true;
 const _moSignin = sSignin;
 if (MO_REEL) sSignin = function() { return _moSignin.apply(this, arguments).replace(/<div class="mvis full">[\s\S]*?<\/div><\/div>/, moPromoHTML()); };
 
