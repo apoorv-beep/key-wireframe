@@ -2419,6 +2419,123 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-on { position:absolute; right:0; bottom:0; width:10px; height:10px; border-radius:50%; background:#1F9D55; box-shadow:0 0 0 2px var(--paper); }
   .cm-av .avatar.lg + .cm-on { width:13px; height:13px; right:2px; bottom:2px; }
   .cm-catn { cursor:pointer; text-decoration:underline dotted; text-underline-offset:3px; }
+
+/* ==== MOTION (26 Sep, "Motion design" thread, second pass). Sign-in story rendered in WebGL (three.js r128) and choreographed
+   with one GSAP timeline scrubbed from a single clock; the Kai call globe is a shader sphere on the same renderer approach.
+   Values from key-tokens.v2.json. Off under navigator.webdriver and prefers-reduced-motion: the libraries are not loaded and
+   motion.js shows one still frame, so tests and captures stay stable and offline. ==== */
+
+.mo-promo, .call {
+  --mo-deep:#0B0E11; --mo-deep-fill:#242B33; --mo-on-deep:#F9FAFC; --mo-on-deep-muted:#A6AFBB; --mo-on-deep-line:#606974;
+  --mo-user:#DCB854; --mo-foil:conic-gradient(from 210deg,#F7E7B8,#DCB854,#A87F2A,#F7E7B8,#DCB854,#A87F2A,#F7E7B8);
+  --mo-surface:#FFFFFF; --mo-ink:#12161A; --mo-ink2:#525B66; --mo-live:#34C171;
+  --mo-std:cubic-bezier(.2,0,0,1); --mo-dec:cubic-bezier(0,0,0,1);
+  font-family:Manrope, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ---- Sign-in story ---- */
+.screen:has(.mo-promo) { padding-top:0; }
+.screen:has(.mo-promo) ~ .ios-status { color:#fff; }
+.screen:has(.mo-promo) ~ .ios-status .sig i, .screen:has(.mo-promo) ~ .ios-status .bat i, .screen:has(.mo-promo) ~ .ios-status .bat::after { background:#fff; }
+.screen:has(.mo-promo) ~ .ios-status .bat { border-color:#fff; }
+.mo-promo { position:relative; margin:0 -16px; height:440px; flex:0 0 auto; overflow:hidden; color:var(--mo-on-deep); cursor:pointer; isolation:isolate;
+  background:radial-gradient(90% 60% at 50% 42%, #18202A 0%, #0E1217 55%, var(--mo-deep) 100%); border-radius:0 0 30px 30px; -webkit-tap-highlight-color:transparent; }
+.mo-promo * { box-sizing:border-box; }
+.mo-promo::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:2; background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
+.mo-gl { position:absolute; inset:0; z-index:1; will-change:filter, transform; }
+.mo-gl canvas { display:block; width:100% !important; height:100% !important; }
+.mo-top { position:absolute; left:20px; right:20px; top:60px; z-index:6; }
+.mo-bars { display:flex; gap:4px; }
+.mo-bars i { flex:1; height:2px; border-radius:1px; background:rgba(249,250,252,.2); overflow:hidden; position:relative; }
+.mo-bars i b { position:absolute; inset:0; background:var(--mo-on-deep); transform-origin:left; transform:scaleX(0); }
+.mo-cap { position:relative; height:26px; margin-top:12px; overflow:hidden; }
+.mo-cap span { position:absolute; left:0; top:0; font-size:17px; font-weight:700; letter-spacing:-.015em; white-space:nowrap; opacity:0; }
+.mo-lbl { position:absolute; left:0; top:0; z-index:3; font-size:11.5px; font-weight:700; letter-spacing:.01em; color:var(--mo-on-deep); white-space:nowrap;
+  transform:translate(-50%,0); opacity:0; text-shadow:0 1px 8px rgba(0,0,0,.8); pointer-events:none; }
+.mo-kai { position:absolute; left:0; top:0; width:28px; height:28px; margin:-14px 0 0 -14px; border-radius:50%; background:var(--mo-on-deep); color:var(--mo-deep);
+  display:flex; align-items:center; justify-content:center; opacity:0; z-index:4; box-shadow:0 0 0 6px rgba(249,250,252,.10), 0 0 34px 6px rgba(255,240,205,.55); }
+.mo-kai svg { width:15px; height:15px; }
+.mo-receipt { position:absolute; left:50%; top:372px; transform:translateX(-50%); z-index:4; display:flex; gap:8px; align-items:center; padding:7px 13px 7px 8px; border-radius:999px;
+  background:rgba(26,31,37,.72); backdrop-filter:blur(14px) saturate(1.4); -webkit-backdrop-filter:blur(14px) saturate(1.4); box-shadow:inset 0 0 0 1px rgba(249,250,252,.08);
+  font-size:12.5px; font-weight:600; white-space:nowrap; opacity:0; }
+.mo-receipt .tg, .mo-why .tg { font-size:11px; font-weight:700; border-radius:6px; padding:1px 6px; flex:0 0 auto; }
+.mo-receipt .tg { color:#E8CD82; box-shadow:inset 0 0 0 1px #A87F2A; }
+
+/* the path card: one actionable thing, lifted while it asks something of you */
+.mo-card { position:absolute; left:14px; right:14px; bottom:16px; z-index:5; background:var(--mo-surface); color:var(--mo-ink); border-radius:20px; padding:14px 14px 12px;
+  box-shadow:0 3px 6px rgba(11,14,17,.14), 0 30px 60px -18px rgba(0,0,0,.75); }
+.mo-promo:not(.still):not(.ready) .mo-card { visibility:hidden; }
+.mo-card > * { will-change:transform, opacity; }
+.mo-crow { display:flex; align-items:center; gap:8px; }
+.mo-state { position:relative; height:18px; flex:1; font-size:12.5px; font-weight:700; }
+.mo-state span { position:absolute; left:0; top:0; display:flex; align-items:center; gap:6px; white-space:nowrap; opacity:0; transform:translateY(6px); transition:opacity .2s var(--mo-std), transform .26s var(--mo-std); }
+.mo-state span::before { content:""; width:7px; height:7px; border-radius:50%; background:currentColor; }
+.mo-state .s-new, .mo-state .s-talking { color:#178A4A; } .mo-state .s-waiting { color:var(--mo-ink2); } .mo-state .s-well { color:#7E6011; }
+.mo-promo[data-st="new"] .s-new, .mo-promo[data-st="waiting"] .s-waiting, .mo-promo[data-st="talking"] .s-talking, .mo-promo[data-st="well"] .s-well { opacity:1; transform:none; }
+.mo-route { display:flex; align-items:center; gap:3px; font-size:9px; font-weight:700; color:var(--mo-ink2); }
+.mo-route i { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-style:normal; background:#E8ECF1; }
+.mo-route i.y { background:var(--mo-ink); color:#fff; } .mo-route i.g { box-shadow:0 0 0 1.5px #E8CD82; background:#FBF3DC; color:#7E6011; }
+.mo-who { display:flex; gap:12px; align-items:center; margin-top:12px; }
+.mo-av { position:relative; width:48px; height:48px; border-radius:50%; flex:0 0 auto; --sweep:0deg; }
+.mo-av::before { content:""; position:absolute; inset:-3px; border-radius:50%; background:var(--mo-foil);
+  -webkit-mask:conic-gradient(from -90deg,#000 var(--sweep),transparent 0); mask:conic-gradient(from -90deg,#000 var(--sweep),transparent 0); }
+.mo-av .fc { position:relative; width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px;
+  color:#F7E7B8; background:radial-gradient(circle at 35% 30%, #4A3F2A, #1F1A12 75%); box-shadow:0 0 0 2px #fff; }
+.mo-nm { font-size:17px; font-weight:700; letter-spacing:-.01em; line-height:1.2; } .mo-ro { font-size:13px; color:var(--mo-ink2); margin-top:1px; }
+.mo-why { display:flex; gap:8px; align-items:baseline; margin-top:10px; font-size:13px; color:var(--mo-ink2); }
+.mo-why .tg { color:#7E6011; box-shadow:inset 0 0 0 1px #E8CD82; }
+.mo-act { position:relative; display:flex; gap:10px; align-items:center; margin-top:12px; height:44px; }
+.mo-btn { position:relative; flex:1; height:44px; border-radius:12px; background:var(--mo-ink); color:#F9FAFC; font-size:15px; font-weight:700; overflow:hidden; }
+.mo-btn span { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:6px; }
+.mo-btn .b2 { opacity:0; color:var(--mo-ink); }
+.mo-btn svg { width:16px; height:16px; stroke-dasharray:24; stroke-dashoffset:24; }
+.mo-skip { font-size:14px; font-weight:600; color:var(--mo-ink2); padding:0 6px; }
+.mo-tap { position:absolute; left:32%; top:50%; width:46px; height:46px; margin:-23px 0 0 -23px; border-radius:50%; background:rgba(255,255,255,.5); box-shadow:0 0 0 1.5px rgba(18,22,26,.22); opacity:0; pointer-events:none; }
+.mo-prog { display:flex; gap:3px; margin-top:12px; }
+.mo-prog i { flex:1; height:3px; border-radius:2px; background:#E8ECF1; overflow:hidden; position:relative; }
+.mo-prog i b { position:absolute; inset:0; background:var(--mo-ink); transform:scaleX(0); transform-origin:left; }
+.mo-prog i:last-child b { background:linear-gradient(90deg,#F7E7B8,#DCB854,#A87F2A); }
+.mo-bubble { position:absolute; left:14px; bottom:calc(100% + 10px); display:flex; gap:8px; align-items:flex-end; opacity:0; transform-origin:0 100%; }
+.mo-bubble .fc { width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #4A3F2A, #1F1A12 75%); color:#F7E7B8; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.mo-bubble p { margin:0; background:var(--mo-on-deep); color:var(--mo-ink); font-size:14px; font-weight:600; padding:9px 13px; border-radius:18px 18px 18px 6px; box-shadow:0 14px 30px -12px rgba(0,0,0,.7); }
+.mo-burst { position:absolute; left:24px; top:24px; width:0; height:0; z-index:2; }
+.mo-burst i { position:absolute; width:6px; height:6px; margin:-3px; border-radius:50%; background:radial-gradient(circle,#FFF4D0,#DCB854 60%,#A87F2A); opacity:0; }
+
+/* still frame (reduced motion, tests): the story's last beat, composed, no libraries */
+.mo-promo.still .mo-gl { background:
+  radial-gradient(3px 3px at 22% 30%, rgba(247,231,184,.9), transparent 70%), radial-gradient(2px 2px at 70% 22%, rgba(249,250,252,.7), transparent 70%),
+  radial-gradient(2px 2px at 84% 40%, rgba(249,250,252,.5), transparent 70%), radial-gradient(2px 2px at 12% 48%, rgba(249,250,252,.45), transparent 70%),
+  radial-gradient(2.5px 2.5px at 58% 36%, rgba(249,250,252,.6), transparent 70%), radial-gradient(40% 30% at 50% 34%, rgba(249,250,252,.06), transparent 70%); }
+.mo-promo.still .mo-card { transform:none; }
+.mo-promo.still .mo-bubble, .mo-promo.still .mo-cap span:last-child { opacity:1; }
+.mo-promo.still .mo-bars b { transform:none; }
+.mo-promo.still .mo-btn { background:#F4F6F9; } .mo-promo.still .mo-btn .b1 { opacity:0; } .mo-promo.still .mo-btn .b2 { opacity:1; } .mo-promo.still .mo-btn svg { stroke-dashoffset:0; }
+.mo-promo.still .mo-skip { opacity:0; } .mo-promo.still .mo-av { --sweep:360deg; } .mo-promo.still .mo-prog b { transform:none; }
+
+/* ---- The Kai call: deep surface, the globe, the transcript spoken word by word ---- */
+.call { background:var(--mo-deep); }
+.call .viz { padding-top:40px; }
+.call .viz { position:relative; }
+.call .viz::before { content:""; position:absolute; left:50%; top:40px; width:230px; height:230px; transform:translateX(-50%); border-radius:50%; pointer-events:none;
+  background:radial-gradient(closest-side, rgba(249,250,252,.10), transparent); transition:background .4s var(--mo-std); }
+.call[data-who="you"] .viz::before { background:radial-gradient(closest-side, rgba(220,184,84,.16), transparent); }
+.call .viz canvas { position:relative; width:230px; height:230px; }
+.call .vizs { font-size:18px; font-weight:700; letter-spacing:-.01em; transition:color .32s var(--mo-std); }
+.call[data-who="you"] .vizs { color:var(--mo-user); }
+.call .vizt { color:var(--mo-on-deep-muted); }
+.call .line.k { color:var(--mo-on-deep); }
+.call .line.k:not(.now) { color:var(--mo-on-deep-muted); }
+.call .line.u { color:var(--mo-user); border-left-color:rgba(220,184,84,.4); }
+.call .line .w { transition:opacity .18s var(--mo-std); }
+.call .line .w.off { opacity:.22; }
+.call .line.mo-live { animation:mo-rise .32s var(--mo-dec); }
+@keyframes mo-rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+.call .ctl { border-top-color:#242B33; }
+.call .chips { transition:opacity .32s var(--mo-std), transform .32s var(--mo-std); }
+.call[data-who="you"] .chips, .call[data-who="think"] .chips { opacity:0; transform:translateY(6px); pointer-events:none; }
+.call[data-who="kai"] .chips { opacity:.55; }
+.call .chips .chip { background:var(--mo-deep-fill); border-color:var(--mo-on-deep-line); }
+.callbar canvas.mo-mini { width:30px; height:30px; flex:0 0 auto; margin:-4px -2px; }
 </style>
 </head>
 <body>
@@ -8903,6 +9020,409 @@ const _talkSendMsg = sendMsg; sendMsg = function(cid, k){
   if (!TALK_LIVE || !c || c.kind!=="dm" || String(k).includes("::") || c.msgs.length===n || c.blocked || c.with===meId() || !DB.people[c.with]) return;
   const last=c.msgs[c.msgs.length-1]; if (last.from!==meId() || last.failed) return;
   talkDm(cid);
+};
+
+/* ==== MOTION (26 Sep, "Motion design" thread, second pass). Owns: the sign-in story in place of the marketing placeholder,
+   the Kai call globe (Apoorv's pick, 22 Sep; the member's voice is gold) and the transcript spoken word by word.
+   Rendering: three.js r128 (WebGL points with soft sprites, depth and additive light) and GSAP 3.12.5 for choreography, both from
+   cdnjs and loaded only when motion is on. Motion is off under navigator.webdriver (tests, captures) unless the URL has ?motion,
+   and under prefers-reduced-motion: then nothing loads, the story shows one composed still and the call behaves as before.
+   Load before data.js. ==== */
+const MO_ON = (()=>{ try { const q=new URLSearchParams(location.search); if (q.has("motion")) return true; return !navigator.webdriver && !matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e) { return false; } })();
+const MO_LIBS = ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"];
+let moLibs = null;
+function moLoad() {
+  if (!MO_ON) return Promise.reject(new Error("motion off"));
+  if (!moLibs) moLibs = Promise.all(MO_LIBS.map(src => new Promise((ok, no) => {
+    if ((/three/.test(src) && window.THREE) || (/gsap/.test(src) && window.gsap)) return ok();
+    const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); setTimeout(()=>no(new Error("slow")), 8000); // a phone on a bad connection gets the still frame
+  }))).then(() => document.fonts ? Promise.race([document.fonts.load("700 80px Manrope"), new Promise(r=>setTimeout(r,1200))]) : 0);
+  return moLibs;
+}
+(()=>{ if (!MO_ON || document.querySelector("link[data-mo-font]")) return; const l=document.createElement("link"); l.rel="stylesheet"; l.dataset.moFont="1"; l.href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"; document.head.appendChild(l); moLoad().catch(()=>{}); })();
+const MO_SPARK = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c.5 4.6 2.4 7 7 7.6-4.6.6-6.5 3-7 7.6-.5-4.6-2.4-7-7-7.6 4.6-.6 6.5-3 7-7.6z"/><path d="M19 15.5c.2 1.8 1 2.7 2.6 3-1.6.2-2.4 1.1-2.6 3-.2-1.9-1-2.8-2.6-3 1.6-.3 2.4-1.2 2.6-3z"/></svg>`;
+const MO_GLSL_SOFT = `varying vec3 vCol; varying float vA; void main(){ float r = length(gl_PointCoord - .5); float a = 1. - smoothstep(0., .5, r); gl_FragColor = vec4(vCol, a*a*vA); }`;
+
+/* ---- Sign-in story: your people, Kai finds who vouches, nothing goes without your yes, followed to what came of it ---- */
+const MO_PEOPLE = [ // id, initials, x, y, z, size, kind
+  ["you","PS",0,-0.25,1.2,0.95,"you"], ["df","DR",-1.75,0.85,0.25,0.78,"vouch"], ["mc","MC",1.8,1.35,-0.5,0.82,"target"],
+  ["rm","RM",-2.15,-1.3,-0.4,0.6,""], ["ar","AR",2.05,-0.95,0.3,0.58,""], ["dp","DP",-0.45,-2.05,-0.8,0.5,""],
+  ["sk","SK",0.55,2.0,-1.8,0.44,""], ["jl","JL",-2.7,1.95,-2.2,0.42,""], ["nt","NT",2.75,0.35,-2.1,0.42,""], ["lw","LW",1.15,-2.25,-1.6,0.42,""]
+];
+const MO_LINKS = [["you","df"],["you","rm"],["you","ar"],["you","dp"],["df","sk"],["df","jl"],["ar","nt"],["dp","lw"],["rm","jl"]];
+const MO_BEATS = [3.2, 3.6, 3.8, 4.4], MO_OUTRO = 0.8, MO_LOOP = 15.8;
+let moT0 = null; // one clock for the story, so a re-render or a remount continues it rather than restarting
+
+function moPromoHTML() {
+  const burst = Array.from({length:12},()=>`<i></i>`).join("");
+  return `<div class="mo-promo${MO_ON?'':' still'}" data-promo data-st="${MO_ON?'new':'well'}" role="img" aria-label="Kai finds Maya through Daniel, who vouches for her. You tap Ask Daniel. Maya replies, and it went well.">
+    <div class="mo-gl"></div>
+    <div class="mo-top"><div class="mo-bars">${MO_BEATS.map(()=>`<i><b></b></i>`).join("")}</div>
+      <div class="mo-cap"><span>Your people, in one place</span><span>Kai finds who vouches</span><span>Nothing goes without your yes</span><span>Followed to what came of it</span></div></div>
+    <span class="mo-lbl" data-l="you">You</span><span class="mo-lbl" data-l="df">Daniel</span><span class="mo-lbl" data-l="mc">Maya</span>
+    <div class="mo-kai">${MO_SPARK}</div>
+    <div class="mo-receipt"><span class="tg">Vouched</span>Daniel recommended Maya</div>
+    <div class="mo-card">
+      <div class="mo-bubble"><span class="fc">MC</span><p>Happy to talk. Coffee Thursday?</p></div>
+      <div class="mo-crow"><div class="mo-state"><span class="s-new">New pick</span><span class="s-waiting">Waiting</span><span class="s-talking">In conversation</span><span class="s-well">Went well</span></div>
+        <div class="mo-route"><i class="y">You</i>→<i class="g">DR</i>→<i>MC</i></div></div>
+      <div class="mo-who"><div class="mo-av"><div class="fc">MC</div><div class="mo-burst">${burst}</div></div><div><div class="mo-nm">Maya Chen</div><div class="mo-ro">Head of Engineering, seed-stage</div></div></div>
+      <div class="mo-why"><span class="tg">Vouched</span><span>Daniel recommended her in #cofounders</span></div>
+      <div class="mo-act"><div class="mo-btn"><span class="b1">Ask Daniel</span><span class="b2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Asked Daniel</span></div><span class="mo-skip">Skip</span><div class="mo-tap"></div></div>
+      <div class="mo-prog">${'<i><b></b></i>'.repeat(5)}</div>
+    </div>
+  </div>`;
+}
+
+// An avatar as a lit disc: soft glow, a foil ring for whoever vouches, initials set in Manrope.
+function moFaceTex(ini, kind) {
+  const c = document.createElement("canvas"); c.width = c.height = 256; const g = c.getContext("2d"), C = 128;
+  const glow = g.createRadialGradient(C,C,60,C,C,128);
+  glow.addColorStop(0, kind==="you" ? "rgba(249,250,252,.35)" : kind==="vouch" ? "rgba(220,184,84,.38)" : "rgba(166,175,187,.14)"); glow.addColorStop(1, "rgba(0,0,0,0)");
+  g.fillStyle = glow; g.fillRect(0,0,256,256);
+  if (kind==="vouch" && g.createConicGradient) { const cg = g.createConicGradient(-2.2, C, C); ["#F7E7B8","#DCB854","#A87F2A","#F7E7B8","#DCB854","#A87F2A","#F7E7B8"].forEach((s,i,a)=>cg.addColorStop(i/(a.length-1), s)); g.fillStyle = cg; g.beginPath(); g.arc(C,C,82,0,Math.PI*2); g.fill(); }
+  const f = g.createRadialGradient(C-26,C-30,6,C,C,78);
+  if (kind==="you") { f.addColorStop(0,"#FFFFFF"); f.addColorStop(1,"#D9DEE5"); }
+  else if (kind==="vouch" || kind==="target") { f.addColorStop(0,"#4A3F2A"); f.addColorStop(1,"#17130D"); }
+  else { f.addColorStop(0,"#3A434E"); f.addColorStop(1,"#151A20"); }
+  g.fillStyle = f; g.beginPath(); g.arc(C,C,kind==="vouch"?74:78,0,Math.PI*2); g.fill();
+  g.strokeStyle = kind==="you" ? "rgba(255,255,255,.9)" : "rgba(249,250,252,.16)"; g.lineWidth = 2; g.stroke();
+  g.fillStyle = kind==="you" ? "#12161A" : kind==="vouch"||kind==="target" ? "#F7E7B8" : "#DDE2E8";
+  g.font = "700 58px Manrope, -apple-system, Helvetica, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(ini, C, C+3);
+  const t = new THREE.CanvasTexture(c); t.anisotropy = 4; return t;
+}
+
+let MO_SCENE = null;
+function moSceneBuild() {
+  const T = THREE, renderer = new T.WebGLRenderer({ antialias:true, alpha:true, powerPreference:"high-performance" });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2)); renderer.setClearColor(0x000000, 0);
+  const scene = new T.Scene(), camera = new T.PerspectiveCamera(38, 1, 0.1, 60), group = new T.Group(); scene.add(group);
+  const px = { value: renderer.getPixelRatio() }, time = { value: 0 }, dim = { value: 1 }, field = { value: 0 };
+  // the community: 1,800 members as points of light in a slow, breathing cloud; a few are gold (people who vouch)
+  const N = 1800, pos = new Float32Array(N*3), col = new Float32Array(N*3), size = new Float32Array(N), seed = new Float32Array(N);
+  let s = 7; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  for (let i=0;i<N;i++) {
+    const u = rnd()*Math.PI*2, v = Math.acos(2*rnd()-1), r = Math.pow(rnd(), 0.55)*5.2;
+    pos[i*3] = Math.sin(v)*Math.cos(u)*r*1.15; pos[i*3+1] = Math.cos(v)*r*0.62; pos[i*3+2] = Math.sin(v)*Math.sin(u)*r - 1.2;
+    const gold = rnd() < 0.045, k = 0.55 + rnd()*0.45;
+    if (gold) { col[i*3]=0.86; col[i*3+1]=0.72; col[i*3+2]=0.33; } else { col[i*3]=0.66*k+0.3; col[i*3+1]=0.70*k+0.3; col[i*3+2]=0.76*k+0.3; }
+    size[i] = (gold ? 2.6 : 1.2) + rnd()*rnd()*3.2; seed[i] = rnd();
+  }
+  const fg = new T.BufferGeometry();
+  fg.setAttribute("position", new T.BufferAttribute(pos,3)); fg.setAttribute("aCol", new T.BufferAttribute(col,3)); fg.setAttribute("aSize", new T.BufferAttribute(size,1)); fg.setAttribute("aSeed", new T.BufferAttribute(seed,1));
+  const fieldMat = new T.ShaderMaterial({ uniforms:{ uTime:time, uPx:px, uDim:dim, uField:field }, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader:`uniform float uTime,uPx,uDim,uField; attribute vec3 aCol; attribute float aSize,aSeed; varying vec3 vCol; varying float vA;
+      void main(){ vec3 p = position + .16*vec3(sin(uTime*.31+aSeed*6.28), cos(uTime*.23+aSeed*4.1), sin(uTime*.19+aSeed*5.3));
+        p *= mix(1.35, 1., uField);
+        vec4 mv = modelViewMatrix*vec4(p,1.); gl_PointSize = aSize*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv;
+        float d = clamp((-mv.z-5.)/10., 0., 1.);
+        vA = (1.-d*.85) * mix(.35, 1., uDim) * uField * (.6 + .4*sin(uTime*1.1 + aSeed*40.)); vCol = aCol; }`,
+    fragmentShader: MO_GLSL_SOFT });
+  const fieldPts = new T.Points(fg, fieldMat); fieldPts.renderOrder = 0; group.add(fieldPts);
+  // people
+  const P = {}; MO_PEOPLE.forEach(([id,ini,x,y,z,sz,kind],i) => {
+    const m = new T.SpriteMaterial({ map:moFaceTex(ini,kind), transparent:true, depthWrite:false, depthTest:false });
+    const sp = new T.Sprite(m); sp.position.set(x,y,z); sp.renderOrder = 10 + Math.round((z+3)*10); group.add(sp);
+    P[id] = { sp, size:sz*1.55, kind, i, v:new T.Vector3(x,y,z) };
+  });
+  // who you know: hairlines, each with a pulse of light moving along it
+  const lp = new Float32Array(MO_LINKS.length*6); MO_LINKS.forEach(([a,b],i)=>{ lp.set([...P[a].v.toArray(), ...P[b].v.toArray()], i*6); });
+  const lg = new T.BufferGeometry(); lg.setAttribute("position", new T.BufferAttribute(lp,3));
+  const linkMat = new T.LineBasicMaterial({ color:0x8D98A6, transparent:true, opacity:0, depthWrite:false, blending:T.AdditiveBlending });
+  const links = new T.LineSegments(lg, linkMat); links.renderOrder = 1; group.add(links);
+  const pg = new T.BufferGeometry(), pp = new Float32Array(MO_LINKS.length*3), pc = new Float32Array(MO_LINKS.length*3).fill(1), ps = new Float32Array(MO_LINKS.length).fill(5), pz = new Float32Array(MO_LINKS.length);
+  pg.setAttribute("position", new T.BufferAttribute(pp,3)); pg.setAttribute("aCol", new T.BufferAttribute(pc,3)); pg.setAttribute("aSize", new T.BufferAttribute(ps,1)); pg.setAttribute("aSeed", new T.BufferAttribute(pz,1));
+  const pulseA = { value:0 };
+  const pulses = new T.Points(pg, new T.ShaderMaterial({ uniforms:{ uPx:px, uA:pulseA }, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader:`uniform float uPx,uA; attribute vec3 aCol; attribute float aSize; varying vec3 vCol; varying float vA; void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); gl_PointSize = aSize*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv; vA = uA; vCol = aCol; }`,
+    fragmentShader: MO_GLSL_SOFT })); pulses.renderOrder = 2; group.add(pulses);
+  // the path Kai finds: you, Daniel, Maya, drawn as a trail of light with a bright head
+  const curve = new T.CatmullRomCurve3([P.you.v, new T.Vector3(-1.05,0.05,1.3), P.df.v, new T.Vector3(0.1,1.75,0.7), P.mc.v], false, "catmullrom", 0.35);
+  const RN = 700, rp = new Float32Array(RN*3), rt = new Float32Array(RN);
+  curve.getSpacedPoints(RN-1).forEach((p,i)=>{ rp.set([p.x,p.y,p.z], i*3); rt[i] = i/(RN-1); });
+  const rg = new T.BufferGeometry(); rg.setAttribute("position", new T.BufferAttribute(rp,3)); rg.setAttribute("aT", new T.BufferAttribute(rt,1));
+  const prog = { value:0 }, rfade = { value:0 };
+  const route = new T.Points(rg, new T.ShaderMaterial({ uniforms:{ uPx:px, uProg:prog, uFade:rfade, uTime:time }, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader:`uniform float uPx,uProg,uFade,uTime; attribute float aT; varying vec3 vCol; varying float vA;
+      void main(){ vec4 mv = modelViewMatrix*vec4(position,1.); float dt = uProg - aT; float on = step(0., dt);
+        float head = exp(-max(dt,0.)*26.); float shimmer = .75 + .25*sin(aT*90. - uTime*6.);
+        gl_PointSize = (2.6 + 10.*head)*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv;
+        vA = on * uFade * (.42*shimmer + .95*head); vCol = mix(vec3(1.,.93,.78), vec3(1.), head); }`,
+    fragmentShader: MO_GLSL_SOFT })); route.renderOrder = 3; group.add(route);
+  MO_SCENE = { renderer, scene, camera, group, P, curve, links, linkMat, pulses, pp, u:{ px, time, dim, field, prog, rfade, pulseA }, tgt:new T.Vector3(), w:0, h:0 };
+  return MO_SCENE;
+}
+
+function moTimeline(root, S) {
+  const q = sel => root.querySelectorAll(sel), one = sel => root.querySelector(sel);
+  const V = { camZ:12.5, camY:0, tgtY:0, links:0, pulse:0, mc:0, lbl:0, blur:0, glS:1, glO:1 }; S.V = V;
+  const pop = MO_PEOPLE.map(()=>({ v:0 })); S.pop = pop;
+  const tl = gsap.timeline({ paused:true, defaults:{ ease:"expo.out" } });
+  const cap = q(".mo-cap span"), capIn = (el, at, out) => { tl.fromTo(el, { y:16, opacity:0, filter:"blur(6px)" }, { y:0, opacity:1, filter:"blur(0px)", duration:.8 }, at); if (out) tl.to(el, { y:-12, opacity:0, filter:"blur(6px)", duration:.35, ease:"power2.in" }, out); };
+  // 1. your people
+  tl.fromTo(V, { camZ:12.5 }, { camZ:9.2, duration:3.4 }, 0);
+  tl.fromTo(S.u.field, { value:0 }, { value:1, duration:2.2, ease:"power2.out" }, 0);
+  pop.forEach((p,i)=>{ if (MO_PEOPLE[i][6]!=="target") tl.fromTo(p, { v:0 }, { v:1, duration:.9, ease:"back.out(1.9)" }, .25 + i*.07); });
+  tl.fromTo(V, { links:0 }, { links:1, duration:1.2, ease:"power2.out" }, .9);
+  tl.fromTo(V, { pulse:0 }, { pulse:1, duration:.6, ease:"power1.out" }, 1.2);
+  tl.fromTo(V, { lbl:0 }, { lbl:1, duration:.6, ease:"power2.out" }, 1.0);
+  capIn(cap[0], .15, 3.0);
+  // 2. Kai finds who vouches
+  tl.to(S.u.dim, { value:0, duration:1.0, ease:"power2.inOut" }, 3.3);
+  tl.to(V, { pulse:0, duration:.4, ease:"power1.in" }, 3.3);
+  tl.fromTo(pop[2], { v:0 }, { v:1, duration:1.0, ease:"back.out(2.2)" }, 3.45);
+  tl.fromTo(V, { mc:0 }, { mc:1, duration:.6, ease:"power2.out" }, 3.7);
+  tl.fromTo(S.u.rfade, { value:0 }, { value:1, duration:.25, ease:"none" }, 3.9);
+  tl.fromTo(S.u.prog, { value:0 }, { value:1.02, duration:2.1, ease:"power2.inOut" }, 3.9);
+  tl.to(V, { camZ:7.9, tgtY:.45, duration:3.2, ease:"power2.inOut" }, 3.3);
+  tl.fromTo(one(".mo-receipt"), { y:12, scale:.92, opacity:0 }, { y:0, scale:1, opacity:1, duration:.6, ease:"back.out(1.7)" }, 5.7);
+  tl.to(one(".mo-receipt"), { y:-6, opacity:0, duration:.25, ease:"power2.in" }, 6.55);
+  capIn(cap[1], 3.3, 6.6);
+  // 3. nothing goes without your yes
+  tl.to(V, { blur:9, glS:.93, glO:.6, camY:.5, duration:1.0, ease:"power2.out" }, 6.7);
+  tl.to(V, { lbl:0, duration:.3, ease:"power1.in" }, 6.7);
+  const card = one(".mo-card"), kids = card.querySelectorAll(":scope > :not(.mo-bubble)");
+  tl.fromTo(card, { y:0, yPercent:125 }, { y:0, yPercent:0, duration:1.05 }, 6.8);
+  tl.fromTo(kids, { y:22, opacity:0 }, { y:0, opacity:1, duration:.7, stagger:.055 }, 6.95);
+  const bars = q(".mo-prog b"), bar = (i, at) => tl.fromTo(bars[i], { scaleX:0 }, { scaleX:1, duration:.55, ease:"power2.inOut" }, at);
+  bar(0, 7.4);
+  const tap = one(".mo-tap"), btn = one(".mo-btn");
+  tl.fromTo(tap, { scale:1.6, opacity:0 }, { scale:.78, opacity:1, duration:.2, ease:"power2.out" }, 8.45).to(tap, { scale:2.4, opacity:0, duration:.5, ease:"power2.out" }, 8.65);
+  tl.to(btn, { scale:.955, duration:.12, ease:"power2.out" }, 8.5).to(btn, { scale:1, duration:.5, ease:"elastic.out(1,.45)" }, 8.62);
+  tl.to(btn.querySelector(".b1"), { y:-14, opacity:0, duration:.25, ease:"power2.in" }, 8.62);
+  tl.to(btn, { backgroundColor:"#F4F6F9", duration:.35, ease:"power2.out" }, 8.65);
+  tl.fromTo(btn.querySelector(".b2"), { y:14, opacity:0 }, { y:0, opacity:1, duration:.4 }, 8.75);
+  tl.fromTo(btn.querySelector("svg"), { strokeDashoffset:24 }, { strokeDashoffset:0, duration:.45, ease:"power2.out" }, 8.9);
+  tl.to(one(".mo-skip"), { opacity:0, x:8, duration:.25, ease:"power2.in" }, 8.62);
+  tl.to(card, { boxShadow:"0 1px 2px rgba(11,14,17,.10), 0 12px 28px -14px rgba(0,0,0,.55)", duration:.5, ease:"power2.out" }, 8.8);
+  bar(1, 8.95); bar(2, 9.45);
+  capIn(cap[2], 6.85, 10.45);
+  // 4. followed to what came of it
+  tl.fromTo(one(".mo-bubble"), { y:18, scale:.86, opacity:0 }, { y:0, scale:1, opacity:1, duration:.7, ease:"back.out(1.8)" }, 11.0);
+  bar(3, 11.2);
+  const av = one(".mo-av");
+  tl.fromTo(av, { "--sweep":"0deg" }, { "--sweep":"360deg", duration:1.0, ease:"power2.inOut" }, 12.55);
+  tl.to(av, { scale:1.1, duration:.18, ease:"power2.out" }, 13.45).to(av, { scale:1, duration:.7, ease:"elastic.out(1,.4)" }, 13.63);
+  q(".mo-burst i").forEach((el,i)=>{ const a = i/12*Math.PI*2 + (i%2)*.2, r = 34 + (i*7)%18;
+    tl.fromTo(el, { x:0, y:0, scale:1.2, opacity:0 }, { keyframes:[{ opacity:1, duration:.04 }, { x:Math.cos(a)*r, y:Math.sin(a)*r + 8, scale:.2, opacity:0, duration:1.1, ease:"expo.out" }] }, 13.5 + (i%3)*.03); });
+  bar(4, 13.4);
+  capIn(cap[3], 10.7, 15.0);
+  // back to the start, continuously
+  tl.to(card, { yPercent:125, duration:.7, ease:"power3.in" }, 15.0);
+  tl.to(V, { blur:0, glS:1, glO:1, camY:0, camZ:12.5, tgtY:0, mc:0, duration:.8, ease:"power2.inOut" }, 15.0);
+  tl.to(S.u.dim, { value:1, duration:.8, ease:"power2.inOut" }, 15.0);
+  tl.to(S.u.rfade, { value:0, duration:.5, ease:"power1.in" }, 15.0);
+  tl.to(pop[2], { v:0, duration:.5, ease:"power2.in" }, 15.0);
+  tl.to(S.u.field, { value:.0, duration:.8, ease:"power2.in" }, 15.0);
+  tl.set({}, {}, MO_LOOP);
+  return tl;
+}
+
+function moPromoStill(root) { root.classList.add("still"); }
+function moPromoMount(root) {
+  if (root._mo) return; root._mo = true;
+  if (!MO_ON) return moPromoStill(root);
+  moLoad().then(() => { if (!root.isConnected) return;
+    const S = MO_SCENE || moSceneBuild(), gl = root.querySelector(".mo-gl"), tl = moTimeline(root, S);
+    gl.appendChild(S.renderer.domElement); root.classList.add("ready");
+    if (moT0===null) moT0 = performance.now();
+    const cuts = [3.2, 6.8, 10.6, 15.0, MO_LOOP];
+    root.onclick = () => { const t = ((performance.now()-moT0)/1000) % MO_LOOP; const c = cuts.find(x=>x>t+.05); moT0 -= (c - t)*1000; }; // tap skips to the next beat
+    const lbls = {}; root.querySelectorAll(".mo-lbl").forEach(el=>lbls[el.dataset.l]=el);
+    const kai = root.querySelector(".mo-kai"), bars = root.querySelectorAll(".mo-bars b"), T = THREE, v = new T.Vector3();
+    const loop = now => {
+      if (!root.isConnected) return;
+      const clock = (now - moT0)/1000, t = clock % MO_LOOP;
+      tl.time(t, false);
+      const w = gl.clientWidth, h = gl.clientHeight;
+      if (w !== S.w || h !== S.h) { S.w = w; S.h = h; S.renderer.setSize(w, h, false); S.camera.aspect = w/h; S.camera.updateProjectionMatrix(); }
+      const V = S.V; S.u.time.value = clock;
+      S.camera.position.set(Math.sin(clock*.11)*.35, V.camY + Math.sin(clock*.17)*.12, V.camZ); S.tgt.set(0, V.tgtY, 0); S.camera.lookAt(S.tgt);
+      S.group.rotation.y = .2*Math.sin(clock*.16); S.group.rotation.x = .05*Math.sin(clock*.12);
+      MO_PEOPLE.forEach(([id],i)=>{ const p = S.P[id], k = S.pop[i].v, dimmed = !(id==="you"||id==="df"||id==="mc");
+        p.sp.scale.setScalar(Math.max(.0001, p.size*k)); p.sp.material.opacity = Math.min(1,k) * (dimmed ? .35 + .65*S.u.dim.value : 1);
+        p.sp.position.y = p.v.y + Math.sin(clock*.8 + i)*.05; });
+      S.linkMat.opacity = .28*V.links*(.3+.7*S.u.dim.value);
+      S.u.pulseA.value = V.pulse;
+      MO_LINKS.forEach(([a,b],i)=>{ const f = ((clock*.35 + i*.37) % 1), A = S.P[a].v, B = S.P[b].v; S.pp.set([A.x+(B.x-A.x)*f, A.y+(B.y-A.y)*f, A.z+(B.z-A.z)*f], i*3); });
+      S.pulses.geometry.attributes.position.needsUpdate = true;
+      gl.style.filter = V.blur > .05 ? `blur(${V.blur.toFixed(2)}px)` : ""; gl.style.transform = `scale(${V.glS})`; gl.style.opacity = V.glO;
+      S.renderer.render(S.scene, S.camera);
+      const proj = (vec) => { v.copy(vec).applyMatrix4(S.group.matrixWorld).project(S.camera); return [(v.x*.5+.5)*w, (-v.y*.5+.5)*h]; };
+      ["you","df","mc"].forEach(id=>{ const p = S.P[id], [x,y] = proj(p.sp.position), r = p.size*S.pop[p.i].v * h/(2*Math.tan(19*Math.PI/180)*(S.camera.position.distanceTo(p.sp.position)))/2;
+        lbls[id].style.transform = `translate(${x}px,${y + r*.62 + 4}px) translate(-50%,0)`; lbls[id].style.opacity = id==="mc" ? V.mc*(1-V.blur/9) : V.lbl; });
+      const pr = S.u.prog.value;
+      if (pr > 0 && pr < 1 && S.u.rfade.value > .5) { const [x,y] = proj(S.curve.getPointAt(Math.min(pr,1))); kai.style.transform = `translate(${x}px,${y}px)`; kai.style.opacity = 1; } else kai.style.opacity = 0;
+      let acc = 0; bars.forEach((el,i)=>{ el.style.transform = `scaleX(${Math.max(0, Math.min(1, (t-acc)/MO_BEATS[i]))})`; acc += MO_BEATS[i]; });
+      const st = t < 8.62 ? "new" : t < 11.0 ? "waiting" : t < 12.55 ? "talking" : "well"; if (root.dataset.st !== st) root.dataset.st = st;
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  }).catch(() => moPromoStill(root));
+}
+// The reel waits for Apoorv to settle the storyboard (26 Sep 01:31); until then sign-in keeps its placeholder and only the globe ships.
+const MO_REEL = false;
+const _moSignin = sSignin;
+if (MO_REEL) sSignin = function() { return _moSignin.apply(this, arguments).replace(/<div class="mvis full">[\s\S]*?<\/div><\/div>/, moPromoHTML()); };
+
+/* ---- Kai call: the globe, driven by what is being said ---- */
+// Speech is scheduled from the words themselves: each syllable a pulse, a comma a short breath, a full stop a longer one.
+const MO_SIG = { level:0, bands:new Float32Array(24), who:"idle", words:[], start:0, end:0, onEnd:null, els:[], shown:-1, rot:0, rad:1, col:[166,175,187] };
+const MO_COL = { idle:[166,175,187], kai:[249,250,252], you:[220,184,84], think:[200,206,214] };
+function moSchedule(text, pace) {
+  let t = 0; const out = [];
+  text.split(/\s+/).filter(Boolean).forEach(w => {
+    const syl = Math.max(1, (w.toLowerCase().match(/[aeiouy]+/g)||[]).length);
+    const d = (90 + syl*150)*pace; out.push({ s:t, e:t+d, syl }); t += d + (/[.?!]$/.test(w) ? 420 : /[,;:]$/.test(w) ? 220 : 40)*pace;
+  });
+  return { words:out, dur:t };
+}
+function moSpeak(who, els, onEnd) {
+  const text = els.map(e=>e.textContent).join(" ");
+  const sch = moSchedule(text, who==="you" ? 0.7 : 1); // the member answers faster than Kai reads
+  MO_SIG.who = who; MO_SIG.words = sch.words; MO_SIG.start = performance.now(); MO_SIG.end = MO_SIG.start + sch.dur; MO_SIG.onEnd = onEnd; MO_SIG.els = els; MO_SIG.shown = -1;
+  moWrapWords(els);
+  moWho(who);
+}
+function moWrapWords(els) {
+  els.forEach(el => { if (el.dataset.moWrapped) return; el.dataset.moWrapped = "1"; el.innerHTML = el.textContent.split(/\s+/).filter(Boolean).map(w=>`<span class="w off">${w}</span>`).join(" "); });
+  const ws = els.flatMap(el=>Array.from(el.querySelectorAll(".w")));
+  ws.forEach((w,i)=>w.classList.toggle("off", i>MO_SIG.shown));
+}
+function moWho(who) {
+  MO_SIG.who = who;
+  const c = phone.querySelector(".call"); if (c) c.dataset.who = who;
+  const st = phone.querySelector("#vizs"); if (st) st.textContent = STATE.callMuted ? "Muted" : ({ kai:"Kai is speaking", you:"Listening", think:"Kai is thinking", idle:"Your turn" })[who];
+}
+function moAmp(now) {
+  if (MO_SIG.who==="idle") return 0.05 + 0.025*Math.sin(now/1000*0.9);
+  if (MO_SIG.who==="think") return 0.12 + 0.06*Math.sin(now/90);
+  const t = now - MO_SIG.start;
+  const w = MO_SIG.words.find(x=>t>=x.s && t<x.e); if (!w) return 0.04;
+  const f = (t-w.s)/(w.e-w.s)*w.syl, ph = f - Math.floor(f);
+  return Math.min(1, (0.22 + 0.78*Math.pow(Math.sin(Math.PI*ph),1.6)) * (0.6 + 0.4*Math.sin(now/1000*0.55 + w.s)));
+}
+function moTick(now, dt) {
+  if (MO_SIG.who==="kai" || MO_SIG.who==="you") {
+    const t = now - MO_SIG.start; let k = -1; MO_SIG.words.forEach((w,i)=>{ if (t>=w.s) k=i; });
+    if (k!==MO_SIG.shown) { MO_SIG.shown = k; const ws = MO_SIG.els.flatMap(el=>el.isConnected?Array.from(el.querySelectorAll(".w")):[]); ws.forEach((w,i)=>w.classList.toggle("off", i>k)); }
+    if (now >= MO_SIG.end) { const f = MO_SIG.onEnd; MO_SIG.onEnd = null; moWho("idle"); if (f) f(); }
+  }
+  const target = STATE.callMuted ? 0.03 : moAmp(now);
+  MO_SIG.level += (target - MO_SIG.level) * (target > MO_SIG.level ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7)); // fast attack, slow release
+  for (let b=0; b<24; b++) { const want = MO_SIG.level*(0.35+0.65*(Math.sin(b*3.1*12.9898 + now/1000*(1.15+b*0.4))*0.5+0.5))*(1-b/62); MO_SIG.bands[b] += (want-MO_SIG.bands[b])*(1-Math.exp(-dt*14)); }
+  const think = MO_SIG.who==="think";
+  MO_SIG.rot += dt * (think ? 1.4 : 0.30);
+  MO_SIG.rad += ((think ? 0.86 : 1) - MO_SIG.rad) * (1-Math.exp(-dt*6));
+  const tc = MO_COL[MO_SIG.who]; MO_SIG.col = MO_SIG.col.map((v,i)=>v+(tc[i]-v)*(1-Math.exp(-dt*8)));
+}
+function moBand(a) { const f = (((a % (Math.PI*2)) + Math.PI*2) % (Math.PI*2)) / (Math.PI*2) * 24; const i = Math.floor(f), m = f-i; const x = MO_SIG.bands[i%24], y = MO_SIG.bands[(i+1)%24]; return x + (y-x)*(m*m*(3-2*m)); }
+function moGlobe(c, t) {
+  const dpr = Math.min(window.devicePixelRatio||1, 2), r = c.getBoundingClientRect(); if (!r.width) return;
+  const W = Math.round(r.width), H = Math.round(r.height);
+  if (c.width !== W*dpr) { c.width = W*dpr; c.height = H*dpr; }
+  const g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2, R = Math.min(W,H)*0.30*MO_SIG.rad, amp = MO_SIG.level, tilt = -0.32, small = W < 60;
+  g.fillStyle = `rgb(${MO_SIG.col.map(Math.round).join(",")})`;
+  const RINGS = small ? 7 : 15;
+  for (let ri=0; ri<RINGS; ri++) {
+    const lat = (ri/(RINGS-1)-0.5)*Math.PI, cl = Math.cos(lat), sl = Math.sin(lat), count = Math.max(4, Math.round((small?12:30)*cl));
+    for (let j=0; j<count; j++) {
+      const lon = j/count*Math.PI*2 + MO_SIG.rot + ri*0.21, e = moBand(lon + lat*1.7);
+      const rr = R*(1 + amp*(0.10+0.34*e) + 0.03*Math.sin(t*1.1+ri));
+      const x3 = cl*Math.cos(lon), z3 = cl*Math.sin(lon), yt = sl*Math.cos(tilt) - z3*Math.sin(tilt), zt = sl*Math.sin(tilt) + z3*Math.cos(tilt), depth = (zt+1)/2;
+      g.globalAlpha = 0.10 + 0.90*depth*depth;
+      g.beginPath(); g.arc(cx + x3*rr, cy + yt*rr, (small?0.5:0.7) + (small?0.9:1.5)*depth*(0.5+e*amp), 0, Math.PI*2); g.fill();
+    }
+  }
+  g.globalAlpha = 1;
+}
+// The globe in WebGL: 4,200 points on a sphere, pushed along their normals by 3D simplex noise scaled by the voice level,
+// brighter at the rim (fresnel) and at the front; the glow behind it is CSS, keyed to who is speaking. One renderer, blitted into
+// whichever canvases are on screen (the call and the minimised bar), so re-renders never create a new GL context.
+const MO_SNOISE = `vec3 m289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 m289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 perm(vec4 x){return m289(((x*34.)+1.)*x);}
+vec4 tis(vec4 r){return 1.79284291400159-.85373472095314*r;}
+float snoise(vec3 v){ const vec2 C=vec2(1./6.,1./3.); const vec4 D=vec4(0.,.5,1.,2.); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+ vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+ i=m289(i); vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+ float n_=.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.*x_);
+ vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+ vec4 s0=floor(b0)*2.+1.; vec4 s1=floor(b1)*2.+1.; vec4 sh=-step(h,vec4(0.)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+ vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+ vec4 nr=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=nr.x; p1*=nr.y; p2*=nr.z; p3*=nr.w;
+ vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.); m=m*m;
+ return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3))); }`;
+let MO_GLOBE = null;
+function moGlobeGL() {
+  if (MO_GLOBE) return MO_GLOBE;
+  if (!window.THREE) return null;
+  const T = THREE, S = 460, renderer = new T.WebGLRenderer({ antialias:true, alpha:true }); renderer.setPixelRatio(1); renderer.setSize(S, S, false); renderer.setClearColor(0,0);
+  const scene = new T.Scene(), camera = new T.PerspectiveCamera(32, 1, .1, 20); camera.position.z = 4.9;
+  const u = { uTime:{value:0}, uAmp:{value:0}, uThink:{value:0}, uColor:{value:new T.Color(1,1,1)}, uPx:{value:1} };
+  const N = 2600, pos = new Float32Array(N*3), seed = new Float32Array(N), ga = Math.PI*(3-Math.sqrt(5));
+  for (let i=0;i<N;i++) { const y = 1 - (i/(N-1))*2, r = Math.sqrt(1-y*y), th = ga*i; pos.set([Math.cos(th)*r, y, Math.sin(th)*r], i*3); seed[i] = (Math.sin(i*12.9898)*43758.5453) % 1; }
+  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
+  const pts = new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader: MO_SNOISE + `uniform float uTime,uAmp,uThink,uPx; attribute float aSeed; varying float vA;
+      void main(){ vec3 n = normalize(position);
+        float n1 = snoise(n*1.5 + vec3(0., uTime*.32, uTime*.21)); float n2 = snoise(n*3.8 - vec3(uTime*.9));
+        float disp = uAmp*(.05 + .26*max(n1,0.) + .04*n2) + .018*sin(uTime*1.4 + aSeed*6.28) - uThink*(.10 + .04*sin(uTime*9. + n.y*8.));
+        vec3 p = n*(1. + disp);
+        vec4 mv = modelViewMatrix*vec4(p,1.); vec3 nv = normalize(normalMatrix*n);
+        float rim = pow(1. - abs(nv.z), 2.2); float front = smoothstep(-.35, 1., nv.z);
+        gl_PointSize = uPx*(2.2 + 3.4*front + 3.0*uAmp*max(n1,0.))*(4.3/-mv.z);
+        gl_Position = projectionMatrix*mv;
+        vA = (.06 + .62*front*front + .7*rim) * (.55 + .45*uAmp + .25*uThink); }`,
+    fragmentShader:`uniform vec3 uColor; varying float vA; void main(){ float r = length(gl_PointCoord-.5); float a = 1. - smoothstep(0.,.5,r); gl_FragColor = vec4(uColor, a*a*vA); }` }));
+  pts.rotation.x = -.32; scene.add(pts);
+  MO_GLOBE = { renderer, scene, camera, pts, u };
+  return MO_GLOBE;
+}
+function moGlobeBlit(G, cs) {
+  G.renderer.render(G.scene, G.camera);
+  cs.forEach(c => { const dpr = Math.min(window.devicePixelRatio||1, 2), r = c.getBoundingClientRect(); if (!r.width) return;
+    const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr); if (c.width !== W) { c.width = W; c.height = H; }
+    const g = c.getContext("2d"); g.clearRect(0,0,W,H); g.globalCompositeOperation = "lighter"; for (let k = W < 120 ? 3 : 1; k--;) g.drawImage(G.renderer.domElement, 0, 0, W, H); }); // the mini globe is drawn three times over so its points survive the downscale
+}
+let moLast = 0;
+vizLoop = function() {
+  const cs = phone.querySelectorAll("#vizc, canvas.mo-mini");
+  if (!cs.length) { vizRAF = null; return; }
+  const now = performance.now(), dt = Math.min(0.05, moLast ? (now-moLast)/1000 : 0.016); moLast = now;
+  if (!MO_ON) { MO_SIG.level = MO_SIG.who==="idle" ? 0.08 : 0.55; for (let b=0;b<24;b++) MO_SIG.bands[b] = MO_SIG.level*(0.3+0.5*(Math.sin(b*3.1)*0.5+0.5)); MO_SIG.col = MO_COL[MO_SIG.who].slice(); cs.forEach(c=>moGlobe(c, 1.7)); vizRAF = null; return; }
+  moTick(now, dt);
+  const G = moGlobeGL();
+  if (G) { G.u.uTime.value = now/1000; G.u.uAmp.value = MO_SIG.level; G.u.uThink.value += ((MO_SIG.who==="think"?1:0) - G.u.uThink.value)*(1-Math.exp(-dt*6));
+    G.u.uColor.value.setRGB(MO_SIG.col[0]/255, MO_SIG.col[1]/255, MO_SIG.col[2]/255); G.pts.rotation.y = MO_SIG.rot; moGlobeBlit(G, cs); }
+  else { moLoad().catch(()=>{}); cs.forEach(c=>moGlobe(c, now/1000)); }
+  vizRAF = requestAnimationFrame(vizLoop);
+};
+vizKick = function(mode) { moWho(MO_ON && mode==="user" ? "you" : MO_ON && mode==="kai" ? "kai" : "idle"); if (!vizRAF) vizRAF = requestAnimationFrame(vizLoop); };
+function moKaiSpeaks() {
+  const now = phone.querySelector(".call .line.k.now"); if (!now) return;
+  const els = STATE.callStep===0 ? [phone.querySelector(".call .line.k"), now] : [now];
+  moSpeak("kai", els, ()=>{});
+}
+const _moStartCall = startCall;
+startCall = function() { const was = STATE.callActive; _moStartCall.apply(this, arguments); if (!was && STATE.callActive) { moLast = 0; if (MO_ON) moKaiSpeaks(); else moWho("idle"); } };
+const _moAnswer = answer;
+answer = function(a) {
+  if (!MO_ON) { _moAnswer(a); return; }
+  if (MO_SIG.who==="you" || MO_SIG.who==="think") return;
+  MO_SIG.els.forEach(el=>el.isConnected && el.querySelectorAll(".w").forEach(w=>w.classList.remove("off"))); // tapping while Kai talks interrupts it
+  const tr = phone.querySelector("#tr"); if (!tr) { _moAnswer(a); return; }
+  const p = document.createElement("p"); p.className = "line u mo-live"; p.textContent = a; tr.appendChild(p); tr.scrollTop = tr.scrollHeight;
+  moSpeak("you", [p], ()=>{ moWho("think"); setTimeout(()=>{ _moAnswer(a); if (STATE.callActive && !STATE.callMin) { const t2 = phone.querySelector("#tr"); if (t2) t2.scrollTop = t2.scrollHeight; moKaiSpeaks(); } else moWho("idle"); }, 650); });
+};
+const _moCallBar = callBarHTML;
+callBarHTML = function() { return _moCallBar.apply(this, arguments).replace('<span class="live"></span>', '<canvas class="mo-mini" width="30" height="30"></canvas>'); };
+const _moPortWire = portWire;
+portWire = function() {
+  _moPortWire.apply(this, arguments);
+  const promo = phone.querySelector("[data-promo]"); if (promo) moPromoMount(promo);
+  const call = phone.querySelector(".call");
+  if (call) { call.dataset.who = MO_SIG.who; moWho(MO_SIG.who); if (MO_ON && (MO_SIG.who==="kai") && MO_SIG.els.length && !MO_SIG.els[0].isConnected) { const now = phone.querySelector(".call .line.k.now"); if (now) { MO_SIG.els = STATE.callStep===0 ? [phone.querySelector(".call .line.k"), now] : [now]; moWrapWords(MO_SIG.els); } } }
+  if (STATE.callActive && !vizRAF) vizRAF = requestAnimationFrame(vizLoop);
 };
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
