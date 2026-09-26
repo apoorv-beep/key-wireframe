@@ -90,7 +90,7 @@
   .body.center { display:flex; flex-direction:column; justify-content:center; }
   .foot { padding:12px 16px 14px; border-top:1px solid var(--line); background:#fff; }
   .nav { position:absolute; left:12px; right:12px; bottom:22px; z-index:10; display:flex; align-items:flex-end; justify-content:space-around; border:1px solid var(--line); border-radius:26px; padding:8px 8px 10px; background:rgba(255,255,255,.96); box-shadow:0 10px 30px rgba(0,0,0,.14); backdrop-filter:blur(8px); }
-  .screen.hasnav .body { padding-bottom:110px; }
+  .screen.hasnav .body { padding-bottom:var(--nav-pad, 110px); }
   .nav .tab .ic.logo { border:1.5px solid var(--ink3); background:#fff; color:var(--ink2); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
   .nav .tab.on .ic.logo { background:var(--ink); color:#fff; border-color:var(--ink); }
   .nav .tab .lr { display:inline-flex; align-items:center; gap:3px; justify-content:center; }
@@ -725,6 +725,14 @@
 }
 /* The Controls pill steps aside while a push banner shows (journey guide, 26 Sep). */
 body:has(.push) .ctlbtn { display:none; }
+
+/* Toasts never swallow taps on the button under them; only Undo is tappable. Above a sticky bottom bar the toast lifts (Events, 26 Sep). */
+.toast.show { pointer-events:none; } .toast.show [data-undo] { pointer-events:auto; }
+#phone:has(.pact, .foot.cbar, .evx-cta, .sbar.sc) .toast { bottom:150px; }
+/* Composer marks */
+.bx code, .bub code { font:12.5px/1.4 ui-monospace, Menlo, monospace; background:rgba(0,0,0,.06); border-radius:4px; padding:0 4px; }
+.bx .quo, .bub .quo { display:block; border-left:2px solid var(--line); padding-left:8px; color:var(--ink2); }
+.fmtbar span:active { background:var(--ink); color:#fff; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -5019,7 +5027,23 @@ function previewOf(m) {
 }
 
 /* ---------- message rendering ---------- */
+/* Formatting marks the composer writes (prod's editor is Quill; the wireframe keeps a light markup): **b** _i_ __u__ ~s~ `code`, and line starts "• ", "1. ", "> ", plus [text](url). */
+function applyFmt(kind) {
+  const ta = phone.querySelector("#ci"); if (!ta) return;
+  const a = ta.selectionStart, b = ta.selectionEnd, sel = ta.value.slice(a,b), before = ta.value.slice(0,a), after = ta.value.slice(b);
+  const wrap = { b:"**", i:"_", u:"__", s:"~", code:"`" }[kind];
+  let out, caret;
+  if (wrap) { out = before + wrap + (sel||"text") + wrap + after; caret = sel ? a + sel.length + wrap.length*2 : a + wrap.length; if (!sel) ta.setSelectionRange(a+wrap.length, a+wrap.length+4); }
+  else if (kind==="link") { out = before + "[" + (sel||"text") + "](https://)" + after; caret = a + (sel||"text").length + 11; }
+  else { const mark = kind==="ul" ? "• " : kind==="ol" ? "1. " : "> "; const ls = before.lastIndexOf("\n")+1; out = before.slice(0,ls) + mark + before.slice(ls) + sel + after; caret = b + mark.length; }
+  ta.value = out; ta.focus(); ta.setSelectionRange(caret, caret); if (ta.oninput) ta.oninput();
+}
+function fmtMarks(t) {
+  return t.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/__(.+?)__/g,"<u>$1</u>").replace(/(^|[^\w])_(.+?)_(?!\w)/g,"$1<i>$2</i>").replace(/~(.+?)~/g,"<s>$1</s>").replace(/`([^`]+)`/g,"<code>$1</code>")
+          .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]*)\)/g,'<span class="lnk">$1</span>').replace(/^> (.*)$/gm,'<span class="quo">$1</span>');
+}
 function fmtText(t) {
+  t = fmtMarks(t);
   return t.replace(/(https?:\/\/)?([a-z0-9-]+\.)+(com|ai|io|dev)(\/[^\s]*)?/gi, s=>`<span class="lnk">${s}</span>`)
           .replace(/@(channel|[A-Z][a-z]+ [A-Z][a-z]+)/g, (s,n)=>`<span class="mention" ${n!=="channel"&&personByName(n)?`data-profile="${personByName(n).id}"`:''}>@${n}</span>`);
 }
@@ -5086,7 +5110,7 @@ function composerBar(c, target) {
   const pend = (STATE.pending||{})[k]||[];
   const editing = STATE.editMsg && STATE.editMsg.k===k;
   return `<div class="foot cbar">
-    ${STATE.fmtOpen&&!editing?`<div class="fmtbar">${["B","I","U","S","&lt;/&gt;","•","1.","❝","🔗"].map(x=>`<span onclick="toast('Formatting: applies to the selection')">${x}</span>`).join("")}</div>`:''}
+    ${STATE.fmtOpen&&!editing?`<div class="fmtbar">${[["b","B"],["i","I"],["u","U"],["s","S"],["code","&lt;/&gt;"],["ul","•"],["ol","1."],["q","❝"],["link","🔗"]].map(([k,x])=>`<span data-fmt="${k}" onpointerdown="event.preventDefault();applyFmt('${k}')">${x}</span>`).join("")}</div>`:''}
     ${pend.length?`<div class="pstrip">${pend.map((a,i)=>`<div class="ptile">${a.t==="file"?a.ext:""}<span class="x" onclick="STATE.pending['${k}'].splice(${i},1);render()">×</span></div>`).join("")}</div>`:''}
     <div id="mentionBox"></div>
     <div class="crow ${draft||pend.length?'has':''}" id="crow">
