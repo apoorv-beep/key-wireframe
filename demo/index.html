@@ -644,7 +644,7 @@
   .bcol .kaiact { margin-top:6px; display:flex; gap:6px; flex-wrap:wrap; } .bcol .kaiact .chip { border-style:dashed; border-color:var(--ink2); font-size:12px; padding:5px 9px; }
   .mgrid { display:grid; gap:4px; margin:2px 0 4px; width:220px; max-width:100%; } .mgrid.g1 { grid-template-columns:1fr; } .mgrid.g2, .mgrid.g3, .mgrid.g4 { grid-template-columns:1fr 1fr; } .mgrid.g3 .mtile:last-child { grid-column:1 / 3; aspect-ratio:2 / 1; }
   .mtile { aspect-ratio:1; border-radius:8px; background:repeating-linear-gradient(45deg,var(--fill2),var(--fill2) 6px,#EFEFEF 6px,#EFEFEF 12px); position:relative; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-  .mtile.vid::after { content:"▶"; width:32px; height:32px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .mtile.vid::after { content:""; -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27white%27%3E%3Cpolygon points=%276 3 20 12 6 21 6 3%27/%3E%3C/svg%3E") center/16px no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27white%27%3E%3Cpolygon points=%276 3 20 12 6 21 6 3%27/%3E%3C/svg%3E") center/16px no-repeat; width:32px; height:32px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; }
   .mtile .plus { position:absolute; inset:0; background:rgba(0,0,0,.5); color:#fff; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; }
   .mtile .upl { background:rgba(0,0,0,.55); color:#fff; font-size:11px; font-weight:700; border-radius:10px; padding:2px 7px; }
   .filecard, .lcard { background:rgba(0,0,0,.05); border-radius:8px; padding:8px 10px; margin:2px 0 4px; cursor:pointer; font-size:14px; }
@@ -747,6 +747,10 @@ body:has(.push) .ctlbtn { display:none; }
 .citabs span b { font-weight:700; margin-left:2px; }
 .citabs.later { overflow-x:auto; white-space:nowrap; scrollbar-width:none; } .citabs.later::-webkit-scrollbar { display:none; } .citabs.later span { flex:0 0 auto; margin-right:16px; }
 .lrow .m .a .faint { font-weight:400; font-size:12px; }
+
+  .li { flex:0 0 auto; vertical-align:-3px; } .sico .li, .xrow .li { vertical-align:middle; } .back .li { vertical-align:0; } .swa .li { display:block; margin:0 auto 2px; } .nbadge .li, .kbadge .li { vertical-align:-1px; }
+  /* Home indicator (journey guide, 26 Sep): the drawn bar sits 8px up and 5px tall, so every foot clears it. */
+  #phone:has(.ios-home) .foot { padding-bottom:26px; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -2590,6 +2594,17 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-cat > span[data-chfold] { cursor:pointer; }
   .cm-dtag { font-size:11px; font-weight:600; color:var(--ink2); background:var(--fill); border-radius:5px; padding:1px 6px; margin-left:4px; vertical-align:1px; }
   @media (prefers-reduced-motion: reduce) { .cm-fold { transition:none; } }
+  /* Lucide icons in place of glyphs on controls, 26 Sep */
+  .ch.slim .che i { width:14px; height:14px; border-radius:50%; background:var(--paper); display:flex; align-items:center; justify-content:center; color:var(--ink2); }
+  .avatar.cm-kaiav { background:var(--ink); color:#fff; border:0; }
+  .avatar.cm-addav { color:var(--ink); }
+  .cm-x { display:inline-flex; align-items:center; }
+  .cm-pillbar svg { vertical-align:-2px; margin-right:6px; }
+  .cm-sel { display:inline-flex; align-items:center; gap:4px; }
+  .cm-link svg { vertical-align:-2px; margin-left:2px; }
+  .cm-tags .add { display:inline-flex; align-items:center; gap:3px; }
+  .cm-box svg { stroke-width:3; }
+  .cm-chebig svg { color:var(--ink2); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -5080,9 +5095,33 @@ function previewOf(m) {
   if (m.text) return (m.from===meId()?"You: ":"")+m.text.replace(/@([A-Z][a-z]+ [A-Z][a-z]+)/g,"@$1");
   const a=m.att[0]; if (!a) return "";
   const lbl = a.t==="img"?"image":a.t==="vid"?"video":a.t==="audio"?"audio":"file";
-  return `<span class="attl">${a.t==="img"?"▣":a.t==="vid"?"▶":"▤"}</span> ${lbl}`;
+  return `<span class="attl">${LI(a.t==="img"?"image":a.t==="vid"?"video":"file",14)}</span> ${lbl}`;
 }
 
+/* Lucide icons (Apoorv, 26 Sep: no emoji on buttons or controls; real icons from Lucide). LI(name, size) returns the inline SVG; lucidePass() swaps the prototype's text chevrons, back arrows and checks after each render. */
+const LUCIDE = {
+  "chevron-right":'<path d="m9 18 6-6-6-6"/>', "chevron-left":'<path d="m15 18-6-6 6-6"/>', "chevron-down":'<path d="m6 9 6 6 6-6"/>', "check":'<path d="M20 6 9 17l-5-5"/>', "x":'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', "plus":'<path d="M5 12h14"/><path d="M12 5v14"/>',
+  "pin":'<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
+  "message-square":'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>', "reply":'<polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/>', "copy":'<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  "pencil":'<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>', "trash-2":'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
+  "flag":'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>', "ellipsis-vertical":'<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>', "ellipsis":'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+  "image":'<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>', "video":'<path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/>', "file":'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>', "file-text":'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>', "camera":'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>', "download":'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>', "play":'<polygon points="6 3 20 12 6 21 6 3"/>',
+  "bold":'<path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/>', "italic":'<line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/>', "underline":'<path d="M6 4v6a6 6 0 0 0 12 0V4"/><line x1="4" x2="20" y1="20" y2="20"/>', "strikethrough":'<path d="M16 4H9a3 3 0 0 0-2.83 4"/><path d="M14 12a4 4 0 0 1 0 8H6"/><line x1="4" x2="20" y1="12" y2="12"/>', "code":'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+  "list-ordered":'<path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>', "list":'<path d="M3 12h.01"/><path d="M3 18h.01"/><path d="M3 6h.01"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M8 6h13"/>', "text-quote":'<path d="M17 6H3"/><path d="M21 12H8"/><path d="M21 18H8"/><path d="M3 12v6"/>', "indent-increase":'<path d="M21 5H11"/><path d="M21 12H11"/><path d="M21 19H11"/><path d="m3 8 4 4-4 4"/>', "indent-decrease":'<path d="M21 5H11"/><path d="M21 12H11"/><path d="M21 19H11"/><path d="m7 8-4 4 4 4"/>', "link":'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  "lock":'<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>', "bell":'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>', "bell-off":'<path d="M8.7 3A6 6 0 0 1 18 8a21.3 21.3 0 0 0 .6 5"/><path d="M17 17H3s3-2 3-9a4.67 4.67 0 0 1 .3-1.7"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="m2 2 20 20"/>',
+  "mail":'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>', "users":'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>', "user":'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>', "smile":'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/>',
+  "calendar":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>', "calendar-days":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>', "info":'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>', "book-open":'<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>', "circle":'<circle cx="12" cy="12" r="10"/>',
+  "bookmark":'<path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>', "alarm-clock":'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/>', "clock":'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', "send":'<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>',
+  "briefcase":'<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>', "tag":'<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>', "gift":'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>', "sparkle":'<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
+  "paperclip":'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>', "mic":'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>', "at-sign":'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>'
+};
+function LI(n, s) { return `<svg class="li" viewBox="0 0 24 24" width="${s||16}" height="${s||16}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${LUCIDE[n]||""}</svg>`; }
+const GLYPH_ICON = { "›":"chevron-right", "‹":"chevron-left", "▾":"chevron-down", "⌄":"chevron-down", "✓":"check", "⋮":"ellipsis-vertical", "⋯":"ellipsis", "×":"x", "+":"plus" };
+function lucidePass() {
+  const w = document.createTreeWalker(phone, NodeFilter.SHOW_TEXT); const hits=[]; let n;
+  while ((n=w.nextNode())) { const t=n.nodeValue.trim(); const el=n.parentNode; if (GLYPH_ICON[t] && el.childNodes.length===1 && !/^(TEXTAREA|SCRIPT|STYLE|OPTION)$/.test(el.tagName)) hits.push(n); }
+  hits.forEach(n=>{ n.parentNode.innerHTML = LI(GLYPH_ICON[n.nodeValue.trim()], n.parentNode.classList.contains("back")?20:16); });
+}
 /* ---------- message rendering ---------- */
 /* Formatting marks the composer writes (prod's editor is Quill; the wireframe keeps a light markup): **b** _i_ __u__ ~s~ `code`, and line starts "• ", "1. ", "> ", plus [text](url). */
 function applyFmt(kind, id) {
@@ -5114,8 +5153,8 @@ function attHTML(att) {
     const tile=(i)=>`<div class="mtile ${a.t==='vid'?'vid':''}" onclick="event.stopPropagation();toast('Opens full-screen preview: swipe between ${n}, thumbnails below, download')">${a.up!=null?`<span class="upl">${a.up}%</span>`:''}${i===3&&n>4?`<span class="plus">+${n-4}</span>`:''}</div>`;
     out += `<div class="mgrid g${show}">${Array.from({length:show},(_,i)=>tile(i)).join("")}</div>`;
   });
-  audio.forEach(a=>{ out += `<div class="aud"><span class="pl">▶</span><span class="atr"><i></i></span><span class="xs faint">${a.dur}</span></div>`; });
-  files.forEach(a=>{ out += `<div class="filecard" onclick="event.stopPropagation();toast('Downloading ${a.name}')"><div class="fx">${a.ext}</div><div class="m"><div class="fnm">${a.name}</div><div class="xs faint">${a.ext} · ${a.size}</div></div><span class="dl">↓</span></div>`; });
+  audio.forEach(a=>{ out += `<div class="aud"><span class="pl">${LI("play",14)}</span><span class="atr"><i></i></span><span class="xs faint">${a.dur}</span></div>`; });
+  files.forEach(a=>{ out += `<div class="filecard" onclick="event.stopPropagation();toast('Downloading ${a.name}')"><div class="fx">${a.ext}</div><div class="m"><div class="fnm">${a.name}</div><div class="xs faint">${a.ext} · ${a.size}</div></div><span class="dl">${LI("download",16)}</span></div>`; });
   links.forEach(a=>{ out += `<div class="lcard" onclick="event.stopPropagation();toast('Opens ${a.url}')"><div class="xs faint">${a.site}</div><div class="lt">${a.title}</div><div class="sm">${a.desc}</div><div class="lnk xs">${a.url}</div></div>`; });
   return out;
 }
@@ -5142,7 +5181,7 @@ function bubbleHTML(c, m, firstOfRun, opts={}) {
   const bubble = `<div class="bub ${mine?'me':'oth'} ${firstOfRun?'first':''} ${m.react&&Object.keys(m.react).some(k=>m.react[k].length)?'hasr':''} ${threadN&&!opts.inThread?'hast':''}" data-lp="${c.id}|${m.id}|${opts.parent||''}">
       ${group&&!mine&&firstOfRun?`<div class="bn" data-profile="${p.id}">${p.name}</div>`:''}${body}
       ${m.deleted?'':reactChip(c.id,m)}
-      ${threadN&&!opts.inThread?`<div class="thchip" onclick="event.stopPropagation();go('thread:${c.id}:${m.id}')">⌗ View ${threadN} ${threadN===1?'reply':'replies'}</div>`:''}
+      ${threadN&&!opts.inThread?`<div class="thchip" onclick="event.stopPropagation();go('thread:${c.id}:${m.id}')">${LI("message-square",13)} View ${threadN} ${threadN===1?'reply':'replies'}</div>`:''}
     </div>`;
   const fail = m.failed ? `<div class="failrow" onclick="event.stopPropagation();retrySend('${c.id}','${m.id}')">Not sent. Tap to retry</div>` : "";
   return `<div class="brow ${mine?'me':'oth'}${hl}">${group&&!mine?(firstOfRun?`<div class="bav" data-profile="${p.id}">${p.initials}</div>`:'<div class="bav sp"></div>'):''}<div class="bcol">${bubble}${fail}${opts.inThread?'':kaiActs(c,m)}</div></div>`;
@@ -5175,17 +5214,17 @@ function composerBar(c, target) {
    Every composer in the wireframe goes through it. o: { id, rowId, k, c, draft, pending, placeholder, toolbar, fmtOpen, attach, mentions, mic, micAttr, editing, sending, replyTo:{name,text,cancel}, sendAttr, max, above, below, chips, wrap, wrapClass } */
 const CLIP_SVG = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.4 11.05l-9.2 9.2a6 6 0 01-8.5-8.5l9.2-9.2a4 4 0 015.66 5.66l-9.2 9.2a2 2 0 01-2.83-2.83l8.5-8.5"/></svg>`;
 const SENDP_SVG = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`;
-const REPLYQ_SVG = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>`;
-const FMT_BTNS = [["b","<b>B</b>"],["i","<i>I</i>"],["u","<u>U</u>"],["s","<s>S</s>"],["code","&lt;/&gt;"],["ol","1."],["ul","•"],["q","❝"],["in","⇥"],["out","⇤"],["link","🔗"]];
+const REPLYQ_SVG_OLD = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M20 18v-2a4 4 0 00-4-4H4"/></svg>`;
+const FMT_BTNS = [["b","bold"],["i","italic"],["u","underline"],["s","strikethrough"],["code","code"],["ol","list-ordered"],["ul","list"],["q","text-quote"],["in","indent-increase"],["out","indent-decrease"],["link","link"]].map(([k,n])=>[k,LI(n,16)]);
 function keyComposer(o) {
   const id=o.id||"ci", draft=o.draft||"", pend=o.pending||[], has=!!(draft.trim()||pend.length||o.sending);
   const attrs = o.k!==undefined ? ` data-k="${o.k}" data-c="${o.c}"` : "";
   const chips = o.chips&&o.chips.length ? `<div class="chips" style="margin:10px 0 6px">${o.chips.map(([l,on])=>`<span class="chip ${on?'on':''}" onclick="this.parentNode.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));this.classList.add('on')">${l}</span>`).join("")}</div>` : "";
-  const reply = o.replyTo ? `<div class="rq"><i></i>${REPLYQ_SVG}<div class="m"><b>${o.replyTo.name}</b><span>${o.replyTo.text||"Attachment"}</span></div><span class="x" onclick="${o.replyTo.cancel}" aria-label="Cancel reply">×</span></div>` : "";
+  const reply = o.replyTo ? `<div class="rq"><i></i>${LI("reply",14)}<div class="m"><b>${o.replyTo.name}</b><span>${o.replyTo.text||"Attachment"}</span></div><span class="x" onclick="${o.replyTo.cancel}" aria-label="Cancel reply">×</span></div>` : "";
   const body = `${o.above||""}${chips}${o.mentions?'<div id="mentionBox"></div>':''}${reply}<div class="crow kc ${has?'has':''} ${o.mic?'hasmic':''}"${o.rowId?` id="${o.rowId}"`:''}>
-      ${o.toolbar&&!o.editing?`<div class="plus ${o.fmtOpen?'on':''}" onclick="STATE.fmtOpen=!STATE.fmtOpen;render()" aria-label="${o.fmtOpen?'Close formatting':'Formatting'}">+</div>`:''}
-      <div class="cpill"><textarea class="ci" id="${id}"${attrs} rows="1" placeholder="${o.placeholder||"Start typing..."}"${o.max?` style="max-height:${o.max}px"`:''}>${draft}</textarea>${o.attach&&!o.editing?`<span class="att" onclick="openSheet('attach','${o.k}')" aria-label="Attach">${CLIP_SVG}</span>`:''}</div>
-      ${o.mic?`<div class="cmic" ${o.micAttr||''}>${MIC_SVG}</div>`:''}
+      ${o.toolbar&&!o.editing?`<div class="plus ${o.fmtOpen?'on':''}" onclick="STATE.fmtOpen=!STATE.fmtOpen;render()" aria-label="${o.fmtOpen?'Close formatting':'Formatting'}">${LI("plus",22)}</div>`:''}
+      <div class="cpill"><textarea class="ci" id="${id}"${attrs} rows="1" placeholder="${o.placeholder||"Start typing..."}"${o.max?` style="max-height:${o.max}px"`:''}>${draft}</textarea>${o.attach&&!o.editing?`<span class="att" onclick="openSheet('attach','${o.k}')" aria-label="Attach">${LI("paperclip",18)}</span>`:''}</div>
+      ${o.mic?`<div class="cmic" ${o.micAttr||''}>${LI("mic",16)}</div>`:''}
       <div class="csend ${o.sending?'busy':''}" ${o.sendAttr||''} aria-label="Send">${o.sending?'<span class="spin"></span>':SENDP_SVG}</div>
     </div>
     ${o.toolbar&&o.fmtOpen&&!o.editing?`<div class="fmtbar">${FMT_BTNS.map(([f,x])=>`<span data-fmt="${f}" onpointerdown="event.preventDefault();applyFmt('${f}','${id}')">${x}</span>`).join("")}</div>`:''}
@@ -5238,7 +5277,7 @@ function scrollChat() { const b=phone.querySelector(".chatbody"); if (b) b.scrol
 function chatHeader(c) {
   if (STATE.editMsg) return `<div class="hdr"><div class="back" onclick="cancelEdit()">‹</div><div class="t" style="font-size:18px">Edit message</div></div>`;
   if (c.kind==="dm") { const p=P(c.with); const o=DB.opps.find(x=>x.personId===c.with); return `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="hav sq" data-profile="${p.id}">${p.initials}</div><div class="hm" data-profile="${p.id}"><div class="hn">${p.name}</div>${c.path&&o?`<div class="xs faint" data-opp="${o.id}" style="text-decoration:underline">Part of a path · open</div>`:''}</div><div class="icon" onclick="openSheet('conv','${c.id}')">···</div></div>`; }
-  if (c.kind==="channel") { const faces=(c.memberIds||[]).slice(0,3).map(id=>`<span>${P(id).initials}</span>`).join(""); return `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;go('family')">‹</div><div class="hav emo" onclick="go('chatinfo:${c.id}')">${c.emoji}${c.ch&&c.ch.private?'<i class="lock">🔒</i>':''}</div><div class="hm" onclick="go('chatinfo:${c.id}')"><div class="hn">${c.title}${c.muted?' <span class="xs faint">🔕</span>':''}</div><div class="xs faint">${c.members} members</div></div><div class="hfaces" onclick="STATE.ciTab='members';go('chatinfo:${c.id}')">${faces}<span>+${Math.max(0,c.members-3)}</span></div><div class="icon" onclick="openSheet('conv','${c.id}')">···</div></div>`; }
+  if (c.kind==="channel") { const faces=(c.memberIds||[]).slice(0,3).map(id=>`<span>${P(id).initials}</span>`).join(""); return `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;go('family')">‹</div><div class="hav emo" onclick="go('chatinfo:${c.id}')">${c.emoji}${c.ch&&c.ch.private?'<i class="lock">${LI("lock",10)}</i>':''}</div><div class="hm" onclick="go('chatinfo:${c.id}')"><div class="hn">${c.title}${c.muted?` <span class="xs faint">${LI("bell-off",12)}</span>`:''}</div><div class="xs faint">${c.members} members</div></div><div class="hfaces" onclick="STATE.ciTab='members';go('chatinfo:${c.id}')">${faces}<span>+${Math.max(0,c.members-3)}</span></div><div class="icon" onclick="openSheet('conv','${c.id}')">···</div></div>`; }
   return `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="hav sq" onclick="go('chatinfo:${c.id}')">${convIni(c)}</div><div class="hm" onclick="go('chatinfo:${c.id}')"><div class="hn">${c.title}</div><div class="xs faint">${c.kind==="event"?`Event chat · ${c.members||c.memberIds.length} going`:`${c.memberIds.length} members`}</div></div><div class="icon" onclick="openSheet('conv','${c.id}')">···</div></div>`;
 }
 function channelTop(c) {
@@ -5246,22 +5285,22 @@ function channelTop(c) {
   const pins = (c.pins||[]).map(id=>c.msgs.find(m=>m.id===id)).filter(Boolean);
   const kaiLine = `<div class="kairead"><span class="live small" style="${cid==='sf'?'background:var(--ink3);animation:none':''}"></span>${cid==='sf'?"Kai doesn't read this channel. Change in family settings.":"Kai reads this channel to find paths. Organizer's choice, visible to everyone here."}<span class="chip sug" style="margin-left:auto;font-size:12px;padding:4px 9px" onclick="toast('Kai: 4 roles posted this month, 3 with a referrer. Two match your mission and are already paths. Read-only, no thread.')">Catch me up</span></div>`;
   const welcome = `<div class="welcome"><div class="wemo">${c.emoji}</div><div class="wtt">#${c.title}</div><div class="sm muted">${P(c.createdBy).name} created this channel on ${c.created}. This is the very beginning of #${c.title}.</div>${c.desc?`<div class="sm" style="margin-top:6px">${c.desc}</div>`:''}${STATE.asOrganizer?`<div class="row" style="gap:8px;margin-top:10px"><span class="chip" onclick="toast('Edit name, emoji and description')">Edit channel info</span><span class="chip" onclick="toast('Add members')">Add member</span></div>`:''}</div>`;
-  return `${pins.length?`<div class="pinbar" onclick="STATE.hl='${pins[0].id}';render()"><span>📌</span><div class="m"><div class="xs faint">Pinned by ${first(pins[0].from)}</div><div class="sm ell">${pins[0].text}</div></div></div>`:''}${kaiLine}${welcome}`;
+  return `${pins.length?`<div class="pinbar" onclick="STATE.hl='${pins[0].id}';render()"><span>${LI("pin",14)}</span><div class="m"><div class="xs faint">Pinned by ${first(pins[0].from)}</div><div class="sm ell">${pins[0].text}</div></div></div>`:''}${kaiLine}${welcome}`;
 }
 function chatScreen(id) {
   const c = convOf(id); if (!c) return sInbox();
-  if (c.kind==="channel" && c.ch && c.ch.private && !c.ch.joined) return `${chatHeader(c)}<div class="body chatbody"><div class="estate"><div class="eico">🔒</div><div class="et">#${c.title} is private</div><div class="es">${c.members} members. Only people the organizer adds can see what's posted here.</div></div></div>${composerBar(c)}`;
+  if (c.kind==="channel" && c.ch && c.ch.private && !c.ch.joined) return `${chatHeader(c)}<div class="body chatbody"><div class="estate"><div class="eico">${LI("lock",28)}</div><div class="et">#${c.title} is private</div><div class="es">${c.members} members. Only people the organizer adds can see what's posted here.</div></div></div>${composerBar(c)}`;
   const dm = (DB.dms||[]).find(d=>d.id===id); if (dm) dm.unread=0; if (c.ch) c.ch.unread=0;
   const empty = !c.msgs.filter(m=>!m.sys).length ? `<div class="estate"><div class="eico">💬</div><div class="et">No messages</div><div class="es">Hey there 👋 Welcome! Feel free to start a conversation, ask questions, or just say hello.</div></div>` : "";
   const editScrim = STATE.editMsg && STATE.editMsg.k===id ? `<div class="escrim" onclick="cancelEdit()"><div class="brow me">${bubbleHTML(c, findMsg(c,STATE.editMsg.id,STATE.editMsg.parent), true)}</div></div>` : "";
-  const evTop = c.kind==="event" ? `<div class="pinbar"><span>📌</span><div class="m"><div class="xs faint">Host pins</div><div class="sm ell">Doors at 7. Table cards have your name. Bar's open.</div></div></div><div class="row" style="margin:10px 0 0;gap:6px"><span class="chip sug" onclick="toast('Checked in. Rahul and Maya are here. Your who-to-meet cards are in Up next.')">Check in</span><span class="chip" onclick="toast('Question sent to the host, pinned when answered')">Ask the host</span></div>` : "";
+  const evTop = c.kind==="event" ? `<div class="pinbar"><span>${LI("pin",14)}</span><div class="m"><div class="xs faint">Host pins</div><div class="sm ell">Doors at 7. Table cards have your name. Bar's open.</div></div></div><div class="row" style="margin:10px 0 0;gap:6px"><span class="chip sug" onclick="toast('Checked in. Rahul and Maya are here. Your who-to-meet cards are in Up next.')">Check in</span><span class="chip" onclick="toast('Question sent to the host, pinned when answered')">Ask the host</span></div>` : "";
   return `${chatHeader(c)}<div class="body chatbody">${c.kind==="dm"&&c.path?dmWhy(c):""}${c.kind==="channel"?channelTop(c):evTop}${empty}${msgsHTML(c, c.msgs)}${editScrim}</div>${composerBar(c)}`;
 }
 function sThread(cid, pid) {
   const c = convOf(cid); const pm = c.msgs.find(m=>m.id===pid); const p=P(pm.from);
   const k = cid+"::"+pid;
   return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700">Thread</div><div class="xs faint">in ${c.kind==="channel"?"#"+c.title:convTitle(c)}</div></div></div>
-  <div class="body chatbody"><div class="tparent" data-lp="${cid}|${pm.id}|"><div class="row" style="gap:6px;align-items:center"><div class="bav" data-profile="${p.id}">${p.initials}</div><b class="sm">${p.name}</b></div>${attHTML(pm.att)}<div class="bx" style="margin-top:8px">${fmtText(pm.text)}</div><div class="row" style="margin-top:10px;gap:6px;align-items:center">${reactChip(cid,pm).replace('class="rchip"','class="rchip flat"')}<span class="tcount">⌗ ${pm.threadCount||pm.thread.length}</span><span class="xs faint" style="margin-left:auto">${pm.day==="Today"?"":pm.day+" · "}${pm.time}</span></div></div>
+  <div class="body chatbody"><div class="tparent" data-lp="${cid}|${pm.id}|"><div class="row" style="gap:6px;align-items:center"><div class="bav" data-profile="${p.id}">${p.initials}</div><b class="sm">${p.name}</b></div>${attHTML(pm.att)}<div class="bx" style="margin-top:8px">${fmtText(pm.text)}</div><div class="row" style="margin-top:10px;gap:6px;align-items:center">${reactChip(cid,pm).replace('class="rchip"','class="rchip flat"')}<span class="tcount">${LI("message-square",12)} ${pm.threadCount||pm.thread.length}</span><span class="xs faint" style="margin-left:auto">${pm.day==="Today"?"":pm.day+" · "}${pm.time}</span></div></div>
   ${(pm.threadCount||0)>pm.thread.length?`<div class="xs faint" style="text-align:center;margin:10px 0">${pm.threadCount-pm.thread.length} earlier replies · <span style="text-decoration:underline" onclick="toast('Loads older replies')">show</span></div>`:''}
   ${msgsHTML(c, pm.thread, { inThread:true, parent:pid })}</div>${composerBar(c, k)}`;
 }
@@ -5282,7 +5321,7 @@ function sChatInfo(cid) {
     ${c.kind!=="event"?`<button class="btn sec" style="margin-top:18px;color:var(--danger)" onclick="openSheet('pconfirm','leave|${cid}')">${isCh?'Leave channel':'Leave group'}</button>`:''}`;
   const mediaT = `${[["Photos and videos",media],["Links",links],["Documents",files]].map(([l,n])=>`<div class="xrow" onclick="toast('${l}: ${n} in this conversation')"><div class="m"><div class="a">${l}</div><div class="b">${n}</div></div><span class="s">›</span></div>`).join("")}${media?`<div class="mgrid g4" style="margin-top:10px;max-width:220px"><div class="mtile"></div><div class="mtile"></div><div class="mtile"></div><div class="mtile"></div></div>`:''}${!media&&!files&&!links?`<div class="estate"><div class="et">Nothing to show here yet</div><div class="es">Any media, links, or documents shared in this conversation will appear here.</div></div>`:''}`;
   const members = `<input class="search" placeholder="Search" style="margin:4px 0 8px">${c.kind!=="event"?`<div class="xrow" onclick="toast('Add members: pick from ${fam().name}')"><div class="m"><div class="a">+ Add members</div></div></div>`:''}${ids.map(id=>{const p=P(id);return `<div class="prow" data-profile="${id}">${av(p.initials)}<div class="m"><div class="a">${p.name}${id===meId()?' (You)':''}</div><div class="b">${p.title||''}${p.company?', '+p.company:''}</div></div>${id===c.createdBy?'<span class="tag">Admin</span>':''}</div>`}).join("")}${(c.members||ids.length)>ids.length?`<div class="xs faint" style="margin-top:8px">and ${(c.members)-ids.length} more</div>`:''}`;
-  return `<div class="cihead ${isCh?'dark':''}"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="xs" style="opacity:.7;margin-top:8px">${isCh?'Channel details':c.kind==="event"?'Event group details':'Group details'}</div><div class="row" style="gap:10px;align-items:center;margin-top:10px"><div class="hav ${isCh?'emo':'sq'}" onclick="toast('${isCh?'Pick an emoji for the channel':'Change the group photo'}')">${isCh?c.emoji:convIni(c)}</div><div><div style="font-size:17px;font-weight:700">${isCh?'#'+c.title:c.title} <span class="xs" style="opacity:.7" onclick="toast('Edit name and description')">✎</span></div><div class="xs" style="opacity:.7">${c.members||ids.length} members</div></div></div></div>
+  return `<div class="cihead ${isCh?'dark':''}"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="xs" style="opacity:.7;margin-top:8px">${isCh?'Channel details':c.kind==="event"?'Event group details':'Group details'}</div><div class="row" style="gap:10px;align-items:center;margin-top:10px"><div class="hav ${isCh?'emo':'sq'}" onclick="toast('${isCh?'Pick an emoji for the channel':'Change the group photo'}')">${isCh?c.emoji:convIni(c)}</div><div><div style="font-size:17px;font-weight:700">${isCh?'#'+c.title:c.title} <span class="xs" style="opacity:.7" onclick="toast('Edit name and description')">${LI("pencil",14)}</span></div><div class="xs" style="opacity:.7">${c.members||ids.length} members</div></div></div></div>
   <div class="citabs">${["about","media","members"].map(t=>`<span class="${tab===t?'on':''}" onclick="STATE.ciTab='${t}';render()">${t[0].toUpperCase()+t.slice(1)}</span>`).join("")}</div>
   <div class="body" style="padding-top:12px">${tab==="about"?about:tab==="media"?mediaT:members}</div>`;
 }
@@ -5299,8 +5338,8 @@ function chatsListHTML() {
   const vis = all.filter(r=>f==="Archived" ? r.archived : !r.archived);
   const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events chat"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
   const unreadN = all.filter(r=>r.unread&&!r.archived).length;
-  const row = r => `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">📌<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right"><span onclick="openSheet('conv','${r.id}')">⋮<br>More</span></div>
-    <div class="conv swc" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}"><div class="avatar sq">${r.ini}</div><div class="m"><div class="a">${r.name}${r.intro?' <span class="tag">Intro</span>':r.path?' <span class="tag">path</span>':''}${r.pinned?' <span class="cgl">📌</span>':''}${r.muted?' <span class="cgl">🔕</span>':''}</div><div class="b ${r.unread?'u':''}">${r.blocked?'Blocked':r.last}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`;
+  const row = r => `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right"><span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",18)}<br>More</span></div>
+    <div class="conv swc" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}"><div class="avatar sq">${r.ini}</div><div class="m"><div class="a">${r.name}${r.intro?' <span class="tag">Intro</span>':r.path?' <span class="tag">path</span>':''}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread?'u':''}">${r.blocked?'Blocked':r.last}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`;
   const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
   const cap = STATE.persona==="chris"?"5 of 8 this week":`${queueAsks().filter(a=>a.state!=="passed"&&a.state!=="open"&&a.state!=="pending").length} of 3 this week`;
@@ -5332,7 +5371,7 @@ function sNewChat(mode) {
   return `<div class="hdr"><div class="back" onclick="STATE.ncSel=[];STATE.backNav=true;goBack()">‹</div><div style="flex:1"><div style="font-size:18px;font-weight:700">${mode==="group"?"Create a group":"Start new chat"}</div><div class="xs faint">${mode==="group"?"Select members":"Select member"}</div></div></div>
   <div class="body"><input class="search" id="ncq" placeholder="Search members" value="${STATE.ncq||''}" style="margin-bottom:10px">
   ${mode==="group"&&sel.length?`<div class="selstrip">${sel.map(id=>`<div class="sc" onclick="STATE.ncSel=STATE.ncSel.filter(x=>x!=='${id}');render()">${av(P(id).initials)}<span class="x">×</span><div class="xs">${P(id).name}</div></div>`).join("")}</div>`:''}
-  ${people.map(p=>`<div class="prow" onclick="ncPick('${mode}','${p.id}')">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${p.title}</div></div>${mode==="group"?`<span class="selc ${sel.includes(p.id)?'on':''}">${sel.includes(p.id)?'✓':''}</span>`:''}</div>`).join("")||`<div class="estate"><div class="et">Expand your search</div><div class="es">No results found for that name. Try checking the spelling or searching by email.</div></div>`}
+  ${people.map(p=>`<div class="prow" onclick="ncPick('${mode}','${p.id}')">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${p.title}</div></div>${mode==="group"?`<span class="selc ${sel.includes(p.id)?'on':''}">${sel.includes(p.id)?LI("check",12):''}</span>`:''}</div>`).join("")||`<div class="estate"><div class="et">Expand your search</div><div class="es">No results found for that name. Try checking the spelling or searching by email.</div></div>`}
   <div class="xs faint" style="margin-top:12px">Anyone in your families. Kai never starts or writes in a chat.</div></div>
   ${mode==="group"?`<div class="foot"><button class="btn" ${sel.length<2?'disabled style="opacity:.4"':''} onclick="ncCreate()">Proceed${sel.length?` · ${sel.length}`:''}</button></div>`:''}`;
 }
@@ -5348,13 +5387,13 @@ function portSheet(type, id) {
   if (type==="msg") {
     const [cid, m_id, parent] = id.split("|"); const c=convOf(cid); const m=findMsg(c,m_id,parent||null); const mine=m.from===meId();
     const row=(ico,t,act,danger)=>`<div class="xrow" onclick="${act}"><span class="sico">${ico}</span><div class="m"><div class="a" style="${danger?'color:var(--danger)':''}">${t}</div></div></div>`;
-    return `<div class="qreact">${QUICK.map(e=>`<span onclick="react('${cid}','${m_id}','${parent||''}','${e}')">${e}</span>`).join("")}<span onclick="openSheet('emoji','${id}')">＋</span></div>
-      ${row("↩","Reply",`setReplyTo('${cid}','${m_id}','${parent||''}')`)}
-      ${parent?'':row("⌗","Reply in thread",`STATE.sheet=null;go('thread:${cid}:${m_id}')`)}
-      ${m.text?row("⧉","Copy message",`STATE.sheet=null;render();toast('Message copied to clipboard')`):''}
-      ${mine&&m.text?row("✎","Edit message",`startEdit('${cid}','${m_id}','${parent||''}')`):''}
-      ${mine?row("🗑","Delete message",`openSheet('pconfirm','delmsg|${id}')`,true):row("⚑","Report message",`openSheet('report','msg|${id}')`)}
-      ${c.kind==="channel"&&STATE.asOrganizer&&!parent?row("📌",(c.pins||[]).includes(m_id)?"Unpin":"Pin to channel",`togglePinMsg('${cid}','${m_id}')`):''}`;
+    return `<div class="qreact">${QUICK.map(e=>`<span onclick="react('${cid}','${m_id}','${parent||''}','${e}')">${e}</span>`).join("")}<span onclick="openSheet('emoji','${id}')">${LI("plus",18)}</span></div>
+      ${row(LI("reply"),"Reply",`setReplyTo('${cid}','${m_id}','${parent||''}')`)}
+      ${parent?'':row(LI("message-square"),"Reply in thread",`STATE.sheet=null;go('thread:${cid}:${m_id}')`)}
+      ${m.text?row(LI("copy"),"Copy message",`STATE.sheet=null;render();toast('Message copied to clipboard')`):''}
+      ${mine&&m.text?row(LI("pencil"),"Edit message",`startEdit('${cid}','${m_id}','${parent||''}')`):''}
+      ${mine?row(LI("trash-2"),"Delete message",`openSheet('pconfirm','delmsg|${id}')`,true):row(LI("flag"),"Report message",`openSheet('report','msg|${id}')`)}
+      ${c.kind==="channel"&&STATE.asOrganizer&&!parent?row(LI("pin"),(c.pins||[]).includes(m_id)?"Unpin":"Pin to channel",`togglePinMsg('${cid}','${m_id}')`):''}`;
   }
   if (type==="emoji") return `<h2>Pick a reaction</h2><div class="emogrid">${QUICK.concat(MORE_EMO).map(e=>{const [cid,m_id,parent]=id.split("|");return `<span onclick="react('${cid}','${m_id}','${parent||''}','${e}')">${e}</span>`}).join("")}</div>`;
   if (type==="reactors") {
@@ -5362,7 +5401,7 @@ function portSheet(type, id) {
     const ks=Object.keys(m.react).filter(k=>m.react[k].length); const sel = ks.includes(STATE.rtab)?STATE.rtab:ks[0];
     return `<div class="rtabs">${ks.map(k=>`<span class="${k===sel?'on':''}" onclick="STATE.rtab='${k}';render()">${k} ${m.react[k].length}</span>`).join("")}</div>${(m.react[sel]||[]).map(pid=>`<div class="prow" ${pid===meId()?`onclick="react('${cid}','${m_id}','','${sel}')"`:`data-profile="${pid}"`}>${av(P(pid).initials)}<div class="m"><div class="a">${P(pid).name}${pid===meId()?' (You)':''}</div>${pid===meId()?'<div class="b">Tap to remove</div>':''}</div></div>`).join("")}`;
   }
-  if (type==="attach") return `<h2>Add to message</h2>${[["📷","Take photo","img"],["▣","Photo & Video library","img"],["▤","Select file to upload","file"]].map(([i,t,k])=>`<div class="xrow" onclick="addPending('${id}','${k}')"><span class="sico">${i}</span><div class="m"><div class="a">${t}</div></div></div>`).join("")}<div class="xs faint" style="margin-top:8px">Up to 10 files. 30 MB each, 100 MB for video.</div>`;
+  if (type==="attach") return `<h2>Add to message</h2>${[[LI("camera"),"Take photo","img"],[LI("image"),"Photo & Video library","img"],[LI("file"),"Select file to upload","file"]].map(([i,t,k])=>`<div class="xrow" onclick="addPending('${id}','${k}')"><span class="sico">${i}</span><div class="m"><div class="a">${t}</div></div></div>`).join("")}<div class="xs faint" style="margin-top:8px">Up to 10 files. 30 MB each, 100 MB for video.</div>`;
   if (type==="conv") {
     const c=convOf(id); const isCh=c.kind==="channel"; const row=(t,act,danger)=>`<div class="xrow" onclick="${act}"><div class="m"><div class="a" style="${danger?'color:var(--danger)':''}">${t}</div></div></div>`;
     const title = isCh?"#"+c.title:convTitle(c);
@@ -5383,7 +5422,7 @@ function portSheet(type, id) {
     return `<h2>${title}</h2>${rows.join("")}`;
   }
   if (type==="mute") return `<h2>Mute notifications</h2><p class="sm muted">Other members won't see that you muted this. You'll still be notified if you're mentioned.</p>${["8 hours","1 week","Until I unmute"].map(o=>`<button class="btn sec" style="margin-top:8px" onclick="convOf('${id}').muted='${o==="Until I unmute"?"Until you unmute":"For "+o}';STATE.sheet=null;render();toast('Muted ${o==="Until I unmute"?"until you unmute":"for "+o}')">${o}</button>`).join("")}`;
-  if (type==="newchat") return `<h2>New</h2><div class="xrow" onclick="STATE.ncSel=[];STATE.ncq='';go('newchat:dm')"><span class="sico">✉</span><div class="m"><div class="a">Start new chat</div></div></div><div class="xrow" onclick="STATE.ncSel=[];STATE.ncq='';go('newchat:group')"><span class="sico">⚇</span><div class="m"><div class="a">Create a group</div></div></div>`;
+  if (type==="newchat") return `<h2>New</h2><div class="xrow" onclick="STATE.ncSel=[];STATE.ncq='';go('newchat:dm')"><span class="sico">${LI("mail")}</span><div class="m"><div class="a">Start new chat</div></div></div><div class="xrow" onclick="STATE.ncSel=[];STATE.ncq='';go('newchat:group')"><span class="sico">${LI("users")}</span><div class="m"><div class="a">Create a group</div></div></div>`;
   if (type==="chanmention") { const [cid,k,n]=id.split("|"); return `<h2>Notify everyone in the channel?</h2><p class="sm muted">Your message includes <b>@channel</b>, which will send a notification to all ${n} members. Do you want to continue?</p><button class="btn" onclick="sendMsg('${cid}','${k}',true)">Send</button><button class="btn ghost" onclick="closeSheet();setTimeout(()=>{const t=phone.querySelector('#ci');if(t)t.focus()},250)">Edit message</button>`; }
   if (type==="report") { const [what,...rest]=id.split("|"); return `<h2>Report ${what==="msg"?"this message":"this conversation"}</h2><p class="sm muted">The organizers of ${fam().name} review reports. The person isn't told who reported them.</p><div class="stack" style="margin-top:10px">${["Spam or selling","Harassment or hate","Pushy or repeated asks","Pretending to be someone","Something else"].map(r=>`<button class="btn sec" onclick="STATE.sheet=null;render();toast('Reported. Thanks, the organizers will look at it.')">${r}</button>`).join("")}</div>`; }
   if (type==="pconfirm") {
@@ -5398,7 +5437,7 @@ function portSheet(type, id) {
   if (type==="nscope") {
     const counts = f=>notifs().filter(n=>n.unread&&(f==="all"||n.fam===f)).length;
     const sel=STATE.nScope||"all";
-    return `<div class="scoperow ${sel==='all'?'on':''}" onclick="STATE.nScope='all';STATE.nFilter=null;STATE.sheet=null;render()"><span>🔔</span><div class="m"><div class="a">All notifications</div></div>${sel==='all'?`${counts('all')?`<span class="unread">${counts('all')}</span>`:''} ✓`:(counts('all')?'<span class="ndot"></span>':'')}</div>
+    return `<div class="scoperow ${sel==='all'?'on':''}" onclick="STATE.nScope='all';STATE.nFilter=null;STATE.sheet=null;render()"><span>${LI("bell")}</span><div class="m"><div class="a">All notifications</div></div>${sel==='all'?`${counts('all')?`<span class="unread">${counts('all')}</span>`:''} ✓`:(counts('all')?'<span class="ndot"></span>':'')}</div>
       <div class="lbl">Your families</div>${DB.families.map(f=>`<div class="scoperow ${sel===f.id?'on':''}" onclick="STATE.nScope='${f.id}';STATE.nFilter=null;STATE.sheet=null;render()"><div class="avatar sq">${f.initial}</div><div class="m"><div class="a">${f.name}</div></div>${sel===f.id?`${counts(f.id)?`<span class="unread">${counts(f.id)}</span>`:''} ✓`:(counts(f.id)?'<span class="ndot"></span>':'')}</div>`).join("")}`;
   }
   if (type==="portnotes") {
@@ -5436,7 +5475,7 @@ function togglePinMsg(cid, m_id) { const c=convOf(cid); c.pins=c.pins||[]; c.pin
 function leaveConv(cid) { const c=convOf(cid); STATE.sheet=null; if (c.kind==="channel") { c.ch.joined=false; go("family"); toast(`Left #${c.title}`); } else { DB.dms=DB.dms.filter(d=>d.id!==cid); go("inbox"); toast("Left the group"); } }
 
 /* ---------- Notifications (bell) ---------- */
-const N_BADGE = { message:"✉", mention:"@", thread:"⌗", reaction:"☺", event:"▦", calendar:"▤", general:"◎", library:"❏", system:"K", kai:"✦", invite:"+" };
+const N_BADGE = { message:LI("mail",10), mention:LI("at-sign",10), thread:LI("message-square",10), reaction:LI("smile",10), event:LI("calendar",10), calendar:LI("calendar-days",10), general:LI("info",10), library:LI("book-open",10), system:"K", kai:"✦", invite:LI("plus",10) };
 function seedNotifs() {
   if (DB.notifs) return;
   DB.notifs = [
@@ -5475,14 +5514,14 @@ function sNotifications() {
   const scope = STATE.nScope||"all"; const sf = DB.families.find(x=>x.id===scope);
   const chips = [["all","All"],["unread","Unread"],"|",["paths","Paths"],["mentions","Mentions"],["threads","Threads"],["events","Events"],["system","System"]];
   const ava = n => n.ava==="kai" ? `<div class="navt kai">✦</div>` : n.ava==="sys" ? `<div class="navt sys">K</div>` : n.ava==="img" ? `<div class="navt img"></div>` : `<div class="navt ${n.sq?'':'p'}">${n.ini}</div>`;
-  const row = n => `<div class="swr" data-sw="notif|${n.id}"><div class="swa right two"><span onclick="toggleRead('${n.id}')">${n.unread?'✓<br>Read':'◌<br>Unread'}</span><span class="dz" onclick="delNotif('${n.id}')">🗑<br>Delete</span></div>
+  const row = n => `<div class="swr" data-sw="notif|${n.id}"><div class="swa right two"><span onclick="toggleRead('${n.id}')">${n.unread?LI("check",18)+'<br>Read':LI("circle",18)+'<br>Unread'}</span><span class="dz" onclick="delNotif('${n.id}')">${LI("trash-2",18)}<br>Delete</span></div>
     <div class="nrow swc ${n.unread?'un':''}" data-nid="${n.id}"><div class="nava">${ava(n)}<span class="nbadge">${N_BADGE[n.type]}</span></div>
     <div class="m">${n.type==="system"?`<div class="nt"><b>${n.title}</b> <span class="faint">· ${n.stamp}</span></div><div class="nt faint">${n.body}</div>`:`<div class="nt"><b>${n.title}${n.body?':':''}</b> ${n.body}</div>`}
     ${n.ava==="kai"?`<span class="kchip">✦ Sent by <b>Kai</b></span>`:(scope==="all"&&n.fam?`<span class="famchip"><i>${DB.families.find(x=>x.id===n.fam).initial}</i>${DB.families.find(x=>x.id===n.fam).name}</span>`:'')}</div>
     <div class="ntr"><div class="xs faint">${n.when}</div>${n.count>1&&n.unread?`<span class="unread">${n.count}</span>`:n.unread?'<span class="ndot"></span>':''}</div></div></div>`;
-  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="nscope" onclick="openSheet('nscope')">${sf?`<div class="avatar sq" style="width:28px;height:28px">${sf.initial}</div>${sf.name}`:'All notifications'}${un?`<span class="unread">${un}</span>`:''}<span class="nchev">⌄</span></div><div class="icon" onclick="openSheet('nmore')">···</div></div>
+  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="nscope" onclick="openSheet('nscope')">${sf?`<div class="avatar sq" style="width:28px;height:28px">${sf.initial}</div>${sf.name}`:'All notifications'}${un?`<span class="unread">${un}</span>`:''}<span class="nchev">${LI("chevron-down",16)}</span></div><div class="icon" onclick="openSheet('nmore')">···</div></div>
   <div class="nfilt">${chips.map(c=>c==="|"?'<i class="div"></i>':`<div class="pill ${f===c[0]?'on':''}" onclick="STATE.nFilter='${c[0]}';render()">${c[1]}${f!==c[0]&&c[0]!=="all"&&c[0]!=="unread"&&all.some(n=>n.unread&&N_FILT[c[0]](n))?'<span class="ndot"></span>':''}</div>`).join("")}</div>
-  <div class="body" style="padding:0">${list.map(row).join("")||`<div class="estate"><div class="eico">${f==="mentions"?"@":f==="threads"?"⌗":f==="events"?"▦":f==="system"?"K":f==="paths"?"✦":"🔔"}</div><div class="et">${N_EMPTY[f][0]}</div><div class="es">${N_EMPTY[f][1]}</div></div>`}
+  <div class="body" style="padding:0">${list.map(row).join("")||`<div class="estate"><div class="eico">${f==="mentions"?LI("at-sign",28):f==="threads"?LI("message-square",28):f==="events"?LI("calendar",28):f==="system"?"K":f==="paths"?"✦":LI("bell",28)}</div><div class="et">${N_EMPTY[f][0]}</div><div class="es">${N_EMPTY[f][1]}</div></div>`}
   <div class="xs faint" style="padding:14px 16px">Yes-or-no asks from members live in Messages, under Requests. The bell only links to them. Swipe a row left to mark it read or delete it.</div></div>`;
 }
 function toggleRead(id) { const n=DB.notifs.find(x=>x.id===id); n.unread=!n.unread; render(); }
@@ -5498,7 +5537,7 @@ function openNotif(id) {
 
 /* ---------- wiring (runs after the prototype's own wire()) ---------- */
 function portWire() {
-  upgradeComposers();
+  upgradeComposers(); lucidePass();
   const ta = phone.querySelector("#ci");
   if (ta) {
     const k = ta.dataset.k, crow = phone.querySelector("#crow"), box = phone.querySelector("#mentionBox");
@@ -5547,12 +5586,12 @@ function sendPassed(){ myAsks().filter(a=>a.state==="passed").forEach(a=>a.told=
 
 /* ==== OPPORTUNITY KINDS FROM PRODUCTION (25 Sep): every kind lives in the pool behind search, reaches you through a member, and becomes a path only after you send ==== */
 const PKIND = {
-  role:     { l:"Role",     pl:"Roles",     ico:"◆", verb:p=>`Ask ${p} to refer you`, mt:"Looking",   prod:"Talent posting" },
-  person:   { l:"Person",   pl:"People",    ico:"●", verb:p=>`Open profile`,          mt:null,        prod:"People recommendation" },
-  deal:     { l:"Deal",     pl:"Deals",     ico:"▲", verb:p=>`Ask ${p} for the deck`, mt:"Investing", prod:"Venture posting" },
+  role:     { l:"Role",     pl:"Roles",     ico:LI("briefcase",14), verb:p=>`Ask ${p} to refer you`, mt:"Looking",   prod:"Talent posting" },
+  person:   { l:"Person",   pl:"People",    ico:LI("user",14), verb:p=>`Open profile`,          mt:null,        prod:"People recommendation" },
+  deal:     { l:"Deal",     pl:"Deals",     ico:LI("tag",14), verb:p=>`Ask ${p} for the deck`, mt:"Investing", prod:"Venture posting" },
   ask:      { l:"Ask",      pl:"Asks",      ico:"?", verb:p=>`Offer ${p} help`,       mt:null,        prod:"Intro posting" },
-  offer:    { l:"Offer",    pl:"Offers",    ico:"✦", verb:p=>`Take ${p} up on it`,    mt:null,        prod:"Plug" },
-  resource: { l:"Resource", pl:"Resources", ico:"▤", verb:p=>`Ask ${p} for it`,       mt:null,        prod:"Resource posting" },
+  offer:    { l:"Offer",    pl:"Offers",    ico:LI("gift",14), verb:p=>`Take ${p} up on it`,    mt:null,        prod:"Plug" },
+  resource: { l:"Resource", pl:"Resources", ico:LI("file-text",14), verb:p=>`Ask ${p} for it`,       mt:null,        prod:"Resource posting" },
   post:     { l:"Post",     pl:"Posts",     ico:"¶", verb:p=>`Reply to ${p}`,         mt:null,        prod:"Library post" }
 };
 DB.pool.push(
@@ -5727,7 +5766,7 @@ function threadsOf() { laterSeed(); return allMsgs().filter(x=>!x.parent && x.m.
 function laterCounts() { laterSeed(); return { saved:DB.saved.length, scheduled:DB.scheduled.length, drafts:draftsOf().length, mentions:mentionsOf().filter(x=>!STATE.mentionsRead[x.m.id]).length, threads:threadsOf().filter(x=>x.unread).length }; }
 function laterRow() {
   const n = laterCounts(); const parts=[]; if (n.saved) parts.push(`${n.saved} saved`); if (n.scheduled) parts.push(`${n.scheduled} scheduled`); if (n.drafts) parts.push(`${n.drafts} draft${n.drafts>1?'s':''}`); if (n.mentions) parts.push(`${n.mentions} mention${n.mentions>1?'s':''}`); if (n.threads) parts.push(`${n.threads} thread${n.threads>1?'s':''} with replies`);
-  return `<div class="xrow later" onclick="go('later')"><span class="sico">🔖</span><div class="m"><div class="a">Saved, scheduled and drafts</div><div class="b">${parts.join(" · ")||"Nothing waiting"}</div></div><span class="s">›</span></div>`;
+  return `<div class="xrow later" onclick="go('later')"><span class="sico">${LI("bookmark")}</span><div class="m"><div class="a">Saved, scheduled and drafts</div><div class="b">${parts.join(" · ")||"Nothing waiting"}</div></div><span class="s">›</span></div>`;
 }
 const _laterChats = chatsListHTML;
 chatsListHTML = function(){ const h=_laterChats(); const mark=`<div class="icon" onclick="openSheet('newchat')">+</div></div>`; return h.includes(mark) ? h.replace(mark, mark+laterRow()) : laterRow()+h; };
@@ -5739,11 +5778,11 @@ function sLater() {
   const empty = (t,s)=>`<div class="estate"><div class="et">${t}</div><div class="es">${s}</div></div>`;
   const mrow = (x, trail, sub) => { const p=P(x.m.from); return `<div class="xrow lrow" onclick="openAt('${x.c.id}','${x.m.id}','${x.parent||''}')">${av(p.initials,"sm")}<div class="m"><div class="a">${p.name} <span class="faint">in ${convName(x.c)}</span></div><div class="b ell">${x.m.deleted?'This message was deleted':previewOf(x.m)}</div>${sub||''}</div>${trail||''}</div>`; };
   let body = "";
-  if (tab==="saved") body = DB.saved.length ? DB.saved.map((s,i)=>{ const c=convOf(s.cid); const m=findMsg(c,s.mid,s.parent||null); if(!m) return ""; return mrow({c,m,parent:s.parent}, `<span class="sico" onclick="event.stopPropagation();openSheet('remind','${i}')">${s.remind?'⏰':'⏱'}</span><span class="sico" onclick="event.stopPropagation();unsaveMsg(${i})">×</span>`, s.remind?`<div class="xs" style="margin-top:3px">Reminder · ${s.remind}</div>`:''); }).join("") : empty("Nothing saved","Long-press a message and tap Save. Add a reminder and Kai brings it back at that time.");
-  else if (tab==="scheduled") body = DB.scheduled.length ? DB.scheduled.map((s,i)=>{ const c=convOf(s.cid); return `<div class="xrow lrow" onclick="schedEdit(${i})"><span class="sico">🕒</span><div class="m"><div class="a">To ${convName(c)} <span class="faint">· ${s.when}</span></div><div class="b ell">${s.text||(s.att&&s.att.length?'Attachment':'')}</div></div><span class="sico" onclick="event.stopPropagation();schedSendNow(${i})">↑</span><span class="sico" onclick="event.stopPropagation();schedDelete(${i})">×</span></div>`; }).join("") : empty("Nothing scheduled","Hold the send button in any chat to pick a time.");
-  else if (tab==="drafts") { const ds=draftsOf(); body = ds.length ? ds.map(d=>`<div class="xrow lrow" onclick="STATE.backNav=false;${d.pid?`go('thread:${d.cid}:${d.pid}')`:d.c.kind==="channel"?`go('channel:${d.cid}')`:`go('dm:${d.cid}')`}"><span class="sico">✎</span><div class="m"><div class="a">${convName(d.c)}${d.pid?' <span class="faint">· thread</span>':''}</div><div class="b ell">${d.text}</div></div><span class="sico" onclick="event.stopPropagation();STATE.drafts['${d.k}']='';render()">×</span></div>`).join("") : empty("No drafts","Anything you type and leave stays in that chat's composer, and shows here."); }
+  if (tab==="saved") body = DB.saved.length ? DB.saved.map((s,i)=>{ const c=convOf(s.cid); const m=findMsg(c,s.mid,s.parent||null); if(!m) return ""; return mrow({c,m,parent:s.parent}, `<span class="sico" onclick="event.stopPropagation();openSheet('remind','${i}')">${s.remind?LI("alarm-clock"):LI("clock")}</span><span class="sico" onclick="event.stopPropagation();unsaveMsg(${i})">×</span>`, s.remind?`<div class="xs" style="margin-top:3px">Reminder · ${s.remind}</div>`:''); }).join("") : empty("Nothing saved","Long-press a message and tap Save. Add a reminder and Kai brings it back at that time.");
+  else if (tab==="scheduled") body = DB.scheduled.length ? DB.scheduled.map((s,i)=>{ const c=convOf(s.cid); return `<div class="xrow lrow" onclick="schedEdit(${i})"><span class="sico">${LI("clock")}</span><div class="m"><div class="a">To ${convName(c)} <span class="faint">· ${s.when}</span></div><div class="b ell">${s.text||(s.att&&s.att.length?'Attachment':'')}</div></div><span class="sico" onclick="event.stopPropagation();schedSendNow(${i})">${LI("send")}</span><span class="sico" onclick="event.stopPropagation();schedDelete(${i})">×</span></div>`; }).join("") : empty("Nothing scheduled","Hold the send button in any chat to pick a time.");
+  else if (tab==="drafts") { const ds=draftsOf(); body = ds.length ? ds.map(d=>`<div class="xrow lrow" onclick="STATE.backNav=false;${d.pid?`go('thread:${d.cid}:${d.pid}')`:d.c.kind==="channel"?`go('channel:${d.cid}')`:`go('dm:${d.cid}')`}"><span class="sico">${LI("pencil")}</span><div class="m"><div class="a">${convName(d.c)}${d.pid?' <span class="faint">· thread</span>':''}</div><div class="b ell">${d.text}</div></div><span class="sico" onclick="event.stopPropagation();STATE.drafts['${d.k}']='';render()">×</span></div>`).join("") : empty("No drafts","Anything you type and leave stays in that chat's composer, and shows here."); }
   else if (tab==="mentions") { const ms=mentionsOf(); body = (ms.length ? `<div class="row" style="justify-content:flex-end;margin:0 0 4px"><span class="xs" style="text-decoration:underline" onclick="mentionsOf().forEach(x=>STATE.mentionsRead[x.m.id]=1);render()">Mark all read</span></div>` : "") + (ms.length ? ms.map(x=>mrow(x, `<div class="s"><div class="xs">${x.m.time}</div>${STATE.mentionsRead[x.m.id]?'':'<div class="unread" style="width:8px;height:8px;min-width:0;padding:0;margin-left:auto"></div>'}</div>`)).join("") : empty("No mentions","When someone @mentions you or @channel in a group you're in, it lands here.")); }
-  else { const ts=threadsOf(); body = ts.length ? ts.map(x=>{ const faces=[...new Set(x.m.thread.map(r=>r.from))].slice(0,3).map(id=>av(P(id).initials,"sm")).join(""); return `<div class="xrow lrow ${x.unread?'un':''}" onclick="openAt('${x.c.id}','${x.m.id}','')"><span class="sico">⌗</span><div class="m"><div class="a ${x.unread?'':''}">${convName(x.c)} <span class="faint">· ${x.m.thread.length} ${x.m.thread.length===1?'reply':'replies'} · ${x.last.time}</span></div><div class="b ell">${previewOf(x.m)}</div><div class="row" style="gap:2px;margin-top:4px">${faces}<span class="xs faint" style="margin-left:6px">${first(x.last.from)}: ${previewOf(x.last)}</span></div></div>${x.unread?'<div class="unread" style="width:8px;height:8px;min-width:0;padding:0"></div>':''}<span class="sico" onclick="event.stopPropagation();threadFollow('${x.c.id}','${x.m.id}',false)">×</span></div>`; }).join("") : empty("No threads","Threads you replied to or follow show here, with the newest reply."); }
+  else { const ts=threadsOf(); body = ts.length ? ts.map(x=>{ const faces=[...new Set(x.m.thread.map(r=>r.from))].slice(0,3).map(id=>av(P(id).initials,"sm")).join(""); return `<div class="xrow lrow ${x.unread?'un':''}" onclick="openAt('${x.c.id}','${x.m.id}','')"><span class="sico">${LI("message-square")}</span><div class="m"><div class="a ${x.unread?'':''}">${convName(x.c)} <span class="faint">· ${x.m.thread.length} ${x.m.thread.length===1?'reply':'replies'} · ${x.last.time}</span></div><div class="b ell">${previewOf(x.m)}</div><div class="row" style="gap:2px;margin-top:4px">${faces}<span class="xs faint" style="margin-left:6px">${first(x.last.from)}: ${previewOf(x.last)}</span></div></div>${x.unread?'<div class="unread" style="width:8px;height:8px;min-width:0;padding:0"></div>':''}<span class="sico" onclick="event.stopPropagation();threadFollow('${x.c.id}','${x.m.id}',false)">×</span></div>`; }).join("") : empty("No threads","Threads you replied to or follow show here, with the newest reply."); }
   return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1"><div style="font-size:18px;font-weight:700">For later</div><div class="xs faint">Across all your families</div></div></div>
   <div class="citabs later">${tabs.map(([k,l,c])=>`<span class="${tab===k?'on':''}" onclick="STATE.laterTab='${k}';render()">${l}${c?` <b>${c}</b>`:''}</span>`).join("")}</div>
   <div class="body" style="padding-top:8px">${body}</div>`;
@@ -5761,8 +5800,8 @@ function schedEdit(i) { const s=DB.scheduled.splice(i,1)[0]; STATE.drafts=STATE.
 function schedDelete(i) { const s=DB.scheduled.splice(i,1)[0]; render(); toast("Scheduled message deleted", ()=>{ DB.scheduled.splice(i,0,s); render(); }); }
 const _laterComposer = composerBar;
 composerBar = function(c, target) { laterSeed(); const k=target||c.id; const sch=DB.scheduled.filter(s=>s.k===k); const [cid,pid]=k.split("::");
-  const also = pid && c.kind!=="dm" ? `<div class="alsorow"><span class="ck ${STATE.alsoChannel[k]?'on':''}" onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">${STATE.alsoChannel[k]?'✓':''}</span><span onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">Also send to ${convName(c)}</span></div>` : "";
-  const strip = sch.length ? `<div class="schedstrip" onclick="STATE.laterTab='scheduled';go('later')"><span>🕒</span><span class="m">${sch.length===1?`Scheduled for ${sch[0].when}`:`${sch.length} scheduled`}</span><span class="s">›</span></div>` : "";
+  const also = pid && c.kind!=="dm" ? `<div class="alsorow"><span class="ck ${STATE.alsoChannel[k]?'on':''}" onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">${STATE.alsoChannel[k]?LI("check",12):''}</span><span onclick="STATE.alsoChannel['${k}']=!STATE.alsoChannel['${k}'];render()">Also send to ${convName(c)}</span></div>` : "";
+  const strip = sch.length ? `<div class="schedstrip" onclick="STATE.laterTab='scheduled';go('later')"><span>${LI("clock",14)}</span><span class="m">${sch.length===1?`Scheduled for ${sch[0].when}`:`${sch.length} scheduled`}</span><span class="s">›</span></div>` : "";
   const h=_laterComposer(c, target); return h.replace('<div class="foot cbar">', `<div class="foot cbar">${strip}${also}`); };
 const _laterSend = sendMsg;
 sendMsg = function(cid, k, confirmed) { laterSeed(); const c=convOf(cid); const [,pid]=k.split("::"); const before=c.msgs.length; const ta=phone.querySelector("#ci"); const text=(ta?ta.value:(STATE.drafts||{})[k]||"").trim();
@@ -5777,17 +5816,17 @@ sThread = function(cid, pid) { laterSeed(); const c=convOf(cid); const pm=c.msgs
   return h.replace(`<div class="xs faint">in ${c.kind==="channel"?"#"+c.title:convTitle(c)}</div></div></div>`, `<div class="xs faint">in ${c.kind==="channel"?"#"+c.title:convTitle(c)} · ${who.length} ${who.length===1?'person':'people'}</div></div><span class="chip ${on?'on':''}" style="margin-left:8px" onclick="threadFollow('${cid}','${pid}',${on?'false':'true'})">${on?'Following':'Follow'}</span></div>`); };
 const _laterBubble = bubbleHTML;
 bubbleHTML = function(c, m, firstOfRun, opts={}) { let h=_laterBubble(c, m, firstOfRun, opts); const n=m.thread?(m.threadCount||m.thread.length):0;
-  if (n && !opts.inThread && m.thread.length) { const last=m.thread[m.thread.length-1]; const faces=[...new Set(m.thread.map(r=>r.from))].slice(0,3).map(id=>`<span class="tf">${P(id).initials}</span>`).join(""); h=h.replace(/⌗ View \d+ (reply|replies)<\/div>/, `<span class="tfaces">${faces}</span>${n} ${n===1?'reply':'replies'} <span class="faint">· ${last.time}</span></div>`); }
+  if (n && !opts.inThread && m.thread.length) { const last=m.thread[m.thread.length-1]; const faces=[...new Set(m.thread.map(r=>r.from))].slice(0,3).map(id=>`<span class="tf">${P(id).initials}</span>`).join(""); h=h.replace(/<svg class="li"[^>]*>(?:(?!<\/svg>).)*<\/svg> View \d+ (reply|replies)<\/div>/, `<span class="tfaces">${faces}</span>${n} ${n===1?'reply':'replies'} <span class="faint">· ${last.time}</span></div>`); }
   if (m.alsoFrom) h=h.replace('<div class="bx">', `<div class="xs faint" style="margin-bottom:2px">Also sent from a thread</div><div class="bx">`);
-  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', '<div class="bf"><span class="svd">🔖</span>');
+  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', '<div class="bf"><span class="svd">${LI("bookmark",11)}</span>');
   return h; };
 const _laterSheet = portSheet;
 portSheet = function(type, id) {
   if (type==="msg") { const [cid,m_id,parent]=id.split("|"); const h=_laterSheet(type,id); const saved=savedIndex(cid,m_id)>=0; const i=h.indexOf("</div>")+6;
-    const rows = `<div class="xrow" onclick="toggleSave('${cid}','${m_id}','${parent||''}')"><span class="sico">🔖</span><div class="m"><div class="a">${saved?'Remove from Saved':'Save'}</div></div></div><div class="xrow" onclick="remindFor('${cid}','${m_id}','${parent||''}')"><span class="sico">⏰</span><div class="m"><div class="a">Remind me</div></div></div>`;
+    const rows = `<div class="xrow" onclick="toggleSave('${cid}','${m_id}','${parent||''}')"><span class="sico">${LI("bookmark")}</span><div class="m"><div class="a">${saved?'Remove from Saved':'Save'}</div></div></div><div class="xrow" onclick="remindFor('${cid}','${m_id}','${parent||''}')"><span class="sico">${LI("alarm-clock")}</span><div class="m"><div class="a">Remind me</div></div></div>`;
     return h.slice(0,i)+rows+h.slice(i); }
   if (type==="remind") { const s=DB.saved[+id]; if (!s) return ""; return `<h2>Remind me</h2><div class="xs faint" style="margin-bottom:8px">Kai brings the message back as a bell row.</div>${["In 1 hour","Tomorrow 9:00","Monday 9:00","Next week"].map(w=>`<div class="xrow" onclick="setRemind(${id},'${w}')"><div class="m"><div class="a">${w}</div></div>${s.remind===w?'<span class="s">✓</span>':''}</div>`).join("")}${s.remind?`<div class="xrow" onclick="setRemind(${id},'')"><div class="m"><div class="a" style="color:var(--danger)">Remove reminder</div></div></div>`:''}`; }
-  if (type==="sched") { const [cid,k]=id.split("|"); return `<h2>Send later</h2><div class="xs faint" style="margin-bottom:8px">Sends itself at that time. Edit or cancel it under Saved, scheduled and drafts.</div>${["Tomorrow 9:00","Monday 9:00","Tonight 20:00"].map(w=>`<div class="xrow" onclick="scheduleMsg('${cid}','${k}','${w}')"><span class="sico">🕒</span><div class="m"><div class="a">${w}</div></div></div>`).join("")}<div class="xrow" onclick="scheduleMsg('${cid}','${k}','Fri 26 Sep 17:30')"><span class="sico">📅</span><div class="m"><div class="a">Pick a date and time</div></div></div>`; }
+  if (type==="sched") { const [cid,k]=id.split("|"); return `<h2>Send later</h2><div class="xs faint" style="margin-bottom:8px">Sends itself at that time. Edit or cancel it under Saved, scheduled and drafts.</div>${["Tomorrow 9:00","Monday 9:00","Tonight 20:00"].map(w=>`<div class="xrow" onclick="scheduleMsg('${cid}','${k}','${w}')"><span class="sico">${LI("clock")}</span><div class="m"><div class="a">${w}</div></div></div>`).join("")}<div class="xrow" onclick="scheduleMsg('${cid}','${k}','Fri 26 Sep 17:30')"><span class="sico">${LI("calendar")}</span><div class="m"><div class="a">Pick a date and time</div></div></div>`; }
   return _laterSheet(type, id);
 };
 const _laterWire = portWire;
@@ -6212,7 +6251,7 @@ function scMissionStatus(m, ps){
 missionSection = function(m){
   const os = DB.opps.filter(o=>o.missionId===m.id&&o.state!=="dropped"&&o.state!=="candidate");
   const w=o=>{ const own=ownerOf(o); return own==="you"&&!isNewOf(o)?1:own==="you"?2:own==="them"?3:own==="kai"?4:5; }; const ps=[...os].sort((a,b)=>w(a)-w(b));
-  const glyph = m.type==="Looking"||m.type==="Hiring"||m.type==="Raising"?["◆","t1"]:m.type==="Cofounder"?["⌘","t2"]:["✦","t3"];
+  const glyph = m.type==="Looking"||m.type==="Hiring"||m.type==="Raising"?[LI("briefcase",14),"t1"]:m.type==="Cofounder"?[LI("users",14),"t2"]:["✦","t3"];
   const [k,tone,txt]=scMissionStatus(m, ps);
   const you=ps.filter(p=>ownerOf(p)==="you");
   return `<div class="msec sc ${glyph[1]}"><div class="msh" data-mission="${m.id}"><div class="mg ${glyph[1]}">${glyph[0]}</div><div class="mst">${m.name}</div><span class="chev">›</span></div>
@@ -6237,7 +6276,7 @@ sHome = function(){
     ${now.length?`<div class="sl">Now<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${now.length}</span></div><div class="rows">${now.join("")}</div>`:''}
     ${active.map(missionSection).join("")}
     ${tailRow}
-    ${done.length?`<div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed · ${done.length}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">✓</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}`:''}
+    ${done.length?`<div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed · ${done.length}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">${LI("check",14)}</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}`:''}
   </div>
   ${navHTML("missions")}${overlay}`;
 };
@@ -6271,7 +6310,7 @@ function scLogRows(m, os, limit){
 }
 sMission = function(id){
   const m = DB.missions.find(x=>x.id===id); if(!m) return sHome();
-  const glyph = m.type==="Looking"||m.type==="Hiring"||m.type==="Raising"?["◆","t1"]:m.type==="Cofounder"?["⌘","t2"]:["✦","t3"];
+  const glyph = m.type==="Looking"||m.type==="Hiring"||m.type==="Raising"?[LI("briefcase",14),"t1"]:m.type==="Cofounder"?[LI("users",14),"t2"]:["✦","t3"];
   const hdr = `<div class="hdr sc"><div class="back" onclick="${!STATE.member&&STATE.rbReturn?"STATE.rbReturn=false;STATE.rbStep=2;go('readback')":"goBack()"}">‹</div><div class="mg ${glyph[1]}">${glyph[0]}</div><div style="flex:1"></div><div class="icon" onclick="openSheet('mmenu','${id}')">···</div></div>`;
   if (!STATE.member) return `${hdr}<div class="body sc"><div class="t20">${m.name}</div><div class="st"><span class="k grey">${m.started?"Starting":"Not started"}</span><span>${m.started?"Kai runs the first pass the day you're in":"Kai starts looking the day you're in a family"}</span></div>
     ${m.started?"":`<div class="acts" style="margin-top:8px"><button class="btn" onclick="(function(){ const m=DB.missions.find(x=>x.id==='${id}'); m.started=true; })();render();toast('Started.')">Start this mission</button></div>`}
@@ -8568,7 +8607,7 @@ function evCta(e, live, locked){
       P({ id:"p3", cat:"Playbooks", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Last week", title:"How I got into Sierra", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know.", read:"5 min read", featured:true, img:true, up:64, cm:21, tags:["Interviews"] }),
       P({ id:"p4", cat:"Wins", who:"Rahul Mehta", ini:"RM", sub:"Engineering Director, Anthropic", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred her, Daniel vouched. Offer to signed in eleven days.", read:"1 min read", up:37, cm:9 }),
       P({ id:"p5", cat:"Questions", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Monday", title:"Who knows Figma's PM bar?", text:"Interviewing a candidate from Figma next week. What does a strong PM there look like?", read:"1 min read", up:12, cm:7 }),
-      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"✦", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Six new members, all greeted.", read:"1 min read", up:18, cm:3 }),
+      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Six new members, all greeted.", read:"1 min read", up:18, cm:3 }),
       P({ id:"p7", cat:"Playbooks", who:"Dev Patel", ini:"DP", sub:"Founder, Legal-tech agents", when:"2h", title:"Shipping tool use in legal agents: what broke", text:"Three months in production. Where the model over-called tools, and the eval that caught it.", read:"7 min read", st:"pending" }),
       P({ id:"p8", cat:"Questions", who:"Jordan Tan", ini:"JT", sub:"Product Manager, Ex-Google Maps", when:"5h", title:"Maps PM to AI PM: where would you start?", text:"Six years on Maps, two on ML ranking. Which of that counts in an AI PM loop?", read:"1 min read", st:"pending" }),
       P({ id:"p9", cat:"Questions", who:"Priya Sharma", ini:"PS", sub:"Senior PM, Google Cloud", when:"Edited 2d ago", title:"Anyone hiring senior PMs for agents?", text:"Looking at AI PM roles in the Bay Area. Happy to trade notes on loops.", read:"1 min read", st:"draft", mine:true })
@@ -8599,6 +8638,18 @@ const C_DOWN_SVG = C_SVG('<path d="M12 5v14M19 12l-7 7-7-7"/>', 16);
 const C_GRID_SVG = C_SVG('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>', 16);
 const C_LIST_SVG = C_SVG('<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>', 16);
 const C_SPARK = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg>';
+const C_LOCK_SVG = C_SVG('<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>', 9);
+const C_X_SVG = C_SVG('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', 16);
+const C_PLUS_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 16);
+const C_PLUS_XS_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 11);
+const C_PLUS_SM_SVG = C_SVG('<path d="M5 12h14"/><path d="M12 5v14"/>', 13);
+const C_REFRESH_SVG = C_SVG('<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>', 14);
+const C_EXT_SVG = C_SVG('<path d="M7 7h10v10"/><path d="M7 17 17 7"/>', 14);
+const C_CHECK_SVG = C_SVG('<path d="M20 6 9 17l-5-5"/>', 14);
+const C_MINUS_SVG = C_SVG('<path d="M5 12h14"/>', 14);
+const C_CHEVSM_SVG = C_SVG('<path d="m6 9 6 6 6-6"/>', 14);
+const C_SMILEPLUS_SVG = C_SVG('<path d="M22 11v1a10 10 0 1 1-9-10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/><path d="M16 5h6"/><path d="M19 2v6"/>', 22);
+const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
 const C_MUTE_SVG = C_SVG('<path d="M13.7 21a2 2 0 01-3.4 0M18.6 13A17.9 17.9 0 0118 8M6.3 6.3A6 6 0 006 8c0 7-3 9-3 9h14M18 8a6 6 0 00-9.3-5M2 2l20 20"/>', 14);
 /* one long press opens a row's menu; the click that follows it is swallowed so the sheet stays open */
 let cSwallowUntil = 0;
@@ -8775,7 +8826,7 @@ sFamilyEvents = function(){
     ${famTop()}
     <div class="cm-bar">${famPills("fevents")}${cChips([["up","Upcoming",up.length],["past","Past",past.length]], when, "cevw")}</div>
     ${cals.length?`<div class="cm-sec">${cHead(cals.length>1?"Calendars":"Calendar")}${cals.map(cal).join("")}</div>`:''}
-    <div class="cm-row cm-inv" data-evgo="eventd:new">${av("+")}<div class="m"><div class="a">Host an event</div><div class="b">${cOrg()?`Goes live on ${(cals[0]||{}).name||f.name} at once`:"An organizer approves it before it's listed"}</div></div><span class="s">›</span></div>
+    <div class="cm-row cm-inv" data-evgo="eventd:new"><div class="avatar cm-addav">${C_PLUS_SVG}</div><div class="m"><div class="a">Host an event</div><div class="b">${cOrg()?`Goes live on ${(cals[0]||{}).name||f.name} at once`:"An organizer approves it before it's listed"}</div></div><span class="s">›</span></div>
     ${body || `<div class="empty">${when==="up"?"Nothing coming up. Host the first one.":"No past events yet."}</div>`}
   </div>
   ${navHTML("families")}`;
@@ -8789,7 +8840,7 @@ const C_CH_DESC = { general:"Anything Xoogler", introductions:"Say who you are a
 const cSuggested = f => cChans(f).filter(c=>!c.joined && C_CH_WHY[c.id] && !(STATE.chDismissed||{})[c.id]);
 function cChRow(c){
   const muted = (STATE.chMute||{})[c.id];
-  return `<div class="ch slim ${c.unread&&!muted?'u':''}" data-channel="${c.id}" data-chl="${c.id}"><div class="che">${CH_EMO[c.id]||'#'}${c.private?'<i>🔒</i>':''}</div><div class="chn">${c.name.replace(/^#/,'')}${c.readonly?' <span class="xs faint">read only</span>':''}</div>${muted?`<span class="cm-muted">${C_MUTE_SVG}</span>`:c.unread?`<div class="unread">${c.unread}</div>`:''}</div>`;
+  return `<div class="ch slim ${c.unread&&!muted?'u':''}" data-channel="${c.id}" data-chl="${c.id}"><div class="che">${CH_EMO[c.id]||'#'}${c.private?'<i>${C_LOCK_SVG}</i>':''}</div><div class="chn">${c.name.replace(/^#/,'')}${c.readonly?' <span class="xs faint">read only</span>':''}</div>${muted?`<span class="cm-muted">${C_MUTE_SVG}</span>`:c.unread?`<div class="unread">${c.unread}</div>`:''}</div>`;
 }
 sFamily = function(){
   if (!STATE.member) return sPendingFamily();
@@ -8801,13 +8852,13 @@ sFamily = function(){
   const cats = [...new Set(all.map(c=>c.cat))];
   const pinned = keep.filter(c=>pins[c.id]);
   const shut = STATE.chShut || {};
-  const sec = (name, list, add) => list.length ? `<div class="cat cm-cat"><span class="cm-fold ${shut[name]?'shut':''}" data-chfold="${name}" aria-label="${shut[name]?'Show':'Hide'} ${name}">${C_CHEV_SVG}</span><span ${add&&cOrg()?`class="cm-catn" data-csheet2="chcat|${name}"`:`data-chfold="${name}"`}>${name}</span>${add&&cOrg()?`<span class="catadd" data-csheet="cnewch">+</span>`:''}<span class="xs faint" style="margin-left:auto">${shut[name]&&list.some(c=>c.unread)?`${list.filter(c=>c.unread).length} unread · `:''}${list.length}</span></div>${shut[name]?'':list.map(cChRow).join("")}` : "";
+  const sec = (name, list, add) => list.length ? `<div class="cat cm-cat"><span class="cm-fold ${shut[name]?'shut':''}" data-chfold="${name}" aria-label="${shut[name]?'Show':'Hide'} ${name}">${C_CHEV_SVG}</span><span ${add&&cOrg()?`class="cm-catn" data-csheet2="chcat|${name}"`:`data-chfold="${name}"`}>${name}</span>${add&&cOrg()?`<span class="catadd" data-csheet="cnewch" aria-label="New channel">${C_PLUS_SM_SVG}</span>`:''}<span class="xs faint" style="margin-left:auto">${shut[name]&&list.some(c=>c.unread)?`${list.filter(c=>c.unread).length} unread · `:''}${list.length}</span></div>${shut[name]?'':list.map(cChRow).join("")}` : "";
   const sug = cSuggested(f);
   const notJoined = all.length - mine.length;
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     <div class="cm-bar">${famPills("chat")}${cChips([["All","All",mine.length],["Unread","Unread",unread.length]], STATE.chFilter==="Unread"?"Unread":"All", "cchf")}</div>
-    <div class="cm-search cm-in"><input class="search" placeholder="Search channels and messages" onclick="toast('Searches channels and messages in ${f.name}')" readonly>${cOrg()?`<span class="cm-fbtn" data-csheet="cnewch" aria-label="New channel">+</span>`:''}</div>
+    <div class="cm-search cm-in"><input class="search" placeholder="Search channels and messages" onclick="toast('Searches channels and messages in ${f.name}')" readonly>${cOrg()?`<span class="cm-fbtn" data-csheet="cnewch" aria-label="New channel">${C_PLUS_SVG}</span>`:''}</div>
     ${STATE.chFilter!=="Unread"&&sug.length?`<div class="cm-row cm-kairow" data-cgo="manage:cbrowse"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">Suggested for you</div><div class="b">${sug.slice(0,2).map(c=>c.name).join(", ")}${sug.length>2?` and ${sug.length-2} more`:''}</div></div><span class="cm-btn q">See</span></div>`:''}
     ${sec("Pinned", pinned)}
     ${cats.map(cat=>sec(cat, keep.filter(c=>c.cat===cat && !pins[c.id]), true)).join("")}
@@ -8828,7 +8879,7 @@ function cBrowse(){
   list = list.slice().sort(by);
   const sug = sort==="rec" && w!=="mine" ? cSuggested(f).filter(c=>list.includes(c)) : [];
   const act = c => c.joined ? '<span class="cm-done">Joined</span>' : `<span class="cm-btn ${sug.includes(c)?'':'q'}" data-join="${c.id}">Join</span>`;
-  const row = (c, why) => `<div class="cm-row" data-channel="${c.id}" data-chl="${c.id}"><div class="cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}${c.private?' <span class="xs faint">private</span>':''}${c.auto?' <span class="cm-dtag">Default</span>':''}</div><div class="b">${why||`${c.cat} · ${c.members} members`}</div></div>${act(c)}${why?`<span class="cm-x" data-chdismiss="${c.id}" aria-label="Not interested">✕</span>`:''}</div>`;
+  const row = (c, why) => `<div class="cm-row" data-channel="${c.id}" data-chl="${c.id}"><div class="cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}${c.private?' <span class="xs faint">private</span>':''}${c.auto?' <span class="cm-dtag">Default</span>':''}</div><div class="b">${why||`${c.cat} · ${c.members} members`}</div></div>${act(c)}${why?`<span class="cm-x" data-chdismiss="${c.id}" aria-label="Not interested">${C_X_SVG}</span>`:''}</div>`;
   return `${famHeader("Browse channels","fchannels")}<div class="body" style="padding-top:0">
     <div class="cm-bar">${cBChips(w, v)}</div>
     <div class="cm-search cm-in"><input class="search" placeholder="Search ${all.filter(c=>!c.private||c.joined||cOrg()).length} channels" onclick="toast('Search channels in ${f.name}')" readonly></div>
@@ -8884,7 +8935,7 @@ function cBar(p){
 function cPostRow(p, mode){
   const k = p.approved&&STATE.postType==="requests" ? "Approved" : p.st==="draft" ? "Draft" : p.st==="pending" ? "Waiting for approval" : p.st==="rejected" ? "Rejected" : p.pinned ? "Pinned" : p.featured ? "Most popular" : "";
   return `<div class="cm-lp" data-cpost="${p.id}">
-    <div class="cm-lby">${av(p.ini,"sm")}<span class="n">${p.who.split(",")[0]}</span><span class="w">${p.when}</span><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
+    <div class="cm-lby">${cAv(p.ini,"sm")}<span class="n">${p.who.split(",")[0]}</span><span class="w">${p.when}</span><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k">${k?`<span class="${p.st==="live"?"":"st"}">${k}</span> · `:''}${p.cat} · ${p.read}</div>
     <div class="cm-lrow"><div class="m"><div class="t">${p.title}</div><div class="x">${p.text}</div></div>${p.img?'<div class="cm-limg"></div>':''}</div>
     ${p.tags.length?`<div class="cm-ltags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div>`:''}
@@ -8920,9 +8971,10 @@ sPosts = function(){
 /* one post (prod library detail): Kai summary, references, votes, save, report, comments, Ask Kai */
 function cPostDetail(){
   const f = cF(); const p = DB.posts.find(x=>x.id===STATE.cPostId) || cPosts(f)[0];
-  const cmts = [["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
+  const mine = ((STATE.cMyCmts||{})[p.id]||[]).map(t=>[DB.user.name,DB.user.initials,t,"Now"]);
+  const cmts = [...mine, ["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
   return `${famHeader(p.cat,"posts")}<div class="body cm-pd" style="padding-top:4px">
-    <div class="cm-lby">${av(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
+    <div class="cm-lby">${cAv(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k" style="margin-top:14px">${p.pinned?"Pinned · ":p.featured?"Most popular · ":""}${p.cat} · ${p.read}</div>
     <h2 class="cm-pt">${p.title}</h2>
     <div class="cm-meta">${p.up*9+40} views · ${p.cm} comments · ${Math.max(2,Math.round(p.cm/3))} voices</div>
@@ -8937,7 +8989,7 @@ function cPostDetail(){
       <div class="cm-row cm-more-row" onclick="toast('All ${p.cm} comments, oldest first')"><div class="m"><div class="a">See all ${p.cm} comments</div></div><span class="s">›</span></div></div>
     <div class="cm-row cm-kairow" onclick="toast('Ask Kai about this post: it answers from the post, the comments and the library.')"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">Ask Kai about this</div><div class="b">From this post, its comments and the library</div></div><span class="s">›</span></div>
   </div>
-  <div class="foot"><div class="cm-search" style="padding:0"><input class="search" placeholder="Add a comment" onclick="toast('Comment composer')" readonly></div></div>`;
+  ${keyComposer({ id:"ccmt", placeholder:"Add a comment", toolbar:true, fmtOpen:STATE.fmtOpen, sendAttr:`data-ccmt="${p.id}"` })}`;
 }
 
 /* ---- Manage: the organizer hub, opened from the hero's Manage button or the family menu; lists without card wrappers ---- */
@@ -9041,11 +9093,11 @@ function cMembers(tab){
   const waiting = cWaiting();
   const filtersOn = ["role","status","tags"].reduce((n,k)=>n+Object.keys(F[k]||{}).length, 0);
   const on = id => sel && sel[id];
-  const row = m => `<div class="cm-mm ${m.st==="declined"||m.st==="removed"?"off":""} ${on(m.id)?"sel":""}" ${sel?`data-mmpick="${m.id}"`:`data-mm="${m.id}" data-mml="${m.id}"`}>${sel?`<span class="cm-box ${on(m.id)?'on':''}">${on(m.id)?'✓':''}</span>`:''}<div class="cm-sq">${cIni(m.n)}</div><div class="m">
+  const row = m => `<div class="cm-mm ${m.st==="declined"||m.st==="removed"?"off":""} ${on(m.id)?"sel":""}" ${sel?`data-mmpick="${m.id}"`:`data-mm="${m.id}" data-mml="${m.id}"`}>${sel?`<span class="cm-box ${on(m.id)?'on':''}">${on(m.id)?C_CHECK_SVG:''}</span>`:''}<div class="cm-sq">${cIni(m.n)}</div><div class="m">
       <div class="a"><span class="nm">${m.n}</span>${cPillOf(m)?`<span class="cm-pill ${m.st==="active"?m.role:m.st}">${cPillOf(m)}</span>`:''}</div>
       <div class="b cm-mmb">${m.e}${m.wa?`<span class="ic">${C_WA_SVG}</span>`:''}${m.notes.length?`<span class="ic">· ${C_NOTE_SVG}${m.notes.length}</span>`:''}</div>
       ${m.sub?`<div class="b">${m.sub}</div>`:''}
-      ${m.st==="active"?`<div class="cm-tags">${m.tags.slice(0,2).map(x=>`<span>${x}</span>`).join("")}${m.tags.length>2?`<span>+${m.tags.length-2}</span>`:''}${sel?'':`<span class="add" data-mmtag="${m.id}">+ Tag</span>`}</div>`:''}
+      ${m.st==="active"?`<div class="cm-tags">${m.tags.slice(0,2).map(x=>`<span>${x}</span>`).join("")}${m.tags.length>2?`<span>+${m.tags.length-2}</span>`:''}${sel?'':`<span class="add" data-mmtag="${m.id}">${C_PLUS_XS_SVG}Tag</span>`}</div>`:''}
       ${t==="requests"&&!sel?`<div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" data-mmok="${m.id}">Approve</span><span class="cm-btn q" data-mmno="${m.id}">Decline</span></div>`:''}
     </div></div>`;
   const nSel = sel ? Object.keys(sel).length : 0;
@@ -9053,7 +9105,7 @@ function cMembers(tab){
     ? `<div class="hdr cm-selhdr"><span class="cm-link0" data-mmselect="0">Cancel</span><div class="t">${nSel}/${t==="requests"?waiting:cF().members} selected</div><span class="cm-link0" data-mmall="1">Select all</span></div>`
     : `<div class="hdr"><div class="back" onclick="STATE.backNav=true;STATE.mmSel=null;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Members</div>
       <div class="icon ${filtersOn?'on':''}" data-csheet="cmmfilter" aria-label="Filter">${C_FILTER_SVG}${filtersOn?`<span class="badge">${filtersOn}</span>`:''}</div><div class="icon" data-csheet="cinvite" aria-label="Invite">${C_MANAGE_SVG}</div><div class="icon" data-csheet="cmmmore" aria-label="More">${C_DOTS_SVG}</div></div>`;
-  const stale = STATE.mmStale!==false && !sel ? `<div class="cm-pillbar" data-mmrefresh="1">↻ Rahul approved Leo Park · Tap to update</div>` : "";
+  const stale = STATE.mmStale!==false && !sel ? `<div class="cm-pillbar" data-mmrefresh="1">${C_REFRESH_SVG}Rahul approved Leo Park · Tap to update</div>` : "";
   const bulk = sel ? `<div class="cm-bulk">${t==="requests"?`<button class="btn" ${nSel?'':'disabled'} data-csheet="cbulk">Approve ${nSel||""}</button>`:''}<button class="btn ${t==="requests"?"sec":""}" ${nSel?'':'disabled'} data-csheet="ctags">Add tags</button>${t==="requests"?'':`<button class="btn sec" data-mmselect="0">Clear</button>`}</div>` : "";
   return `${hdr}
     <div class="body" style="padding-top:0">
@@ -9075,7 +9127,7 @@ function cNotes(){
       <div class="cm-lockline">Visible to admins only. The member never sees notes.</div>
       ${m.notes.map(([by,when,text,edited],i)=>`<div class="cm-row" style="align-items:flex-start;cursor:default">${av(cIni(by),"sm")}<div class="m"><div class="b"><b style="color:var(--ink)">${by}</b> · ${when}${edited?" · Edited":""}</div><div class="cm-text">${text}</div></div><span class="cm-lmenu" onclick="toast('Edit or delete this note')">${C_DOTS_SVG}</span></div>`).join("") || '<div class="empty">No notes yet.</div>'}
     </div>
-    <div class="foot"><div class="cm-search" style="padding:0"><input class="search" id="cnote" placeholder="Add a note…"><span class="cm-fbtn" data-cnoteadd="1" aria-label="Save note">↑</span></div></div>`;
+    ${keyComposer({ id:"cnote", placeholder:"Add a note", sendAttr:'data-cnoteadd="1"' })}`;
 }
 function cAnswers(){
   const m = cMMOne(STATE.mmFor);
@@ -9085,7 +9137,7 @@ function cAnswers(){
 }
 /* G1 manage tags: tap a row for edit and delete (swipe in the app) */
 function cTagAdmin(){
-  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Manage tags</div><div class="icon" onclick="STATE.mmTagDefs.push(['New tag',0]);STATE.mmTagOpen=STATE.mmTagDefs.length-1;render()" aria-label="Add tag">+</div></div>
+  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div style="flex:1;font-size:18px;font-weight:700">Manage tags</div><div class="icon" onclick="STATE.mmTagDefs.push(['New tag',0]);STATE.mmTagOpen=STATE.mmTagDefs.length-1;render()" aria-label="Add tag">${C_PLUS_SVG}</div></div>
     <div class="body" style="padding-top:4px"><div class="cm-search" style="padding:6px 0 6px"><input class="search" placeholder="Search" readonly></div>
     ${cTagDefs().map(([t,n],i)=>`<div class="cm-row" data-ctagopen="${i}"><div class="m"><div class="a" style="font-weight:500">${t}</div><div class="b">${cPl(n,"member")}</div></div>${STATE.mmTagOpen===i?`<span class="cm-btn q" onclick="event.stopPropagation();toast('Rename ${t}')">Edit</span><span class="cm-btn q" style="color:var(--danger)" data-ctagdel="${i}">Delete</span>`:''}</div>`).join("")}
     <div class="cm-meta">Tags are for organizers. Members never see them.</div></div>`;
@@ -9207,7 +9259,7 @@ sPublicPage = function(){
       <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div>
       <div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>Run by ${who}</span></div></div>
     ${member?'':`<div class="cm-sec">${known.length?`<div class="cm-row" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div><div class="b">People you know. Others show only if they allow it.</div></div></div>`:''}
-      <div class="cm-row" style="cursor:default">${av(DB.user.invitedBy&&f.id==="xoogler"?"DR":"✦","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
+      <div class="cm-row" style="cursor:default">${cAv(DB.user.invitedBy&&f.id==="xoogler"?"DR":"kai","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
     <div class="cm-sec">${cHead("Who it's for")}<div class="cm-text">${d.forWho}</div></div>
     <div class="cm-sec">${cHead("What happens here")}
       ${d.out.length?`<div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta" style="margin-top:6px">Last quarter, from what members reported</div>`:''}
@@ -9218,7 +9270,7 @@ sPublicPage = function(){
     ${member?'':`<div class="cm-sec">${cHead("How joining works")}
       ${open ? step(1,"Join","You're in straight away")+step(2,"Say hi in the channels","Kai suggests who to meet first")
         : step(1,"Apply","About 8 minutes. Kai fills most of it from your profile.")+step(2,`${d.run[0][1].split(" ")[0]} reviews it`,`Reviews ${d.cadence}. Usually ${d.decide}.`)+step(3,"You're in","Channels, people and events open up")}</div>`}
-    ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link} ↗</span></div>`:''}
+    ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
   <div class="foot">${member?`<div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" data-cgo="family">Open ${f.name}</button><button class="btn" style="flex:1;margin:0" data-csheet="cinvite">Invite</button></div>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
@@ -9359,8 +9411,8 @@ function cSheet(type, id){
     const roleName = (C_ROLES.find(r=>r[0]===m.role)||C_ROLES[0])[1].replace("Community ","");
     return `<div class="cm-qv"><div class="cm-sq">${cIni(m.n)}</div><div class="m"><div class="a">${m.n}${cPillOf(m)?`<span class="cm-pill ${m.st==="active"?m.role:m.st}">${cPillOf(m)}</span>`:''}</div><div class="b">${m.e}</div><div class="b">${m.city}</div></div><span class="cm-lmenu" data-csheet2="cmmmenu|${m.id}" aria-label="More">${C_DOTS_SVG}</span></div>
       ${off?`<div class="cm-meta" style="margin-top:10px">${m.sub}</div><div class="cm-lock"><div class="xs faint">${m.reason[0]}</div><div>${m.reason[1]}</div></div>`
-        :`<div class="cm-qrole">${m.st==="active"?`<span class="cm-sel" data-csheet2="crole|${m.id}">${roleName} ▾</span>`:`<span class="cm-sel">Member ▾</span>`}<span class="b">${m.st==="pending"?m.sub:`Joined ${m.joined} · invited by ${m.id==="chris"?"no one, founder":"Daniel Reyes"}`}</span></div>`}
-      ${m.st==="active"?`<div class="cm-tags" style="margin:12px 0 4px">${m.tags.map(x=>`<span>${x}</span>`).join("")}<span class="add" data-mmtag="${m.id}">+ Tag</span></div>`:''}
+        :`<div class="cm-qrole">${m.st==="active"?`<span class="cm-sel" data-csheet2="crole|${m.id}">${roleName}${C_CHEVSM_SVG}</span>`:`<span class="cm-sel">Member${C_CHEVSM_SVG}</span>`}<span class="b">${m.st==="pending"?m.sub:`Joined ${m.joined} · invited by ${m.id==="chris"?"no one, founder":"Daniel Reyes"}`}</span></div>`}
+      ${m.st==="active"?`<div class="cm-tags" style="margin:12px 0 4px">${m.tags.map(x=>`<span>${x}</span>`).join("")}<span class="add" data-mmtag="${m.id}">${C_PLUS_XS_SVG}Tag</span></div>`:''}
       ${m.atm?`<div class="cm-atm"><b>At the moment</b><div>${m.atm}</div></div>`:''}
       <div class="cm-list" style="margin-top:6px"><div class="cm-row" data-mmgo="answers|${m.id}"><div class="m"><div class="a">Registration answers</div></div><span class="cm-done">5</span><span class="s">›</span></div>
         <div class="cm-row" data-mmgo="notes|${m.id}"><div class="m"><div class="a">Notes</div></div>${m.notes.length?`<span class="cm-done">${m.notes.length}</span>`:''}<span class="s">›</span></div></div>
@@ -9398,13 +9450,13 @@ function cSheet(type, id){
     const ids = STATE.mmSel ? Object.keys(STATE.mmSel) : [STATE.mmTagFor];
     const ms = ids.map(cMMOne); const pick = STATE.cTagPick || (STATE.cTagPick = Object.fromEntries(cTagDefs().map(([t])=>[t, ms.every(m=>m.tags.includes(t)) ? 1 : ms.some(m=>m.tags.includes(t)) ? .5 : 0])));
     return `<h2>Tags</h2><div class="cm-search" style="padding:0 0 6px"><input class="search" placeholder="Search tags…" readonly><span class="cm-fbtn" data-cgo="manage:tags" aria-label="Manage tags">${C_SVG('<circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>')}</span></div>
-      <div class="cm-list">${cTagDefs().map(([t,n])=>`<div class="cm-row" data-ctagpick="${t}"><span class="cm-box ${pick[t]===1?'on':pick[t]?'half':''}">${pick[t]===1?'✓':pick[t]?'–':''}</span><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-done">${n}</span></div>`).join("")}</div>
+      <div class="cm-list">${cTagDefs().map(([t,n])=>`<div class="cm-row" data-ctagpick="${t}"><span class="cm-box ${pick[t]===1?'on':pick[t]?'half':''}">${pick[t]===1?C_CHECK_SVG:pick[t]?C_MINUS_SVG:''}</span><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-done">${n}</span></div>`).join("")}</div>
       <button class="btn" data-ctagapply="1">Apply${ids.length>1?` to ${ids.length}`:''}</button>`;
   }
   /* E1 filter */
   if (type==="cmmfilter") {
     const F = STATE.mmF || (STATE.mmF = { role:{}, status:{}, tags:{} });
-    const grp = (h, k, opts) => `<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(([v,l])=>`<div class="cm-row" data-cmmf="${k}|${v}"><div class="m"><div class="a" style="font-weight:500">${l}</div></div><span class="cm-box ${F[k][v]?'on':''}">${F[k][v]?'✓':''}</span></div>`).join("")}</div>`;
+    const grp = (h, k, opts) => `<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(([v,l])=>`<div class="cm-row" data-cmmf="${k}|${v}"><div class="m"><div class="a" style="font-weight:500">${l}</div></div><span class="cm-box ${F[k][v]?'on':''}">${F[k][v]?C_CHECK_SVG:''}</span></div>`).join("")}</div>`;
     const n = cMM().filter(m=>(!Object.keys(F.role).length||(m.st==="active"&&F.role[m.role]))&&(!Object.keys(F.status).length||F.status[m.st])&&(!Object.keys(F.tags).length||m.tags.some(x=>F.tags[x]))).length;
     return `<div class="row" style="justify-content:space-between"><h2 style="margin:0">Filter</h2><span class="cm-link" data-cmmfclear="1">Clear all</span></div>
       ${grp("Roles","role",C_ROLES.map(r=>[r[0],r[1].replace("Community ","")]))}${grp("Status","status",[["active","Active"],["pending","Pending"],["declined","Declined"],["removed","Removed"]])}${grp("Tags","tags",cTagDefs().slice(0,6).map(([t])=>[t,t]))}
@@ -9469,7 +9521,7 @@ function cSheet(type, id){
   if (type==="cnewch") {
     const s = STATE.cNewCh || (STATE.cNewCh = { priv:false, def:false, cat:"General" });
     return `<h2>New channel</h2>
-      <div class="row" style="gap:12px;align-items:stretch"><div class="cm-che cm-chebig" aria-label="Pick an emoji">💬</div><div class="field" style="flex:1;margin:0"><div class="k">Name</div><div class="v faint">#new-channel</div></div></div>
+      <div class="row" style="gap:12px;align-items:stretch"><div class="cm-che cm-chebig" aria-label="Pick an emoji">${C_SMILEPLUS_SVG}</div><div class="field" style="flex:1;margin:0"><div class="k">Name</div><div class="v faint">#new-channel</div></div></div>
       <div class="field"><div class="k">Description</div><div class="v faint">What it's for, in one line</div></div>
       <div class="cm-lbl">Category</div>${cChips([...new Set(cChans(f).map(c=>c.cat))].map(x=>[x,x]), s.cat, "cnewchcat")}
       <div class="toggle ${s.priv?'on':''}" data-cnewch="priv"><div><div style="font-size:15px;font-weight:600">Private</div><div class="sm muted">Members ask to join; you approve</div></div><div class="sw"></div></div>
@@ -9483,7 +9535,7 @@ function cSheet(type, id){
     const facets = cOrg() ? [...C_PFACETS, C_PFACET_ORG] : C_PFACETS;
     const n = Math.max(3, 412 - Object.keys(on).length*137);
     return `<div class="row" style="justify-content:space-between"><h2 style="margin:0">Filter people</h2><span class="cm-link" data-cpfclear="1">Clear all</span></div>
-      ${facets.map(([h,opts])=>`<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(o=>`<div class="cm-row" data-cpf="${o}"><div class="m"><div class="a" style="font-weight:500">${o}</div></div><span class="cm-box ${on[o]?'on':''}">${on[o]?'✓':''}</span></div>`).join("")}</div>`).join("")}
+      ${facets.map(([h,opts])=>`<div class="cm-h" style="margin-top:14px"><span>${h}</span></div><div class="cm-list">${opts.map(o=>`<div class="cm-row" data-cpf="${o}"><div class="m"><div class="a" style="font-weight:500">${o}</div></div><span class="cm-box ${on[o]?'on':''}">${on[o]?C_CHECK_SVG:''}</span></div>`).join("")}</div>`).join("")}
       <button class="btn" data-cpfapply="1">Show ${Object.keys(on).length?n:412} members</button>`;
   }
   return null;
@@ -9587,6 +9639,7 @@ portWire = function(){
   q("[data-cmmfclear]", ()=>{ STATE.mmF={ role:{}, status:{}, tags:{} }; render(); });
   q("[data-cmmfgo]", ()=>{ STATE.sheet=null; render(); });
   q("[data-cmmsort]", el=>{ STATE.mmSort=el.dataset.cmmsort; STATE.sheet=null; render(); });
+  q("[data-ccmt]", el=>{ const i=phone.querySelector("#ccmt"); const v=(i&&i.value||"").trim(); if (!v) return; const p=DB.posts.find(x=>x.id===el.dataset.ccmt); STATE.cMyCmts=STATE.cMyCmts||{}; (STATE.cMyCmts[p.id]=STATE.cMyCmts[p.id]||[]).unshift(v); p.cm++; render(); toast("Comment posted"); });
   q("[data-cnoteadd]", ()=>{ const i=phone.querySelector("#cnote"); const v=(i&&i.value||"").trim(); if (!v) return; const m=cMMOne(STATE.mmFor); cMMSet(m.id, {notes:[[DB.user.name,"Now",v], ...m.notes]}); render(); });
   q("[data-crep]", el=>{ STATE.cRepDone=true; render(); toast(el.dataset.crep==="keep"?"Kept. The reporters aren't told who decided.":"Message removed. Tom is told why."); });
   q("[data-cinsr]", el=>{ STATE.cInsR=el.dataset.cinsr; render(); });
