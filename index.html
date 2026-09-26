@@ -723,6 +723,8 @@
   .stagebar .sgrp { flex-wrap:wrap; }
   .stagebar .sgl { width:100%; min-width:0; margin-top:4px; }
 }
+/* The Controls pill steps aside while a push banner shows (journey guide, 26 Sep). */
+body:has(.push) .ctlbtn { display:none; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -867,6 +869,9 @@
 .hs.sc h2 { font-size:20px; font-weight:600; margin:0 0 6px; color:#fff; } .hs.sc p { font-size:15px; color:#bbb; max-width:280px; margin:0; } .hs.sc .m12 { color:#888; margin-top:12px; }
 .sc .empty { font-size:15px; }
 .sc .body-gap { height:8px; }
+/* Phone fits (journey guide, 26 Sep): a flex card with one long line must shrink; a sheet's send button stays in view. */
+.vcard { min-width:0; }
+.sc .acts.stick { position:sticky; bottom:0; background:#fff; padding-bottom:8px; margin-top:12px; }
 
   /* ==== EVENTS AND CALENDARS, 25 Sep 2026 (events thread). Covers are the one expressive surface; lists stay plain. ==== */
   .evx-cov { position:relative; border-radius:14px; overflow:hidden; height:96px; display:flex; align-items:flex-end; padding:8px; }
@@ -3478,7 +3483,7 @@ function sHome() {
 }
 function navHTML(on) {
   const f = fam();
-  const openReqs = DB.asks.filter(a=>a.to===STATE.persona && (a.state==="open"||(a.state==="pending"&&DB.opps.some(o=>o.id==="o2"&&o.state!=="new"&&o.state!=="candidate")))).length; const unreadDms = (STATE.persona==="priya"?DB.dms.reduce((a,d)=>a+d.unread,0):0); const openAsks = openReqs + unreadDms;
+  const openReqs = DB.asks.filter(a=>a.to===STATE.persona && !a.hidden && (a.state==="open"||(a.state==="pending"&&DB.opps.some(o=>o.id==="o2"&&o.state!=="new"&&o.state!=="candidate")))).length; const unreadDms = (STATE.persona==="priya"?DB.dms.reduce((a,d)=>a+d.unread,0):0); const openAsks = openReqs + unreadDms;
   const tab=(id,l)=>`<div class="tab ${on===id?'on':''}" onclick="go('${id==='missions'?'home':id}')"><div class="ic" style="position:relative">${id==='missions'&&STATE.nowCount?`<span class="unread" style="position:absolute;top:-8px;right:-10px">${STATE.nowCount}</span>`:''}${id==='inbox'&&openReqs?`<span class="unread" style="position:absolute;top:-8px;right:-10px;background:#fff;color:var(--ink);border:1.5px solid var(--ink)" title="requests">${openReqs}</span>`:id==='inbox'&&unreadDms?`<span class="unread" style="position:absolute;top:-8px;right:-10px">${unreadDms}</span>`:''}</div>${l}</div>`;
   const chev = `<svg class="chevs" viewBox="0 0 10 14"><path d="M2 5.5 5 2.5l3 3M2 8.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const famTab = `<div class="tab fam ${on==='families'?'on':''}" id="famTab"><div class="ic logo">${f.initial}</div><span class="lr"><span class="fname">${f.name}</span><span style="opacity:${on==='families'?1:.45}">${chev}</span></span></div>`;
@@ -5916,7 +5921,7 @@ forwardSheet = function(id){
   return scSheet(`Forward ${f1(from)} to ${f1(target)}`, `${f1(target)} gets ${f1(from)}'s note and yours`, `<div class="sl">How well do you know ${f1(from)}?</div><div class="chips" style="margin-top:6px">${VSTRENGTH.map(([k,l])=>`<span class="chip ${a.strength===k?'on':''}" onclick="DB.asks.find(x=>x.id==='${id}').strength='${k}';render()">${l}</span>`).join("")}</div>
     <div class="sl">A line from you, optional</div>${msgComposer({ id:"fwdline", draft:`${f1(target)}, ${f1(from)} is worth twenty minutes. I'll let you two take it from here.`, spoken:`(Spoken) ${f1(target)}, quick one, ${f1(from)} is good, worth a call.`, sendAttr:`data-fwdsend="${id}"` })}
     <div class="row" data-sctog="fwdnote:${id}"><div class="m"><div class="a plain" style="color:var(--ink2)">${f1(from)}'s note for ${f1(target)}</div></div><span class="chev">${scOn("fwdnote:"+id)?"▾":"›"}</span></div>${scOn("fwdnote:"+id)?`<div class="bub"><div class="bn">${f1(from)}, with Kai</div>${a.forward}</div>`:""}
-    <div class="acts"><button class="btn" data-fwdsend="${id}">Forward and vouch · ${cost}</button></div><div class="cost">${f1(target)} sees your line and the vouch. ${f1(from)} sees: ${f1(me())} agreed</div>`);
+    <div class="acts stick"><button class="btn" data-fwdsend="${id}">Forward and vouch · ${cost}</button></div><div class="cost">${f1(target)} sees your line and the vouch. ${f1(from)} sees: ${f1(me())} agreed</div>`);
 };
 askCard = function(a){
   const from = DB.people[a.from]; const target = a.target?DB.people[a.target]:null;
