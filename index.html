@@ -10394,9 +10394,9 @@ function moPromoStill(root) { root.classList.add("still"); }
 // Short phones: scale the whole reel down (to half at most) so the sign-in buttons stay above the fold (hosting's phone check, 390x664)
 function moPromoFit(root) {
   const body = root.parentElement, btns = body ? body.querySelectorAll(".btn") : [], last = btns[btns.length-1]; if (!last) return;
-  root.style.zoom = "";
+  root.style.zoom = root.style.margin = "";
   const over = last.getBoundingClientRect().bottom + 12 - body.getBoundingClientRect().top - body.clientHeight, z = Math.max(.5, Math.min(1, 1 - Math.max(0, over)/440));
-  root.style.zoom = z < .995 ? z.toFixed(3) : "";
+  if (z < .995) { root.style.zoom = z.toFixed(3); root.style.margin = `0 ${(-16/z).toFixed(2)}px`; } // zoom scales the -16px bleed too, so widen it back to the screen edges
 }
 function moPromoMount(root) {
   if (root._mo) return; root._mo = true;
