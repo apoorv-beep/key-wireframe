@@ -800,7 +800,7 @@
 .sc .rows.first .fr:first-child, .sc .sl + .fr, .sc .rows .fr:first-child { border-top:0; }
 .sc .lrow { display:flex; gap:10px; padding:7px 0; border-top:1px solid var(--line); font-size:15px; color:var(--ink2); line-height:1.4; }
 .sc .lrow .when { flex:0 0 40px; color:var(--ink3); font-size:12px; padding-top:3px; } .sc .lrow b { color:var(--ink); font-weight:600; } .sc .lrow span:last-child { flex:1; min-width:0; }
-.sc .lrow .pn { text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.sc .pn { text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
 .sc .rows .lrow:first-child { border-top:0; }
 /* the two message shapes */
 .sc .bub { background:var(--fill); border-radius:14px; padding:10px 12px; font-size:15px; line-height:1.4; margin:6px 0; max-width:100%; }
@@ -8185,7 +8185,7 @@ MORE_POOL.forEach((x,i)=>{ x.id="mp"+i; if (x.kind==="person"||x.kind==="ask") x
    Whoever decides answers from their own profile: the connector first (open to intros?), then the person (open to this kind of ask,
    not a "not now", a slot left this week). Yes becomes a reply, no becomes the existing "can't" / "not available" status, full becomes "said later".
    Replies arrive on their own a few seconds after you send, or on the next load if the page was closed; "Simulate next" delivers the next one now.
-   Slots refill when you advance a week. Paths the cycle plays by hand (o2, Chris and Maya's phones) are left to whoever plays them.
+   Slots refill when you advance a week. Paths the cycle plays by hand (o2, the connector and Maya's phones) are left to whoever plays them.
    Off in test runs (navigator.webdriver) unless the URL has ?live; "Simulate next" still uses the rules there. ==== */
 const RULE_TOPIC = { Looking:["Hiring conversations","Referrals"], Hiring:["Hiring conversations"], Cofounder:["Cofounder conversations"], Raising:["Investing","Office hours"], Investing:["Investing"], Learning:["Product advice","Advice","Office hours"], "The people":["Intros","Advice","Product advice"] };
 const RULE_YES = { Hiring:"Happy to chat about the team. Does Thursday afternoon work?", Cofounder:"Yes, I'd like to hear what you're building. Coffee next week?", Referrals:"Passed your note to our recruiter, she'll reach out about a screen.", Investing:"Send me the deck and let's find 30 minutes.", Office:"Grab a slot in my office hours this week.", Advice:"Sure, happy to help. Send me a couple of times?" };
