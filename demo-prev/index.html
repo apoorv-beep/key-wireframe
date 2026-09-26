@@ -3067,6 +3067,13 @@ body:has(.push) .ctlbtn { display:none; }
   .call .viz::before { top:16px; width:150px; height:150px; }
   .call .viz canvas { width:150px; height:150px; }
 }
+/* SE-size screens (568 tall with real Manrope): the reel stops at half size, so the copy under it tightens until both sign-in buttons sit in view */
+@media (max-height:600px) {
+  .mo-promo + div { padding-top:10px !important; }
+  .mo-promo + div h1 { font-size:22px; margin:4px 0 6px !important; }
+  .mo-promo + div .invchip { margin-top:10px !important; }
+  .body:has(> .mo-promo) > .btn:not(.ghost) { margin-top:12px !important; }
+}
 </style>
 </head>
 <body>
@@ -10571,16 +10578,16 @@ function moTimeline(root) {
 }
 
 function moPromoStill(root) { root.classList.add("still"); }
-// Short phones: scale the whole reel down (to half at most) so the sign-in buttons stay above the fold (hosting's phone check, 390x664)
+// Short phones: scale the whole reel down (to 44% at most) so the sign-in buttons stay above the fold (hosting's phone check, 390x664)
 function moPromoFit(root) {
   const body = root.parentElement, btns = body ? body.querySelectorAll(".btn") : [], last = btns[btns.length-1]; if (!last) return;
   root.style.zoom = root.style.margin = "";
-  const over = last.getBoundingClientRect().bottom + 12 - body.getBoundingClientRect().top - body.clientHeight, z = Math.max(.5, Math.min(1, 1 - Math.max(0, over)/440));
+  const over = last.getBoundingClientRect().bottom + 12 - body.getBoundingClientRect().top - body.clientHeight, z = Math.max(.44, Math.min(1, 1 - Math.max(0, over)/440));
   if (z < .995) { root.style.zoom = z.toFixed(3); root.style.margin = `0 ${(-16/z).toFixed(2)}px`; } // zoom scales the -16px bleed too, so widen it back to the screen edges
 }
 function moPromoMount(root) {
   if (root._mo) return; root._mo = true;
-  moPromoFit(root); const refit = () => root.isConnected ? moPromoFit(root) : removeEventListener("resize", refit); addEventListener("resize", refit);
+  moPromoFit(root); const refit = () => root.isConnected ? moPromoFit(root) : removeEventListener("resize", refit); addEventListener("resize", refit); if (document.fonts) document.fonts.ready.then(refit); // Manrope sets the copy taller than the fallback, so fit again once it lands
   if (!MO_ON) return moPromoStill(root);
   moLoad().then(() => { if (!root.isConnected) return;
     const F = MO_FIELD || moFieldBuild(), gl = root.querySelector(".mo-gl"), { tl, V, SV } = moTimeline(root);
