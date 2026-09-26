@@ -5371,7 +5371,7 @@ function sChatInfo(cid) {
 /* ---------- Messages list ---------- */
 function convRows() {
   seedChats();
-  return DB.dms.map(d=>{ const c=convOf(d.id)||{}; const lm=c.msgs?lastMsg(c):null; return { id:d.id, c, kind:c.kind||(d.group?"group":"dm"), name:c.kind?convTitle(c):(d.group||P(d.with).name), ini:c.kind?convIni(c):"?", last:lm?previewOf(lm):d.last, when:lm&&lm.day!=="Today"?(lm.day.replace(", 2026","").replace(/^(\w{3}) (\d+)$/,"$2 $1")):(d.when||""), unread:d.unread||0, pinned:c.pinned||d.pinned, muted:c.muted, archived:c.archived, path:c.path, blocked:c.blockedByMe }; });
+  return DB.dms.filter(d=>!d.owner||d.owner===meId()).map(d=>{ const c=convOf(d.id)||{}; const lm=c.msgs?lastMsg(c):null; return { id:d.id, c, kind:c.kind||(d.group?"group":"dm"), name:c.kind?convTitle(c):(d.group||P(d.with).name), ini:c.kind?convIni(c):"?", last:lm?previewOf(lm):d.last, when:lm&&lm.day!=="Today"?(lm.day.replace(", 2026","").replace(/^(\w{3}) (\d+)$/,"$2 $1")):(d.when||""), unread:d.unread||0, pinned:c.pinned||d.pinned, muted:c.muted, archived:c.archived, path:c.path, blocked:c.blockedByMe }; });
 }
 function chatsListHTML() {
   const f = STATE.convFilter||"All";
@@ -5765,16 +5765,25 @@ forwardSheet = function(id) {
 };
 function vouchSheet(type, id) {
   const a = DB.asks.find(x=>x.id===id); const from=firstName(DB.people[a.from]), to=firstName(DB.people[a.target]);
-  if (type==="vpass") return `<h2>Pass along without vouching</h2><p class="sm muted">${to} gets ${from}'s note and sees that you passed it on without vouching. It uses one of your slots.</p>${msgComposer({ id:"vpassline", draft:`${to}, passing this along from ${from}. I don't know them well, so your call entirely.`, sendAttr:`onclick="vouchDo('pass','${id}')"`, disclosure:`${to} sees: passed along by Daniel, no vouch.` })}`;
+  if (type==="vpass") return `<h2>Pass along without vouching</h2><p class="sm muted">${to} gets ${from}'s note and sees that you passed it on without vouching. It uses one of your slots.</p>${msgComposer({ id:"vpassline", draft:`${to}, passing this along from ${from}. I don't know them well, so your call entirely.`, sendAttr:`onclick="vouchDo('pass','${id}')"`, disclosure:`${to} sees: passed along by ${firstName(me())}, doesn't know ${from} well.` })}`;
   if (type==="vcheck") return `<h2>Check with ${to} first</h2><p class="sm muted">Kai asks ${to} without naming ${from}. If ${to} says no, nobody is told anything. Doesn't use a slot.</p>${msgComposer({ id:"vcheckline", draft:`Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.`, sendAttr:`onclick="vouchDo('check','${id}')"`, disclosure:`${to} sees it's from you. ${from}'s name stays out.` })}`;
   return `<h2>Ask ${from} something</h2><p class="sm muted">The request waits while you ask. Doesn't use a slot.</p>${msgComposer({ id:"vaskline", draft:`Happy to help. What are you hoping to get from ${to}, in a line?`, sendAttr:`onclick="vouchDo('ask','${id}')"`, disclosure:`Goes to ${from} only.` })}`;
+}
+/* An ask-back is a chat (Fable round 18): the question lands in a DM on the connector's phone and in the asker's DM with the connector; the request card shows the question and, once it arrives, the reply. */
+function askBackChat(a, text, fromId) {
+  seedChats(); const cid="d-ask-"+a.id; const m=()=>M(fromId, text, { day:"Today", time:nowTime() });
+  if (!DB.chat[cid]) { DB.chat[cid]={ id:cid, kind:"dm", with:a.from, msgs:[] }; DB.dms.unshift({ id:cid, with:a.from, owner:a.to, when:"now", unread:0 }); }
+  DB.chat[cid].msgs.push(m()); const d=DB.dms.find(x=>x.id===cid); d.last=(fromId===a.to?"You: ":first(fromId)+": ")+text.slice(0,60); d.when="now"; d.unread=fromId===a.to?0:1;
+  const ad=DB.dms.find(x=>x.with===a.to&&!x.owner); if (ad && DB.chat[ad.id]) { DB.chat[ad.id].msgs.push(m()); ad.last=(fromId===a.from?"You: ":first(fromId)+": ")+text.slice(0,60); ad.when="now"; if (fromId!==a.from) ad.unread=(ad.unread||0)+1; }
+  return cid;
 }
 function vouchDo(k, id) {
   const a = DB.asks.find(x=>x.id===id); const from=firstName(DB.people[a.from]), to=firstName(DB.people[a.target]);
   STATE.sheet=null;
   if (k==="pass") { a.strength="none"; forwardSend(id); return; }
   if (k==="check") { a.checking=true; a.state="pending"; render(); toast(`Asked ${to}, without ${from}'s name.`); return; }
-  a.asked=true; render(); toast(`Sent to ${from}.`);
+  const q=(document.getElementById("vaskline")||{}).value||`What are you hoping to get from ${to}, in a line?`;
+  a.asked=true; a.question=q; a.answer=null; a.askChat=askBackChat(a, q, a.to); render(); toast(`Sent to ${from}. The reply lands in Messages; the request waits.`);
 }
 
 /* Scroll keeps across in-place re-renders (Apoorv, 26 Sep 01:48): a tap on a chip, fold, toggle or RSVP must not jump to the top.
@@ -5883,7 +5892,7 @@ me = function(){ return STATE.persona==="priya" ? DB.user : PERSONAS[STATE.perso
 
 /* Maya's copy of the request: hidden until Daniel forwards. The nameless pre-check is a separate ask. */
 DB.asks.push(
-  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Daniel introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. I worked with her at Google and she's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", receipts:[["Vouched","Daniel forwarded this with a vouch: they worked together at Google","Daniel"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
+  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Daniel introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. I worked with her at Google and she's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", askerNote:"Hi Maya, Daniel mentioned you when I said I was looking for a technical cofounder. I'm building an agents product for ops teams, two of us and a working prototype. Twenty minutes on your read of the infra choices would help a lot.", receipts:[["Vouched","Daniel forwarded this with a vouch: they worked together at Google","Daniel"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
   { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", receipts:[["Rule","Daniel is checking before naming anyone. A no here tells nobody anything","Daniel"]], state:"open", when:"now", hidden:true }
 );
 const _myAsks = myAsks; myAsks = function(){ return _myAsks().filter(a=>!a.hidden); };
@@ -5917,8 +5926,8 @@ function renameVia(o, name){ if(!o.timeline) return; o.timeline.forEach(t=>{ t[0
 const _forwardSend = forwardSend; forwardSend = function(id){
   const a=ask(id); const passed = a.strength==="none";
   _forwardSend(id);
-  if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { o.checking=false; o.asked=null; if (passed) { o.log.pop(); o.log.push(["Daniel","passed your note to Maya without vouching. Her call entirely.","+1d"]); } }
-    if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Daniel passed Priya's note to you"; t.receipts[0]=["Passed along","Daniel forwarded this without vouching","Daniel"]; } }
+  if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { o.checking=false; o.asked=null; if (passed) { o.log.pop(); o.log.push(["Daniel","passed your note along, with a line saying he doesn't know you well.","+1d"]); } }
+    if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Daniel passed Priya's note to you"; t.receipts[0]=["Passed along","Daniel passed this along. Doesn't know Priya well","Daniel"]; } }
     queuePush("priya", passed?"Daniel passed your note along":"Daniel said yes", passed?"He forwarded it to Maya without a vouch. Maya has it now.":"He forwarded your note to Maya with a line of his own. Maya has it now.", [["See path", ()=>go("path:o2"), "path:o2"]]);
     queuePush("maya", passed?"Daniel passed a note to you":"Daniel introduced you to Priya", "Priya Sharma, senior PM at Google Cloud, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
 };
@@ -6006,7 +6015,7 @@ function crepySheet(id){
   return `<h2>${firstName(c)} asked</h2><div class="msg k" style="margin:6px 0 10px">${o.asked}</div>
     ${msgComposer({ id:"crepline", draft:`Twenty minutes to hear how ${firstName(t)} thinks about agents infra, and whether she'd want a product partner. If it's a no from her, that's fine.`, spoken:`(Spoken) Just twenty minutes on how she thinks about agents infra.`, sendAttr:`onclick="crepSend('${id}')"`, disclosure:`Goes to ${firstName(c)} only. ${firstName(t)} isn't told anything yet.` })}`;
 }
-function crepSend(id){ const o=DB.opps.find(x=>x.id===id); const line=(document.getElementById("crepline")||{}).value||""; o.asked=null; o.log.push(["You",`answered ${firstName(viaOf(o)||DB.people.chris)}'s question.`,"now"]); const c=ask("c1"); if (c) { c.asked=false; c.answer=line; } queuePush("chris","Priya answered", line.slice(0,90), [["Open", ()=>go("req:c1"), "req:c1"]]); STATE.sheet=null; render(); toast("Sent to Daniel."); }
+function crepSend(id){ const o=DB.opps.find(x=>x.id===id); const line=(document.getElementById("crepline")||{}).value||""; o.asked=null; o.log.push(["You",`answered ${firstName(viaOf(o)||DB.people.chris)}'s question.`,"now"]); const c=ask("c1"); if (c) { c.asked=false; c.answer=line; askBackChat(c, line, c.from); } queuePush("chris","Priya answered", line.slice(0,90), [["Open", ()=>go("req:c1"), "req:c1"]]); STATE.sheet=null; render(); toast("Sent to Daniel."); }
 
 /* Priya's quick actions carry the sync; the base handler is replaced after wire() */
 function cycleExit(id, k){
@@ -6155,7 +6164,7 @@ const _oppSheetV3 = oppSheetV3; oppSheetV3 = function(id){
   let h=_oppSheetV3(id); const o=DB.opps.find(x=>x.id===id); if (!o || o.state==="done") return h; const t=firstName(targetOf(o)); const c=viaOf(o)?firstName(viaOf(o)):"Daniel";
   if (o.phase==="blocked") h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${c} couldn't take this one. No reason is shown.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn" data-exit="${id}|other">${o.roleTitle?"Apply directly":"Ask Sana instead"}</button><div class="sec2" data-exit="${id}|direct">Go direct to ${t}</div><div class="sec2" data-exit="${id}|close">Close</div></div>`);
   else if (o.phase==="declined") h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${t} isn't available right now. That's all you're shown.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn sec" data-exit="${id}|close">Close this path</button><div class="sec2" data-exit="${id}|other">Another route</div><div class="sec2" data-exit="${id}|snooze">Ask in a month</div></div>`);
-  else if (o.asked) h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${c} asked you something before deciding.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn" onclick="openSheet('creply','${id}')">Reply to ${c}</button></div>`);
+  else if (o.asked) h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${c} asked you something. Reply in Messages, or here.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn" onclick="openSheet('creply','${id}')">Reply to ${c}</button></div>`);
   else if (o.later && o.state==="waiting") h=h.replace(/Kai drafts a nudge Friday if quiet\./, "Kai asks again in a month.");
   else if (o.checking && o.state==="waiting") h=h.replace(/<b>Now<\/b> [^<]*/, `<b>Now</b> ${c} is checking with ${t} first, without your name.`);
   return h;
@@ -6570,7 +6579,9 @@ sReqThread = function(aid){
       if (aid==="t1") { convo += `<div class="bub u">${o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Daniel mentioned you. Coffee next week?"}</div>`; if (o&&(o.state==="conversation"||o.state==="done")) convo += `<div class="bub"><div class="bn">${f(from)}</div>Thursday 3pm works. Happy to come to you.</div>`; }
       else convo += `<div class="bub u">Hi ${f(from)}, happy to help. Friday at 11?</div><div class="bub"><div class="bn">${f(from)}</div>Friday at eleven works, thank you!</div>`;
     }
-    const facts = [[strength, a.strength!=="none"], ...a.receipts.filter(r=>r[0]!=="Vouched"&&r[0]!=="Passed along").map(r=>[r[1],false])];
+    const who = `${from.title}, ${from.company} · verified · ${(from.families||[]).join(", ")}`;
+    const facts = [[strength, a.strength!=="none"], [`Who ${f(from)} is: ${who}`, false, "profile"], ...a.receipts.filter(r=>r[0]!=="Vouched"&&r[0]!=="Passed along").map(r=>[r[1],false])];
+    if (a.askerNote) convo += `<div class="bub"><div class="bn">${f(from)}, with Kai</div>${a.askerNote}</div>`;
     const opener = aid==="t1" ? "Hi Priya, Daniel mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?" : `Hi ${f(from)}, happy to help. I made the same jump a few months ago. Friday at 11 works?`;
     const line = a.state==="declined" ? `You said not now. ${f(from)} sees: not available right now` : a.state==="done" ? `${a.outcomeLine||"Closed"}. Nothing else was sent` : a.later&&a.state==="open" ? `You said later. Kai brings this back in a month. ${f(from)} sees: waiting` : "";
     const foot = (a.state==="open"||a.state==="pending"||a.state==="waiting") ? keyComposer({ id:"draft", wrapClass:"sc", placeholder:`Message ${f(from)}`, draft:a.state==="waiting"?"":opener, mic:true, micAttr:`onclick="document.getElementById('draft').value='${opener.replace(/'/g,"\\'")}';document.getElementById('draft').dispatchEvent(new Event('input'))"`, max:140, sendAttr:`data-replyask="${aid}"`, below:a.state!=="waiting"?`<div class="cost">Kai drafted this · <span class="pn" onclick="openSheet('tdecline','${aid}')">Not now</span> · <span class="pn" onclick="targetLater('${aid}')">Later</span></div>`:"" }) : "";
@@ -6584,10 +6595,11 @@ sReqThread = function(aid){
   const nextReq = queueAsks().find(x=>(x.state==="open"||x.state==="pending")&&x.id!==aid);
   let status="", body="", foot="", hmeta=a.what;
   if (!decided) {
-    if (a.kind==="connector") { if (a.checking) status=`<div class="sys">Checking with ${f(target)} first, without ${f(from)}'s name</div>`; else if (a.checkOk) status=`<div class="sys">${f(target)} said yes to a nameless check. Forward when you're ready</div>`; else if (a.checkNo) status=`<div class="sys">${f(target)} isn't open to this right now. Nobody was named, ${f(from)} hasn't been told</div>`; else if (a.asked&&!a.answer) status=`<div class="sys">You asked ${f(from)} a question. Waiting on the answer</div>`; else if (a.answer) status=`<div class="bub"><div class="bn">You asked</div>What are you hoping to get from ${f(target)}, in a line?</div><div class="bub"><div class="bn">${f(from)}</div>${a.answer}</div>`; }
+    if (a.kind==="connector" && a.asked!==undefined && (a.question||a.answer)) status=`<div class="lbl" style="margin-top:14px">You asked ${f(from)}</div><div class="bub u">${a.question}</div>${a.answer?`<div class="bub"><div class="bn">${f(from)}</div>${a.answer}</div>`:`<div class="sys">Waiting on the answer. The request stays open; nothing was sent to ${f(target)}</div>`}<div class="cost" style="text-align:left"><span class="pn" onclick="go('dm:${a.askChat||'d-ask-'+aid}')">Open chat</span></div>`;
+    else if (a.kind==="connector") { if (a.checking) status=`<div class="sys">Checking with ${f(target)} first, without ${f(from)}'s name</div>`; else if (a.checkOk) status=`<div class="sys">${f(target)} said yes to a nameless check. Forward when you're ready</div>`; else if (a.checkNo) status=`<div class="sys">${f(target)} isn't open to this right now. Nobody was named, ${f(from)} hasn't been told</div>`; else if (a.asked&&!a.answer) status=`<div class="sys">You asked ${f(from)} a question. Waiting on the answer</div>`; else if (a.answer) status=`<div class="bub"><div class="bn">You asked</div>What are you hoping to get from ${f(target)}, in a line?</div><div class="bub"><div class="bn">${f(from)}</div>${a.answer}</div>`; }
     const cost = a.kind==="help" ? "" : aid==="t0" ? "Counts as nothing until a name is on it" : a.kind==="connector" ? `Uses 1 of your ${STATE.persona==="chris"?8:3} this week` : `1 of your 3 this week`;
     const primary = a.kind==="connector" ? `<button class="btn" onclick="openSheet('forward','${aid}')">Forward and vouch</button>` : `<button class="btn" data-askyes="${aid}">${aid==="t0"?"Yes, open to it":a.kind==="help"?"Answer in #"+a.channel:"Accept and reply"}</button>`;
-    const other = a.kind==="connector" ? `<div class="row" data-sctog="other:${aid}"><div class="m"><div class="b" style="white-space:normal">Other ways: pass along, check with ${f(target)} first, ask ${f(from)} something</div></div><span class="chev">${scOn("other:"+aid)?"▾":"›"}</span></div>${scOn("other:"+aid)?`<div class="rows">${[["vpass","Pass along without vouching","Uses a slot"],["vcheck",`Check with ${f(target)} first`,"No names. Doesn't use a slot"],["vask",`Ask ${f(from)} something`,"The request waits"]].map(([k,l,b])=>`<div class="xrow" onclick="openSheet('${k}','${aid}')"><div class="m"><div class="a">${l}</div><div class="b">${b}</div></div></div>`).join("")}</div>`:""}` : "";
+    const other = a.kind==="connector" ? `<div class="row" data-sctog="other:${aid}"><div class="m"><div class="b" style="white-space:normal">Other ways: pass along, check with ${f(target)} first, ask ${f(from)} something</div></div><span class="chev">${scOn("other:"+aid)?"▾":"›"}</span></div>${scOn("other:"+aid)?`<div class="rows">${[["vpass","Pass along without vouching",`Uses a slot. ${f(target)} sees: doesn't know ${f(from)} well`],["vcheck",`Check with ${f(target)} first`,"No names. Doesn't use a slot"],["vask",`Ask ${f(from)} something`,"The request waits"]].map(([k,l,b])=>`<div class="xrow" onclick="openSheet('${k}','${aid}')"><div class="m"><div class="a">${l}</div><div class="b">${b}</div></div></div>`).join("")}</div>`:""}` : "";
     body = `${factRows(facts)}${note}${fwdRow}${status}`;
     foot = `<div class="foot sc"><div class="acts" style="margin-top:0">${primary}<span class="quiet" data-askno="${aid}">${a.kind==="help"?"Not me":"Not now"}</span></div>${other}${cost?`<div class="cost">${cost}</div>`:""}</div>`;
   } else if (a.kind==="connector" && a.state!=="declined" && a.state!=="redirected") {
