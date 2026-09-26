@@ -8864,7 +8864,7 @@ const EDU_TIPS = [
     title:"Swipe a chat", body:"Pin, mute or archive.",
     art:()=>`<div class="ea-sw"><div class="row0"><div class="ea-row"><div class="av">DR</div><div class="m"><i>Daniel Reyes</i><u></u></div></div></div><div class="acts"><span>📌</span><span>⋮</span></div><span class="hand">← swipe</span></div>` },
   { key:"requests", at:()=>STATE.screen==="inbox" && STATE.inboxView==="requests", target:".body [data-askyes]",
-    title:"Yes or not now", body:"Up to three a week. They never see a no.",
+    title:"Yes or not now", get body(){ return `Up to ${STATE.persona==="chris"?"eight":"three"} a week. They never see a no.`; },
     art:()=>`<div class="ea-pair"><div class="pri"><b>Yes</b>opens a chat</div><div><b>Not now</b>never shown</div></div>` },
 ];
 
