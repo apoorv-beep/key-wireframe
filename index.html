@@ -6862,6 +6862,191 @@ sSentThread = function(oid){
 const _scPortSheet = portSheet; portSheet = function(type, id){ if (type==="quick") return scQuickSheet(id); return _scPortSheet(type, id); };
 const _scPortWire = portWire; portWire = function(){ _scPortWire(); phone.querySelectorAll("[data-sctog]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); scToggle(el.dataset.sctog); }); };
 
+/* ==== DECISIONS (26 Sep, missions thread). Apoorv's eight calls on the missions flow audit (06:25), wired by wrapping scan.js.
+   Loads after scan.js, before events.js. Nothing here edits another module's file.
+   1 off-Key lane (a target who isn't on Key; a role read from the Xoogler Slack)   2 cadence by demand, weekly heartbeat
+   3 "Waiting" stays (his: ship it)   4 the sent moment ends in "Done for today" when nothing else needs you
+   5 decline reasons: the three plus "Something else" in the member's words   6 the hirer's side (Maya's role, candidates, close)
+   7 expiry: 21 days as status only, one asker nudge on day 7 (research)   8 journal: one tap after the event, then stop after two "Not yet" (research)
+   Plus: Kai on a call is never the only way in (type instead), and a host's mission (Priya fills her Oct 9 teardown). ==== */
+
+/* ---- 2, 7: copy. Fixed weekly copy goes; demand-gated delivery with a weekly heartbeat comes in. Day 7 nudge, 21 days status only. ---- */
+const D_COPY = [
+  ["Kai nudges Friday", "Kai nudges on day 7 if it's quiet"],
+  ["Kai drafts a nudge Friday if it's quiet.", "Kai drafts a nudge on day 7 if it's quiet. You send it."],
+  ["Kai drafts a nudge Friday", "Kai drafts a nudge on day 7 if it's quiet"],
+  ["next pass Friday", "Kai brings the next one when something clears the bar"],
+  ["the call makes this specific", "a call or a typed chat with Kai makes this specific"],
+  ["Next search Friday.", "Kai searches as postings and people land, and says so once a week even when nothing clears the bar."],
+  ["Do the ten-minute call and it runs the moment you're in.", "Do the ten-minute call, or type it to Kai, and it runs the moment you're in."],
+  ["The first thing to do is the ten minute call above, so Kai knows what to look for.", "The first thing to do is the ten minute call above, or a typed chat if you'd rather not talk, so Kai knows what to look for."],
+  ['<button class="btn sec" onclick="startCall()">Start the call</button>', '<button class="btn sec" onclick="startCall()">Start the call</button><button class="btn sec" onclick="openSheet(\'kai\')">Type it instead</button>'],
+];
+const dCopy = h => typeof h==="string" ? D_COPY.reduce((s,[a,b])=>s.split(a).join(b), h) : h;
+["sHome","sMission","sPath","sentSheet","sSentThread","missionSection","intakeCard"].forEach(n=>{ const f=window[n]; if (typeof f==="function") window[n]=function(){ return dCopy(f.apply(this, arguments)); }; });
+const _dStatus = scMissionStatus; scMissionStatus = function(m, ps){ const r=_dStatus(m, ps); if (r && r[2]) r[2]=dCopy(r[2]); return r; };
+
+/* ---- 1: an off-Key target and a Slack posting, seeded with the first pass ---- */
+const _dIntake = applyIntake; applyIntake = function(){
+  _dIntake();
+  if (!STATE.member) return;
+  if (!DB.people.ravi) DB.people.ravi = { id:"ravi", name:"Ravi Menon", initials:"RM", title:"CTO", company:"Stripe", line:"Ex-Google Pay. Not on Key; Daniel reaches him on WhatsApp.", families:[], openTo:[], notNow:[], slots:"", help:[], lookingFor:"", offKey:true };
+  const m1 = DB.missions.find(m=>m.type==="Looking");
+  if (m1) {
+    m1.brief = dCopy(m1.brief||"");
+    if (!DB.opps.some(o=>o.id==="o5")) DB.opps.push(opp("o5", m1.id, "role", "tom", "direct", [ ["Source","Posted in #jobs on the Xoogler Slack, Sep 24. Kai read it there, nothing else","slack"], ["Fit","Senior PM, applied AI. Matches your mission","mission"], ["Shared","Tom recruits from Xoogler often","people"] ], "Apply", "new", { roleTitle:"Senior PM, applied AI", roleCompany:"OpenAI", source:"slack" }));
+    if (!DB.opps.some(o=>o.id==="o6")) DB.opps.push(opp("o6", m1.id, "person", "ravi", "connector", [ ["Outside Key","Not on Key. Daniel sends your note over WhatsApp and tells Kai what comes back","off-Key"], ["Vouched","Daniel worked with him on Google Pay","Daniel"], ["Role","Told Daniel he's hiring a PM lead","WhatsApp, Sep 22"] ], "Ask Daniel", "new", { via:"chris", offKey:true }));
+  }
+  if (!DB.missions.some(m=>m.id==="m3")) DB.missions.push({ id:"m3", type:"Hosting", name:"Fill the Linear teardown, Oct 9", brief:"You host Product teardown: Linear on Oct 9. 12 going. Kai suggests who to invite from Xoogler by interest and by who hasn't been to one in a while; you invite. Done when 25 are going.", done:"25 going", standing:false, status:"active", host:true, ev:"e4", invited:[] });
+};
+const _dScStatus = scStatus; scStatus = function(o){
+  let s = _dScStatus(o); const own = ownerOf(o);
+  if (o.offKey && own==="them") s += " · outside Key, so Kai can't see the reply. Tell Kai when you hear";
+  if (o.source==="slack" && own==="you" && isNewOf(o)) s = "From #jobs on the Xoogler Slack · " + s;
+  return s;
+};
+const _dAsk = askSheet; askSheet = function(id){
+  let h = _dAsk(id); const o = DB.opps.find(x=>x.id===id);
+  if (o && o.offKey) { const c = viaOf(o); const t = targetOf(o);
+    h = h.replace(`To ${c.name}`, `To ${c.name} · he forwards it over WhatsApp`);
+    h = h.replace('<div class="acts">', `<div class="m12" style="margin-top:8px">${f1(t)} isn't on Key. ${f1(c)} sends your note from his own phone, so nothing lands here until he or you tell Kai. Kai asks him on day 7.</div><div class="acts">`); }
+  return h;
+};
+
+/* ---- 4: the sent moment ends the session when nothing else needs you ---- */
+const _dSent = sentSheet; sentSheet = function(id){
+  let h = _dSent(id).replace('onclick="closeSheet()">Done', 'onclick="dAfterSent()">Done');
+  const o = DB.opps.find(x=>x.id===id);
+  if (o && o.offKey) h = h.replace("You'll be told the moment it moves", `${f1(viaOf(o))} forwards it on WhatsApp. Kai can't see ${f1(targetOf(o))}'s reply, so tell it when you hear`);
+  return h;
+};
+function dAfterSent(){ STATE.sheet = null; if (STATE.persona==="priya" && todayItems().length===0) STATE.sheet = { type:"dsheet", id:"done" }; render(); }
+function dNextThing(){
+  const a = myAsks().find(x=>x.state==="open"); if (a) { const f=DB.people[a.from]; return { a:`One request you could answer`, b:`${f1(f)} ${a.what}`, act:`go('inbox')` }; }
+  const m = DB.missions.find(x=>(x.mlog||[]).some(l=>l[0]==="Kai"&&/\?$/.test(l[1]))); if (m) return { a:"Kai has a question", b:m.name, act:`go('mission:${m.id}')` };
+  const e = (DB.fevents||[]).find(x=>!x.past && x.bucket==="week"); if (e) return { a:`${e.day||"This week"}: ${e.name}`, b:e.rsvp?"You're going. 3 people to meet":`${e.going} going`, act:`go('eventd:${e.id}')` };
+  return { a:"Honestly nothing", b:"Kai tells you the moment something moves, and checks in once a week either way", act:"" };
+}
+let D_first = false;
+const _dHome = sHome; sHome = function(){ D_first = STATE.member && STATE.persona==="priya" && STATE.intakeDone && DB.missions.some(m=>m.status!=="closed") && todayItems().length===0; if (STATE.persona==="maya" && STATE.member) return dMayaHome(); return _dHome(); };
+const _dSection = missionSection; missionSection = function(m){
+  let pre = "";
+  if (D_first) { D_first = false; const n = dNextThing(); pre = `<div class="sl">Now</div><div class="rows"><div class="row first" onclick="openSheet('dsheet','done')"><div class="m"><div class="a plain">Nothing needs you today</div><div class="b">${n.a}${n.b?" · "+n.b:""}</div></div><span class="chev">›</span></div></div>`; }
+  if (m.host) return pre + dHostSection(m);
+  return pre + _dSection(m);
+};
+function dDoneSheet(){ const n = dNextThing();
+  return `<div class="sc center"><div class="t20">Done for today</div><div class="b15" style="margin-top:6px">Everything that needed you is handled. Kai tells you the moment something moves.</div>
+    <div class="rows" style="margin-top:14px;text-align:left"><div class="row first" ${n.act?`onclick="closeSheet();${n.act}"`:""}><div class="m"><div class="a">${n.a}</div><div class="b">${n.b}</div></div>${n.act?'<span class="chev">›</span>':""}</div></div>
+    <div class="acts" style="margin-top:14px"><button class="btn" onclick="closeSheet()">Close</button></div></div>`; }
+
+/* ---- 5: the three reasons stay; a fourth is the member's own words. Only Kai reads it. ---- */
+function dOtherRow(id, kind){ return `<div class="xrow" onclick="this.hidden=true;this.nextElementSibling.hidden=false;this.nextElementSibling.querySelector('textarea').focus()"><div class="m"><div class="a">Something else</div><div class="b">In your words. Only Kai reads it</div></div></div><div hidden><textarea class="input" id="dreason" rows="2" placeholder="What's true for you right now" style="margin-top:6px"></textarea><div class="acts" style="margin-top:8px"><button class="btn" onclick="dOtherSend('${id}','${kind}')">Send</button></div></div>`; }
+function dOtherSend(id, kind){ const t = ((document.getElementById("dreason")||{}).value||"").trim(); STATE.dReasons = STATE.dReasons||{}; STATE.dReasons[id] = t; if (kind==="target") targetDecline(id); else askDecline(id, t ? "Other: "+t : "skip"); }
+const _dTdecl = tdeclineSheet; tdeclineSheet = function(id){ return _dTdecl(id).replace('<div class="acts">', dOtherRow(id,"target") + '<div class="acts">'); };
+const _dAskNo = askNoSheet; askNoSheet = function(id){ const a = DB.asks.find(x=>x.id===id); if (a && a.kind==="forwarded") return tdeclineSheet(id); return _dAskNo(id).replace('<div class="acts">', dOtherRow(id,"ask") + '<div class="acts">'); };
+
+/* ---- host's mission (Priya fills her Oct 9 teardown). Invites land in the events module's guest list when it is present. ---- */
+const D_HOST = [
+  { pid:"lena",  why:"Asked about Linear's pricing in #product last week" },
+  { pid:"grace", why:"VP Product at Figma. Came to the Figma teardown" },
+  { pid:"ines",  why:"New this month. Hasn't been to an event yet" },
+  { pid:"hana",  why:"Went to three teardowns, missed the last two" },
+  { pid:"omar",  why:"Hiring a founding PM. This room is his pool" },
+  { pid:"kofi",  why:"Asked Kai for founders to meet. Two are going" },
+];
+function dHostRows(m){ const e = (typeof evE==="function") ? evE(m.ev) : null; if (e && typeof evHostData==="function") evHostData(e);
+  const inv = pid => m.invited.includes(pid) || (e && (e.invitedList||[]).includes(pid)); const going = pid => e && (e.goingList||[]).includes(pid);
+  return { e, todo: D_HOST.filter(c=>!inv(c.pid)&&!going(c.pid)), sent: D_HOST.filter(c=>inv(c.pid)||going(c.pid)).map(c=>Object.assign({ going:going(c.pid) }, c)) }; }
+function dHostStatus(m){ const { e, todo, sent } = dHostRows(m); const yes = sent.filter(c=>c.going).length;
+  if (todo.length) return ["New pick","green", `${todo.length} to invite${sent.length?`, ${sent.length} invited`:""}`];
+  if (sent.length && yes<sent.length) return ["Waiting","grey", `on ${sent.length-yes} invited · Kai re-confirms two days before`];
+  return ["Went well","green", `${e?e.going:0} going`]; }
+function dHostSection(m){ const [k,tone,txt] = dHostStatus(m);
+  return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
+function dInvite(mid, pid){ const m = DB.missions.find(x=>x.id===mid); const p = DB.people[pid]; if (!m||!p) return;
+  if (!m.invited.includes(pid)) m.invited.push(pid);
+  const e = (typeof evE==="function") ? evE(m.ev) : null; if (e) { if (typeof evHostData==="function") evHostData(e); e.invitedList = e.invitedList||[]; if (!e.invitedList.includes(pid)) e.invitedList.push(pid); }
+  if (typeof missionLogAdd==="function") missionLogAdd(m, "You", `invited ${p.name}. Kai re-confirms two days before`, "now");
+  toast(`Invited ${f1(p)}. Kai re-confirms two days before.`); render(); }
+function dHostPage(m){ const { e, todo, sent } = dHostRows(m); const [k,tone,txt] = dHostStatus(m);
+  const row = (c, right) => { const p = DB.people[c.pid]; return `<div class="row" onclick="openSheet('profile','${c.pid}')">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${c.why}</div></div>${right}</div>`; };
+  return `<div class="hdr sc"><div class="back" onclick="goBack()">‹</div><div class="mg t3">${LI("calendar",14)}</div><div style="flex:1"></div>${e?`<div class="icon" onclick="go('eventd:manage.${m.ev}')">${LI("settings",18)}</div>`:""}</div>
+  <div class="body sc"><div class="t20">${m.name}</div><div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>
+    <div class="sl">Brief</div><div class="row first" data-kaibrief="${m.id}"><div class="m"><div class="a plain">${m.brief}</div><div class="b">Change the purpose or the number with Kai</div></div><span class="chev">›</span></div>
+    ${todo.length?`<div class="sl">To invite<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${todo.length}</span></div><div class="rows">${todo.map(c=>row(c, `<button class="mini" onclick="event.stopPropagation();dInvite('${m.id}','${c.pid}')">Invite</button>`)).join("")}</div><div class="m12" style="margin-top:6px">Kai picked these from interest, attendance and asks. Skip anyone and it learns; nobody sees a skip</div>`:""}
+    ${sent.length?`<div class="sl">Invited</div><div class="rows">${sent.map(c=>row(c, `<span class="k ${c.going?"green":"grey"}">${c.going?"Going":"Invited"}</span>`)).join("")}</div>`:""}
+    <div class="sl">Event</div><div class="rows"><div class="row first" onclick="go('eventd:${m.ev}')"><div class="m"><div class="a">${e?e.name:"Product teardown: Linear"}</div><div class="b">${e?`${e.when} · ${e.going} going`:"Oct 9"}</div></div><span class="chev">›</span></div>${e?`<div class="row" onclick="go('eventd:manage.${m.ev}')"><div class="m"><div class="a">Guests and reminders</div><div class="b">Kai re-confirms two days before and asks who met whom after</div></div><span class="chev">›</span></div>`:""}</div>
+    ${(m.mlog||[]).length?`<div class="sl">Activity</div><div class="rows">${(m.mlog||[]).slice().reverse().slice(0,6).map(l=>`<div class="lrow"><span class="when">${l[2]}</span><span><b>${l[0]}</b> ${l[1]}</span></div>`).join("")}</div>`:""}
+  </div>${navHTML("missions")}`; }
+const _dMission = sMission; sMission = function(id){ if (id==="h1") return dHirePage(); const m = DB.missions.find(x=>x.id===id); if (m && m.host && STATE.member) return dCopy(dHostPage(m)); return _dMission(id); };
+
+/* ---- 6: the hirer's side. Maya posted a role; her Missions tab is the role, its candidates, and closing it. ---- */
+const D_HIRE = { id:"h1", name:"Founding product engineer", posted:"Sep 20", where:"#jobs on the Xoogler Slack and Key", status:"open",
+  cands: [
+    { pid:"lena",  src:"Kai found. Matches 4 of your 5 musts", st:"new" },
+    { pid:"rohan", src:"Applied from the Slack post", st:"new" },
+    { pid:"sam",   src:"Referred by Daniel", st:"replied", reply:"Happy to talk. Thursday afternoon?" },
+    { pid:"pooja", src:"Referred by Grace", st:"talking", when:"Met Tuesday" },
+    { pid:"marco", src:"Applied on Key", st:"passed", why:"Not the right time" },
+  ] };
+const D_HK = { new:["New pick","green"], replied:["Next step","green"], waiting:["Waiting","grey"], talking:["In conversation","green"], passed:["Passed","grey"], closed:["Closed","grey"], hired:["Went well","green"] };
+function dHireStatus(){ const r = D_HIRE; const c = r.cands; const open = c.filter(x=>x.st!=="passed"&&x.st!=="closed");
+  if (r.status==="closed") return ["Closed","grey", r.hired?`Hired ${f1(DB.people[r.hired])}`:"Role closed. Candidates were told"];
+  const need = c.filter(x=>x.st==="new"||x.st==="replied").length;
+  return need ? [need===c.filter(x=>x.st==="new").length?"New pick":"Next step","green", `${need} need${need===1?"s":""} you · ${open.length} candidates`] : ["Waiting","grey", `${open.length} candidates · Kai nudges on day 7 if it's quiet`]; }
+function dMayaHome(){ const [k,tone,txt] = dHireStatus();
+  return `${topHdr("Missions", `<div class="icon" onclick="openSheet('newmission')">+</div>`)}<div class="body sc">
+    <div class="rows"><div class="row first" onclick="go('mission:h1')"><div class="m"><div class="a">Hire a ${D_HIRE.name.toLowerCase()}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div></div>
+    <div class="m12" style="margin-top:10px">Your role is one mission. Candidates arrive from Key, from #jobs on Slack and from referrals; each is a path with a state, the same as an intro.</div>
+  </div>${navHTML("missions")}`; }
+function dCandRow(c){ const p = DB.people[c.pid]; const [k,tone] = D_HK[c.st]; const line = c.st==="replied" ? `Replied: “${c.reply}”` : c.st==="talking" ? `${c.when} · ${c.src}` : c.st==="passed" ? `You passed · ${c.why}` : c.st==="waiting" ? `You reached out ${c.when||"today"} · Kai nudges on day 7 if it's quiet` : c.st==="closed" ? "Told: role closed. No names" : c.src;
+  const verb = c.st==="new" ? `<button class="mini" onclick="event.stopPropagation();openSheet('dsheet','reach|${c.pid}')">Reach out</button>` : c.st==="replied" ? `<button class="mini" onclick="event.stopPropagation();openSheet('dsheet','reply|${c.pid}')">Reply</button>` : c.st==="talking" ? `<button class="mini sec" onclick="event.stopPropagation();openSheet('dsheet','hired|${c.pid}')">Hired</button>` : "";
+  return `<div class="row" onclick="STATE.sheet={type:'dsheet',id:'cand|${c.pid}'};render()">${av(p.initials)}<div class="m"><div class="a">${p.name} <span class="m12">${p.title}, ${p.company}</span></div><div class="b"><span class="k ${tone}">${k}</span> ${line}</div></div>${verb}</div>`; }
+function dHirePage(){ const r = D_HIRE; const [k,tone,txt] = dHireStatus(); const need = r.cands.filter(c=>c.st==="new"||c.st==="replied"); const wait = r.cands.filter(c=>c.st==="waiting"); const talk = r.cands.filter(c=>c.st==="talking"||c.st==="hired"); const gone = r.cands.filter(c=>c.st==="passed"||c.st==="closed");
+  return `<div class="hdr sc"><div class="back" onclick="go('home')">‹</div><div class="mg t1">${LI("briefcase",14)}</div><div style="flex:1"></div><div class="icon" onclick="openSheet('dsheet','rolemenu')">···</div></div>
+  <div class="body sc"><div class="t20">${r.name}</div><div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>
+    <div class="sl">The role</div><div class="rows"><div class="row first" onclick="openSheet('dsheet','rolemenu')"><div class="m"><div class="a plain">${r.status==="open"?"Open":"Closed"} · posted ${r.posted}</div><div class="b">${r.where}. Kai reads both and brings candidates here</div></div><span class="chev">›</span></div></div>
+    ${need.length?`<div class="sl">Needs you<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${need.length}</span></div><div class="rows">${need.map(dCandRow).join("")}</div>`:""}
+    ${wait.length?`<div class="sl">Waiting</div><div class="rows">${wait.map(dCandRow).join("")}</div>`:""}
+    ${talk.length?`<div class="sl">In conversation</div><div class="rows">${talk.map(dCandRow).join("")}</div>`:""}
+    ${gone.length?`<div class="row" style="margin-top:12px" onclick="STATE.dGone=!STATE.dGone;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Passed and closed · ${gone.length}</div></div><span class="chev">${STATE.dGone?"▾":"›"}</span></div>${STATE.dGone?`<div class="rows">${gone.map(dCandRow).join("")}</div>`:""}`:""}
+    <div class="m12" style="margin-top:12px">Nobody you pass on is told a reason. Nobody sees who else applied. Closing the role tells open candidates “role closed”, by name of the role only.</div>
+  </div>${navHTML("missions")}`; }
+function dCand(pid){ return D_HIRE.cands.find(c=>c.pid===pid); }
+function dReach(pid){ const c = dCand(pid); if (!c) return; c.st = "waiting"; c.when = "today"; STATE.sheet = null; toast(`Sent to ${f1(DB.people[pid])}. Kai nudges on day 7 if it's quiet.`); render(); }
+function dReplySend(pid){ const c = dCand(pid); if (!c) return; c.st = "talking"; c.when = "Thursday"; STATE.sheet = null; toast("Sent. Kai asks how it went after Thursday."); render(); }
+function dPass(pid, why){ const c = dCand(pid); if (!c) return; c.st = "passed"; c.why = why || "No reason"; STATE.sheet = null; toast(`Passed. ${f1(DB.people[pid])} sees: not this time. No reason.`); render(); }
+function dHired(pid){ const c = dCand(pid); if (!c) return; c.st = "hired"; D_HIRE.status = "closed"; D_HIRE.hired = pid; D_HIRE.cands.forEach(x=>{ if (x.st==="new"||x.st==="replied"||x.st==="waiting") x.st="closed"; }); STATE.sheet = null; toast(`Hired ${f1(DB.people[pid])}. Open candidates were told the role closed.`); render(); }
+function dCloseRole(){ D_HIRE.status = "closed"; D_HIRE.cands.forEach(x=>{ if (x.st==="new"||x.st==="replied"||x.st==="waiting") x.st="closed"; }); STATE.sheet = null; toast("Closed. Open candidates were told. The two you're talking to were not."); render(); }
+function dReopenRole(){ D_HIRE.status = "open"; D_HIRE.hired = null; D_HIRE.cands.forEach(x=>{ if (x.st==="closed") x.st="new"; }); STATE.sheet = null; toast("Reopened. Kai starts bringing candidates again."); render(); }
+function dSheet(id){
+  if (id==="done") return dDoneSheet();
+  const [kind, pid] = id.split("|"); const c = pid ? dCand(pid) : null; const p = pid ? DB.people[pid] : null; const r = D_HIRE;
+  if (kind==="cand" && c) { const rows=[]; const x=(l,act,b,cls)=>rows.push(`<div class="xrow ${cls||""}" onclick="${act}"><div class="m"><div class="a">${l}</div>${b?`<div class="b">${b}</div>`:""}</div></div>`);
+    x("View profile", `openSheet('profile','${pid}')`);
+    if (c.st==="new") x("Reach out", `openSheet('dsheet','reach|${pid}')`, "Kai drafted it in your voice");
+    if (c.st==="replied") x("Reply", `openSheet('dsheet','reply|${pid}')`);
+    if (c.st==="talking") x("Mark as hired", `openSheet('dsheet','hired|${pid}')`, "Closes the role and tells the others");
+    if (c.st!=="passed"&&c.st!=="closed"&&c.st!=="hired") x("Pass", `openSheet('dsheet','pass|${pid}')`, `${f1(p)} sees: not this time. No reason`, "danger");
+    if (c.st==="passed") x("Bring back", `dCand('${pid}').st='new';STATE.sheet=null;render()`, "Nobody is told");
+    return `<div class="sc"><div class="who big">${av(p.initials,"lg")}<div class="m"><div class="n15">${p.name}</div><div class="st" style="margin:0"><span class="k ${D_HK[c.st][1]}">${D_HK[c.st][0]}</span><span>${c.src}</span></div></div></div><div class="rows" style="margin-top:6px">${rows.join("")}</div></div>`; }
+  if (kind==="reach" && c) return scSheet(`Reach out to ${f1(p)}`, `To ${p.name} · ${c.src}`, `<div class="draftbox"><textarea id="draft">Hi ${f1(p)}, Maya here. I'm hiring a founding product engineer for an agents infra startup and ${c.src.startsWith("Referred")?c.src.replace("Referred by","")+" suggested I write to you":"your work at "+p.company+" is exactly the shape of it"}. Open to a 20 minute call this week?</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span>${scDraftMic("draft", "(Spoken) Hey, Maya here. Twenty minutes this week?")}</div></div><div class="acts"><button class="btn" onclick="dReach('${pid}')">Send to ${f1(p)}</button><span class="quiet" onclick="closeSheet()">Back</span></div>`);
+  if (kind==="reply" && c) return scSheet(`Reply to ${f1(p)}`, "", `<div class="bub"><div class="bn">${f1(p)}</div>${c.reply}</div><textarea class="input" id="draft" rows="3" style="margin-top:8px">Thursday afternoon works. 3pm? I'll send a calendar invite.</textarea>${STATE.connect&&STATE.connect.calendar?`<div class="chips"><span class="chip on">Thu 3pm</span><span class="chip">Thu 4:30pm</span><span class="chip">Fri 11am</span></div>`:""}<div class="acts"><button class="btn" onclick="dReplySend('${pid}')">Send</button></div>`);
+  if (kind==="pass" && c) return scSheet(`Pass on ${f1(p)}`, `${f1(p)} sees: not this time. No reason, no guilt`, `${scReasonRows(["Not the right level","Not the right time","Went with someone else"], w=>`onclick="dPass('${pid}','${w}')"`)}${dOtherRow(pid,"pass").replace(`dOtherSend('${pid}','pass')`, `dPass('${pid}',((document.getElementById('dreason')||{}).value||'').trim()||'Other')`)}<div class="acts"><span class="quiet" style="margin:0 auto" onclick="dPass('${pid}','')">Skip the reason</span></div><div class="m12" style="text-align:center">The reason stays with Kai. It shows fewer like this</div>`);
+  if (kind==="hired" && c) return scSheet(`Hired ${f1(p)}?`, "Closes the role", `<div class="m12">${r.cands.filter(x=>x.st==="new"||x.st==="replied"||x.st==="waiting").length} open candidates are told: role closed. No names, no reason. Anyone you're talking to is not told; you close those yourself.</div><div class="acts" style="margin-top:14px"><button class="btn" onclick="dHired('${pid}')">Yes, hired</button><span class="quiet" onclick="closeSheet()">Not yet</span></div>`);
+  if (kind==="rolemenu") { const open = r.cands.filter(x=>x.st==="new"||x.st==="replied"||x.st==="waiting").length; const rows=[]; const x=(l,act,b,cls)=>rows.push(`<div class="xrow ${cls||""}" onclick="${act}"><div class="m"><div class="a">${l}</div>${b?`<div class="b">${b}</div>`:""}</div></div>`);
+    x("Edit the post", `closeSheet();toast('Opens the post. Changes go to Key and #jobs.')`, r.where);
+    x("Repost to #jobs", `closeSheet();toast('Reposted to #jobs on the Xoogler Slack.')`, "Kai posts it in your name, once");
+    x("Who can see this role", `closeSheet();toast('Xoogler and Michigan. Change it in the post.')`);
+    if (r.status==="open") x("Close the role", `openSheet('dsheet','closerole')`, `${open} open candidate${open===1?"":"s"} would be told`, "danger"); else x("Reopen the role", `dReopenRole()`, "Kai starts bringing candidates again");
+    return `<div class="sc"><h2>${r.name}</h2><div class="rows">${rows.join("")}</div></div>`; }
+  if (kind==="closerole") { const open = r.cands.filter(x=>x.st==="new"||x.st==="replied"||x.st==="waiting"); const talk = r.cands.filter(x=>x.st==="talking");
+    return scSheet("Close the role?", "Nothing else about you or the other candidates is shared", `<div class="m12">${open.length?`${open.map(x=>f1(DB.people[x.pid])).join(", ")} ${open.length===1?"is":"are"} told: “${r.name}” closed. No names, no reason.`:"No open candidates to tell."}${talk.length?` ${talk.map(x=>f1(DB.people[x.pid])).join(", ")}, who you're talking to, ${talk.length===1?"is":"are"} not told; you close those yourself.`:""}</div><div class="acts" style="margin-top:14px"><button class="btn" onclick="dCloseRole()">Close the role</button><span class="quiet" onclick="closeSheet()">Keep it open</span></div>`); }
+  return "";
+}
+const _dPortSheet = portSheet; portSheet = function(type, id){ if (type==="dsheet") return dSheet(id); return _dPortSheet(type, id); };
+
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
    with one card design everywhere. Calendars live in a strip at the top, on their own pages, and on the Calendars screen.
