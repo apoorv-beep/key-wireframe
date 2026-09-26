@@ -2649,6 +2649,51 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-danger .a, .cm-danger .cm-ic { color:var(--danger); }
   .cm-end { border-bottom:0 !important; padding-top:6px !important; margin-bottom:24px; }
 
+  /* Media, links and docs (26 Sep, Apoorv 05:18): a 3-up grid, month-grouped rows, and a full-screen viewer. */
+  .cm-mt { position:relative; aspect-ratio:1; max-width:100%; background:var(--fill2); border-radius:4px; cursor:pointer; overflow:hidden; }
+  .cm-mt.v { background:#C9C9C9; }
+  .cm-mt b { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(20,20,20,.55); color:#fff; font-size:15px; }
+  .cm-vd { position:absolute; left:5px; bottom:5px; display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:600; color:#fff; background:rgba(20,20,20,.55); border-radius:999px; padding:2px 6px 2px 4px; }
+  .cm-vd .li { fill:currentColor; }
+  .cm-mstrip { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; margin-top:4px; }
+  .cm-mgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:0 -16px; }
+  .cm-mgrid .cm-mt { border-radius:0; }
+  .cm-mo { font-size:13px; font-weight:600; color:var(--ink3); padding:14px 0 4px; }
+  .cm-fav, .cm-ext { width:40px; height:40px; border-radius:8px; background:var(--fill); display:flex; align-items:center; justify-content:center; flex:0 0 auto; color:var(--ink2); }
+  .cm-ext { font-size:10px; font-weight:700; letter-spacing:.04em; color:var(--ink); }
+  .cm-url { color:var(--ink2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cm-voice { cursor:default; }
+  .cm-play { width:36px; height:36px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; flex:0 0 auto; cursor:pointer; }
+  .cm-play .li { fill:currentColor; }
+  .cm-wave { height:6px; border-radius:3px; background:var(--fill2); margin:6px 0 4px; overflow:hidden; }
+  .cm-wave i { display:block; height:100%; width:0; background:var(--ink); transition:width 1.2s linear; }
+  .cm-voice.on .cm-wave i { width:35%; }
+  .cm-viewer { position:absolute; inset:0; z-index:30; background:#0B0B0B; color:#fff; display:flex; flex-direction:column; padding:54px 0 28px; }
+  .phone:has(.cm-viewer) .ios-status { color:#fff; }
+  .phone:has(.cm-viewer) .ios-status .sig i, .phone:has(.cm-viewer) .ios-home { background:#fff; }
+  .phone:has(.cm-viewer) .ios-status .bat { border-color:#fff; }
+  .cm-vtop { display:flex; align-items:center; gap:12px; padding:8px 16px; }
+  .cm-vtop .m { flex:1; min-width:0; } .cm-vtop .a { font-weight:600; font-size:15px; } .cm-vtop .b { font-size:12px; color:rgba(255,255,255,.65); }
+  .cm-vx { width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .cm-vn { font-size:13px; color:rgba(255,255,255,.65); font-variant-numeric:tabular-nums; }
+  .cm-vimg { flex:1; margin:12px 0; background:#2A2A2A; position:relative; display:flex; align-items:center; justify-content:center; }
+  .cm-vimg.v { background:#1E1E1E; }
+  .cm-vnav { position:absolute; top:50%; transform:translateY(-50%); width:36px; height:36px; border-radius:50%; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .cm-vnav.l { left:10px; } .cm-vnav.r { right:10px; }
+  .cm-vplay { width:60px; height:60px; border-radius:50%; background:rgba(255,255,255,.18); display:flex; align-items:center; justify-content:center; }
+  .cm-vplay .li { fill:currentColor; }
+  .cm-vbar { position:absolute; left:16px; right:16px; bottom:12px; display:flex; align-items:center; gap:10px; font-size:12px; font-variant-numeric:tabular-nums; }
+  .cm-vbar i { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,.3); }
+  .cm-vcap { padding:0 16px 10px; font-size:14px; line-height:1.4; }
+  .cm-vthumbs { display:flex; gap:4px; overflow-x:auto; padding:0 16px 14px; scrollbar-width:none; }
+  .cm-vthumbs::-webkit-scrollbar { display:none; }
+  .cm-vthumbs .cm-mt { flex:0 0 44px; width:44px; background:#3A3A3A; opacity:.6; }
+  .cm-vthumbs .cm-mt.on { opacity:1; outline:2px solid #fff; outline-offset:-2px; }
+  .cm-vthumbs .cm-vd { display:none; }
+  .cm-vacts { display:flex; justify-content:space-around; padding:0 16px; }
+  .cm-vacts span { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+  .cm-vacts b { font-size:12px; font-weight:500; }
+
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
    Tip surface = component.tip.bg (surface.default) at elevation 3; the target gets the focus ring. ==== */
@@ -5187,6 +5232,8 @@ const LUCIDE = {
   "smile-plus":'<path d="M22 11v1a10 10 0 1 1-9-10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/><path d="M16 5h6"/><path d="M19 2v6"/>',
   "search":'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
   "log-out":'<path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>',
+  "pause":'<rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/>',
+  "forward":'<path d="m15 17 5-5-5-5"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/>',
   "settings":'<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
   "paperclip":'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>', "mic":'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>', "at-sign":'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>'
 };
@@ -5477,7 +5524,7 @@ function portSheet(type, id) {
       ${m.text?row(LI("copy"),"Copy message",`STATE.sheet=null;render();toast('Message copied to clipboard')`):''}
       ${mine&&m.text?row(LI("pencil"),"Edit message",`startEdit('${cid}','${m_id}','${parent||''}')`):''}
       ${mine?row(LI("trash-2"),"Delete message",`openSheet('pconfirm','delmsg|${id}')`,true):row(LI("flag"),"Report message",`openSheet('report','msg|${id}')`)}
-      ${c.kind==="channel"&&STATE.asOrganizer&&!parent?row(LI("pin"),(c.pins||[]).includes(m_id)?"Unpin":"Pin to channel",`togglePinMsg('${cid}','${m_id}')`):''}`;
+      ${((c.kind==="channel"&&STATE.asOrganizer)||c.kind==="group")&&!parent?row(LI("pin"),(c.pins||[]).includes(m_id)?"Unpin":c.kind==="group"?"Pin to group":"Pin to channel",`togglePinMsg('${cid}','${m_id}')`):''}`;
   }
   if (type==="emoji") return `<h2>Pick a reaction</h2><div class="emogrid">${QUICK.concat(MORE_EMO).map(e=>{const [cid,m_id,parent]=id.split("|");return `<span onclick="react('${cid}','${m_id}','${parent||''}','${e}')">${e}</span>`}).join("")}</div>`;
   if (type==="reactors") {
@@ -5566,7 +5613,7 @@ function delMsg(ref) { const [cid,m_id,parent]=ref.split("|"); const c=convOf(ci
 function startEdit(cid, m_id, parent) { const c=convOf(cid); const m=findMsg(c,m_id,parent||null); const k=parent?cid+"::"+parent:cid; STATE.drafts=STATE.drafts||{}; STATE.editMsg={ k, id:m_id, parent:parent||null, prev:STATE.drafts[k]||"" }; STATE.drafts[k]=m.text; STATE.sheet=null; render(); const t=phone.querySelector("#ci"); if(t){ t.focus(); t.setSelectionRange(t.value.length,t.value.length); } }
 function cancelEdit() { const e=STATE.editMsg; if(!e) return; STATE.drafts[e.k]=e.prev||""; STATE.editMsg=null; render(); }
 function addPending(k, t) { STATE.pending=STATE.pending||{}; STATE.pending[k]=(STATE.pending[k]||[]).concat(t==="file"?{t:"file",name:"deck-v3.pdf",ext:"PDF",size:"2.4 MB"}:{t:"img",n:1}); STATE.sheet=null; render(); }
-function togglePinMsg(cid, m_id) { const c=convOf(cid); c.pins=c.pins||[]; c.pins = c.pins.includes(m_id)?c.pins.filter(x=>x!==m_id):[m_id].concat(c.pins); STATE.sheet=null; render(); }
+function togglePinMsg(cid, m_id) { const c=convOf(cid); c.pins=c.pins||[]; if (!c.pins.includes(m_id) && c.kind==="group" && c.pins.length>=4) { STATE.sheet=null; render(); toast("Groups keep four pins. Unpin one first."); return; } c.pins = c.pins.includes(m_id)?c.pins.filter(x=>x!==m_id):[m_id].concat(c.pins); STATE.sheet=null; render(); }
 function leaveConv(cid) { const c=convOf(cid); STATE.sheet=null; if (c.kind==="channel") { c.ch.joined=false; go("family"); toast(`Left #${c.title}`); } else { DB.dms=DB.dms.filter(d=>d.id!==cid); go("inbox"); toast("Left the group"); } }
 
 /* ---------- Notifications (bell) ---------- */
@@ -9000,32 +9047,80 @@ function cBrowse(){
 /* ---- Conversation details: one page for channels and groups (Apoorv, 26 Sep 04:33: "rethink the details screen ... consistent with the blend").
    Research and calls: community-audit/details/research.md. One scroll instead of tabs (WhatsApp, Telegram, iMessage): who it is,
    up to four actions, what it's for, the ritual, pinned, photos and files, members, then report and leave as the last rows.
-   Pinned, photos and files, and members open their own full lists (STATE.ciTab). Channels are wired here; groups use the same
-   function once missions routes them (port.js owns DMs, groups and event chats). ---- */
+   Pinned, photos and files, and members open their own full lists (STATE.ciTab). Channels and groups are routed here; DMs open
+   the profile and event chats open the event (port.js). ---- */
 const _cChatInfo = sChatInfo;
+/* Everything shared in a conversation, newest first. Each photo or video is its own entry so the grid and the viewer can step through them;
+   links, docs and voice notes are rows. Every entry keeps its message, so "Show in chat" can jump to it (WhatsApp "Media, links and docs", Telegram shared media). */
+function cShared(c){
+  const out = [];
+  c.msgs.forEach(m=>[m].concat(m.thread||[]).forEach(x=>(x.att||[]).forEach(a=>{
+    if (a.t==="img"||a.t==="vid") for (let i=0;i<(a.n||1);i++) out.push({ k:"media", a, m:x, vid:a.t==="vid" });
+    else out.push({ k:a.t==="link"?"links":a.t==="audio"?"voice":"docs", a, m:x });
+  })));
+  return out.reverse();
+}
+const cMonth = d => /^[A-Z][a-z]{2} \d/.test(d||"") ? new Date(d).toLocaleString("en-US",{month:"long",year:"numeric"}) : "This week";
+const cByMonth = (list, row) => { let last=""; return list.map((e,i)=>{ const mo=cMonth(e.m.day); const h = mo!==last ? `<div class="cm-mo">${mo}</div>` : ""; last=mo; return h+row(e,i); }).join(""); };
+const cMT = (cid, e, i, cls, inner) => `<div class="cm-mt${e.vid?" v":""}${cls||""}" data-cview="${cid}:${i}">${inner||(e.vid?`<span class="cm-vd">${LI("play",10)}${e.a.dur||""}</span>`:"")}</div>`;
+/* The mock channels had nothing shared, so the media page could never be seen. These sit before each channel's newest messages. */
+function cSeedShared(){
+  const at = (id, list) => { const c = DB.chat[id]; if (c) c.msgs.unshift(...list); };
+  at("sf", [
+    M("rahul","The Mission office roof is open to Xooglers on Thursdays",{day:"Sep 14, 2026",time:"5:12 PM",att:[{t:"img",n:2}]}),
+    M("sana","Coffee spot for Tuesday",{day:"Sep 15, 2026",time:"8:40 AM",att:[{t:"link",site:"maps.google.com",title:"Sightglass Coffee",desc:"270 7th St, San Francisco",url:"maps.google.com/sightglass-7th"}]}),
+    M("ana","",{day:"Sep 15, 2026",time:"9:02 AM",att:[{t:"audio",dur:"0:38"}]}),
+    M("maya","Fall founder dinners, add yours",{day:"Sep 16, 2026",time:"7:30 PM",att:[{t:"file",name:"sf-founder-dinners-fall.pdf",ext:"PDF",size:"420 KB"}]}),
+    M("jordan","Presidio walk at sunset",{day:"Sep 17, 2026",time:"7:05 PM",att:[{t:"vid",n:1,dur:"0:24"},{t:"img",n:3}]}) ]);
+  at("announcements", [
+    M("chris","Photos from the September dinner. Thank you for coming.",{day:"Aug 28, 2026",time:"10:15 AM",att:[{t:"img",n:6}]}),
+    M("chris","The panel in 60 seconds",{day:"Aug 28, 2026",time:"10:17 AM",att:[{t:"vid",n:1,dur:"1:04"}]}),
+    M("chris","Member guide, updated for fall",{day:"Sep 18, 2026",time:"9:00 AM",att:[{t:"file",name:"xoogler-member-guide.pdf",ext:"PDF",size:"2.4 MB"}]}),
+    M("chris","Last month's town hall, if you missed it",{day:"Sep 18, 2026",time:"9:05 AM",att:[{t:"link",site:"youtube.com",title:"Xoogler town hall, August",desc:"48 min",url:"youtube.com/watch?v=xoogler-aug"}]}),
+    M("chris","",{day:"Sep 19, 2026",time:"11:20 AM",att:[{t:"audio",dur:"1:12"}]}) ]);
+}
+const _cSeedChats = seedChats;
+seedChats = function(){ const first = !DB.chat; _cSeedChats(); if (first) cSeedShared(); };
 function cDetails(cid){
   const c = convOf(cid); const isCh = c.kind==="channel"; const ch = c.ch||{};
   const f = cF(); const org = isCh ? cOrg() : c.createdBy===meId(); const canAdd = isCh ? org : true;
   const gone = STATE.chRemoved||{}; const ids = (c.memberIds||[]).filter(id=>!gone[cid+"|"+id]);
   const count = isCh ? c.members : ids.length; const title = isCh ? "#"+c.title.replace(/^#/,"") : c.title;
   const pins = (c.pins||[]).map(id=>c.msgs.find(m=>m.id===id)).filter(Boolean);
-  const all = c.msgs.concat(...c.msgs.map(m=>m.thread||[]));
-  const att = t => all.flatMap(m=>(m.att||[]).filter(a=>t.includes(a.t)));
-  const media = att(["img","vid"]).reduce((s,a)=>s+(a.n||1),0), links = att(["link"]), files = att(["file"]);
+  const sh = cShared(c), kinds = { media:"Media", links:"Links", docs:"Docs", voice:"Voice" };
+  const n = k => sh.filter(e=>e.k===k).length, media = n("media"), nShared = sh.length;
+  const chat = isCh ? "channel:"+cid : "dm:"+cid;
   const role = id => id===c.createdBy ? "Creator" : "";
-  const sub = ["pinned","media","members"].includes(STATE.ciTab) ? STATE.ciTab : null;
-  const back = sub ? `STATE.ciTab='about';render()` : `STATE.ciTab='about';STATE.backNav=true;goBack()`;
-  const hdr = t => `<div class="hdr"><div class="back" onclick="${back}">‹</div><div style="flex:1;font-size:18px;font-weight:700">${t||""}</div>${!sub&&org?`<div class="icon" ${isCh?`data-csheet2="cedch|${ch.id}"`:`onclick="toast('Rename the group, change its photo and description')"`} aria-label="Edit">${LI("pencil",18)}</div>`:''}</div>`;
+  const sub = ["pinned","media","members","view"].includes(STATE.ciTab) ? STATE.ciTab : null;
+  const back = sub && !(c.kind==="event" && sub==="media") ? `STATE.ciTab='about';render()` : `STATE.ciTab='about';STATE.backNav=true;goBack()`;
+  const hdr = t => `<div class="hdr"><div class="back" onclick="${back}">‹</div><div style="flex:1;font-size:18px;font-weight:700">${t||""}</div>${!sub&&org?`<div class="icon" ${isCh?`data-csheet2="cedch|${ch.id}"`:`data-csheet2="cedgrp|${cid}"`} aria-label="Edit">${LI("pencil",18)}</div>`:''}</div>`;
   const pinRow = m => `<div class="cm-row cm-pin" onclick="STATE.ciTab='about';STATE.hl='${m.id}';go('${isCh?"channel":"dm"}:${cid}')">${av(P(m.from).initials,"sm")}<div class="m"><div class="b"><b style="color:var(--ink)">${P(m.from).name}</b> · ${m.day||''}</div><div class="cm-text cm-clamp">${m.text||"Attachment"}</div></div>${org&&sub?`<span class="cm-btn q" onclick="event.stopPropagation();togglePinMsg('${cid}','${m.id}')">Unpin</span>`:''}</div>`;
   const memRow = id => { const p=P(id); const r=role(id); const rm = org && id!==meId() && id!==c.createdBy;
     return `<div class="cm-row" data-profile="${id}">${av(p.initials)}<div class="m"><div class="a">${p.name}${id===meId()?' <span class="cm-you">You</span>':''}</div><div class="b">${[p.title,p.company].filter(Boolean).join(", ")}</div></div>${r?`<span class="cm-done">${r}</span>`:''}${rm&&sub?`<span class="cm-lmenu" data-csheet2="cmem|${cid}:${id}" aria-label="More">${C_DOTS_SVG}</span>`:''}</div>`; };
   const addRow = canAdd ? `<div class="cm-row cm-inv" onclick="toast('${isCh?`Add people from ${f.name}`:"Add people to the group"}')"><div class="cm-sq cm-sqs">${LI("user-plus",18)}</div><div class="m"><div class="a">Add people</div></div></div>` : "";
-  const mediaBody = () => { const t = STATE.ciMedia||"Photos"; const list = t==="Photos" ? media : t==="Links" ? links.length : files.length;
-    return `<div class="cm-chips">${["Photos","Links","Files"].map(x=>`<span class="cm-chip ${t===x?'on':''}" onclick="STATE.ciMedia='${x}';render()">${x} ${x==="Photos"?media:x==="Links"?links.length:files.length}</span>`).join("")}</div>
-      ${!list ? `<div class="cm-meta0">No ${t.toLowerCase()} shared here yet.</div>` : t==="Photos" ? `<div class="cm-grid">${Array.from({length:Math.min(media,12)},()=>'<div class="mtile"></div>').join("")}</div>`
-        : (t==="Links"?links:files).map(a=>`<div class="cm-row" onclick="toast('Opens ${a.url||a.name}')"><div class="cm-sq cm-sqs">${LI(t==="Links"?"link":"file",18)}</div><div class="m"><div class="a">${a.name||a.site||a.url}</div><div class="b">${a.url||a.ext||""}</div></div></div>`).join("")}`; };
+  const fmtOf = e => ({ PDF:"PDF", DOCX:"Word", XLSX:"Excel", PPTX:"Slides" })[e.a.ext] || e.a.ext;
+  const who = e => `${P(e.m.from).name} · ${e.m.day.replace(/, \d{4}$/,"")}`;
+  const more = (e, i) => `<span class="cm-lmenu" data-csheet2="cshared|${cid}:${i}" aria-label="More">${C_DOTS_SVG}</span>`;
+  const mediaBody = () => { const t = kinds[STATE.ciMedia] ? STATE.ciMedia : "media"; const list = sh.filter(e=>e.k===t);
+    const rows = {
+      media: () => `<div class="cm-mgrid">${list.map((e,i)=>cMT(cid,e,i)).join("")}</div>`,
+      links: () => cByMonth(list, e => `<div class="cm-row" onclick="toast('Opens ${e.a.url}')"><div class="cm-fav">${LI("link",16)}</div><div class="m"><div class="a">${e.a.title||e.a.site}</div><div class="b cm-url">${e.a.url}</div><div class="b">${who(e)}</div></div>${more(e, sh.indexOf(e))}</div>`),
+      docs: () => cByMonth(list, e => `<div class="cm-row" onclick="toast('Opens a preview of ${e.a.name}')"><div class="cm-ext">${e.a.ext}</div><div class="m"><div class="a">${e.a.name}</div><div class="b">${fmtOf(e)} · ${e.a.size} · ${who(e)}</div></div>${more(e, sh.indexOf(e))}</div>`),
+      voice: () => cByMonth(list, e => { const j = sh.indexOf(e), on = STATE.ciPlay===cid+":"+j;
+        return `<div class="cm-row cm-voice${on?" on":""}"><span class="cm-play" onclick="STATE.ciPlay=${on?"null":`'${cid}:${j}'`};render()" aria-label="${on?"Pause":"Play"}">${LI(on?"pause":"play",16)}</span><div class="m"><div class="cm-wave"><i></i></div><div class="b">${e.a.dur} · ${who(e)}</div></div>${more(e, j)}</div>`; })
+    };
+    return `<div class="cm-chips">${Object.keys(kinds).map(k=>`<span class="cm-chip ${t===k?'on':''}" onclick="STATE.ciMedia='${k}';render()">${kinds[k]} <b>${n(k)}</b></span>`).join("")}</div>
+      ${list.length ? rows[t]() : `<div class="cm-meta0">${({media:"No photos or videos",links:"No links",docs:"No docs",voice:"No voice notes"})[t]} shared here yet.</div>`}`; };
+  if (sub==="view") { const L = sh.filter(e=>e.k==="media"); const i = Math.max(0, Math.min(STATE.ciIdx||0, L.length-1)); const e = L[i];
+    const close = `STATE.ciTab=STATE.ciBack||'about';render()`;
+    if (!e) return `${hdr("Media")}<div class="body cm-det"><div class="cm-meta0">Nothing to show.</div></div>`;
+    return `<div class="cm-viewer"><div class="cm-vtop"><span class="cm-vx" onclick="${close}" aria-label="Close">${LI("x",20)}</span><div class="m"><div class="a">${P(e.m.from).name}</div><div class="b">${e.m.day} · ${e.m.time}</div></div><span class="cm-vn">${i+1} of ${L.length}</span></div>
+      <div class="cm-vimg${e.vid?" v":""}">${i>0?`<span class="cm-vnav l" data-cview="${cid}:${i-1}" aria-label="Previous">${LI("chevron-left",22)}</span>`:""}${e.vid?`<span class="cm-vplay">${LI("play",26)}</span><div class="cm-vbar"><i></i><span>0:00 / ${e.a.dur||""}</span></div>`:""}${i<L.length-1?`<span class="cm-vnav r" data-cview="${cid}:${i+1}" aria-label="Next">${LI("chevron-right",22)}</span>`:""}</div>
+      ${e.m.text?`<div class="cm-vcap">${e.m.text}</div>`:""}
+      <div class="cm-vthumbs">${L.map((x,j)=>cMT(cid,x,j,j===i?" on":"")).join("")}</div>
+      <div class="cm-vacts"><span onclick="toast('Pick who to send it to')">${LI("forward",20)}<b>Forward</b></span><span onclick="toast('Saved to your photos')">${LI("download",20)}<b>Save</b></span><span onclick="STATE.ciTab='about';STATE.hl='${e.m.id}';go('${chat}')">${LI("message-square",20)}<b>Show in chat</b></span></div></div>`; }
   if (sub==="pinned") return `${hdr(`Pinned <span class="cm-cnt0">${pins.length}</span>`)}<div class="body cm-det">${pins.map(pinRow).join("")||`<div class="cm-meta0">Nothing pinned yet.${org?" Pin a message from its menu.":" Organizers pin what everyone should see."}</div>`}</div>`;
-  if (sub==="media") return `${hdr("Photos and files")}<div class="body cm-det">${mediaBody()}</div>`;
+  if (sub==="media") return `${hdr("Media, links and docs")}<div class="body cm-det">${mediaBody()}</div>`;
   if (sub==="members") { const q=(STATE.ciQ||"").toLowerCase(); const list=ids.filter(id=>P(id).name.toLowerCase().includes(q));
     return `${hdr(`Members <span class="cm-cnt0">${count}</span>`)}<div class="body cm-det"><div class="cm-search" style="padding:0 0 8px"><input class="search" id="ciq" placeholder="Search members" value="${STATE.ciQ||''}" oninput="STATE.ciQ=this.value;render();const i=phone.querySelector('#ciq');i.focus();i.setSelectionRange(i.value.length,i.value.length)"></div>
       <div class="cm-list">${q?'':addRow}${list.map(memRow).join("")}</div>${count>ids.length&&!q?`<div class="cm-row cm-more-row" onclick="toast('Loads the next 50')"><div class="m"><div class="a">Show ${count-ids.length} more</div></div></div>`:''}</div>`; }
@@ -9037,7 +9132,7 @@ function cDetails(cid){
   const faces = ids.slice(0,3).map(id=>`<span>${P(id).initials}</span>`).join("");
   const kai = isCh ? (ch.id==="sf" ? "Kai doesn't read this channel. The organizers chose that." : "Kai reads this channel to find paths. The organizers chose that.") : "";
   const rit = isCh ? cRituals(f).filter(r=>r[5]===ch.id).map(([k,n,q,d,every])=>`<div class="cm-row cm-rit" style="cursor:default"><div class="cm-day">${d||every.slice(0,3)}</div><div class="m"><div class="a">${q}</div><div class="b">${n} · ${every} · Kai posts it, you reply here</div></div></div>`).join("") : "";
-  const strip = media ? `<div class="cm-strip" onclick="STATE.ciTab='media';render()">${Array.from({length:Math.min(media,4)},(_,i)=>`<div class="mtile">${i===3&&media>4?`<b>+${media-3}</b>`:''}</div>`).join("")}</div>` : "";
+  const strip = media ? `<div class="cm-mstrip">${sh.filter(e=>e.k==="media").slice(0,4).map((e,i)=>cMT(cid, e, i, "", i===3&&media>4?`<b>+${media-3}</b>`:"")).join("")}</div>` : "";
   return `${hdr()}<div class="body cm-det">
     <div class="cm-did">${isCh?`<div class="cm-dav">${c.emoji}</div>`:`<div class="cm-dfaces">${faces}</div>`}<h2>${title}</h2>
       <div class="b">${isCh?`${ch.private?`${LI("lock",12)} Private`:"Public"} · ${ch.cat} · `:"Group · "}<span class="cm-link0" onclick="STATE.ciTab='members';render()">${count} members</span></div></div>
@@ -9045,17 +9140,19 @@ function cDetails(cid){
     <div class="cm-sec">${cHead("About")}${c.desc?`<div class="cm-text">${c.desc}</div>`:org?`<div class="cm-text cm-faint">Add a description so people know what it's for.</div>`:''}
       <div class="cm-meta0">Created by <span class="cm-link0" data-profile="${c.createdBy}">${P(c.createdBy).name}</span> · ${c.created}</div>
       ${kai?`<div class="cm-kline"><span class="cm-kai">${C_SPARK}</span>${kai}</div>`:''}</div>
-    ${rit?`<div class="cm-sec">${cHead("Ritual")}${rit}</div>`:''}
-    ${pins.length?`<div class="cm-sec">${cHead(`Pinned <i>${pins.length}</i>`, pins.length>2?"See all":"", `onclick="STATE.ciTab='pinned';render()"`)}${pins.slice(0,2).map(pinRow).join("")}</div>`:''}
-    <div class="cm-sec">${cHead(`Photos and files <i>${media+links.length+files.length}</i>`, media+links.length+files.length?"See all":"", `onclick="STATE.ciTab='media';render()"`)}${strip}${media+links.length+files.length?`<div class="cm-meta0">${media} photos · ${links.length} links · ${files.length} files</div>`:`<div class="cm-meta0">Nothing shared yet.</div>`}</div>
+    ${isCh?`<div class="cm-sec">${cHead("Ritual")}${rit||`<div class="cm-meta0">${org?`No ritual yet. <span class="cm-link0" data-cgo="manage">Add one in Manage</span>`:"No ritual in this channel."}</div>`}</div>`:''}
+    <div class="cm-sec">${cHead(`Pinned <i>${pins.length}</i>`, pins.length>2?"See all":"", `onclick="STATE.ciTab='pinned';render()"`)}${pins.slice(0,2).map(pinRow).join("")||`<div class="cm-meta0">Nothing pinned yet.${org?" Pin a message from its menu.":""}</div>`}</div>
+    <div class="cm-sec">${cHead(`Media, links and docs <i>${nShared}</i>`, nShared?"See all":"", `onclick="STATE.ciTab='media';render()"`)}${strip}<div class="cm-meta0">${nShared ? Object.keys(kinds).map(k=>`${n(k)} ${kinds[k].toLowerCase()}`).join(" · ") : "Nothing shared yet."}</div></div>
     <div class="cm-sec">${cHead(`Members <i>${count}</i>`, "See all", `onclick="STATE.ciTab='members';render()"`)}<div class="cm-list">${addRow}${ids.slice(0,4).map(memRow).join("")}</div></div>
     <div class="cm-sec cm-list cm-end">
       <div class="cm-row" onclick="openSheet('report','conv|${cid}')"><div class="cm-ic">${LI("flag",18)}</div><div class="m"><div class="a">Report</div><div class="b">${isCh?"The organizers review it":"Key's team reviews it"}</div></div></div>
-      <div class="cm-row cm-danger" onclick="openSheet('pconfirm','leave|${cid}')"><div class="cm-ic">${LI("log-out",18)}</div><div class="m"><div class="a">${isCh?"Leave channel":"Leave group"}</div></div></div>
+      <div class="cm-row" onclick="openSheet('pconfirm','clear|${cid}')"><div class="cm-ic">${LI("trash-2",18)}</div><div class="m"><div class="a">Clear chat</div><div class="b">Only for you. Everyone else keeps it</div></div></div>
+      ${isCh&&c.createdBy===meId()?'':`<div class="cm-row cm-danger" onclick="openSheet('pconfirm','leave|${cid}')"><div class="cm-ic">${LI("log-out",18)}</div><div class="m"><div class="a">${isCh?"Leave channel":"Leave group"}</div></div></div>`}
+      ${org?`<div class="cm-row cm-danger" onclick="${isCh?`toast('Deleting a channel asks you to confirm by name.')`:`openSheet('pconfirm','delconv|${cid}')`}"><div class="cm-ic">${LI("trash-2",18)}</div><div class="m"><div class="a">${isCh?"Delete channel":"Delete group"}</div><div class="b">${isCh?"Removes it and its messages for everyone":"Removes it for everyone"}</div></div></div>`:''}
     </div></div>`;
 }
 /* An event chat has no details page: its header opens the event (events thread, 26 Sep). Its ··· sheet opens the shared photos and files list here. */
-sChatInfo = function(cid){ const c = convOf(cid); return c && (c.kind==="channel" || (c.kind==="event" && STATE.ciTab==="media")) ? cDetails(cid) : _cChatInfo(cid); };
+sChatInfo = function(cid){ const c = convOf(cid); return c && (c.kind==="channel" || c.kind==="group" || (c.kind==="event" && ["media","view"].includes(STATE.ciTab))) ? cDetails(cid) : _cChatInfo(cid); };
 
 /* ---- Posts: the prod library, shown here unchanged (settings/product_library): the family's own categories, the list card's fields,
    votes, comments, save and share; drafts; posts waiting for approval; approve or reject with a reason. One kind of object:
@@ -9465,6 +9562,18 @@ function cLeave(fid){
 const cRadio = (on) => `<span class="cm-radio ${on?'on':''}"></span>`;
 function cSheet(type, id){
   const f = cF();
+  if (type==="cshared") { const [cid,j]=id.split(":"); const c=convOf(cid); const e=cShared(c)[+j]; if (!e) return "";
+    const r = (ic, a, on, cls) => `<div class="cm-row ${cls||""}" onclick="${on}"><div class="cm-ic">${LI(ic,18)}</div><div class="m"><div class="a">${a}</div></div></div>`;
+    const mine = e.m.from===meId(), org = c.kind==="channel" ? cOrg() : c.createdBy===meId();
+    return `<div class="cm-list">${r("message-square","Show in chat",`closeSheet();STATE.ciTab='about';STATE.hl='${e.m.id}';go('${c.kind==="channel"?"channel":"dm"}:${cid}')`)}
+      ${e.k==="links"?r("copy","Copy link",`closeSheet();toast('Link copied')`):e.k==="docs"?r("download","Download",`closeSheet();toast('Downloading ${e.a.name}')`):""}
+      ${r("forward","Forward",`closeSheet();toast('Pick who to send it to')`)}
+      ${mine||org?r("trash-2","Delete for everyone",`closeSheet();toast('Deleted. The message shows it was removed')`,"cm-danger"):""}</div>`; }
+  if (type==="cedgrp") { const c=convOf(id);
+    return `<h2>Edit group</h2>
+      <div class="row" style="gap:12px;align-items:stretch"><div class="cm-che cm-chebig" aria-label="Change photo" onclick="toast('Take a photo or pick one')">${LI("camera",22)}</div><div class="field" style="flex:1;margin:0"><div class="k">Name</div><div class="v">${c.title}</div></div></div>
+      <div class="field"><div class="k">Description</div><div class="v">${c.desc||"What the group is for, in one line"}</div></div>
+      <button class="btn" onclick="closeSheet();toast('Saved. Everyone in the group sees the change.')">Save</button>`; }
   if (type==="cmem") { const [cid,pid]=id.split(":"); const c=convOf(cid); const p=P(pid);
     return `<div class="cm-selhdr" style="margin-bottom:6px">${av(p.initials)}<div style="flex:1"><div class="t">${p.name}</div><div class="xs faint">${[p.title,p.company].filter(Boolean).join(", ")}</div></div></div>
       <div class="cm-list"><div class="cm-row" data-profile="${pid}"><div class="cm-ic">${LI("user",18)}</div><div class="m"><div class="a">View profile</div></div></div>
@@ -9709,6 +9818,7 @@ portWire = function(){
   q("[data-pview]", el=>cFilter(()=>{ STATE.peopleView=el.dataset.pview; }));
   q("[data-cptype]", el=>cFilter(()=>{ STATE.postType=el.dataset.cptype; }));
   q("[data-csheet]", el=>sheetFrom(el.dataset.csheet));
+  q("[data-cview]", el=>{ const [cid,i]=el.dataset.cview.split(":"); if (STATE.ciTab!=="view") STATE.ciBack=STATE.ciTab; STATE.ciTab="view"; STATE.ciIdx=+i; if (STATE.screen!=="chatinfo:"+cid) go("chatinfo:"+cid); else render(); });
   q("[data-csheet2]", el=>{ const [t,id]=el.dataset.csheet2.split("|"); if (t==="crole") STATE.cRolePick=null; if (t==="cremove") STATE.cRemR=""; sheetFrom(t, id); });
   q("[data-cnotif]", el=>{ STATE.cNotif=el.dataset.cnotif; render(); });
   q("[data-cgreet]", el=>{ const p=DB.people[el.dataset.cgreet]; STATE.cGreeted=Object.assign(STATE.cGreeted||{}, {[p.id]:true}); go("channel:introductions"); toast(`Kai drafted a hello to ${p.name.split(" ")[0]} in #introductions. Send it when it reads right.`); });
