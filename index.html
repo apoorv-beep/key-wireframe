@@ -5230,6 +5230,23 @@ function vouchDo(k, id) {
   a.asked=true; render(); toast(`Sent to ${from}.`);
 }
 
+/* Scroll keeps across in-place re-renders (Apoorv, 26 Sep 01:48): a tap on a chip, fold, toggle or RSVP must not jump to the top.
+   Keyed by screen: the same screen re-rendering with no navigation animation keeps the body's and the open sheet's scroll; a real
+   navigation (go to another screen) starts at the top. Anything that positions the scroller itself (chat bottom, tab panes) wins,
+   because the keep only applies when the fresh scroller is still at 0. Shared helper: keepScroll(fn) runs fn (default render). */
+const _ksRender = render;
+render = function(){
+  const S = STATE.screen, same = S===STATE._ksScreen && !STATE.anim;
+  const b = phone.querySelector(".view .body"), sb = phone.querySelector("#sheet .sb");
+  const y = same && b ? b.scrollTop : 0, sy = same && sb && STATE.sheet ? { type: STATE.sheet.type, y: sb.scrollTop } : null;
+  _ksRender();
+  STATE._ksScreen = S;
+  if (!same) return;
+  const nb = phone.querySelector(".view .body"); if (nb && y && nb.scrollTop===0) nb.scrollTop = y;
+  const nsb = phone.querySelector("#sheet .sb"); if (nsb && sy && sy.y && STATE.sheet && STATE.sheet.type===sy.type && nsb.scrollTop===0) nsb.scrollTop = sy.y;
+};
+function keepScroll(fn){ (fn||render)(); }
+
 
 /* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Daniel decides, Maya answers.
    Rule from wireframe-audit/path-endings.md and Fable round 16: status is shown, words are sent. Kai proposes, a person taps. ==== */
