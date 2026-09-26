@@ -2356,9 +2356,9 @@
 <div class="stage">
   <div class="stagebar">
     <div class="sgrp"><span class="sgl">Key AI · lo-fi</span><button onclick="restart()">Restart</button><button onclick="jump('home')">Skip to home</button><button onclick="jump('family')">Skip to family</button><button onclick="STATE.orgStep=0;go('orgconnect')">Organizer: new family</button></div>
-    <div class="sgrp"><span class="sgl">Entry</span><button onclick="STATE.entry='invite';DB.user.invitedBy='Chris Fong';go('signin')">Invite</button><button onclick="STATE.entry='event';DB.user.invitedBy=null;go('signin')">Event</button><button onclick="STATE.entry='cold';DB.user.invitedBy=null;go('signin')">Cold</button></div>
+    <div class="sgrp"><span class="sgl">Entry</span><button onclick="STATE.entry='invite';DB.user.invitedBy='Daniel Reyes';go('signin')">Invite</button><button onclick="STATE.entry='event';DB.user.invitedBy=null;go('signin')">Event</button><button onclick="STATE.entry='cold';DB.user.invitedBy=null;go('signin')">Cold</button></div>
     <div class="sgrp"><span class="sgl">Time</span><button onclick="advanceWeek()">Advance a week ▸</button><span class="xs" id="weekLbl" style="color:#8a8a8a"></span></div>
-    <div class="sgrp"><span class="sgl">View as</span><button id="orgToggle" onclick="STATE.asOrganizer=!STATE.asOrganizer;render()">Organizer</button><button id="personaBtn" onclick="cyclePersona()">Chris</button></div>
+    <div class="sgrp"><span class="sgl">View as</span><button id="orgToggle" onclick="STATE.asOrganizer=!STATE.asOrganizer;render()">Organizer</button><button id="personaBtn" onclick="cyclePersona()">Daniel</button></div>
     <div class="sgrp"><span class="sgl">Play</span><button id="simBtn" onclick="simulate()">Simulate next ▸</button><button id="netBtn" onclick="STATE.offline=!STATE.offline;render()">Network: on</button><button onclick="openSheet('metrics')">Metrics</button></div>
     <div class="sgrp"><span class="sgl">Ported</span><button onclick="portJump('inbox')">Messages</button><button onclick="portJump('dm:d3')">Chat</button><button onclick="portJump('channel:jobs')">Channel</button><button onclick="portJump('notifications')">Bell</button><button onclick="portJump('explore')">Pool</button><button onclick="portJump('mission:m2');openSheet('cyclenotes')">The cycle</button><button onclick="portJump(null)">What changed</button></div>
   </div>
@@ -2370,13 +2370,13 @@
    MOCK DATABASE
    ========================= */
 const DB = {
-  user: { name: "Priya Sharma", initials: "PS", title: "Senior Product Manager", company: "Google Cloud", email: "priya@gmail.com", invitedBy: "Chris Fong", family: "Xoogler" },
+  user: { name: "Priya Sharma", initials: "PS", title: "Senior Product Manager", company: "Google Cloud", email: "priya@gmail.com", invitedBy: "Daniel Reyes", family: "Xoogler" },
   family: { name: "Xoogler", proof: "38 intros and 6 hires last quarter", members: 412 },
   intents: [ "Hiring", "Looking", "Cofounder", "Raising", "Investing", "Learning", "The people" ],
   people: {
     rahul: { id:"rahul", name:"Rahul Mehta", initials:"RM", title:"Engineering Director", company:"Anthropic", line:"Building the eng team for a new product line. Ex-Google Search.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:["Investing"], slots:"2 slots left this week", lookingFor:"Senior PMs who have shipped AI features", help:["Interview prep for AI companies","Eng and PM partnership","Hiring senior ICs"], shared:["Xoogler dinner, August","Met three times this year"] },
     maya:  { id:"maya", name:"Maya Chen", initials:"MC", title:"Head of Engineering", company:"Seed-stage, stealth", line:"Building infra for agents. Looking for a product partner.", families:["Xoogler","Michigan"], openTo:["Cofounder conversations","Product advice"], notNow:["Hiring"], slots:"2 slots left this month", lookingFor:"A product cofounder with AI experience", help:["Infra for agents","Fundraising a seed round","Early hiring"], shared:["Xoogler dinner, August","AI meetup, July"] },
-    chris: { id:"chris", name:"Chris Fong", initials:"CF", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
+    chris: { id:"chris", name:"Daniel Reyes", initials:"CF", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
     priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google Cloud", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
     dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google Legal. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
     ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Sierra", line:"Runs platform at Sierra. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Sierra"], shared:["Xoogler dinner, August","Met twice this year"] },
@@ -2393,10 +2393,10 @@ const DB = {
   recommendedFamilies: [
     { id:"michigan", name:"Michigan Alumni Network", initial:"M", members:1240, kind:"open", why:"From your LinkedIn: UMSI, 2025", proof:"12 intros last quarter" },
     { id:"aipm", name:"AI PM Circle", initial:"A", members:180, kind:"vetted", why:"Two people you know are members", proof:"Runs a monthly hiring thread" },
-    { id:"desi", name:"Desi Founders", initial:"D", members:900, kind:"vetted", why:"Chris is also a member", proof:"4 cofounder matches this year" }
+    { id:"desi", name:"Desi Founders", initial:"D", members:900, kind:"vetted", why:"Daniel is also a member", proof:"4 cofounder matches this year" }
   ],
   families: [
-    { id:"xoogler", name:"Xoogler", initial:"X", members:412, role:"member", proof:"38 intros and 6 hires last quarter", pinned:{ who:"Chris Fong", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } },
+    { id:"xoogler", name:"Xoogler", initial:"X", members:412, role:"member", proof:"38 intros and 6 hires last quarter", pinned:{ who:"Daniel Reyes", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } },
     { id:"michigan", name:"Michigan Product Alumni", initial:"M", members:188, role:"member", proof:"12 intros last quarter", pinned:null },
     { id:"desi", name:"Desi Founders", initial:"D", members:236, role:"member", proof:"9 intros and 2 rounds last quarter", source:"WhatsApp", pinned:{ who:"Neha Rao", text:"Investor office hours Thursday in SF and Friday in NYC. Reply in #cities with where you are." } }
   ],
@@ -2404,8 +2404,8 @@ const DB = {
   channels: {
     xoogler: [
       { id:"general", cat:"General", name:"#general", unread:0, last:"Rahul: Great turnout last night", joined:true, auto:true, members:412 },
-      { id:"introductions", cat:"General", name:"#introductions", unread:1, last:"Chris: Welcome Priya, Dev, and Ana…", joined:true, auto:true, members:412 },
-      { id:"announcements", cat:"General", name:"#announcements", unread:0, last:"Chris: Dinner Thursday, 34 in", joined:true, auto:true, members:412, readonly:true },
+      { id:"introductions", cat:"General", name:"#introductions", unread:1, last:"Daniel: Welcome Priya, Dev, and Ana…", joined:true, auto:true, members:412 },
+      { id:"announcements", cat:"General", name:"#announcements", unread:0, last:"Daniel: Dinner Thursday, 34 in", joined:true, auto:true, members:412, readonly:true },
       { id:"jobs", cat:"Opportunities", name:"#jobs", unread:3, last:"Sana: Senior PM, agents team at Perplexity…", joined:true, auto:true, members:301 },
       { id:"cofounders", cat:"Opportunities", name:"#cofounders", unread:0, last:"Maya: Anyone building eval tooling?", joined:true, auto:false, members:96 },
       { id:"fundraising", cat:"Opportunities", name:"#fundraising", unread:0, last:"Private to founders and investors", joined:false, private:true, members:58 },
@@ -2437,25 +2437,25 @@ const DB = {
       { who:"Ana Ruiz", ini:"AR", when:"Today", text:"Sierra is opening a platform PM role in October. Happy to talk to anyone thinking about it.", intent:"hiring", role:{ title:"Platform PM", company:"Sierra", poster:"ana", rel:"Hiring manager", link:null } }
     ],
     introductions: [
-      { who:"Chris Fong", ini:"CF", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Sierra. Say hi.", replies:6 }
+      { who:"Daniel Reyes", ini:"CF", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Sierra. Say hi.", replies:6 }
     ],
     cofounders: [
-      { who:"Chris Fong", ini:"CF", when:"Aug 21", text:"If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.", intent:"vouch" },
+      { who:"Daniel Reyes", ini:"CF", when:"Aug 21", text:"If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.", intent:"vouch" },
       { who:"Maya Chen", ini:"MC", when:"Sep 14", text:"Anyone building eval tooling for agents? Would love to compare notes.", intent:"help" }
     ],
     sf: [
-      { who:"Chris Fong", ini:"CF", when:"Monday", ritual:"Where are you", text:"Who's in SF this week? Reply with your days and I'll set up a lunch.", replies:14 },
+      { who:"Daniel Reyes", ini:"CF", when:"Monday", ritual:"Where are you", text:"Who's in SF this week? Reply with your days and I'll set up a lunch.", replies:14 },
       { who:"Rahul Mehta", ini:"RM", when:"Monday", text:"Tue to Thu, downtown." },
       { who:"Sana Iqbal", ini:"SI", when:"Monday", text:"All week." }
     ],
     general: [
-      { who:"Rahul Mehta", ini:"RM", when:"Yesterday", text:"Great turnout last night. Thanks Chris." }
+      { who:"Rahul Mehta", ini:"RM", when:"Yesterday", text:"Great turnout last night. Thanks Daniel." }
     ],
     "m-general": [ { who:"Alumni Board", ini:"AB", when:"Sep 1", text:"Welcome to the fall cohort. Introductions in #introductions." } ],
     "d-general": [ { who:"Neha Rao", ini:"NR", when:"Today", text:"Investor office hours Thursday in SF and Friday in NYC. Reply in #cities with where you are." } ],
     "d-cities": [ { who:"Neha Rao", ini:"NR", when:"Monday", ritual:"Where are you", text:"Where are you this week? SF, NYC, Bangalore, elsewhere. I'll set up dinners.", replies:23 }, { who:"Arjun Mehta", ini:"AM", when:"Monday", text:"Bangalore till the 30th, then SF." } ],
     "d-hiring": [ { who:"Arjun Mehta", ini:"AM", when:"Today", text:"Founding designer, Bangalore or SF. Equity heavy. DM me.", intent:"hiring", role:{ title:"Founding designer", company:"Arjun's startup, stealth", poster:"arjun", rel:"Founder", link:null } } ],
-    announcements: [ { who:"Chris Fong", ini:"CF", when:"Today", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } ],
+    announcements: [ { who:"Daniel Reyes", ini:"CF", when:"Today", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } ],
     "m-jobs": [ { who:"Kate Lin", ini:"KL", when:"Sep 10", text:"Two PM roles at Duolingo, growth and learning. I'm a referrer.", intent:"hiring", role:{ title:"PM, growth", company:"Duolingo", poster:"kate", rel:"Referrer", link:null } } ]
   },
   fevents: [
@@ -2475,9 +2475,9 @@ const DB = {
     { id:"g2", kind:"family", family:"xoogler", title:"Catch me up on #jobs", last:"Four roles this month, three with a referrer.", when:"Mon" }
   ],
   dms: [
-    { id:"d2", with:"chris", last:"You: Thanks for the intro, Chris", when:"Yesterday", path:false, unread:0 },
+    { id:"d2", with:"chris", last:"You: Thanks for the intro, Daniel", when:"Yesterday", path:false, unread:0 },
     { id:"d3", with:"maya", last:"Maya: Thursday 3pm, see you then", when:"Wed", path:true, unread:0 },
-    { id:"g-dinner", group:"Xoogler dinner · event chat", last:"Chris: Break's over, back in five", when:"Thu", unread:0, event:true }
+    { id:"g-dinner", group:"Xoogler dinner · event chat", last:"Daniel: Break's over, back in five", when:"Thu", unread:0, event:true }
   ],
   pool: [
     { kind:"role", title:"Senior PM, new product line", org:"Anthropic", via:"rahul", fam:"Xoogler", when:"Sep 9", why:"Matches your role mission" },
@@ -2512,7 +2512,7 @@ const DB = {
     boundaries: [["Never surface anyone at Google Cloud","you told Kai","Sep 16","paths"],["Never contact Sam Ortiz","you added","Sep 17","paths, requests"]],
     inferred: [["Most of your calendar overlap is with AI people","calendar","Sep 18","paths"],["Interested in eval tooling","you answered in #cofounders","Sep 19","help nudges"]],
     shared: [["Open to intros via connector, 3 a week",["xoogler","michigan","desi"]],["Can help with: product reviews, PM hiring",["xoogler","desi"]],["Looking for: revealed only on mutual match",[]],["Location: Bay Area",["xoogler","michigan","desi"]]],
-    told: [["Chris's Kai","that you're open to cofounder intros and how you know Maya","Sep 19"],["Dev's Kai","that you're at capacity this week","Sep 20"]],
+    told: [["Daniel's Kai","that you're open to cofounder intros and how you know Maya","Sep 19"],["Dev's Kai","that you're at capacity this week","Sep 20"]],
     stale: ["Three asks a week is fine (said Sep 16)"]
   },
   context: {
@@ -2524,24 +2524,24 @@ const DB = {
   },
   rules: { quiet:null, intros:"Via connector", hiring:"Open", advice:"Open", investing:"Closed", cofounder:"Open", capacity:3, path:"Anyone in my families, via connector", window:"None set", delegate:true, share:"Openness and capacity only" },
   posts: [
-    { kind:"Update", who:"Chris Fong", when:"Today", title:"Where I've been this month", text:"Three cities, two hackathons, one very good dinner. What I keep hearing: everyone's hiring PMs who've shipped AI, and nobody can find them. If that's you, say so in #jobs." },
-    { kind:"Digest", who:"Kai, published by Chris", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Maya's looking for eval-tooling folks. Six new members, all greeted." },
-    { kind:"Feature", who:"Ana Ruiz, approved by Chris", when:"Last week", title:"How I got into Sierra", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know." }
+    { kind:"Update", who:"Daniel Reyes", when:"Today", title:"Where I've been this month", text:"Three cities, two hackathons, one very good dinner. What I keep hearing: everyone's hiring PMs who've shipped AI, and nobody can find them. If that's you, say so in #jobs." },
+    { kind:"Digest", who:"Kai, published by Daniel", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Maya's looking for eval-tooling folks. Six new members, all greeted." },
+    { kind:"Feature", who:"Ana Ruiz, approved by Daniel", when:"Last week", title:"How I got into Sierra", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know." }
   ],
   asks: [
-    { id:"a1", to:"priya", kind:"connector", from:"dev", target:"rahul", what:"wants an intro to Rahul Mehta through you", note:"Hi Priya, Chris mentioned you and Rahul have worked together. I'm building legal-tech agents and would love 20 minutes with him on how Anthropic thinks about tool use. Totally fine if it's a no.", forward:"Dev Patel, ex-Google, building legal-tech agents. Wants 20 min on tool-use design.", receipts:[["Shared","Both in Xoogler. Chris greeted you both in #introductions","#introductions"],["Standing","Replies to asks. Has made 2 intros","ledger"]], state:"open", when:"2h" },
-    { id:"a2", to:"priya", kind:"direct", from:"ana", what:"wants 20 minutes on PM interview loops", note:"You listed PM hiring as something you can help with. I'm hiring a platform PM at Sierra and want to sanity-check my loop. Happy to return the favor.", receipts:[["Rule","Under your Product advice rule, via connector: Chris greeted you together","rules"],["Shared","Both at Xoogler dinner in August","events"]], state:"open", when:"1d" },
-    { id:"a3", to:"priya", kind:"forwarded", from:"jordan", via:"chris", what:"Chris introduced Jordan to you", note:"Priya, meet Jordan. Ex-Maps PM, just joined Xoogler, thinking about AI PM roles. You're two months ahead of him on exactly this. Jordan, Priya's the one to ask. Over to you both.", receipts:[["Vouched","Chris made the intro and nominated Jordan last week","#introductions"],["Shared","Both ex-Google, both in Xoogler","xoogler"]], state:"open", when:"3h" },
+    { id:"a1", to:"priya", kind:"connector", from:"dev", target:"rahul", what:"wants an intro to Rahul Mehta through you", note:"Hi Priya, Daniel mentioned you and Rahul have worked together. I'm building legal-tech agents and would love 20 minutes with him on how Anthropic thinks about tool use. Totally fine if it's a no.", forward:"Dev Patel, ex-Google, building legal-tech agents. Wants 20 min on tool-use design.", receipts:[["Shared","Both in Xoogler. Daniel greeted you both in #introductions","#introductions"],["Standing","Replies to asks. Has made 2 intros","ledger"]], state:"open", when:"2h" },
+    { id:"a2", to:"priya", kind:"direct", from:"ana", what:"wants 20 minutes on PM interview loops", note:"You listed PM hiring as something you can help with. I'm hiring a platform PM at Sierra and want to sanity-check my loop. Happy to return the favor.", receipts:[["Rule","Under your Product advice rule, via connector: Daniel greeted you together","rules"],["Shared","Both at Xoogler dinner in August","events"]], state:"open", when:"1d" },
+    { id:"a3", to:"priya", kind:"forwarded", from:"jordan", via:"chris", what:"Daniel introduced Jordan to you", note:"Priya, meet Jordan. Ex-Maps PM, just joined Xoogler, thinking about AI PM roles. You're two months ahead of him on exactly this. Jordan, Priya's the one to ask. Over to you both.", receipts:[["Vouched","Daniel made the intro and nominated Jordan last week","#introductions"],["Shared","Both ex-Google, both in Xoogler","xoogler"]], state:"open", when:"3h" },
     { id:"a4", to:"priya", kind:"help", from:"maya", channel:"cofounders", what:"asked about eval tooling for agents in #cofounders", note:"Anyone building eval tooling for agents? Would love to compare notes.", receipts:[["Why you","You shipped eval features at Cloud. Kai flagged this to you and one other member","context"]], state:"open", when:"5h" },
     { id:"a5", to:"priya", kind:"direct", from:"kate", what:"wants a referral to Google Cloud", note:"Saw you're at Cloud. Any chance of a referral for the PM, Vertex role?", receipts:[["Rule","Cold ask from Michigan. You're at capacity this week","rules"]], state:"passed", when:"2d" },
-    { id:"c1", to:"chris", kind:"connector", from:"priya", target:"maya", what:"wants an intro to Maya Chen through you", note:"Hi Chris, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.", forward:"Priya Sharma, senior PM at Google Cloud, shipped two AI features, looking for a technical cofounder for an agents product.", receipts:[["Vouched","You nominated her last week","nomination"],["Standing","New. 0 intros, replies within a day","ledger"]], state:"pending", when:"now" },
-    { id:"c2", to:"chris", kind:"connector", from:"dev", target:"sana", what:"wants an intro to Sana Iqbal through you", note:"Hey Chris, could you connect me with Sana? Perplexity's agents team is exactly my area.", forward:"Dev Patel, ex-Google, legal-tech agents.", receipts:[["Shared","You greeted Dev in #introductions","#introductions"],["Standing","2 intros made, replies to asks","ledger"]], state:"open", when:"4h" }
+    { id:"c1", to:"chris", kind:"connector", from:"priya", target:"maya", what:"wants an intro to Maya Chen through you", note:"Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.", forward:"Priya Sharma, senior PM at Google Cloud, shipped two AI features, looking for a technical cofounder for an agents product.", receipts:[["Vouched","You nominated her last week","nomination"],["Standing","New. 0 intros, replies within a day","ledger"]], state:"pending", when:"now" },
+    { id:"c2", to:"chris", kind:"connector", from:"dev", target:"sana", what:"wants an intro to Sana Iqbal through you", note:"Hey Daniel, could you connect me with Sana? Perplexity's agents team is exactly my area.", forward:"Dev Patel, ex-Google, legal-tech agents.", receipts:[["Shared","You greeted Dev in #introductions","#introductions"],["Standing","2 intros made, replies to asks","ledger"]], state:"open", when:"4h" }
   ],
   activity: [
-    { cat:"you", who:"Chris Fong", ini:"CF", text:"introduced you to Jordan Tan", when:"9:12", to:"req:a3", unread:true },
+    { cat:"you", who:"Daniel Reyes", ini:"CF", text:"introduced you to Jordan Tan", when:"9:12", to:"req:a3", unread:true },
     { cat:"you", who:"Rahul Mehta", ini:"RM", text:"reacted to your reply in #jobs", when:"Tue", to:"channel:jobs", unread:true },
-    { cat:"you", who:"Chris Fong", ini:"CF", text:"approved your nomination of Jordan", when:"Mon", to:"people" },
-    { cat:"family", who:"Chris Fong", ini:"CF", text:"published This week in Xoogler", when:"Mon", to:"posts" },
+    { cat:"you", who:"Daniel Reyes", ini:"CF", text:"approved your nomination of Jordan", when:"Mon", to:"people" },
+    { cat:"family", who:"Daniel Reyes", ini:"CF", text:"published This week in Xoogler", when:"Mon", to:"posts" },
     { cat:"family", who:"Xoogler Dinners", ini:"X", text:"added AI PM roundtable, Oct 7", when:"Mon", to:"cal:cal-xt" },
     { cat:"family", who:"Ritual", ini:"#", text:"Who's in SF this week? is up in #sf-this-week", when:"Mon", to:"channel:sf" },
     { cat:"system", who:"Kai", ini:"K", text:"proposed a rule: fewer direct asks. Review in Rules", when:"Sun", to:"you:rules" },
@@ -2549,11 +2549,11 @@ const DB = {
     { cat:"system", who:"Account", ini:"A", text:"Your export is ready to download", when:"Fri", to:"you:settings" }
   ],
   eventChat: [
-    { who:"Chris Fong", ini:"CF", pin:true, text:"Doors at 7. Table cards have your name. Bar's open." },
+    { who:"Daniel Reyes", ini:"CF", pin:true, text:"Doors at 7. Table cards have your name. Bar's open." },
     { who:"Kai", ini:"K", sys:true, text:"Rahul Mehta checked in" },
     { who:"Kai", ini:"K", sys:true, text:"Maya Chen checked in" },
     { who:"Sana Iqbal", ini:"SI", text:"Running ten late, save me a seat." },
-    { who:"Chris Fong", ini:"CF", pin:true, text:"Break's over, back in five for the intros round." }
+    { who:"Daniel Reyes", ini:"CF", pin:true, text:"Break's over, back in five for the intros round." }
   ]
 };
 
@@ -2654,15 +2654,15 @@ function advanceWeek() {
   if (wk===2) { const o1=DB.opps.find(o=>o.id==="o1"); const o2=DB.opps.find(o=>o.id==="o2"); const o3=DB.opps.find(o=>o.id==="o3");
     if (o1&&isNewOf(o1)) { o1.state="waiting"; lit(o1,"Asked","-6d"); o1.log.push(["You","said hi to Rahul","-6d"]); }
     if (o1) { o1.state="yourmove"; o1.phase="replied"; o1.replyText="Rahul: Happy to chat. Thursday afternoon?"; lit(o1,"Replied","-1d"); o1.log.push(["Rahul","replied","-1d"]); if (STATE.connect.calendar) { o1.logPrompt="Tuesday with Rahul, anything come of it?"; } }
-    if (o2&&isNewOf(o2)) { o2.state="waiting"; lit(o2,"Asked","-5d"); o2.log.push(["You","asked Chris to intro you to Maya","-5d"]); o2.log.push(["Chris","agreed and forwarded your note","-3d"]); o2.viaAgreed=true; lit(o2,"Chris agreed","-3d"); }
+    if (o2&&isNewOf(o2)) { o2.state="waiting"; lit(o2,"Asked","-5d"); o2.log.push(["You","asked Daniel to intro you to Maya","-5d"]); o2.log.push(["Daniel","agreed and forwarded your note","-3d"]); o2.viaAgreed=true; lit(o2,"Daniel agreed","-3d"); }
     if (o3) { o3.state="waiting"; lit(o3,"Asked","-6d"); o3.log.push(["You","asked Sana to refer you","-6d"]); o3.log.push(["Kai","no reply from Sana in 6 days. Drafted a nudge for you to send.","-1d"]); o3.nudgeDraft=true; }
-    go("home"); pushNote("This week", "Rahul replied. Chris forwarded your note to Maya. Sana hasn't answered; Kai drafted a nudge for you.", [["Open", ()=>go("home")]]);
+    go("home"); pushNote("This week", "Rahul replied. Daniel forwarded your note to Maya. Sana hasn't answered; Kai drafted a nudge for you.", [["Open", ()=>go("home")]]);
     if (o1&&o1.logPrompt) { DB.activity.unshift({ cat:"foryou", who:"Kai", ini:"K", text:o1.logPrompt+" Tap to answer.", when:"now", to:"mission:m1", needs:true }); setTimeout(()=>pushNote("Quick one", o1.logPrompt, [["Answer", ()=>go("mission:m1")]]), 900); }
     return; }
   if (wk===3) { DB.activity.unshift({ cat:"you", who:"Kai", ini:"K", text:"Two paths moved this week. Anything to add?", when:"now", to:"mission:m1", needs:true }); (()=>{ const noop=()=>{}; noop(); })(); if (false) pushNote("Your week on Key", "", [["Log", ()=>{ STATE.kaiScope={kind:"mission",id:"m1",label:DB.missions[0].name,sugg:[]}; STATE.kaiMsgs=[{who:"k",text:"What happened this week? One line, or hold the mic."}]; STATE.logMode="m1"; const sc=STATE.kaiScope; openSheet("kai"); STATE.kaiScope=sc; render(); }]]);
     const o1=DB.opps.find(o=>o.id==="o1"); const o2=DB.opps.find(o=>o.id==="o2"); const o3=DB.opps.find(o=>o.id==="o3");
     if (o1) { o1.state="conversation"; o1.met=true; o1.phase=null; lit(o1,"In conversation","-4d"); o1.log.push(["You","met Rahul Thursday","-4d"]); o1.journalDue=true; }
-    if (o2) { o2.state="yourmove"; o2.phase="replied"; o2.replyText="Maya: Chris mentioned you. Coffee next week?"; lit(o2,"Replied","-2d"); o2.log.push(["Maya","replied","-2d"]); }
+    if (o2) { o2.state="yourmove"; o2.phase="replied"; o2.replyText="Maya: Daniel mentioned you. Coffee next week?"; lit(o2,"Replied","-2d"); o2.log.push(["Maya","replied","-2d"]); }
     if (o3) { o3.stale=true; o3.log.push(["Kai","two weeks, no reply. Proposing to archive.","now"]); }
     STATE.archiveProposed = o3 ? [o3.id] : [];
     go("home"); pushNote("Two things", "Kai wants to know how Rahul went, and one path went quiet. One tap each.", [["Open", ()=>go("mission:m1")]]); return; }
@@ -2708,7 +2708,7 @@ function applyIntake() {
     DB.opps.push(opp("o3",m1.id,"role","sana","connector",[ ["Fit","Senior PM, agents team. Matches your mission","mission"], ["Vouched","Sana is on the hiring panel and posted it herself","#jobs, Sep 12"], ["Shared","2 other Xooglers work there","people"] ],"Ask Sana to refer you","new",{ via:"sana", roleTitle:"Senior PM, agents", roleCompany:"Perplexity", timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
   }
   if (m2) {
-    DB.opps.push(opp("o2",m2.id,"person","maya","connector",[ ["Vouched","Chris recommended her in #cofounders in August","#cofounders, Aug 21"], ["Shared","Both at Xoogler dinner and the AI meetup","events"], ["Open","Cofounder conversations, 2 slots left this month","rules"] ],"Ask Chris to intro you","new",{ via:"chris", timeline:[["Surfaced","today",true],["Asked Chris","",false],["Chris agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
+    DB.opps.push(opp("o2",m2.id,"person","maya","connector",[ ["Vouched","Daniel recommended her in #cofounders in August","#cofounders, Aug 21"], ["Shared","Both at Xoogler dinner and the AI meetup","events"], ["Open","Cofounder conversations, 2 slots left this month","rules"] ],"Ask Daniel to intro you","new",{ via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
   }
   STATE.intakeDone = true;
 }
@@ -2722,15 +2722,15 @@ const THREAD_SUGGESTIONS = {
     { t:"What's the next step?", r:"Say hi to Rahul. It's the strongest path you have, it costs nothing, and he's going Thursday so you can follow up in person. The draft is ready in his card." }
   ],
   m2: [
-    { t:"Why Maya?", r:"Chris recommended her by name in #cofounders, you've been in a room with her twice, and her stated intent is a product cofounder with AI experience, which is you. That's a vouched path plus a mutual intent. It's the best cofounder signal in Xoogler right now." },
+    { t:"Why Maya?", r:"Daniel recommended her by name in #cofounders, you've been in a room with her twice, and her stated intent is a product cofounder with AI experience, which is you. That's a vouched path plus a mutual intent. It's the best cofounder signal in Xoogler right now." },
     { t:"Who else is looking?", r:"Two others with a stated cofounder intent in your families, but neither has a vouched path yet. I'd rather wait for one than surface a cold ask for something this serious. I'll tell you the moment one appears." },
     { t:"Pause this mission", r:"Paused. I'll stop surfacing cofounder paths until you say otherwise. Everything stays where it is.", effect:"pause" },
-    { t:"What should I say to Chris?", r:"Keep it short. Remind him of the #cofounders post, say what you're building, ask if he'd connect you. The draft in Maya's card does that in three sentences." }
+    { t:"What should I say to Daniel?", r:"Keep it short. Remind him of the #cofounders post, say what you're building, ask if he'd connect you. The draft in Maya's card does that in three sentences." }
   ]
 };
 const OPP_SUGGESTIONS = {
   o1: [ ["How do I know Rahul?","Three meetings this year on your calendar: two 1:1s in March and June, and a group dinner in August. You were both on the Cloud AI platform team in 2021."], ["What's he hiring for?","Senior PMs for a new product line. He posted it in #jobs on September 9 and said he's prioritizing people who've shipped AI features."], ["Is this worth my time?","Yes. It's a direct path with three real touchpoints, and he's going Thursday. If you don't want the role, it's still the right person to talk to about the AI PM market."], ["What should I say?","Reference the June conversation, say you're looking, ask for twenty minutes before Thursday. The draft does exactly that."] ],
-  o2: [ ["Why through Chris?","You haven't met Maya directly. Chris co-hosted two events with her and recommended her by name, so his intro carries weight. Asking her cold would work against Chris's own recommendation."], ["What does she want?","A product cofounder with AI experience for an agents infra company. She wrote that herself. It matches your cofounder intent, which is why the blurred block on her profile is already visible to you."], ["Is Chris okay with intros?","Yes. His rules are open to intros, and he's made eleven this quarter. This would be his first ask from you this week."], ["What if he says no?","The path reroutes. Maya's also connected to Rushal Verma, who you met at the meetup. And she's going Thursday, so there's an in-person route too."] ],
+  o2: [ ["Why through Daniel?","You haven't met Maya directly. Daniel co-hosted two events with her and recommended her by name, so his intro carries weight. Asking her cold would work against Daniel's own recommendation."], ["What does she want?","A product cofounder with AI experience for an agents infra company. She wrote that herself. It matches your cofounder intent, which is why the blurred block on her profile is already visible to you."], ["Is Daniel okay with intros?","Yes. His rules are open to intros, and he's made eleven this quarter. This would be his first ask from you this week."], ["What if he says no?","The path reroutes. Maya's also connected to Rushal Verma, who you met at the meetup. And she's going Thursday, so there's an in-person route too."] ],
   o3: [ ["Who is Sana?","Product lead at Perplexity, on the hiring panel for this role. She posted it in #jobs on September 12 and said referrals go to the top of her list."], ["What's the role?","Senior PM on the agents team. Bay Area, in person three days. The posting link is on the role screen. Two Xooglers work there already."], ["Should I just apply?","You can, but a referral from Sana skips the screen. Ask her first. If she doesn't reply in a week, I'll suggest applying directly."], ["What should I say?","Say you saw her post, one line on what you've shipped in AI, ask if she'd refer you. The draft is ready."] ]
 };
 const KAI_COMPOSER = [
@@ -2742,7 +2742,7 @@ const KAI_COMPOSER = [
 const START_VERBS = [ ["Find a role","Looking","Find a role"], ["Find a cofounder","Cofounder","Find a cofounder"], ["Hire someone","Hiring","Hire for my team"], ["Raise","Raising","Raise a round"], ["Meet people","The people","Meet people worth knowing"] ];
 function startVerb(i) { const [label,type,name] = START_VERBS[i]; if (DB.missions.some(m=>m.type===type)) { toast(`Already running: ${name}`); return; } const id="m"+(DB.missions.length+1); DB.missions.push({ id, type, name, started:true, brief:"Kai is looking across Xoogler and Michigan. Next pass Friday. Do the call and I'll make this specific.", done:"Not set yet", standing:type==="The people", status:"active", constraints:[] }); if (!STATE.intent.includes(type)) STATE.intent.push(type);
   if (type==="Looking" && !DB.opps.some(o=>o.id==="o1")) DB.opps.push(opp("o1", id, "person", "rahul", "direct", [ ["Shared","Both ex-Google Cloud, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
-  if (type==="Cofounder" && !DB.opps.some(o=>o.id==="o2")) DB.opps.push(opp("o2", id, "person", "maya", "connector", [ ["Vouched","Chris recommended her in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Chris to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Chris","",false],["Chris agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
+  if (type==="Cofounder" && !DB.opps.some(o=>o.id==="o2")) DB.opps.push(opp("o2", id, "person", "maya", "connector", [ ["Vouched","Daniel recommended her in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Daniel to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
   render(); STATE.kaiScope={ kind:"mission", id, label:name, sugg: type==="Looking"?["An AI company, under 200 people","Bay Area or remote","Senior, not staff"]:type==="Cofounder"?["Technical, has shipped","Bay Area","Someone I've worked with before"]:["Tell me what kind","Where","Who you already know"] }; STATE.kaiMsgs=[{who:"k",text:`${name}. Tell me what kind, and I'll make it specific. Or talk it through when you do the conversation.`}]; const sc=STATE.kaiScope; openSheet("kai"); STATE.kaiScope=sc; render(); }
 const NEW_MISSION_CHIPS = [ "Get into Anthropic", "Find an advisor who's raised a seed", "Hire a designer for my side project" ];
 const NEW_MISSION_DONE = { "Get into Anthropic":"A conversation with a hiring manager there", "Find an advisor who's raised a seed":"One advisor agreed", "Hire a designer for my side project":"Someone accepted" };
@@ -2769,7 +2769,7 @@ function endQuickVoice() {
   const q = STATE.quick; q.phase="reply"; const scope = kaiScopeFor();
   if (/two hundred/i.test(q.user) && scope&&scope.kind==="mission") { missionSay(scope.id, "Only companies under 200 people"); q.reply="Done. Anthropic is bigger, Rahul moved to candidates. Friday's pass uses it."; q.chips=["Undo","Open mission"]; }
   else if (/meet/i.test(q.user)) { q.reply="Rahul, Maya and Sana are going. Want to see a hello for all three?"; q.chips=["Preview the three","Not now"]; }
-  else if (/know/i.test(q.user)) { q.reply="You've met three times this year. Chris is the strongest route if you want an intro."; q.chips=["Draft a note","Open profile"]; }
+  else if (/know/i.test(q.user)) { q.reply="You've met three times this year. Daniel is the strongest route if you want an intro."; q.chips=["Draft a note","Open profile"]; }
   else { q.reply="Rahul, Maya and Sana. Three people you should meet."; q.chips=["Who to meet","Open event"]; }
   mountQuick();
   STATE.quickDismiss=setTimeout(()=>{ STATE.quick=null; const el=phone.querySelector("#quick"); if(el) el.remove(); }, 7000);
@@ -3004,7 +3004,7 @@ const APP_PAGES = [
   { t:"Why Xoogler", qs:[["Why do you want to join?","",false],["How did you hear about us?","",false],["Who do you already know here?","",false]] },
   { t:"What you're working on", qs:[["What are you working on right now?","",false],["What's next for you?","",false],["Are you hiring, looking, or building?","",false],["Location","Bay Area",true]] },
   { t:"What you can offer", qs:[["What can you help members with?","",false],["Would you host or speak?","",false],["Topics you'd want a dinner on","",false]] },
-  { t:"House rules", qs:[["No cold pitches to members. Agree?","",false],["Intros go through people, not lists. Agree?","",false],["Anything else Chris should know?","",false]] }
+  { t:"House rules", qs:[["No cold pitches to members. Agree?","",false],["Intros go through people, not lists. Agree?","",false],["Anything else Daniel should know?","",false]] }
 ];
 function sApplication() {
   const i = STATE.appPage; const pg = APP_PAGES[i]; const total = APP_PAGES.length;
@@ -3012,12 +3012,12 @@ function sApplication() {
   return `<div class="hdr"><div class="back" onclick="${i?'STATE.appPage--;render()':"go('family-step')"}">‹</div><div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:700">Xoogler application</div><div class="xs faint">Page ${i+1} of ${total} · ${pg.t} · <span class="tag" style="font-size:10px">saved</span></div></div><div class="flogo" style="width:28px;height:28px;font-size:12px">X</div></div>
   <div class="apbar">${APP_PAGES.map((p,k)=>`<i class="${k<i?'done':''} ${k===i?'on':''}"></i>`).join("")}</div>
   <div class="body">
-    ${i===0?`<p class="sm muted" style="margin:6px 0 10px">Chris's questions, in his words. 22 in all, ${APP_PAGES.reduce((a,p)=>a+p.qs.filter(q=>q[2]).length,0)} already filled from your profile. About 8 minutes. Everything saves as you go.</p>`:''}
+    ${i===0?`<p class="sm muted" style="margin:6px 0 10px">Daniel's questions, in his words. 22 in all, ${APP_PAGES.reduce((a,p)=>a+p.qs.filter(q=>q[2]).length,0)} already filled from your profile. About 8 minutes. Everything saves as you go.</p>`:''}
     <div class="stack">${pg.qs.map(([q,a,pre],k)=>{ const key=i+":"+k; const v=STATE.appAnswers[key]!==undefined?STATE.appAnswers[key]:a; return `<div class="field"><div class="k">${q}${pre?' · from your profile':''}</div>${pre?`<div class="v" style="display:flex;justify-content:space-between;align-items:center">${v}<span class="xs faint" style="text-decoration:underline">edit</span></div>`:`<div class="composer" style="margin-top:6px"><textarea class="input" rows="2" data-ans="${key}" placeholder="Type, or hold mic">${v}</textarea><div class="mic" data-ansmic="${key}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></div></div>`}</div>`; }).join("")}</div>
   </div>
-  <div class="foot">${i<total-1?`<button class="btn" onclick="STATE.appPage++;render()">Next · ${pg.t==="House rules"?"Submit":APP_PAGES[i+1].t}</button>`:`<button class="btn" onclick="submitApp()">Submit to Chris</button>`}<button class="btn ghost" onclick="toast('Saved. Come back any time from the Families tab, or from the notification.');go('home')">Save and finish later</button></div>`;
+  <div class="foot">${i<total-1?`<button class="btn" onclick="STATE.appPage++;render()">Next · ${pg.t==="House rules"?"Submit":APP_PAGES[i+1].t}</button>`:`<button class="btn" onclick="submitApp()">Submit to Daniel</button>`}<button class="btn ghost" onclick="toast('Saved. Come back any time from the Families tab, or from the notification.');go('home')">Save and finish later</button></div>`;
 }
-function submitApp() { STATE.metrics.applications++; STATE.applied=true; STATE.appliedAt="today"; DB.activity.unshift({ cat:"system", who:"Xoogler", ini:"X", text:"application received. Chris reviews about twice a week.", when:"now", to:"family" }); go("home"); pushNote("Application sent", "Chris reviews about twice a week. You'll hear either way. Meanwhile, get ready.", [["Get ready", ()=>go("home")]]); }
+function submitApp() { STATE.metrics.applications++; STATE.applied=true; STATE.appliedAt="today"; DB.activity.unshift({ cat:"system", who:"Xoogler", ini:"X", text:"application received. Daniel reviews about twice a week.", when:"now", to:"family" }); go("home"); pushNote("Application sent", "Daniel reviews about twice a week. You'll hear either way. Meanwhile, get ready.", [["Get ready", ()=>go("home")]]); }
 function sFamilyStep() {
   const invited = !!DB.user.invitedBy;
   return `${`<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('home')">‹</div><div style="flex:1"></div><div class="xs faint">Xoogler</div></div>`}
@@ -3026,7 +3026,7 @@ function sFamilyStep() {
     <div class="card" style="border-color:var(--ink)"><div class="xs faint">Last quarter</div><div class="row" style="gap:18px;margin-top:6px"><div><div style="font-size:24px;font-weight:800">38</div><div class="xs muted">intros</div></div><div><div style="font-size:24px;font-weight:800">6</div><div class="xs muted">hires</div></div><div><div style="font-size:24px;font-weight:800">4</div><div class="xs muted">cofounders</div></div></div></div>
     <div class="lbl">What members get</div>
     <div class="card" style="padding:4px 14px">${[["<b>Warm paths</b>, not cold outreach","Intros through people who vouch for you"],["<b>Asked less, and better</b>","Requests go through people, capacity is capped, nothing reaches you without your yes"],["<b>Rooms, monthly</b>","Dinners with who to meet before you walk in"]].map(([a,b])=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
-    <p class="sm muted" style="margin:12px 0 0">Chris reviews applications about twice a week. Until you're in, you can get ready and Kai can prepare. Nothing reaches members.</p>
+    <p class="sm muted" style="margin:12px 0 0">Daniel reviews applications about twice a week. Until you're in, you can get ready and Kai can prepare. Nothing reaches members.</p>
     <p class="xs faint" style="margin-top:10px;text-decoration:underline" onclick="go('doorway')">Not this one? Find other families</p>
   </div>
   <div class="foot"><button class="btn" onclick="STATE.appPage=0;go('application')">Apply · about 8 minutes</button><button class="btn ghost" onclick="toast('Saved. Apply later from the Families tab.');STATE.applied=false;go('home')">Not now</button></div>`;
@@ -3035,7 +3035,7 @@ function sFamilyStep() {
     <div class="cover" style="margin-top:0"><div class="flogo big">X</div></div>
     <div class="famname"><div class="t">${DB.family.name}</div><div class="m">${DB.family.members} ex-Googlers · ${DB.family.proof}</div></div>
     ${invited?`<div class="invchip" style="margin:0 0 10px">${av("CF","sm")}<span><b>${DB.user.invitedBy}</b>, president, invited you to apply</span></div>`:''}
-    <p class="sm" style="margin:0 0 10px">Xoogler vets everyone. Chris reviews applications about twice a week. Until you're in, you can get ready, and Kai can prepare, but nothing reaches members.</p>
+    <p class="sm" style="margin:0 0 10px">Xoogler vets everyone. Daniel reviews applications about twice a week. Until you're in, you can get ready, and Kai can prepare, but nothing reaches members.</p>
     <div class="lbl">What members get</div>
     <div class="card" style="padding:4px 14px">${[["Warm paths","Intros through people who can vouch for you, tracked to what came of them"],["Dinners and roundtables","Monthly, with who to meet before you walk in"],["Channels","#jobs, #cofounders, #sf-this-week, and eleven more"]].map(([a,b])=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
     <div class="lbl">Coming up</div>
@@ -3153,7 +3153,7 @@ function startSuggested() {
   (STATE.suggest||[]).filter(x=>x.on).forEach((m,i)=>{ const nm=sugName(m); DB.missions.push({ id:"m"+(i+1), type:m.type, name:nm, brief:`${nm}. ${m.done}. Kai is looking in Xoogler and Michigan. Next pass Friday.`, done:m.done.replace("Default: ",""), standing:/Standing/.test(m.done), status:"active", constraints:Object.values(m.picks).filter(v=>v&&!["Any","Either","Anywhere","Other"].includes(v)) }); });
   const m1 = DB.missions.find(m=>m.type==="Looking"); const m2 = DB.missions.find(m=>m.type==="Cofounder");
   if (m1) DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", STATE.connect.calendar ? [ ["Connected","You've met 3 times this year","calendar"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ] : [ ["Shared","Both ex-Google Cloud, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
-  if (m2) DB.opps.push(opp("o2", m2.id, "person", "maya", "connector", [ ["Vouched","Chris recommended her in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Chris to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Chris","",false],["Chris agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
+  if (m2) DB.opps.push(opp("o2", m2.id, "person", "maya", "connector", [ ["Vouched","Daniel recommended her in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Daniel to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
 }
 
 /* ---- Home ---- */
@@ -3210,7 +3210,7 @@ function quickLogin() {
 }
 function approveMe() { STATE.welcomeDue = true;
   STATE.member=true; STATE.family="xoogler";
-  DB.activity.unshift({ cat:"you", who:"Chris Fong", ini:"CF", text:"approved your application. You're in Xoogler.", when:"now", to:"family", unread:true });
+  DB.activity.unshift({ cat:"you", who:"Daniel Reyes", ini:"CF", text:"approved your application. You're in Xoogler.", when:"now", to:"family", unread:true });
   if (STATE.intakeDone) { applyIntake(); pushNote("You're in Xoogler", "Kai ran a first pass. Paths are on your Missions tab.", [["Open", ()=>go("home")]]); go("home"); }
   else { pushNote("You're in Xoogler", "Two quick steps and Kai starts looking.", [["Continue", ()=>go("intent")]]); go("intent"); }
 }
@@ -3496,7 +3496,7 @@ function sReadback() {
     <p class="muted">This becomes your profile. It's what Kai knows about you, and the only parts other members' Kai can read are the ones you share. Fix anything.</p>
     ${profileHTML({ initials:DB.user.initials, name:DB.user.name, headline:`${DB.user.title} at ${DB.user.company}`, verified:(STATE.signinWith==="linkedin"||STATE.linkedinConfirmed), families:STATE.applied?["Xoogler, pending"]:[], self:true,
       stats:[["6 yrs","at Google"],["8","on your team"],["3","asks a week"]],
-      facts:[["◎","Senior PM on an AI feature at Google Cloud, working most with the eng and design leads"],["◆","Bay Area, in person preferred, nothing before November"],["✦","Meets people at events; cold messages feel wrong"],["⌘","Already knows Rahul Mehta at Anthropic (met three times) and Chris"]],
+      facts:[["◎","Senior PM on an AI feature at Google Cloud, working most with the eng and design leads"],["◆","Bay Area, in person preferred, nothing before November"],["✦","Meets people at events; cold messages feel wrong"],["⌘","Already knows Rahul Mehta at Anthropic (met three times) and Daniel"]],
       words:"I've shipped two AI features at Cloud and I'm ready for a smaller company where the product is the company. I want to get there through people who can vouch for the work, not a cold application.",
       prompts:[["What I'm after","A senior PM role at an AI company under two hundred people, ideally through someone I know. A technical cofounder for an agents idea, no rush on that one."],["What I can help with","Product reviews on AI features, PM hiring loops, and getting into Google. Ask me about any of these."]],
       connection:{ lines:[["👁","Members see your name, headline, and what you can help with"],["◔","What you're after shows only on a mutual match"],["✕","Who you know, your boundaries and this page never leave unless you share them"]] } })}
@@ -3750,7 +3750,7 @@ function sPublicPage() {
     <div class="lbl">Coming up</div>
     ${DB.fevents.filter(e=>e.family===f.id&&!e.past).slice(0,2).map(e=>evCard(e,"row",{fam:false,noAction:true})).join("")}
     <div class="lbl">Run by</div>
-    <div class="rowitem" style="cursor:default">${av(f.id==="desi"?"NR":"CF")}<div class="m"><div class="a">${f.id==="desi"?"Neha Rao":"Chris Fong"}</div><div class="b">${f.id==="desi"?"Partner, Lattice Ventures":"President"}</div></div></div>
+    <div class="rowitem" style="cursor:default">${av(f.id==="desi"?"NR":"CF")}<div class="m"><div class="a">${f.id==="desi"?"Neha Rao":"Daniel Reyes"}</div><div class="b">${f.id==="desi"?"Partner, Lattice Ventures":"President"}</div></div></div>
     <div class="xs faint" style="margin-top:14px">Your AI can ask Key for a warm path here once you're a member. Members bring their own tools.</div>
   </div>
   <div class="foot">${STATE.member?`<button class="btn sec" onclick="go('family')">You're a member · open</button>`:`<button class="btn" onclick="STATE.appPage=0;go('application')">Apply · about 8 minutes</button>`}</div>`;
@@ -3852,7 +3852,7 @@ function sFamily() {
     ${famTop()}
     ${famPills("chat")}
     ${f.pinned?`<div class="pinned" style="margin-top:12px"><b>Pinned by ${f.pinned.who}</b>${f.pinned.text}</div>`:""}
-    ${(function(){ const recs=(DB.channels[f.id]||[]).filter(c=>!c.joined && !(STATE.chDismissed||{})[c.id]).slice(0,2); if(!recs.length) return ""; const why={jobs:"Three roles a week match your mission", cofounders:"Where Chris found Maya for you", raising:"Two members you know are in it", cities:"Your city's thread", fundraising:"Two members you know post here; it fits your cofounder mission", "hiring-managers":"Roles like the ones you're after are posted here first", "ai":"Rahul and Sana are active here", "founders":"Where cofounder conversations start"}; const keyOf=c=>(c.name||"").replace("#",""); return `<div class="chrec"><div class="lbl" style="margin:12px 0 6px;display:flex;align-items:center;gap:6px"><span class="stdot"></span>Kai suggests</div>${recs.map(c=>`<div class="chrow"><div class="chh">${CH_EMO[c.id]||"#"}</div><div class="m"><div class="a">${c.name}</div><div class="b">${why[c.id]||why[keyOf(c)]||`${c.members||120} members, active this week`}</div></div><span class="chip" style="font-size:12px" onclick="event.stopPropagation();go('channel:${c.id}')">Peek</span><span class="chip on" style="font-size:12px" onclick="event.stopPropagation();(function(){ const x=(DB.channels['${f.id}']||[]).find(z=>z.id==='${c.id}'); x.joined=true; })();render();toast('Joined ${c.name}.')">Join</span><span class="xs faint" style="padding:6px" onclick="event.stopPropagation();STATE.chDismissed=STATE.chDismissed||{};STATE.chDismissed['${c.id}']=true;render()">✕</span></div>`).join("")}</div>`; })()}
+    ${(function(){ const recs=(DB.channels[f.id]||[]).filter(c=>!c.joined && !(STATE.chDismissed||{})[c.id]).slice(0,2); if(!recs.length) return ""; const why={jobs:"Three roles a week match your mission", cofounders:"Where Daniel found Maya for you", raising:"Two members you know are in it", cities:"Your city's thread", fundraising:"Two members you know post here; it fits your cofounder mission", "hiring-managers":"Roles like the ones you're after are posted here first", "ai":"Rahul and Sana are active here", "founders":"Where cofounder conversations start"}; const keyOf=c=>(c.name||"").replace("#",""); return `<div class="chrec"><div class="lbl" style="margin:12px 0 6px;display:flex;align-items:center;gap:6px"><span class="stdot"></span>Kai suggests</div>${recs.map(c=>`<div class="chrow"><div class="chh">${CH_EMO[c.id]||"#"}</div><div class="m"><div class="a">${c.name}</div><div class="b">${why[c.id]||why[keyOf(c)]||`${c.members||120} members, active this week`}</div></div><span class="chip" style="font-size:12px" onclick="event.stopPropagation();go('channel:${c.id}')">Peek</span><span class="chip on" style="font-size:12px" onclick="event.stopPropagation();(function(){ const x=(DB.channels['${f.id}']||[]).find(z=>z.id==='${c.id}'); x.joined=true; })();render();toast('Joined ${c.name}.')">Join</span><span class="xs faint" style="padding:6px" onclick="event.stopPropagation();STATE.chDismissed=STATE.chDismissed||{};STATE.chDismissed['${c.id}']=true;render()">✕</span></div>`).join("")}</div>`; })()}
     <div class="toolrow"><div class="search" onclick="toast('Search channels and messages in ${f.name}')">Search channels</div>${STATE.asOrganizer?`<div class="icon" onclick="toast('New channel: name, category, private or public (out of scope)')">+</div>`:''}</div>
     <div class="browserow" onclick="STATE.browseAll=!STATE.browseAll;render()"><div class="icon">☰</div><div style="flex:1">${STATE.browseAll?'Showing all channels':'Browse channels'}</div><span class="xs faint">${notJoined} you haven't joined</span></div>
     ${cats.map(section).join("")}
@@ -3893,7 +3893,7 @@ function sPeople() {
     ${famPills("people")}
     <div class="toolrow" style="padding-top:10px"><input class="search" id="pq" placeholder="Search ${f.members} members" value="${STATE.peopleQuery}"><div class="icon" data-pview="${STATE.peopleView==='grid'?'list':'grid'}">${STATE.peopleView==='grid'?'≡':'⋮⋮'}</div></div>
     <div class="pills" style="margin-top:-2px">${filters.map(x=>`<div class="pill ${STATE.peopleFilter===x?'on':''}" style="font-size:13px;padding:6px 11px" data-pfilter="${x}">${x}</div>`).join("")}</div>
-    ${!q&&STATE.peopleFilter==="All"&&picks.length?`<div class="plbl" style="margin-top:4px">Kai thinks you should meet</div><div class="hscroll">${picks.map(p=>`<div class="ptile" data-profile="${p.id}">${av(p.initials,"lg")}<div class="pt">${p.name}</div><div class="xs muted">${p.id==="maya"?"Chris vouched. Intent matches.":p.id==="ana"?"Met twice. Hiring a PM.":"On the panel for your role."}</div></div>`).join("")}</div>`:''}
+    ${!q&&STATE.peopleFilter==="All"&&picks.length?`<div class="plbl" style="margin-top:4px">Kai thinks you should meet</div><div class="hscroll">${picks.map(p=>`<div class="ptile" data-profile="${p.id}">${av(p.initials,"lg")}<div class="pt">${p.name}</div><div class="xs muted">${p.id==="maya"?"Daniel vouched. Intent matches.":p.id==="ana"?"Met twice. Hiring a PM.":"On the panel for your role."}</div></div>`).join("")}</div>`:''}
     ${body||'<div class="empty">Nobody matches.</div>'}
     <div class="xs faint" style="margin:14px 0 0">Routes are worked out when you open a profile, not for all ${f.members} at once. The mark is how close you already are: filled met, half through someone, empty same family.</div>
   </div>
@@ -3926,7 +3926,7 @@ function sEventChat() {
 function sPosts() {
   if (!STATE.member) return sPendingFamily();
   const f = fam();
-  const live = STATE.liveBroadcast ? `<div class="bcast live"><div class="bk"><span class="live"></span>Live now</div><div class="name" style="margin-top:6px">Office hours with Chris</div><div class="sm muted">Started 12 min ago. 41 members listening. Kai notes questions and follow-ups for you.</div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sm" style="margin:0;flex:1;height:40px" onclick="toast('Joins the room (out of scope here)')">Join</button><button class="btn sec sm" style="margin:0;flex:0 0 auto;height:40px;padding:0 14px" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</button></div></div>` : "";
+  const live = STATE.liveBroadcast ? `<div class="bcast live"><div class="bk"><span class="live"></span>Live now</div><div class="name" style="margin-top:6px">Office hours with Daniel</div><div class="sm muted">Started 12 min ago. 41 members listening. Kai notes questions and follow-ups for you.</div><div class="row" style="gap:8px;margin-top:10px"><button class="btn sm" style="margin:0;flex:1;height:40px" onclick="toast('Joins the room (out of scope here)')">Join</button><button class="btn sec sm" style="margin:0;flex:0 0 auto;height:40px;padding:0 14px" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</button></div></div>` : "";
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("posts")}
@@ -3966,12 +3966,12 @@ function sManage() {
 function sManageSection(id) {
   const secs = {
     applications: ["Applications", `${!STATE.member&&STATE.applied?`<div class="card" style="border-color:var(--ink)"><div class="top">${av("PS")}<div><div class="name">Priya Sharma</div><div class="sub">Senior PM, Google Cloud · invited by you</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Verified</span><span>Employment at Google, 2019 to present, from LinkedIn.</span></div><div class="rc"><span class="ty">Kai</span><span>Cloud AI, six years. Looking for a senior PM role at an AI company and a technical cofounder. Answers are specific. Calendar overlap with 6 members.</span></div><div class="lbl" style="margin-top:8px">Her answers</div><p class="sm muted">Why Xoogler: "${(STATE.appAnswers["1:0"]||"I miss the density of people who've shipped at scale.").replace("(Spoken) ","")}"</p><div class="act"><button class="btn sm" onclick="approveMe();STATE.asOrganizer=false">Approve Priya</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div>`:''}<div class="card"><div class="top">${av("JT")}<div><div class="name">Jordan Tan</div><div class="sub">PM, ex-Google Maps · nominated by Rahul</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Kai</span><span>Six years at Google, two in AI. Wants intros to AI founders. Answers are specific and match the nomination.</span></div><div class="lbl" style="margin-top:8px">Their answers</div><p class="sm muted">Why Xoogler: "I miss the density of people who've shipped at scale."<br>What I can offer: "Maps org intros, PM interview prep."</p><div class="act"><button class="btn sm" onclick="toast('Approved. Jordan gets a push and Kai runs a first pass.')">Approve Jordan</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div><div class="empty">3 more waiting</div>`],
-    members: ["Members and roles", `<div class="card" style="padding:4px 14px">${["Chris Fong · Owner","Rahul Mehta · Admin","Sana Iqbal · Moderator","Maya Chen · Member","Priya Sharma · Member, new"].map(x=>`<div class="rowitem"><div class="m"><div class="a" style="font-weight:500">${x}</div></div><div class="s">›</div></div>`).join("")}</div>`],
-    greeting: ["Greeting queue", `<div class="card" style="padding:4px 14px">${[["Priya Sharma","Joined Tuesday. No first action yet."],["Dev Patel","Posted in #jobs. Not greeted."],["Ana Ruiz","Greeted by Chris."]].map(([a,b])=>`<div class="rowitem">${av(a.split(" ").map(x=>x[0]).join(""))}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="chip" style="font-size:12px" onclick="toast('Reply drafted in your voice')">Say hi</span></div>`).join("")}</div>`],
+    members: ["Members and roles", `<div class="card" style="padding:4px 14px">${["Daniel Reyes · Owner","Rahul Mehta · Admin","Sana Iqbal · Moderator","Maya Chen · Member","Priya Sharma · Member, new"].map(x=>`<div class="rowitem"><div class="m"><div class="a" style="font-weight:500">${x}</div></div><div class="s">›</div></div>`).join("")}</div>`],
+    greeting: ["Greeting queue", `<div class="card" style="padding:4px 14px">${[["Priya Sharma","Joined Tuesday. No first action yet."],["Dev Patel","Posted in #jobs. Not greeted."],["Ana Ruiz","Greeted by Daniel."]].map(([a,b])=>`<div class="rowitem">${av(a.split(" ").map(x=>x[0]).join(""))}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="chip" style="font-size:12px" onclick="toast('Reply drafted in your voice')">Say hi</span></div>`).join("")}</div>`],
     rituals: ["Rituals", `<div class="card" style="padding:4px 14px">${[["Where are you","Mondays · #sf-this-week · 14 replies avg"],["New here","As members join · #introductions · 6 replies avg"],["Asks","Tuesdays · #general · 9 replies avg"],["Poll of the week","Fridays · #general · 41 votes avg"]].map(([a,b])=>`<div class="rowitem"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><div class="s">on</div></div>`).join("")}</div><div class="card" style="margin-top:10px"><div class="tag new">Kai suggestion</div><div class="name" style="margin-top:6px">Wins on Thursdays</div><p class="sm muted">Families like yours get the most reactions on a wins thread before the weekend. Draft ready in your voice.</p><div class="act"><button class="btn sm" onclick="toast('Ritual on. Kai drafts each Thursday; you approve before it posts.')">Enable</button><span class="no">Not now</span></div></div>`],
     events: ["Events and attendance", `<div class="card"><div class="name">Xoogler dinner, Thursday</div><div class="sub">34 going · check-in live · 2 checked in so far</div><div class="rc" style="margin-top:8px"><span class="ty">Kai</span><span>Three people worth connecting yourself: Priya and Rahul (she's looking, he's hiring), Maya and Dev (both agents infra).</span></div></div>`],
     outcomes: ["Outcomes this quarter", `<div class="card"><div class="row" style="gap:16px"><div><div style="font-size:26px;font-weight:700">38</div><div class="xs muted">intros</div></div><div><div style="font-size:26px;font-weight:700">6</div><div class="xs muted">hires</div></div><div><div style="font-size:26px;font-weight:700">4</div><div class="xs muted">cofounder matches</div></div></div><p class="sm muted" style="margin-top:10px">21 of 38 intros led to a conversation. 6 hires came through referrals posted in #jobs.</p></div>`],
-    health: ["Health", `<div class="card"><div class="name">9 members with no edges</div><p class="sm muted">Joined but never connected. Kai suggests a greeting and one intro each.</p></div><div class="card"><div class="name">3 going quiet</div><p class="sm muted">Active in spring, nothing since July. One is Rushal Verma, a bridge between two clusters.</p></div><div class="card"><div class="name">Bridges</div><p class="sm muted">Chris, Rahul, and Sana connect most of the family. If Sana left, the Perplexity cluster detaches.</p></div>`],
+    health: ["Health", `<div class="card"><div class="name">9 members with no edges</div><p class="sm muted">Joined but never connected. Kai suggests a greeting and one intro each.</p></div><div class="card"><div class="name">3 going quiet</div><p class="sm muted">Active in spring, nothing since July. One is Rushal Verma, a bridge between two clusters.</p></div><div class="card"><div class="name">Bridges</div><p class="sm muted">Daniel, Rahul, and Sana connect most of the family. If Sana left, the Perplexity cluster detaches.</p></div>`],
     posts: ["Posts", `<div class="card"><div class="tag">Digest draft</div><div class="name" style="margin-top:6px">This week in Xoogler</div><p class="sm muted">Four roles in #jobs, three with a referrer. Fourteen in SF, lunch Wednesday. Six new members, all greeted.</p><div class="act"><button class="btn sm" onclick="toast('Published to Posts')">Publish</button><span class="no">Edit</span></div></div>`],
     settings: ["Settings", `<div class="card" style="padding:4px 14px">${["Application questions · 22, 9 prefilled by Kai","Nominations · trusted members auto-approve","Family floors · no cold asks","Connectors · Slack connected, WhatsApp not","Space types · Chat, People, Events, Posts","Public page · on"].map(x=>`<div class="rowitem"><div class="m"><div class="a" style="font-weight:500">${x}</div></div><div class="s">›</div></div>`).join("")}</div>`],
     checklist: ["First 30 days", `<div class="card" style="padding:4px 14px">${["First ritual posted ✓","First event scheduled ✓","Every new member greeted within a day · 2 left","Slack connected ✓"].map(x=>`<div class="rowitem"><div class="m"><div class="a" style="font-weight:500">${x}</div></div></div>`).join("")}</div>`]
@@ -3987,7 +3987,7 @@ function switcherSheet() {
 
 /* ---- Inbox: asks and activity. Every ask is a path seen from the other side. ---- */
 function myAsks() { return DB.asks.filter(a=>a.to===STATE.persona && !(a.id==="c1" && !DB.opps.some(o=>o.id==="o2"&&o.state!=="new"&&o.state!=="candidate"))); }
-function me() { return STATE.persona==="chris" ? { name:"Chris Fong", initials:"CF" } : DB.user; }
+function me() { return STATE.persona==="chris" ? { name:"Daniel Reyes", initials:"CF" } : DB.user; }
 function askCard(a) {
   const from = DB.people[a.from]; const target = a.target?DB.people[a.target]:null; const via = a.via?DB.people[a.via]:null;
   const mine = me();
@@ -4021,7 +4021,7 @@ function sInbox() {
   if (!STATE.member) return `${topHdr("Messages")}<div class="body"><div class="empty" style="margin-top:8px">Messages open when you're in a family. Requests and chats all happen between members.</div></div>${navHTML("inbox")}`;
   const chatsHTML = chatsListHTML();
   if (STATE.inboxView==="requests") return `<div class="hdr"><div class="back" onclick="STATE.inboxView=null;render()">‹</div><div class="t">Requests${STATE.persona!=="priya"?' <span class="xs faint">as '+me().name.split(" ")[0]+'</span>':''}</div></div><div class="body">${coach("requests","People asking you for something: to vouch for them, to talk, to refer. Each is a yes or a no. Yes opens a conversation; no is never shown to them. Kai caps these at your capacity, three a week.")}${asksHTML}</div>${navHTML("inbox")}`;
-  return `${topHdr("Messages", STATE.persona==="chris"?'<span class="xs faint" style="margin-right:6px">as Chris</span>':'')}
+  return `${topHdr("Messages", STATE.persona==="chris"?'<span class="xs faint" style="margin-right:6px">as Daniel</span>':'')}
   <div class="body">${inboxCoach}
     ${chatsHTML}
   </div>
@@ -4049,7 +4049,7 @@ function forwardSend(id) {
   STATE.metrics.decisions++; STATE.metrics.sends++;
   const a = DB.asks.find(x=>x.id===id); const from=DB.people[a.from]; const target=DB.people[a.target];
   a.state="waiting"; a.when="now";
-  if (id==="c1") { const o=DB.opps.find(x=>x.id==="o2"); if(o){ o.viaAgreed=true; lit(o,"Chris agreed","+1d"); o.log.push(["Chris","said yes and forwarded your note to Maya, with a line of his own.","+1d"]); } }
+  if (id==="c1") { const o=DB.opps.find(x=>x.id==="o2"); if(o){ o.viaAgreed=true; lit(o,"Daniel agreed","+1d"); o.log.push(["Daniel","said yes and forwarded your note to Maya, with a line of his own.","+1d"]); } }
   DB.activity.unshift({ cat:"you", who:"You", ini:me().initials, text:`forwarded ${from.name.split(" ")[0]} to ${target.name.split(" ")[0]}`, when:"now", to:"inbox" });
   STATE.sheet=null; render(); toast(`Forwarded. It stays in Requests as waiting on ${target.name.split(" ")[0]}. You'll be told what came of it.`);
 }
@@ -4067,7 +4067,7 @@ function askDecline(id, why) {
 }
 function askMoreSheet(id) {
   const a = DB.asks.find(x=>x.id===id); const from=DB.people[a.from];
-  const alts = a.kind==="connector" ? [["sana","Sana Iqbal","Co-hosted with Rahul twice, stronger tie than yours"],["chris","Chris Fong","Knows everyone. Open to intros, 3 slots"]] : [];
+  const alts = a.kind==="connector" ? [["sana","Sana Iqbal","Co-hosted with Rahul twice, stronger tie than yours"],["chris","Daniel Reyes","Knows everyone. Open to intros, 3 slots"]] : [];
   return `<h2>More</h2>
     ${a.kind==="connector"?`<div class="lbl">Redirect to a better connector</div><p class="sm muted">${from.name.split(" ")[0]} is told the path moved, not why. The new connector sees who suggested them.</p>${alts.map(x=>`<div class="rowitem" data-redirect="${id}|${x[1]}">${av(DB.people[x[0]].initials)}<div class="m"><div class="a">${x[1]}</div><div class="b">${x[2]}</div></div><div class="s">›</div></div>`).join("")}`:''}
     <div class="lbl">Other</div>
@@ -4137,7 +4137,7 @@ function sEvents() {
 function sEventDetail(id) {
   const e = DB.fevents.find(x=>x.id===id); const f = DB.families.find(x=>x.id===e.family); const host = DB.people[e.host];
   const live = STATE.eventDay && e.id==="e1" && !e.past;
-  const meet = e.meet.map(pid=>{ const p=DB.people[pid]; const o=DB.opps.find(x=>x.personId===pid); const why = pid==="rahul"?"You've met three times. He's hiring senior PMs.":pid==="maya"?"Chris vouched for her. Her cofounder intent matches yours.":pid==="sana"?"On the Perplexity hiring panel. Posted the role you're tracking.":pid==="ana"?"Hiring a platform PM. You've met twice.":"Michigan alum, growth PM at Duolingo.";
+  const meet = e.meet.map(pid=>{ const p=DB.people[pid]; const o=DB.opps.find(x=>x.personId===pid); const why = pid==="rahul"?"You've met three times. He's hiring senior PMs.":pid==="maya"?"Daniel vouched for her. Her cofounder intent matches yours.":pid==="sana"?"On the Perplexity hiring panel. Posted the role you're tracking.":pid==="ana"?"Hiring a platform PM. You've met twice.":"Michigan alum, growth PM at Duolingo.";
     const here = live && ["rahul","maya"].includes(pid);
     return `<div class="card" data-profile="${pid}"><div class="top">${av(p.initials)}<div style="flex:1;min-width:0"><div class="name">${p.name}${here?' <span class="tag new">Here now</span>':''}</div><div class="sub">${p.title}, ${p.company}</div></div>${o?`<span class="tag">${o.state==="new"?"In a mission":o.state==="done"?"Done":"In progress"}</span>`:''}</div><div class="rc" style="margin-top:8px"><span class="ty">Why</span><span>${why}</span></div><div class="act"><button class="btn sm" data-opener="${e.id}|${pid}">${live?"Find "+p.name.split(" ")[0]:"Say hi "+e.day}</button><span class="no" onclick="event.stopPropagation();toast('Not this one. Kai shows fewer like this.')">Not this</span></div></div>`; }).join("");
   return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div style="flex:1"></div><div class="icon" onclick="toast('Share, add to calendar, report (out of scope)')">···</div></div>
@@ -4160,7 +4160,7 @@ function rsvp(id, on) { const e=DB.fevents.find(x=>x.id===id); e.rsvp=on; if(on)
 function openerSheet(key) {
   const [eid,pid] = key.split("|"); const e=DB.fevents.find(x=>x.id===eid); const p=DB.people[pid];
   const live = STATE.eventDay && eid==="e1";
-  const draft = live ? `Hey ${p.name.split(" ")[0]}, it's Priya. I'm at the table by the window, come say hi when you're free.` : `Hi ${p.name.split(" ")[0]}, I'll be at ${e.name} on ${e.day}. Would be great to say hi in person, ${pid==="rahul"?"and hear about the new product line.":pid==="maya"?"Chris mentioned you in #cofounders and I'm building in agents too.":"and ask about the loop for the agents role."}`;
+  const draft = live ? `Hey ${p.name.split(" ")[0]}, it's Priya. I'm at the table by the window, come say hi when you're free.` : `Hi ${p.name.split(" ")[0]}, I'll be at ${e.name} on ${e.day}. Would be great to say hi in person, ${pid==="rahul"?"and hear about the new product line.":pid==="maya"?"Daniel mentioned you in #cofounders and I'm building in agents too.":"and ask about the loop for the agents role."}`;
   return `<h2>${live?"Find "+p.name.split(" ")[0]:"Say hi to "+p.name.split(" ")[0]+" "+e.day}</h2>
     <p class="sm muted">${live?"A short note now. They're checked in.":"Sent now, so the in-person hello isn't cold. Costs no ask slot: presence is the route."}</p>
     ${msgComposer({ id:"draft", draft, spoken:`(Spoken) Hey ${p.name.split(" ")[0]}, Priya here, see you Thursday, save me five minutes.`, sendAttr:`data-opensend="${key}"`, disclosure:`Kai drafted this. ${p.name.split(" ")[0]} sees you approved it.` })}`;
@@ -4363,7 +4363,7 @@ function sYouSection(id) {
       <div class="card" style="background:var(--fill)"><div class="rc" style="margin:0"><span class="ty">Open</span><span>Priya takes intros via a connector. ${Math.max(0,R.capacity-1)} of ${R.capacity} slots left this week.</span></div><div class="rc"><span class="ty">Can help</span><span>Product reviews, PM hiring.</span></div><div class="xs faint" style="margin-top:8px">That's all. Never your rules in detail, never your capacity as a number they can plan around, never who you've declined.</div></div>`],
     people: ["Connectors", `<p class="sm muted" style="margin-top:6px">Kai routes your requests through these people, and routes others' through you. Keep them warm and your paths stay warm.</p>
       <div class="seg" style="margin-top:8px"><div class="${(STATE.connSeg||'vouch')==='vouch'?'on':''}" data-connseg="vouch">Can vouch for you · 4</div><div class="${STATE.connSeg==='you'?'on':''}" data-connseg="you">You vouched for · 2</div><div class="${STATE.connSeg==='quiet'?'on':''}" data-connseg="quiet">Going quiet · 2</div></div>
-      ${((STATE.connSeg||'vouch')==='vouch' ? [["chris","Nominated you · 1 intro made for you · strongest route","strong"],["rahul","Met 3 times this year · can vouch at Anthropic","strong"],["maya","Talked at AI meetup · path in motion","warm"],["ana","Met twice · can vouch at Sierra","warm"]] : STATE.connSeg==='you' ? [["jordan","You replied to Chris's intro · he's in","landed"],["dev","You forwarded him to Rahul · waiting","waiting"]] : [["rahul","80 days since you talked · Kai drafts a hello at 90","quiet"],["ana","75 days · drafts a hello at 90","quiet"]]).map(([pid,l,t])=>{const p=DB.people[pid];return `<div class="prow" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${l}</div></div><span class="tag">${t}</span></div>`}).join("")}
+      ${((STATE.connSeg||'vouch')==='vouch' ? [["chris","Nominated you · 1 intro made for you · strongest route","strong"],["rahul","Met 3 times this year · can vouch at Anthropic","strong"],["maya","Talked at AI meetup · path in motion","warm"],["ana","Met twice · can vouch at Sierra","warm"]] : STATE.connSeg==='you' ? [["jordan","You replied to Daniel's intro · he's in","landed"],["dev","You forwarded him to Rahul · waiting","waiting"]] : [["rahul","80 days since you talked · Kai drafts a hello at 90","quiet"],["ana","75 days · drafts a hello at 90","quiet"]]).map(([pid,l,t])=>{const p=DB.people[pid];return `<div class="prow" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${l}</div></div><span class="tag">${t}</span></div>`}).join("")}
       <div class="xs faint" style="margin-top:12px">${(STATE.connSeg||'vouch')==='vouch'?"Strength comes from meetings, events, and paths. It's what decides direct versus via a connector.":STATE.connSeg==='you'?"Every intro you make is tracked to what came of it, and you're told.":"Warm ties fade. A hello now costs nothing and keeps the route open."}</div>`],
     sources: ["Sources", `<p class="sm muted" style="margin-top:6px">What feeds Context, and what each one contributed. Revoke any; the lines it produced leave with it.</p>
       ${[["Contacts","granted · 412 people · 38 overlap with your families","Revoke"],["Device calendar","granted · 61 meetings read · briefs on","Revoke"],["LinkedIn","sign-in · name, photo, employment verified","Disconnect"],["Xoogler channels","#jobs, #introductions, #cofounders, #general · organizer's choice","See"],["Desi Founders (WhatsApp)","#general, #cities, #hiring · not #raising","See"],["Your drafts","how Kai writes as you · 6 samples","Reset"]].map(([k,v,a])=>`<div class="prow" style="cursor:default"><div class="m"><div class="a">${k}</div><div class="b">${v}</div></div><span class="chip" style="font-size:12px" onclick="toast('${a}: lines from this source are removed from Context.')">${a}</span></div>`).join("")}
@@ -4381,7 +4381,7 @@ function briefSheet(pid) {
     <div class="lbl">How you're connected</div><div class="card"><div class="glyph" style="margin:0"><div class="n you">You</div><div class="l done"></div><div class="n lit">${p.initials}</div><span style="margin-left:6px">Met 3 times. Last: June 3, 1:1.</span></div></div>
     <div class="lbl">Open to</div><div class="card"><div class="chips">${p.openTo.map(x=>`<span class="chip">${x}</span>`).join("")}</div></div>
     <div class="lbl">What you said you'd follow up on</div><div class="card"><p class="sm" style="margin:0">June: you said you'd send him the eval write-up. You didn't. Bring it, or say so.</p></div>
-    <div class="lbl">What he's said lately</div><div class="card"><p class="sm" style="margin:0">#jobs, Sep 9: hiring senior PMs for a new product line, AI features shipped is the bar. #general, yesterday: thanked Chris for the dinner turnout.</p></div>
+    <div class="lbl">What he's said lately</div><div class="card"><p class="sm" style="margin:0">#jobs, Sep 9: hiring senior PMs for a new product line, AI features shipped is the bar. #general, yesterday: thanked Daniel for the dinner turnout.</p></div>
     <div class="lbl">What this meeting is for</div><div class="card" style="background:var(--fill)"><p class="sm" style="margin:0">Path: Senior PM role. Next step after this: he introduces you to the hiring manager, or says it's not a fit. Either is fine to ask for directly.</p></div>
     <div class="xs faint" style="margin:12px 0 0">Built from your calendar, Context, and channels Kai reads. Nothing here is visible to Rahul.</div>`;
 }
@@ -4508,7 +4508,7 @@ function sReqThread(aid) {
     <div class="thread"><div class="msg k">${a.note}</div>${a.forward?`<div class="msg k" style="background:#fff;border:1px dashed var(--line)"><span class="xs faint">Note for ${target.name.split(" ")[0]}, ready to forward</span><br>${a.forward}</div>`:''}</div>
     <div class="lbl">Why this reached you</div>${a.receipts.map(r=>`<div class="rc"><span class="ty">${r[0]}</span><span>${r[1]} <span class="src" data-src="${r[2]}">source</span></span></div>`).join("")}
     ${decided&&a.kind!=="connector"&&a.state!=="declined"&&a.state!=="redirected"?`<div class="ctxcard"><div class="row" style="justify-content:space-between;align-items:center"><span class="xs" style="font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink3)">Why you're talking</span><span class="xs faint" onclick="STATE.ctxOpen=!STATE.ctxOpen;render()" style="cursor:pointer">${STATE.ctxOpen?"Less":"More"}</span></div><div class="sm" style="margin-top:4px">${from.name.split(" ")[0]} asked: ${a.what}${target?`, for ${target.name}`:""}. You said yes.</div>${STATE.ctxOpen?`<div class="xs muted" style="margin-top:6px">${a.note}</div>`:''}</div>`:''}
-    ${decided&&a.kind==="connector"&&a.state!=="declined"&&a.state!=="redirected"?(function(){ const o=DB.opps.find(x=>x.id==="o2"); const tl=[["You forwarded "+from.name.split(" ")[0]+"'s note to "+(target?target.name.split(" ")[0]:"them")+", with a line of yours", a.when||"now", true]]; const replied=o&&(o.state==="yourmove"||o.state==="conversation"||o.state==="done"); const talking=o&&(o.state==="conversation"||o.state==="done"); const ended=o&&o.state==="done"; tl.push([(target?target.name.split(" ")[0]:"They")+" said yes to "+from.name.split(" ")[0], replied?"Thu":"", replied]); tl.push(["They're talking. You're out of the thread", talking?"Fri":"", talking]); tl.push([ended?(o.outcome==="good"?"Ended well. "+from.name.split(" ")[0]+" thanked you":"Ended. That's all you're told"):"When it ends, you're told once", ended?"now":"", ended]); return `<div class="lbl" style="margin-top:14px">Where this is</div><div class="track" style="margin-top:6px">${tl.map((t,i)=>`<div class="trk ${t[2]?'on':''}"><div class="dot"></div><div class="m"><div class="a" style="font-weight:${t[2]?700:500};color:${t[2]?'var(--ink)':'var(--ink3)'}">${t[0]}</div>${t[1]?`<div class="b">${t[1]}</div>`:''}</div></div>`).join("")}</div><div class="xs faint" style="margin-top:10px">${target?target.name.split(" ")[0]:"They"} sees your line and that you forwarded it. ${from.name.split(" ")[0]} sees "Chris agreed." Neither sees this page.</div>`; })():''}
+    ${decided&&a.kind==="connector"&&a.state!=="declined"&&a.state!=="redirected"?(function(){ const o=DB.opps.find(x=>x.id==="o2"); const tl=[["You forwarded "+from.name.split(" ")[0]+"'s note to "+(target?target.name.split(" ")[0]:"them")+", with a line of yours", a.when||"now", true]]; const replied=o&&(o.state==="yourmove"||o.state==="conversation"||o.state==="done"); const talking=o&&(o.state==="conversation"||o.state==="done"); const ended=o&&o.state==="done"; tl.push([(target?target.name.split(" ")[0]:"They")+" said yes to "+from.name.split(" ")[0], replied?"Thu":"", replied]); tl.push(["They're talking. You're out of the thread", talking?"Fri":"", talking]); tl.push([ended?(o.outcome==="good"?"Ended well. "+from.name.split(" ")[0]+" thanked you":"Ended. That's all you're told"):"When it ends, you're told once", ended?"now":"", ended]); return `<div class="lbl" style="margin-top:14px">Where this is</div><div class="track" style="margin-top:6px">${tl.map((t,i)=>`<div class="trk ${t[2]?'on':''}"><div class="dot"></div><div class="m"><div class="a" style="font-weight:${t[2]?700:500};color:${t[2]?'var(--ink)':'var(--ink3)'}">${t[0]}</div>${t[1]?`<div class="b">${t[1]}</div>`:''}</div></div>`).join("")}</div><div class="xs faint" style="margin-top:10px">${target?target.name.split(" ")[0]:"They"} sees your line and that you forwarded it. ${from.name.split(" ")[0]} sees "Daniel agreed." Neither sees this page.</div>`; })():''}
     ${decided&&!(a.kind==="connector"&&a.state!=="declined"&&a.state!=="redirected")?`<div class="msg sys" style="margin:14px auto">${a.state==="declined"?"You said not now. They see: not available right now.":a.state==="redirected"?"Redirected to "+a.redirectedTo:"Accepted. Continue below."}</div>`:''}
   </div>
   ${decided&&a.kind==="connector"&&a.state!=="declined"&&a.state!=="redirected"?`<div class="foot"><div class="row" style="gap:8px"><button class="btn sec" style="flex:1" onclick="toast('Opens a chat with ${from.name.split(" ")[0]}, separate from the intro.')">Message ${from.name.split(" ")[0]}</button></div></div>`:''}
@@ -4531,7 +4531,7 @@ function sSentThread(oid) {
 const QUICK = ["👍🏻","👎🏻","😊","🎉","🔥","❤️"];
 const MORE_EMO = ["😂","🙏","👏","💯","🚀","👀","✅","🙌","🤝","💡","😮","😢","🥳","☕","📌","🧠","⚡","🌉"];
 const CH_EMO = { general:"💬", introductions:"👋", announcements:"📣", jobs:"💼", cofounders:"🤝", fundraising:"💰", "hiring-managers":"🧑‍💼", sf:"🌉", nyc:"🗽", london:"🎡", "ai-agents":"🤖", parents:"🍼", climbing:"🧗", "d-general":"💬", "d-cities":"🌏", "d-raising":"💰", "d-hiring":"💼", "m-general":"💬", "m-jobs":"💼", "m-annarbor":"🏈" };
-const CH_DESC = { jobs:"Roles members are hiring for or can refer into. Say whether you're the hiring manager, on the panel, or a referrer.", cofounders:"Looking for a cofounder, or know someone who is.", general:"Anything for the whole family.", introductions:"New members say hello here. Chris greets everyone on Mondays.", announcements:"From the organizers. Only organizers post here.", sf:"Who's in SF this week, and where to meet.", "ai-agents":"Building with agents: evals, tool use, infra." };
+const CH_DESC = { jobs:"Roles members are hiring for or can refer into. Say whether you're the hiring manager, on the panel, or a referrer.", cofounders:"Looking for a cofounder, or know someone who is.", general:"Anything for the whole family.", introductions:"New members say hello here. Daniel greets everyone on Mondays.", announcements:"From the organizers. Only organizers post here.", sf:"Who's in SF this week, and where to meet.", "ai-agents":"Building with agents: evals, tool use, infra." };
 const meId = () => STATE.persona || "priya";
 const P = id => DB.people[id] || { id, name:id, initials:(id||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() };
 const first = id => P(id).name.split(" ")[0];
@@ -4547,10 +4547,10 @@ function seedChats() {
   const me = "priya";
   DB.chat.d2 = { id:"d2", kind:"dm", with:"chris", msgs:[
     M("chris","Just introduced you to Jordan. He's about two months behind you on the AI PM search, so you're the right person.",{day:"Yesterday",time:"10:02 AM"}),
-    M(me,"Thanks for the intro, Chris",{day:"Yesterday",time:"10:15 AM",react:{"👍🏻":["chris"]}}),
+    M(me,"Thanks for the intro, Daniel",{day:"Yesterday",time:"10:15 AM",react:{"👍🏻":["chris"]}}),
     M("chris","Anytime. Tell me how it goes.",{day:"Yesterday",time:"10:16 AM"}) ] };
   DB.chat.d3 = { id:"d3", kind:"dm", with:"maya", path:true, msgs:[
-    M(me,"Hi Maya, Chris said you're the one to talk to about agents infra. Would love 30 minutes on what you're building.",{day:"Sep 22, 2026",time:"11:40 AM"}),
+    M(me,"Hi Maya, Daniel said you're the one to talk to about agents infra. Would love 30 minutes on what you're building.",{day:"Sep 22, 2026",time:"11:40 AM"}),
     M("maya","Happy to. I'm around Thursday afternoon.",{day:"Sep 22, 2026",time:"1:05 PM"}),
     M(me,"Thursday afternoon works. 3pm? Happy to come to you.",{day:"Sep 22, 2026",time:"1:09 PM"}),
     M(me,"One-pager on the idea, so you have context before we meet.",{day:"Sep 22, 2026",time:"1:10 PM",att:[{t:"file",name:"agents-idea-one-pager.pdf",ext:"PDF",size:"1.2 MB"}]}),
@@ -4590,7 +4590,7 @@ function seedChats() {
     cof.msgs.find(m=>m.from==="chris").react={"🤝":["maya","rahul","sana"]};
     cof.msgs.push(M(me,"Would love to compare notes, Maya. Shipped two eval features at Cloud.",{day:"Sep 14, 2026",time:"6:02 PM",react:{"❤️":["maya"],"🔥":["rahul"]}}));
   }
-  const intro = DB.chat.introductions; if (intro && intro.msgs[0]) { intro.msgs[0].thread=[M("jordan","Thanks Chris! Happy to be here.",{time:"9:20 AM"}),M("dev","Hi all, legal-tech agents. Say hi if you've shipped tool use.",{time:"9:31 AM"}),M(me,"Hi everyone, Priya. PM at Cloud, looking at AI companies.",{time:"9:44 AM"})]; intro.msgs[0].threadCount=6; }
+  const intro = DB.chat.introductions; if (intro && intro.msgs[0]) { intro.msgs[0].thread=[M("jordan","Thanks Daniel! Happy to be here.",{time:"9:20 AM"}),M("dev","Hi all, legal-tech agents. Say hi if you've shipped tool use.",{time:"9:31 AM"}),M(me,"Hi everyone, Priya. PM at Cloud, looking at AI companies.",{time:"9:44 AM"})]; intro.msgs[0].threadCount=6; }
   const ann = DB.chat.announcements; if (ann) ann.pins=[ann.msgs[0].id];
   const ai = DB.chat["ai-agents"]; if (ai && !ai.msgs.length) ai.msgs=[ M("maya","Eval tooling thread: what are you using for regression evals on tool calls?",{day:"Sep 19, 2026",time:"10:12 AM",threadCount:9,thread:[M("rahul","Homegrown harness plus golden traces.",{day:"Sep 19, 2026"})]}), M("rahul","We open-sourced our trace viewer, link in thread",{day:"Sep 21, 2026",time:"2:30 PM"}) ];
   const xf = DB.families.find(f=>f.id==="xoogler"); if (xf && xf.pinned && DB.chat.general) DB.chat.general.pins=[];
@@ -4913,7 +4913,7 @@ function seedNotifs() {
   DB.notifs = [
     { id:"n1", type:"kai", fam:"xoogler", ava:"kai", title:"Three new paths for your role mission", body:"Kai found them in #jobs and at Xoogler dinner. Nothing was sent.", when:"12m", unread:true, to:"home", filt:"paths" },
     { id:"n2", type:"mention", fam:"xoogler", ini:"AR", title:"Ana Ruiz mentioned you in #jobs", body:"@Priya Sharma you'd be great for this, happy to talk.", when:"1h", unread:true, to:"channel:jobs", hlText:"Sierra is opening" },
-    { id:"n3", type:"invite", fam:"xoogler", ini:"CF", title:"Chris Fong introduced you to Jordan Tan", body:"Say hi when you have a minute.", when:"2h", unread:true, to:"req:a3", filt:"paths" },
+    { id:"n3", type:"invite", fam:"xoogler", ini:"CF", title:"Daniel Reyes introduced you to Jordan Tan", body:"Say hi when you have a minute.", when:"2h", unread:true, to:"req:a3", filt:"paths" },
     { id:"n4", type:"thread", fam:"xoogler", ini:"SI", title:"Sana Iqbal and others replied to a thread", body:"Hybrid, SF three days a week.", when:"3h", unread:true, to:"thread:jobs:SANA" },
     { id:"n5", type:"message", fam:null, ini:"PL", sq:true, title:"Kate Lin sent a message in PM loop prep", body:"image", when:"1h", unread:true, count:2, to:"dm:g-pm" },
     { id:"n6", type:"reaction", fam:"xoogler", ini:"MC", title:"Maya Chen and Rahul Mehta reacted to your message in #cofounders", body:"Would love to compare notes, Maya.", when:"1d", unread:false, to:"channel:cofounders", hlText:"Would love to compare" },
@@ -5032,8 +5032,8 @@ DB.pool.push(
   { kind:"ask", title:"A PM to review an onboarding flow", org:"Dev Patel", via:"dev", fam:"Xoogler", when:"Sep 14", why:"You listed product reviews as help you give", facts:[["Wants","One hour, this week or next"],["For","Legal agents, pre-launch"]] },
   { kind:"offer", title:"Resume and portfolio reviews for PMs", org:"Ana Ruiz", via:"ana", fam:"Xoogler", when:"Sep 10", why:"Matches your role mission", facts:[["For","Members moving into AI"],["Slots","3 left this month"]] },
   { kind:"offer", title:"Office hours for first-time founders", org:"Neha Rao", via:"neha", fam:"Desi Founders", when:"Weekly", why:"Useful for your cofounder mission", facts:[["When","Wednesdays, 30 minutes"],["For","Pre-seed and seed founders"]] },
-  { kind:"resource", title:"$5k cloud credits for member startups", org:"Program", via:"chris", fam:"Xoogler", when:"Sep 1", why:"Worth having once your cofounder mission lands", facts:[["What","$5k credits for 12 months"],["How","Chris sends the code"]] },
-  { kind:"post", ptype:"article", title:"How I got into Sierra", org:"Article", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Chris"]] },
+  { kind:"resource", title:"$5k cloud credits for member startups", org:"Program", via:"chris", fam:"Xoogler", when:"Sep 1", why:"Worth having once your cofounder mission lands", facts:[["What","$5k credits for 12 months"],["How","Daniel sends the code"]] },
+  { kind:"post", ptype:"article", title:"How I got into Sierra", org:"Article", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Daniel"]] },
   { kind:"post", ptype:"announcement", title:"Xoogler dinners move to Thursdays from October", org:"Announcement", via:"chris", fam:"Xoogler", when:"Yesterday", why:"You're going Thursday", facts:[["From","the organizers"]] },
   { kind:"post", ptype:"win", title:"Signed my first two design partners", org:"Win", via:"maya", fam:"Xoogler", when:"2 days ago", why:"Maya is on one of your paths", facts:[["In","#wins"]] },
   { kind:"post", ptype:"question", title:"Which AI companies actually let PMs ship?", org:"Question", via:"sana", fam:"Michigan", when:"3 days ago", why:"Matches your mission", facts:[["In","#jobs"]] }
@@ -5154,7 +5154,7 @@ forwardSheet = function(id) {
 };
 function vouchSheet(type, id) {
   const a = DB.asks.find(x=>x.id===id); const from=firstName(DB.people[a.from]), to=firstName(DB.people[a.target]);
-  if (type==="vpass") return `<h2>Pass along without vouching</h2><p class="sm muted">${to} gets ${from}'s note and sees that you passed it on without vouching. It uses one of your slots.</p>${msgComposer({ id:"vpassline", draft:`${to}, passing this along from ${from}. I don't know them well, so your call entirely.`, sendAttr:`onclick="vouchDo('pass','${id}')"`, disclosure:`${to} sees: passed along by Chris, no vouch.` })}`;
+  if (type==="vpass") return `<h2>Pass along without vouching</h2><p class="sm muted">${to} gets ${from}'s note and sees that you passed it on without vouching. It uses one of your slots.</p>${msgComposer({ id:"vpassline", draft:`${to}, passing this along from ${from}. I don't know them well, so your call entirely.`, sendAttr:`onclick="vouchDo('pass','${id}')"`, disclosure:`${to} sees: passed along by Daniel, no vouch.` })}`;
   if (type==="vcheck") return `<h2>Check with ${to} first</h2><p class="sm muted">Kai asks ${to} without naming ${from}. If ${to} says no, nobody is told anything. Doesn't use a slot.</p>${msgComposer({ id:"vcheckline", draft:`Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.`, sendAttr:`onclick="vouchDo('check','${id}')"`, disclosure:`${to} sees it's from you. ${from}'s name stays out.` })}`;
   return `<h2>Ask ${from} something</h2><p class="sm muted">The request waits while you ask. Doesn't use a slot.</p>${msgComposer({ id:"vaskline", draft:`Happy to help. What are you hoping to get from ${to}, in a line?`, sendAttr:`onclick="vouchDo('ask','${id}')"`, disclosure:`Goes to ${from} only.` })}`;
 }
@@ -5167,16 +5167,16 @@ function vouchDo(k, id) {
 }
 
 
-/* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Chris decides, Maya answers.
+/* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Daniel decides, Maya answers.
    Rule from wireframe-audit/path-endings.md and Fable round 16: status is shown, words are sent. Kai proposes, a person taps. ==== */
-const PERSONAS = { priya:null, chris:{ name:"Chris Fong", initials:"CF" }, maya:{ name:"Maya Chen", initials:"MC" } };
+const PERSONAS = { priya:null, chris:{ name:"Daniel Reyes", initials:"CF" }, maya:{ name:"Maya Chen", initials:"MC" } };
 const PERSONA_ORDER = ["priya","chris","maya"];
 me = function(){ return STATE.persona==="priya" ? DB.user : PERSONAS[STATE.persona]; };
 
-/* Maya's copy of the request: hidden until Chris forwards. The nameless pre-check is a separate ask. */
+/* Maya's copy of the request: hidden until Daniel forwards. The nameless pre-check is a separate ask. */
 DB.asks.push(
-  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Chris introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. I worked with her at Google and she's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", receipts:[["Vouched","Chris forwarded this with a vouch: they worked together at Google","Chris"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
-  { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", receipts:[["Rule","Chris is checking before naming anyone. A no here tells nobody anything","Chris"]], state:"open", when:"now", hidden:true }
+  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Daniel introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. I worked with her at Google and she's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", receipts:[["Vouched","Daniel forwarded this with a vouch: they worked together at Google","Daniel"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
+  { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", receipts:[["Rule","Daniel is checking before naming anyone. A no here tells nobody anything","Daniel"]], state:"open", when:"now", hidden:true }
 );
 const _myAsks = myAsks; myAsks = function(){ return _myAsks().filter(a=>!a.hidden); };
 const _convRows = convRows; convRows = function(){ return STATE.persona==="priya" ? _convRows() : _convRows().filter(r=>(DB.dms.find(d=>d.id===r.id)||{}).owner===STATE.persona); };
@@ -5205,37 +5205,37 @@ function targetHas(o){ const c=viaOf(o); const {t:ta}=pathAsks(o); return !isNew
 function setStatus(a, word, extra){ if(!a) return; a.state="done"; a.outcomeLine=word+(extra?". "+extra:""); a.when="now"; a.hidden=false; const d=DB.dms.find(x=>x.with===a.from&&x.owner===a.to); if (d) { d.last=word+". Nothing else is sent."; d.when="now"; seedChats(); if (DB.chat[d.id]) DB.chat[d.id].msgs.push({ id:mid(), sys:`${word}. Nothing else is sent.`, day:"Today" }); } }
 function renameVia(o, name){ if(!o.timeline) return; o.timeline.forEach(t=>{ t[0]=t[0].replace(/^Asked \w+$/,"Asked "+name).replace(/^\w+ agreed$/,name+" agreed"); }); }
 
-/* ---- Priya's side: what Chris's five decisions do to her path ---- */
+/* ---- Priya's side: what Daniel's five decisions do to her path ---- */
 const _forwardSend = forwardSend; forwardSend = function(id){
   const a=ask(id); const passed = a.strength==="none";
   _forwardSend(id);
-  if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { o.checking=false; o.asked=null; if (passed) { o.log.pop(); o.log.push(["Chris","passed your note to Maya without vouching. Her call entirely.","+1d"]); } }
-    if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Chris passed Priya's note to you"; t.receipts[0]=["Passed along","Chris forwarded this without vouching","Chris"]; } }
-    queuePush("priya", passed?"Chris passed your note along":"Chris said yes", passed?"He forwarded it to Maya without a vouch. Maya has it now.":"He forwarded your note to Maya with a line of his own. Maya has it now.", [["See path", ()=>go("path:o2"), "path:o2"]]);
-    queuePush("maya", passed?"Chris passed a note to you":"Chris introduced you to Priya", "Priya Sharma, senior PM at Google Cloud, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
+  if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { o.checking=false; o.asked=null; if (passed) { o.log.pop(); o.log.push(["Daniel","passed your note to Maya without vouching. Her call entirely.","+1d"]); } }
+    if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Daniel passed Priya's note to you"; t.receipts[0]=["Passed along","Daniel forwarded this without vouching","Daniel"]; } }
+    queuePush("priya", passed?"Daniel passed your note along":"Daniel said yes", passed?"He forwarded it to Maya without a vouch. Maya has it now.":"He forwarded your note to Maya with a line of his own. Maya has it now.", [["See path", ()=>go("path:o2"), "path:o2"]]);
+    queuePush("maya", passed?"Daniel passed a note to you":"Daniel introduced you to Priya", "Priya Sharma, senior PM at Google Cloud, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
 };
 const _askDecline = askDecline; askDecline = function(id, why){
   _askDecline(id, why);
-  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { o.state="yourmove"; o.phase="blocked"; o.viaAgreed=false; o.log.push(["Chris","can't take this one. No reason is shown to you.","now"]); queuePush("priya","Chris can't take this one","No reason is given. The path is still yours: another route, go direct, or close.", [["See options", ()=>go("path:o2"), "path:o2"]]); } }
+  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { o.state="yourmove"; o.phase="blocked"; o.viaAgreed=false; o.log.push(["Daniel","can't take this one. No reason is shown to you.","now"]); queuePush("priya","Daniel can't take this one","No reason is given. The path is still yours: another route, go direct, or close.", [["See options", ()=>go("path:o2"), "path:o2"]]); } }
   if (id==="t0") { const c=ask("c1"); if (c) { c.checking=false; c.checkNo=true; c.state="open"; queuePush("chris","Maya isn't open to this right now","She wasn't told who asked. Priya hasn't been told anything. Your call on the request.", [["Open", ()=>go("req:c1"), "req:c1"]]); } }
   if (id==="t1") targetDecline("t1");
 };
 const _askRedirect = askRedirect; askRedirect = function(id, toName){
   _askRedirect(id, toName);
-  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { const p=personByName(toName)||DB.people.sana; o.via=p.id; o.viaAgreed=false; renameVia(o, firstName(p)); o.log.push(["Chris",`moved this to ${firstName(p)}, who knows Maya better. ${firstName(p)} has your ask now.`,"now"]); queuePush("priya",`Your ask moved to ${firstName(p)}`,`Chris passed it to ${firstName(p)}, not why. ${firstName(p)} sees Chris suggested it.`, [["See path", ()=>go("path:o2"), "path:o2"]]); } }
+  if (id==="c1") { const o=o2(); if (o && o.state==="waiting") { const p=personByName(toName)||DB.people.sana; o.via=p.id; o.viaAgreed=false; renameVia(o, firstName(p)); o.log.push(["Daniel",`moved this to ${firstName(p)}, who knows Maya better. ${firstName(p)} has your ask now.`,"now"]); queuePush("priya",`Your ask moved to ${firstName(p)}`,`Daniel passed it to ${firstName(p)}, not why. ${firstName(p)} sees Daniel suggested it.`, [["See path", ()=>go("path:o2"), "path:o2"]]); } }
 };
 const _vouchDo = vouchDo; vouchDo = function(k, id){
   _vouchDo(k, id);
   if (id!=="c1") return; const o=o2(); const t0=ask("t0");
-  if (k==="check") { if (o) { o.checking=true; o.log.push(["Chris","is checking with Maya first, without your name.","now"]); } if (t0) { t0.hidden=false; t0.state="open"; t0.when="now"; } queuePush("maya","Chris has a quick question","Open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", [["Open", ()=>go("req:t0"), "req:t0"]]); }
-  if (k==="ask") { if (o) { o.asked="What are you hoping to get from Maya, in a line?"; o.log.push(["Chris","asked you a question before deciding.","now"]); } queuePush("priya","Chris asked you something","Before he decides: what are you hoping to get from Maya, in a line?", [["Reply", ()=>openSheet("creply","o2"), "path:o2"]]); }
+  if (k==="check") { if (o) { o.checking=true; o.log.push(["Daniel","is checking with Maya first, without your name.","now"]); } if (t0) { t0.hidden=false; t0.state="open"; t0.when="now"; } queuePush("maya","Daniel has a quick question","Open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", [["Open", ()=>go("req:t0"), "req:t0"]]); }
+  if (k==="ask") { if (o) { o.asked="What are you hoping to get from Maya, in a line?"; o.log.push(["Daniel","asked you a question before deciding.","now"]); } queuePush("priya","Daniel asked you something","Before he decides: what are you hoping to get from Maya, in a line?", [["Reply", ()=>openSheet("creply","o2"), "path:o2"]]); }
 };
 const _replyAskSend = replyAskSend; replyAskSend = function(id){
   const draft = ([...document.querySelectorAll("#draft")].pop()||{}).value||"";
   _replyAskSend(id);
   const a=ask(id); const o=o2();
-  if (id==="t1" && o) { o.state="yourmove"; o.phase="replied"; o.replyText=`Maya: ${draft.replace(/^Hi Priya,?\s*/i,"").split(". ").slice(0,2).join(". ")||"Chris mentioned you. Coffee next week?"}`; o.checking=false; lit(o,"Maya replied","now"); o.log.push(["Maya","replied.","now"]); a.outcomeLine="Now a chat"; if(!DB.dms.some(d=>d.id==="d-t1")) { seedChats(); DB.chat["d-t1"]={ id:"d-t1", kind:"dm", with:"priya", path:true, msgs:[ { id:mid(), sys:"<b>Chris Fong</b> introduced you both.", day:"Today" }, M("maya", draft||"Chris mentioned you. Coffee next week?") ] }; DB.dms.unshift({ id:"d-t1", with:"priya", owner:"maya", last:"You: "+draft.slice(0,60), when:"now", path:true, unread:0 }); } queuePush("priya","Maya replied", o.replyText.replace(/^Maya: /,""), [["Reply", ()=>openSheet("reply","o2"), "path:o2"]]); const c=ask("c1"); if (c) queuePush("chris","Maya said yes to Priya","They're talking. You're out of the thread. You'll be told once when it ends.", [["See", ()=>go("req:c1"), "req:c1"]]); render(); }
-  if (id==="t0") { const c=ask("c1"); if (c) { c.checking=false; c.checkOk=true; c.state="open"; a.outcomeLine="You said yes. Chris decides next"; } queuePush("chris","Maya is open to it","She said yes without a name. Forward Priya's note when you're ready.", [["Forward", ()=>openSheet("forward","c1"), "req:c1"]]); }
+  if (id==="t1" && o) { o.state="yourmove"; o.phase="replied"; o.replyText=`Maya: ${draft.replace(/^Hi Priya,?\s*/i,"").split(". ").slice(0,2).join(". ")||"Daniel mentioned you. Coffee next week?"}`; o.checking=false; lit(o,"Maya replied","now"); o.log.push(["Maya","replied.","now"]); a.outcomeLine="Now a chat"; if(!DB.dms.some(d=>d.id==="d-t1")) { seedChats(); DB.chat["d-t1"]={ id:"d-t1", kind:"dm", with:"priya", path:true, msgs:[ { id:mid(), sys:"<b>Daniel Reyes</b> introduced you both.", day:"Today" }, M("maya", draft||"Daniel mentioned you. Coffee next week?") ] }; DB.dms.unshift({ id:"d-t1", with:"priya", owner:"maya", last:"You: "+draft.slice(0,60), when:"now", path:true, unread:0 }); } queuePush("priya","Maya replied", o.replyText.replace(/^Maya: /,""), [["Reply", ()=>openSheet("reply","o2"), "path:o2"]]); const c=ask("c1"); if (c) queuePush("chris","Maya said yes to Priya","They're talking. You're out of the thread. You'll be told once when it ends.", [["See", ()=>go("req:c1"), "req:c1"]]); render(); }
+  if (id==="t0") { const c=ask("c1"); if (c) { c.checking=false; c.checkOk=true; c.state="open"; a.outcomeLine="You said yes. Daniel decides next"; } queuePush("chris","Maya is open to it","She said yes without a name. Forward Priya's note when you're ready.", [["Forward", ()=>openSheet("forward","c1"), "req:c1"]]); }
   if (id==="a3") { /* Jordan, Priya's own intro; base behaviour */ }
 };
 function targetDecline(id){ const a=ask(id); if(!a) return; a.state="declined"; a.when="now"; STATE.sheet=null; if (id==="t1") { const o=o2(); const c=ask("c1"); if (o && o.state!=="done") { o.state="yourmove"; o.phase="declined"; o.log.push(["Maya","isn't available right now. That's all you're shown.","now"]); queuePush("priya","Maya isn't available right now","No reason is given. Close the path, try another route, or ask again in a month.", [["See options", ()=>go("path:o2"), "path:o2"]]); } if (c && c.state==="waiting") { setStatus(c,"Closed","Maya wasn't available. That's all you're told"); } } render(); toast("Done. Priya sees: not available right now."); }
@@ -5298,7 +5298,7 @@ function crepySheet(id){
   return `<h2>${firstName(c)} asked</h2><div class="msg k" style="margin:6px 0 10px">${o.asked}</div>
     ${msgComposer({ id:"crepline", draft:`Twenty minutes to hear how ${firstName(t)} thinks about agents infra, and whether she'd want a product partner. If it's a no from her, that's fine.`, spoken:`(Spoken) Just twenty minutes on how she thinks about agents infra.`, sendAttr:`onclick="crepSend('${id}')"`, disclosure:`Goes to ${firstName(c)} only. ${firstName(t)} isn't told anything yet.` })}`;
 }
-function crepSend(id){ const o=DB.opps.find(x=>x.id===id); const line=(document.getElementById("crepline")||{}).value||""; o.asked=null; o.log.push(["You",`answered ${firstName(viaOf(o)||DB.people.chris)}'s question.`,"now"]); const c=ask("c1"); if (c) { c.asked=false; c.answer=line; } queuePush("chris","Priya answered", line.slice(0,90), [["Open", ()=>go("req:c1"), "req:c1"]]); STATE.sheet=null; render(); toast("Sent to Chris."); }
+function crepSend(id){ const o=DB.opps.find(x=>x.id===id); const line=(document.getElementById("crepline")||{}).value||""; o.asked=null; o.log.push(["You",`answered ${firstName(viaOf(o)||DB.people.chris)}'s question.`,"now"]); const c=ask("c1"); if (c) { c.asked=false; c.answer=line; } queuePush("chris","Priya answered", line.slice(0,90), [["Open", ()=>go("req:c1"), "req:c1"]]); STATE.sheet=null; render(); toast("Sent to Daniel."); }
 
 /* Priya's quick actions carry the sync; the base handler is replaced after wire() */
 function cycleExit(id, k){
@@ -5308,7 +5308,7 @@ function cycleExit(id, k){
   if (k==="thank") { openSheet("thank", id); return; }
   if (k==="direct") { const prevVia=c; o.via=null; o.route="direct"; o.viaAgreed=false; o.phase=null; o.state="waiting"; o.checking=false; o.log.push(["You",`went direct to ${firstName(t)}. ${prevVia?firstName(prevVia)+" sees: Moved.":""}`,"now"]);
     if (holderHas(ca)) setStatus(ca,"Moved","Priya went another way. Your queue is clear");
-    if (ta) { ta.hidden=false; ta.kind="direct"; ta.via=null; ta.state="open"; ta.when="now"; ta.what="wants a cofounder conversation with you"; ta.note="Hi Maya, Chris mentioned your infra work in #cofounders. I'm a PM at Google Cloud looking for a technical cofounder for an agents idea. Would you be open to twenty minutes? No worries at all if not."; ta.receipts=[["Rule","Under your cofounder rule, direct asks are open. 2 slots left this month","your rules"],["Shared","Both at Xoogler dinner and the AI meetup","events"]]; queuePush("maya","Priya asked you for twenty minutes","A cofounder conversation. Drafted with Kai, Priya approved it.", [["Open", ()=>go("req:t1"), "req:t1"]]); }
+    if (ta) { ta.hidden=false; ta.kind="direct"; ta.via=null; ta.state="open"; ta.when="now"; ta.what="wants a cofounder conversation with you"; ta.note="Hi Maya, Daniel mentioned your infra work in #cofounders. I'm a PM at Google Cloud looking for a technical cofounder for an agents idea. Would you be open to twenty minutes? No worries at all if not."; ta.receipts=[["Rule","Under your cofounder rule, direct asks are open. 2 slots left this month","your rules"],["Shared","Both at Xoogler dinner and the AI meetup","events"]]; queuePush("maya","Priya asked you for twenty minutes","A cofounder conversation. Drafted with Kai, Priya approved it.", [["Open", ()=>go("req:t1"), "req:t1"]]); }
     STATE.sheet=null; render(); toast(`Direct. ${firstName(t)} has your note now.${prevVia?" "+firstName(prevVia)+" sees: Moved.":""}`); return; }
   if (k==="other") { if (o.roleTitle) { const prev=c; o.via=null; o.route="cold"; o.viaAgreed=false; o.state="waiting"; o.stale=false; o.log.push(["You",`applied directly. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!==id); STATE.sheet=null; render(); toast(`Applied. ${prev?firstName(prev)+" sees: Moved. No words.":""}`); return; }
     const alt = (c&&c.id==="sana") ? DB.people.rushal||DB.people.rahul : DB.people.sana; const prev=c; o.via=alt.id; o.viaAgreed=false; o.phase=null; o.checking=false; o.state="waiting"; o.later=false; renameVia(o, firstName(alt)); o.log.push(["You",`asked ${firstName(alt)} to vouch instead. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]);
@@ -5349,7 +5349,7 @@ const _sMission = sMission; sMission = function(id){
 const _todayItems = todayItems; todayItems = function(){
   const items=_todayItems(); if (STATE.persona!=="priya") return items;
   DB.opps.filter(o=>o.updateDue&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av("K")}<div class="m"><div class="a">Still talking with ${firstName(targetOf(o))}?</div><div class="b">Ten days, no meeting seen. One tap.</div></div><button class="btn sm sec" onclick="event.stopPropagation();go('mission:${o.missionId}')">Answer</button></div>`));
-  DB.opps.filter(o=>o.asked&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av(DB.people.chris.initials)}<div class="m"><div class="a">Chris asked you something</div><div class="b">${o.asked}</div></div><button class="btn sm sec" onclick="event.stopPropagation();openSheet('creply','${o.id}')">Reply</button></div>`));
+  DB.opps.filter(o=>o.asked&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av(DB.people.chris.initials)}<div class="m"><div class="a">Daniel asked you something</div><div class="b">${o.asked}</div></div><button class="btn sm sec" onclick="event.stopPropagation();openSheet('creply','${o.id}')">Reply</button></div>`));
   DB.opps.filter(o=>(o.phase==="blocked"||o.phase==="declined")&&o.state!=="done").forEach(o=>items.unshift(`<div class="trow" data-opp="${o.id}">${av(targetOf(o).initials)}<div class="m"><div class="a">${o.phase==="blocked"?`${firstName(viaOf(o)||DB.people.chris)} can't take the ${firstName(targetOf(o))} ask`:`${firstName(targetOf(o))} isn't available right now`}</div><div class="b">No reason given. Another route, direct, or close.</div></div><button class="btn sm sec" onclick="event.stopPropagation();go('path:${o.id}')">Options</button></div>`));
   if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&viaOf(o)&&!o.thanked) items.push(`<div class="trow" data-opp="${o.id}">${av("K")}<div class="m"><div class="a">Thank ${firstName(viaOf(o))}?</div><div class="b">His intro landed. A line is drafted for you.</div></div><button class="btn sm sec" onclick="event.stopPropagation();openSheet('thank','${o.id}')">Preview</button></div>`); }
   return items;
@@ -5378,7 +5378,7 @@ const _closeMission = closeMission; closeMission = function(mid, how){
 const _sReqThread2 = sReqThread; sReqThread = function(aid){
   const a=ask(aid); let h=_sReqThread2(aid); if (!a) return h;
   if (a.kind==="forwarded") {
-    if (aid==="t1") { const o=o2(); h=h.replace("Hi Jordan, happy to help. Friday at 11?", (o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Chris mentioned you. Coffee next week?")).replace('<div class="msg k"><span class="xs faint">Jordan</span><br>Friday at eleven works, thank you!</div>', o&&(o.state==="conversation"||o.state==="done")?'<div class="msg k"><span class="xs faint">Priya</span><br>Thursday 3pm works. Happy to come to you.</div>':'').replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Friday at 11 works\?/g, "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace("worked with "+firstName(DB.people[a.from])+" at Google. Strong.", a.strength==="none"?"passed this along without vouching.":a.strength==="strong"?"knows Priya well. Strong.":a.strength==="light"?"has met Priya. Light.":"worked with Priya at Google. Strong."); }
+    if (aid==="t1") { const o=o2(); h=h.replace("Hi Jordan, happy to help. Friday at 11?", (o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Daniel mentioned you. Coffee next week?")).replace('<div class="msg k"><span class="xs faint">Jordan</span><br>Friday at eleven works, thank you!</div>', o&&(o.state==="conversation"||o.state==="done")?'<div class="msg k"><span class="xs faint">Priya</span><br>Thursday 3pm works. Happy to come to you.</div>':'').replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Friday at 11 works\?/g, "Hi Priya, Daniel mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace("worked with "+firstName(DB.people[a.from])+" at Google. Strong.", a.strength==="none"?"passed this along without vouching.":a.strength==="strong"?"knows Priya well. Strong.":a.strength==="light"?"has met Priya. Light.":"worked with Priya at Google. Strong."); }
     if (a.state==="open") h=h.replace(/No accept step\. (\w+) already vouched\./, (m,v)=>`No accept step. ${v} ${a.strength==="none"?"passed it along":"already vouched"}. Or: <span style="text-decoration:underline" onclick="openSheet('tdecline','${aid}')">not now</span> · <span style="text-decoration:underline" onclick="targetLater('${aid}')">later</span>.`);
     if (a.later && a.state==="open") h=h.replace('<div class="foot">', `<div class="msg sys" style="margin:10px auto">You said later. Kai brings this back in a month. ${firstName(DB.people[a.from])} sees: waiting.</div><div class="foot">`);
     if (a.state==="declined") h=h.replace('<div class="foot">', `<div class="msg sys" style="margin:10px auto">You said not now. ${firstName(DB.people[a.from])} sees: not available right now.</div><div class="foot" hidden>`);
@@ -5396,8 +5396,8 @@ const _sReqThread2 = sReqThread; sReqThread = function(aid){
 };
 const _replyAskSheet = replyAskSheet; replyAskSheet = function(id){
   let h=_replyAskSheet(id);
-  if (id==="t1") h=h.replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Thursday at the Xoogler dinner works, or a call Friday\. Which is easier\?/, "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace(/Hey Priya, happy to\. Friday at eleven\?/,"Hey Priya, coffee next week?");
-  if (id==="t0") h=h.replace(/Hi Chris, sure\. Send it over and I'll mark it up, then let's do 20 minutes\. Friday 11 works\./, "Sure, open to it. Send the name over.").replace(/Sent as you\. Chris sees you wrote it\./, "Goes to Chris only. Nobody else knows yet.");
+  if (id==="t1") h=h.replace(/Hi Jordan, happy to help\. I made the same jump a few months ago\. Thursday at the Xoogler dinner works, or a call Friday\. Which is easier\?/, "Hi Priya, Daniel mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?").replace(/Hey Priya, happy to\. Friday at eleven\?/,"Hey Priya, coffee next week?");
+  if (id==="t0") h=h.replace(/Hi Daniel, sure\. Send it over and I'll mark it up, then let's do 20 minutes\. Friday 11 works\./, "Sure, open to it. Send the name over.").replace(/Sent as you\. Daniel sees you wrote it\./, "Goes to Daniel only. Nobody else knows yet.");
   return h;
 };
 const _askNoSheet = askNoSheet; askNoSheet = function(id){ const a=ask(id); if (a&&a.kind==="forwarded") return tdeclineSheet(id); return _askNoSheet(id); };
@@ -5436,15 +5436,15 @@ const _sendAsk = sendAsk; sendAsk = function(id){
 
 function cycleNotes(){
   const li = a => `<ul class="pn">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
-  return `<h2>The mission cycle, end to end</h2><p class="sm muted">One introduction, three phones. Use the persona button above the phone: Priya asks, Chris decides, Maya answers. Each switch delivers the push that phone was owed. The scripted month (Advance a week) still plays the happy path; every other ending is a tap away.</p>
-    <div class="lbl">Priya, the asker</div>${li(["Sends the ask from the path sheet; Chris's phone gets a push with Yes and Not now on the lock screen","Sees what Chris did: forwarded with a vouch, passed along without one, checking with Maya first, a question back, moved to Sana, or can't take it","When Chris can't: the card says so with no reason, and offers Sana, going direct, or closing","When Maya isn't available: close, another route, or ask again in a month","Every ending is a confirm that lists who sees what, plus an optional drafted line to the connector","Went well: Chris sees Landed; a thank-you is drafted, Priya sends it","Kai's check-ins: nudge draft at six days, archive or another route at two weeks, still talking at ten days, did you talk a week after meeting, close when the done condition looks met","Closing the mission lists the open paths and closes them with it"])}
-    <div class="lbl">Chris, the connector</div>${li(["Requests row and badge in Messages, a push, and a bell row when the ask arrives","Before you vouch, five decisions; a check comes back as Maya's yes or no with nobody else told","His record shows a status when the path ends: Landed, Closed, Withdrawn, Moved, Expired. Never why","Priya's answer to his question, and her thank-you if she sent one, appear in the request thread","Dev's request expires after 21 days as a status"])}
-    <div class="lbl">Maya, the target</div>${li(["The intro lands as a chat with Chris's vouch and its strength; no accept step","Not now, later, or reply. Not now shows Priya “not available right now” and Chris “Closed”","A nameless check from Chris is a request she can take or decline without anyone learning who asked","Going direct puts Priya's own note in her Requests"])}
+  return `<h2>The mission cycle, end to end</h2><p class="sm muted">One introduction, three phones. Use the persona button above the phone: Priya asks, Daniel decides, Maya answers. Each switch delivers the push that phone was owed. The scripted month (Advance a week) still plays the happy path; every other ending is a tap away.</p>
+    <div class="lbl">Priya, the asker</div>${li(["Sends the ask from the path sheet; Daniel's phone gets a push with Yes and Not now on the lock screen","Sees what Daniel did: forwarded with a vouch, passed along without one, checking with Maya first, a question back, moved to Sana, or can't take it","When Daniel can't: the card says so with no reason, and offers Sana, going direct, or closing","When Maya isn't available: close, another route, or ask again in a month","Every ending is a confirm that lists who sees what, plus an optional drafted line to the connector","Went well: Daniel sees Landed; a thank-you is drafted, Priya sends it","Kai's check-ins: nudge draft at six days, archive or another route at two weeks, still talking at ten days, did you talk a week after meeting, close when the done condition looks met","Closing the mission lists the open paths and closes them with it"])}
+    <div class="lbl">Daniel, the connector</div>${li(["Requests row and badge in Messages, a push, and a bell row when the ask arrives","Before you vouch, five decisions; a check comes back as Maya's yes or no with nobody else told","His record shows a status when the path ends: Landed, Closed, Withdrawn, Moved, Expired. Never why","Priya's answer to his question, and her thank-you if she sent one, appear in the request thread","Dev's request expires after 21 days as a status"])}
+    <div class="lbl">Maya, the target</div>${li(["The intro lands as a chat with Daniel's vouch and its strength; no accept step","Not now, later, or reply. Not now shows Priya “not available right now” and Daniel “Closed”","A nameless check from Daniel is a request she can take or decline without anyone learning who asked","Going direct puts Priya's own note in her Requests"])}
     <div class="lbl">Calls for you</div>${li(["Cadence: your wireframe says “next pass Friday”; the research says a daily batch of up to three with an honest empty day. Left as Friday until you pick","Nudge day: the card says six days, the loop says a week","Expiry: two weeks to archive, 21 days to expire. Both guesses until missions are live","A connector who forwarded gets Closed when the target never replies. Built as yes"])}`;
 }
 
 const _oppSheetV3 = oppSheetV3; oppSheetV3 = function(id){
-  let h=_oppSheetV3(id); const o=DB.opps.find(x=>x.id===id); if (!o || o.state==="done") return h; const t=firstName(targetOf(o)); const c=viaOf(o)?firstName(viaOf(o)):"Chris";
+  let h=_oppSheetV3(id); const o=DB.opps.find(x=>x.id===id); if (!o || o.state==="done") return h; const t=firstName(targetOf(o)); const c=viaOf(o)?firstName(viaOf(o)):"Daniel";
   if (o.phase==="blocked") h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${c} couldn't take this one. No reason is shown.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn" data-exit="${id}|other">${o.roleTitle?"Apply directly":"Ask Sana instead"}</button><div class="sec2" data-exit="${id}|direct">Go direct to ${t}</div><div class="sec2" data-exit="${id}|close">Close</div></div>`);
   else if (o.phase==="declined") h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${t} isn't available right now. That's all you're shown.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn sec" data-exit="${id}|close">Close this path</button><div class="sec2" data-exit="${id}|other">Another route</div><div class="sec2" data-exit="${id}|snooze">Ask in a month</div></div>`);
   else if (o.asked) h=h.replace("<b>Now</b> Your move.", `<b>Now</b> ${c} asked you something before deciding.`).replace(/<div class="sbar">[\s\S]*$/, `<div class="sbar"><button class="btn" onclick="openSheet('creply','${id}')">Reply to ${c}</button></div>`);
@@ -5730,7 +5730,7 @@ const scSheet = (title, meta, body) => `<div class="sc"><div class="t20">${title
 const scDraftMic = (id, spoken) => `<span class="mic sm" onclick="document.getElementById('${id}').value='${String(spoken).replace(/'/g,"\\'")}'">${MIC_SVG}</span>`;
 const SC_DRAFTS = {
   o1: "Hi Rahul, good to see you at the dinner last month. I'm starting to look at senior PM roles at AI companies and saw your #jobs post. Could I get twenty minutes before Thursday to hear what you're building?",
-  o2: "Hi Chris, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
+  o2: "Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
   o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google Cloud and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
 };
 askSheet = function(id){
@@ -5810,7 +5810,7 @@ tdeclineSheet = function(id){
 };
 askMoreSheet = function(id){
   const a = DB.asks.find(x=>x.id===id); const from=DB.people[a.from];
-  const alts = a.kind==="connector" ? [["sana","Sana Iqbal","Co-hosted with Rahul twice, stronger tie than yours"],["chris","Chris Fong","Knows everyone. Open to intros, 3 slots"]] : [];
+  const alts = a.kind==="connector" ? [["sana","Sana Iqbal","Co-hosted with Rahul twice, stronger tie than yours"],["chris","Daniel Reyes","Knows everyone. Open to intros, 3 slots"]] : [];
   return scSheet("More", "", `${a.kind==="connector"?`<div class="sl">Redirect to a better connector</div><div class="rows">${alts.map(x=>`<div class="row" data-redirect="${id}|${x[1]}">${av(DB.people[x[0]].initials)}<div class="m"><div class="a">${x[1]}</div><div class="b">${x[2]}</div></div><span class="chev">›</span></div>`).join("")}</div><div class="m12" style="margin-top:4px">${f1(from)} is told the path moved, not why</div>`:''}
     <div class="sl">Other</div><div class="rows">
       <div class="xrow" onclick="closeSheet();toast('Snoozed a week. Comes back once, then expires.')"><div class="m"><div class="a">Snooze a week</div></div></div>
@@ -5824,9 +5824,9 @@ passedSheet = function(){
 };
 replyAskSheet = function(id){
   const a = DB.asks.find(x=>x.id===id); const from=DB.people[a.from];
-  const draft = id==="t1" ? "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?" : id==="t0" ? "Sure, open to it. Send the name over." : a.kind==="forwarded" ? `Hi Jordan, happy to help. I made the same jump a few months ago. Thursday at the Xoogler dinner works, or a call Friday. Which is easier?` : `Hi ${f1(from)}, sure. Send it over and I'll mark it up, then let's do 20 minutes. Friday 11 works.`;
+  const draft = id==="t1" ? "Hi Priya, Daniel mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?" : id==="t0" ? "Sure, open to it. Send the name over." : a.kind==="forwarded" ? `Hi Jordan, happy to help. I made the same jump a few months ago. Thursday at the Xoogler dinner works, or a call Friday. Which is easier?` : `Hi ${f1(from)}, sure. Send it over and I'll mark it up, then let's do 20 minutes. Friday 11 works.`;
   const spoken = id==="t1" ? "(Spoken) Hey Priya, coffee next week?" : `(Spoken) Hey ${f1(from)}, happy to. Friday at eleven?`;
-  const disc = id==="t0" ? "Goes to Chris only. Nobody else knows yet" : `Sent as you. ${f1(from)} sees you wrote it`;
+  const disc = id==="t0" ? "Goes to Daniel only. Nobody else knows yet" : `Sent as you. ${f1(from)} sees you wrote it`;
   return scSheet(`Reply to ${f1(from)}`, "", `<div class="bub"><div class="bn">${f1(from)}</div>${a.note}</div>${msgComposer({ id:"draft", draft, spoken, chips: STATE.connect.calendar&&id!=="t0"?[["Fri 11am",true],["Thu, at the dinner",false],["Next week",false]]:[], sendAttr:`data-replyask="${id}"`, disclosure:disc })}`);
 };
 forwardSheet = function(id){
@@ -5859,11 +5859,11 @@ sReqThread = function(aid){
     const strength = a.strength==="none" ? `${f(v)} passed this along without vouching` : a.strength==="strong" ? `${f(v)} vouches: knows ${f(from)} well` : a.strength==="light" ? `${f(v)} vouches: has met ${f(from)}` : `${f(v)} vouches: worked with ${f(from)} at Google`;
     let convo = `<div class="bub"><div class="bn">${f(v)}</div>${a.note}</div>`;
     if (a.state==="waiting"||a.state==="done") {
-      if (aid==="t1") { convo += `<div class="bub u">${o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Chris mentioned you. Coffee next week?"}</div>`; if (o&&(o.state==="conversation"||o.state==="done")) convo += `<div class="bub"><div class="bn">${f(from)}</div>Thursday 3pm works. Happy to come to you.</div>`; }
+      if (aid==="t1") { convo += `<div class="bub u">${o&&o.replyText?o.replyText.replace(/^Maya: /,""):"Daniel mentioned you. Coffee next week?"}</div>`; if (o&&(o.state==="conversation"||o.state==="done")) convo += `<div class="bub"><div class="bn">${f(from)}</div>Thursday 3pm works. Happy to come to you.</div>`; }
       else convo += `<div class="bub u">Hi ${f(from)}, happy to help. Friday at 11?</div><div class="bub"><div class="bn">${f(from)}</div>Friday at eleven works, thank you!</div>`;
     }
     const facts = [[strength, a.strength!=="none"], ...a.receipts.filter(r=>r[0]!=="Vouched"&&r[0]!=="Passed along").map(r=>[r[1],false])];
-    const opener = aid==="t1" ? "Hi Priya, Chris mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?" : `Hi ${f(from)}, happy to help. I made the same jump a few months ago. Friday at 11 works?`;
+    const opener = aid==="t1" ? "Hi Priya, Daniel mentioned you. Heads-down this week, but coffee next week would be good. Tuesday or Wednesday?" : `Hi ${f(from)}, happy to help. I made the same jump a few months ago. Friday at 11 works?`;
     const line = a.state==="declined" ? `You said not now. ${f(from)} sees: not available right now` : a.state==="done" ? `${a.outcomeLine||"Closed"}. Nothing else was sent` : a.later&&a.state==="open" ? `You said later. Kai brings this back in a month. ${f(from)} sees: waiting` : "";
     const foot = (a.state==="open"||a.state==="pending"||a.state==="waiting") ? `<div class="foot sc"><div class="composer"><textarea class="input" id="draft" rows="1" placeholder="Message ${f(from)}">${a.state==="waiting"?"":opener}</textarea><div class="mic">${MIC_SVG}</div><button class="btn sm" data-replyask="${aid}">Send</button></div>${a.state!=="waiting"?`<div class="cost">Kai drafted this · <span class="pn" onclick="openSheet('tdecline','${aid}')">Not now</span> · <span class="pn" onclick="targetLater('${aid}')">Later</span></div>`:""}</div>` : "";
     return `<div class="hdr sc">${back}<div class="who">${av(from.initials)}<div class="m"><div class="a">${from.name}</div><div class="m12">${a.strength==="none"?"passed along by":"via"} ${v.name}</div></div></div>${more}</div>
@@ -7105,8 +7105,8 @@ const EV_ME = "priya";
   add({ id:"e7", name:"Demo night", when:"Thu, Oct 15, 7pm", day:"Oct 15", where:"Palo Alto", going:60, rsvp:false, family:"xoogler", host:"chris", bucket:"upcoming", cal:"cal-xd", theme:"gold", end:"10pm", cap:60, sort:1015, reg:"waitlist", wait:3, meet:["rahul"], details:"Eight demos, five minutes each. Full; spots open when people drop." });
   add({ id:"e8", name:"Board night", when:"Tue, Oct 6, 7pm", day:"Oct 6", where:"Menlo Park", going:30, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", theme:"ink", vis:"members", sort:1006, reg:"none" });
   add({ id:"e9", name:"Founder fireside: pricing", when:"Tue, Oct 13, 6pm", day:"Oct 13", where:"Stanford", going:88, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-spc", listed:["cal-pa"], theme:"dusk", sort:1013, reg:"none", meet:["maya"], details:"Two founders on their first pricing change, and what it cost them." });
-  add({ id:"e11", name:"Angel check-writing 101", when:"Wed, Oct 14, 6pm", day:"Oct 14", where:"SF", going:26, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-cf", theme:"gold", sort:1014, reg:"none", details:"Chris walks through his first twenty checks. Twelve seats." });
-  add({ id:"e12", name:"Founders dinner", when:"Thu, Oct 8, 7pm", day:"Oct 8", where:"Atherton", going:9, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-cf", theme:"ink", end:"10pm", cap:12, vis:"invite", sort:1008, reg:"invited", meet:["maya"], details:"Twelve founders, one table. Chris picks the seats." });
+  add({ id:"e11", name:"Angel check-writing 101", when:"Wed, Oct 14, 6pm", day:"Oct 14", where:"SF", going:26, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-cf", theme:"gold", sort:1014, reg:"none", details:"Daniel walks through his first twenty checks. Twelve seats." });
+  add({ id:"e12", name:"Founders dinner", when:"Thu, Oct 8, 7pm", day:"Oct 8", where:"Atherton", going:9, rsvp:false, family:null, host:"chris", bucket:"upcoming", cal:"cal-cf", theme:"ink", end:"10pm", cap:12, vis:"invite", sort:1008, reg:"invited", meet:["maya"], details:"Twelve founders, one table. Daniel picks the seats." });
   add({ id:"e13", name:"Product teardown: Figma", when:"Fri, Oct 23, 6pm", day:"Oct 23", where:"Mountain View", going:0, rsvp:false, family:null, host:EV_ME, bucket:"upcoming", cal:"cal-pt", theme:"dusk", end:"8pm", cap:20, sort:1023, reg:"hosting", draft:true });
   const C = (id, o) => { const c = DB.calendars.find(x=>x.id===id); if (c) Object.assign(c, o); };
   C("cal-xd", { kind:"family", main:true, auto:true, theme:"gold", admins:["chris"], accepts:"members", events:["e1","e0","e7"] });
@@ -7119,7 +7119,7 @@ const EV_ME = "priya";
   addc({ id:"cal-dn", name:"Desi Founders", family:"desi", host:"neha", subs:150, kind:"family", main:true, auto:true, theme:"sage", admins:["neha"], accepts:"members", about:"Breakfasts and investor office hours, SF and NYC.", events:["e6"] });
   addc({ id:"cal-pa", name:"Palo Alto Events", family:null, host:null, subs:1840, kind:"city", theme:"harbour", accepts:"anyone", about:"Public Key events near Palo Alto from every family. Hosts submit; Key's team approves.", events:["e5","e1","e9","e4"] });
   addc({ id:"cal-spc", name:"Founders Table", family:null, famExt:"Stanford GSB Founders", host:"chris", subs:410, members:640, kind:"family", main:true, theme:"dusk", subscribed:true, admins:["chris"], accepts:"members", about:"Stanford GSB Founders' calendar. Firesides are open; board nights are for members.", events:["e8","e9"] });
-  addc({ id:"cal-cf", name:"Chris Fong", family:null, host:"chris", subs:212, kind:"personal", theme:"gold", admins:["chris"], accepts:"admins", about:"Chris's own events.", events:["e11"] });
+  addc({ id:"cal-cf", name:"Daniel Reyes", family:null, host:"chris", subs:212, kind:"personal", theme:"gold", admins:["chris"], accepts:"admins", about:"Daniel's own events.", events:["e11"] });
   DB.fevents.forEach(e=>{ if (e.reg===undefined) e.reg = e.rsvp ? "going" : "none"; if (!e.listed) e.listed=[]; if (!e.pending) e.pending=[]; });
   if (!DB.people.neha) DB.people.neha = { id:"neha", name:"Neha Rao", initials:"NR", title:"Founder", company:"Desi Founders", families:["Desi Founders"], openTo:[] };
   STATE.evSeg = STATE.evSeg || "foryou"; STATE.evMine = STATE.evMine || "upcoming"; STATE.evAsked = STATE.evAsked || {}; STATE.evMtab = STATE.evMtab || "guests";
@@ -7276,7 +7276,7 @@ function evSwap(dir){
 }
 
 /* ---- event page, host and manage share the eventd: route ---- */
-const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"Chris vouched for her. Her cofounder intent matches yours.", sana:"On the Perplexity hiring panel. Posted the role you're tracking.", ana:"Hiring a platform PM. You've met twice.", kate:"Michigan alum, growth PM at Duolingo." };
+const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"Daniel vouched for her. Her cofounder intent matches yours.", sana:"On the Perplexity hiring panel. Posted the role you're tracking.", ana:"Hiring a platform PM. You've met twice.", kate:"Michigan alum, growth PM at Duolingo." };
 /* ---- event page: the event's theme paints the whole screen and its effect runs behind it (events branch, themed-page).
    Few words: a poster, the title, two facts, faces, the chat, people. The sticky button does the rest. ---- */
 const EV_WHY_SHORT = { rahul:"Hiring senior PMs", maya:"Wants a technical cofounder", sana:"On Perplexity's hiring panel", ana:"Hiring a platform PM", kate:"Growth PM at Duolingo", chris:"Runs Xoogler dinners" };
@@ -7698,9 +7698,9 @@ function evCta(e, live, locked){
   const T = { Update:"announcement", Digest:"announcement", Feature:"article" };
   DB.posts.forEach(p=>{ if (!p.type) p.type = T[p.kind]||"announcement"; if (p.fam===undefined) p.fam = "xoogler"; });
   const add = p => { if (!DB.posts.some(x=>x.title===p.title)) DB.posts.push(Object.assign({ fam:"xoogler" }, p)); };
-  add({ type:"win", who:"Rahul Mehta", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred her, Chris vouched. Offer to signed in eleven days." });
+  add({ type:"win", who:"Rahul Mehta", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred her, Daniel vouched. Offer to signed in eleven days." });
   add({ type:"question", who:"Ana Ruiz", when:"Monday", title:"Who knows Figma's PM bar?", text:"Interviewing a candidate from Figma next week. What does a strong PM there look like?", replies:7 });
-  add({ type:"article", who:"Sana Iqbal, approved by Chris", when:"Sep 12", title:"What Perplexity's PM loop actually tests", text:"Four rounds, one of them a live teardown. What I look for, and the answer most people miss.", tag:"Hiring", read:"6 min" });
+  add({ type:"article", who:"Sana Iqbal, approved by Daniel", when:"Sep 12", title:"What Perplexity's PM loop actually tests", text:"Four rounds, one of them a live teardown. What I look for, and the answer most people miss.", tag:"Hiring", read:"6 min" });
   DB.posts[0].pinned = true;
   DB.cweek = DB.cweek || {
     xoogler: [
@@ -7770,7 +7770,7 @@ function cPane(){
 
 /* ---- people helpers shared by Home and People: closeness is one fixed mark (met, through someone, same family) ---- */
 function cTier(p){ return p.shared.some(x=>/Met|Talked|Nominated|Greeted/.test(x)) ? 0 : (DB.opps.some(o=>o.personId===p.id&&o.via&&o.via!==p.id) || ["maya","jordan","dev"].includes(p.id)) ? 1 : 2; }
-function cVia(p){ const o=DB.opps.find(x=>x.personId===p.id&&x.via&&x.via!==p.id); const v=o&&DB.people[o.via]; return v ? v.name.split(" ")[0] : ({maya:"Chris",jordan:"Rahul",dev:"Rahul"})[p.id]||"a member"; }
+function cVia(p){ const o=DB.opps.find(x=>x.personId===p.id&&x.via&&x.via!==p.id); const v=o&&DB.people[o.via]; return v ? v.name.split(" ")[0] : ({maya:"Daniel",jordan:"Rahul",dev:"Rahul"})[p.id]||"a member"; }
 function cClose(p){ const t=cTier(p); return t===0 ? "Met" : t===1 ? "Through "+cVia(p) : "In "+cF().name; }
 const cFace = (p, cls) => `<div class="cm-av">${av(p.initials, cls||"")}<span class="cmark t${cTier(p)}"></span></div>`;
 const cHead = (t, link, attr) => `<div class="cm-h"><span>${t}</span>${link?`<span class="cm-more" ${attr}>${link}</span>`:''}</div>`;
@@ -7882,7 +7882,7 @@ sPosts = function(){
   const list = STATE.postType==="All" ? all : all.filter(p=>p.type===STATE.postType);
   const label = t => (C_TYPES.find(x=>x[0]===t)||["","Post"])[1].replace(/s$/,"");
   const row = p => `<div class="cm-post"><div class="ck">${label(p.type)}${p.pinned?' · Pinned':''}</div><div class="ct">${p.title}</div><div class="cx">${p.text}</div><div class="cm">${p.who.split(",")[0]} · ${p.when}</div></div>`;
-  const live = STATE.liveBroadcast ? `<div class="cm-post cm-live"><div class="ck"><span class="cm-livedot"></span>Live now</div><div class="ct">Office hours with ${f.id==="desi"?"Neha":"Chris"}</div><div class="cx">41 members listening. Kai keeps the follow-ups for you.</div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
+  const live = STATE.liveBroadcast ? `<div class="cm-post cm-live"><div class="ck"><span class="cm-livedot"></span>Live now</div><div class="ct">Office hours with ${f.id==="desi"?"Neha":"Daniel"}</div><div class="cx">41 members listening. Kai keeps the follow-ups for you.</div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
   const chips = cChips([["All","All"],"|",...C_TYPES.map(([id,l])=>[id,l])], STATE.postType, "cptype");
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
@@ -7912,12 +7912,12 @@ const C_MM = [
   { id:"jordan", n:"Jordan Tan", e:"jordan.tan@gmail.com", st:"pending", sub:"Waiting 3 days · nominated by Rahul Mehta", notes:1, tags:[] },
   { id:"mira", n:"Mira Joshi", e:"mira.j@outlook.com", st:"pending", sub:"Waiting 2 days · applied from the family page", notes:0, tags:[] },
   { id:"leo", n:"Leo Park", e:"leo@parklabs.io", st:"pending", sub:"Waiting 1 day · invited by Sana Iqbal", notes:0, tags:[] },
-  { id:"chris", n:"Chris Fong", e:"chris@xoogler.org", st:"admin", notes:0, tags:["Organizer"] },
+  { id:"chris", n:"Daniel Reyes", e:"chris@xoogler.org", st:"admin", notes:0, tags:["Organizer"] },
   { id:"rahul", n:"Rahul Mehta", e:"rahul@anthropic.com", st:"admin", notes:3, tags:["Investor","Speaker","Mentor"] },
   { id:"maya", n:"Maya Chen", e:"maya@stealth.dev", st:"member", notes:2, tags:["Software Engineer","Speaker"] },
   { id:"ana", n:"Ana Ruiz", e:"ana@sierra.ai", st:"member", notes:0, tags:["Hiring"] },
   { id:"dev", n:"Dev Patel", e:"dev@lexagents.com", st:"member", notes:0, tags:[] },
-  { id:"sam", n:"Sam Ortiz", e:"sam.ortiz@gmail.com", st:"declined", sub:"Declined 12 Sep by Chris Fong", notes:1, tags:[] }
+  { id:"sam", n:"Sam Ortiz", e:"sam.ortiz@gmail.com", st:"declined", sub:"Declined 12 Sep by Daniel Reyes", notes:1, tags:[] }
 ];
 const C_MM_PILL = { pending:"Pending", admin:"Admin", declined:"Declined" };
 function cMembers(tab){
@@ -7959,7 +7959,7 @@ sManageSection = function(id){
 sPublicPage = function(){
   const f = DB.families.find(x=>x.id===(STATE.pubFamily||"xoogler")) || DB.recommendedFamilies.find(x=>x.id===STATE.pubFamily) || DB.families[0];
   const member = STATE.member && DB.families.some(x=>x.id===f.id);
-  const pub = STATE.reportPublic!==false; const run = f.id==="desi" ? ["NR","Neha Rao","Partner, Lattice Ventures"] : ["CF","Chris Fong","President"];
+  const pub = STATE.reportPublic!==false; const run = f.id==="desi" ? ["NR","Neha Rao","Partner, Lattice Ventures"] : ["CF","Daniel Reyes","President"];
   const known = ["rahul","maya","ana"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
   const why = DB.user.invitedBy && f.id==="xoogler" ? `<b>${DB.user.invitedBy}</b> invited you to apply` : STATE.entry==="event" ? `You're registered for <b>Xoogler dinner, Thursday</b>` : `Kai: ${f.why||"ex-Google, from your LinkedIn"}`;
   const evs = DB.fevents.filter(e=>e.family===f.id && !e.past).sort((a,b)=>(a.sort||0)-(b.sort||0)).slice(0,2);
@@ -8025,7 +8025,7 @@ function cSheet(type, id){
       <div class="row" style="gap:8px;margin-top:12px"><button class="btn sec" style="flex:1" onclick="closeSheet()">Stay</button><button class="btn" style="flex:1;background:var(--danger);border-color:var(--danger)" data-cleave="${f.id}">Leave now</button></div>`;
   }
   if (type==="cinvite") {
-    return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Chris"} decides. Your line is the first thing the organizers read.</p>
+    return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
       <div class="field"><div class="k">Why they belong</div><div class="v" style="color:var(--ink2)">Worked with her on Cloud AI for two years. She'd help anyone hiring PMs.</div><div class="xs faint" style="margin-top:4px">Kai drafted this from what you told it. Edit it.</div></div>
       <p class="xs faint">They see "Invited by ${DB.user.name}" on the family page. The link works once and expires in 14 days.</p>
@@ -8054,7 +8054,7 @@ function cSheet(type, id){
     const ini = m.n.split(" ").map(x=>x[0]).join("");
     const role = m.st==="admin" ? "Admin" : m.st==="pending" ? "Pending" : m.st==="declined" ? "Declined" : "Member";
     return `<div class="cm-qv"><div class="cm-sq">${ini}</div><div class="m"><div class="a">${m.n}</div><div class="b">${m.e}</div><div class="b">${p.title?`${p.title}, ${p.company}`:"San Francisco"}</div></div></div>
-      <div class="cm-qrole"><span class="cm-sel">${role}${m.st==="member"||m.st==="admin"?" ▾":""}</span><span class="b">${m.sub||"Invited by Chris Fong"}</span></div>
+      <div class="cm-qrole"><span class="cm-sel">${role}${m.st==="member"||m.st==="admin"?" ▾":""}</span><span class="b">${m.sub||"Invited by Daniel Reyes"}</span></div>
       ${m.st==="member"||m.st==="admin"?`<div class="cm-tags" style="margin:12px 0 4px">${m.tags.map(x=>`<span>${x}</span>`).join("")}<span class="add">+ Tag</span></div>`:''}
       ${p.line?`<div class="cm-atm"><b>At the moment</b><div>${p.line}</div></div>`:''}
       <div class="cm-list" style="margin-top:6px"><div class="cm-row" onclick="toast('Notes: admin only. The member never sees them.')"><div class="m"><div class="a">Notes</div></div><span class="cm-done">${m.notes}</span><span class="s">›</span></div>
@@ -8512,7 +8512,7 @@ function askSheet(id) {
   if (o.phase==="followup") { const t=targetOf(o); return `<h2>Follow up with ${t.name.split(" ")[0]}</h2><p class="sm muted">You talked last night. Sent now, while it's warm. Kai asks how it went in a week.</p><div class="lbl">Your note</div><textarea class="input" id="draft" rows="4">Great talking last night, ${t.name.split(" ")[0]}. ${o.personId==="rahul"?"I'd love to hear more about the new product line. Twenty minutes next week?":"Let's keep the conversation going. Coffee next week?"}</textarea><div class="xs faint" style="margin:12px 0 10px">Kai drafted this. ${t.name.split(" ")[0]} sees you approved it.</div><button class="btn" data-send="${id}">Send</button>`; }
   const drafts = {
     o1: "Hi Rahul, good to see you at the dinner last month. I'm starting to look at senior PM roles at AI companies and saw your #jobs post. Could I get twenty minutes before Thursday to hear what you're building?",
-    o2: "Hi Chris, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
+    o2: "Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and her infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
     o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google Cloud and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
   };
   const to = via||p;
@@ -8672,7 +8672,7 @@ function kaiAsk(t) {
   const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
   if (scope && scope.kind==="mission") { STATE.kaiMsgs.push({who:"u",text:t}); const mm=DB.missions.find(x=>x.id===scope.id); const before=(mm.mlog||[]).length; missionSay(scope.id, t); const kaiLine=(mm.mlog||[]).slice(before+1).find(l=>l[0]==="Kai"); STATE.kaiMsgs.push({who:"k",text:(kaiLine?kaiLine[1]:"Noted.")+" Written to the mission's activity."}); render(); return; }
   if (scope && scope.kind==="context") { STATE.kaiMsgs.push({who:"u",text:t}); if (/noticed/i.test(t)) { STATE.kaiMsgs.push({who:"k",text:DB.contextV2.inferred.length?`Two things: ${DB.contextV2.inferred.map(l=>l[0].toLowerCase()).join("; ")}. Say yes to either and I'll use it.`:"Nothing waiting right now."}); } else { const sec=/never|don't|do not|off /i.test(t)?"boundaries":/help|can |offer|add:/i.test(t)?"offer":/looking|want|after|role|cofounder/i.test(t)?"after":/prefer|morning|call|write/i.test(t)?"work":"who"; const clean=t.replace(/^add:[ ]*/i,""); DB.contextV2[sec].push(sec==="offer"?[clean,"you told Kai","now","help nudges",true]:[clean,"you told Kai","now",CTX_SECTIONS.find(x=>x[0]===sec)[2]]); if (sec==="offer") STATE.offerSaid=true; DB.episodes.unshift({ d:"Today", t:"told", what:"You told Kai: "+clean, learned:[clean], sent:[sec,0] }); STATE.kaiMsgs.push({who:"k",text:`Filed under ${CTX_SECTIONS.find(x=>x[0]===sec)[1]}. It's in Now and on your Timeline.`}); } render(); return; }
-  if (scope) { STATE.kaiMsgs.push({who:"u",text:t}); STATE.kaiMsgs.push({who:"k",text:`About ${scope.label}: ${scope.kind==="profile"?"You've met through Xoogler; Chris is the strongest route. Want a draft?":scope.kind==="family"?"Four roles this month, three with a referrer. Two are already paths in your mission.":scope.kind==="request"?"Vouched by Chris, two intros made. It costs one of your three this week. I'd take it.":"Rahul, Maya and Sana are going. I can send all three a hello now."}`}); render(); return; }
+  if (scope) { STATE.kaiMsgs.push({who:"u",text:t}); STATE.kaiMsgs.push({who:"k",text:`About ${scope.label}: ${scope.kind==="profile"?"You've met through Xoogler; Daniel is the strongest route. Want a draft?":scope.kind==="family"?"Four roles this month, three with a referrer. Two are already paths in your mission.":scope.kind==="request"?"Vouched by Daniel, two intros made. It costs one of your three this week. I'd take it.":"Rahul, Maya and Sana are going. I can send all three a hello now."}`}); render(); return; }
   const k = KAI_COMPOSER.find(x=>x.t===t) || { r:"Noted. I'll use it on the next pass. If it changes a mission I'll show it in that mission's activity.", mini:null, chips:["Start a mission","Why these picks?"] };
   if (k.flow==="newmission") { STATE.sheet={type:"newmission"}; render(); return; }
   STATE.kaiMsgs.push({who:"u",text:t}); STATE.kaiMsgs.push({who:"k",text:k.r,mini:k.mini,chips:k.chips});
@@ -8712,7 +8712,7 @@ function createMission(name) {
   STATE.sheet=null; toast(`Mission created: ${name}`); go("home");
 }
 function sourceSheet(src) {
-  const map = { calendar:["Calendar","Three entries with Rahul Mehta: Mar 12 (1:1), Jun 3 (1:1), Aug 21 (Xoogler dinner). Read from your device calendar. Nobody else sees these."], "#jobs, Sep 9":["#jobs in Xoogler","Rahul Mehta, Sep 9: “We're hiring senior PMs for a new product line. AI features shipped is the bar. DM me.”"], "#jobs, Sep 12":["#jobs in Xoogler","Sana Iqbal, Sep 12: “Senior PM, agents team at Perplexity. I'm on the panel. Referrals go to the top.”"], "#cofounders, Aug 21":["#cofounders in Xoogler","Chris Fong, Aug 21: “If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.”"], xoogler:["Xoogler membership","Both members. Chris nominated you."], LinkedIn:["LinkedIn","Both listed Google Cloud, overlapping 2019 to 2022. From your own profiles."], events:["Events","Xoogler dinner (Aug) and AI meetup (Jul). Both checked in at both."], rules:["Maya's rules","Open to cofounder conversations. 2 slots left this month. Read from her rules, shown to you in aggregate only."], mission:["Your mission","Senior PM role at an AI company, Bay Area. From your intake call."], people:["People at Perplexity","Two Xoogler members work there. Names on the role screen."] };
+  const map = { calendar:["Calendar","Three entries with Rahul Mehta: Mar 12 (1:1), Jun 3 (1:1), Aug 21 (Xoogler dinner). Read from your device calendar. Nobody else sees these."], "#jobs, Sep 9":["#jobs in Xoogler","Rahul Mehta, Sep 9: “We're hiring senior PMs for a new product line. AI features shipped is the bar. DM me.”"], "#jobs, Sep 12":["#jobs in Xoogler","Sana Iqbal, Sep 12: “Senior PM, agents team at Perplexity. I'm on the panel. Referrals go to the top.”"], "#cofounders, Aug 21":["#cofounders in Xoogler","Daniel Reyes, Aug 21: “If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.”"], xoogler:["Xoogler membership","Both members. Daniel nominated you."], LinkedIn:["LinkedIn","Both listed Google Cloud, overlapping 2019 to 2022. From your own profiles."], events:["Events","Xoogler dinner (Aug) and AI meetup (Jul). Both checked in at both."], rules:["Maya's rules","Open to cofounder conversations. 2 slots left this month. Read from her rules, shown to you in aggregate only."], mission:["Your mission","Senior PM role at an AI company, Bay Area. From your intake call."], people:["People at Perplexity","Two Xoogler members work there. Names on the role screen."] };
   const [t,d] = map[src]||["Source","This receipt's source would open here."];
   return `<h2>${t}</h2><p>${d}</p><p class="xs faint">Not right? Tap here to correct the Context line it came from. (Out of scope)</p><button class="btn sec" onclick="closeSheet()">Close</button>`;
 }
@@ -8763,7 +8763,7 @@ function wire() {
   phone.querySelectorAll("[data-exit]").forEach(el=>el.onclick=()=>{ const [id,k]=el.dataset.exit.split("|"); const o=DB.opps.find(x=>x.id===id); const t=targetOf(o), c=viaOf(o);
     if (k==="nudge") { openSheet("preview", o.id); }
     else if (k==="direct") { o.via=null; o.route="direct"; o.viaAgreed=false; o.log.push(["You",`went direct to ${firstName(t)}. ${c?firstName(c)+" wasn't told.":""}`,"now"]); STATE.sheet=null; render(); toast(`Direct. ${firstName(t)} has your note now.`); }
-    else if (k==="other") { o.via="sana"; o.viaAgreed=false; o.log.push(["You","asked Sana to vouch instead. Chris was told the path moved.","now"]); STATE.sheet=null; render(); toast("Sana has it now."); }
+    else if (k==="other") { o.via="sana"; o.viaAgreed=false; o.log.push(["You","asked Sana to vouch instead. Daniel was told the path moved.","now"]); STATE.sheet=null; render(); toast("Sana has it now."); }
     else if (k==="withdraw") { openSheet("confirm","withdraw|"+firstName(c&&!o.viaAgreed?c:t)); STATE.confirmAfter=()=>{ o.state="done"; o.outcome="closed"; o.log.push(["You","withdrew","now"]); }; }
     else if (k==="snooze") { const prev=o.state; o.state="candidate"; STATE.sheet=null; render(); toast("Snoozed. Comes back once, then expires.", ()=>{ o.state=prev; }); }
     else if (k==="move") { openSheet("move", id); }
@@ -8825,7 +8825,7 @@ function wire() {
   phone.querySelectorAll("[data-debrief]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); openSheet("debrief", el.dataset.debrief); });
   phone.querySelectorAll("[data-face]").forEach(el=>el.onclick=()=>{ STATE.debriefSel[el.dataset.face]=!STATE.debriefSel[el.dataset.face]; render(); });
   phone.querySelectorAll("[data-debriefsave]").forEach(el=>el.onclick=()=>debriefSave(el.dataset.debriefsave));
-  phone.querySelectorAll("[data-coldask]").forEach(el=>el.onclick=()=>{ const pid=el.dataset.coldask; const p=DB.people[pid]; const m=DB.missions.find(x=>x.type==="The people")||DB.missions[0]; if(!m){ toast("Start a mission first"); return; } const direct=p.shared.some(x=>/Met|Greeted|Talked/.test(x)); const o=opp("o"+(DB.opps.length+40), m.id, "person", pid, direct?"direct":"connector", direct?[["Shared",p.shared[0],"events"],["Shared","Both in Xoogler","xoogler"]]:[["Shared","Both in Xoogler","xoogler"],["Rule",`${p.name.split(" ")[0]} takes intros via a connector. Chris can vouch.`,"rules"]], direct?`Say hi to ${p.name.split(" ")[0]}`:`Ask Chris to intro you`, "new", direct?{}:{via:"chris"}); DB.opps.push(o); openSheet("ask", o.id); });
+  phone.querySelectorAll("[data-coldask]").forEach(el=>el.onclick=()=>{ const pid=el.dataset.coldask; const p=DB.people[pid]; const m=DB.missions.find(x=>x.type==="The people")||DB.missions[0]; if(!m){ toast("Start a mission first"); return; } const direct=p.shared.some(x=>/Met|Greeted|Talked/.test(x)); const o=opp("o"+(DB.opps.length+40), m.id, "person", pid, direct?"direct":"connector", direct?[["Shared",p.shared[0],"events"],["Shared","Both in Xoogler","xoogler"]]:[["Shared","Both in Xoogler","xoogler"],["Rule",`${p.name.split(" ")[0]} takes intros via a connector. Daniel can vouch.`,"rules"]], direct?`Say hi to ${p.name.split(" ")[0]}`:`Ask Daniel to intro you`, "new", direct?{}:{via:"chris"}); DB.opps.push(o); openSheet("ask", o.id); });
   phone.querySelectorAll("[data-book]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); openSheet("book", el.dataset.book); });
   phone.querySelectorAll("[data-brief]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); openSheet("brief", el.dataset.brief); });
   phone.querySelectorAll("[data-you]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); if(el.classList.contains("avatar")) { STATE.anim="v-push-left"; go("you"); } else { go("you:"+el.dataset.you); } });
@@ -8888,6 +8888,7 @@ function wire() {
     kb.onpointerdown=(e)=>{ kb.setPointerCapture(e.pointerId); holdStart=e.clientY; holdY=e.clientY; holdFired=false; started=false; holdTimer=setTimeout(()=>{ holdFired=true; showHint(); startQuickVoice(); },300); };
     kb.onpointermove=(e)=>{ holdY=e.clientY; const dy=holdStart-holdY; if(hint) hint.style.transform=`translate(-50%, ${-Math.min(dy,40)}px)`; if(!started && dy>70){ started=true; clearTimeout(holdTimer); killHint(); holdFired=false; if(STATE.quick){ clearInterval(STATE.quickTimer); STATE.quick=null; } startCall(); } };
     kb.onpointerup=()=>{ clearTimeout(holdTimer); killHint(); if(started){ started=false; return; } if(!holdFired) { if(STATE.callActive) expandCall(); else openSheet("kai"); } else if(STATE.quick) endQuickVoice(); holdFired=false; };
+    kb.ontouchend=(e)=>e.preventDefault();
     kb.onpointercancel=()=>{ clearTimeout(holdTimer); killHint(); holdFired=false; started=false; if(STATE.quick&&STATE.quick.phase==="listen"){ clearInterval(STATE.quickTimer); STATE.quick=null; render(); } };
   }
   // home: mission cards expand in place
@@ -8911,6 +8912,7 @@ function wire() {
     const onFam = famScreens.includes(STATE.screen) || STATE.screen.startsWith("channel:") || STATE.screen.startsWith("manage:");
     ft.onpointerdown=()=>{ fired=false; t=setTimeout(()=>{ fired=true; openSheet("switcher"); },450); };
     ft.onpointerup=()=>{ clearTimeout(t); if(!fired){ if(onFam) openSheet("switcher"); else go("family"); } fired=false; };
+    ft.ontouchend=(e)=>e.preventDefault();
     ft.onpointercancel=()=>clearTimeout(t);
   }
   const ot=document.getElementById("orgToggle"); if(ot){ ot.textContent = "Organizer"; ot.classList.toggle("on", !!STATE.asOrganizer); }
