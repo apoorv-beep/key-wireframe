@@ -2376,7 +2376,7 @@ const DB = {
   people: {
     rahul: { id:"rahul", name:"Rahul Mehta", initials:"RM", title:"Engineering Director", company:"Anthropic", line:"Building the eng team for a new product line. Ex-Google Search.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:["Investing"], slots:"2 slots left this week", lookingFor:"Senior PMs who have shipped AI features", help:["Interview prep for AI companies","Eng and PM partnership","Hiring senior ICs"], shared:["Xoogler dinner, August","Met three times this year"] },
     maya:  { id:"maya", name:"Maya Chen", initials:"MC", title:"Head of Engineering", company:"Seed-stage, stealth", line:"Building infra for agents. Looking for a product partner.", families:["Xoogler","Michigan"], openTo:["Cofounder conversations","Product advice"], notNow:["Hiring"], slots:"2 slots left this month", lookingFor:"A product cofounder with AI experience", help:["Infra for agents","Fundraising a seed round","Early hiring"], shared:["Xoogler dinner, August","AI meetup, July"] },
-    chris: { id:"chris", name:"Daniel Reyes", initials:"CF", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
+    chris: { id:"chris", name:"Daniel Reyes", initials:"DR", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
     priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google Cloud", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
     dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google Legal. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
     ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Sierra", line:"Runs platform at Sierra. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Sierra"], shared:["Xoogler dinner, August","Met twice this year"] },
@@ -2437,14 +2437,14 @@ const DB = {
       { who:"Ana Ruiz", ini:"AR", when:"Today", text:"Sierra is opening a platform PM role in October. Happy to talk to anyone thinking about it.", intent:"hiring", role:{ title:"Platform PM", company:"Sierra", poster:"ana", rel:"Hiring manager", link:null } }
     ],
     introductions: [
-      { who:"Daniel Reyes", ini:"CF", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Sierra. Say hi.", replies:6 }
+      { who:"Daniel Reyes", ini:"DR", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Sierra. Say hi.", replies:6 }
     ],
     cofounders: [
-      { who:"Daniel Reyes", ini:"CF", when:"Aug 21", text:"If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.", intent:"vouch" },
+      { who:"Daniel Reyes", ini:"DR", when:"Aug 21", text:"If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. She's the real thing.", intent:"vouch" },
       { who:"Maya Chen", ini:"MC", when:"Sep 14", text:"Anyone building eval tooling for agents? Would love to compare notes.", intent:"help" }
     ],
     sf: [
-      { who:"Daniel Reyes", ini:"CF", when:"Monday", ritual:"Where are you", text:"Who's in SF this week? Reply with your days and I'll set up a lunch.", replies:14 },
+      { who:"Daniel Reyes", ini:"DR", when:"Monday", ritual:"Where are you", text:"Who's in SF this week? Reply with your days and I'll set up a lunch.", replies:14 },
       { who:"Rahul Mehta", ini:"RM", when:"Monday", text:"Tue to Thu, downtown." },
       { who:"Sana Iqbal", ini:"SI", when:"Monday", text:"All week." }
     ],
@@ -2455,7 +2455,7 @@ const DB = {
     "d-general": [ { who:"Neha Rao", ini:"NR", when:"Today", text:"Investor office hours Thursday in SF and Friday in NYC. Reply in #cities with where you are." } ],
     "d-cities": [ { who:"Neha Rao", ini:"NR", when:"Monday", ritual:"Where are you", text:"Where are you this week? SF, NYC, Bangalore, elsewhere. I'll set up dinners.", replies:23 }, { who:"Arjun Mehta", ini:"AM", when:"Monday", text:"Bangalore till the 30th, then SF." } ],
     "d-hiring": [ { who:"Arjun Mehta", ini:"AM", when:"Today", text:"Founding designer, Bangalore or SF. Equity heavy. DM me.", intent:"hiring", role:{ title:"Founding designer", company:"Arjun's startup, stealth", poster:"arjun", rel:"Founder", link:null } } ],
-    announcements: [ { who:"Daniel Reyes", ini:"CF", when:"Today", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } ],
+    announcements: [ { who:"Daniel Reyes", ini:"DR", when:"Today", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } ],
     "m-jobs": [ { who:"Kate Lin", ini:"KL", when:"Sep 10", text:"Two PM roles at Duolingo, growth and learning. I'm a referrer.", intent:"hiring", role:{ title:"PM, growth", company:"Duolingo", poster:"kate", rel:"Referrer", link:null } } ]
   },
   fevents: [
@@ -2538,10 +2538,10 @@ const DB = {
     { id:"c2", to:"chris", kind:"connector", from:"dev", target:"sana", what:"wants an intro to Sana Iqbal through you", note:"Hey Daniel, could you connect me with Sana? Perplexity's agents team is exactly my area.", forward:"Dev Patel, ex-Google, legal-tech agents.", receipts:[["Shared","You greeted Dev in #introductions","#introductions"],["Standing","2 intros made, replies to asks","ledger"]], state:"open", when:"4h" }
   ],
   activity: [
-    { cat:"you", who:"Daniel Reyes", ini:"CF", text:"introduced you to Jordan Tan", when:"9:12", to:"req:a3", unread:true },
+    { cat:"you", who:"Daniel Reyes", ini:"DR", text:"introduced you to Jordan Tan", when:"9:12", to:"req:a3", unread:true },
     { cat:"you", who:"Rahul Mehta", ini:"RM", text:"reacted to your reply in #jobs", when:"Tue", to:"channel:jobs", unread:true },
-    { cat:"you", who:"Daniel Reyes", ini:"CF", text:"approved your nomination of Jordan", when:"Mon", to:"people" },
-    { cat:"family", who:"Daniel Reyes", ini:"CF", text:"published This week in Xoogler", when:"Mon", to:"posts" },
+    { cat:"you", who:"Daniel Reyes", ini:"DR", text:"approved your nomination of Jordan", when:"Mon", to:"people" },
+    { cat:"family", who:"Daniel Reyes", ini:"DR", text:"published This week in Xoogler", when:"Mon", to:"posts" },
     { cat:"family", who:"Xoogler Dinners", ini:"X", text:"added AI PM roundtable, Oct 7", when:"Mon", to:"cal:cal-xt" },
     { cat:"family", who:"Ritual", ini:"#", text:"Who's in SF this week? is up in #sf-this-week", when:"Mon", to:"channel:sf" },
     { cat:"system", who:"Kai", ini:"K", text:"proposed a rule: fewer direct asks. Review in Rules", when:"Sun", to:"you:rules" },
@@ -2549,11 +2549,11 @@ const DB = {
     { cat:"system", who:"Account", ini:"A", text:"Your export is ready to download", when:"Fri", to:"you:settings" }
   ],
   eventChat: [
-    { who:"Daniel Reyes", ini:"CF", pin:true, text:"Doors at 7. Table cards have your name. Bar's open." },
+    { who:"Daniel Reyes", ini:"DR", pin:true, text:"Doors at 7. Table cards have your name. Bar's open." },
     { who:"Kai", ini:"K", sys:true, text:"Rahul Mehta checked in" },
     { who:"Kai", ini:"K", sys:true, text:"Maya Chen checked in" },
     { who:"Sana Iqbal", ini:"SI", text:"Running ten late, save me a seat." },
-    { who:"Daniel Reyes", ini:"CF", pin:true, text:"Break's over, back in five for the intros round." }
+    { who:"Daniel Reyes", ini:"DR", pin:true, text:"Break's over, back in five for the intros round." }
   ]
 };
 
@@ -2892,7 +2892,7 @@ function sSignin() {
       <div class="bwm">Key</div>
       <h1 style="margin:6px 0 8px">Reach the right people through people who vouch for you</h1>
       <p class="sm muted" style="margin:0">Key works inside vetted groups. Intros come with a name behind them, and every one is followed to what came of it.</p>
-      ${invited?`<div class="invchip" style="margin-top:14px">${av("CF","sm")}<span><b>${DB.user.invitedBy}</b> invited you to apply to <b>${DB.user.family}</b></span></div>`:STATE.entry==="event"?`<div class="invchip" style="margin-top:14px">${av("X","sm")}<span>You're registered for <b>Xoogler dinner, Thursday</b>. Join to see who's going</span></div>`:''}
+      ${invited?`<div class="invchip" style="margin-top:14px">${av("DR","sm")}<span><b>${DB.user.invitedBy}</b> invited you to apply to <b>${DB.user.family}</b></span></div>`:STATE.entry==="event"?`<div class="invchip" style="margin-top:14px">${av("X","sm")}<span>You're registered for <b>Xoogler dinner, Thursday</b>. Join to see who's going</span></div>`:''}
     </div>
     <div style="flex:1"></div>
     <button class="btn" style="margin-top:24px" onclick="STATE.authIntent='signup';go('auth')">Get started</button>
@@ -3022,7 +3022,7 @@ function sFamilyStep() {
   const invited = !!DB.user.invitedBy;
   return `${`<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('home')">‹</div><div style="flex:1"></div><div class="xs faint">Xoogler</div></div>`}
   <div class="body" style="padding-top:0"><div class="cover" style="margin-top:0"><div class="flogo big">X</div></div><div class="famname"><div class="t">${DB.family.name}</div><div class="m">${DB.family.members} ex-Googlers · ${DB.family.proof}</div></div>
-    ${invited?`<div class="invchip" style="margin:0 0 10px">${av("CF","sm")}<span><b>${DB.user.invitedBy}</b>, president, invited you to apply</span></div>`:''}
+    ${invited?`<div class="invchip" style="margin:0 0 10px">${av("DR","sm")}<span><b>${DB.user.invitedBy}</b>, president, invited you to apply</span></div>`:''}
     <div class="card" style="border-color:var(--ink)"><div class="xs faint">Last quarter</div><div class="row" style="gap:18px;margin-top:6px"><div><div style="font-size:24px;font-weight:800">38</div><div class="xs muted">intros</div></div><div><div style="font-size:24px;font-weight:800">6</div><div class="xs muted">hires</div></div><div><div style="font-size:24px;font-weight:800">4</div><div class="xs muted">cofounders</div></div></div></div>
     <div class="lbl">What members get</div>
     <div class="card" style="padding:4px 14px">${[["<b>Warm paths</b>, not cold outreach","Intros through people who vouch for you"],["<b>Asked less, and better</b>","Requests go through people, capacity is capped, nothing reaches you without your yes"],["<b>Rooms, monthly</b>","Dinners with who to meet before you walk in"]].map(([a,b])=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
@@ -3034,7 +3034,7 @@ function sFamilyStep() {
   <div class="body" style="padding-top:0">
     <div class="cover" style="margin-top:0"><div class="flogo big">X</div></div>
     <div class="famname"><div class="t">${DB.family.name}</div><div class="m">${DB.family.members} ex-Googlers · ${DB.family.proof}</div></div>
-    ${invited?`<div class="invchip" style="margin:0 0 10px">${av("CF","sm")}<span><b>${DB.user.invitedBy}</b>, president, invited you to apply</span></div>`:''}
+    ${invited?`<div class="invchip" style="margin:0 0 10px">${av("DR","sm")}<span><b>${DB.user.invitedBy}</b>, president, invited you to apply</span></div>`:''}
     <p class="sm" style="margin:0 0 10px">Xoogler vets everyone. Daniel reviews applications about twice a week. Until you're in, you can get ready, and Kai can prepare, but nothing reaches members.</p>
     <div class="lbl">What members get</div>
     <div class="card" style="padding:4px 14px">${[["Warm paths","Intros through people who can vouch for you, tracked to what came of them"],["Dinners and roundtables","Monthly, with who to meet before you walk in"],["Channels","#jobs, #cofounders, #sf-this-week, and eleven more"]].map(([a,b])=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
@@ -3210,7 +3210,7 @@ function quickLogin() {
 }
 function approveMe() { STATE.welcomeDue = true;
   STATE.member=true; STATE.family="xoogler";
-  DB.activity.unshift({ cat:"you", who:"Daniel Reyes", ini:"CF", text:"approved your application. You're in Xoogler.", when:"now", to:"family", unread:true });
+  DB.activity.unshift({ cat:"you", who:"Daniel Reyes", ini:"DR", text:"approved your application. You're in Xoogler.", when:"now", to:"family", unread:true });
   if (STATE.intakeDone) { applyIntake(); pushNote("You're in Xoogler", "Kai ran a first pass. Paths are on your Missions tab.", [["Open", ()=>go("home")]]); go("home"); }
   else { pushNote("You're in Xoogler", "Two quick steps and Kai starts looking.", [["Continue", ()=>go("intent")]]); go("intent"); }
 }
@@ -3750,7 +3750,7 @@ function sPublicPage() {
     <div class="lbl">Coming up</div>
     ${DB.fevents.filter(e=>e.family===f.id&&!e.past).slice(0,2).map(e=>evCard(e,"row",{fam:false,noAction:true})).join("")}
     <div class="lbl">Run by</div>
-    <div class="rowitem" style="cursor:default">${av(f.id==="desi"?"NR":"CF")}<div class="m"><div class="a">${f.id==="desi"?"Neha Rao":"Daniel Reyes"}</div><div class="b">${f.id==="desi"?"Partner, Lattice Ventures":"President"}</div></div></div>
+    <div class="rowitem" style="cursor:default">${av(f.id==="desi"?"NR":"DR")}<div class="m"><div class="a">${f.id==="desi"?"Neha Rao":"Daniel Reyes"}</div><div class="b">${f.id==="desi"?"Partner, Lattice Ventures":"President"}</div></div></div>
     <div class="xs faint" style="margin-top:14px">Your AI can ask Key for a warm path here once you're a member. Members bring their own tools.</div>
   </div>
   <div class="foot">${STATE.member?`<button class="btn sec" onclick="go('family')">You're a member · open</button>`:`<button class="btn" onclick="STATE.appPage=0;go('application')">Apply · about 8 minutes</button>`}</div>`;
@@ -3987,7 +3987,7 @@ function switcherSheet() {
 
 /* ---- Inbox: asks and activity. Every ask is a path seen from the other side. ---- */
 function myAsks() { return DB.asks.filter(a=>a.to===STATE.persona && !(a.id==="c1" && !DB.opps.some(o=>o.id==="o2"&&o.state!=="new"&&o.state!=="candidate"))); }
-function me() { return STATE.persona==="chris" ? { name:"Daniel Reyes", initials:"CF" } : DB.user; }
+function me() { return STATE.persona==="chris" ? { name:"Daniel Reyes", initials:"DR" } : DB.user; }
 function askCard(a) {
   const from = DB.people[a.from]; const target = a.target?DB.people[a.target]:null; const via = a.via?DB.people[a.via]:null;
   const mine = me();
@@ -4151,7 +4151,7 @@ function sEventDetail(id) {
     : `<button class="btn" style="margin-top:10px" data-evrsvp="${e.id}">RSVP</button>`}
     ${!e.past?`<div class="lbl">Who to meet${e.rsvp?"":" if you go"}</div>${meet||'<div class="empty">Kai finds who to meet three days before, from who RSVPs.</div>'}`:''}
     ${!e.past&&e.details?`<div class="lbl">Details</div><div class="card"><p class="sm" style="margin:0">${e.details}</p></div>`:''}
-    ${!e.past?`<div class="lbl">Going</div><div class="card" style="padding:10px 14px"><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","CF"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span></div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking. Kai picks who to meet from this list, and you can pick your own from People.</div></div>`:''}
+    ${!e.past?`<div class="lbl">Going</div><div class="card" style="padding:10px 14px"><div class="row" style="gap:6px;flex-wrap:wrap">${["RM","MC","SI","AR","DP","JT","DR"].slice(0,Math.min(7,e.going)).map(x=>av(x,"sm")).join("")}<span class="xs faint" style="margin-left:4px">+${e.going-7} more</span></div><div class="xs faint" style="margin-top:8px">Names only. No score, no ranking. Kai picks who to meet from this list, and you can pick your own from People.</div></div>`:''}
     ${e.past&&e.met&&e.met.length?`<div class="lbl">From your debrief</div>${e.met.map(id=>{const p=DB.people[id];return `<div class="rowitem" data-profile="${id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">Talked at ${e.name}. Follow-up sent, replied.</div></div><div class="s">edge</div></div>`}).join("")}`:''}
   </div>
   ${navHTML("events")}`;
@@ -4913,7 +4913,7 @@ function seedNotifs() {
   DB.notifs = [
     { id:"n1", type:"kai", fam:"xoogler", ava:"kai", title:"Three new paths for your role mission", body:"Kai found them in #jobs and at Xoogler dinner. Nothing was sent.", when:"12m", unread:true, to:"home", filt:"paths" },
     { id:"n2", type:"mention", fam:"xoogler", ini:"AR", title:"Ana Ruiz mentioned you in #jobs", body:"@Priya Sharma you'd be great for this, happy to talk.", when:"1h", unread:true, to:"channel:jobs", hlText:"Sierra is opening" },
-    { id:"n3", type:"invite", fam:"xoogler", ini:"CF", title:"Daniel Reyes introduced you to Jordan Tan", body:"Say hi when you have a minute.", when:"2h", unread:true, to:"req:a3", filt:"paths" },
+    { id:"n3", type:"invite", fam:"xoogler", ini:"DR", title:"Daniel Reyes introduced you to Jordan Tan", body:"Say hi when you have a minute.", when:"2h", unread:true, to:"req:a3", filt:"paths" },
     { id:"n4", type:"thread", fam:"xoogler", ini:"SI", title:"Sana Iqbal and others replied to a thread", body:"Hybrid, SF three days a week.", when:"3h", unread:true, to:"thread:jobs:SANA" },
     { id:"n5", type:"message", fam:null, ini:"PL", sq:true, title:"Kate Lin sent a message in PM loop prep", body:"image", when:"1h", unread:true, count:2, to:"dm:g-pm" },
     { id:"n6", type:"reaction", fam:"xoogler", ini:"MC", title:"Maya Chen and Rahul Mehta reacted to your message in #cofounders", body:"Would love to compare notes, Maya.", when:"1d", unread:false, to:"channel:cofounders", hlText:"Would love to compare" },
@@ -5169,7 +5169,7 @@ function vouchDo(k, id) {
 
 /* ==== THE MISSION CYCLE, END TO END (25 Sep). One introduction on three phones: Priya asks, Daniel decides, Maya answers.
    Rule from wireframe-audit/path-endings.md and Fable round 16: status is shown, words are sent. Kai proposes, a person taps. ==== */
-const PERSONAS = { priya:null, chris:{ name:"Daniel Reyes", initials:"CF" }, maya:{ name:"Maya Chen", initials:"MC" } };
+const PERSONAS = { priya:null, chris:{ name:"Daniel Reyes", initials:"DR" }, maya:{ name:"Maya Chen", initials:"MC" } };
 const PERSONA_ORDER = ["priya","chris","maya"];
 me = function(){ return STATE.persona==="priya" ? DB.user : PERSONAS[STATE.persona]; };
 
@@ -7281,7 +7281,7 @@ const EV_WHY = { rahul:"You've met three times. He's hiring senior PMs.", maya:"
    Few words: a poster, the title, two facts, faces, the chat, people. The sticky button does the rest. ---- */
 const EV_WHY_SHORT = { rahul:"Hiring senior PMs", maya:"Wants a technical cofounder", sana:"On Perplexity's hiring panel", ana:"Hiring a platform PM", kate:"Growth PM at Duolingo", chris:"Runs Xoogler dinners" };
 const EV_REACT = ["👋","🔥","🎉","🙌"];
-const EV_FACES = ["RM","MC","SI","AR","DP","JT","CF","KL"];
+const EV_FACES = ["RM","MC","SI","AR","DP","JT","DR","KL"];
 let evtMount = null;
 function evScreen(e, inner){ return `<div class="evt-screen ev-canvas" data-evt-theme="${e.theme}" data-evt-fx="${e.fx||"none"}" data-evt-emoji="${e.emoji||"✨"}" data-evt-going="${e.going||1}" data-evt-cap="${e.cap||40}">${inner}</div>`; }
 function evPoster(e, stamp){ const p=evPreset(e.theme); return `<div class="evt-poster" style="background:linear-gradient(${p.angle+180}deg, ${p.stops.join(", ")})"><span class="evt-emoji">${e.emoji||"✨"}</span>${stamp?`<span class="evt-stamp">${stamp}</span>`:""}</div>`; }
@@ -7959,7 +7959,7 @@ sManageSection = function(id){
 sPublicPage = function(){
   const f = DB.families.find(x=>x.id===(STATE.pubFamily||"xoogler")) || DB.recommendedFamilies.find(x=>x.id===STATE.pubFamily) || DB.families[0];
   const member = STATE.member && DB.families.some(x=>x.id===f.id);
-  const pub = STATE.reportPublic!==false; const run = f.id==="desi" ? ["NR","Neha Rao","Partner, Lattice Ventures"] : ["CF","Daniel Reyes","President"];
+  const pub = STATE.reportPublic!==false; const run = f.id==="desi" ? ["NR","Neha Rao","Partner, Lattice Ventures"] : ["DR","Daniel Reyes","President"];
   const known = ["rahul","maya","ana"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
   const why = DB.user.invitedBy && f.id==="xoogler" ? `<b>${DB.user.invitedBy}</b> invited you to apply` : STATE.entry==="event" ? `You're registered for <b>Xoogler dinner, Thursday</b>` : `Kai: ${f.why||"ex-Google, from your LinkedIn"}`;
   const evs = DB.fevents.filter(e=>e.family===f.id && !e.past).sort((a,b)=>(a.sort||0)-(b.sort||0)).slice(0,2);
@@ -7968,7 +7968,7 @@ sPublicPage = function(){
     <div class="cover" style="margin-top:-10px"><div class="flogo big">${f.initial}</div></div>
     <div class="famname"><div class="t">${f.name}</div><div class="cm-promise">${f.promise||(f.id==="xoogler"?"Ex-Googlers helping each other make the next move.":f.proof||"")}</div>
       <div class="cm-badges"><span>${f.kind==="open"?"Open":"Vetted"}</span><span>${f.members} members</span><span>Since ${f.since||2023}</span></div></div>
-    ${member?'':`<div class="cm-sec"><div class="cm-row" style="cursor:default">${av(DB.user.invitedBy&&f.id==="xoogler"?"CF":"✦","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
+    ${member?'':`<div class="cm-sec"><div class="cm-row" style="cursor:default">${av(DB.user.invitedBy&&f.id==="xoogler"?"DR":"✦","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
     ${pub?`<div class="cm-sec"><div class="cm-lbl">Last quarter · from what members reported</div><div class="cm-stats"><div><b>38</b><span>intros</span></div><div><b>6</b><span>hires</span></div><div><b>4</b><span>cofounders</span></div></div></div>`:''}
     <div class="cm-sec"><div class="cm-lbl">Who's inside</div>
       ${known.length?`<div class="cm-row" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.length} people you know are here</div></div></div>`:''}
