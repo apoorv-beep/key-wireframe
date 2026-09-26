@@ -6302,7 +6302,7 @@ sMission = function(id){
     <div class="row first" data-kaibrief="${id}"><div class="m"><div class="a plain">${brief1}</div>${briefMeta?`<div class="b">${briefMeta}</div>`:""}</div><span class="chev">›</span></div>
     <div class="sl">Log<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${log.n}</span></div>
     ${log.html}
-    <div class="mlog">${keyComposer({ id:"mupd", wrap:false, placeholder:"Log what happened, or ask Kai", mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="missionSend('${id}')"` })}</div>
+    <div class="mlog">${keyComposer({ id:"mupd", wrap:false, placeholder:"Log it, or ask Kai", mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="missionSend('${id}')"` })}</div>
     <div class="mlog-hint">${[["Met Rahul Thursday, went well","Met someone"],["Got a recruiter screen at Perplexity","Something moved"],["Why these picks?","Why these picks?"]].map(([v,l])=>`<span onclick="const t=document.getElementById('mupd');t.value='${v}';t.dispatchEvent(new Event('input'));t.focus()">${l}</span>`).join("")}</div>
     <div class="body-gap"></div>
   </div>
