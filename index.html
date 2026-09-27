@@ -1100,10 +1100,12 @@ body:has(.push) .ctlbtn { display:none; }
   /* calendar thumbnail: the cover, with the family logo or owner's initials as a mark (today's calendar card) */
   .evx-cct { width:56px; height:36px; border-radius:8px; flex:0 0 auto; position:relative; overflow:hidden; }
   .evx-cct i { position:absolute; left:4px; bottom:4px; min-width:16px; height:16px; padding:0 3px; border-radius:4px; background:#fff; color:var(--ink); font-style:normal; font-size:8.5px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,.2); }
-  .evx-cct.strip { width:96px; height:60px; border-radius:12px; } .evx-cct.strip i { left:6px; bottom:6px; height:20px; min-width:20px; font-size:10px; border-radius:6px; }
+  .evx-cct.big { width:96px; height:60px; border-radius:12px; } .evx-cct.big i { left:6px; bottom:6px; height:20px; min-width:20px; font-size:10px; border-radius:6px; }
   .evx-cct.mine { box-shadow:0 0 0 2px #fff,0 0 0 4px #C9A64B; }
+  .evx-cct i.evx-fm, .evx-pill i.evx-fm { padding:0; overflow:hidden; background:#fff; } .evx-fm > svg { width:100%; height:100%; display:block; }
+  .evx-cct i.evx-fm { width:16px; } .evx-cct.big i.evx-fm { width:24px; height:24px; border-radius:6px; } .evx-pill i.evx-fm { border-radius:4px; box-shadow:0 0 0 1px var(--line); }
   .evx-cct.all { background:#fff; border:1px solid var(--line); color:var(--ink2); font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center; }
-  .evx-sep { flex:0 0 1px; align-self:stretch; background:var(--line); margin:4px 0 22px; }
+  .evx-sep { flex:0 0 1px; height:44px; margin-top:8px; background:var(--line); } /* upright, centred on the 60px thumbnails */
   /* tabs move between places (bold plus underline, no fill); filters use the base pills */
   .evx-tabs { display:flex; gap:22px; border-bottom:1px solid var(--line); margin:2px 0 10px; position:sticky; top:0; z-index:3; background:var(--paper); }
   .evx-tabs div { padding:10px 0 9px; font-size:14.5px; color:var(--ink3); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; }
@@ -2638,6 +2640,78 @@ body:has(.push) .ctlbtn { display:none; }
   /* Create, Repeat: each date shows the cover it will get */
   .evs-draft .evs-d { overflow:hidden; padding-top:0; }
   .evs-cv { position:relative; justify-self:stretch; height:44px; margin:0 -4px 7px; background:var(--line); font-style:normal; }
+  /* ==== calendar page (27 Sep): a channel page. Banner, mark, name, people you know; tabs Events, Past, About; List, Day, Week, Month ==== */
+  .evx-cban { height:112px; margin:0 -16px; }
+  .evx-clogo { width:72px; height:72px; border-radius:18px; margin-top:-36px; position:relative; border:3px solid var(--paper); box-sizing:border-box; display:flex; align-items:flex-end; padding:7px; }
+  .evx-clogo i { font-style:normal; min-width:24px; height:24px; padding:0 5px; border-radius:7px; background:#fff; color:var(--ink); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,.2); }
+  .evx-clogo i.evx-fm { width:30px; height:30px; padding:0; border-radius:8px; overflow:hidden; }
+  .evx-cname { font-size:26px; font-weight:800; letter-spacing:-.015em; line-height:1.15; margin:10px 0 2px; text-wrap:balance; }
+  .evx-cmeta { font-size:13.5px; color:var(--ink2); }
+  .evx-cabout { font-size:14px; line-height:1.45; margin:8px 0 0; }
+  .evx-cfolk { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; color:var(--ink2); cursor:pointer; }
+  .evx-cfolk .evx-faces i { width:24px; height:24px; font-size:9px; margin-left:-6px; } .evx-cfolk .evx-faces i:first-child { margin-left:0; }
+  .evx-cact { gap:8px; margin:14px 0 4px; }
+  .btn.evx-fbtn { display:inline-flex; align-items:center; justify-content:center; gap:6px; } .btn.evx-fbtn svg.li { margin:0; }
+  .evx-vseg { margin:2px 0 12px; }
+  .evx-soon { font-style:normal; font-size:11.5px; font-weight:800; padding:2px 8px; border-radius:999px; background:var(--ink); color:#fff; margin-left:6px; vertical-align:1px; }
+  .evx-cnav { display:flex; align-items:center; gap:2px; margin:2px 0 10px; } .evx-cnav b { flex:1; font-size:16px; font-weight:800; }
+  .evx-cnav span { font-size:12.5px; font-weight:700; padding:5px 11px; border-radius:999px; border:1px solid var(--line); cursor:pointer; margin-right:4px; }
+  .evx-cnav i { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-style:normal; color:var(--ink); } .evx-cnav i:active { background:var(--fill); }
+  .evx-free { display:grid; gap:6px; padding:14px 0; font-size:14px; color:var(--ink3); border-bottom:1px solid var(--line); } .evx-free b { color:var(--ink); font-weight:700; text-decoration:underline; cursor:pointer; }
+  /* month: the event's cover fills its day; a bar under the date is a plan of yours elsewhere */
+  .evx-mgrid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .evx-mgrid .dn { font-size:11px; font-weight:700; color:var(--ink3); text-align:center; padding-bottom:2px; }
+  .evx-mc { aspect-ratio:1; border-radius:10px; position:relative; overflow:hidden; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:13.5px; color:var(--ink); }
+  .evx-mc b { position:relative; z-index:1; font-weight:600; }
+  .evx-mc .evx-mcv { position:absolute; inset:0; }
+  .evx-mc.has b { position:absolute; left:3px; top:3px; font-size:10.5px; font-weight:800; line-height:1; padding:3px 4px; border-radius:6px; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.15); }
+  .evx-mc.past .evx-mcv { filter:grayscale(1); opacity:.5; }
+  .evx-mc em { position:absolute; right:3px; bottom:3px; z-index:1; font-style:normal; font-size:10px; font-weight:800; line-height:1; padding:3px 4px; border-radius:6px; background:var(--ink); color:#fff; }
+  .evx-mc.today:not(.has) b { width:30px; height:30px; border-radius:50%; background:var(--ink); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .evx-mc.today.has b { background:var(--ink); color:#fff; }
+  .evx-mc.on::after { content:""; position:absolute; inset:0; border-radius:10px; box-shadow:inset 0 0 0 2.5px var(--ink); z-index:2; pointer-events:none; }
+  .evx-mc.mine::before { content:""; position:absolute; left:50%; bottom:4px; width:14px; height:3px; margin-left:-7px; border-radius:2px; background:var(--ink); z-index:1; }
+  .evx-mc.mine:not(.has) b { transform:translateY(-3px); } .evx-mc.today.mine:not(.has)::before { bottom:1px; }
+  .evx-mgrid + .evx-dh, .evx-mkey + .evx-dh { margin-top:16px; }
+  .evx-mkey { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:12.5px; color:var(--ink2); } .evx-mkey i { width:14px; height:3px; border-radius:2px; background:var(--ink); }
+  /* your plans on other calendars: outlined, never filled */
+  .evx-plan { display:flex; align-items:center; gap:12px; padding:10px 12px; margin-top:8px; border:1.5px solid var(--line); border-radius:14px; cursor:pointer; }
+  .evx-plan .m, .evx-wi .m, .evx-blk .m { min-width:0; flex:1; display:grid; gap:2px; } .evx-plan b, .evx-wi b, .evx-blk b { font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .evx-plan .m span, .evx-wi .m span, .evx-blk .m span { font-size:12.5px; color:var(--ink2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .evx-pcv, .evx-wcv { position:relative; width:44px; height:44px; border-radius:10px; overflow:hidden; flex:0 0 auto; }
+  .evx-plan .evx-pcv { filter:grayscale(1); opacity:.55; }
+  .evx-plan em, .evx-wi em, .evx-blk em { font-style:normal; font-size:11.5px; font-weight:800; color:var(--danger); flex:0 0 auto; }
+  /* week: one row per day, Free when nothing is on */
+  .evx-week { border-top:1px solid var(--line); }
+  .evx-wk { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); }
+  .evx-wd { width:40px; flex:0 0 auto; display:grid; justify-items:center; align-content:start; gap:1px; cursor:pointer; padding-top:2px; } .evx-wd span { font-size:11px; font-weight:700; color:var(--ink3); } .evx-wd b { font-size:17px; font-weight:800; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .evx-wk.today .evx-wd b { background:var(--ink); color:#fff; }
+  .evx-wl { flex:1; min-width:0; display:grid; gap:8px; align-content:center; }
+  .evx-wi { display:flex; align-items:center; gap:10px; cursor:pointer; min-width:0; } .evx-wi .evx-tag { flex:0 0 auto; }
+  .evx-wi.ghost { padding:6px 8px; margin:-2px -2px; border:1.5px solid var(--line); border-radius:12px; } .evx-wi.ghost .evx-wcv { width:36px; height:36px; filter:grayscale(1); opacity:.55; }
+  .evx-wfree { font-size:13px; color:var(--ink3); }
+  /* day: a strip of the week's dates, then the hours */
+  .evx-dstrip { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:6px; }
+  .evx-dp { display:grid; justify-items:center; gap:3px; padding:7px 0 9px; border-radius:12px; cursor:pointer; position:relative; } .evx-dp span { font-size:11px; font-weight:700; color:var(--ink3); } .evx-dp b { font-size:16px; font-weight:700; }
+  .evx-dp.has::after { content:""; position:absolute; left:50%; bottom:3px; width:14px; height:3px; margin-left:-7px; border-radius:2px; background:var(--ink); }
+  .evx-dp.today b { text-decoration:underline; text-underline-offset:3px; }
+  .evx-dp.on { background:var(--ink); } .evx-dp.on span, .evx-dp.on b { color:#fff; } .evx-dp.on.has::after { background:#fff; }
+  .evx-hours { position:relative; margin:18px 0 8px; }
+  .evx-hr { position:absolute; left:0; right:0; height:0; border-top:1px solid var(--line); } .evx-hr span { position:absolute; left:0; top:-8px; font-size:11px; font-weight:600; color:var(--ink3); background:var(--paper); padding-right:6px; }
+  .evx-blk { position:absolute; display:flex; gap:10px; align-items:flex-start; padding:8px; border-radius:12px; background:var(--fill); overflow:hidden; cursor:pointer; box-sizing:border-box; }
+  .evx-bcv { position:relative; width:40px; height:40px; border-radius:9px; overflow:hidden; flex:0 0 auto; }
+  .evx-gap { position:absolute; left:52px; right:0; display:flex; align-items:center; margin-top:4px; height:28px !important; border-radius:10px; background:var(--fill); } .evx-gap span { margin-left:12px; font-size:12px; font-weight:600; color:var(--ink3); }
+  .evx-blk.ghost { background:var(--paper); border:1.5px solid var(--line); } .evx-blk.ghost .evx-bcv { filter:grayscale(1); opacity:.55; }
+  .evx-blk .m { gap:3px; } .evx-bft { display:flex; align-items:center; gap:8px; margin-top:6px; } .evx-blk b { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  /* past: the covers in a grid, like a channel's videos */
+  .evx-pgrid { display:grid; grid-template-columns:1fr 1fr; gap:16px 12px; margin-top:4px; }
+  .evx-pg { display:grid; gap:4px; cursor:pointer; min-width:0; } .evx-pg b { font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .evx-pg > span:last-child { font-size:12.5px; color:var(--ink2); }
+  .evx-pgc { position:relative; aspect-ratio:1; border-radius:14px; overflow:hidden; margin-bottom:4px; }
+  .evx-pgc em { position:absolute; left:8px; bottom:8px; z-index:1; font-style:normal; font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:999px; background:#fff; color:var(--ink); }
+  /* about: rows with hairlines */
+  .evx-about { font-size:14.5px; line-height:1.5; margin:4px 0 8px; }
+  .evx-arow { align-items:center; } .evx-aic { width:36px; height:36px; border-radius:10px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-style:normal; color:var(--ink); flex:0 0 auto; }
+  .evx-bell.on .a { font-weight:800; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -3287,6 +3361,7 @@ body:has(.push) .ctlbtn { display:none; }
 @keyframes tipDimIn { from { opacity:0; } to { opacity:1; } }
 .tip-on, .nav .kai.tip-on .ic { box-shadow:none !important; animation:none; }
 
+.tipx.compact .art { display:none; }
 /* tip pictures: stacked faces overlap less so both initials read; swipe picture drawn by popups.js */
 .tipx .ea-row .av + .av { margin-left:-6px; }
 .pop-sw { display:flex; border-radius:10px; overflow:hidden; background:#fff; }
@@ -3316,6 +3391,13 @@ body:has(.push) .ctlbtn { display:none; }
 .flogo.big.fm { border:3px solid #fff; box-shadow:0 0 0 1px var(--line); }
 .famchip i.fm { border:1px solid var(--line); }
 .tab.fam .ic.logo.fm { border:1.5px solid var(--line); background:#fff; }
+/* Kai's mark (v64): foil K, always on ink */
+.kn { display:block; flex:0 0 auto; }
+.avatar.kn-on { background:transparent; border:0; padding:0; overflow:hidden; }
+.avatar.kn-on .kn { width:100%; height:100%; }
+.navt.kai.kn-on { font-size:0; }
+.kchip.kn-on .kn { margin-right:1px; }
+.cm-kaiav.kn-on { background:transparent; border:0; }
 </style>
 </head>
 <body>
@@ -7808,8 +7890,11 @@ const _evmToday = todayItems; todayItems = function(){ const items=_evmToday(); 
 const _evmPortSheet = portSheet; portSheet = function(type, id){ if (type==="evmsheet") { const h=evmSheet(id); if (h!==null) return h; } return _evmPortSheet(type, id); };
 
 /* Family marks and the Kai K (bottom nav thread, 27 Sep). FAM_MARK[id] is a square SVG; clip it to the family radius. */
-const FAM_MARK = {"xoogler": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#fff\"/><path d=\"M50 50L25.96 25.96A34 34 0 0 1 74.04 25.96Z\" fill=\"#5374AE\"/><path d=\"M50 50L74.04 25.96A34 34 0 0 1 74.04 74.04Z\" fill=\"#D9443A\"/><path d=\"M50 50L74.04 74.04A34 34 0 0 1 25.96 74.04Z\" fill=\"#EDB53C\"/><path d=\"M50 50L25.96 74.04A34 34 0 0 1 25.96 25.96Z\" fill=\"#4FA053\"/><path d=\"M22 22 78 78M78 22 22 78\" stroke=\"#fff\" stroke-width=\"11\"/><circle cx=\"50\" cy=\"50\" r=\"46\" fill=\"none\" stroke=\"#0B0E11\" stroke-width=\"3\"/></svg>", "michigan": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#00274C\"/><path d=\"M15.0 24.8 L41.6 24.8 L50.0 38.8 L58.4 24.8 L85.0 24.8 L85.0 37.4 L78.0 37.4 L78.0 62.6 L85.0 62.6 L85.0 75.2 L58.4 75.2 L58.4 62.6 L64.0 62.6 L64.0 50.0 L50.0 69.6 L36.0 50.0 L36.0 62.6 L41.6 62.6 L41.6 75.2 L15.0 75.2 L15.0 62.6 L22.0 62.6 L22.0 37.4 L15.0 37.4Z\" fill=\"#FFCB05\"/></svg>", "aipm": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#1E2B45\"/><circle cx=\"50\" cy=\"50\" r=\"31\" fill=\"none\" stroke=\"#fff\" stroke-width=\"6\"/><text x=\"50\" y=\"59\" text-anchor=\"middle\" font-family=\"Manrope,Arial,sans-serif\" font-weight=\"800\" font-size=\"26\" fill=\"#fff\" letter-spacing=\"-1\">AI</text></svg>", "desi": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#17493B\"/><path d=\"M34 26h34v11H47v10h18v11H47v16H34z\" fill=\"#fff\"/></svg>"};
-const KAI_K = {"k": "M19.7705 19.6201L24.3896 14.9902H29.9658L23.6924 21.3389L30.6123 28.2852H24.9062L19.7705 22.9404V28.2852H14.8428V22.8262L14.8418 22.8408L9.70508 28.1846H4L10.9189 21.2393L4.64746 14.8896H10.2217L14.8418 19.5195L14.8428 19.5332V6H19.7705V19.6201Z", "spark": "M28 11C28 9.712 29.712 8 31 8C29.712 8 28 6.288 28 5C28 6.288 26.288 8 25 8C26.288 8 28 9.712 28 11Z"};
+const FAM_MARK = {"xoogler": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\" xmlns:c2pa=\"http://c2pa.org/manifest\"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTowNjMxNWJiMS05MTFkLTQzYjEtYTI2Yi03OTc1YzVhOThjMjEAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaCSWx3QeXwabpEFJPNkUOncAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDphYTUxOTc0MC1hZDNjLTRiYmYtOGFhMi1hN2Y1ZTFkMzU2MmZscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoDBKtqEw1FRwob0Rrb+s/WgAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggKus2kYsf7aMXgdhUEcWROxWPmevi95UFACSer9yNoZWkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaDCo/pQYIGP+TUi6I6Ntc/kAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCAuhfpMKZ6pSa14U+CEM1b4fwVixvjhgsowDchTo16llGRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBh9Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjA2MzE1YmIxLTkxMWQtNDNiMS1hMjZiLTc5NzVjNWE5OGMyMS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmRiMjMzZDk5LWExOTYtNDEwMC04N2MyLWQyZWRmMzI0YjcxYnJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAq6zaRix/toxeB2FQRxZE7FY+Z6+L3lQUAJJ6v3I2hlaJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggL0qFmoAVs+8EKwKQOonziuM93Vm8ka5SVAN+1z5EIhmiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggoNi/bafzexUYkYU8M/mhEvHLbqAhUCn53po+c+q7jBJ0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQC2N05VL9loeiqQaOmv5qug1NmkfhWfem41l2/gHzsybbiHcR7/EwjsFCBNXFYqy7dxkwa6TePnG7fgClPo7cEA=</c2pa:manifest></metadata><rect width=\"100\" height=\"100\" fill=\"#fff\"/><path d=\"M50 50L25.96 25.96A34 34 0 0 1 74.04 25.96Z\" fill=\"#5374AE\"/><path d=\"M50 50L74.04 25.96A34 34 0 0 1 74.04 74.04Z\" fill=\"#D9443A\"/><path d=\"M50 50L74.04 74.04A34 34 0 0 1 25.96 74.04Z\" fill=\"#EDB53C\"/><path d=\"M50 50L25.96 74.04A34 34 0 0 1 25.96 25.96Z\" fill=\"#4FA053\"/><path d=\"M22 22 78 78M78 22 22 78\" stroke=\"#fff\" stroke-width=\"11\"/></svg>", "michigan": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#00274C\"/><path d=\"M15.0 24.8 L41.6 24.8 L50.0 38.8 L58.4 24.8 L85.0 24.8 L85.0 37.4 L78.0 37.4 L78.0 62.6 L85.0 62.6 L85.0 75.2 L58.4 75.2 L58.4 62.6 L64.0 62.6 L64.0 50.0 L50.0 69.6 L36.0 50.0 L36.0 62.6 L41.6 62.6 L41.6 75.2 L15.0 75.2 L15.0 62.6 L22.0 62.6 L22.0 37.4 L15.0 37.4Z\" fill=\"#FFCB05\"/></svg>", "aipm": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#1E2B45\"/><circle cx=\"50\" cy=\"50\" r=\"31\" fill=\"none\" stroke=\"#fff\" stroke-width=\"6\"/><text x=\"50\" y=\"59\" text-anchor=\"middle\" font-family=\"Manrope,Arial,sans-serif\" font-weight=\"800\" font-size=\"26\" fill=\"#fff\" letter-spacing=\"-1\">AI</text></svg>", "desi": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#17493B\"/><path d=\"M34 26h34v11H47v10h18v11H47v16H34z\" fill=\"#fff\"/></svg>"};
+/* The nav shows a family by its short name: 8 characters at most (what fits the tab at 11/700, e.g. "Michigan"), set by the organizer (fallback: the full name, cut
+   with an ellipsis inside the tab). */
+const FAM_SHORT = {"xoogler":"Xoogler","michigan":"Michigan","desi":"Desi","aipm":"AI PM"};
+const KAI_K = {"k": "M19.7705 19.6201L24.3896 14.9902H29.9658L23.6924 21.3389L30.6123 28.2852H24.9062L19.7705 22.9404V28.2852H14.8428V22.8262L14.8418 22.8408L9.70508 28.1846H4L10.9189 21.2393L4.64746 14.8896H10.2217L14.8418 19.5195L14.8428 19.5332V6H19.7705V19.6201Z", "foil": ["#F7E7B8", "#DCB854", "#A87F2A"]};  /* Kai's mark everywhere (his 20:13): the K alone, foil gradient on a dark disc, never on white */
 
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
@@ -9077,7 +9162,10 @@ function evApprover(c){ if (!c || evIsAdmin(c)) return null; if (c.kind==="famil
 
 /* A calendar is shown by its cover, as in today's app (cover_photo, default image when none), with its family's logo or its owner's initials as the mark. */
 function evCalMark(c){ return c.kind==="personal"&&evIsAdmin(c) ? DB.user.initials : c.kind==="personal" ? (DB.people[c.host]||{initials:c.name[0]}).initials : c.name[0]; }
-function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="background:${evBg(c.theme)}"><i>${evCalMark(c)}</i></div>`; }
+/* a family calendar wears the family's own mark (FAM_MARK from the nav thread's marks.js, v63), as Community's cMark does; others keep the initial */
+const evFamMark = c => c && c.family && typeof FAM_MARK!=="undefined" && FAM_MARK[c.family] ? FAM_MARK[c.family] : "";
+const evMarkI = (c, txt, style) => { const m=evFamMark(c); return m ? `<i class="evx-fm">${m}</i>` : `<i${style?` style="${style}"`:""}>${txt}</i>`; };
+function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>`; }
 
 /* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
 function evCover(e, cls, inner){ return `<div class="evx-cov ${cls||""}" style="background:${evBg(e.theme)}">${inner||""}</div>`; }
@@ -9093,7 +9181,7 @@ evStatus = function(e){
   return `${e.going} going${meet?` · ${meet} to meet`:""}`;
 };
 function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
-function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}"><i style="background:${evBg(c.theme)}">${c.name[0]}</i>${c.name}</span>`:""; }
+function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}">${evMarkI(c, c.name[0], `background:${evBg(c.theme)}`)}${c.name}</span>`:""; }
 evCard = function(e, size, opts){
   opts=opts||{}; const time=(e.when||"").split(", ").slice(-1)[0]; const home=evC(e.cal);
   return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}">${evThumb(e,"evx-thumb")}
@@ -9137,8 +9225,8 @@ const EV_PLUS = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" str
 function evStrip(){
   const mine = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
   const fol = DB.calendars.filter(c=>!evIsAdmin(c) && evFollows(c));
-  const item = c => `<div class="evx-si" data-cal="${c.id}">${evCalThumb(c, "strip "+(evIsAdmin(c)?"mine":""))}<span>${c.kind==="personal"&&evIsAdmin(c)?"Your calendar":c.name}</span></div>`;
-  return `<div class="evx-strip">${mine.map(item).join("")}<i class="evx-sep"></i>${fol.map(item).join("")}<div class="evx-si" data-evgo="calendars"><div class="evx-cct strip all">All</div><span>Calendars</span></div></div>`;
+  const item = c => `<div class="evx-si" data-cal="${c.id}">${evCalThumb(c, "big "+(evIsAdmin(c)?"mine":""))}<span>${c.kind==="personal"&&evIsAdmin(c)?"Your calendar":c.name}</span></div>`;
+  return `<div class="evx-strip">${mine.map(item).join("")}<i class="evx-sep"></i>${fol.map(item).join("")}<div class="evx-si" data-evgo="calendars"><div class="evx-cct big all">All</div><span>Calendars</span></div></div>`;
 }
 sEvents = function(){
   if (!STATE.member) return _evBaseEvents();
@@ -9491,34 +9579,120 @@ function evLive(id){ const e=evE(id); const c=evC(e.cal); const who=e.awaiting&&
   <div class="evx-cta evt-rsvp"><button class="btn sec" data-evgo="eventd:manage.${id}">${evIc("settings")} Manage</button><button class="btn" data-evsheet="evinvite|${id}">${evIc("mail")} Invite guests</button></div>`); }
 
 /* ---- calendar page, and calendar admin for the ones you run ---- */
+/* ==== CALENDAR PAGE (27 Sep, events thread; Apoorv 20:02). A calendar reads like a channel page: anyone can look at all of it,
+   and following only changes what reaches you (For you, pushes by the bell, your phone's calendar). Tabs Events, Past, About.
+   Events shows List, Day, Week or Month; your plans on other calendars sit outlined beside them, so a clash is visible.
+   Research: /mnt/project-files/events-audit/calendar-page-research.md. ==== */
+const EV_TODAY = new Date(2026, 8, 24);
+const EV_MONL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const evYmd = d => d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+const evFromYmd = n => new Date(Math.floor(n/10000), Math.floor(n/100)%100-1, n%100);
+const evAddDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate()+n);
+const evMon0 = d => evAddDays(d, -((d.getDay()+6)%7));
+const evHrOf = s => { const m=String(s||"").match(/(\d+)(?::(\d+))?(am|pm)/); return m ? (+m[1]%12) + (m[3]==="pm"?12:0) + (+m[2]||0)/60 : null; };
+const evStartH = e => { const h=evHrOf((String(e.when).match(/\d+(:\d+)?(am|pm)$/)||[""])[0]); return h==null ? 18 : h; };
+const evEndH = e => { const s=evStartH(e), h=evHrOf(e.end); return h!=null && h>s ? h : s+2; };
+const evOnCal = (e, c) => c.events.includes(e.id) || (e.listed||[]).includes(c.id);
+const evCalEvs = c => DB.fevents.filter(e=>!e.draft && evOnCal(e, c)).sort((a,b)=>a.sort-b.sort||evStartH(a)-evStartH(b));
+/* your plans elsewhere: what you host, go to, are invited to or wait for on other calendars */
+const evPlansOff = c => DB.fevents.filter(e=>!e.draft && !e.past && ["going","hosting","invited","pending","waitlist"].includes(e.reg) && !evOnCal(e, c));
+const evOnDay = (list, d) => list.filter(e=>evYmd(evDate(e))===evYmd(d)).sort((a,b)=>evStartH(a)-evStartH(b));
+const evClash = (a, b) => evYmd(evDate(a))===evYmd(evDate(b)) && evStartH(a) < evEndH(b) && evStartH(b) < evEndH(a);
+const evDayLbl = d => `${EV_DOW[d.getDay()]}, ${EV_MON[d.getMonth()]} ${d.getDate()}`;
+function evSoon(e){ const n=Math.round((evDate(e)-EV_TODAY)/864e5); if (e.past || n<0) return ""; return n===0 ? (evStartH(e)>=17?"Tonight":"Today") : n===1 ? "Tomorrow" : n<7 ? `In ${n} days` : ""; }
+/* people you know who follow it: faces, not a follower count (Partiful Mutuals; low counts can backfire, so counts stay in Manage) */
+const EV_CAL_FOLK = { "cal-xd":["rahul","maya","sana","dev","jordan","ana"], "cal-xt":["rahul","dev","ana"], "cal-mp":["kate","jordan"], "cal-ai":["sana","neha","arjun"],
+  "cal-me":["rahul","maya","kate"], "cal-pt":["maya","jordan","lena","omar"], "cal-dn":["arjun","neha","priti"], "cal-pa":["rahul","maya","sana","dev","kate","jordan","omar","grace"],
+  "cal-spc":["maya","felix","zoe"], "cal-cf":["maya","rahul","dev"] };
+function evCalFolk(c){ const ids=(EV_CAL_FOLK[c.id]||[]).filter(p=>DB.people[p] && p!==EV_ME); if (!ids.length) return "";
+  const n = ids.length>2 ? `${evFirst(ids[0])}, ${evFirst(ids[1])} and ${ids.length-2} more you know` : evNames(ids);
+  return `<div class="evx-cfolk" data-evsheet="evcalfolk|${c.id}"><span class="evx-faces">${ids.slice(0,4).map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</span><span>${n} follow${ids.length===1?"s":""}</span></div>`; }
+/* the bell is a setting under Follow (YouTube: All, Personalized, None). Default is highlights plus a weekly digest, not a push per event. */
+const EV_BELL = { all:["bell-ring","Every new event","A push each time one is added"], picks:["bell","Highlights","A push for the ones Kai thinks fit you, the rest in a weekly digest"], none:["bell-off","Weekly digest only","No pushes. Its events still show in For you"] };
+const evBellOf = c => c.notify || "picks";
+
+function evCalAt(evs){ if (!STATE.evCalAt) { const n=evs.find(e=>!e.past && evDate(e)>=EV_TODAY); STATE.evCalAt = evYmd(n ? evDate(n) : EV_TODAY); } return evFromYmd(STATE.evCalAt); }
+const evCalNav = label => `<div class="evx-cnav"><b>${label}</b><span data-evcaltoday>Today</span><i data-evcalnav="-1" aria-label="Back">${evIc("chevron-left",18)}</i><i data-evcalnav="1" aria-label="Next">${evIc("chevron-right",18)}</i></div>`;
+function evPlanRow(e, here){ const clash=here.some(x=>evClash(e,x)); const home=evC(e.cal);
+  return `<div class="evx-plan" data-ev="${e.id}"><span class="evx-pcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(evStartH(e))} · ${evState(e)||"Yours"}${home?` · ${home.kind==="personal"&&evIsAdmin(home)?"Your calendar":home.name}`:""}</span></div>${clash?`<em>Clashes</em>`:""}</div>`; }
+function evCalFree(evs, d){ const n=evs.find(e=>!e.past && evYmd(evDate(e))>evYmd(d));
+  return `<div class="evx-free"><span>Nothing here on ${evDayLbl(d)}.</span>${n?`<b data-evcald="${evYmd(evDate(n))}">Next: ${n.name}, ${evDayLbl(evDate(n))}</b>`:""}</div>`; }
+function evCalDayList(c, evs, plans, d){ const here=evOnDay(evs,d), mine=evOnDay(plans,d);
+  return `<div class="evx-dh">${evDayLbl(d)}${here[0]&&evSoon(here[0])?` <em class="evx-soon">${evSoon(here[0])}</em>`:""}</div>${here.length||mine.length ? here.map(e=>evCard(e,"row",{here:c.id})).join("") + mine.map(e=>evPlanRow(e, here)).join("") : evCalFree(evs, d)}`; }
+
+/* Month: the event's own cover fills its day, so the month reads as pictures (no dots). A bar under the number is a plan of yours elsewhere. */
+function evCalMonth(c, evs, plans){ const at=evCalAt(evs), y=at.getFullYear(), m=at.getMonth(); const lead=(new Date(y,m,1).getDay()+6)%7, n=new Date(y,m+1,0).getDate();
+  const cells=[]; for (let i=1;i<=n;i++){ const d=new Date(y,m,i), k=evYmd(d), here=evOnDay(evs,d), mine=evOnDay(plans,d);
+    cells.push(`<div class="evx-mc ${here.length?"has":""} ${k===evYmd(EV_TODAY)?"today":""} ${k===STATE.evCalAt?"on":""} ${mine.length?"mine":""} ${here.length&&here.every(e=>e.past)?"past":""}" data-evcald="${k}" aria-label="${evDayLbl(d)}">${here.length?`<span class="evx-mcv">${evCvArt(here[0])}</span>`:""}<b>${i}</b>${here.length>1?`<em>+${here.length-1}</em>`:""}</div>`); }
+  return `${evCalNav(`${EV_MONL[m]} ${y}`)}<div class="evx-mgrid">${["M","T","W","T","F","S","S"].map(x=>`<span class="dn">${x}</span>`).join("")}${"<i></i>".repeat(lead)}${cells.join("")}</div>${plans.some(e=>evDate(e).getMonth()===m)?`<div class="evx-mkey"><i></i>Your plans on other calendars</div>`:""}${evCalDayList(c, evs, plans, at)}`; }
+
+/* Week: seven rows, one per day. Empty days say Free, which is the point of looking at a week. */
+function evWkItem(e, other, ghost){ const clash=other.some(o=>evClash(e,o));
+  return `<div class="evx-wi ${ghost?"ghost":""}" data-ev="${e.id}"><span class="evx-wcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(evStartH(e))}${ghost?` · ${evState(e)||"Yours"}`:""}</span></div>${clash?`<em>Clashes</em>`:ghost?"":evTag(e)}</div>`; }
+function evCalWeek(c, evs, plans){ const s=evMon0(evCalAt(evs)), days=[...Array(7)].map((_,i)=>evAddDays(s,i)), l=days[6];
+  const lbl = s.getMonth()===l.getMonth() ? `${EV_MON[s.getMonth()]} ${s.getDate()} to ${l.getDate()}` : `${EV_MON[s.getMonth()]} ${s.getDate()} to ${EV_MON[l.getMonth()]} ${l.getDate()}`;
+  return evCalNav(lbl) + `<div class="evx-week">${days.map(d=>{ const here=evOnDay(evs,d), mine=evOnDay(plans,d), k=evYmd(d);
+    return `<div class="evx-wk ${k===evYmd(EV_TODAY)?"today":""}"><div class="evx-wd" data-evcald="${k}" data-evview="day"><span>${EV_DOW[d.getDay()]}</span><b>${d.getDate()}</b></div><div class="evx-wl">${[...here.map(e=>[e,false]), ...mine.map(e=>[e,true])].sort((a,b)=>evStartH(a[0])-evStartH(b[0])).map(([e,g])=>evWkItem(e, g?here:mine, g)).join("")||`<span class="evx-wfree">Free</span>`}</div></div>`; }).join("")}</div>`; }
+
+/* Day: the week as a strip of dates on top, then the hours. Blocks carry the event's cover; your other plans are outlined. */
+function evCalDay(c, evs, plans){ const d=evCalAt(evs), s=evMon0(d);
+  const strip = [...Array(7)].map((_,i)=>{ const x=evAddDays(s,i), k=evYmd(x); return `<div class="evx-dp ${k===evYmd(d)?"on":""} ${k===evYmd(EV_TODAY)?"today":""} ${evOnDay(evs,x).length?"has":""}" data-evcald="${k}"><span>${EV_DOW[x.getDay()].slice(0,1)}</span><b>${x.getDate()}</b></div>`; }).join("");
+  const here=evOnDay(evs,d), mine=evOnDay(plans,d), all=[...here.map(e=>[e,false]), ...mine.map(e=>[e,true])].sort((a,b)=>evStartH(a[0])-evStartH(b[0]));
+  const top = evCalNav(`${EV_MONL[d.getMonth()]} ${d.getFullYear()}`) + `<div class="evx-dstrip">${strip}</div><div class="evx-dh">${evDayLbl(d)}${here[0]&&evSoon(here[0])?` <em class="evx-soon">${evSoon(here[0])}</em>`:""}</div>`;
+  if (!all.length) return top + evCalFree(evs, d);
+  const H=60, G=36, h0=Math.max(0, Math.floor(Math.min(...all.map(([e])=>evStartH(e))))-1), h1=Math.min(24, Math.ceil(Math.max(...all.map(([e])=>evEndH(e))))+1);
+  const busy=new Set(); all.forEach(([e])=>{ for (let h=Math.floor(evStartH(e)); h<Math.ceil(evEndH(e)); h++) busy.add(h); });
+  const ys={}, rows=[]; let y=0;
+  for (let h=h0; h<h1; ) { let k=h; while (k<h1 && !busy.has(k)) k++;
+    if (k-h>=3) { rows.push(`<div class="evx-gap" style="top:${y}px;height:${G}px"><span>Free, ${evHr(h)} to ${evHr(k)}</span></div>`); y+=G; h=k; }
+    else { ys[h]=y; rows.push(`<div class="evx-hr" style="top:${y}px"><span>${evHr(h)}</span></div>`); y+=H; h++; } }
+  const cols = all.map(([e],i)=>all.slice(0,i).filter(([o])=>evClash(e,o)).length), wide = all.map(([e],i)=>1+all.filter(([o],j)=>j!==i&&evClash(e,o)).length);
+  const blocks = all.map(([e,g],i)=>{ const a=evStartH(e), b=evEndH(e);
+    return `<div class="evx-blk ${g?"ghost":""}" data-ev="${e.id}" style="top:${ys[Math.floor(a)]+(a-Math.floor(a))*H+2}px;height:${(b-a)*H-4}px;left:calc(52px + (100% - 52px) * ${cols[i]} / ${wide[i]});width:calc((100% - 52px) / ${wide[i]} - 4px)"><span class="evx-bcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(a)} to ${evHr(b)}${g?` · ${evState(e)||"Yours"}`:""}</span>${wide[i]>1?`<em>Clashes</em>`:g||b-a<2?"":`<div class="evx-bft">${evFaces(e)}${evTag(e)}</div>`}</div></div>`; }).join("");
+  return top + `<div class="evx-hours" style="height:${y}px">${rows.join("")}${blocks}</div>`; }
+
+function evCalPast(c, evs){ const past=evs.filter(e=>e.past).reverse(); if (!past.length) return `<div class="empty">No past events yet.</div>`;
+  return `<div class="evx-pgrid">${past.map(e=>{ const d=evDate(e); return `<div class="evx-pg" data-ev="${e.id}"><span class="evx-pgc">${evCvArt(e)}${e.checkedIn||e.reg==="going"?`<em>You went</em>`:""}</span><b>${e.name}</b><span>${EV_MON[d.getMonth()]} ${d.getDate()} · ${e.going} went</span></div>`; }).join("")}</div>`; }
+
+function evCalAbout(c, evs, submit){ const went=evs.filter(e=>e.past && (e.checkedIn || e.reg==="going")); const slug=`key.ai/${c.name.toLowerCase().replace(/[^a-z0-9]+/g,"")}`;
+  const row = (ic, a, b, attr) => `<div class="rowitem evx-arow" ${attr||""}><i class="evx-aic">${evIc(ic,18)}</i><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${attr?`<span class="xs muted">›</span>`:""}</div>`;
+  return `${c.about?`<p class="evx-about">${c.about}</p>`:""}
+    <div class="rowitem evx-arow">${av((DB.people[c.admins[0]]||DB.user).initials)}<div class="m"><div class="a">${c.admins.map(a=>a===EV_ME?"You":DB.people[a]?DB.people[a].name:"").filter(Boolean).join(", ")}</div><div class="b">${c.admins.length>1?"Run it together":"Runs it"}</div></div></div>
+    ${row("calendar-days", `${evs.filter(e=>!e.past).length} coming up, ${evs.filter(e=>e.past).length} past`, (DB.series||[]).some(s=>evs.some(e=>e.seriesId===s.id)) ? evCadLabel((DB.series||[]).find(s=>evs.some(e=>e.seriesId===s.id))) : "")}
+    ${went.length?row("repeat", `You went to ${went.length} of ${evs.filter(e=>e.past).length}`, `Last: ${went[went.length-1].name}, ${evDayLbl(evDate(went[went.length-1]))}`):""}
+    ${submit?row("plus", `Host an event on ${c.name}`, `${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it first`, `data-evnewon="${c.id}"`):""}
+    ${row("calendar-sync", "Add to your phone's calendar", "Apple, Google or a link", `data-evsheet="evsync|${c.id}"`)}
+    ${row("link", slug, "Anyone with the link can look", `data-evshare="${c.id}"`)}`; }
+
 sCalendar = function(id){
   if (id.endsWith(".manage")) return evCalManage(id.slice(0,-7));
   const c = evC(id); if (!c) return `<div class="body"><div class="empty">Calendar not found.</div></div>`;
-  const on = evFollows(c); const admin = evIsAdmin(c); const seg = STATE.evCalSeg||"up";
-  const evs = DB.fevents.filter(e=>c.events.includes(e.id)||(e.listed||[]).includes(c.id)).sort((a,b)=>a.sort-b.sort);
-  const nonMember = c.kind==="family" && !evMemberOf(c);
-  const own = c.kind==="personal" && admin;
-  let list = "";
-  if (seg==="up") list = evByDate(evs.filter(e=>!e.past), "Nothing scheduled.", c.id);
-  else if (seg==="past") list = evByDate(evs.filter(e=>e.past).reverse(), "No past events yet.", c.id);
-  else { const days = new Map(evs.filter(e=>e.sort>1000&&e.sort<1100).map(e=>[e.sort-1000,e]));
-    list = `<div class="evx-month"><div class="evx-mh">October 2026</div>${["M","T","W","T","F","S","S"].map(d=>`<span class="dn">${d}</span>`).join("")}${'<span></span>'.repeat(3)}${Array.from({length:31},(_,i)=>{const e=days.get(i+1); return `<span class="${e?'has':''}" ${e?`data-ev="${e.id}"`:""}>${i+1}${e?'<i></i>':''}</span>`;}).join("")}</div>`; }
+  if (STATE.evCalId!==id) { STATE.evCalId=id; STATE.evCalAt=null; STATE.evCpt="events"; }
+  const on=evFollows(c), admin=evIsAdmin(c), nonMember=c.kind==="family" && !evMemberOf(c);
+  const evs=evCalEvs(c), plans=evPlansOff(c), tab=STATE.evCpt||"events", view=STATE.evCalView||"list";
+  const submit = !admin && (c.accepts==="anyone" || (c.accepts==="members" && evMemberOf(c)));
   const actions = admin
     ? `<button class="btn" style="flex:1" data-evnewon="${c.id}">Add event</button><button class="btn sec" style="flex:1" data-evgo="cal:${c.id}.manage">Manage${(c.requests||[]).length?` · ${c.requests.length}`:""}</button>`
-    : `<button class="btn ${on?'sec':''}" style="flex:1" data-evfollow="${c.id}">${on?`${evIc("check",15)} Following`:'Follow'}</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}`;
-  const submit = !admin && (c.accepts==="anyone" || (c.accepts==="members" && evMemberOf(c)));
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evsync|${c.id}" aria-label="Sync">${evIc("calendar-sync")}</div></div>
+    : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`
+    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}`;
+  const up = evs.filter(e=>!e.past);
+  let pane = "";
+  if (tab==="past") pane = evCalPast(c, evs);
+  else if (tab==="about") pane = evCalAbout(c, evs, submit);
+  else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh">[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
+      : view==="day" ? evCalDay(c, evs, plans) : view==="week" ? evCalWeek(c, evs, plans) : evCalMonth(c, evs, plans);
+    pane = `<div class="seg evx-vseg">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
+  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
   <div class="body">
-    ${evCover({theme:c.theme},"hero cal", `${c.kind==="personal"?`<span class="evx-date">${own?"Your calendar":"Personal calendar"}</span>`:""}<div class="evx-htitle">${c.name}</div>`)}
-    <div class="xs muted" style="margin-top:10px">${evKind(c)} · key.ai/${c.name.toLowerCase().replace(/[^a-z0-9]+/g,"")}</div>
-    <div class="evx-stats"><span><b>${c.subs.toLocaleString()}</b> followers</span>${c.kind==="family"?`<span><b>${(c.members||(DB.families.find(f=>f.id===c.family)||{}).members||0).toLocaleString()}</b> members</span>`:""}<span><b>${evs.filter(e=>!e.past).length}</b> upcoming</span></div>
-    <p class="sm" style="margin:8px 0 12px">${c.about}</p>
-    <div class="row" style="gap:8px">${actions}</div>
-    ${admin?`<div class="xs faint" style="margin-top:8px">${own?"Your calendar. What you put here publishes at once. People can follow it from your profile.":"You run this calendar. Your events publish at once; others' wait for you or a co-admin."}</div>`
-      : on&&c.auto&&!c.subscribed?`<div class="xs faint" style="margin-top:8px">Following because you're a member. New events and changes, at most two pushes a day.</div>`:on?`<div class="xs faint" style="margin-top:8px">New events and changes, at most two pushes a day.</div>`:""}
-    ${submit?`<div class="xs" style="margin-top:12px;text-decoration:underline;cursor:pointer" data-evnewon="${c.id}">Host an event on ${c.name}</div><div class="xs faint">${evApprover(c)} approve${evApprover(c).endsWith("s")?"":"s"} it first.</div>`:""}
-    <div class="pills evx-chips" style="margin-top:14px">${[["up","Upcoming"],["past","Past"],["month","Month"]].map(([k,l])=>`<div class="pill ${seg===k?'on':''}" data-evcalseg="${k}">${l}</div>`).join("")}</div>
-    <div class="evx-list">${list}</div>
+    <div class="evx-cban" style="background:${evBg(c.theme)}"></div>
+    <div class="evx-clogo" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>
+    <h1 class="evx-cname">${c.kind==="personal"&&admin?"Your calendar":c.name}</h1>
+    <div class="evx-cmeta">${evKind(c)}${up.length?` · ${up.length} coming up`:""}</div>
+    ${!on&&!admin&&c.about?`<p class="evx-cabout">${c.about}</p>`:""}
+    ${evCalFolk(c)}
+    <div class="row evx-cact">${actions}</div>
+    <div class="evx-tabs">${[["events","Events"],["past","Past"],["about","About"]].map(([k,l])=>`<div class="${tab===k?"on":""}" data-evcpt="${k}">${l}</div>`).join("")}</div>
+    <div class="evx-pane">${pane}</div>
   </div>`;
 };
 function evCalManage(id){
@@ -9729,6 +9903,11 @@ function evSheet(type, id){
     <button class="btn" data-evregok="${id}">${e.approval?"Send request":e.price?`Pay $${e.price}`:"Register"}</button><button class="btn ghost" onclick="closeSheet()">Not now</button>`; }
   if (type==="evfollow") { const [cid,eid]=id.split("|"); const c=evC(cid); const e=evE(eid); return `<h2>${e.reg==="going"?"You're in.":"Request sent."} Follow ${c.name}?</h2><p class="sm muted">Its next events show in For you. At most two pushes a day, and you can unfollow any time.</p>
     <button class="btn" data-evfollowok="${cid}">Follow</button><button class="btn ghost" onclick="closeSheet();toast('${e.reg==="going"?"You\\'re in. Ticket and event chat are ready.":"Request sent."}')">Not now</button><div class="xs faint" style="text-align:center">Asked once. Kai won't ask again for this calendar.</div>`; }
+  if (type==="evbell") { const c=evC(id), v=evBellOf(c); return `<h2>Following ${c.name}</h2>
+    ${Object.entries(EV_BELL).map(([k,[ic,a,b]])=>`<div class="rowitem evx-bell ${v===k?"on":""}" data-evbell="${id}|${k}"><i class="evx-aic">${evIc(ic,18)}</i><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div>${v===k?evIc("check",18):""}</div>`).join("")}
+    <div class="rowitem" data-evsheet="evsync|${id}"><i class="evx-aic">${evIc("calendar-sync",18)}</i><div class="m"><div class="a">Add to your phone's calendar</div></div><span class="xs muted">›</span></div>
+    <button class="btn ghost" style="color:var(--danger);margin-top:6px" data-evunfollow="${id}">Unfollow</button>`; }
+  if (type==="evcalfolk") { const c=evC(id), ids=(EV_CAL_FOLK[id]||[]).filter(p=>DB.people[p] && p!==EV_ME); return `<h2>People you know who follow ${c.name}</h2>${ids.map(p=>`<div class="rowitem" data-profile="${p}">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div>${DB.people[p].title?`<div class="b">${DB.people[p].title}</div>`:""}</div></div>`).join("")}`; }
   if (type==="evticket") { const e=evE(id); return `<div class="evx-tkt" style="background:${evBg(e.theme)}"><div class="evx-htitle" style="position:static">${e.name}</div><div class="xs" style="color:#fff;opacity:.85">${e.when} · ${e.where}</div></div>
     <div class="qr"><div class="qrbox"></div><div class="xs faint">${DB.user.name} · ${e.ticket||"Standard"}</div></div>
     <button class="btn" onclick="toast('Added to Apple Wallet. It updates if the host changes the time.')">Add to Wallet</button><button class="btn sec" style="margin-top:8px" data-evsheet="evaddcal|${id}">Add to calendar</button><button class="btn ghost" onclick="toast('Directions open in Maps.')">Directions</button>`; }
@@ -9864,7 +10043,16 @@ portWire = function(){
   q("[data-evunrsvp]", el=>rsvp(el.dataset.evunrsvp, false));
   q("[data-evregok]", el=>evRegister(el.dataset.evregok));
   q("[data-evfollowok]", el=>{ const c=evC(el.dataset.evfollowok); c.subscribed=true; c.unfollowed=false; c.subs++; STATE.sheet=null; render(); toast(`Following ${c.name}.`); });
-  q("[data-evcalseg]", el=>{ STATE.evCalSeg=el.dataset.evcalseg; evSwap("f"); });
+  q("[data-evcpt]", el=>evTab(el, "evCpt", "evcpt"));
+  q("[data-evcalview]", el=>{ STATE.evCalView=el.dataset.evcalview; evSwap("f"); });
+  q("[data-evcald]", el=>{ STATE.evCalAt=+el.dataset.evcald; if (el.dataset.evview) STATE.evCalView=el.dataset.evview; evSwap("f"); });
+  q("[data-evcalnav]", el=>{ const d=evFromYmd(STATE.evCalAt), n=+el.dataset.evcalnav, v=STATE.evCalView||"list";
+    if (v==="month") { const m=new Date(d.getFullYear(), d.getMonth()+n, 1), f=evCalEvs(evC(STATE.evCalId)).find(e=>{ const x=evDate(e); return x.getFullYear()===m.getFullYear() && x.getMonth()===m.getMonth(); }); STATE.evCalAt=evYmd(f?evDate(f):m); }
+    else STATE.evCalAt=evYmd(evAddDays(d, n*(v==="week"?7:1))); evSwap("f"); });
+  q("[data-evcaltoday]", ()=>{ STATE.evCalAt=evYmd(EV_TODAY); evSwap("f"); });
+  q("[data-evbell]", el=>{ const [cid,v]=el.dataset.evbell.split("|"); const c=evC(cid); c.notify=v; STATE.sheet=null; render(); toast(`${c.name}: ${EV_BELL[v][1].toLowerCase()}.`); });
+  q("[data-evunfollow]", el=>{ STATE.sheet=null; evToggleFollow(el.dataset.evunfollow); });
+  q("[data-evshare]", el=>{ const c=evC(el.dataset.evshare); toast(`Link copied: key.ai/${c.name.toLowerCase().replace(/[^a-z0-9]+/g,"")}`); });
   q("[data-evctab]", el=>evTab(el, "evCtab", "evctab"));
   q("[data-evnewon]", el=>{ STATE.evDraft=null; evDraft().cal=el.dataset.evnewon; STATE.evBack=STATE.screen; go("eventd:new"); });
   q("[data-evtheme]", el=>{ evDraft().theme=el.dataset.evtheme; render(); });
@@ -12270,7 +12458,15 @@ function popFit(){
   tip.classList.add("up"); tip.classList.remove("down"); tip.style.setProperty("--ay","0%");
   tip.style.top = Math.min(r.bottom - pr.top + 12, pr.height - 8 - tip.offsetHeight) + "px";
 }
-eduPlace = function(){ _popPlace(); popFit(); popDim(); };
+/* A tip below its target must stop above the nav, so the tab bar stays visible and tappable (iPhone SE, Requests tip).
+   If it would reach the nav, the tip drops its picture (title, line and Got it stay) and is placed again. */
+function popClearNav(){
+  const tip = phone.querySelector(".tipx"), nav = phone.querySelector(".nav"), t = phone.querySelector(".tip-on");
+  if (!tip || !nav || !t || tip.classList.contains("compact") || nav.contains(t) || !tip.classList.contains("up")) return false;
+  if (tip.getBoundingClientRect().bottom <= nav.getBoundingClientRect().top - 8) return false;
+  tip.classList.add("compact"); return true;
+}
+eduPlace = function(){ _popPlace(); popFit(); if (popClearNav()) { _popPlace(); popFit(); } popDim(); };
 eduClear = function(){ _popClear(); const d = phone.querySelector(".tipdim"); if (d) d.remove(); };
 /* The screen can still be sliding in (motion's 28px tab slide) when the tip mounts, so the tip and the cut-out follow
    the target every frame while a tip is up; the loop stops when the tip goes. */
@@ -12361,6 +12557,29 @@ try {
   new MutationObserver(() => { if (fmQueued) return; fmQueued = true; requestAnimationFrame(() => { fmQueued = false; fmApply(); }); })
     .observe(document.body, { childList:true, subtree:true });
 } catch(e) {}
+
+/* ==== KAI'S MARK (his 20:13 "Everywhere"): the Key K in foil on the ink disc, no sparkle. Gold only on a dark disc. ====
+   kaiMark(size) = disc + K; kaiK(size) = the K alone, for a box that is already dark (the Kai button's disc, .navt.kai, .kchip). */
+const KN_STOPS = (KAI_K.foil && KAI_K.foil.length===3) ? KAI_K.foil : ["#F7E7B8","#DCB854","#A87F2A"];  /* the product foil tokens, shared with the vouched ring and the covers */
+const KN_FOIL = `<linearGradient id="knFoil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${KN_STOPS[0]}"/><stop offset=".5" stop-color="${KN_STOPS[1]}"/><stop offset="1" stop-color="${KN_STOPS[2]}"/></linearGradient>`;
+function kaiK(size){ return `<svg class="kn" viewBox="2 4 30 26" width="${size}" height="${Math.round(size*26/30)}" aria-label="Kai"><defs>${KN_FOIL}</defs><path d="${KAI_K.k}" fill="url(#knFoil)"/></svg>`; }
+function kaiMark(size){ return `<svg class="kn kn-disc" viewBox="0 0 34 34" width="${size}" height="${size}" aria-label="Kai"><defs>${KN_FOIL}</defs><circle cx="17" cy="17" r="17" fill="#0B0E11"/><path d="${KAI_K.k}" fill="url(#knFoil)" transform="translate(17 17) scale(.72) translate(-17.3 -17.15)"/></svg>`; }
+function knApply(root){
+  const R = root||document;
+  const put = (el, html) => { el.innerHTML = html; el.classList.add("kn-on"); };
+  R.querySelectorAll("#kaiBtn .ic").forEach(el => { if (!el.classList.contains("kn-on")) put(el, kaiK(26)); });
+  R.querySelectorAll(".avatar").forEach(el => { if (!el.classList.contains("kn-on") && !el.children.length && el.textContent.trim()==="K") put(el, kaiMark(el.classList.contains("lg")?44:32)); });
+  R.querySelectorAll(".navt.kai").forEach(el => { if (!el.classList.contains("kn-on")) put(el, kaiK(20)); });
+  R.querySelectorAll(".kchip").forEach(el => { const t = el.firstChild; if (t && t.nodeType===3 && t.textContent.startsWith("✦")) { t.textContent = t.textContent.replace("✦","").trimStart(); el.insertAdjacentHTML("afterbegin", kaiK(13)); el.classList.add("kn-on"); } });
+  R.querySelectorAll(".cm-kaiav, .cm-kai, .evx-kai, .evt-kaihd, .evt-kaimark, .evt-kai").forEach(el => {
+    if (el.classList.contains("kn-on")) return;
+    const svg = el.querySelector(":scope > svg"); if (!svg) return;
+    const sz = el.classList.contains("cm-kaiav") ? 32 : el.classList.contains("evt-kaimark") ? 14 : 18;
+    svg.outerHTML = kaiMark(sz); el.classList.add("kn-on");
+  });
+}
+const _knRender = render; render = function(){ const r = _knRender.apply(this, arguments); knApply(); return r; };
+const _fmApplyOnly = fmApply; fmApply = function(root){ _fmApplyOnly(root); knApply(root); };
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
