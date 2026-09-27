@@ -4650,11 +4650,11 @@ p,
 .kc-send svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 .kc-ctl { display:flex; justify-content:center; gap:20px; padding:18px 0 38px; flex:0 0 auto; }
 .kc-b { display:flex; flex-direction:column; align-items:center; gap:7px; width:64px; background:none; border:0; padding:0; cursor:pointer; color:inherit; }
-.kc-b .d { width:64px; height:64px; border-radius:999px; display:grid; place-items:center; background:rgba(249,250,252,.14); color:var(--icon-on-deep, #F9FAFC); transition:background .16s, color .16s, transform .12s; -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
+.kc-b .d { width:64px; height:64px; border-radius:999px; display:grid; place-items:center; background:var(--component-call-control-bg, #F9FAFC24); color:var(--icon-on-deep, #F9FAFC); transition:background .16s, color .16s, transform .12s; -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
 .kc-b .d svg { width:28px; height:28px; }
 .kc-b:active .d { transform:scale(.94); }
 .kc-b .l { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); }
-.kc-b.on .d { background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); }
+.kc-b.on .d { background:var(--component-call-control-active-bg, #F9FAFC); color:var(--component-call-control-active-ink, #12161A); }
 .kc-b.on .l { color:var(--component-call-ink-default, #F9FAFC); }
 .kc-b.end .d { background:var(--component-call-end-bg, #C8322F); color:var(--component-call-end-ink, #F9FAFC); }
 /* KeyCallBar: the call, minimised, with its own round Mute and End */
@@ -4663,8 +4663,8 @@ p,
 .callbar.kc-bar .cbm { flex:1; min-width:0; }
 .callbar.kc-bar .cbm b { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); display:block; }
 .callbar.kc-bar .cbl { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.callbar.kc-bar .kc-sb { width:40px; height:40px; border-radius:999px; display:grid; place-items:center; background:rgba(249,250,252,.14); color:#F9FAFC; flex:0 0 auto; }
-.callbar.kc-bar .kc-sb.on { background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); }
+.callbar.kc-bar .kc-sb { width:40px; height:40px; border-radius:999px; display:grid; place-items:center; background:var(--component-call-control-bg, #F9FAFC24); color:#F9FAFC; flex:0 0 auto; }
+.callbar.kc-bar .kc-sb.on { background:var(--component-call-control-active-bg, #F9FAFC); color:var(--component-call-control-active-ink, #12161A); }
 .callbar.kc-bar .kc-sb.end { background:var(--component-call-end-bg, #C8322F); }
 .callbar.kc-bar .kc-sb svg { width:20px; height:20px; }
 @media (max-height:620px) { .kc-top { padding-top:44px; } .call.kc .viz canvas { width:170px; height:170px; } .call.kc .viz::before { width:170px; height:170px; } .kc-b .d { width:56px; height:56px; } .kc-ctl { padding:12px 0 24px; } .kc-ideas, .kc-type { bottom:124px; } }
@@ -4677,9 +4677,9 @@ p,
 /* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep). Loads after kai-call.css. KeyKaiSheet: half on open, top on the first
    message; header, scrolling body and a pinned composer. Token names with the values Design system gave as fallbacks. ==== */
 .sheet.ks { height:calc(100% - 56px); max-height:none; border-radius:var(--radius-absolute-24, 24px) var(--radius-absolute-24, 24px) 0 0; background:var(--bg-surface-default, #FFFFFF); }
-.sheet.ks.half { height:72%; }
+.sheet.ks.half { height:50%; }
 .sheet.ks.grew { animation:ksGrow .44s cubic-bezier(.2,.8,.2,1); }
-@keyframes ksGrow { from { height:72%; } }
+@keyframes ksGrow { from { height:50%; } }
 .sheet.ks .sb { display:flex; flex-direction:column; padding:0; overflow:hidden; }
 .sheet.ks svg { fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 .sheet.ks .kn-disc, .sheet.ks .kn-disc * { stroke:none; }
@@ -15252,7 +15252,7 @@ sCall = function() {
   const ideas = STATE.callStep<INTAKE.length ? INTAKE[STATE.callStep].a : [];
   const who = typeof MO_SIG!=="undefined" ? MO_SIG.who : "idle";
   const status = STATE.callMuted ? "Muted" : ({ kai:"Kai is speaking", you:"Listening", think:"Kai is thinking", idle:"Your turn" })[who] || "Your turn";
-  const b = (on, attr, ic, l, cls="") => `<button class="kc-b${on?" on":""}${cls}" ${attr} aria-pressed="${!!on}"><span class="d">${kcI(ic,28)}</span><span class="l">${l}</span></button>`;
+  const b = (on, attr, ic, l, cls="") => `<button class="kc-b${on?" on":""}${cls}" ${attr} aria-pressed="${!!on}" data-kc="KeyCallButton" data-kv="kind=${cls?"end":"default"}, on=${!!on}"><span class="d">${kcI(ic,28)}</span><span class="l">${l}</span></button>`;
   return `<div class="call kc${STATE.callCap?"":" nocap"}" data-who="${who}" data-kc="KeyCallScreen" data-kv="who=${who}, muted=${!!STATE.callMuted}, captions=${!!STATE.callCap}">
     <div class="kc-top"><button class="kc-ib" data-kcmin aria-label="Minimise call">${kcI("down")}</button>
       <div class="kc-who"><div class="n">${KC_K}Kai</div><div class="t"><span data-timer>${fmt(STATE.callSeconds)}</span> · ${Math.min(STATE.callStep+1,INTAKE.length)} of ${INTAKE.length}</div></div>
