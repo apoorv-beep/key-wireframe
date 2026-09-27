@@ -4716,6 +4716,14 @@ p,
 .ks-minis { margin-top:8px; }
 .ks-mini { padding:10px 0; border-top:1px solid var(--border-default, #E3E8EE); font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); }
 .ks-mini:last-child { border-bottom:1px solid var(--border-default, #E3E8EE); }
+.ks-mrow { display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--border-default, #E3E8EE); }
+.ks-mrow:last-child { border-bottom:1px solid var(--border-default, #E3E8EE); }
+.ks-av { width:44px; height:44px; border-radius:999px; display:grid; place-items:center; flex:0 0 auto; background:var(--bg-fill-strong, #E3E8EE); color:var(--text-primary, #0B0E11); font:var(--type-label-strong, 700 13px/1.2 Manrope, system-ui, sans-serif); }
+.ks-mrow .m { flex:1; min-width:0; }
+.ks-mrow .m b { font:var(--type-body-m-strong, 600 15px/1.45 Manrope, system-ui, sans-serif); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ks-mrow .m span { font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ks-add { flex:0 0 auto; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--component-button-primary-ink, #FFFFFF); background:var(--component-button-primary-bg-default, #0B0E11); border:0; border-radius:var(--radius-absolute-12, 12px); padding:9px 10px; cursor:pointer; white-space:nowrap; }
+.ks-in { flex:0 0 auto; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-tertiary, #8A94A3); }
 .ks-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
 .ks-chip { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); background:none; border:1px dashed var(--border-strong, #C6CED8); border-radius:999px; padding:8px 12px; cursor:pointer; white-space:nowrap; }
 .ks-nudge .ks-chip { flex:0 0 auto; }
@@ -4767,6 +4775,15 @@ p,
   .reqrow { grid-template-columns:auto minmax(0,1fr) auto; grid-template-areas:"f a s" "f b s" "f c s"; }
   .reqrow .rcap .xs { justify-self:start; }
 }
+
+/* Later on small phones (hosting's SE check, 22:47): tabs keep the 16 gutter, and the reminder glyph lines up with the row's right edge instead of spilling into the gutter */
+.citabs.later { padding-inline:16px; }
+.citabs.later ~ .body .lrow .m { flex:1; min-width:0; }
+.citabs.later ~ .body .lrow .sico { flex:0 0 auto; width:auto; margin-right:-6px; }
+/* DMs and groups: the date pill pins under the header while scrolling (the latest day on top; one width so earlier pills never peek out), so a chat never opens with a pill cut under the header (WhatsApp, Telegram and Slack pin the day the same way); the hairline goes, since a pinned line would cross the bubbles */
+#phone:has(.hdr .mx-hav) .chatbody .dsep { position:sticky; top:8px; z-index:2; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep::before { display:none; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep span { display:inline-block; min-width:112px; box-sizing:border-box; }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -15324,6 +15341,15 @@ const ksLead = t => /mission|log what/i.test(t) ? "flag" : /who|hiring|meet|peop
 const ksQ = s => String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
 const ksStrip = s => String(s).replace(/<[^>]*>/g, "");
 
+// A mini that names a member becomes the library's member row: face, name, one line, one action. Anything else stays a plain row.
+function ksMini(x) {
+  const txt = ksStrip(x), p = Object.values(DB.people).find(q => q.id!==meId() && txt.startsWith(q.name));
+  if (!p) return `<div class="ks-mini">${x}</div>`;
+  const line = `${p.title}, ${p.company}`;
+  const has = DB.opps.some(o => o.personId===p.id && o.state!=="dropped");
+  return `<div class="ks-mrow" data-kc="KeyMemberRow" data-kv="state=${has?"in-paths":"default"}"><span class="ks-av" data-kc="KeyAvatar" data-kv="size=44">${p.initials}</span>
+    <span class="m"><b>${ksQ(p.name)}</b><span>${ksQ(line)}</span></span>${has?`<span class="ks-in">In your paths</span>`:`<button class="ks-add" data-kspath="${p.id}">Add as path</button>`}</div>`;
+}
 kaiSheet = function() {
   const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
   const avail = kaiScopeFor();
@@ -15346,7 +15372,7 @@ kaiSheet = function() {
   const msg = m => m.who==="u" ? `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${m.text}</div>`
     : m.who==="sys" ? `<div class="ks-sys">${m.text}</div>`
     : m.talkPending ? `<div class="ks-k" data-kc="KeyKaiThinking">${kaiMark(24)}<div class="ks-think"><i></i>Looking across your communities</div></div>`
-    : `<div class="ks-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${m.text}</p>${m.mini?`<div class="ks-minis">${m.mini.map(x=>`<div class="ks-mini">${x}</div>`).join("")}</div>`:""}${m.chips?`<div class="ks-chips">${m.chips.map(c=>`<button class="ks-chip" data-kai="${ksQ(c)}" data-kc="KeyKaiChip">${c}</button>`).join("")}</div>`:""}</div></div>`;
+    : `<div class="ks-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${m.text}</p>${m.mini?`<div class="ks-minis">${m.mini.map(ksMini).join("")}</div>`:""}${m.chips?`<div class="ks-chips">${m.chips.map(c=>`<button class="ks-chip" data-kai="${ksQ(c)}" data-kc="KeyKaiChip">${c}</button>`).join("")}</div>`:""}</div></div>`;
   const body = empty ? hello : `${scopeChip?`<div class="ks-scopes top">${scopeChip}</div>`:""}<div class="ks-thread">${list.map(msg).join("")}</div>`;
   return `${head}<div class="ks-body">${body}</div>
     <div class="ks-comp" data-kc="KeyComposer" data-kv="surface=sheet"><div class="ks-box">
@@ -15389,6 +15415,8 @@ const _ksPortWire = portWire;
 portWire = function() {
   _ksPortWire.apply(this, arguments);
   const b = phone.querySelector(".sheet.ks .ks-body"); if (b && (STATE.kaiMsgs||[]).length) b.scrollTop = b.scrollHeight;
+  phone.querySelectorAll(".sheet.ks [data-kspath]").forEach(el => el.onclick = () => { const p = DB.people[el.dataset.kspath], o = talkDraft(p.id); if (!o) { toast("Start a mission first, then I can add paths."); return; }
+    STATE.kaiMsgs.push({ who:"k", text:`Added ${ksQ(firstName(p))} as a path in ${ksQ(DB.missions.find(m => m.id===o.missionId).name)}, with a hello drafted. Nothing goes until you tap Send.`, chips:[`Review the ask to ${firstName(p)}`] }); render(); });
   const i = phone.querySelector(".sheet.ks #kaiIn"), s = phone.querySelector(".sheet.ks #kaiSendBtn");
   if (i && s && !i.dataset.ks) { i.dataset.ks = 1; i.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); s.click(); } }); }
 };

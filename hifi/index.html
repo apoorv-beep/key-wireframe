@@ -4595,6 +4595,27 @@ p,
 #pname .p2fw.ph0 { visibility:hidden; }
 .p2 > .p2fw.pg { margin-top:-50px; }
 
+/* Your own profile: pencils, Kai noticed, Recently, add rows */
+.p2sh2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.p2sh2 > .p2lf, .p2sh2 > .p2sh { margin-bottom:6px; }
+.p2pen { width:32px; height:32px; margin:-6px -6px 0 0; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:12px; background:transparent; color:var(--ink2); cursor:pointer; }
+.p2pen:active { background:var(--fill); }
+.p2kn { padding:12px 0; margin-bottom:12px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.p2kh { display:flex; align-items:center; gap:8px; }
+.p2kh b { font-size:14px; }
+.p2kh small { margin-left:auto; font-size:12px; color:var(--ink3); }
+.p2kc { margin:8px 0 10px; }
+.p2kc span { display:block; font-size:12px; color:var(--ink3); }
+.p2kc b { font-size:16px; font-weight:600; }
+.p2acts2 { display:flex; gap:8px; }
+.p2acts2 button { font:inherit; font-size:14px; font-weight:600; height:36px; padding:0 14px; border-radius:18px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; white-space:nowrap; }
+.p2acts2 button.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+.p2add { display:flex; align-items:center; gap:8px; width:100%; font:inherit; font-size:15px; font-weight:600; color:var(--ink); background:transparent; border:0; padding:12px 0; cursor:pointer; }
+.p2rc { padding:8px 0; border-bottom:1px solid var(--line); }
+.p2rc b { display:block; font-size:14px; font-weight:600; }
+.p2rc small { font-size:12px; color:var(--ink2); }
+.p2chip.sugg { border-style:dashed; color:var(--ink2); }
+
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
    Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
    the status, the captions, an Ideas tray on request, and four round buttons (Mute, Ideas, Type, red End). The reel's star
@@ -14207,10 +14228,10 @@ function p2Dock(pid){ const p=DB.people[pid], d=p2d(pid), sent=STATE.p2done["msg
   return `<button class="btn p2kai" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
 function p2Blocked(pid){ return typeof fxBlocked==="function" && fxBlocked(pid); }
 
+function p2Privacy(){ return `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
 const _p2ProfileBody = profileBody;
 profileBody = function(pid, opts){
-  if (pid==="priya") { const h=_p2ProfileBody(pid, opts); if (!(opts&&opts.edit)) return h;
-    return h + `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
+  if (pid==="priya") { const h=_p2ProfileBody(pid, opts); return opts&&opts.edit ? h+p2Privacy() : h; }
   return p2Body(pid);
 };
 const _p2ProfileSheet = profileSheet;
@@ -14313,6 +14334,81 @@ wire = function(){
       if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
   }
   return _p2Wire.apply(this, arguments);
+};
+
+/* ==== YOUR OWN PROFILE (same layout as everyone else's, plus the edit flows from the prototype, rounds 4 to 7) ====
+   Pencils per section, "Tell Kai what's new" (Kai proposes a checklist; yes lands under Recently with its source),
+   a "Kai noticed" card, Looking for rows each with a show switch, links under Elsewhere with switches,
+   "Only you see" rows into Context, Rules, Connectors and Sources, and View as (member, match, outside) from the eye. */
+function p2Own(){
+  if (!STATE.p2own) { const C=DB.contextV2;
+    STATE.p2own = { bld:(C.who[1]||C.who[0]||[""])[0], needs:C.after.slice(0,2).map((a,i)=>({ t:a[0], m:(DB.missions[i]||{}).name||a[0], on:1 })), recent:[], sug:0,
+      links:{ linkedin:1, github:1, site:0 } }; }
+  return STATE.p2own; }
+const P2_SUG = [
+  { lbl:"Right now", ch:"Leading the Gemini agents launch", src:"From your Kai call, 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
+  { lbl:"Can help with", ch:"Add AI features at scale", src:"From your journal, twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
+];
+function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
+  const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f="Priya";
+  const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
+  if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
+  const sug = edit ? P2_SUG[o.sug] : null;
+  const needs = o.needs.filter(n=>edit||n.on);
+  const links = profileLinks("priya").filter(([k])=>edit||o.links[k]);
+  const help = C.offer.map(x=>x[0]);
+  return `<div class="p2">
+    ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
+    ${sug?`<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b>Kai noticed</b><small>${sug.src}</small></div><div class="p2kc"><span>${sug.lbl}</span><b>${sug.ch}</b></div><div class="p2acts2"><button class="on" onclick="p2Sug('yes')">Update</button><button onclick="p2Sug('edit')">Edit</button><button onclick="p2Sug('no')">Not now</button></div></div>`:''}
+    <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
+      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
+    <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
+    <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail"><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Cloud</b><small>Senior PM · 2020 – now</small></div><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Ads</b><small>PM · 2018 – 2020</small></div></div></div>
+    ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
+    ${edit?`<div class="p2sec"><div class="p2sh">Only you see</div>${[["context","brain","What Kai knows about you",`${C.who.length+C.after.length+C.offer.length+C.work.length} things · ${C.inferred.length} waiting for your yes`],["rules","shield","Rules",`Intros ${String(DB.rules.intros).toLowerCase()} · ${DB.rules.capacity} requests a week`],["people","users","Connectors","Who can vouch for you"],["sources","link","Sources","Contacts, calendar, channels"]].map(([id,i,a,b])=>`<button class="p2lk" onclick="event.stopPropagation();go('you:${id}')">${p2Logo(LI(LUCIDE[i]?i:"lock",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">${a}</b><small>${b}</small></span>${LI("chevron-right",16)}</button>`).join("")}</div>`:''}
+    ${edit?p2Privacy():''}
+    ${links.length||edit?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
+  </div>`;
+}
+function p2Sug(a){ const o=p2Own(), g=P2_SUG[o.sug]; if (!g) return;
+  if (a==="edit") { openSheet(g.lbl==="Right now"?"p2editnow":"p2editask",""); return; }
+  if (a==="yes") { g.apply(o); o.recent.unshift([`${g.lbl}: ${g.ch.replace(/^Add /,"")}`, g.src.replace(/^From/,"from")]); toast("Updated. It's under Recently"); } else toast("Kai won't ask about this again");
+  o.sug++; render(); }
+function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
+function p2LinkVis(k){ const o=p2Own(); o.links[k]=!o.links[k]; render(); toast(o.links[k]?"Shown on your profile":"Hidden"); }
+function p2OwnApply(){ const o=p2Own(), c=[...document.querySelectorAll('.sheet [data-p2prop]')].map(x=>x.getAttribute("aria-checked")==="true");
+  if (c[0]) { o.bld="Leading the Gemini agents launch"; o.recent.unshift(["Right now: Leading the Gemini agents launch","from what you told Kai · just now"]); }
+  if (c[1]) { o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); o.recent.unshift(["Looking for: Two PMs for Gemini agents","from what you told Kai · just now"]); }
+  if (c[2]) { if(!DB.contextV2.offer.some(x=>x[0]==="Agents launches")) DB.contextV2.offer.push(["Agents launches","you told Kai","Sep 27","help nudges",true]); o.recent.unshift(["I can help with: Agents launches","from what you told Kai · just now"]); }
+  closeSheet(); setTimeout(()=>toast("Profile updated"),200); }
+
+const _p2ProfileBody2 = profileBody;
+profileBody = function(pid, opts){
+  if (pid==="priya" && STATE.member) return p2OwnBody(opts&&opts.edit ? "edit" : (STATE.p2viewAs||"member"));
+  return _p2ProfileBody2(pid, opts); };
+const _p2SOwn = sOwnProfile;
+sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
+  h = h.replace(/<div class="plinks">[\s\S]*?<\/div>/, "");
+  h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`,
+    `<div class="pbtn" aria-label="See your profile as someone else" onclick="openSheet('p2viewas','')">${LI("eye",18)}</div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
+  const va = STATE.ownPreview ? ({member:"a member of your families",match:"someone Kai matched with you",outside:"someone outside your families"})[STATE.p2viewAs||"member"] : "";
+  h = h.replace(/<span class="xs muted" style="flex:1">This is what a member sees.<\/span>/, `<span class="xs muted" style="flex:1">What ${va} sees.</span>`);
+  if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
+  return h; };
+
+const _p2PortSheet2 = portSheet;
+portSheet = function(type, id){
+  const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
+  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();render()"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
+  if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
+  if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
+  if (type==="p2editask") { const C=DB.contextV2; return `<h2>I can help with</h2><div class="p2chips">${C.offer.map(([c])=>`<button class="p2chip" onclick="DB.contextV2.offer=DB.contextV2.offer.filter(x=>x[0]!=='${c.replace(/'/g,"")}');openSheet('p2editask','')">${c}${LI("x",14)}</button>`).join("")}</div><div class="p2sh" style="margin-top:16px">Kai suggests, from what you've told it</div><div class="p2chips">${["AI features at scale","Michigan MS to Google"].filter(c=>!C.offer.some(x=>x[0]===c)).map(c=>`<button class="p2chip sugg" onclick="DB.contextV2.offer.push(['${c}','Kai suggested','Sep 27','help nudges',true]);openSheet('p2editask','')">${LI("plus",14)}${c}</button>`).join("")}</div><button class="btn" style="margin-top:16px" onclick="closeSheet();render()">Done</button>`; }
+  if (type==="p2editwork") return `<h2>Work</h2>${[["Google Cloud","Senior PM · 2020 – now"],["Google Ads","PM · 2018 – 2020"]].map(([a,b])=>`<div class="xrow" onclick="toast('Edit role')">${p2Logo("G","#1A73E8")}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("pencil",16)}</div>`).join("")}<div class="xrow" onclick="toast('Add a role')"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Add a role</div></div></div><button class="btn sec" style="margin-top:12px" onclick="openSheet('p2feed','')">Or tell Kai and it fills it in</button>`;
+  if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
+    return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
+  if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  return _p2PortSheet2(type, id);
 };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
