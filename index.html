@@ -2831,6 +2831,10 @@ p,
   @media (max-height: 600px), (max-width: 360px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:700 28px/32.2px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.7px; } }
   /* Events' filter and follow chips at the library's control height, 36 (Design system, 27 Sep) */
   .pill[data-evmine], .pill[data-evrf], .chip[data-evfollow] { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:36px; padding-top:0; padding-bottom:0; }
+  /* The calendar page's Add to calendar: the full label from 360 up; below 360 a calendar-plus icon and "Add", sized to its content, so Following keeps its padding */
+  .btn.evx-sync { display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+  .btn.evx-sync svg.li { display:none; margin:0; flex:none; }
+  @media (max-width: 359px) { .evx-cact:has(> .evx-sync) { display:grid; grid-template-columns:minmax(0, 1fr) auto; } .btn.evx-sync svg.li { display:block; } .evx-sync-x { display:none; } }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -3769,6 +3773,9 @@ p,
 #phone:has(.hdr .mx-hav) .chatbody .dsep { position:sticky; top:8px; z-index:2; }
 #phone:has(.hdr .mx-hav) .chatbody .dsep::before { display:none; }
 #phone:has(.hdr .mx-hav) .chatbody .dsep span { display:inline-block; min-width:112px; box-sizing:border-box; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { opacity:0; pointer-events:none; transition:opacity .2s ease; }
+#phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin { opacity:1; }
+@media (prefers-reduced-motion: reduce) { #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { transition:none; } }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -4062,6 +4069,34 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 
 @media (max-height:700px), (max-width:380px) { .brief { padding:12px 14px 12px; margin-bottom:12px; } .brief .br-hi { font-size:22px; } .brief .br-line { margin-top:5px; -webkit-line-clamp:1; } .brief .br-line .br-t2 { display:none; } .brief .br-foot { margin-top:10px; } .brief .br-faces .avatar { width:32px; height:32px; } .brief.look3 { padding-top:14px; } .brief.look3 .br-hi { font-size:26px; } }
 
+/* the full brief (sheet): sections by place, bell-style badges, event covers */
+.sheet .br-sl { margin-top:20px; }
+.sheet .br-slt { display:flex; align-items:center; gap:8px; }
+.sheet .br-n { font-weight:400; letter-spacing:0; text-transform:none; color:var(--ink3); }
+.sheet .br-mark { width:22px; height:22px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; border:1px solid var(--line); background:#fff; overflow:hidden; }
+.sheet .br-mark svg { width:100%; height:100%; display:block; }
+.sheet .br-open { font-size:12px; font-weight:600; letter-spacing:0; text-transform:none; color:var(--ink2); display:inline-flex; align-items:center; gap:2px; padding:4px 0 4px 10px; }
+.sheet .br-row .nava { position:relative; flex:0 0 auto; }
+.sheet .br-row .nava .nbadge { position:absolute; right:-3px; bottom:-3px; width:16px; height:16px; border-radius:50%; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; border:2px solid #fff; }
+.sheet .br-row .nava .nbadge svg { width:9px; height:9px; }
+.sheet .br-ev { width:36px; height:36px; border-radius:9px; overflow:hidden; }
+.sheet .br-ev svg, .sheet .br-ev canvas, .sheet .br-ev > * { width:100%; height:100%; display:block; }
+.sheet .br-when { font-size:12px; color:var(--ink3); white-space:nowrap; margin-left:6px; }
+.sheet .br-row .k { margin-left:6px; }
+.sheet .br-hd { font-size:22px; font-weight:600; letter-spacing:-.01em; line-height:1.2; margin:4px 0 6px; }
+.sheet .br-sum { font-size:14px; color:var(--ink2); line-height:1.4; margin-bottom:2px; }
+.sheet .br-sl { display:flex; justify-content:space-between; align-items:center; margin:22px 0 2px; }
+.sheet .br-sl:first-of-type { margin-top:16px; }
+.sheet .br-slt { font-size:13px; font-weight:600; letter-spacing:.02em; text-transform:none; color:var(--ink); }
+.sheet .br-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--line); cursor:pointer; }
+.sheet .br-row .m { flex:1; min-width:0; }
+.sheet .br-row .a { font-size:15px; font-weight:600; line-height:1.3; }
+.sheet .br-row .b { font-size:12px; color:var(--ink3); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sheet .br-row .chev { color:var(--ink3); font-size:16px; flex:0 0 auto; }
+.sheet .br-row .k { font-size:12px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; color:var(--ink2); white-space:nowrap; flex:0 0 auto; }
+.sheet .br-row .k.green { color:#2E7D4F; }
+.sheet .br-row .avatar .li { width:14px; height:14px; }
+
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
 .p2btl { display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; color:var(--ink); background:var(--fill); border:0; border-radius:12px; padding:8px 12px; cursor:pointer; }
@@ -4148,6 +4183,132 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
    hidden placeholder that holds its place under the name (#pname sits 14px above the body; 36px button + 14px gap = 50px) */
 #pname .p2fw.ph0 { visibility:hidden; }
 .p2 > .p2fw.pg { margin-top:-50px; }
+
+/* Your own profile: pencils, Kai noticed, Recently, add rows */
+.p2sh2 { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.p2sh2 > .p2lf, .p2sh2 > .p2sh { margin-bottom:6px; }
+.p2pen { width:32px; height:32px; margin:-6px -6px 0 0; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:12px; background:transparent; color:var(--ink2); cursor:pointer; }
+.p2pen:active { background:var(--fill); }
+.p2kn { padding:12px 0; margin-bottom:12px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.p2kh { display:flex; align-items:center; gap:8px; }
+.p2kh b { font-size:14px; }
+.p2kh small { margin-left:auto; font-size:12px; color:var(--ink3); }
+.p2kc { margin:8px 0 10px; }
+.p2kc span { display:block; font-size:12px; color:var(--ink3); }
+.p2kc b { font-size:16px; font-weight:600; }
+.p2acts2 { display:flex; gap:8px; }
+.p2acts2 button { font:inherit; font-size:14px; font-weight:600; height:36px; padding:0 14px; border-radius:18px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; white-space:nowrap; }
+.p2acts2 button.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+.p2add { display:flex; align-items:center; gap:8px; width:100%; font:inherit; font-size:15px; font-weight:600; color:var(--ink); background:transparent; border:0; padding:12px 0; cursor:pointer; }
+.p2rc { padding:8px 0; border-bottom:1px solid var(--line); }
+.p2rc b { display:block; font-size:14px; font-weight:600; }
+.p2rc small { font-size:12px; color:var(--ink2); }
+.p2chip.sugg { border-style:dashed; color:var(--ink2); }
+
+/* Hero header buttons over the photo: radius-12 glass plates like the event page (round is only for mic and call controls) */
+.pscreen .pbar .pbtn { border-radius:12px; background:rgba(255,255,255,.72); border-color:rgba(255,255,255,.5); box-shadow:none; -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
+.pscreen .pbar.show .pbtn { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+.pscreen .pbar .pbtn:active { background:var(--fill); }
+
+/* ==== PROFILE HIGH FIDELITY (Apoorv 23:11, hi-fi copy only: profile2.js sets #phone.hf-prof when KEY_HIFI is on).
+   Tokens only, from design-system/key-tokens.css: type from the 14 named styles, radii and spacing from the absolute scales.
+   Same parts as the other hi-fi screens: KeyButton at radius 12, KeyChip pills, KeyTag, rows on the page with hairlines,
+   the Requests-row card for the one "between you" line, overline section labels, Lucide at 1.75. ==== */
+#phone.hf-prof svg.li { stroke-width:1.75; }
+#phone.hf-prof .pscreen, #phone.hf-prof .pbar.show { background:var(--bg-page); }
+/* hero: the member's photo, fading into the page */
+#phone.hf-prof .pphoto { background:var(--bg-cover-fallback); }
+#phone.hf-prof .pphoto.ph-cover { background-position:center 25%; }
+#phone.hf-prof .pphoto.ph-cover .pini { display:none; }
+#phone.hf-prof .pini { color:var(--text-disabled); opacity:.5; }
+#phone.hf-prof .pgrad { height:55%; background:linear-gradient(to bottom, transparent, var(--bg-page) 88%); }
+#phone.hf-prof .pname .pn { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .pname .pt { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-secondary); margin-top:var(--space-absolute-4); }
+#phone.hf-prof .pname .pf { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-prof .pbar .ptitle b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); }
+#phone.hf-prof .pscreen .pbar .pbtn { color:var(--icon-primary); background:color-mix(in srgb, var(--bg-surface-default) 72%, transparent); border:var(--border-width-hairline) solid color-mix(in srgb, var(--bg-surface-default) 50%, transparent); border-radius:var(--radius-absolute-12); }
+#phone.hf-prof .pscreen .pbar.show .pbtn { background:transparent; border-color:transparent; }
+
+/* section rhythm and labels (overline 11 XB) */
+#phone.hf-prof .p2 { gap:var(--space-absolute-24); }
+#phone.hf-prof .p2lf, #phone.hf-prof .p2sh { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); margin-bottom:var(--space-absolute-8); }
+#phone.hf-prof .p2bld { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); margin-bottom:var(--space-absolute-16); }
+
+/* KeyButton: primary, secondary, at radius 12 (label/strong on small, button/l on the dock) */
+#phone.hf-prof .p2follow, #phone.hf-prof .p2x, #phone.hf-prof .p2acts2 button, #phone.hf-prof .p2acts button { border-radius:var(--radius-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); font-weight:700; }
+#phone.hf-prof .p2follow { height:var(--space-absolute-40); padding:0 var(--space-absolute-16) 0 var(--space-absolute-12); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .p2follow.on { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-primary); }
+#phone.hf-prof .p2x { height:var(--space-absolute-40); padding:0 var(--space-absolute-14); background:transparent; border:var(--border-width-hairline) solid var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
+#phone.hf-prof .p2nd.hit .p2x { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .p2x.done, #phone.hf-prof .p2nd.hit .p2x.done { background:var(--bg-fill-default); border-color:var(--bg-fill-default); color:var(--text-secondary); }
+#phone.hf-prof .p2acts2 button, #phone.hf-prof .p2acts button { height:var(--space-absolute-40); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-primary); }
+#phone.hf-prof .p2acts2 button.on, #phone.hf-prof .p2acts button.on { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .sheet .btn, #phone.hf-prof .pact .btn:not(.p2kai):not(.p2round) { border-radius:var(--radius-absolute-12); }
+
+/* the one "between you" line: one object, so one card, like the Requests row (gold hairline when it is about you) */
+#phone.hf-prof .p2btl { background:var(--component-card-bg); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); padding:var(--space-absolute-12) var(--space-absolute-16); gap:var(--space-absolute-12); }
+#phone.hf-prof .p2btl.you { background:var(--component-card-bg); border-color:var(--border-gold); }
+#phone.hf-prof .p2btl b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2btl small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2btl.you small { color:var(--text-gold); font-weight:600; }
+#phone.hf-prof .p2ico { border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); width:var(--space-absolute-40); height:var(--space-absolute-40); }
+
+/* rows on the page with hairlines (Looking for, links, Only you see, Recently, sheet rows) */
+#phone.hf-prof .p2nd, #phone.hf-prof .p2lk, #phone.hf-prof .p2rc, #phone.hf-prof .p2tl > div { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-prof .p2nd b, #phone.hf-prof .p2lk b, #phone.hf-prof .p2rc b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2nd small, #phone.hf-prof .p2lk small, #phone.hf-prof .p2rc small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2nd small.p2why { color:var(--text-gold); font-weight:600; }
+#phone.hf-prof .p2lk > svg { color:var(--icon-tertiary); }
+/* KeyTag gold (people): "You fit this" */
+#phone.hf-prof .p2fit { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); text-transform:none; color:var(--component-tag-gold-ink); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--component-tag-gold-border); border-radius:var(--radius-absolute-6); padding:var(--space-absolute-2) var(--space-absolute-6); margin-bottom:var(--space-absolute-6); }
+/* logo tiles: radius 12 */
+#phone.hf-prof .p2lg { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); font:var(--type-label-strong); }
+#phone.hf-prof .p2lk .p2lg[style*="#F2F3F5"] { background:var(--bg-fill-default) !important; color:var(--icon-primary); }
+
+/* KeyChip: pills (label 13 SB), suggested ones on a dashed hairline */
+#phone.hf-prof .p2chip { height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding:0 var(--space-absolute-14); border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); border:var(--border-width-hairline) solid var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+#phone.hf-prof .p2chip svg { color:var(--icon-secondary); }
+#phone.hf-prof .p2chip.asked { background:var(--bg-fill-default); color:var(--text-secondary); }
+#phone.hf-prof .p2chip.sugg { border-style:dashed; border-color:var(--component-chip-suggested-border); color:var(--text-secondary); }
+
+/* Work and School: rows, not cards (logo tile, then name over years) */
+#phone.hf-prof .p2rail { display:block; overflow:visible; margin:0; padding:0; }
+#phone.hf-prof .p2wk { display:grid; grid-template-columns:var(--space-absolute-40) 1fr; column-gap:var(--space-absolute-12); align-items:center; width:100%; background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); border-radius:0; padding:var(--space-absolute-12) 0; }
+#phone.hf-prof .p2wk .p2lg { grid-row:1 / span 3; margin:0; width:var(--space-absolute-40); height:var(--space-absolute-40); }
+#phone.hf-prof .p2wk b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2wk small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2wk small.p2you { color:var(--text-gold); font-weight:600; }
+
+/* KeySwitch */
+#phone.hf-prof .p2sw { background:var(--component-progress-track); }
+#phone.hf-prof .p2sw::after { background:var(--bg-surface-default); box-shadow:var(--elevation-1); }
+#phone.hf-prof .p2sw[aria-checked="true"] { background:var(--component-button-primary-bg-default); }
+
+/* your own profile: pencils are bare header-style icons, Kai noticed sits between hairlines with the Kai mark */
+#phone.hf-prof .p2pen { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); color:var(--icon-secondary); margin:calc(-1 * var(--space-absolute-12)) calc(-1 * var(--space-absolute-8)) 0 0; }
+#phone.hf-prof .p2pen:active { background:var(--bg-fill-default); }
+#phone.hf-prof .p2kn { border-color:var(--border-default); padding:var(--space-absolute-16) 0; }
+#phone.hf-prof .p2kh b { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2kh small, #phone.hf-prof .p2kc span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-prof .p2kc b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2add { font:var(--type-body-m-strong); color:var(--text-primary); padding:var(--space-absolute-14) 0; }
+
+/* dock: Kai on the deep plate (foil K), Message as a radius-12 tile beside it */
+#phone.hf-prof .btn.p2kai { background:var(--bg-deep); border-color:var(--bg-deep); color:var(--text-on-deep-default); border-radius:var(--radius-absolute-16); box-shadow:var(--elevation-2); min-height:var(--space-absolute-56); padding:var(--space-absolute-8) var(--space-absolute-16); }
+#phone.hf-prof .btn.p2kai b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+#phone.hf-prof .btn.p2kai small { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-on-deep-muted); }
+#phone.hf-prof .btn.p2round { flex-basis:var(--space-absolute-56); width:var(--space-absolute-56); height:var(--space-absolute-56); min-height:var(--space-absolute-56); border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--icon-primary); box-shadow:var(--elevation-2); }
+#phone.hf-prof .btn.p2round.done { background:var(--bg-fill-default); }
+
+/* sheets: headings title 20 SB, notes and answers on the fill, radius 16 */
+#phone.hf-prof .p2shd h2, #phone.hf-prof .sheet h2 { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2note, #phone.hf-prof .p2ans { background:var(--bg-fill-default); border-radius:var(--radius-absolute-16); }
+#phone.hf-prof .p2ans .acts button { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-label); font-weight:700; }
+#phone.hf-prof .p2ans .src span { border-radius:var(--radius-absolute-6); background:var(--bg-surface-default); color:var(--text-secondary); font:var(--type-caption); }
+#phone.hf-prof .p2tl > div > span:first-child { font:var(--type-caption); color:var(--text-tertiary); }
+/* profile sheet header (base markup sets inline sizes): KeyAvatar 56, name title 20 SB, role body/m */
+#phone.hf-prof .sheet .ph .pn { font:var(--type-title) !important; letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+#phone.hf-prof .sheet .ph .pt { font:var(--type-body-s); color:var(--text-secondary); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -10693,8 +10854,8 @@ sCalendar = function(id){
   const submit = !admin && (c.accepts==="anyone" || (c.accepts==="members" && evMemberOf(c)));
   const actions = admin
     ? `<button class="btn" style="flex:1" data-evnewon="${c.id}">Add event</button><button class="btn sec" style="flex:1" data-evgo="cal:${c.id}.manage">Manage${(c.requests||[]).length?` · ${c.requests.length}`:""}</button>`
-    : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`
-    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}`;
+    : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`
+    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`}`;
   const up = evs.filter(e=>!e.past);
   let pane = "";
   if (tab==="past") pane = evCalPast(c, evs);
@@ -13724,10 +13885,10 @@ function p2Dock(pid){ const p=DB.people[pid], d=p2d(pid), sent=STATE.p2done["msg
   return `<button class="btn p2kai" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
 function p2Blocked(pid){ return typeof fxBlocked==="function" && fxBlocked(pid); }
 
+function p2Privacy(){ return `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
 const _p2ProfileBody = profileBody;
 profileBody = function(pid, opts){
-  if (pid==="priya") { const h=_p2ProfileBody(pid, opts); if (!(opts&&opts.edit)) return h;
-    return h + `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
+  if (pid==="priya") { const h=_p2ProfileBody(pid, opts); return opts&&opts.edit ? h+p2Privacy() : h; }
   return p2Body(pid);
 };
 const _p2ProfileSheet = profileSheet;
@@ -13862,6 +14023,7 @@ function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail"><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Cloud</b><small>Senior PM · 2020 – now</small></div><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Ads</b><small>PM · 2018 – 2020</small></div></div></div>
     ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
     ${edit?`<div class="p2sec"><div class="p2sh">Only you see</div>${[["context","brain","What Kai knows about you",`${C.who.length+C.after.length+C.offer.length+C.work.length} things · ${C.inferred.length} waiting for your yes`],["rules","shield","Rules",`Intros ${String(DB.rules.intros).toLowerCase()} · ${DB.rules.capacity} requests a week`],["people","users","Connectors","Who can vouch for you"],["sources","link","Sources","Contacts, calendar, channels"]].map(([id,i,a,b])=>`<button class="p2lk" onclick="event.stopPropagation();go('you:${id}')">${p2Logo(LI(LUCIDE[i]?i:"lock",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">${a}</b><small>${b}</small></span>${LI("chevron-right",16)}</button>`).join("")}</div>`:''}
+    ${edit?p2Privacy():''}
     ${links.length||edit?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
   </div>`;
 }
@@ -13900,11 +14062,25 @@ portSheet = function(type, id){
   if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
   if (type==="p2editask") { const C=DB.contextV2; return `<h2>I can help with</h2><div class="p2chips">${C.offer.map(([c])=>`<button class="p2chip" onclick="DB.contextV2.offer=DB.contextV2.offer.filter(x=>x[0]!=='${c.replace(/'/g,"")}');openSheet('p2editask','')">${c}${LI("x",14)}</button>`).join("")}</div><div class="p2sh" style="margin-top:16px">Kai suggests, from what you've told it</div><div class="p2chips">${["AI features at scale","Michigan MS to Google"].filter(c=>!C.offer.some(x=>x[0]===c)).map(c=>`<button class="p2chip sugg" onclick="DB.contextV2.offer.push(['${c}','Kai suggested','Sep 27','help nudges',true]);openSheet('p2editask','')">${LI("plus",14)}${c}</button>`).join("")}</div><button class="btn" style="margin-top:16px" onclick="closeSheet();render()">Done</button>`; }
   if (type==="p2editwork") return `<h2>Work</h2>${[["Google Cloud","Senior PM · 2020 – now"],["Google Ads","PM · 2018 – 2020"]].map(([a,b])=>`<div class="xrow" onclick="toast('Edit role')">${p2Logo("G","#1A73E8")}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("pencil",16)}</div>`).join("")}<div class="xrow" onclick="toast('Add a role')"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Add a role</div></div></div><button class="btn sec" style="margin-top:12px" onclick="openSheet('p2feed','')">Or tell Kai and it fills it in</button>`;
-  if (type==="p2missions") { const M=(DB.missions.length?DB.missions.map(m=>m.name):["Senior PM role","Technical cofounder"]).concat(["Meet PMs in Seattle"]); const ow=p2Own();
+  if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
     return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
   if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   return _p2PortSheet2(type, id);
 };
+
+/* ==== HIGH FIDELITY (Apoorv 23:11). One file serves both copies: the hi-fi copy sets KEY_HIFI, the wireframe never does.
+   #phone gets .hf-prof on the profile page and on profile sheets only, so other screens keep their own layers.
+   The hero paints the member's photograph through photos.js; until it loads, or if it can't, the hero stays a plain cover fill. ==== */
+const p2HiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+const _p2HfRender = render;
+render = function(){ const r = _p2HfRender.apply(this, arguments);
+  if (p2HiFi() && typeof phone!=="undefined" && phone) {
+    const prof = STATE.screen==="profile", sh = (STATE.sheet&&STATE.sheet.type)||"";
+    phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
+    const pid = STATE.profileId||"priya", ph = prof && phone.querySelector(".pphoto");
+    if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 1000), "ph-cover");
+  }
+  return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -13969,15 +14145,18 @@ function brItems(){
     const a = /class="a">([^<]*)</.exec(h), ini = /class="avatar[^"]*"[^>]*>([^<]*)</.exec(h);
     items.push({ kind:"ask", ini: ini ? ini[1] : "K", title: a ? a[1] : "Kai asks", html:h });
   });
+  (typeof notifs==="function" ? notifs() : []).filter(n => n.unread && n.type!=="kai" && n.type!=="system").forEach(n =>
+    items.push({ kind: n.fam ? "fam" : "msg", fam:n.fam, n, ini:n.ava?"":n.ini, title:n.title, sub:n.body||"", when:n.when, badge:n.type, go:`(notifs().find(x=>x.id==='${n.id}')||{}).unread=false;go('${n.to||"notifications"}')` }));
   (DB.opps||[]).forEach(o => {
     const t = (o.timeline||[]).filter(x => x[2] && !/Surfaced|Interested/.test(x[0]) && /today|now/i.test(x[1]||""));
     if (!t.length || items.some(i => i.html && i.html.includes(`"${o.id}"`))) return;
     const p = targetOf(o); if (!p) return; const m = DB.missions.find(x => x.id===o.missionId);
     items.push({ kind:"moved", ini:p.initials, title:`${firstName(p)}: ${t[t.length-1][0].toLowerCase()}`, sub: m ? m.name : "", go:`go('path:${o.id}')` });
   });
-  (DB.activity||[]).filter(a => a.unread && a.who!=="Kai" && a.cat!=="system").slice(0,3).forEach(a => items.push({ kind:"act", ini:a.ini, title:`${a.who} ${a.text}`.replace(/\.$/,""), go: a.to ? `go('${a.to}')` : "" }));
-  const ev = (DB.events||[]).find(e => e.rsvp && !e.past);
-  if (ev) items.push({ kind:"event", ini: (ev.title||"E")[0], title:`${ev.title}${ev.when?" · "+ev.when:""}`, sub:"You're going", go:`go('eventd:${ev.id}')` });
+  (DB.fevents||[]).filter(e => (e.rsvp===true || e.reg==="hosting") && e.bucket!=="past").forEach(e =>
+    items.push({ kind:"event", ini:(e.name||"E")[0], title:e.name, sub:`${e.day||""}${e.going?" · "+e.going+" going":""}`, label: e.reg==="hosting" ? "Hosting" : "Going", ev:e, go:`go('eventd:${e.id}')` }));
+  const reqs = typeof myAsks==="function" ? myAsks().filter(a => a.state==="open").length : 0;
+  if (reqs) items.push({ kind:"msg", ini:"", reqs, title:`${reqs} request${reqs===1?"":"s"} waiting for you`, sub:"Intros and asks people sent through you", go:"go('inbox')" });
   return items;
 }
 function brFaces(items, n){
@@ -13989,22 +14168,39 @@ function brFaces(items, n){
 function brBanner(){
   const items = brItems(); const n = items.length;
   const short = t => t.replace(/\s*·.*$/,"").replace(/^(\w+):\s/,"$1 ");
-  const line = n ? `<b>${n===1?"One thing":n+" things"} moved</b> · ${short(items[0].title)}${items[1]?`<span class="br-t2"> · ${short(items[1].title)}</span>`:""}` : "Nothing new yet. Kai is still looking.";
+  const line = n ? `<b>${n===1?"One thing needs":n+" things need"} you</b> · ${short(items[0].title)}${items[1]?`<span class="br-t2"> · ${short(items[1].title)}</span>`:""}` : "Nothing new yet. Kai is still looking.";
   const cta = n ? "Catch up" : "See your brief";
   return `<div class="brief look${STATE.briefLook}" onclick="openSheet('brief')" role="button"><div class="br-bg"><i></i><i></i><i></i></div>
     <div class="br-top"><div class="br-hi">${brGreeting()}</div><div class="br-k">${typeof kaiMark==="function"?kaiMark(28):""}</div></div>
     <div class="br-line">${line}</div>
     <div class="br-foot"><div class="br-faces">${brFaces(items,3)}</div><div class="br-cta">${cta} <span class="chev">›</span></div></div></div>`;
 }
+function brRow(i){
+  if (i.html) return i.html;
+  const badge = i.badge && typeof N_BADGE!=="undefined" && N_BADGE[i.badge] ? `<span class="nbadge">${N_BADGE[i.badge]}</span>` : "";
+  const ava = i.ev && typeof evCvArt==="function" ? `<div class="br-ev">${evCvArt(i.ev)}</div>` : i.reqs ? `<div class="avatar">${LI("mail",14)}</div>` : i.n && i.n.ava==="kai" ? (typeof kaiMark==="function" ? kaiMark(36) : av("K")) : av(i.ini||"?");
+  const right = i.label ? `<span class="k ${i.label==="Hosting"?"green":"grey"}">${i.label}</span>` : i.when ? `<span class="br-when">${i.when}</span>` : "";
+  return `<div class="row br-row" onclick="STATE.sheet=null;${i.go}"><div class="nava">${ava}${badge}</div><div class="m"><div class="a">${i.title}</div>${i.sub?`<div class="b">${i.sub}</div>`:""}</div>${right}<span class="chev">›</span></div>`;
+}
+function brSection(title, rows, open, mark){
+  if (!rows.length) return "";
+  return `<div class="sl br-sl"><span class="br-slt">${mark||""}${title}<span class="br-n">${rows.length}</span></span>${open?`<span class="br-open" onclick="event.stopPropagation();STATE.sheet=null;${open}">Open ${LI("chevron-right",12)}</span>`:""}</div><div class="rows">${rows.map(brRow).join("")}</div>`;
+}
 function brSheet(){
-  const items = brItems();
-  const row = i => i.html ? i.html : `<div class="row" onclick="STATE.sheet=null;${i.go}">${av(i.ini)}<div class="m"><div class="a">${i.title}</div>${i.sub?`<div class="b">${i.sub}</div>`:""}</div><span class="chev">›</span></div>`;
-  const asks = items.filter(i => i.kind==="ask"), moved = items.filter(i => i.kind!=="ask");
-  return `<div class="t20">${brGreeting()}</div><div class="m12" style="margin-bottom:6px">${items.length ? `${items.length===1?"One thing":items.length+" things"} moved today. Everything here is yours to act on; nothing is sent without you.` : "Nothing moved since you were last here. Kai keeps looking and asks only when it has something."}</div>
-    ${asks.length?`<div class="sl">Kai asks<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400;margin-left:6px">${asks.length}</span></div><div class="rows">${asks.map(row).join("")}</div>`:""}
-    ${moved.length?`<div class="sl">Moved</div><div class="rows">${moved.map(row).join("")}</div>`:""}
-    ${STATE.p2keep?`<div class="row" onclick="STATE.sheet=null;openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="b">Everyone you keep up with</div></div><span class="chev">›</span></div>`:""}
-    <div class="chips" style="margin-top:14px"><span class="chip" onclick="STATE.sheet=null;openSheet('kai')">Ask Kai about this</span><span class="chip" onclick="(DB.activity||[]).forEach(a=>a.unread=false);STATE.sheet=null;render();toast('Caught up.')">Caught up</span></div>`;
+  const items = brItems(); const n = items.length;
+  const asks = items.filter(i => i.kind==="ask"), moved = items.filter(i => i.kind==="moved"), msgs = items.filter(i => i.kind==="msg"), evs = items.filter(i => i.kind==="event");
+  const fams = DB.families.filter(f => items.some(i => i.kind==="fam" && i.fam===f.id));
+  const where = [...fams.map(f => f.name.split(" ")[0]), msgs.length?"Messages":"", evs.length?"Events":"", moved.length?"your missions":""].filter(Boolean);
+  const line = n ? `${n===1?"One thing needs":n+" things need"} you${where.length?" across "+where.slice(0,-1).join(", ")+(where.length>1?" and ":"")+where[where.length-1]:""}. Nothing is sent without you.` : "Nothing needs you right now. Kai keeps looking and asks only when it has something.";
+  const famMark = f => `<span class="br-mark flg" data-fam="${f.id}">${f.initial}</span>`;
+  return `<div class="br-hd">${brGreeting()}</div><div class="br-sum">${line}</div>
+    ${brSection("Kai asks", asks, "")}
+    ${fams.map(f => brSection(f.name, items.filter(i => i.kind==="fam" && i.fam===f.id), `STATE.family='${f.id}';go('family')`, famMark(f))).join("")}
+    ${brSection("Messages", msgs, "go('inbox')")}
+    ${brSection("Events", evs, "go('events')")}
+    ${brSection("Your missions", moved, "go('home')")}
+    ${STATE.p2keep?`<div class="sl br-sl"><span class="br-slt">Your people this week</span></div><div class="rows"><div class="row" onclick="STATE.sheet=null;openSheet('p2digest','')"><div class="avatar">${LI("users",14)}</div><div class="m"><div class="a">This week's digest</div><div class="b">Everyone you keep up with</div></div><span class="chev">›</span></div></div>`:""}
+    <div class="chips" style="margin-top:16px"><span class="chip" onclick="STATE.sheet=null;openSheet('kai')">Ask Kai about this</span><span class="chip" onclick="(notifs()||[]).forEach(a=>a.unread=false);(DB.activity||[]).forEach(a=>a.unread=false);STATE.sheet=null;render();toast('Caught up.')">Caught up</span></div>`;
 }
 const _brPortSheet = portSheet; portSheet = function(type, id){ if (type==="brief") return brSheet(); return _brPortSheet(type, id); };
 const _brHome = sHome; sHome = function(){
@@ -14243,6 +14439,16 @@ const _mxToast = toast;
 toast = function(t, undo) { return _mxToast(typeof t==="string" ? t.replace(MX_WHERE, MX_NOW) : t, undo); };
 const _mxSheet = portSheet;
 portSheet = function(type, id) { const h=_mxSheet(type, id); return typeof h==="string" ? h.replace(MX_WHERE, MX_NOW) : h; };
+
+/* ---- pinned date pill (hosting's SE check, 23:07): like WhatsApp and Telegram, the pinned date shows while you scroll and fades once you stop, so it never sits on the first sender's name ---- */
+function mxPins(cb) { const t = cb.getBoundingClientRect().top; cb.querySelectorAll(".dsep").forEach(d => d.classList.toggle("mx-pin", d.getBoundingClientRect().top - t <= 9)); }
+let _mxIdle;
+document.addEventListener("scroll", e => {
+  const cb = e.target; if (!(cb instanceof Element) || !cb.classList.contains("chatbody")) return;
+  mxPins(cb); cb.classList.add("mx-scrolling"); clearTimeout(_mxIdle); _mxIdle = setTimeout(() => cb.classList.remove("mx-scrolling"), 1200);
+}, true);
+const _mxRender = render;
+render = function(...a) { const r = _mxRender.apply(this, a); const cb = document.querySelector("#phone .chatbody"); if (cb) requestAnimationFrame(() => mxPins(cb)); return r; };
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
