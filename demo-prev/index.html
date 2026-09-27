@@ -7000,7 +7000,7 @@ sHome = function(){
     ${now.length?`<div class="sl">Now<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${now.length}</span></div><div class="rows">${now.join("")}</div>`:''}
     ${active.map(missionSection).join("")}
     ${tailRow}
-    ${done.length?`<div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed · ${done.length}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">${LI("check",14)}</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}`:''}
+    <div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed${done.length?` · ${done.length}`:""}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open&&!done.length?`<div class="empty" style="margin:4px 0 8px">Nothing completed yet. A mission you close lands here with what came of it.</div>`:""}${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">${LI("check",14)}</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}
   </div>
   ${navHTML("missions")}${overlay}`;
 };
@@ -7994,17 +7994,18 @@ function evmSheet(id){ if (id==="b-preview") return scSheet("What Kai sends Wedn
 
 /* routing: mission pages, the home group, the Now row */
 const _evmMission = sMission; sMission = function(id){ const m=DB.missions.find(x=>x.id===id); if (m && m.evKind && STATE.member) { const f={ b:evmPageB, c:evmPageC, d:evmPageD, e:evmPageE, f:evmPageF }[m.evKind]; if (f) return f(m); } return _evmMission(id); };
+/* Home (Apoorv 21:37): no "You host" group. A host mission and a series mission are ordinary rows with the Hosting label; the per-event
+   jobs (re-confirm, introductions, how it went, co-host) live on the event's mission page and in Manage, never as their own home rows. */
 const _evmSection = missionSection; missionSection = function(m){
-  if (!STATE.member) return _evmSection(m);
-  const evs = DB.missions.filter(x=>x.evKind && x.status!=="closed"); if (!evs.length) return _evmSection(m);
-  const first = DB.missions.find(x=>(x.host||x.evKind) && x.status!=="closed");
-  if (m.evKind || (m.host && m!==first)) return "";
-  if (m.host && m===first) {
-    const rows = [m].concat(evs).map(x=>{ const [k,tone,txt] = x.host ? (typeof dHostStatus==="function"?dHostStatus(x):["Next step","green",""]) : evmStatus(x); const ic = x.host?"user-plus":{ b:"calendar-check", c:"users", d:"moon", e:"hand", f:"repeat" }[x.evKind]; return `<div class="row" data-mission="${x.id}"><div class="avatar" style="border-radius:8px">${LI(ic,14)}</div><div class="m"><div class="a">${x.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }).join("");
-    return `<div class="msec sc t3"><div class="msh" onclick="go('events')"><div class="mg t3">${LI("calendar",14)}</div><div class="mst">You host</div><span class="chev">›</span></div><div class="st"><span class="k green">Next step</span><span>Linear teardown Oct 9 · Coffee Oct 1 · ${evs.length+1} things Kai can do</span></div><div class="rows">${rows}</div></div>`;
-  }
+  if (STATE.member && m.evKind && !m.series) return "";
+  if (STATE.member && m.series) { const [k,tone,txt]=evmStatus(m); return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
   return _evmSection(m);
 };
+const _evmHostPage = sMission; sMission = function(id){ let h=_evmHostPage(id); const m=DB.missions.find(x=>x.id===id);
+  if (m && m.host && m.ev && STATE.member) { const jobs=(msEventMissions(m.ev)||[]).filter(j=>j.go); if (jobs.length) { const ic={ b:"calendar-check", c:"users", d:"moon", e:"hand", f:"repeat" };
+    const rows=jobs.map(j=>`<div class="row" onclick="go('${j.go}')"><div class="avatar" style="border-radius:8px">${LI(ic[j.kind]||"sparkle",14)}</div><div class="m"><div class="a">${j.label}</div>${j.count?`<div class="b">${j.count} waiting on you</div>`:""}</div><span class="chev">›</span></div>`).join("");
+    h=h.replace('<div class="sl">Event</div>', `<div class="sl">Kai can also</div><div class="rows">${rows}</div><div class="sl">Event</div>`); } }
+  return h; };
 const _evmToday = todayItems; todayItems = function(){ const items=_evmToday(); if (STATE.persona==="priya" && STATE.member && DB.missions.some(x=>x.id==="ev-c.e4")) { const left=EVM_C.e4.length-Object.keys(evmS().c).length; if (left) items.push(`<div class="trow sc" onclick="go('mission:ev-c.e4')"><div class="avs" style="margin:0;gap:4px">${av(evmP("rahul").initials)}${av(evmP("maya").initials)}</div><div class="m"><div class="a">${left} introductions to approve</div><div class="b">Linear teardown, Oct 9 · each hears only if both say yes</div></div><button class="mini" onclick="event.stopPropagation();go('mission:ev-c.e4')">Approve</button></div>`); } return items; };
 const _evmPortSheet = portSheet; portSheet = function(type, id){ if (type==="evmsheet") { const h=evmSheet(id); if (h!==null) return h; } return _evmPortSheet(type, id); };
 
