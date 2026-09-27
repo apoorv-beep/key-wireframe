@@ -2713,6 +2713,119 @@ p,
   .evx-about { font-size:14.5px; line-height:1.5; margin:4px 0 8px; }
   .evx-arow { align-items:center; } .evx-aic { width:36px; height:36px; border-radius:10px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-style:normal; color:var(--ink); flex:0 0 auto; }
   .evx-bell.on .a { font-weight:800; }
+  /* ==== THE EVENT PAGE, EVENLY SET, 27 Sep (Apoorv 21:12: the title was cut, spacing uneven). The theme still paints every colour;
+     type, spacing, radii and sizes follow Design system's scale, written out as values because the wireframe doesn't load key-tokens.css. One gutter (16, as the header), a 24/32 rhythm between blocks,
+     and the 14 type styles instead of the 31 sizes the page had. The title keeps room below its last line so descenders are never cut. ==== */
+  .evt-screen { --face-ring:var(--ev-ink-inverse); }
+  .evt-screen .evt-hdr { padding:8px 16px; }
+  .evt-screen .evt-body { padding-left:16px; padding-right:16px; }
+  .evt-screen .evt-people, .evt-screen .evt-more, .evt-screen .evs-strip, .evt-screen .evt-looks, .evt-screen .evt-fxrow { margin-left:calc(16px * -1); margin-right:calc(16px * -1); padding-left:16px; padding-right:16px; }
+  .evt-screen .evt-mtabs { margin-left:calc(16px * -1); margin-right:calc(16px * -1); padding-left:16px; padding-right:16px; }
+  .evt-screen .evt-poster, .evt-screen .evt-roll { border-radius:24px; }
+  .evt-screen .evt-stamp { font:800 11px/13.2px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:1.21px; padding:6px 10px; border-radius:8px; }
+  .evt-screen .evt-title { font:700 34px/37.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-1.02px; margin:24px 0 8px; padding-bottom:4px; }
+  .evt-screen .evt-live .evt-title { margin:24px 0 4px; }
+  .evt-screen input.input.evt-name { font:700 34px/37.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif !important; letter-spacing:-1.02px; padding:0 0 4px; margin:4px 0 16px; }
+  .evt-screen .evt-host { gap:12px; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-by { gap:8px; }
+  .evt-screen .evt-bav { width:24px; height:24px; font:600 10px/1 Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0; }
+  .evt-screen .evt-follow, .evt-screen .evt-fact em, .evt-screen .evs-h span, .evt-screen .evm-row > em, .evt-screen .evt-person .btn.sm { display:inline-flex; align-items:center; gap:4px; min-height:32px; padding:0 12px; border-radius:999px; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-facts { gap:12px; margin:24px 0; }
+  .evt-screen .evt-fact { gap:12px; }
+  .evt-screen .evt-fact b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-fact > div:not(.evt-cal) > span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evt-ico, .evt-screen .evt-cal, .evt-screen .evm-n { flex:0 0 48px; width:48px; height:48px; border-radius:12px; }
+  .evt-screen .evt-cal b { font:800 11px/13.2px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:1.21px; overflow:visible; }
+  .evt-screen .evt-cal span { overflow:visible; }
+  .evt-screen .evt-cal span, .evt-screen .evm-n { font:800 22px/25.3px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.44px; }
+  .evt-screen .evs { margin:0 0 24px; }
+  .evt-screen .evs-h { gap:8px; margin-bottom:12px; }
+  .evt-screen .evs-h b { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evs-strip { gap:8px; }
+  .evt-screen .evs-d { flex:0 0 64px; gap:0; padding:8px 4px; border-radius:16px; }
+  .evt-screen .evs-d b { font:800 11px/13.2px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:1.21px; }
+  .evt-screen .evs-d span { font:800 22px/25.3px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.44px; }
+  .evt-screen .evs-d em, .evt-screen .evs-moved { font:500 12px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.12px; margin-top:0; }
+  .evt-screen .evs-moved { margin-top:8px; }
+  .evt-screen .evt-going { gap:12px; margin:0 0 24px; }
+  .evt-screen .evt-going b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-going span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  /* KeyFaceStack, size=40: the spec's three faces, 4 overlap and a ring in the ground's colour; the theme picks the fills */
+  .evt-screen .evt-going .evt-faces { padding-left:0; }
+  .evt-screen .evt-going .evt-faces i { width:40px; height:40px; margin-left:calc(4px * -1); border:1.5px solid var(--face-ring); box-shadow:none; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0; }
+  .evt-screen .evt-going .evt-faces i:first-child { margin-left:0; }
+  .evt-screen .evt-ask, .evt-screen .evt-note, .evt-screen .evt-duo, .evt-screen .evm { margin:0 0 16px; }
+  .evt-screen .evt-ask { gap:4px; padding:16px; border-radius:20px; }
+  .evt-screen .evt-ask > b { font:600 17px/22.1px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.17px; }
+  .evt-screen .evt-ask > span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-ask .evt-duo { margin:12px 0 0; }
+  .evt-screen .evt-duo { gap:8px; } .evt-screen .evt-duo .btn { min-height:48px; padding:0 12px; border-radius:16px; font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-note { gap:8px; padding:12px 16px; border-radius:16px; font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-note span { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evm { gap:8px; }
+  .evt-screen .evm-h { gap:6px; margin:0; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evm-row { gap:12px; padding:12px 16px 12px 12px; border-radius:20px; }
+  .evt-screen .evm-row > div { gap:2px; }
+  .evt-screen .evm-row > div > b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evm-row > div > span { display:block; font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  /* KeyFaceStack, size=24, inline with the line it belongs to */
+  .evm-faces { display:inline-flex; vertical-align:middle; gap:0; margin-right:6px; }
+  .evm-faces i { width:24px; height:24px; margin-left:calc(4px * -1); border:1.5px solid var(--face-ring, #fff); font:600 10px/1 Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0; }
+  .evm-faces i:first-child { margin-left:0; }
+  .evt-screen .evt-chat { margin-top:0; padding:16px; border-radius:24px; }
+  .evt-screen .evt-chat-h { margin-bottom:12px; font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-chat-h > span:first-child { display:inline-flex; align-items:center; gap:6px; }
+  .evt-screen .evt-new { display:inline-flex; align-items:center; min-height:24px; padding:0 8px; font:700 12px/14.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-b { gap:8px; margin:8px 0; }
+  .evt-screen .evt-bt { padding:0 12px; border:solid transparent; border-width:8px 0; border-radius:16px 16px 16px 4px; font:400 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-b.me .evt-bt { border-radius:16px 16px 4px 16px; }
+  .evt-screen .evt-bt b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .evt-screen .evt-act { gap:8px; margin:0 0 8px; font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-act b { font-weight:600; }
+  .evt-screen .evt-react { gap:8px; margin-top:12px; }
+  .evt-screen .evt-react button { width:40px; height:40px; }
+  .evt-screen .evt-say { height:40px; padding:0 16px; font:400 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-lockline { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-sec { margin:32px 0 12px; font:600 20px/24px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.3px; }
+  .evt-screen .evt-sec + .evt-chat { margin-top:0; }
+  .evt-screen .evt-about { margin:0; font:400 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  /* KeyPersonTile, as Community draws it */
+  .evt-screen .evt-people, .evt-screen .evt-more { gap:12px; padding-bottom:4px; }
+  .evt-screen .evt-person { gap:4px; padding:16px 12px; border-radius:20px; }
+  .evt-screen .evt-pav { width:64px; height:64px; margin-bottom:4px; font:600 20px/24px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0; }
+  .evt-screen .evt-pav em { font:700 12px/14.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; padding:2px 6px; }
+  .evt-screen .evt-person b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-person span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; min-height:2lh; }
+  .evt-screen .evt-person .btn.sm { margin-top:8px; }
+  .evt-screen .evt-person em.evt-sent { margin-top:8px; font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-mini { gap:4px; }
+  .evt-screen .evt-mini b { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-mini span { font:500 12px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.12px; }
+  .evt-screen .evt-mini-p { border-radius:20px; margin-bottom:4px; }
+  .evt-screen .evt-foot { gap:8px 16px; margin:40px 0 0; }
+  .evt-screen .evt-foot span { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evx-cta .btn { padding:16px; border-radius:16px; font:700 17px/20.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.09px; }
+  .evt-screen .evx-cta small { font:500 12px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.12px; }
+  .evt-screen .evt-rsvp { gap:8px; }
+  /* the host's screens share the same styles: form rows, the Manage header, the door count */
+  .evt-screen .evt-calpick, .evt-screen .evt-hdr-act, .evt-screen .evt-kai { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-rows { border-radius:20px; }
+  .evt-screen .evt-frow { gap:12px; padding:10px 16px; }
+  .evt-screen .evt-frow b, .evt-screen .evt-grow b { font:600 15px/22.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-frow span:not(.evt-tog), .evt-screen .evt-frow em, .evt-screen .evt-grow .m span, .evt-screen .evt-live-sub { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-grow em { font:600 13px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.06px; }
+  .evt-screen .evt-mtop b { font:800 22px/25.3px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.44px; padding-bottom:2px; }
+  .evt-screen .evt-mtop span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-door b { font:700 34px/37.4px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-1.02px; }
+  .evt-screen .evt-door > span { font:400 13px/19.5px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0px; }
+  .evt-screen .evt-by .evt-ct i.evx-fm { display:flex; top:0; left:0; bottom:auto; width:100%; height:100%; min-width:0; border-radius:inherit; box-shadow:none; }
+  /* final audit, 27 Sep 21:15: nothing that carries information is cut to one line; the cover grid stays inside the gutter; a calendar with no family logo shows its initial on a white tile */
+  .evx-s, .evx-wi b, .evm-prow .m span { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-cvgrid { grid-template-columns:repeat(4, minmax(0, 1fr)); gap:16px 12px; }
+  .evt-cvk { font:500 12px/15.6px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:0.12px; }
+  .evt-cvk i { border-radius:16px; overflow:hidden; } .evt-cvk i > svg { display:block; width:100%; height:100%; }
+  .evx-pill i:not(.evx-fm) { background:#fff; color:var(--ink); border-radius:4px; box-shadow:0 0 0 1px var(--line); }
+  .evx-foot { flex-wrap:wrap; row-gap:6px; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -3410,8 +3523,8 @@ p,
 .brief .br-line b { font-weight:700; opacity:1; }
 .brief .br-foot { display:flex; align-items:center; justify-content:space-between; margin-top:14px; gap:10px; }
 .brief .br-faces { display:flex; align-items:center; }
-.brief .br-faces .avatar { width:36px; height:36px; font-size:12px; border:2px solid #0B0E11; border-style:solid; margin-right:-8px; color:var(--ink); background:#fff; }
-.brief .br-more { margin-left:14px; font-size:12px; font-weight:700; opacity:.85; }
+.brief .br-faces .avatar { width:36px; height:36px; font-size:12px; border:2px solid #0B0E11; border-style:solid; margin-right:-4px; color:var(--ink); background:#fff; }
+.brief .br-more { margin-left:10px; font-size:12px; font-weight:700; opacity:.85; }
 .brief .br-cta { font-size:14px; font-weight:700; display:flex; align-items:center; gap:2px; white-space:nowrap; }
 .brief .br-cta .chev { font-size:18px; line-height:1; }
 /* 1 · Ink: near-black plate, a warm light from the top-left, the K in foil */
@@ -3436,6 +3549,8 @@ p,
 @media (prefers-reduced-motion: no-preference) { .brief { animation:brIn .32s cubic-bezier(.2,.8,.2,1) both; } }
 @keyframes brIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
 html.pop-still .brief, html.mo-still .brief { animation:none; }
+
+@media (max-height:700px), (max-width:380px) { .brief { padding:12px 14px 12px; margin-bottom:12px; } .brief .br-hi { font-size:22px; } .brief .br-line { margin-top:5px; -webkit-line-clamp:1; } .brief .br-line .br-t2 { display:none; } .brief .br-foot { margin-top:10px; } .brief .br-faces .avatar { width:32px; height:32px; } .brief.look3 { padding-top:14px; } .brief.look3 .br-hi { font-size:26px; } }
 
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:18px; }
@@ -9301,7 +9416,7 @@ evStatus = function(e){
   return `${e.going} going${meet?` · ${meet} to meet`:""}`;
 };
 function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
-function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}">${evMarkI(c, c.name[0], `background:${evBg(c.theme)}`)}${c.name}</span>`:""; }
+function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}">${evMarkI(c, c.name[0])}${c.name}</span>`:""; }
 evCard = function(e, size, opts){
   opts=opts||{}; const time=(e.when||"").split(", ").slice(-1)[0]; const home=evC(e.cal);
   return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}">${evThumb(e,"evx-thumb")}
@@ -9486,7 +9601,7 @@ sEventDetail = function(id){
     <div class="evt-host">${home?`<span ${home.kind==="personal"?`data-cal="${home.id}"`:`data-profile="${e.host}"`} class="evt-by"><i class="evt-bav">${host.initials}</i>${e.host===EV_ME?"You":host.name.split(" ")[0]}</span>${home.kind==="personal"?"":`<span data-cal="${home.id}" class="evt-by">${evCalThumb(home,"evt-ct")}${home.name}</span>`}${evIsAdmin(home)?"":`<span class="evt-follow ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?"Following":"+ Follow"}</span>`}`:""}</div>
     ${evFacts(e, live, locked)}
     ${locked?"":evSeriesStrip(e)}
-    ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(5,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} +${e.going-names.length}</span>`:""}</div></div>`}
+    ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(3,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} and ${e.going-names.length} other${e.going-names.length===1?"":"s"}</span>`:""}</div></div>`}
     ${evStateRow(e, live, locked)}
     ${locked||live?"":evMsBlock(e)}${evSeriesTrack(e)}
     ${inRoom ? evChatCard(e, live, locked) + people : ""}
@@ -9920,7 +10035,7 @@ const evMsTap = (e, m) => m.live ? `data-evmsgo="${m.go}"` : m.act ? `data-evmsa
 const evMsFaces = ids => { ids=(ids||[]).filter(p=>DB.people[p]).slice(0,3); return ids.length ? `<i class="evm-faces">${ids.map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</i>` : ""; };
 function evMsRow(e, m){ return `<div class="evm-row" ${evMsTap(e,m)}><b class="evm-n">${m.icon?evIc(m.icon,20):m.count}</b><div><b>${m.label}</b>${m.sub||(m.faces||[]).length?`<span>${evMsFaces(m.faces)}${m.sub||""}</span>`:""}</div>${m.verb?`<em>${m.verb}</em>`:""}</div>`; }
 function evMsBlock(e, kinds){ const items=evMsItems(e).filter(m=>kinds ? kinds.includes(m.kind) : m.kind!=="f"); if (!items.length) return "";
-  return `<div class="evm">${kinds?"":`<div class="evm-h">${evIc("sparkles",15)} With Kai</div>`}${items.map(m=>evMsRow(e,m)).join("")}</div>`; }
+  return `<div class="evm">${kinds?"":`<div class="evm-h evt-kaihd">${evIc("sparkles",15)} With Kai</div>`}${items.map(m=>evMsRow(e,m)).join("")}</div>`; }
 /* the one prompt a hosted event's card carries on the Events tab */
 function evCardKai(e){ if (e.reg!=="hosting" || e.past || e.draft) return ""; const m=evMsItems(e).filter(x=>x.kind!=="f")[0]; if (!m) return "";
   return `<div class="evx-kai" ${evMsTap(e,m)}>${evIc("sparkles",14)}<span>${m.label}</span><b>${m.verb||"Open"}</b></div>`; }
@@ -9964,7 +10079,7 @@ function evMsSheet(type, id){
       const inv = pid => `<button class="btn sm" data-evkaiinv="${eid}|${pid}" onclick="event.stopPropagation()">Invite</button>`;
       return `<h2>Fill ${e.cap-e.going} open seat${e.cap-e.going===1?"":"s"}</h2><p class="sm muted">${e.name}, ${evDayLabel(e)}. Nobody is invited until you tap Invite.</p>
         ${lapsed.length?`<div class="lbl">Came before, not in yet</div>${lapsed.map(pid=>{ const r=att.find(x=>x.pid===pid); return prow(pid, inv(pid), `Came ${r.came} of ${r.of}`); }).join("")}`:""}
-        ${picks.length?`<div class="lbl">${evIc("sparkles",13)} Kai's picks</div>${picks.map(c=>prow(c.pid, inv(c.pid), c.why)).join("")}`:""}
+        ${picks.length?`<div class="lbl evt-kaihd">${evIc("sparkles",13)} Kai's picks</div>${picks.map(c=>prow(c.pid, inv(c.pid), c.why)).join("")}`:""}
         ${lapsed.length||picks.length?"":`<div class="empty">Kai is looking. Picks land here, and nobody is invited until you tap Invite.</div>`}`; }
     if (kind==="b") { const un=evUnconfirmed(e), yes=(e.goingList||[]).filter(p=>(e.confirmed||{})[p]), when=STATE.evRcWhen||e.rcWhen||"2d"; const d=evDate(e);
       const first = un[0] ? evFirst(un[0]) : "Rahul";
@@ -12931,13 +13046,14 @@ function brItems(){
 }
 function brFaces(items, n){
   const seen = new Set(); const f = [];
-  items.forEach(i => { if (f.length<n && i.ini && !seen.has(i.ini)) { seen.add(i.ini); f.push(i.ini); } });
-  return f.map(x => av(x)).join("") + (items.length>n ? `<span class="br-more">+${items.length-n}</span>` : "");
+  items.forEach(i => { if (f.length<n && i.ini && /^[A-Z]{1,2}$/.test(i.ini) && !seen.has(i.ini)) { seen.add(i.ini); f.push(i.ini); } });
+  const rest = items.length - f.length;
+  return f.map(x => av(x)).join("") + (rest>0 ? `<span class="br-more">+${rest}</span>` : "");
 }
 function brBanner(){
   const items = brItems(); const n = items.length;
   const short = t => t.replace(/\s*·.*$/,"").replace(/^(\w+):\s/,"$1 ");
-  const line = n ? `<b>${n===1?"One thing":n+" things"} moved</b> · ${items.slice(0,2).map(i=>short(i.title)).join(" · ")}` : "Nothing new yet. Kai is still looking.";
+  const line = n ? `<b>${n===1?"One thing":n+" things"} moved</b> · ${short(items[0].title)}${items[1]?`<span class="br-t2"> · ${short(items[1].title)}</span>`:""}` : "Nothing new yet. Kai is still looking.";
   const cta = n ? "Catch up" : "See your brief";
   return `<div class="brief look${STATE.briefLook}" onclick="openSheet('brief')" role="button"><div class="br-bg"><i></i><i></i><i></i></div>
     <div class="br-top"><div class="br-hi">${brGreeting()}</div><div class="br-k">${typeof kaiMark==="function"?kaiMark(28):""}</div></div>
