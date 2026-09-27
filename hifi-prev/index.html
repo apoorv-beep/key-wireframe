@@ -3238,6 +3238,7 @@ p,
   /* KeyChip, KeyFilterRail; Follow is the call to act and Following settles into a tonal chip, as a subscribe button does */
   .evx-hi .pill, .evx-sh .pill { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-chip-bg); border-color:var(--component-chip-border); color:var(--component-chip-ink); }
   .evx-hi .pill.on, .evx-sh .pill.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+  .evx-hi .pill, .evx-hi .chip { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding-top:0; padding-bottom:0; }
   .evx-hi .chip[data-evfollow], .evx-sh .chip[data-evfollow] { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
   .evx-hi .chip.on[data-evfollow], .evx-sh .chip.on[data-evfollow] { background:var(--bg-fill-strong); border-color:var(--bg-fill-strong); color:var(--text-primary); }
   /* KeyAvatar: a filled disc, not the wireframe's dashed ring */
@@ -3354,9 +3355,8 @@ p,
   .evt-screen .evt-people, .evt-screen .evt-more, .evt-screen .evs-strip, .evt-screen .evt-looks, .evt-screen .evt-fxrow { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-mtabs { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-poster, .evt-screen .evt-roll { border-radius:var(--radius-absolute-24); }
-  /* 4:3 cover and photo roll, so the name clears the floating RSVP / Manage bar on the first screen; on short screens (320 x 568) 3:2 and the title one size down. The art is centred and loses only empty ground */
+  /* 4:3 cover and photo roll, so the name clears the floating RSVP / Manage bar on the first screen; on short or narrow screens 3:2 and the title one size down (end of file, after the title's own rule). The art is centred and loses only empty ground */
   .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:4 / 3; }
-  @media (max-height: 600px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); } }
   .evt-screen .evt-stamp { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); padding:var(--space-absolute-6) var(--space-absolute-10); border-radius:var(--radius-absolute-8); }
   .evt-screen .evt-title { font:var(--type-display-xl); letter-spacing:var(--type-display-xl-tracking); margin:var(--space-absolute-24) 0 var(--space-absolute-8); padding-bottom:var(--space-absolute-4); }
   .evt-screen .evt-live .evt-title { margin:var(--space-absolute-24) 0 var(--space-absolute-4); }
@@ -3463,6 +3463,8 @@ p,
   .evt-cvk i { border-radius:var(--radius-absolute-16); overflow:hidden; } .evt-cvk i > svg { display:block; width:100%; height:100%; }
   .evx-pill i:not(.evx-fm) { background:var(--bg-surface-default); color:var(--text-primary); outline:1px solid var(--border-default); outline-offset:-1px; border-radius:var(--radius-absolute-4); }
   .evx-foot { flex-wrap:wrap; row-gap:var(--space-absolute-6); }
+  /* Short or narrow screens (320 x 568, 360 wide): the cover and roll go 3:2 and the title one size down, so the whole name clears the floating RSVP / Manage bar */
+  @media (max-height: 600px), (max-width: 360px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); } }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -4871,6 +4873,10 @@ p,
 #phone.hf-msg .citabs.later span { color:var(--text-tertiary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
 #phone.hf-msg .citabs.later span.on { color:var(--text-primary); box-shadow:inset 0 calc(-1 * var(--border-width-focus)) 0 var(--text-primary); }
 #phone.hf-msg .xrow.lrow { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-14) 0; }
+
+/* ==== REAL PHOTOS (Apoorv 27 Sep 22:37, hi-fi copy only): photos.js stamps these classes only when KEY_HIFI is set ==== */
+.ph-face { background-size:cover !important; background-position:center 30% !important; background-repeat:no-repeat !important; color:transparent !important; text-shadow:none !important; }
+.ph-cover { background-size:cover !important; background-position:center !important; background-repeat:no-repeat !important; }
 </style>
 </head>
 <body>
@@ -14170,7 +14176,7 @@ function p2Body(pid){
   return `<div class="p2">
     ${p2BetweenLine(pid)}
     ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
-    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">Ask ${f} about</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
+    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">${f} can help with</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
     ${d.work.length?`<div class="p2sec"><div class="p2sh">Work</div><div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${d.school.length?`<div class="p2sec"><div class="p2sh">School</div><div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${evs.length?`<div class="p2sec"><div class="p2sh">You're both going</div>${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
@@ -15513,6 +15519,67 @@ render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=
 
 // Header counts cap at 9+ so the badge stays a small mark on the corner of a bare icon (hosting's SE check, 27 Sep).
 const _hfLastRender = render; render = function(){ const r=_hfLastRender.apply(this, arguments); document.querySelectorAll(".hdr > .icon .badge").forEach(b=>{ if (+b.textContent>9) b.textContent="9+"; }); return r; };
+
+/* ==== REAL PHOTOS (Apoorv 27 Sep 22:37): "replace those empty avatars with the real people in hifi prototype ... also for the calendar cover photos".
+   Hi-fi copy only (KEY_HIFI). Every person avatar that shows a member's initials gets that member's photograph, and every calendar cover
+   (the banner on a calendar page and the cover thumb in calendar rows) gets a photograph. Event covers keep their pictograms (his 19:19).
+   Photos are Pexels photographs (Pexels License: free to use, no attribution required), listed with their pages in CREDITS.md.
+   They load from images.pexels.com; until one loads, or if it can't, the initials stay exactly as before. ==== */
+const PH_FACE = {rahul:33261955, maya:3053485, chris:18196288, priya:15602468, dev:30109429, ana:29540830, jordan:31268612, kate:713312, neha:18890945, arjun:7752822, sana:6084078, lena:22885538, omar:18138952, grace:34381970, tom:27268204, ines:16595635, kofi:19379640, hana:15169525, felix:33971228, priti:17611594, marco:15898845, zoe:9161849, sam:6999225, ruth:7884600, eli:3764545, mira:712521, jake:5490277, aisha:11440539, ben:30496628, clara:19179777, diego:12894362, emma:3763156, farah:10347162, greg:10223581, ivy:6237901, kabir:34423748, anika:29852895, rohan:19425131, meera:4584590, vikram:34423732, tara:18427477, nikhil:11957449, pooja:10041257, arun:8758985, sneha:6977987, karan:4307884, divya:32967602, yusuf:6577460, lina:7535450, paul:19720544, asha:30004322};
+const PH_COVER = {"cal-xd":1843655, "cal-xt":5716703, "cal-mp":28948294, "cal-ai":30886148, "cal-me":2575835, "cal-pt":7580842, "cal-dn":30577704, "cal-pa":26600254, "cal-spc":4192783, "cal-cf":30457533};
+const phUrl = (id, w, h) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=${w}&h=${h}`;
+const PH_SEEN = {};
+/* preload, then paint: a failed photo never replaces the initials */
+function phPaint(el, url, cls){
+  const st = PH_SEEN[url];
+  const put = () => { el.style.backgroundImage = `url("${url}")`; el.classList.add(cls); };
+  if (st === true) return put();
+  if (st === false) return;
+  if (st) return st.push(put);
+  PH_SEEN[url] = [put];
+  const im = new Image();
+  im.onload = () => { const q = PH_SEEN[url]; PH_SEEN[url] = true; q.forEach(f => f()); };
+  im.onerror = () => { PH_SEEN[url] = false; };
+  im.src = url;
+}
+/* initials are shared (Ana Ruiz and Anika Rao are both AR): a person id on the avatar or a close ancestor decides, else the first seeded person */
+function phWho(el, ini){
+  const ids = Object.keys(DB.people).filter(id => PH_FACE[id] && DB.people[id].initials === ini);
+  if (ids.length < 2) return ids[0];
+  for (let n = el, i = 0; n && n.attributes && i < 6; n = n.parentElement, i++)
+    for (const a of n.attributes) if (ids.includes(a.value)) return a.value;
+  return ids[0];
+}
+function phApply(){
+  if (typeof KEY_HIFI === "undefined" || !KEY_HIFI) return;
+  const root = document.getElementById("phone"); if (!root) return;
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: t => /^\s*[A-Z]{2}\s*$/.test(t.nodeValue) ? 1 : 3 });
+  const hits = [];
+  for (let t; (t = tw.nextNode()); ) hits.push(t);
+  hits.forEach(t => {
+    const el = t.parentElement, ini = t.nodeValue.trim();
+    if (!el || el.childNodes.length !== 1 || el.dataset.phi === ini) return;
+    const b = el.getBoundingClientRect();
+    if (b.width < 14 || b.width > 80 || b.height / b.width > 1.4 || b.width / b.height > 1.4) return;
+    const id = phWho(el, ini); if (!id) return;
+    el.dataset.phi = ini;
+    el.setAttribute("aria-label", DB.people[id].name);
+    const px = b.width > 48 ? 240 : 128;
+    phPaint(el, phUrl(PH_FACE[id], px, px), "ph-face");
+  });
+  const cal = (STATE.screen || "").startsWith("cal:") ? STATE.screen.slice(4) : "";
+  root.querySelectorAll(".evx-cban:not(.ph-cover)").forEach(el => { if (PH_COVER[cal]) phPaint(el, phUrl(PH_COVER[cal], 860, 320), "ph-cover"); });
+  root.querySelectorAll(".evx-cct:not(.ph-cover)").forEach(el => {
+    const h = el.closest("[data-cal],[data-evcalpick]"); const c = h && (h.dataset.cal || h.dataset.evcalpick);
+    if (PH_COVER[c]) phPaint(el, phUrl(PH_COVER[c], 160, 120), "ph-cover");
+  });
+}
+const _phRender = render; render = function(){ const r = _phRender.apply(this, arguments); phApply(); return r; };
+let phQueued = false;
+try {
+  new MutationObserver(() => { if (phQueued) return; phQueued = true; requestAnimationFrame(() => { phQueued = false; phApply(); }); })
+    .observe(document.body, { childList:true, subtree:true, characterData:true });
+} catch(e) {}
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
