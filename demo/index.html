@@ -2945,15 +2945,17 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-osfs { display:flex; } .cm-osf { width:26px; height:26px; border-radius:50%; background:#fff; color:var(--ink); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--ink); }
   .cm-osf + .cm-osf { margin-left:-9px; }
 
-  /* overview: composer first, then what has a clock on it, then posts (27 Sep) */
-  .cm-compose { padding:14px 0; border-bottom:1px solid var(--line); }
-  .cm-crow { display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid var(--ink3); border-radius:14px; cursor:pointer; }
-  .cm-crow span { flex:1; min-width:0; font-size:15px; color:var(--ink2); }
-  .cm-crow i { display:flex; color:var(--ink2); }
-  .cm-cchips { display:flex; gap:8px; margin-top:10px; }
-  .cm-cchips span { height:32px; padding:0 12px; display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:999px; font-size:13px; font-weight:600; cursor:pointer; }
+  /* overview: organizer brief, then what has a clock on it, then posts (27 Sep) */
+  .cm-bnums { display:flex; align-items:center; gap:12px; margin:12px 14px 0; padding:10px 0 0; border-top:1px solid rgba(255,255,255,.14); border-bottom:0; cursor:pointer; }
+  .cm-bnums .cm-sparkw { color:#fff; }
+  .cm-bnums .m { flex:1; min-width:0; font-size:13px; color:rgba(255,255,255,.8); } .cm-bnums .m b { font-size:20px; font-weight:700; color:#fff; font-variant-numeric:tabular-nums; margin-right:4px; }
+  .cm-bnums .m span { display:block; font-size:12px; color:rgba(255,255,255,.6); }
+  .cm-bnums .s { color:rgba(255,255,255,.7); }
+  .cm-brief .cm-osbar { margin-top:12px; }
+  .cm-brief .cm-osjobs { margin-top:12px; } .cm-brief .cm-osbar + .cm-osjobs { margin-top:0; }
+  .cm-osf .li { width:14px; height:14px; }
   .cm-wk > .evx-card { margin-top:10px; }
-  .cm-newm { padding:12px 0 4px; }
+  .cm-newm { padding:14px 0 12px; }
   .cm-nmh { display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:600; color:var(--ink2); }
   .cm-nms { display:flex; gap:8px; margin-top:8px; overflow-x:auto; scrollbar-width:none; }
   .cm-nm { flex:0 0 116px; display:flex; flex-direction:column; align-items:center; gap:2px; padding:4px 0; cursor:pointer; text-align:center; }
@@ -3019,6 +3021,11 @@ body:has(.push) .ctlbtn { display:none; }
    with one GSAP timeline scrubbed from a single clock; the Kai call globe is a shader sphere on the same renderer approach.
    Values from key-tokens.v2.json. Off under navigator.webdriver and prefers-reduced-motion: the libraries are not loaded and
    motion.js shows one still frame, so tests and captures stay stable and offline. ==== */
+/* Motion system rules (Apoorv's yeses). Tabs: the pane alone slides 28px with a fade, 260ms cubic-bezier(.2,.8,.2,1).
+   Sheets and drawers: the page steps back under them (iOS page sheet): ground key.950, screen scale .93 from the top edge,
+   dropped 46px, radius 14, white status bar, 280ms cubic-bezier(.2,.8,.2,1), off under reduced motion. Approved 27 Sep;
+   popups.css owns it. Anything here that measures the screen uses layout size (clientWidth), not getBoundingClientRect,
+   so the step-back never resizes it. */
 
 .mo-promo, .call {
   --mo-deep:#0B0E11; --mo-deep-fill:#242B33; --mo-on-deep:#F9FAFC; --mo-on-deep-muted:#A6AFBB; --mo-on-deep-line:#606974;
@@ -3291,6 +3298,7 @@ body:has(.push) .ctlbtn { display:none; }
 .toast { background:var(--pop-deep); box-shadow:var(--pop-lift); }
 
 @media (prefers-reduced-motion: reduce) { #phone > .screen { transition:none; } .tipdim { animation:none; } }
+.pop-still #phone > .screen { transition:none; } .pop-still .tipdim { animation:none; }
 </style>
 </head>
 <body>
@@ -10025,10 +10033,11 @@ portWire = function(){
 };
 
 /* ==== Default covers, v3 (approved 27 Sep). Kit and the 16 kinds from events-audit/covers/abstract-v3/, then the app wiring. ==== */
-/* Default event covers, v3 (27 Sep). One graphic system for every kind, drawn in code from the event's theme.
-   Flat inks only: no gradients, glows, drop shadows or grain. Few big shapes, placed off-centre and cropped by the frame.
-   Where two shapes overlap, the overlap prints in a third ink, the way two screen-printed layers do.
-   Two stroke weights (24 and 12), round caps. No text. Readable at 56px.
+/* Default event covers, v4 (27 Sep). One house style for every kind: pictogram posters after Otl Aicher's 1972 Munich grid
+   and Isotype, drawn in code from the event's theme inks. One hero object, big and cropped by the frame, drawn flat-on (side or
+   plan view). Edges run at 0, 45 or 90 degrees; curves are only circles and circle arcs. Solid shapes with no outlines: a detail
+   is a gap cut to the ground. Objects at rest: motion is only a 45 degree tilt or a one-gap offset. Where two shapes overlap,
+   the overlap prints in a third ink, the way two screen-printed layers do. No text, no faces. Readable at 56px.
    No clusters of small circles, dots, holes or dotted lines (trypophobia; Cole & Wilkins 2013). */
 const CVA = {};
 const CVA_KINDS = ["welcome","dinner","coffee","talk","roundtable","workshop","class","mixer","party","demo","summit","watch","trip","online","outdoors","games"];
@@ -10098,6 +10107,8 @@ const cvaOv = (id, key, clip, shape) => `<clipPath id="${id}${key}">${cvaClip(cl
 const cvaDrop = (x, y, w, h, f) => `<path d="M${x} ${y}C${x + w * .62} ${y + h * .38} ${x + w * .5} ${y + h} ${x} ${y + h}C${x - w * .5} ${y + h} ${x - w * .62} ${y + h * .38} ${x} ${y}Z" fill="${f}"/>`;
 const cvaRot = (a, x, y, body) => `<g transform="rotate(${a} ${x} ${y})">${body}</g>`;
 const cvaTr = (x, y, body, a = 0) => `<g transform="translate(${x} ${y})${a ? ` rotate(${a})` : ""}">${body}</g>`;
+const cvaR = (x, y, w, h, f, r = 0) => `<rect x="${x}" y="${y}" width="${w}" height="${h}"${r ? ` rx="${r}"` : ""} fill="${f}"/>`;
+const cvaP = (d, f) => `<path d="${d}" fill="${f}"/>`;
 
 /* A kind has 4 compositions. The seed picks one and whether it is mirrored; pass v to pin a composition.
    Each composition is (c, id, rnd) => SVG markup on a 400 x 400 canvas; the ground is already painted in c.g.
@@ -10112,516 +10123,611 @@ function cvaKind(e){ const m = CVA_MATCH.find(([re]) => re.test(e.name || "")); 
 const cvaCover = (kind, p, seed, v) => `<div class="cv cv-ab">${cvaSvg(kind, p, seed, v)}</div>`;
 
 CVA.class = [
-  // An open book, cropped by the frame, with a ribbon
+  // An open book seen from above, three lines of text on each page, a ribbon bookmark hanging out the bottom
+  Object.assign((c, id, rnd) => {
+    const lines = [[60, 132, 108], [60, 164, 108], [60, 196, 64], [232, 132, 108], [232, 164, 108], [232, 196, 64]].map(([x, y, w]) => cvaR(x, y, w, 12, c.k)).join("");
+    return `${cvaM(0, cvaR(20, 80, 360, 240, c.dark ? c.b : c.i, 8) + cvaR(36, 96, 156, 208, c.p) + cvaR(208, 96, 156, 208, c.p), "b")}
+    ${cvaM(1, lines, "s")}
+    ${cvaM(2, cvaP("M188 272H212V376L200 364L188 376Z", c.a), "t", "sway")}`;
+  }, { nf: true }),
+
+  // Four books stacked flat, the top one pushed one gap out, an apple on top
   (c, id, rnd) => {
-    const lines = x => [0, 1, 2].map(k => `<rect x="${x}" y="${176 + k * 34}" width="${k === 2 ? 70 : 110}" height="12" rx="6" fill="${c.b}"/>`).join("");
-    return `${cvaM(0, `<path d="M-10 150C60 118 150 118 200 150C250 118 340 118 410 150V420H-10Z" fill="${c.a}"/>`, "b")}
-      ${cvaM(1, `<path d="M10 140C80 110 160 112 196 146V410H10Z" fill="${c.p}"/><path d="M390 140C320 110 240 112 204 146V410H390Z" fill="${c.p}"/>${lines(56)}${lines(236)}`, "b")}
-      ${cvaM(2, `<path d="M300 60H332V178L316 162L300 178Z" fill="${c.m}"/>`, "t")}`;
+    const book = (x, y, w, h, f, gx) => cvaR(x, y, w, h, f) + cvaR(gx, y, 12, h, c.g);
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, book(48, 284, 288, 56, c.i, 84) + book(72, 236, 248, 48, c.m, 280) + book(56, 184, 272, 52, c.i, 100), "b")}
+    ${cvaM(1, book(92, 136, 232, 48, c.m, 288), "r")}
+    ${cvaM(2, `<circle cx="200" cy="88" r="48" fill="${c.a}"/>` + cvaP("M200 40A32 32 0 0 1 232 8A32 32 0 0 1 200 40Z", c.i), "t")}`;
   },
 
-  // A stack of books
+  // A framed chalkboard with a circle and a set-square triangle drawn on it, chalk on the tray
   (c, id, rnd) => {
-    const j = () => Math.round(rnd() * 16 - 8);
-    const bk = (y, h, x, w, f, band) => `<rect x="${x + j()}" y="${y}" width="${w}" height="${h}" rx="6" fill="${f}"/>`;
-    return `<circle cx="292" cy="112" r="120" fill="${c.b}"/>
-      ${cvaM(0, bk(318, 70, 40, 320, c.i), "l")}${cvaM(1, bk(252, 66, 76, 272, c.a), "r")}${cvaM(2, bk(196, 56, 58, 250, c.m), "l")}${cvaM(3, bk(144, 52, 96, 220, c.p), "r")}`;
+    const board = c.dark ? c.b : c.m;
+    return `${cvaM(0, cvaR(20, 40, 360, 260, c.i, 8) + cvaR(36, 56, 328, 228, board), "t")}
+    ${cvaM(1, `<circle cx="132" cy="170" r="64" fill="${c.p}"/><circle cx="132" cy="170" r="48" fill="${board}"/>` + cvaP("M220 236H332V124ZM260 220L316 164V220Z", c.p), "s")}
+    ${cvaM(2, cvaR(4, 300, 392, 16, c.i, 8) + cvaR(252, 284, 56, 16, c.a), "b")}`;
   },
 
-  // A mortarboard, tassel hanging
+  // A desk lamp on its arm throwing a cone of light onto a closed notebook
   (c, id, rnd) => {
-    return `<circle cx="112" cy="298" r="150" fill="${c.b}"/>
-      ${cvaM(0, `<path d="M112 236H288V312C288 312 250 332 200 332C150 332 112 312 112 312Z" fill="${c.m}"/>`, "b")}
-      ${cvaM(1, `<path d="M200 96L384 174L200 252L16 174Z" fill="${c.i}"/>`, "t")}
-      ${cvaM(2, `<g class="mi mi-sway"><path d="M200 174L322 216V300" fill="none" stroke="${c.a}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M308 292H336L346 352H298Z" fill="${c.a}"/></g>`, "t")}`;
-  },
-
-  // A drafting compass drawing an arc
-  (c, id, rnd) => {
-    return `${cvaM(0, `<path d="M40 330A160 160 0 0 1 360 330" fill="none" stroke="${c.a}" stroke-width="24" stroke-linecap="round"/><rect x="0" y="330" width="400" height="70" fill="${c.b}"/>`, "s")}
-      ${cvaM(1, `<path d="M186 60L214 60L220 90L116 330L104 324L180 90Z" fill="${c.i}"/><path d="M186 60L214 60L220 90L296 324L284 330L180 90Z" fill="${c.m}"/><rect x="190" y="24" width="20" height="44" rx="6" fill="${c.i}"/><path d="M280 324L300 324L290 350Z" fill="${c.i}"/>`, "t")}`;
+    return `${cvaR(0, 340, 400, 60, c.m)}
+    ${cvaM(0, cvaP("M100 232H260L368 340H-8Z", c.b), "t")}
+    ${cvaM(1, cvaR(264, 316, 120, 24, c.i, 8) + cvaR(316, 32, 16, 292, c.i) + cvaRot(-45, 180, 176, cvaR(172, 168, 212, 16, c.i, 8)) + `<circle cx="324" cy="32" r="16" fill="${c.i}"/>` + cvaP("M156 176H204L260 232H100Z", c.i), "r")}
+    ${cvaM(2, cvaR(96, 308, 136, 32, c.a) + cvaR(96, 316, 128, 16, c.p), "b")}`;
   },
 ];
+
 CVA.coffee = [
-  // A cup on its saucer, steam rising
+  // A cup on its saucer in side elevation, three straight bars of steam, a disc behind
   (c, id, rnd) => {
-    const steam = c.dark ? c.p : c.m;
-    return `<circle cx="120" cy="118" r="130" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="26" y="322" width="348" height="26" rx="13" fill="${c.a}"/><path d="M84 176H306V246C306 296 268 322 195 322C122 322 84 296 84 246Z" fill="${c.i}"/><path d="M306 204H322C360 204 360 272 322 272H306" fill="none" stroke="${c.i}" stroke-width="24"/>`, "b")}
-      ${cvaM(1, `<g class="mi mi-rise"><path d="M160 146C140 116 180 96 160 62M226 146C206 116 246 96 226 62" fill="none" stroke="${steam}" stroke-width="12" stroke-linecap="round"/></g>`, "b")}`;
+    const cup = cvaP("M100 160H300V240A100 100 0 0 1 260 320H140A100 100 0 0 1 100 240Z", c.i) + cvaP("M292 176H300A40 40 0 0 1 300 256H292V240H300A24 24 0 0 0 300 192H292Z", c.i) + cvaR(60, 320, 280, 24, c.i, 12);
+    const steam = cvaR(152, 72, 16, 64, c.m, 8) + cvaR(192, 40, 16, 96, c.m, 8) + cvaR(232, 88, 16, 48, c.m, 8);
+    return `${cvaM(0, `<circle cx="240" cy="150" r="130" fill="${c.b}"/>`, "s")}
+      ${cvaM(1, cup, "b")}
+      ${cvaM(2, steam, "b", "rise")}`;
   },
 
-  // Two mugs knocking together
+  // Two mugs standing side by side on a table, overprinting where they overlap
   (c, id, rnd) => {
-    const t = 10 + Math.round(rnd() * 4);
-    const mug = (x, a, f, s) => `<g transform="translate(${x} 244) rotate(${a})"><rect x="-70" y="-96" width="140" height="180" rx="18" fill="${f}"/><path d="M${70 * s} -50H${90 * s}C${134 * s} -50 ${134 * s} 36 ${90 * s} 36H${70 * s}" fill="none" stroke="${f}" stroke-width="24"/></g>`;
-    return `<rect y="330" width="400" height="70" fill="${c.b}"/>
-      ${cvaM(0, mug(142, -t, c.a, -1), "l")}${cvaM(1, mug(262, t, c.m, 1), "r")}
-      ${cvaOv(id, "u", `<g transform="translate(142 244) rotate(${-t})"><rect x="-70" y="-96" width="140" height="180" rx="18"/></g>`, `<g transform="translate(262 244) rotate(${t})"><rect x="-70" y="-96" width="140" height="180" rx="18" fill="${c.ov(c.a, c.m)}"/></g>`)}`;
+    const mugA = cvaR(60, 140, 160, 200, c.a, 8) + cvaP("M68 188H60A44 44 0 0 0 60 276H68V260H60A28 28 0 0 1 60 204H68Z", c.a);
+    const mugB = cvaR(160, 180, 160, 160, c.m, 8) + cvaP("M312 216H320A44 44 0 0 1 320 304H312V288H320A28 28 0 0 0 320 232H312Z", c.m);
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+      ${cvaM(1, mugA, "l")}${cvaM(2, mugB, "r")}
+      ${cvaOv(id, "m", cvaR(60, 140, 160, 200, "#000", 8), cvaR(160, 180, 160, 160, c.ov(c.a, c.m), 8))}`;
   },
 
-  // A kettle pouring into a pour-over on a carafe
+  // A moka pot in front elevation with faceted chambers, a small cup beside it on the table
   (c, id, rnd) => {
-    return `${cvaM(0, `<circle cx="396" cy="30" r="130" fill="${c.i}"/><path d="M286 96C262 104 246 114 232 132" fill="none" stroke="${c.i}" stroke-width="22" stroke-linecap="round"/>`, "tr")}
-      ${cvaM(1, `<path d="M228 140C216 160 208 174 206 196" fill="none" stroke="${c.a}" stroke-width="10" stroke-linecap="round"/>`, "t")}
-      ${cvaM(2, `<rect x="104" y="188" width="196" height="18" rx="9" fill="${c.i}"/><path d="M118 206H286L236 280H168Z" fill="${c.a}"/>`, "t")}
-      ${cvaM(3, `<path d="M162 282H242V300C300 318 324 358 306 410H98C80 358 104 318 162 300Z" fill="${c.b}"/><path d="M96 350H308L306 410H98Z" fill="${c.m}"/>`, "b")}`;
+    const pot = cvaP("M96 84H224V160L192 192V216L236 260V340H84V260L128 216V192L96 160Z", c.i) + cvaR(112, 198, 96, 12, c.g)
+      + cvaP("M140 84A20 20 0 0 1 180 84Z", c.i) + cvaP("M224 84H260L224 120Z", c.i) + cvaP("M96 92H60A8 8 0 0 0 52 100V184A8 8 0 0 0 68 184V108H96Z", c.i);
+    const cup = cvaP("M276 268H356V292A40 40 0 0 1 340 324H292A40 40 0 0 1 276 292Z", c.a) + cvaP("M348 264H356A24 24 0 0 1 356 312H348V296H356A8 8 0 0 0 356 280H348Z", c.a) + cvaR(264, 324, 104, 16, c.a, 8);
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+      ${cvaM(1, pot, "b")}
+      ${cvaM(2, cup, "r")}`;
   },
 
-  // A cup from above on its saucer, with a leaf in the foam and a spoon beside it
+  // A cup seen from above on its saucer, a ring of crema, a spoon lying at 45 degrees
   (c, id, rnd) => {
-    const a = Math.round(rnd() * 40 - 20);
-    return `${cvaM(0, `<circle cx="186" cy="200" r="182" fill="${c.p}"/>`, "s")}
-      ${cvaM(1, `${cvaRot(a, 186, 200, `<rect x="276" y="176" width="58" height="48" rx="18" fill="${c.i}"/>`)}<circle cx="186" cy="200" r="112" fill="${c.i}"/><circle cx="186" cy="200" r="90" fill="${c.a}"/>${cvaRot(a - 30, 186, 200, cvaDrop(186, 136, 70, 128, c.p))}`, "s")}
-      ${cvaM(2, cvaRot(-36, 96, 360, `<ellipse cx="96" cy="336" rx="22" ry="34" fill="${c.m}"/><rect x="89" y="360" width="14" height="110" rx="7" fill="${c.m}"/>`), "bl")}`;
+    const cup = `<circle cx="180" cy="200" r="96" fill="${c.i}"/>` + cvaR(264, 184, 80, 32, c.i, 8) + `<circle cx="180" cy="200" r="76" fill="${c.a}"/><circle cx="180" cy="200" r="60" fill="${c.m}"/>`;
+    const spoon = cvaTr(92, 288, cvaR(-88, -20, 64, 40, c.i, 20) + cvaR(-32, -8, 120, 16, c.i, 8), 45);
+    return `${cvaM(0, `<circle cx="180" cy="200" r="150" fill="${c.b}"/>`, "s")}
+      ${cvaM(1, cup, "s")}
+      ${cvaM(2, spoon, "bl")}`;
   },
 ];
+
 CVA.demo = [
-  // A rocket climbing out of the frame on a wide trail
+  // A rocket tilted at exactly 45 degrees, one round window, two fins, a round flame with a 45-degree point, a disc behind
   (c, id, rnd) => {
-    const body = `<path d="M0 -150C44 -110 56 -40 50 70H-50C-56 -40-44-110 0-150Z"/>`;
-    return `${cvaM(0, `<path d="M-60 470L190 220" stroke="${c.b}" stroke-width="120" stroke-linecap="round"/>`, "bl")}
-      ${cvaM(1, `<g class="mi mi-bob"><g transform="translate(240 170) rotate(45)"><path d="M-50 20L-96 96H-50ZM50 20L96 96H50Z" fill="${c.a}"/><g fill="${c.i}">${body}</g><circle cx="0" cy="-40" r="26" fill="${c.b}"/><rect x="-50" y="40" width="100" height="30" fill="${c.a}"/><g class="mi mi-flick">${`<path d="M-34 70H34C34 120 16 150 0 180C-16 150-34 120-34 70Z" fill="${c.a}"/>`}</g></g></g>`, "bl")}`;
+    const at = b => `<g transform="translate(214 186) rotate(45) scale(1.1)">${b}</g>`;
+    const body = `<path d="M-36 120V-100A36 36 0 0 1 36 -100V120ZM-18 -40A18 18 0 1 0 18 -40A18 18 0 1 0 -18 -40Z" fill="${c.i}" fill-rule="evenodd"/>`;
+    const fins = cvaP("M-36 40L-80 84V148L-36 104Z", c.m) + cvaP("M36 40L80 84V148L36 104Z", c.m);
+    const flame = cvaP("M-22.6 170.6A32 32 0 1 1 22.6 170.6L0 193.3Z", c.a);
+    return `${cvaM(0, `<circle cx="200" cy="200" r="150" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, at(fins + body), "bl")}
+    ${cvaM(2, at(flame), "bl", "flick")}`;
   },
 
-  // A laptop open on stage, a play mark on its screen
+  // A laptop in front elevation on a table, a play triangle on its screen
   (c, id, rnd) => {
-    return `<circle cx="200" cy="300" r="190" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="54" y="84" width="292" height="200" rx="16" fill="${c.i}"/><rect x="70" y="100" width="260" height="168" rx="6" fill="${c.a}"/><path d="M178 146L238 184L178 222Z" fill="${c.p}"/>`, "s")}
-      ${cvaM(1, `<path d="M40 284H360L392 318H8Z" fill="${c.m}"/><rect y="318" width="400" height="82" fill="${c.i}"/>`, "b")}`;
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaR(20, 312, 360, 28, c.i, 8), "b")}
+    ${cvaM(1, cvaR(60, 60, 280, 240, c.i, 8) + cvaR(76, 76, 248, 208, c.p), "b")}
+    ${cvaM(2, cvaP("M180 116L244 180L180 244Z", c.a), "s")}`;
   },
 
-  // Winners' podium with a trophy on the top step
+  // A trophy with two half-ring handles standing on a three-step podium, a disc behind
   (c, id, rnd) => {
-    return `${cvaM(0, `<rect x="16" y="270" width="124" height="140" fill="${c.m}"/>`, "b")}${cvaM(1, `<rect x="140" y="214" width="124" height="196" fill="${c.a}"/>`, "b")}${cvaM(2, `<rect x="264" y="304" width="124" height="106" fill="${c.i}"/>`, "b")}
-      ${cvaM(3, `<path d="M156 70H248V104C248 140 226 160 202 160C178 160 156 140 156 104Z" fill="${c.i}"/><path d="M156 84H136C120 84 118 124 150 128M248 84H268C284 84 286 124 254 128" fill="none" stroke="${c.i}" stroke-width="12" stroke-linecap="round"/><rect x="192" y="158" width="20" height="30" fill="${c.i}"/><rect x="170" y="186" width="64" height="28" rx="4" fill="${c.i}"/>`, "t")}`;
+    const cup = "M112 40H288V96A88 88 0 0 1 112 96Z";
+    const handles = "M124 40H112A36 36 0 0 0 112 112H124V96H112A20 20 0 0 1 112 56H124ZM276 40H288A36 36 0 0 1 288 112H276V96H288A20 20 0 0 0 288 56H276Z";
+    const podium = cvaR(140, 260, 120, 160, c.m) + cvaR(20, 300, 108, 120, c.m) + cvaR(272, 320, 108, 100, c.m);
+    return `${cvaM(0, `<circle cx="200" cy="140" r="140" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, podium, "b")}
+    ${cvaM(2, cvaP(handles, c.i) + cvaP(cup, c.i) + cvaR(188, 180, 24, 48, c.i) + cvaP("M156 224H244L260 240V260H140V240Z", c.i) + `<circle cx="200" cy="112" r="24" fill="${c.a}"/>`, "t")}`;
   },
 
-  // A pitch deck on an easel, the numbers going up (never mirrored)
+  // A presentation screen hanging from a bar with a short pull tab, three bars of rising height on it
   (c, id, rnd) => {
-    return `${cvaM(0, `<path d="M200 250L120 410M200 250L280 410M200 250V410" stroke="${c.i}" stroke-width="16" stroke-linecap="round"/>`, "b")}
-      ${cvaM(1, `<rect x="46" y="44" width="308" height="222" rx="10" fill="${c.p}"/><rect x="186" y="26" width="28" height="26" rx="6" fill="${c.i}"/>`, "t")}
-      ${cvaM(2, `<rect x="92" y="186" width="48" height="50" fill="${c.m}"/><rect x="176" y="148" width="48" height="88" fill="${c.m}"/><rect x="260" y="96" width="48" height="140" fill="${c.a}"/>`, "b")}`;
+    const chart = cvaR(108, 200, 48, 56, c.m) + cvaR(176, 160, 48, 96, c.m) + cvaR(244, 120, 48, 136, c.a);
+    return `${cvaM(0, cvaR(96, -10, 8, 60, c.i) + cvaR(296, -10, 8, 60, c.i) + cvaR(40, 48, 320, 24, c.i, 12), "t")}
+    ${cvaM(1, cvaR(60, 72, 280, 232, c.i) + cvaR(76, 72, 248, 216, c.p) + cvaP("M188 304H212V332A12 12 0 0 1 188 332Z", c.i), "t")}
+    ${cvaM(2, chart, "b")}`;
   },
 ];
-CVA.demo[1].nf = CVA.demo[3].nf = true;
+CVA.demo[1].nf = true;
+CVA.demo[3].nf = true;
+
 CVA.dinner = [
-  // A plate from above, a fork beside it and a knife resting across
+  // A place setting from above: plate and well, a fork on the left, a knife on the right
   (c, id, rnd) => {
-    const a = 34 + Math.round(rnd() * 8);
-    return `${cvaM(0, `<circle cx="252" cy="214" r="160" fill="${c.p}"/><circle cx="252" cy="214" r="108" fill="${c.b}"/>`, "s")}
-      ${cvaM(1, `<rect x="42" y="188" width="24" height="240" rx="12" fill="${c.i}"/><path d="M26 60H82V150C82 176 70 190 54 190C38 190 26 176 26 150Z" fill="${c.i}"/><rect x="39" y="44" width="9" height="76" fill="${c.g}"/><rect x="60" y="44" width="9" height="76" fill="${c.g}"/>`, "b")}
-      ${cvaM(2, cvaTr(300, 250, `<rect x="-14" y="-10" width="28" height="170" rx="14" fill="${c.a}"/><path d="M-14 -8V-170C-14-196 16-206 16-176V-8Z" fill="${c.a}"/>`, a), "rot")}`;
+    const fork = "M8 64H20V124H28V64H40V124H48V64H60V148L44 164V332A8 8 0 0 1 28 332V164L8 148Z";
+    const knife = "M344 204V96A32 32 0 0 1 376 64V332A10 10 0 0 1 356 332V204Z";
+    return `${cvaM(0, `<circle cx="200" cy="200" r="124" fill="${c.i}"/><circle cx="200" cy="200" r="84" fill="${c.m}"/>`, "s")}
+    ${cvaM(1, cvaP(fork, c.i), "l")}${cvaM(2, cvaP(knife, c.i), "r")}`;
   },
 
-  // A pendant lamp throwing a cone of light onto the table
+  // A pendant lamp over a table, its light falling on two wine glasses
   (c, id, rnd) => {
-    const cone = c.dark ? cvaMix(c.g, c.p, .2) : c.b;
-    return `<rect y="318" width="400" height="82" fill="${c.a}"/>
-      ${cvaM(0, `<g class="mi mi-sway"><rect x="194" y="-10" width="12" height="80" fill="${c.i}"/><path d="M104 150H296L382 318H18Z" fill="${cone}"/><path d="M92 150A108 96 0 0 1 308 150Z" fill="${c.i}"/></g>`, "t")}
-      ${cvaM(1, `<path d="M70 256H218C214 300 184 318 144 318C104 318 74 300 70 256Z" fill="${c.i}"/>`, "b")}
-      ${cvaM(2, `<path d="M262 186H322C330 212 332 244 314 256C304 263 296 264 292 264C288 264 280 263 270 256C252 244 254 212 262 186Z" fill="${c.m}"/><rect x="286" y="262" width="12" height="44" fill="${c.m}"/><rect x="264" y="304" width="56" height="14" rx="7" fill="${c.m}"/>`, "b")}`;
+    const glass = (x, y) => cvaP(`M${x - 32} 164H${x + 32}A40 40 0 1 1 ${x - 32} 164Z`, c.p) + cvaP(`M${x - 40} ${y}A40 40 0 0 0 ${x + 40} ${y}Z`, c.a) + cvaR(x - 8, 224, 16, 44, c.p) + cvaR(x - 32, 264, 64, 16, c.p, 8);
+    return `${cvaM(0, cvaP("M144 100H256L436 280H-36Z", c.b), "t")}
+    ${cvaM(1, cvaR(196, -10, 8, 54, c.i) + cvaP("M144 100A56 56 0 0 1 256 100Z", c.i), "t", "sway")}
+    ${cvaM(2, cvaR(-10, 280, 420, 24, c.i) + cvaR(56, 304, 24, 110, c.i) + cvaR(320, 304, 24, 110, c.i), "b")}
+    ${cvaM(3, glass(140, 188) + glass(260, 188), "b")}`;
   },
 
-  // A cloche lifting off a platter
+  // A cloche on a platter, flat-on: the dome with its rim, a knob on top
   (c, id, rnd) => {
-    const lift = -8 - Math.round(rnd() * 4);
-    return `<rect y="286" width="400" height="114" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="26" y="280" width="348" height="24" rx="12" fill="${c.i}"/>`, "b")}
-      ${cvaM(1, `<g class="mi mi-bob">${cvaRot(lift, 340, 262, `<path d="M60 262A140 140 0 0 1 340 262Z" fill="${c.a}"/><rect x="172" y="98" width="56" height="34" rx="14" fill="${c.a}"/><rect x="44" y="250" width="312" height="16" rx="8" fill="${c.m}"/>`)}</g>`, "t")}`;
+    const w1 = Math.sqrt(176 ** 2 - 36 ** 2), w2 = Math.sqrt(176 ** 2 - 24 ** 2);
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaR(12, 316, 376, 24, c.m, 8), "b")}
+    ${cvaM(1, cvaP(`M${200 - w1} 280A176 176 0 0 1 ${200 + w1} 280Z`, c.i) + cvaP(`M24 316A176 176 0 0 1 ${200 - w2} 292H${200 + w2}A176 176 0 0 1 376 316Z`, c.i), "t")}
+    ${cvaM(2, `<circle cx="200" cy="124" r="20" fill="${c.a}"/>`, "t")}`;
   },
 
-  // Three candles on the table, flames alight
+  // Three candles of different heights on a table, each flame a circle drawn to a 45 degree point
   (c, id, rnd) => {
-    const h = [0, 1, 2].map(() => Math.round(rnd() * 30));
-    const cand = (x, top, i) => `<rect x="${x - 25}" y="${top}" width="50" height="${330 - top}" fill="${c.p}"/><rect x="${x - 2}" y="${top - 16}" width="4" height="18" fill="${c.i}"/>` +
-      `<g class="mi mi-flick" style="animation-delay:${1 + i * .4}s">${cvaDrop(x, top - 86, 44, 72, c.a)}</g>`;
-    return `<circle cx="300" cy="110" r="136" fill="${c.b}"/><rect y="330" width="400" height="70" fill="${c.i}"/>
-      ${cvaM(0, cand(110, 184 + h[0], 0), "b")}${cvaM(1, cand(200, 114 + h[1], 1), "b")}${cvaM(2, cand(290, 214 + h[2], 2), "b")}`;
+    const flame = (x, y) => cvaTr(x, y, cvaP("M-24 -24H0A24 24 0 0 1 24 0A24 24 0 0 1 0 24A24 24 0 0 1 -24 0Z", c.a), 45);
+    const candle = (x, top) => cvaR(x - 28, top, 56, 340 - top, c.i) + cvaR(x - 4, top - 16, 8, 16, c.i);
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, candle(120, 160) + candle(200, 84) + candle(280, 204), "b")}
+    ${cvaM(1, flame(120, 116) + flame(280, 160), "t")}
+    ${cvaM(2, flame(200, 40), "t", "flick")}`;
   },
 ];
+CVA.dinner[0].nf = true;
+
 CVA.games = [
-  // A pawn on a board of big squares
+  // A chess pawn flat-on, standing on a row of alternating squares
   (c, id, rnd) => {
-    return `<path d="M0 0H134V134H0ZM268 0H402V134H268ZM134 134H268V268H134ZM0 268H134V402H0ZM268 268H402V402H268Z" fill="${c.b}"/>
-      ${cvaM(0, `<circle cx="200" cy="112" r="52" fill="${c.i}"/><rect x="146" y="162" width="108" height="24" rx="12" fill="${c.i}"/><path d="M170 186H230C232 250 256 290 290 320H110C144 290 168 250 170 186Z" fill="${c.i}"/><rect x="86" y="318" width="228" height="44" rx="12" fill="${c.a}"/>`, "t")}`;
+    const pawn = `<circle cx="200" cy="96" r="48" fill="${c.i}"/>` + cvaR(140, 156, 120, 24, c.i, 12) + cvaP("M172 180H228V212L284 268H116L172 212Z", c.i) + cvaR(80, 280, 240, 40, c.i, 8);
+    return `${cvaM(0, cvaR(0, 320, 80, 80, c.b) + cvaR(160, 320, 80, 80, c.b) + cvaR(320, 320, 80, 80, c.b), "b")}
+      ${cvaM(1, pawn, "b")}`;
   },
 
-  // A fan of three cards
+  // Two playing cards, one upright with a heart, one turned 45 degrees behind it, overprinting
   (c, id, rnd) => {
-    const heart = (x, y, f) => `<path d="M${x} ${y + 34}C${x - 62} ${y - 8} ${x - 40} ${y - 62} ${x} ${y - 30}C${x + 40} ${y - 62} ${x + 62} ${y - 8} ${x} ${y + 34}Z" fill="${f}"/>`;
-    const card = (a, f, suit) => cvaRot(a, 200, 380, `<rect x="122" y="100" width="156" height="220" rx="16" fill="${f}" stroke="${c.g}" stroke-width="8"/>${suit}`);
-    return `${cvaM(0, card(-22, c.m, `<path d="M200 164L236 210L200 256L164 210Z" fill="${c.p}"/>`), "l")}${cvaM(1, card(0, c.i, `<path d="M200 166C242 200 250 218 240 234C230 250 210 246 206 236L214 262H186L194 236C190 246 170 250 160 234C150 218 158 200 200 166Z" fill="${c.p}"/>`), "b")}
-      ${cvaM(2, card(22, c.p, heart(200, 212, c.a)), "r")}`;
+    const upright = cvaR(180, 120, 160, 240, c.i, 8);
+    const turned = cvaRot(-45, 140, 180, cvaR(60, 60, 160, 240, c.m, 8));
+    const heart = cvaP("M260 204L300 244L260 284L220 244Z", c.a) + `<circle cx="240" cy="224" r="28.28" fill="${c.a}"/><circle cx="280" cy="224" r="28.28" fill="${c.a}"/>`;
+    return `${cvaM(0, turned, "l")}
+      ${cvaM(1, upright, "r")}
+      ${cvaOv(id, "c", cvaR(180, 120, 160, 240, "#000", 8), cvaRot(-45, 140, 180, cvaR(60, 60, 160, 240, c.ov(c.i, c.m), 8)))}
+      ${cvaM(2, heart, "s")}`;
   },
 
-  // A quiz buzzer mid-press
-  (c, id, rnd) => {
-    return `<rect y="316" width="400" height="84" fill="${c.b}"/>
-      ${cvaM(0, `<path d="M70 260H330L350 330H50Z" fill="${c.i}"/><path d="M110 262A90 76 0 0 1 290 262Z" fill="${c.a}"/><rect x="186" y="164" width="28" height="30" rx="6" fill="${c.a}"/><rect x="164" y="160" width="72" height="14" rx="7" fill="${c.a}"/>`, "b")}
-      ${cvaM(1, `<g class="mi mi-grow"><path d="M200 40V104M90 90L132 134M310 90L268 134" stroke="${c.m}" stroke-width="24" stroke-linecap="round"/></g>`, "s")}`;
-  },
+  // A game controller flat-on: rounded body with grips, a plus-shaped pad and two buttons (never mirrored: the pad belongs on the left)
+  Object.assign((c, id, rnd) => {
+    const body = cvaR(40, 120, 320, 160, c.i, 80) + `<circle cx="120" cy="264" r="72" fill="${c.i}"/><circle cx="280" cy="264" r="72" fill="${c.i}"/>`;
+    const pad = cvaP("M108 160h24v28h28v24h-28v28h-24v-28h-28v-24h28Z", c.g);
+    const buttons = `<circle cx="264" cy="216" r="20" fill="${c.a}"/><circle cx="304" cy="176" r="20" fill="${c.a}"/>`;
+    return `${cvaM(0, `<circle cx="260" cy="150" r="130" fill="${c.b}"/>`, "s")}
+      ${cvaM(1, body + pad, "b")}
+      ${cvaM(2, buttons, "s")}`;
+  }, { nf: true }),
 
-  // Two jigsaw pieces about to lock
+  // Two puzzle pieces locked together on the diagonal, a knob in a matching socket
   (c, id, rnd) => {
-    const piece = `<path d="M0 0H70A40 40 0 1 1 130 0H200V70A40 40 0 1 1 200 130V200H0Z"/>`;
-    const a = Math.round(rnd() * 6 - 3);
-    return `${cvaM(0, `<g fill="${c.a}" transform="translate(-30 116) rotate(${a})">${piece}</g>`, "l")}
-      ${cvaM(1, `<g class="mi mi-drift"><g fill="${c.m}" transform="translate(252 122) rotate(${-4 + a})"><path d="M0 0H200V200H0V130A40 40 0 1 0 0 70Z"/></g></g>`, "r")}`;
+    const at = b => `<g transform="translate(200 200) rotate(45)">${b}</g>`;
+    const right = cvaR(6, -70, 140, 140, c.a) + cvaR(64, -86, 24, 20, c.a) + `<circle cx="76" cy="-94" r="24" fill="${c.a}"/>` + cvaR(0, -24, 32, 48, c.g) + `<circle cx="32" cy="0" r="36" fill="${c.g}"/>`;
+    const left = cvaR(-146, -70, 140, 140, c.i) + cvaR(-10, -12, 42, 24, c.i) + `<circle cx="32" cy="0" r="24" fill="${c.i}"/>` + cvaR(-88, 50, 24, 24, c.g) + `<circle cx="-76" cy="44" r="24" fill="${c.g}"/>`;
+    return `${cvaM(0, at(right), "br")}
+      ${cvaM(1, at(left), "tl")}`;
   },
 ];
+
 CVA.mixer = [
-  // Two wine glasses meeting; where the bowls cross prints a third ink
+  // A bottle standing beside a tumbler, ice in the glass
   (c, id, rnd) => {
-    const t = 10 + Math.round(rnd() * 3), bowl = "M-64 -318C-86 -262-90-200-56-168C-40-154-20-148 0-148C20-148 40-154 56-168C90-200 86-262 64-318Z";
-    const glass = (x, a, f) => `<g transform="translate(${x} 430) rotate(${a})"><path d="${bowl}" fill="${f}"/><rect x="-6" y="-152" width="12" height="150" fill="${f}"/><rect x="-52" y="-14" width="104" height="14" rx="7" fill="${f}"/></g>`;
-    return `<path d="M0 0H400V96A304 304 0 0 0 96 400H0Z" fill="${c.b}" opacity="${c.dark ? .55 : .7}"/>
-      ${cvaM(0, glass(104, t, c.a), "l")}${cvaM(1, glass(296, -t, c.i), "r")}
-      ${cvaOv(id, "x", `<g transform="translate(104 430) rotate(${t})"><path d="${bowl}"/></g>`, `<g transform="translate(296 430) rotate(${-t})"><path d="${bowl}" fill="${c.ov(c.a, c.i)}"/></g>`)}`;
+    const bottle = "M60 340V200C60 168 84 146 116 140V-10H164V140C196 146 220 168 220 200V340Z";
+    const glass = "M240 200H380L366 340H254Z";
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaP(bottle, c.a) + cvaR(60, 240, 160, 56, c.g) + cvaR(116, 40, 48, 40, c.i), "l")}
+    ${cvaM(1, cvaP(glass, c.i) + cvaP("M246 250H374L366 340H254Z", c.m), "r")}
+    ${cvaM(2, `<g class="mi mi-bob">${cvaRot(45, 310, 250, cvaR(286, 226, 48, 48, c.p, 6))}</g>`, "t")}`;
   },
 
-  // A martini glass with an olive on a pick, cropped by the frame
+  // Two wine glasses side by side on a table, bowls overlapping, poured to different levels
   (c, id, rnd) => {
-    const a = -6 + Math.round(rnd() * 4);
-    return `<rect x="0" y="0" width="400" height="${c.dark ? 400 : 400}" fill="${c.g}"/><circle cx="310" cy="96" r="150" fill="${c.b}"/>
-      ${cvaM(0, cvaRot(a, 200, 220, `<path d="M-20 112H420L200 318Z" fill="${c.k}"/><path d="M34 134H366L200 290Z" fill="${c.a}"/>${cvaOv(id, "m", `<circle cx="310" cy="96" r="150"/>`, `<path d="M34 134H366L200 290Z" fill="${c.ov(c.a, c.b)}"/>`)}<rect x="193" y="300" width="14" height="120" fill="${c.k}"/>`), "s")}
-      ${cvaM(1, `<g transform="rotate(${a + 34} 236 160)"><rect x="230" y="40" width="12" height="190" rx="6" fill="${c.p}"/><circle cx="236" cy="176" r="30" fill="${c.p}"/></g>`, "t", "drift")}`;
+    const bowl = x => `M${x - 64} 80H${x + 64}V144A64 64 0 0 1 ${x - 64} 144Z`;
+    const wine = (x, y) => { if (y <= 144) return `M${x - 64} ${y}H${x + 64}V144A64 64 0 0 1 ${x - 64} 144Z`; const w = Math.sqrt(4096 - (y - 144) ** 2); return `M${x - w} ${y}A64 64 0 0 0 ${x + w} ${y}Z`; };
+    const glass = (x, y, g, w) => cvaP(bowl(x), g) + cvaP(wine(x, y), w) + cvaR(x - 8, 204, 16, 120, g) + cvaR(x - 40, 324, 80, 16, g, 8);
+    const [lg, lw, rg, rw] = [c.i, c.a, c.m, c.a];
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, glass(152, 116, lg, lw), "l")}${cvaM(1, glass(248, 168, rg, rw), "r")}
+    ${cvaOv(id, "g", `<path d="${bowl(152)}"/>`, cvaP(bowl(248), c.ov(lg, rg)) + cvaP(wine(248, 168), c.ov(lg, rw)))}
+    ${cvaOv(id, "w", `<path d="${wine(152, 116)}"/>`, cvaP(bowl(248), c.ov(lw, rg)) + cvaP(wine(248, 168), c.ov(lw, rw)))}`;
   },
 
-  // Two blank name tags and a marker
+  // A martini glass with 45 degree sides, an olive on a pick
   (c, id, rnd) => {
-    const j = () => Math.round(rnd() * 4 - 2);
-    const tag = (x, y, a, band, body) => cvaTr(x, y, `<rect x="-130" y="-92" width="260" height="184" rx="16" fill="${body}"/>${cvaOv(id, "t" + x, `<rect x="-130" y="-92" width="260" height="184" rx="16"/>`, `<rect x="-130" y="-92" width="260" height="62" fill="${band}"/>`)}<rect x="-92" y="34" width="150" height="12" rx="6" fill="${band}" opacity=".45"/>`, a + j());
-    return `${cvaM(0, tag(150, 130, -10, c.a, c.p), "tl")}${cvaM(1, tag(262, 262, 7, c.k, c.b), "br")}
-      ${cvaM(2, cvaTr(96, 330, `<rect x="-24" y="-18" width="150" height="36" rx="12" fill="${c.k}"/><rect x="-86" y="-18" width="70" height="36" rx="12" fill="${c.a}"/>`, -32), "bl")}`;
+    return `${cvaM(0, `<circle cx="264" cy="136" r="124" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaP("M60 80H340L200 220Z", c.i) + cvaP("M92 112H308L200 220Z", c.m) + cvaR(192, 212, 16, 112, c.i) + cvaR(128, 324, 144, 16, c.i, 8), "b")}
+    ${cvaM(2, cvaRot(45, 240, 100, cvaR(236, 0, 8, 200, c.i, 4) + `<circle cx="240" cy="140" r="24" fill="${c.a}"/>`), "tr")}`;
   },
 
-  // A bottle pouring into a tumbler on the bar
+  // A bar: the counter top, two stools in front of it, one pendant lamp above
   (c, id, rnd) => {
-    const a = 128 + Math.round(rnd() * 6 - 3);
-    return `<rect x="0" y="318" width="400" height="82" fill="${c.b}"/>
-      ${cvaM(0, `<g transform="translate(212 150) rotate(${a})"><path d="M-14 0H14V70C14 104 52 112 52 150V460H-52V150C-52 112-14 104-14 70Z" fill="${c.i}"/><rect x="-52" y="196" width="104" height="96" fill="${c.a}"/><rect x="-18" y="-10" width="36" height="22" rx="6" fill="${c.a}"/></g>`, "tr")}
-      ${cvaM(1, `<path d="M196 156C176 190 166 222 166 300" fill="none" stroke="${c.a}" stroke-width="16" stroke-linecap="round"/>`, "t")}
-      ${cvaM(2, `<path d="M76 206H252L234 362H94Z" fill="${c.p}"/><path d="M83 272H245L234 362H94Z" fill="${c.a}"/>`, "b")}`;
+    const stool = x => cvaR(x - 72, 224, 144, 28, c.i, 14) + cvaR(x - 8, 252, 16, 148, c.i) + cvaP(`M${x - 48} 400A48 48 0 0 1 ${x + 48} 400Z`, c.i);
+    return `${cvaM(0, cvaR(0, 184, 400, 216, c.b) + cvaR(-10, 160, 420, 24, c.i), "b")}
+    ${cvaM(1, cvaR(196, -10, 8, 50, c.i) + cvaP("M136 104A64 64 0 0 1 264 104Z", c.a), "t", "sway")}
+    ${cvaM(2, stool(112) + stool(288), "b")}`;
   },
 ];
+
 CVA.online = [
-  // Four video tiles, each person a different shape
+  // A laptop on a video call: four tiles of people, the one speaking in the accent colour
   (c, id, rnd) => {
-    const t = (x, y, f) => `<rect x="${x}" y="${y}" width="172" height="172" rx="18" fill="${f}"/>`;
-    return `${cvaM(0, t(22, 22, c.a) + `<circle cx="108" cy="108" r="56" fill="${c.p}"/>`, "tl")}
-      ${cvaM(1, t(206, 22, c.i) + `<path d="M292 50L352 160H232Z" fill="${c.a}"/>`, "tr")}
-      ${cvaM(2, t(22, 206, c.m) + `<rect x="58" y="242" width="100" height="100" fill="${c.p}"/>`, "bl")}
-      ${cvaM(3, t(206, 206, c.b) + `<path d="M232 334A60 60 0 0 1 352 334Z" fill="${c.i}"/><rect x="232" y="334" width="120" height="12" fill="${c.i}"/>`, "br")}`;
+    const tile = (x, y, f) => cvaR(x, y, 136, 104, f) + `<circle cx="${x + 68}" cy="${y + 38}" r="22" fill="${c.g}"/>` + cvaP(`M${x + 32} ${y + 104}A36 36 0 0 1 ${x + 104} ${y + 104}Z`, c.g);
+    return `${cvaM(0, cvaR(40, 40, 320, 256, c.i, 8) + cvaR(12, 296, 376, 20, c.i, 8), "b")}
+    ${cvaM(1, tile(56, 56, c.m) + tile(208, 56, c.a), "t")}
+    ${cvaM(2, tile(56, 176, c.m) + tile(208, 176, c.m), "t")}`;
   },
 
-  // A laptop on a call: one face, and your own tile in the corner
+  // A phone standing upright with a caller on screen and a small self-view tile
   (c, id, rnd) => {
-    return `${cvaM(0, `<rect x="30" y="56" width="340" height="236" rx="16" fill="${c.i}"/><rect x="46" y="72" width="308" height="204" rx="6" fill="${c.a}"/>${cvaOv(id, "s", `<rect x="46" y="72" width="308" height="204" rx="6"/>`, `<circle cx="178" cy="150" r="46" fill="${c.p}"/><path d="M92 290C92 230 132 206 178 206C224 206 264 230 264 290Z" fill="${c.p}"/>`)}<rect x="270" y="196" width="68" height="64" rx="8" fill="${c.m}"/>`, "s")}
-      ${cvaM(1, `<path d="M10 292H390L400 330H0Z" fill="${c.m}"/>`, "b")}`;
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaR(112, 20, 176, 320, c.i, 8) + cvaR(124, 56, 152, 248, c.g) + cvaR(136, 68, 128, 224, c.p) + cvaR(176, 36, 48, 8, c.g, 4), "b")}
+    ${cvaM(1, `<circle cx="200" cy="168" r="28" fill="${c.a}"/>` + cvaP("M148 292V260A52 52 0 0 1 252 260V292Z", c.a), "s")}
+    ${cvaM(2, cvaR(220, 80, 32, 48, c.k), "s")}`;
   },
 
-  // Headphones on, sound coming through
+  // Headphones with an equaliser playing between the ear cups
   (c, id, rnd) => {
-    return `<circle cx="200" cy="230" r="150" fill="${c.b}"/>
-      ${cvaM(0, `<path d="M76 250V200A124 124 0 0 1 324 200V250" fill="none" stroke="${c.i}" stroke-width="28"/><rect x="42" y="214" width="76" height="136" rx="30" fill="${c.a}"/><rect x="282" y="214" width="76" height="136" rx="30" fill="${c.a}"/>`, "t")}
-      ${cvaM(1, `<g class="mi mi-grow"><path d="M170 250V310M200 226V334M230 262V298" stroke="${c.i}" stroke-width="14" stroke-linecap="round"/></g>`, "s")}`;
+    const bars = [[128, 64], [168, 128], [208, 96], [248, 40]].map(([x, h]) => cvaR(x, 324 - h, 24, h, c.a)).join("");
+    return `${cvaM(0, cvaP("M44 236A156 156 0 0 1 356 236H332A132 132 0 0 0 68 236Z", c.i), "t")}
+    ${cvaM(1, cvaR(16, 204, 80, 136, c.i, 8) + cvaR(304, 204, 80, 136, c.i, 8), "b")}
+    ${cvaM(2, bars, "b")}`;
   },
 
-  // Two windows overlapping, a cursor on top
-  (c, id, rnd) => {
-    const w1 = `<rect x="24" y="48" width="252" height="196" rx="14"/>`, w2 = `<rect x="124" y="148" width="252" height="196" rx="14"/>`;
-    return `${cvaM(0, `<g fill="${c.a}">${w1}</g><rect x="24" y="48" width="252" height="36" rx="14" fill="${c.i}"/><rect x="24" y="66" width="252" height="18" fill="${c.i}"/>`, "tl")}
-      ${cvaM(1, `<g fill="${c.m}">${w2}</g>${cvaOv(id, "w", w1, `<g fill="${c.ov(c.a, c.m)}">${w2}</g>`)}<rect x="124" y="148" width="252" height="36" rx="14" fill="${c.i}"/><rect x="124" y="166" width="252" height="18" fill="${c.i}"/>`, "br")}
-      ${cvaM(2, `<g class="mi mi-drift"><path d="M258 236V340L284 314L304 360L322 352L302 306H340Z" fill="${c.p}"/></g>`, "br")}`;
-  },
+  // Two browser windows overprinted where they overlap, a mouse pointer on the front one
+  Object.assign((c, id, rnd) => {
+    const A = cvaR(20, 40, 240, 200, c.a), B = f => cvaR(140, 140, 240, 200, f);
+    return `${cvaM(0, A + cvaR(20, 40, 240, 40, c.i), "tl")}
+    ${cvaM(1, B(c.b), "br")}
+    ${cvaOv(id, "w", A, B(c.ov(c.a, c.b)))}
+    ${cvaM(2, cvaR(140, 140, 240, 40, c.i), "br")}
+    ${cvaM(3, cvaP("M260 212V308L276 292L316 332L332 316L292 276L308 260Z", c.i), "s", "drift")}`;
+  }, { nf: true }),
 ];
+
 CVA.outdoors = [
-  // Two peaks overlapping, the sun between them
+  // Two mountains overprinting where they overlap, snow on the taller peak, the sun behind
   (c, id, rnd) => {
-    const m1 = `<path d="M-60 400L140 150L340 400Z"/>`, m2 = `<path d="M110 400L290 100L470 400Z"/>`;
-    return `${cvaM(0, `<g class="mi mi-rise"><circle cx="232" cy="96" r="56" fill="${c.a}"/></g>`, "b")}
-      ${cvaM(1, `<g fill="${c.m}">${m2}</g>`, "r")}${cvaM(2, `<g fill="${c.i}">${m1}</g>${cvaOv(id, "o", m2, `<g fill="${c.ov(c.i, c.m)}">${m1}</g>`)}`, "l")}
-      <rect y="360" width="400" height="40" fill="${c.b}"/>`;
+    const back = "M140 120L420 400H-140Z", front = "M280 180L500 400H60Z";
+    return `${cvaM(0, `<circle cx="300" cy="110" r="90" fill="${c.b}"/>`, "s")}
+      ${cvaM(1, cvaP(back, c.a) + cvaP("M140 120L200 180L180 200L160 180L140 200L120 180L100 200L80 180Z", c.p), "l")}
+      ${cvaM(2, cvaP(front, c.i), "r")}
+      ${cvaOv(id, "m", cvaP(back, "#000"), cvaP(front, c.ov(c.a, c.i)))}`;
   },
 
-  // The sun setting into the sea, a sail on the horizon
+  // A sailboat at rest: hull, mast and two sails, on a band of water under the sun
   (c, id, rnd) => {
-    return `${cvaM(0, `<g class="mi mi-rise"><circle cx="200" cy="236" r="116" fill="${c.a}"/></g>`, "b")}
-      <rect y="236" width="400" height="164" fill="${c.m}"/>
-      ${cvaM(1, `<path d="M40 290H180M220 290H360M100 340H300" stroke="${c.p}" stroke-width="12" stroke-linecap="round"/>`, "b")}
-      ${cvaM(2, `<g class="mi mi-drift"><path d="M300 110V222H244Z" fill="${c.p}"/><path d="M308 130V222H350Z" fill="${c.i}"/><path d="M236 230H362L346 250H252Z" fill="${c.i}"/></g>`, "r")}`;
+    const boat = cvaP("M40 296H360L316 340H84Z", c.i) + cvaR(192, 60, 16, 236, c.i) + cvaP("M220 104V284H400Z", c.i) + cvaP("M180 140V284H36Z", c.m);
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+      ${cvaM(1, `<circle cx="88" cy="88" r="40" fill="${c.a}"/>`, "s")}
+      ${cvaM(2, boat, "b")}`;
   },
 
-  // A picnic blanket and a basket, seen from above at an angle
+  // A picnic basket flat-on with a woven body and a half-ring handle, on a striped blanket
   (c, id, rnd) => {
-    const sq = [];
-    for (let r = 0; r < 4; r++) for (let q = 0; q < 4; q++) if ((r + q) % 2 === 0) sq.push(`<rect x="${q * 80}" y="${r * 80}" width="80" height="80"/>`);
-    return `${cvaM(0, `<g transform="matrix(.94 .26 -.5 .62 150 130)"><rect width="320" height="320" fill="${c.p}"/><g fill="${c.a}">${sq.join("")}</g></g>`, "s")}
-      ${cvaM(1, `<path d="M84 96A64 64 0 0 1 212 96" fill="none" stroke="${c.i}" stroke-width="14"/><path d="M64 96H232L214 196H82Z" fill="${c.i}"/><rect x="64" y="96" width="168" height="20" fill="${c.m}"/>`, "t")}`;
+    const blanket = cvaR(0, 340, 400, 60, c.b) + cvaP("M32 340h16v60h-16ZM112 340h16v60h-16ZM192 340h16v60h-16ZM272 340h16v60h-16ZM352 340h16v60h-16Z", c.g);
+    const basket = cvaP("M100 168A100 100 0 0 1 300 168H284A84 84 0 0 0 116 168Z", c.i) + cvaR(44, 168, 312, 24, c.i, 8)
+      + cvaP("M60 204H340V300L300 340H100L60 300Z", c.i)
+      + cvaP("M60 236h280v12h-280ZM60 280h280v12h-280ZM148 248h12v32h-12ZM240 248h12v32h-12Z", c.g);
+    return `${cvaM(0, blanket, "b")}
+      ${cvaM(1, basket, "b")}`;
   },
 
-  // Running track lanes sweeping round the bend
+  // A bicycle in side elevation: two wheels and a frame of level and 45 degree bars
   (c, id, rnd) => {
-    return `${cvaM(0, `<path d="M420 90H250A150 150 0 0 0 250 390H420" fill="none" stroke="${c.a}" stroke-width="130"/>`, "r")}
-      ${cvaM(1, `<path d="M420 58H250A182 182 0 0 0 250 422H420M420 122H250A118 118 0 0 0 250 358H420" fill="none" stroke="${c.p}" stroke-width="8"/><path d="M420 90H250A150 150 0 0 0 250 390H420" fill="none" stroke="${c.p}" stroke-width="8"/>`, "r")}
-      ${cvaM(2, `<rect x="330" y="20" width="18" height="140" fill="${c.i}"/>`, "t")}`;
+    const bar = (x1, y1, x2, y2, f) => `<rect x="-8" y="-8" width="${Math.hypot(x2 - x1, y2 - y1) + 16}" height="16" rx="8" fill="${f}" transform="translate(${x1} ${y1}) rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI})"/>`;
+    const wheel = x => `<path d="M${x - 100} 240A100 100 0 1 0 ${x + 100} 240A100 100 0 1 0 ${x - 100} 240ZM${x - 84} 240A84 84 0 1 1 ${x + 84} 240A84 84 0 1 1 ${x - 84} 240Z" fill-rule="evenodd" fill="${c.m}"/>`;
+    const frame = bar(80, 240, 160, 240, c.i) + bar(80, 240, 160, 160, c.i) + bar(160, 240, 160, 136, c.i) + bar(160, 160, 240, 160, c.i) + bar(160, 240, 240, 160, c.i) + bar(240, 160, 320, 240, c.i);
+    const parts = cvaR(128, 124, 64, 16, c.i, 8) + bar(240, 160, 216, 136, c.i) + bar(216, 136, 252, 136, c.i);
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+      ${cvaM(1, wheel(80) + wheel(320), "s")}
+      ${cvaM(2, frame + parts, "l")}`;
   },
 ];
+
 CVA.party = [
-  // Bunting across the top, streamers hanging below
+  // A bottle of fizz tipped at exactly 45 degrees, the cork one gap beyond the neck on the same axis, a disc behind
   (c, id, rnd) => {
-    const ink = [c.a, c.m, c.i, c.b], sag = y => 40 + 60 * Math.sin(Math.PI * y / 400);
-    const flags = Array.from({ length: 6 }, (_, k) => { const x = 20 + k * 70, y = sag(x), y2 = sag(x + 60); return `<path d="M${x} ${y}L${x + 60} ${y2}L${x + 30 + (y2 - y) * .3} ${(y + y2) / 2 + 74}Z" fill="${ink[k % 3]}"/>`; }).join("");
-    const rib = (x, len, f, d) => `<path d="M${x} ${sag(x) + 6}c${-24 * d} 40 ${24 * d} 70 0 110s${-24 * d} 70 0 ${len}" fill="none" stroke="${f}" stroke-width="16" stroke-linecap="round"/>`;
-    return `${cvaM(0, rib(92 + Math.round(rnd() * 20), 150, c.m, 1) + rib(236 + Math.round(rnd() * 20), 190, c.a, -1) + rib(344, 120, c.i, 1), "t", "sway")}
-      ${cvaM(1, `<path d="M-10 ${sag(-10)}Q200 ${2 * sag(200) - 40} 410 ${sag(410)}" fill="none" stroke="${c.i}" stroke-width="6"/>${flags}`, "t")}`;
+    const at = b => `<g transform="translate(206 194) rotate(45) scale(.82)">${b}</g>`;
+    const bottle = cvaP("M-70 300V40C-70 8 -46 -8 -24 -24V-140H24V-24C46 -8 70 8 70 40V300Z", c.i) + cvaR(-24, -140, 48, 64, c.a) + cvaR(-70, 90, 140, 70, c.g);
+    return `${cvaM(0, `<circle cx="276" cy="286" r="124" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, at(bottle), "bl")}
+    ${cvaM(2, `<g class="mi mi-bob">${at(cvaP("M-20 -164V-192C-20 -208 20 -208 20 -192V-164Z", c.a))}</g>`, "tr")}`;
   },
 
-  // Three balloons overlapping, strings trailing
+  // Bunting: two straight strings across the frame, pennants in alternating inks
   (c, id, rnd) => {
-    const bal = (x, y, s = 1) => `<path d="M${x} ${y - 110 * s}C${x + 82 * s} ${y - 110 * s} ${x + 96 * s} ${y + 2 * s} ${x} ${y + 64 * s}C${x - 96 * s} ${y + 2 * s} ${x - 82 * s} ${y - 110 * s} ${x} ${y - 110 * s}Z"/>`;
-    const B1 = bal(138, 170), B2 = bal(262, 136), B3 = bal(214, 250, .86);
-    const knot = (x, y, f) => `<path d="M${x - 12} ${y + 12}L${x} ${y - 4}L${x + 12} ${y + 12}Z" fill="${f}"/>`;
-    return `<path d="M138 234C150 290 120 330 144 410M262 200C250 280 290 330 268 410M214 305C220 350 200 380 212 410" fill="none" stroke="${c.i}" stroke-width="6" stroke-linecap="round"/>
-      ${cvaM(0, `<g class="mi mi-bob"><g fill="${c.a}">${B1}</g>${knot(138, 234, c.a)}</g>`, "b")}${cvaM(1, `<g class="mi mi-bob" style="animation-delay:1.6s"><g fill="${c.m}">${B2}</g>${knot(262, 200, c.m)}</g>`, "b")}
-      ${cvaOv(id, "b", `<g>${B1}</g>`, `<g fill="${c.ov(c.a, c.m)}">${B2}</g>`)}
-      ${cvaM(2, `<g fill="${c.b}">${B3}</g>${cvaOv(id, "c", `<g>${B1}</g>`, `<g fill="${c.ov(c.a, c.b)}">${B3}</g>`)}${cvaOv(id, "d", `<g>${B2}</g>`, `<g fill="${c.ov(c.m, c.b)}">${B3}</g>`)}${knot(214, 305, c.b)}`, "b")}`;
+    const row = (y, xs, f) => cvaR(-10, y, 420, 8, c.i) + xs.map((x, i) => cvaP(`M${x - 80} ${y + 8}H${x + 80}L${x} ${y + 88}Z`, f[i % 2])).join("");
+    return `${cvaM(0, row(80, [24, 200, 376], [c.a, c.i]), "l")}
+    ${cvaM(1, row(232, [112, 288], [c.i, c.a]), "r")}`;
   },
 
-  // A party popper firing a burst
+  // Three balloons on straight strings, overprinting where they overlap
   (c, id, rnd) => {
-    const cone = `<path d="M34 386L112 196L224 308Z"/>`, ray = (a, r0, r1, f) => { const t = a * Math.PI / 180; return `<path d="M${(168 + r0 * Math.cos(t)).toFixed(1)} ${(252 + r0 * Math.sin(t)).toFixed(1)}L${(168 + r1 * Math.cos(t)).toFixed(1)} ${(252 + r1 * Math.sin(t)).toFixed(1)}" stroke="${f}" stroke-width="24" stroke-linecap="round"/>`; };
-    return `${cvaM(0, ray(-100, 96, 176, c.i) + ray(-68, 110, 230, c.m) + ray(-36, 110, 196, c.a) + ray(-6, 104, 184, c.i) + ray(-134, 100, 150, c.a), "s")}
-      ${cvaM(1, `<g fill="${c.a}">${cone}</g>${cvaOv(id, "p", cone, `<path d="M0 330L150 230L170 250L20 350Z M0 250L110 176L128 194L0 280Z" fill="${c.m}"/>`)}`, "bl")}`;
+    const ball = (x, y, r, f) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}"/>` + cvaP(`M${x - 12} ${y + r + 12}L${x} ${y + r}L${x + 12} ${y + r + 12}Z`, f);
+    const disc = (x, y, r, f = "") => `<circle cx="${x}" cy="${y}" r="${r}"${f ? ` fill="${f}"` : ""}/>`;
+    return `${cvaM(0, cvaR(124, 290, 8, 120, c.i) + cvaR(252, 232, 8, 180, c.i) + cvaR(332, 336, 8, 80, c.i), "b")}
+    ${cvaM(1, ball(128, 184, 96, c.a), "bl")}${cvaM(2, ball(256, 124, 96, c.i), "b")}${cvaM(3, ball(336, 252, 72, c.m), "br")}
+    ${cvaOv(id, "l", disc(128, 184, 96), disc(256, 124, 96, c.ov(c.a, c.i)))}${cvaOv(id, "r", disc(336, 252, 72), disc(256, 124, 96, c.ov(c.m, c.i)))}`;
   },
 
-  // A bottle of fizz popping its cork
+  // A gift box flat-on: box, lid, a ribbon band and a bow of two triangles
   (c, id, rnd) => {
-    return `<circle cx="296" cy="108" r="126" fill="${c.b}"/>
-      ${cvaM(0, cvaRot(38, 150, 300, `<path d="M128 108H172V160C172 184 214 196 214 240V480H86V240C86 196 128 184 128 160Z" fill="${c.i}"/><path d="M124 100H176V196C160 206 140 206 124 196Z" fill="${c.a}"/><rect x="86" y="300" width="128" height="80" fill="${c.a}"/>`), "bl")}
-      ${cvaM(1, `<path d="M238 168C256 136 262 118 272 96M258 186C292 176 316 166 346 170" fill="none" stroke="${c.a}" stroke-width="16" stroke-linecap="round"/><g class="mi mi-bob">${cvaRot(24, 300, 70, `<path d="M280 84H320L314 120H286Z" fill="${c.m}"/><rect x="274" y="58" width="52" height="30" rx="12" fill="${c.m}"/>`)}</g>`, "tr")}`;
+    return `${cvaR(0, 360, 400, 40, c.b)}
+    ${cvaM(0, cvaR(80, 196, 240, 164, c.i) + cvaR(64, 140, 272, 44, c.i), "b")}
+    ${cvaM(1, cvaR(184, 140, 32, 220, c.a), "t")}
+    ${cvaM(2, cvaP("M200 108L144 52V164Z", c.a) + cvaP("M200 108L256 52V164Z", c.a), "t")}`;
   },
 ];
+
 CVA.roundtable = [
-  // Three circles overlapping; every overlap prints its own ink
+  // Three people seated at one table under a lamp
   (c, id, rnd) => {
-    const A = `<circle cx="138" cy="150" r="132"/>`, B = `<circle cx="264" cy="150" r="132"/>`;
-    const ab = c.ov(c.a, c.m), ac = c.ov(c.a, c.b), bc = c.ov(c.m, c.b);
-    return `${cvaM(0, `<circle cx="138" cy="150" r="132" fill="${c.a}"/>`, "tl")}${cvaM(1, `<circle cx="264" cy="150" r="132" fill="${c.m}"/>`, "tr")}${cvaM(2, `<circle cx="200" cy="262" r="132" fill="${c.b}"/>`, "b")}
-      <clipPath id="${id}A">${A}</clipPath><clipPath id="${id}B">${B}</clipPath>
-      <g class="mo" clip-path="url(#${id}A)"><circle cx="264" cy="150" r="132" fill="${ab}"/><circle cx="200" cy="262" r="132" fill="${ac}"/></g>
-      <g class="mo" clip-path="url(#${id}B)"><circle cx="200" cy="262" r="132" fill="${bc}"/></g>
-      <g class="mo" clip-path="url(#${id}A)"><g clip-path="url(#${id}B)"><circle cx="200" cy="262" r="132" fill="${c.ov(ab, c.b)}"/></g></g>`;
+    const person = (x, f, h = 0) => `<circle cx="${x}" cy="${150 - h}" r="30" fill="${f}"/>` + cvaP(`M${x - 56} 280V${244 - h}C${x - 56} ${210 - h} ${x - 32} ${192 - h} ${x} ${192 - h}C${x + 32} ${192 - h} ${x + 56} ${210 - h} ${x + 56} ${244 - h}V280Z`, f);
+    const body = (x, h = 0) => `M${x - 56} 280V${244 - h}C${x - 56} ${210 - h} ${x - 32} ${192 - h} ${x} ${192 - h}C${x + 32} ${192 - h} ${x + 56} ${210 - h} ${x + 56} ${244 - h}V280Z`;
+    return `${cvaM(0, cvaR(196, -10, 8, 50, c.i) + cvaP("M150 80C150 52 172 36 200 36C228 36 250 52 250 80Z", c.i), "t", "sway")}
+    ${cvaM(1, person(90, c.a) + person(310, c.b), "b")}
+    ${cvaM(2, person(200, c.m, 10), "b")}
+    ${cvaOv(id, "l", body(90), cvaP(body(200, 10), c.ov(c.a, c.m)))}${cvaOv(id, "r", body(310), cvaP(body(200, 10), c.ov(c.b, c.m)))}
+    ${cvaM(3, cvaR(-10, 280, 420, 32, c.i) + cvaR(60, 312, 24, 100, c.i) + cvaR(316, 312, 24, 100, c.i), "b")}`;
   },
 
-  // Two speech bubbles crossing
+  // Two speech bubbles facing each other, overprinted where they overlap
   (c, id, rnd) => {
-    const b1 = `<path d="M60 40H280Q320 40 320 80V180Q320 220 280 220H132L76 268L88 220H60Q20 220 20 180V80Q20 40 60 40Z"/>`;
-    const b2 = `<path d="M140 176H340Q380 176 380 216V310Q380 350 340 350H318L330 396L270 350H140Q100 350 100 310V216Q100 176 140 176Z"/>`;
-    return `${cvaM(0, `<g fill="${c.a}">${b1}</g>`, "tl")}${cvaM(1, `<g fill="${c.m}">${b2}</g>`, "br")}${cvaOv(id, "s", b1, `<g fill="${c.ov(c.a, c.m)}">${b2}</g>`)}`;
+    const a = "M28 40H252A8 8 0 0 1 260 48V192A8 8 0 0 1 252 200H120L60 260V200H28A8 8 0 0 1 20 192V48A8 8 0 0 1 28 40Z";
+    const b = "M148 140H372A8 8 0 0 1 380 148V292A8 8 0 0 1 372 300H340V360L280 300H148A8 8 0 0 1 140 292V148A8 8 0 0 1 148 140Z";
+    return `${cvaM(0, cvaP(a, c.a), "tl")}
+    ${cvaM(1, cvaP(b, c.i), "br")}
+    ${cvaOv(id, "o", cvaP(a, c.a), cvaP(b, c.ov(c.a, c.i)))}`;
   },
 
-  // A round table with chairs drawn up (board night)
+  // A boardroom table seen from above, three chairs drawn up on each side, each chair a seat and its back
   (c, id, rnd) => {
-    const back = (x, y, h, f) => `<path d="M${x - 40} ${y + h}V${y + 36}A40 36 0 0 1 ${x + 40} ${y + 36}V${y + h}Z" fill="${f}"/>`;
-    return `${cvaM(0, back(84, 118, 140, c.i) + back(200, 92, 140, c.i) + back(316, 118, 140, c.i), "t")}
-      ${cvaM(1, `<rect x="182" y="290" width="36" height="96" fill="${c.i}"/><ellipse cx="200" cy="388" rx="78" ry="14" fill="${c.i}"/><ellipse cx="200" cy="262" rx="186" ry="66" fill="${c.m}"/><ellipse cx="200" cy="248" rx="186" ry="66" fill="${c.a}"/>`, "s")}
-      ${cvaM(2, back(-6, 250, 200, c.m) + back(406, 250, 200, c.m), "b")}`;
+    const xs = [108, 200, 292];
+    const chair = (x, y, back) => cvaR(x - 36, y, 72, 64, c.i, 8) + cvaR(x - 36, back, 72, 16, c.i, 8);
+    const chairs = xs.map(x => chair(x, 80, 52) + chair(x, 256, 332)).join("");
+    return `${cvaM(0, chairs, "s")}
+    ${cvaM(1, cvaR(40, 124, 320, 152, c.a, 8), "b")}`;
   },
 
-  // Two profiles facing; the space between them is a vase (Rubin, 1915)
+  // Three large circles overlapping like a Venn diagram, each overlap overprinted
   (c, id, rnd) => {
-    const face = "M0 -10H152C152 40 154 80 160 104C164 118 154 126 152 136C168 156 188 166 196 178C200 186 190 190 166 194C170 200 176 206 172 214C166 218 164 222 170 230C172 240 164 246 160 256C166 266 172 278 164 290C148 308 132 320 126 344C122 364 122 384 124 410H0Z";
-    return `${cvaM(0, `<path d="${face}" fill="${c.i}"/>`, "l")}${cvaM(1, `<path d="${face}" fill="${c.a}" transform="translate(400 0) scale(-1 1)"/>`, "r")}`;
+    const A = `<circle cx="128" cy="136" r="144" fill="${c.a}"/>`, B = `<circle cx="272" cy="136" r="144" fill="${c.b}"/>`;
+    const C = f => `<circle cx="200" cy="264" r="144" fill="${f}"/>`;
+    const ab = c.ov(c.a, c.b);
+    return `${cvaM(0, A, "tl")}${cvaM(1, B, "tr")}${cvaM(2, C(c.m), "b")}
+    ${cvaOv(id, "ab", A, B.replace(c.b, ab))}${cvaOv(id, "ac", A, C(c.ov(c.a, c.m)))}${cvaOv(id, "bc", B, C(c.ov(c.b, c.m)))}
+    ${cvaOv(id, "x", A, cvaOv(id, "y", B, C(c.ov(ab, c.m))))}`;
   },
 ];
+
 CVA.summit = [
-  // A lanyard and a blank conference badge
+  // A lanyard badge: two straps at 45 degrees into a clip, a badge with a photo window and two name bars cut out
   (c, id, rnd) => {
-    const a = Math.round(rnd() * 8 - 4);
-    return `${cvaM(0, `<g class="mi mi-sway">${cvaRot(a, 200, 0, `<path d="M80 -20L184 156M320 -20L216 156" stroke="${c.a}" stroke-width="36"/><rect x="176" y="146" width="48" height="40" rx="8" fill="${c.i}"/>
-      <rect x="92" y="176" width="216" height="252" rx="18" fill="${c.p}"/><rect x="92" y="176" width="216" height="64" fill="${c.m}"/><rect x="176" y="194" width="48" height="12" rx="6" fill="${c.p}"/>
-      <rect x="126" y="268" width="148" height="18" rx="9" fill="${c.a}"/><rect x="126" y="304" width="96" height="14" rx="7" fill="${c.b}"/>`)}</g>`, "t")}`;
+    const strap = a => cvaRot(a, 200, 112, cvaR(192, -160, 16, 272, c.m));
+    const badge = `<path d="M100 140H300V380H100ZM140 180V300H260V180ZM140 320V332H260V320ZM140 348V360H220V348Z" fill="${c.i}" fill-rule="evenodd"/>`;
+    const sitter = `<circle cx="200" cy="224" r="24" fill="${c.i}"/>` + cvaP("M160 300A40 40 0 0 1 240 300Z", c.i);
+    return `${cvaM(0, `<circle cx="200" cy="280" r="150" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, strap(-45) + strap(45), "t")}
+    ${cvaM(2, badge + sitter + cvaR(180, 96, 40, 60, c.a, 8), "b")}`;
   },
 
-  // A peak with a flag planted on top
+  // A mountain peak with a zigzag snowcap and a small flag on top, the sun behind
   (c, id, rnd) => {
-    return `<circle cx="96" cy="112" r="70" fill="${c.b}"/>
-      ${cvaM(0, `<path d="M180 400L330 170L480 400Z" fill="${c.m}"/>`, "r")}
-      ${cvaM(1, `<path d="M-80 400L182 120L444 400Z" fill="${c.i}"/><path d="M182 120L236 178L208 170L182 196L160 172L134 172Z" fill="${c.p}"/>`, "b")}
-      ${cvaM(2, `<rect x="176" y="30" width="12" height="96" fill="${c.i}"/><g class="mi mi-sway"><path d="M188 34H262L244 60L262 86H188Z" fill="${c.a}"/></g>`, "t")}`;
+    return `${cvaM(0, `<circle cx="290" cy="150" r="100" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaR(196, 32, 8, 72, c.i) + cvaR(204, 32, 40, 28, c.m), "t")}
+    ${cvaM(2, cvaP("M200 100L500 400H-100Z", c.i) + cvaP("M200 100L280 180L240 220L200 180L160 220L120 180Z", c.a), "b")}`;
   },
 
-  // A keynote stage: big screen, the front row in silhouette
+  // An auditorium: a big screen with one circle and one bar, a stage, two staggered rows of seat backs
   (c, id, rnd) => {
-    const seat = x => `<path d="M${x - 34} 420V344A34 34 0 0 1 ${x + 34} 344V420Z"/>`;
-    return `${cvaM(0, `<rect x="36" y="40" width="328" height="196" rx="8" fill="${c.p}"/><circle cx="148" cy="138" r="62" fill="${c.a}"/><rect x="236" y="100" width="92" height="16" rx="8" fill="${c.b}"/><rect x="236" y="132" width="64" height="16" rx="8" fill="${c.b}"/>`, "s")}
-      ${cvaM(1, `<rect y="270" width="400" height="26" fill="${c.m}"/>`, "b")}
-      ${cvaM(2, `<g fill="${c.i}">${[36, 118, 200, 282, 364].map(seat).join("")}</g>`, "b")}`;
+    const row = (xs, y, f) => xs.map(x => cvaR(x, y, 80, 120, f, 8)).join("");
+    return `${cvaM(0, cvaR(40, 24, 320, 176, c.i) + cvaR(56, 40, 288, 144, c.p) + `<circle cx="132" cy="112" r="40" fill="${c.a}"/>` + cvaR(196, 104, 104, 16, c.m), "t")}
+    ${cvaM(1, cvaR(0, 216, 400, 40, c.b), "s")}
+    ${cvaM(2, row([16, 112, 208, 304], 272, c.m) + row([-32, 64, 160, 256, 352], 320, c.i), "b")}`;
   },
 
-  // Three banners hung from a pole
+  // Three banners with V-notched ends hanging from one bar, over a floor band
   (c, id, rnd) => {
-    const ban = (x, h, f) => `<path d="M${x} 60H${x + 96}V${h}L${x + 48} ${h - 34}L${x} ${h}Z" fill="${f}"/>`;
-    return `${cvaM(0, `<rect x="-10" y="44" width="420" height="18" rx="9" fill="${c.i}"/>`, "t")}
-      ${cvaM(1, `<g class="mi mi-sway">${ban(34, 330, c.a)}</g>`, "t")}${cvaM(2, `<g class="mi mi-sway" style="animation-delay:1.5s">${ban(152, 400, c.m)}</g>`, "t")}${cvaM(3, `<g class="mi mi-sway" style="animation-delay:.7s">${ban(270, 280, c.b)}</g>`, "t")}`;
+    const banner = (x, h, f) => cvaP(`M${x} 32H${x + 96}V${h}L${x + 48} ${h - 48}L${x} ${h}Z`, f);
+    return `${cvaR(0, 360, 400, 40, c.b)}
+    ${cvaM(0, banner(40, 300, c.a) + banner(264, 300, c.m), "t")}
+    ${cvaM(1, banner(152, 340, c.i), "t")}
+    ${cvaM(2, cvaR(-10, 40, 420, 16, c.i), "l")}`;
   },
 ];
+
 CVA.talk = [
-  // A studio microphone in a pool of light
+  // A stool and a mic stand under one spotlight
   (c, id, rnd) => {
-    return `<circle cx="136" cy="176" r="156" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="148" y="34" width="152" height="236" rx="76" fill="${c.i}"/>${cvaOv(id, "g", `<rect x="148" y="34" width="152" height="236" rx="76"/>`, `<rect x="140" y="98" width="170" height="14" fill="${c.a}"/><rect x="140" y="134" width="170" height="14" fill="${c.a}"/><rect x="140" y="170" width="170" height="14" fill="${c.a}"/>`)}`, "s")}
-      ${cvaM(1, `<path d="M122 164V196A102 102 0 0 0 326 196V164" fill="none" stroke="${c.a}" stroke-width="24" stroke-linecap="round"/><rect x="212" y="296" width="24" height="120" fill="${c.a}"/>`, "b")}`;
+    const cone = "M150 -10H250L360 340H40Z";
+    const stool = cvaR(100, 200, 160, 24, c.i, 12) + cvaP("M116 224H148L132 340H100Z", c.i) + cvaP("M212 224H244L260 340H228Z", c.i) + cvaR(116, 284, 128, 16, c.i);
+    const stand = cvaR(300, 110, 16, 230, c.i) + cvaR(260, 324, 96, 16, c.i, 8) + cvaRot(-45, 308, 110, cvaR(290, 50, 36, 72, c.i, 18));
+    return `${cvaR(0, 340, 400, 60, c.m)}
+    ${cvaM(0, cvaP(cone, c.b), "t")}
+    ${cvaM(1, stool, "b")}${cvaM(2, stand, "r")}`;
   },
 
-  // A stool and a mic stand in a spotlight
+  // A big stage microphone in its U-shaped holder, grille cut as gap bands, the stem cropped by the bottom edge, a disc behind
   (c, id, rnd) => {
-    const cone = c.dark ? cvaMix(c.g, c.p, .2) : c.b;
-    return `<path d="M96 0H196L346 356H56Z" fill="${cone}"/><ellipse cx="200" cy="356" rx="152" ry="34" fill="${c.a}"/>
-      ${cvaM(0, `<rect x="120" y="212" width="124" height="24" rx="12" fill="${c.i}"/><path d="M146 232L128 360M218 232L236 360M138 300H226" stroke="${c.i}" stroke-width="14" stroke-linecap="round" fill="none"/>`, "b")}
-      ${cvaM(1, `<path d="M296 360V138" stroke="${c.i}" stroke-width="12" stroke-linecap="round"/><rect x="258" y="354" width="76" height="12" rx="6" fill="${c.i}"/>${cvaRot(-28, 296, 120, `<rect x="282" y="66" width="28" height="64" rx="14" fill="${c.i}"/>`)}`, "r")}`;
+    const holder = "M100 148V188A100 100 0 0 0 300 188V148H284V188A84 84 0 0 1 116 188V148Z";
+    const grille = [96, 128, 160].map(y => cvaR(132, y, 136, 12, c.b)).join("");
+    return `${cvaM(0, `<circle cx="200" cy="180" r="150" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaP(holder, c.i) + cvaR(100, 148, 36, 16, c.i) + cvaR(264, 148, 36, 16, c.i) + cvaR(192, 296, 16, 120, c.i) + cvaR(176, 280, 48, 24, c.a, 8), "b")}
+    ${cvaM(2, cvaR(132, 40, 136, 216, c.i, 68) + grille, "t")}`;
   },
 
-  // Two armchairs facing each other across a fire
+  // Fireside chat: two armchairs in side elevation facing each other, a side table between them
   (c, id, rnd) => {
-    const chair = x => cvaTr(x, 0, `<rect x="0" y="118" width="46" height="196" rx="18" fill="${c.i}"/><rect x="18" y="222" width="116" height="70" rx="12" fill="${c.i}"/><rect x="36" y="196" width="104" height="30" rx="15" fill="${c.m}"/><rect x="22" y="290" width="14" height="36" fill="${c.i}"/><rect x="112" y="290" width="14" height="36" fill="${c.i}"/>`);
-    return `<rect y="320" width="400" height="80" fill="${c.b}"/>
-      ${cvaM(0, chair(10), "l")}${cvaM(1, `<g transform="translate(400 0) scale(-1 1)">${chair(10)}</g>`, "r")}
-      ${cvaM(2, `<rect x="150" y="300" width="100" height="22" rx="11" fill="${c.m}"/><g class="mi mi-flick">${cvaDrop(200, 150, 96, 150, c.a)}${cvaDrop(200, 222, 44, 78, c.p)}</g>`, "s")}`;
+    const chair = cvaR(-20, 100, 56, 200, c.i, 28) + cvaR(20, 184, 120, 36, c.i, 18) + cvaR(-20, 236, 160, 64, c.i, 8) + cvaR(0, 300, 16, 40, c.i) + cvaR(112, 300, 16, 40, c.i);
+    const table = cvaR(160, 216, 80, 16, c.m, 8) + cvaR(192, 232, 16, 108, c.m) + cvaR(172, 324, 56, 16, c.m, 8);
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, chair, "l")}${cvaM(1, `<g transform="translate(400 0) scale(-1 1)">${chair}</g>`, "r")}
+    ${cvaM(2, table + cvaR(184, 180, 32, 36, c.a, 8), "b")}`;
   },
 
-  // Curtains drawn back from a lectern in the spotlight
+  // A lectern with a 45-degree cut desk, a small mic on a 45-degree arm, a big disc behind
   (c, id, rnd) => {
-    return `<ellipse cx="200" cy="372" rx="150" ry="40" fill="${c.b}"/><circle cx="200" cy="170" r="112" fill="${c.b}"/>
-      ${cvaM(1, `<path d="M0 0H150C126 120 116 260 66 400H0Z" fill="${c.a}"/>`, "l")}${cvaM(1, `<path d="M400 0H250C274 120 284 260 334 400H400Z" fill="${c.a}"/>`, "r")}
-      ${cvaM(0, `<path d="M128 196H272L292 236H108Z" fill="${c.m}"/><path d="M108 236H292V250H108Z" fill="${c.i}"/><path d="M128 250H272L258 384H142Z" fill="${c.i}"/><rect x="118" y="380" width="164" height="20" fill="${c.i}"/>`, "b")}
-      <rect width="400" height="30" fill="${c.i}"/>`;
+    const desk = "M80 160H320V180L280 220H120L80 180Z";
+    const mic = cvaR(224, 148, 32, 12, c.i) + cvaRot(-45, 240, 152, cvaR(232, 72, 16, 88, c.i) + cvaR(224, 28, 32, 56, c.i, 16));
+    return `${cvaM(0, `<circle cx="200" cy="150" r="130" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaP(desk, c.i) + cvaR(120, 232, 160, 180, c.i) + `<circle cx="200" cy="300" r="32" fill="${c.a}"/>`, "b")}
+    ${cvaM(2, mic, "t")}`;
   },
 ];
+
 CVA.trip = [
-  // A suitcase with a luggage tag
+  // An airliner climbing on the diagonal past the sun, two straight contrails
   (c, id, rnd) => {
-    const a = Math.round(rnd() * 6 - 3);
-    return `<circle cx="306" cy="96" r="112" fill="${c.b}"/>
-      ${cvaM(0, cvaRot(a, 200, 260, `<path d="M156 130V104Q156 84 176 84H224Q244 84 244 104V130" fill="none" stroke="${c.i}" stroke-width="20"/><rect x="60" y="128" width="280" height="236" rx="28" fill="${c.a}"/><rect x="118" y="128" width="26" height="236" fill="${c.m}"/><rect x="256" y="128" width="26" height="236" fill="${c.m}"/><rect x="92" y="360" width="30" height="24" rx="6" fill="${c.i}"/><rect x="278" y="360" width="30" height="24" rx="6" fill="${c.i}"/>`), "b")}
-      ${cvaM(1, `<g class="mi mi-sway"><path d="M234 120C258 150 260 172 262 196" fill="none" stroke="${c.i}" stroke-width="6"/><g transform="rotate(12 262 230)"><path d="M236 196H288V274H236Z" fill="${c.p}"/></g></g>`, "t")}`;
+    const plane = cvaR(-18, -160, 36, 300, c.i, 18) + cvaP("M-18 -30L-170 40V66L-18 30Z", c.i) + cvaP("M18 -30L170 40V66L18 30Z", c.i) + cvaP("M-18 100L-72 132V148L-18 136Z", c.i) + cvaP("M18 100L72 132V148L18 136Z", c.i);
+    return `${cvaM(0, `<circle cx="300" cy="100" r="96" fill="${c.a}"/>`, "s")}
+    ${cvaM(1, `<g transform="translate(190 210) rotate(45)">${cvaR(-70, 60, 12, 420, c.b) + cvaR(58, 60, 12, 420, c.b)}</g>`, "bl")}
+    ${cvaM(2, `<g transform="translate(190 210) rotate(45)">${plane}</g>`, "bl")}`;
   },
 
-  // A paper plane looping across the sky
+  // A suitcase flat-on with two strap bands, a top handle, two wheels and a tag hanging from the handle
   (c, id, rnd) => {
-    return `${cvaM(0, `<path d="M-20 330C80 330 150 300 170 240C190 170 110 150 100 210C90 270 200 270 260 200" fill="none" stroke="${c.a}" stroke-width="14" stroke-linecap="round"/>`, "l")}
-      ${cvaM(1, `<g class="mi mi-bob"><path d="M372 70L220 176L290 188Z" fill="${c.p}"/><path d="M372 70L290 188L300 260Z" fill="${c.m}"/><path d="M372 70L262 204L300 260L290 188Z" fill="${c.i}"/></g>`, "tr")}`;
+    const bag = cvaR(80, 120, 240, 200, c.i, 8) + cvaR(128, 120, 16, 200, c.g) + cvaR(256, 120, 16, 200, c.g)
+      + cvaP("M160 120V80A8 8 0 0 1 168 72H232A8 8 0 0 1 240 80V120H224V88H176V120Z", c.i)
+      + `<circle cx="120" cy="336" r="16" fill="${c.i}"/><circle cx="280" cy="336" r="16" fill="${c.i}"/>`;
+    const tag = cvaR(196, 80, 8, 84, c.a) + cvaP("M176 176L200 152L224 176V244H176Z", c.a);
+    return `${cvaM(0, cvaR(0, 352, 400, 48, c.b), "b")}
+      ${cvaM(1, bag, "b")}
+      ${cvaM(2, tag, "t", "sway")}`;
   },
 
-  // A tent under a crescent moon, fire going
+  // A tent on the ground under a crescent moon, one pine behind it
   (c, id, rnd) => {
-    return `<path d="M318 60A64 64 0 1 0 358 172A54 54 0 1 1 318 60Z" fill="${c.p}"/><rect y="330" width="400" height="70" fill="${c.b}"/>
-      ${cvaM(0, `<path d="M20 334L150 110L280 334Z" fill="${c.a}"/><path d="M150 110L110 334H190Z" fill="${c.i}"/>`, "b")}
-      ${cvaM(1, `<path d="M290 334L358 300M290 300L358 334" stroke="${c.i}" stroke-width="14" stroke-linecap="round"/><g class="mi mi-flick">${cvaDrop(324, 220, 58, 96, c.m)}</g>`, "s")}`;
+    const pine = cvaP("M340 44L380 84H300Z", c.m) + cvaP("M340 72L392 124H288Z", c.m) + cvaP("M340 100L404 164H276Z", c.m) + cvaR(332, 164, 16, 100, c.m);
+    const tent = cvaR(192, 72, 16, 40, c.i) + cvaP("M200 100L440 340H-40Z", c.i) + cvaP("M200 248L292 340H108Z", c.m) + cvaR(192, 248, 16, 92, c.i);
+    const moon = `<circle cx="84" cy="92" r="48" fill="${c.a}"/><circle cx="112" cy="76" r="40" fill="${c.g}"/>`;
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+      ${cvaM(1, pine, "r")}
+      ${cvaM(2, tent, "b")}
+      ${cvaM(3, moon, "tl")}`;
   },
 
-  // A compass, needle settling
+  // A folded map in three panels, a route of straight legs ending at a map pin
   (c, id, rnd) => {
-    const a = 20 + Math.round(rnd() * 30);
-    return `${cvaM(0, `<circle cx="210" cy="210" r="176" fill="${c.p}"/><circle cx="210" cy="210" r="164" fill="none" stroke="${c.i}" stroke-width="24"/><path d="M210 70V104M210 316V350M70 210H104M316 210H350" stroke="${c.i}" stroke-width="12" stroke-linecap="round"/>`, "s")}
-      ${cvaM(1, `<g transform="rotate(${a} 210 210)"><g class="mi mi-wob"><path d="M210 80L246 210H174Z" fill="${c.a}"/><path d="M210 340L246 210H174Z" fill="${c.m}"/></g></g><circle cx="210" cy="210" r="18" fill="${c.i}"/>`, "rot")}`;
+    const leg = (x1, y1, x2, y2) => `<rect x="-8" y="-8" width="${Math.hypot(x2 - x1, y2 - y1) + 16}" height="16" rx="8" fill="${c.i}" transform="translate(${x1} ${y1}) rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI})"/>`;
+    const map = cvaR(40, 120, 108, 240, c.b) + cvaR(148, 120, 108, 240, c.a) + cvaR(256, 120, 108, 240, c.b);
+    const route = leg(92, 316, 92, 260) + leg(92, 260, 144, 208) + leg(144, 208, 272, 208);
+    const pin = `<path d="M244 172A50.91 50.91 0 1 1 316 172L280 208ZM300 136A20 20 0 1 0 260 136A20 20 0 1 0 300 136Z" fill-rule="evenodd" fill="${c.i}"/>`;
+    return `${cvaM(0, map, "b")}
+      ${cvaM(1, route, "l")}
+      ${cvaM(2, pin, "t", "bob")}`;
   },
 ];
+
 CVA.watch = [
-  // The big screen, seen from behind the couch
+  // A TV on short legs showing a sun over a hill, the back of a sofa in front
   (c, id, rnd) => {
-    return `${cvaM(0, `<rect x="40" y="46" width="320" height="200" rx="14" fill="${c.i}"/><rect x="56" y="62" width="288" height="168" rx="4" fill="${c.a}"/><path d="M56 180L150 120L224 170L276 136L344 180V230H56Z" fill="${c.m}"/><rect x="150" y="246" width="100" height="14" fill="${c.i}"/>`, "s")}
-      ${cvaM(1, `<path d="M-20 420V330A56 56 0 0 1 92 330A56 56 0 0 1 204 330A56 56 0 0 1 316 330A56 56 0 0 1 428 330V420Z" fill="${c.b}"/>`, "b")}`;
+    const sofa = cvaP("M80 292H194V412H80A60 60 0 0 1 80 292Z", c.b) + cvaP("M320 292H206V412H320A60 60 0 0 0 320 292Z", c.b);
+    return `${cvaM(0, cvaR(100, 256, 16, 44, c.i) + cvaR(284, 256, 16, 44, c.i) + cvaR(60, 60, 280, 200, c.i, 8) + cvaR(76, 76, 248, 168, c.p), "t")}
+    ${cvaM(1, `<circle cx="256" cy="132" r="28" fill="${c.a}"/>` + cvaP("M76 244V208A140 140 0 0 1 277.6 244Z", c.m), "s")}
+    ${cvaM(2, sofa, "b")}`;
   },
 
-  // A ball in play, seams and all
+  // A basketball, big and cropped, its seams cut as gaps, resting on a floor band
   (c, id, rnd) => {
-    return `<rect y="320" width="400" height="80" fill="${c.b}"/>
-      ${cvaM(0, `<g class="mi mi-spin"><circle cx="232" cy="200" r="150" fill="${c.a}"/><g fill="none" stroke="${c.i}" stroke-width="12"><path d="M232 50V350M82 200H382"/><path d="M126 94C176 140 176 260 126 306M338 94C288 140 288 260 338 306"/></g></g>`, "r")}
-      ${cvaM(1, `<path d="M18 150H70M4 206H60M22 262H78" stroke="${c.i}" stroke-width="12" stroke-linecap="round"/>`, "r")}`;
+    const ring = x => `<path d="M${x - 198} 160A198 198 0 1 0 ${x + 198} 160A198 198 0 1 0 ${x - 198} 160ZM${x - 182} 160A182 182 0 1 1 ${x + 182} 160A182 182 0 1 1 ${x - 182} 160Z" fill="${c.g}"/>`;
+    return `${cvaM(0, cvaR(0, 340, 400, 60, c.b), "b")}
+    ${cvaM(1, `<clipPath id="${id}ball"><circle cx="230" cy="160" r="180"/></clipPath><circle cx="230" cy="160" r="180" fill="${c.a}"/><g clip-path="url(#${id}ball)">${cvaR(222, -20, 16, 360, c.g)}${cvaR(40, 152, 380, 16, c.g)}${ring(-60)}${ring(520)}</g>`, "t")}`;
   },
 
-  // Two pennants crossed
+  // Two pennant flags on poles crossed at 45 degrees, a disc behind
   (c, id, rnd) => {
-    const p1 = `<path d="M60 90L360 150L60 230Z"/>`, p2 = `<path d="M60 200L330 290L60 350Z"/>`;
-    return `${cvaM(0, `<rect x="40" y="70" width="20" height="340" rx="6" fill="${c.i}"/>`, "b")}
-      ${cvaM(1, `<g class="mi mi-sway"><g fill="${c.a}">${p1}</g></g>`, "l")}${cvaM(2, `<g fill="${c.m}">${p2}</g>${cvaOv(id, "f", p1, `<g fill="${c.ov(c.a, c.m)}">${p2}</g>`)}`, "l")}`;
+    const flag = f => `<g transform="translate(200 272) rotate(45)">${cvaR(-8, -160, 16, 320, c.i)}<circle cx="0" cy="-164" r="14" fill="${c.i}"/>${cvaP("M8 -150L8 -30L208 -90Z", f)}</g>`;
+    return `${cvaM(0, `<circle cx="200" cy="200" r="150" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, flag(c.a), "bl")}
+    ${cvaM(2, `<g transform="translate(400 0) scale(-1 1)">${flag(c.m)}</g>`, "br")}`;
   },
 
-  // A clapperboard snapping shut
+  // A clapperboard, its striped clapper arm raised at exactly 45 degrees
   (c, id, rnd) => {
-    const stripes = w => `<g>${[0, 1, 2, 3, 4].map(k => `<path d="M${k * 76 - 10} 0H${k * 76 + 28}L${k * 76 + 8} ${w}H${k * 76 - 30}Z" fill="${c.p}"/>`).join("")}</g>`;
-    return `${cvaM(0, `<rect x="44" y="176" width="312" height="196" rx="10" fill="${c.i}"/><rect x="72" y="236" width="124" height="16" rx="8" fill="${c.m}"/><rect x="72" y="276" width="184" height="16" rx="8" fill="${c.m}"/><rect x="72" y="316" width="96" height="16" rx="8" fill="${c.m}"/>
-      <g transform="translate(44 134)"><rect width="312" height="46" fill="${c.i}"/>${stripes(46)}</g>`, "b")}
-      ${cvaM(1, `<g class="mi mi-rock"><g transform="translate(44 118) rotate(-18)"><rect y="-46" width="312" height="46" fill="${c.a}"/><g transform="translate(0 -46)">${stripes(46)}</g></g></g>`, "t")}`;
+    const stripes = (y, xs) => cvaP(xs.map(x => `M${x} ${y + 40}L${x + 40} ${y}H${x + 64}L${x + 24} ${y + 40}Z`).join(""), c.a);
+    const arm = cvaRot(-45, 80, 220, cvaR(80, 180, 240, 40, c.i) + stripes(180, [96, 144, 192, 240]));
+    return `${cvaM(0, `<circle cx="260" cy="140" r="120" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaR(80, 220, 240, 40, c.i) + stripes(220, [96, 144, 192, 240]) + cvaR(80, 272, 240, 160, c.i), "b")}
+    ${cvaM(2, arm, "t")}`;
   },
 ];
+
 CVA.welcome = [
-  // An open door with light spilling out onto the floor
+  // A door standing open: the frame, the leaf swung in on its hinge, light filling the opening, a floor band
   (c, id, rnd) => {
-    const spill = c.dark ? cvaMix(c.b, c.p, .45) : c.p;
-    return `<rect y="340" width="400" height="60" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="112" y="44" width="184" height="296" fill="${c.i}"/><rect x="126" y="58" width="156" height="282" fill="${c.p}"/><path d="M126 340H282L372 400H36Z" fill="${spill}"/>`, "s")}
-      ${cvaM(1, `<path d="M282 58L364 26V374L282 340Z" fill="${c.a}"/><rect x="342" y="190" width="10" height="44" rx="5" fill="${c.i}"/>`, "r")}`;
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaP("M88 340V28H312V340H280V60H120V340Z", c.i), "b")}
+    ${cvaM(1, cvaR(132, 72, 136, 268, c.p), "s")}
+    ${cvaM(2, cvaR(132, 72, 64, 268, c.a) + `<circle cx="180" cy="212" r="8" fill="${c.i}"/>`, "l")}`;
   },
 
-  // A big key, turned
+  // A key at 45 degrees: round bow with one hole, straight shaft, square-toothed bit, a disc behind
   (c, id, rnd) => {
-    const a = -32 + Math.round(rnd() * 8);
-    const key = `<path d="M-84 0A84 84 0 1 0 84 0A84 84 0 1 0-84 0ZM-34 0A34 34 0 1 1 34 0A34 34 0 1 1-34 0Z" fill-rule="evenodd"/><rect x="70" y="-20" width="290" height="40" rx="8"/><rect x="262" y="14" width="30" height="58" rx="6"/><rect x="310" y="14" width="30" height="40" rx="6"/>`;
-    return `<circle cx="262" cy="164" r="146" fill="${c.b}"/>
-      ${cvaM(0, `<g fill="${c.a}" transform="translate(96 290) rotate(${a})">${key}</g>${cvaOv(id, "k", `<circle cx="262" cy="164" r="146"/>`, `<g fill="${c.ov(c.a, c.b)}" transform="translate(96 290) rotate(${a})">${key}</g>`)}`, "rot")}`;
+    const at = b => `<g transform="translate(212 196) rotate(-45)">${b}</g>`;
+    const bow = cvaP("M-212 0A80 80 0 1 0 -52 0A80 80 0 1 0 -212 0ZM-160 0A28 28 0 1 1 -104 0A28 28 0 1 1 -160 0Z", c.i);
+    const shaft = cvaR(-60, -16, 244, 32, c.i) + cvaR(-44, -32, 16, 64, c.i) + cvaP("M104 16H184V60H148V44H132V76H104Z", c.i);
+    return `${cvaM(0, `<circle cx="248" cy="156" r="136" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, at(bow + shaft), "bl")}`;
   },
 
-  // A signpost with blank boards pointing different ways
+  // A signpost: one post, arrow boards pointing both ways at different heights, a ground band
   (c, id, rnd) => {
-    return `<path d="M-40 400C40 318 360 318 440 400Z" fill="${c.b}"/>
-      ${cvaM(0, `<rect x="186" y="54" width="28" height="330" fill="${c.i}"/>`, "b")}
-      ${cvaM(1, `<path d="M130 78H300L336 114L300 150H130Z" fill="${c.a}"/>`, "l")}
-      ${cvaM(2, `<path d="M92 172H270V240H92L56 206Z" fill="${c.m}"/>`, "r")}
-      ${cvaM(3, `<path d="M160 262H282L306 288L282 314H160Z" fill="${c.p}"/>`, "l")}`;
+    return `${cvaR(0, 340, 400, 60, c.b)}
+    ${cvaM(0, cvaR(192, 36, 16, 304, c.i), "b")}
+    ${cvaM(1, cvaP("M84 60H304L336 92L304 124H84Z", c.a), "l")}
+    ${cvaM(2, cvaP("M316 152H104L72 184L104 216H316Z", c.i), "r")}
+    ${cvaM(3, cvaP("M128 244H276L304 272L276 300H128Z", c.m), "l")}`;
   },
 
-  // An envelope with a card rising out of it
+  // An invitation: an envelope flat-on with its flap open and a card standing half out
   (c, id, rnd) => {
-    return `${cvaM(0, `<rect x="62" y="196" width="276" height="184" rx="10" fill="${c.m}"/><path d="M62 204L200 104L338 204Z" fill="${c.m}"/>`, "b")}
-      ${cvaM(1, `<g class="mi mi-bob"><rect x="104" y="96" width="192" height="216" rx="8" fill="${c.p}"/><rect x="134" y="132" width="132" height="22" rx="11" fill="${c.a}"/><rect x="134" y="170" width="84" height="14" rx="7" fill="${c.b}"/></g>`, "b")}
-      ${cvaM(2, `<path d="M62 214L200 300L338 214V380H62Z" fill="${c.a}"/><path d="M62 380L200 290L338 380Z" fill="${c.ov(c.a, c.m)}"/>`, "b")}`;
+    return `${cvaM(0, `<circle cx="200" cy="156" r="140" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaP("M60 360V200L200 60L340 200V360Z", c.m), "b")}
+    ${cvaM(2, cvaR(100, 100, 200, 220, c.p) + cvaR(140, 140, 120, 16, c.a, 8) + cvaR(140, 172, 80, 16, c.a, 8), "t")}
+    ${cvaM(3, cvaP("M68 192L140 264H260L332 192L340 200L260 280H140L60 200Z", c.g) + cvaP("M60 200L140 280H260L340 200V360H60Z", c.i), "b")}`;
   },
 ];
+
 CVA.workshop = [
-  // Sticky notes overlapping, and a marker
+  // An easel holding a canvas with a picture on it
   (c, id, rnd) => {
-    const j = () => Math.round(rnd() * 4 - 2);
-    const n1 = `<rect x="-90" y="-90" width="180" height="180"/>`;
-    const t1 = `translate(142 142) rotate(${-8 + j()})`, t2 = `translate(262 214) rotate(${6 + j()})`;
-    return `${cvaM(0, `<g transform="${t1}" fill="${c.a}">${n1}</g>`, "tl")}${cvaM(1, `<g transform="${t2}" fill="${c.m}">${n1}</g>`, "r")}
-      ${cvaOv(id, "n", `<g transform="${t1}">${n1}</g>`, `<g transform="${t2}" fill="${c.ov(c.a, c.m)}">${n1}</g>`)}
-      ${cvaM(2, `<g transform="translate(118 318) rotate(${-4 + j()})"><rect x="-80" y="-60" width="160" height="120" fill="${c.p}"/><rect x="-54" y="-20" width="92" height="12" rx="6" fill="${c.b}"/><rect x="-54" y="6" width="60" height="12" rx="6" fill="${c.b}"/></g>`, "bl")}
-      ${cvaM(3, cvaTr(300, 340, `<rect x="-70" y="-17" width="120" height="34" rx="10" fill="${c.i}"/><path d="M50 -17H72L92 0L72 17H50Z" fill="${c.i}"/><rect x="-86" y="-17" width="30" height="34" rx="10" fill="${c.a}"/>`, -30), "br")}`;
+    const leg = a => cvaRot(a, 200, 20, cvaR(192, 20, 16, 400, c.i));
+    const canvas = cvaR(96, 76, 208, 170, c.p);
+    const pic = `<circle cx="248" cy="130" r="32" fill="${c.a}"/>` + cvaP("M96 246V200C132 170 168 170 204 200C232 180 268 180 304 204V246Z", c.m);
+    return `${cvaR(0, 360, 400, 40, c.b)}
+    ${cvaM(0, leg(-14) + leg(14) + cvaR(192, 20, 16, 340, c.i), "b")}${cvaM(1, cvaR(84, 246, 232, 20, c.i, 10) + canvas, "t")}${cvaM(2, pic, "s")}`;
   },
 
-  // A pencil across a set square
+  // Sticky notes on a board, each with a folded corner, one turned 45 degrees, a marker lying across
   (c, id, rnd) => {
-    const sq = `<path d="M40 380V60L360 380ZM96 324H224L96 196Z" fill-rule="evenodd"/>`;
-    return `${cvaM(0, `<g fill="${c.a}">${sq}</g>`, "bl")}
-      ${cvaM(1, cvaRot(-45, 250, 170, `<rect x="226" y="-120" width="48" height="250" fill="${c.i}"/><rect x="226" y="-120" width="16" height="250" fill="${c.m}"/><path d="M226 130H274L250 196Z" fill="${c.p}"/><path d="M242 172H258L250 196Z" fill="${c.i}"/>`), "tr")}`;
+    const note = (x, y, s, f, flap) => cvaP(`M${x} ${y}H${x + s}V${y + s - 32}L${x + s - 32} ${y + s}H${x}Z`, f) + cvaP(`M${x + s} ${y + s - 32}L${x + s - 32} ${y + s}V${y + s - 32}Z`, flap);
+    return `${cvaM(0, cvaR(20, 20, 360, 360, c.b, 8), "s")}
+    ${cvaM(1, note(52, 52, 128, c.p, c.m) + note(212, 92, 128, c.i, c.m), "t")}
+    ${cvaM(2, cvaRot(45, 136, 276, note(80, 220, 112, c.m, c.p)), "l")}
+    ${cvaM(3, cvaTr(296, 300, cvaR(-104, -16, 164, 32, c.i, 8) + cvaR(52, -16, 56, 32, c.a, 8), -45), "br")}`;
   },
 
-  // Blocks stacked into a small building: slab, square, quarter circle, triangle
+  // A set square with a pencil lying across it
   (c, id, rnd) => {
-    return `${cvaM(0, `<rect x="54" y="306" width="292" height="94" fill="${c.i}"/>`, "b")}
-      ${cvaM(1, `<rect x="74" y="160" width="146" height="146" fill="${c.a}"/>`, "l")}
-      ${cvaM(2, `<path d="M220 306V160A146 146 0 0 1 366 306Z" fill="${c.m}"/>`, "r")}
-      ${cvaM(3, `<path d="M74 160L147 40L220 160Z" fill="${c.b}"/>`, "t")}`;
+    const pencil = cvaR(-124, -20, 36, 40, c.m) + cvaR(-96, -20, 180, 40, c.a) + cvaP("M84 -20L104 0L84 20Z", c.p) + cvaP("M96 -8L104 0L96 8Z", c.i);
+    return `${cvaM(0, `<circle cx="296" cy="104" r="124" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaP("M40 40V360H360ZM96 176L224 304H96Z", c.i), "bl")}
+    ${cvaM(2, cvaTr(184, 236, pencil, -45), "tr")}`;
   },
 
-  // A brush laying down one big stroke of paint
+  // A hammer and an open-ended wrench crossed at 45 degrees over a disc
   (c, id, rnd) => {
-    return `${cvaM(0, `<path d="M-20 300C80 240 120 360 220 290C280 248 290 200 300 170" fill="none" stroke="${c.a}" stroke-width="64" stroke-linecap="round"/>`, "l")}
-      ${cvaM(1, cvaRot(38, 300, 150, `<rect x="276" y="116" width="48" height="56" rx="6" fill="${c.a}"/><rect x="272" y="60" width="56" height="60" fill="${c.m}"/><rect x="286" y="-120" width="28" height="184" rx="14" fill="${c.i}"/>`), "tr")}`;
+    const wrench = cvaR(-16, -64, 32, 236, c.i, 16) + cvaP("M20 -148A52 52 0 1 1 -20 -148V-92H20Z", c.i);
+    const hammer = cvaR(-16, -112, 32, 284, c.m, 16) + cvaP("M-84 -164H44L92 -116H-84Z", c.i);
+    return `${cvaM(0, `<circle cx="200" cy="200" r="150" fill="${c.b}"/>`, "s")}
+    ${cvaM(1, cvaTr(200, 212, wrench, 45), "tr")}
+    ${cvaM(2, cvaTr(200, 212, hammer, -45), "tl")}`;
   },
 ];
 
@@ -10932,41 +11038,33 @@ const C_RIT = {
 const cRituals = f => C_RIT[f.id] || [];
 const C_DAYN = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday" };
 
-/* ---- Overview, in three bands (Apoorv 27 Sep 18:32: posts are the main action; research in community-audit/overview/):
-   1. Share: the post composer (Skool, Facebook Groups, LinkedIn Groups, Circle open a group on it).
-   2. This week: only what has a clock on it, soonest first: today's ritual, new members to greet in their first week, this week's event.
-   3. Posts: the pinned note, then posts by latest activity (Circle's default "New activity", Facebook's "New activity").
-   Then the rest of the calendar as a strip, and one row for unread channels. Organizers see their Kai week and To do above all three. ---- */
+/* ---- Overview (Apoorv 27 Sep 18:32 and 19:34; research in community-audit/overview/):
+   organizers get one brief on top (cOrgBrief). Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
+   Then Posts as they are scoped today: the pinned note, Kai's library posts and organizer broadcasts. Then the rest of the calendar as a strip,
+   and one row for unread channels. Whether members write posts waits on research (member-posts-research.md). New members live in People. ---- */
 const C_WEEK_END = 927;   /* mock week: Mon 21 to Sun 27 Sep, the week the Monday ritual is live */
-function cCompose(f){
-  const cats = cCats(f).filter(c=>cOrg()||!DB.clib.orgOnly.includes(c)).slice(0,3);
-  return `<div class="cm-compose"><div class="cm-crow" data-csheet="cnewpost" role="button">${av(DB.user.initials)}<span>Share something with ${f.name}</span><i>${LI("image",18)}</i></div>
-    <div class="cm-cchips">${cats.map(c=>`<span data-cnewcatgo="${c}">${c}</span>`).join("")}</div></div>`;
+/* members who joined this week, with Say hi in place (People, under the search) */
+function cNewStrip(f){
+  const joined = ["dev","jordan"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
+  const face = p => `<div class="cm-nm" data-profile="${p.id}">${av(p.initials,"lg")}<b>${p.name.split(" ")[0]}</b><span>${p.company.split(",")[0]}</span>${(STATE.cGreeted||{})[p.id]?'<em class="cm-done">Greeted</em>':`<em class="cm-btn q" data-cgreet="${p.id}">Say hi</em>`}</div>`;
+  return joined.length ? `<div class="cm-sec cm-newm"><div class="cm-nmh">Joined this week</div><div class="cm-nms">${joined.map(face).join("")}</div></div>` : "";
 }
 function cWeek(){
   const f = cF();
-  const joined = ["dev","jordan"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
   const busy = (DB.channels[f.id]||[]).filter(c=>c.joined&&c.unread&&!(STATE.chMute||{})[c.id]).sort((a,b)=>b.unread-a.unread);
   const up = cFamEvents(f).filter(e=>!e.past).sort((a,b)=>a.sort-b.sort);
   const soon = up.filter(e=>e.sort<=C_WEEK_END).slice(0,1), later = up.filter(e=>!soon.includes(e)).slice(0,4);
   const posts = cPosts(f).filter(p=>p.st==="live"&&!(STATE.cHidden||{})[p.id]).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0)).slice(0,2);
-  const pend = cPosts(f).filter(p=>p.st==="pending").length;
-  const todo = cOrg() ? [["manage:applications","Want to join",cWaiting(),"Oldest is 6 days"],["posts:requests","Posts to approve",pend,""],cOrgStrip()?["",0]:["manage:greeting","New members not greeted",2,""],["manage:reports","Reported",1,"A message in #jobs"]].filter(x=>x[2]) : [];
   const live = cRituals(f).filter(r=>r[7]==="live");
   const ch = id => ((DB.channels[f.id]||[]).find(c=>c.id===id)||{name:"#"+id}).name;
   const rit = ([k,n,q,d,every,c,rep]) => `<div class="cm-row cm-rit" data-channel="${c}"><div class="cm-day on">${d}</div><div class="m"><div class="a">${q}</div><div class="b">${ch(c)} · ${rep} replies so far</div></div><span class="cm-btn" data-channel="${c}">Join in</span></div>`;
-  const face = p => `<div class="cm-nm" data-profile="${p.id}">${av(p.initials,"lg")}<b>${p.name.split(" ")[0]}</b><span>${p.company.split(",")[0]}</span>${(STATE.cGreeted||{})[p.id]?'<em class="cm-done">Greeted</em>':`<em class="cm-btn q" data-cgreet="${p.id}">Say hi</em>`}</div>`;
-  const newm = joined.length ? `<div class="cm-newm"><div class="cm-nmh">Joined this week<span class="cm-more" data-cnewpeople="1">People</span></div><div class="cm-nms">${joined.map(face).join("")}</div></div>` : "";
-  const week = [...live.map(rit), newm, ...soon.map(e=>evCard(e,"row",{fam:false}))].filter(Boolean);
+  const week = [...live.map(rit), ...soon.map(e=>evCard(e,"row",{fam:false}))].filter(Boolean);
   const pinP = f.pinned && Object.values(DB.people).find(p=>p.name===f.pinned.who);
   const pinNote = f.pinned ? `<div class="cm-lp cm-pinnote"><div class="cm-lby">${av(pinP?pinP.initials:"?","sm")}<span class="n">${f.pinned.who.split(" ")[0]}</span><span class="w">${LI("pin",12)} Pinned</span></div><div class="cm-lrow"><div class="m"><div class="x">${f.pinned.text}</div></div></div></div>` : "";
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("week")}
-    ${cOrgStrip()}
-    ${todo.length?`<div class="cm-sec">${cHead("To do")}${todo.map(([go,a,n,b])=>`<div class="cm-row" data-cgo="${go}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div><span class="cm-count">${n}</span><span class="s">›</span></div>`).join("")}</div>`:''}
-    ${cOrg()?`<div class="cm-row cm-insrow" data-cgo="manage:insights"><div class="cm-sparkw">${cSpark(C_WAU.slice(-8), 64, 28)}</div><div class="m"><div class="a">${C_WAU[C_WAU.length-1]} active this week</div><div class="b">Up ${C_WAU[C_WAU.length-1]-C_WAU[C_WAU.length-2]} from last week</div></div><span class="cm-more">Insights</span><span class="s">›</span></div>`:''}
-    ${cCompose(f)}
+    ${cOrgBrief()}
     ${week.length?`<div class="cm-sec cm-wk">${cHead("This week")}${week.join("")}</div>`:''}
     ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("Posts","All",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
     ${later.length?`<div class="cm-sec">${cHead("Coming up","Events",'data-ctab="fevents"')}<div class="cm-evstrip">${later.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
@@ -11011,6 +11109,7 @@ sPeople = function(){
       <div class="cm-search"><input class="search" id="pq" placeholder="Search ${f.members} members" value="${STATE.peopleQuery||""}"><span class="cm-fbtn ${filtersOn?'on':''}" data-csheet="cpfilter" aria-label="Filter">${C_FILTER_SVG}${filtersOn?`<b>${filtersOn}</b>`:''}</span></div>
       ${cChips(C_OPEN, pf, "pfilter")}</div>
     ${cOrg()?`<div class="cm-row cm-mgr" data-cgo="manage:members"><div class="cm-sq">${C_SHIELD_SVG}</div><div class="m"><div class="a">Manage members</div><div class="b">Requests, roles, tags and notes</div></div>${cWaiting()?`<span class="cm-count">${cWaiting()}</span>`:''}<span class="s">›</span></div>`:''}
+    ${!q && pf==="All" ? cNewStrip(f) : ""}
     ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>Kai picked for your missions`,"Missions",'data-cgo="home"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
     <div class="cm-cnt"><span class="cm-sort" data-csheet="cpsort">${(C_PSORT.find(x=>x[0]===sort)||C_PSORT[0])[1]}${C_CHEV_SVG}</span><span class="cm-view" data-pview="${grid?'list':'grid'}" aria-label="${grid?'List':'Grid'} view">${grid?C_LIST_SVG:C_GRID_SVG}</span></div>
     ${body || '<div class="empty">Nobody matches. Try fewer filters.</div>'}
@@ -11287,19 +11386,28 @@ function cPostDetail(){
 const C_ORGJOBS = [["welcome",2,"to welcome","joined this week, nobody has greeted them yet"],["quiet",3,"going quiet","posted most weeks, nothing in three weeks"],["unanswered",2,"asks unanswered","no reply after two days"],["thank",2,"to thank","answered, introduced or hosted this month"],["meet",2,"pairs to introduce","Kai's suggestion, from what they asked and offer"],["host",1,"to ask to host","came to three or more events, never hosted"]];
 const cOrgGo = () => DB.missions.find(m=>m.id==="morg") ? `go('mission:morg')` : `toast('Opens your Kai mission for running ${cF().name}')`;
 const cOrgRow = () => `<div class="cm-row cm-kairow cm-orgm" onclick="${cOrgGo()}"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">How Kai helps you run ${cF().name}</div><div class="b">${C_ORGJOBS.slice(0,3).map(([,n,l])=>`${n} ${l}`).join(" · ")}</div></div><span class="cm-count">${C_ORGJOBS.reduce((t,j)=>t+j[1],0)}</span><span class="s">›</span></div>`;
-/* The organizer strip (Apoorv's yes, 27 Sep 17:48, to missions' research round two): Kai's week at the top of the family tab, organizers
-   only, only while something is open. Each job is one tap into its sheet (org.js "osheet"), with the faces it concerns; the header opens
-   the mission. Shopify Home cards, Airbnb's host Today, copilot suggestions in the working surface; the Monday push lands on the mission. */
-function cOrgStrip(){
-  if (typeof oStatus!=="function" || !DB.missions.some(m=>m.id==="morg")) return "";   /* the mission exists only for an organizer (org.js oEnsure) */
-  const jobs = oJobs().map(j=>({ ...j, open:oOpen(j.id) })).filter(j=>j.open.length);
-  if (!jobs.length) return "";
-  const done = oDoneN(), total = oTotal(), [lab,,line] = oStatus();
-  const face = pid => { const p = DB.people[pid]; return `<span class="cm-osf">${p?p.initials:"?"}</span>`; };
-  return `<div class="cm-ostrip">
-    <div class="cm-oshd" onclick="go('mission:morg')"><span class="cm-osk">${C_SPARK}</span><div class="m"><div class="a">This week with Kai</div><div class="b">${line}</div></div><span class="cm-osn">${lab}</span><span class="s">›</span></div>
-    <div class="cm-osbar" aria-label="${done} of ${total} done"><i style="width:${Math.round(done/total*100)}%"></i></div>
-    <div class="cm-osjobs">${jobs.map(j=>`<button class="cm-osjob" onclick="openSheet('osheet','${j.id}')" aria-label="${O_VERB[j.id]} ${j.open.length}"><span class="cm-osfs">${j.open.slice(0,2).map(c=>face(c.pid)).join("")}</span><b>${O_VERB[j.id]}</b><i>${j.open.length}</i></button>`).join("")}</div>
+/* The organizer brief (Apoorv 27 Sep 19:34: Kai's week, To do and Insights were three versions of one thing). One block at the top of
+   Overview, organizers only: how the numbers move (a tap opens Insights), then everything waiting on them as one row of taps, people
+   waiting on them first (requests, reports, approvals), then Kai's jobs from the organizer mission (org.js "osheet"). The header opens
+   the mission. Shopify Home, Airbnb's host Today; the Monday push lands on the same mission. */
+function cOrgBrief(){
+  const f = cF(), morg = typeof oStatus==="function" && DB.missions.some(m=>m.id==="morg");   /* the mission exists only for Daniel (org.js oEnsure) */
+  if (!cOrg() && !morg) return "";
+  const face = ini => `<span class="cm-osf">${ini}</span>`, ic = n => `<span class="cm-osf">${LI(n,14)}</span>`;
+  const ini = n => n.split(" ").map(w=>w[0]).join("").slice(0,2);
+  const wait = cMM().filter(m=>m.st==="pending"), pend = cPosts(f).filter(p=>p.st==="pending").length;
+  const admin = [[wait.length,"Review","manage:applications",wait.slice(0,2).map(m=>face(ini(m.n))).join("")],[1,"Check report","manage:reports",ic("flag")],[pend,"Approve posts","posts:requests",ic("file-text")]].filter(x=>x[0]);
+  const jobs = morg ? oJobs().map(j=>({ ...j, open:oOpen(j.id) })).filter(j=>j.open.length) : [];
+  const done = morg ? oDoneN() : 0, total = morg ? oTotal() : 0, [lab,,line] = morg ? oStatus() : ["","",""];
+  const chips = [...admin.map(([n,v,go,fs])=>`<button class="cm-osjob" data-cgo="${go}" aria-label="${v} ${n}"><span class="cm-osfs">${fs}</span><b>${v}</b><i>${n}</i></button>`),
+    ...(morg ? jobs.map(j=>`<button class="cm-osjob" data-ojob="${j.id}" onclick="openSheet('osheet','${j.id}')" aria-label="${O_VERB[j.id]} ${j.open.length}"><span class="cm-osfs">${j.open.slice(0,2).map(c=>face(DB.people[c.pid]?DB.people[c.pid].initials:"?")).join("")}</span><b>${O_VERB[j.id]}</b><i>${j.open.length}</i></button>`)
+      : [`<button class="cm-osjob" data-cgo="manage:greeting" aria-label="Greet 2"><span class="cm-osfs">${face("DP")}${face("JT")}</span><b>Greet</b><i>2</i></button>`])];
+  const n = C_WAU[C_WAU.length-1], d = n - C_WAU[C_WAU.length-2];
+  return `<div class="cm-ostrip cm-brief">
+    <div class="cm-oshd" ${morg?`onclick="go('mission:morg')"`:''}><span class="cm-osk">${C_SPARK}</span><div class="m"><div class="a">Your week in ${f.name}</div><div class="b">${morg?line:"Kai drafts, nothing goes out until you tap"}</div></div>${morg?`<span class="cm-osn">${lab}</span><span class="s">›</span>`:''}</div>
+    <div class="cm-bnums cm-insrow" data-cgo="manage:insights"><div class="cm-sparkw">${cSpark(C_WAU.slice(-8), 64, 28)}</div><div class="m"><b>${n}</b> active this week<span>${d>=0?"Up":"Down"} ${Math.abs(d)} from last week</span></div><span class="cm-osn">Insights</span><span class="s">›</span></div>
+    ${morg?`<div class="cm-osbar" aria-label="${done} of ${total} done"><i style="width:${Math.round(done/total*100)}%"></i></div>`:''}
+    ${chips.length?`<div class="cm-osjobs">${chips.join("")}</div>`:''}
   </div>`;
 }
 function cOrgMonth(){
@@ -11942,7 +12050,6 @@ portWire = function(){
   q("[data-cvote]", el=>{ const [id,d]=el.dataset.cvote.split("|"); STATE.cVote=Object.assign(STATE.cVote||{}); STATE.cVote[id] = STATE.cVote[id]===+d ? 0 : +d; render(); });
   q("[data-csave]", el=>{ const id=el.dataset.csave; STATE.cSave=Object.assign(STATE.cSave||{}); STATE.cSave[id]=!STATE.cSave[id]; STATE.sheet=null; render(); toast(STATE.cSave[id]?"Saved. Find it under Saved.":"Removed from Saved."); });
   q("[data-cnewcat]", el=>{ STATE.cNewCat=el.dataset.cnewcat; render(); });
-  q("[data-cnewcatgo]", el=>{ STATE.cNewCat=el.dataset.cnewcatgo; openSheet("cnewpost"); });
   q("[data-cpostsave]", el=>{ const st=el.dataset.cpostsave; const f=cF(); DB.posts.unshift({ id:"pn"+DB.posts.length, fam:f.id, cat:STATE.cNewCat||cCats(f)[1], who:DB.user.name, ini:DB.user.initials, sub:"", when:"Now", title:"Your new post", text:"What you wrote.", read:"1 min read", tags:[], up:0, cm:0, st, mine:true }); STATE.cNewCat=null; STATE.sheet=null; STATE.postType = st==="live" ? "All" : "drafts"; render(); toast(st==="live"?"Posted.":st==="pending"?"Sent to the organizers. It's under Drafts until it's approved.":"Saved to Drafts."); });
   q("[data-cpdel]", el=>{ DB.posts = DB.posts.filter(p=>p.id!==el.dataset.cpdel); STATE.sheet=null; if (STATE.screen==="manage:cpost") go("posts"); else render(); toast("Deleted."); });
   q("[data-cppin]", el=>{ const p=DB.posts.find(x=>x.id===el.dataset.cppin); p.pinned=!p.pinned; STATE.sheet=null; render(); });
@@ -12084,18 +12191,37 @@ function popDim(){
   d.style.borderRadius = t.matches(".nav .kai") ? "50%" : "";
 }
 const _popPlace = eduPlace, _popClear = eduClear;
-eduPlace = function(){ _popPlace(); popDim(); };
+/* edu.js puts the tip above when it does not fit above the nav; on a short phone above can run off the top.
+   Then it goes below the target and may cover the nav, which sits under the scrim anyway. */
+function popFit(){
+  const tip = phone.querySelector(".tipx"), t = phone.querySelector(".tip-on"); if (!tip || !t || tip.style.visibility==="hidden" || tip.offsetTop >= 8) return;
+  const pr = phone.getBoundingClientRect(), r = (t.querySelector(".ic")||t).getBoundingClientRect();
+  tip.classList.add("up"); tip.classList.remove("down"); tip.style.setProperty("--ay","0%");
+  tip.style.top = Math.min(r.bottom - pr.top + 12, pr.height - 8 - tip.offsetHeight) + "px";
+}
+eduPlace = function(){ _popPlace(); popFit(); popDim(); };
 eduClear = function(){ _popClear(); const d = phone.querySelector(".tipdim"); if (d) d.remove(); };
 /* The screen can still be sliding in (motion's 28px tab slide) when the tip mounts, so the tip and the cut-out follow
    the target every frame while a tip is up; the loop stops when the tip goes. */
 let popRaf = 0;
 function popFollow(){ if (!phone.querySelector(".tipx")) { popRaf = 0; return; } eduPlace(); popRaf = requestAnimationFrame(popFollow); }
 const _popMount = eduMount;
-eduMount = function(){ _popMount(); if (!popRaf && phone.querySelector(".tipx")) popRaf = requestAnimationFrame(popFollow); };
+/* On a short phone the target can sit behind the bottom nav, or leave no room for the tip on either side (320x568: the first
+   pick on home). Then scroll the target to the top of its list once, as the tip mounts, so the tip fits under it. */
+function popReveal(){
+  const t = phone.querySelector(".tip-on"), tip = phone.querySelector(".tipx"), body = t && t.closest(".body"), nav = phone.querySelector(".nav"); if (!body || !tip) return;
+  const r = t.getBoundingClientRect(), br = body.getBoundingClientRect(), need = tip.offsetHeight + 16;
+  const floor = Math.min(br.bottom, nav ? nav.getBoundingClientRect().top : br.bottom) - 8;
+  if (r.bottom > floor || (r.top - br.top < need && floor - r.bottom < need)) body.scrollTop += r.top - br.top - 8;
+}
+eduMount = function(){ _popMount(); if (!phone.querySelector(".tipx")) return; popReveal(); eduPlace(); if (!popRaf) popRaf = requestAnimationFrame(popFollow); };
 
 /* Tip pictures: the swipe tip drew emoji on its actions and its "swipe" label covered the name. Lucide icons, no label. */
 (()=>{ const t = EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
   t.art = ()=>`<div class="pop-sw"><div class="ea-row"><div class="av">DR</div><div class="m"><i>Daniel Reyes</i><u></u></div></div><div class="acts"><span>${LI("pin",14)}</span><span>${LI("bell-off",14)}</span><span>${LI("ellipsis-vertical",14)}</span></div></div>`; })();
+
+/* Under navigator.webdriver (tests, captures) the sheet step-back is instant unless the URL has ?motion, like motion.js. */
+try { if (navigator.webdriver && !new URLSearchParams(location.search).has("motion")) document.documentElement.classList.add("pop-still"); } catch(e){}
 
 /* ==== PROFILE FIXES (27 Sep, missions thread; found by the profiles thread, built as a candidate on the coordinator's ask)
    1. A blocked person's profile must not offer "Say hi": the action becomes Unblock, with a line saying what blocked means.
@@ -12702,7 +12828,7 @@ function moTick(now, dt) {
 }
 function moBand(a) { const f = (((a % (Math.PI*2)) + Math.PI*2) % (Math.PI*2)) / (Math.PI*2) * 24; const i = Math.floor(f), m = f-i; const x = MO_SIG.bands[i%24], y = MO_SIG.bands[(i+1)%24]; return x + (y-x)*(m*m*(3-2*m)); }
 function moGlobe(c, t) {
-  const dpr = Math.min(window.devicePixelRatio||1, 2), r = c.getBoundingClientRect(); if (!r.width) return;
+  const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return; // layout size, so the page stepping back under a sheet (scale .93) doesn't resize the buffer every frame
   const W = Math.round(r.width), H = Math.round(r.height);
   if (c.width !== W*dpr) { c.width = W*dpr; c.height = H*dpr; }
   const g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
@@ -12764,7 +12890,7 @@ function moGlobeGL() {
 }
 function moGlobeBlit(G, cs) {
   G.renderer.render(G.scene, G.camera);
-  cs.forEach(c => { const dpr = Math.min(window.devicePixelRatio||1, 2), r = c.getBoundingClientRect(); if (!r.width) return;
+  cs.forEach(c => { const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return;
     const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr); if (c.width !== W) { c.width = W; c.height = H; }
     const g = c.getContext("2d"); g.clearRect(0,0,W,H); g.globalCompositeOperation = "lighter"; for (let k = W < 120 ? 3 : 1; k--;) g.drawImage(G.renderer.domElement, 0, 0, W, H); }); // the mini globe is drawn three times over so its points survive the downscale
 }

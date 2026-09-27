@@ -3231,6 +3231,66 @@ body:has(.push) .ctlbtn { display:none; }
   .ob3sign:has(.mo-promo) .ob3btns { padding-top:10px; gap:6px; }
   .ob3sign:has(.mo-promo) .ob3btns .btn { min-height:44px; padding-block:0; } /* 44pt, Apple's minimum target */
 }
+
+/* ==== POPUPS (27 Sep, pop-up salience thread). Apoorv 18:19: pop-ups are the same white as the product and blend in.
+   One rule for every layer that floats: the page behind it steps back, so the layer is never white on white.
+   - Scrim: one value everywhere, key.950 at 45% (was 35% grey on sheets, none on tips).
+   - Teaching tip (KeyTip): deep surface (bg.deep, key.950) with white type; the picture of the real part stays on a white panel
+     inside it; the page is dimmed except a cut-out around the thing it points at.
+   - Sheets and menus: the page behind scales back and rounds (the iOS page sheet), under the scrim; grab handle darker.
+   - Drawer and OS prompt: same scrim. Push banner: grey material with blur and a deep shadow, never flat white.
+   - Toast: already inverse; gains the elevation 4 shadow.
+   Append after edu.css and motion.css. ==== */
+:root { --pop-scrim:rgba(11,14,17,.45); --pop-deep:#0B0E11; --pop-lift:0 2px 4px rgba(11,14,17,.10), 0 22px 48px -14px rgba(11,14,17,.55); }
+
+/* ---- sheets, menus, drawer, OS prompt: one scrim ---- */
+.scrim, .dscrim, .osp { background:var(--pop-scrim); }
+.sheet { border-top:0; box-shadow:0 -10px 40px -8px rgba(11,14,17,.40); }
+.sheet .grab::after { background:#A6AFBB; width:36px; height:5px; border-radius:3px; }
+
+/* the page steps back while a sheet is up (iOS page sheet); status bar turns white on the dark edge */
+#phone { background:var(--pop-deep); }
+#phone > .screen { background:var(--paper); transform-origin:50% 0; transition:transform .28s cubic-bezier(.2,.8,.2,1), border-radius .28s cubic-bezier(.2,.8,.2,1); }
+#phone:has(> #sheet:not(.closing)) > .screen, #phone:has(> .drawer:not(.closing)) > .screen { transform:translateY(46px) scale(.93); border-radius:14px; overflow:hidden; }
+#phone:has(> #sheet:not(.closing)) .ios-status { color:#fff; }
+#phone:has(> #sheet:not(.closing)) .ios-status .sig i { background:#fff; }
+#phone:has(> #sheet:not(.closing)) .ios-status .bat { border-color:#fff; }
+
+/* ---- teaching tip ---- */
+.tipx { background:var(--pop-deep); color:#fff; padding:12px 12px 12px 14px; box-shadow:var(--pop-lift); }
+.tipx .ar { background:var(--pop-deep); box-shadow:none; }
+.tipx.up .ar { box-shadow:none; }
+.tipx .art { background:#fff; margin:0 -2px 12px 0; }
+.tipx .tt b { color:#fff; }
+.tipx .tt .n { color:rgba(255,255,255,.56); }
+.tipx .tb { color:rgba(255,255,255,.74); }
+.tipx .ok { margin-top:12px; }
+.tipx .ok span { background:#fff; color:var(--pop-deep); border-radius:12px; padding:8px 16px; font-size:14px; }
+/* the cut-out: a clear hole over the target, the rest of the phone under the scrim (popups.js places it) */
+.tipdim { position:absolute; z-index:25; pointer-events:none; border-radius:16px; box-shadow:0 0 0 200vmax var(--pop-scrim); animation:tipDimIn .2s ease; }
+.tipdim.still { animation:none; }
+@keyframes tipDimIn { from { opacity:0; } to { opacity:1; } }
+.tip-on, .nav .kai.tip-on .ic { box-shadow:none !important; animation:none; }
+
+/* tip pictures: stacked faces overlap less so both initials read; swipe picture drawn by popups.js */
+.tipx .ea-row .av + .av { margin-left:-6px; }
+.pop-sw { display:flex; border-radius:10px; overflow:hidden; background:#fff; }
+.pop-sw .ea-row { flex:1; min-width:0; border-radius:0; margin-left:-24px; padding-left:24px; box-shadow:1px 0 0 var(--line); }
+.pop-sw .acts { display:flex; flex:0 0 auto; }
+.pop-sw .acts span { width:34px; display:flex; align-items:center; justify-content:center; color:#fff; background:#525B66; }
+.pop-sw .acts span:first-child { background:#808996; } .pop-sw .acts span:last-child { background:#39424C; }
+
+/* ---- push banner: material, not white ---- */
+.push { background:rgba(226,231,237,.94); -webkit-backdrop-filter:blur(22px) saturate(1.6); backdrop-filter:blur(22px) saturate(1.6); border:0; box-shadow:var(--pop-lift); }
+.push .pa span { background:#fff; border-color:#fff; }
+
+/* ---- OS prompt: system material over the scrim ---- */
+.osc { background:rgba(242,242,244,.92); -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px); box-shadow:var(--pop-lift); }
+
+/* ---- toast ---- */
+.toast { background:var(--pop-deep); box-shadow:var(--pop-lift); }
+
+@media (prefers-reduced-motion: reduce) { #phone > .screen { transition:none; } .tipdim { animation:none; } }
 </style>
 </head>
 <body>
@@ -12010,6 +12070,32 @@ if (EDU_ON) {
 }
 const _eduRender = render;
 render = function(){ const r = _eduRender.apply(this, arguments); eduMount(); return r; };
+
+/* ==== POPUPS (27 Sep, pop-up salience thread): the cut-out behind the teaching tip. popups.css draws it; this places it.
+   Wraps eduPlace and eduClear from edu.js; load after edu.js. ==== */
+function popDim(){
+  const t = phone.querySelector(".tip-on"), tip = phone.querySelector(".tipx");
+  let d = phone.querySelector(".tipdim");
+  if (!t || !tip || tip.style.visibility==="hidden") { if (d) d.remove(); return; }
+  if (!d) { d = document.createElement("div"); d.className = "tipdim" + (EDU_STILL ? " still" : ""); phone.insertBefore(d, tip); }
+  const pr = phone.getBoundingClientRect(), r = (t.querySelector(".ic")||t).getBoundingClientRect(), pad = 6;
+  d.style.left = (r.left-pr.left-pad)+"px"; d.style.top = (r.top-pr.top-pad)+"px";
+  d.style.width = (r.width+pad*2)+"px"; d.style.height = (r.height+pad*2)+"px";
+  d.style.borderRadius = t.matches(".nav .kai") ? "50%" : "";
+}
+const _popPlace = eduPlace, _popClear = eduClear;
+eduPlace = function(){ _popPlace(); popDim(); };
+eduClear = function(){ _popClear(); const d = phone.querySelector(".tipdim"); if (d) d.remove(); };
+/* The screen can still be sliding in (motion's 28px tab slide) when the tip mounts, so the tip and the cut-out follow
+   the target every frame while a tip is up; the loop stops when the tip goes. */
+let popRaf = 0;
+function popFollow(){ if (!phone.querySelector(".tipx")) { popRaf = 0; return; } eduPlace(); popRaf = requestAnimationFrame(popFollow); }
+const _popMount = eduMount;
+eduMount = function(){ _popMount(); if (!popRaf && phone.querySelector(".tipx")) popRaf = requestAnimationFrame(popFollow); };
+
+/* Tip pictures: the swipe tip drew emoji on its actions and its "swipe" label covered the name. Lucide icons, no label. */
+(()=>{ const t = EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
+  t.art = ()=>`<div class="pop-sw"><div class="ea-row"><div class="av">DR</div><div class="m"><i>Daniel Reyes</i><u></u></div></div><div class="acts"><span>${LI("pin",14)}</span><span>${LI("bell-off",14)}</span><span>${LI("ellipsis-vertical",14)}</span></div></div>`; })();
 
 /* ==== PROFILE FIXES (27 Sep, missions thread; found by the profiles thread, built as a candidate on the coordinator's ask)
    1. A blocked person's profile must not offer "Say hi": the action becomes Unblock, with a line saying what blocked means.
