@@ -7434,11 +7434,11 @@ const _bMission = sMission; sMission = function(id){
 const _bOPage = typeof oPage==="function" ? oPage : null;
 if (_bOPage) oPage = function(){ let h=_bOPage(); const i=h.indexOf('<div class="mlog">'); const j=h.indexOf('<div class="body-gap">'); if (i>=0&&j>i) h=h.slice(0,i)+`<div class="row" onclick="STATE.lg=STATE.lg||{open:null,done:{},last:null};STATE.lg.last=null;openSheet('lsheet','morg')"><div class="avatar" style="border-radius:8px">${LI("mic",14)}</div><div class="m"><div class="a plain">Tell Kai what changed</div><div class="b">Hold to talk. Grace said yes, skip welcomes this week, who went quiet</div></div><span class="chev">›</span></div>`+h.slice(j); return h; };
 
-/* home: the mic in the header, everywhere you are; the calendar push once */
+/* home: no fourth header icon (his 18:35 word: three at most; Kai already exists). The free log stays on the mission page.
+   The calendar push waits until Priya has sent her first ask, so it never covers the first screen of the demo (journey guide, 18:34). */
 const _bHome = sHome; sHome = function(){
-  let h = _bHome(); if (!STATE.member || !STATE.intakeDone) return h;
-  h = h.replace(`<div class="icon" onclick="openSheet('newmission')">+</div>`, `<div class="icon" onclick="STATE.lg=STATE.lg||{open:null,done:{},last:null};STATE.lg.last=null;openSheet('lsheet','')">${LI("mic",18)}</div><div class="icon" onclick="openSheet('newmission')">+</div>`);
-  lgCalendarPush(); return h;
+  const h = _bHome(); if (!STATE.member || !STATE.intakeDone) return h;
+  if (DB.opps.some(o=>["waiting","conversation","yourmove"].includes(o.state) && !isNewOf(o))) lgCalendarPush(); return h;
 };
 const _bPortSheet = portSheet; portSheet = function(type, id){ if (type==="bsheet") return bBriefSheet(id); if (type==="lsheet") return lgSheet(id||null); return _bPortSheet(type, id); };
 
