@@ -3102,6 +3102,12 @@ body:has(.push) .ctlbtn { display:none; }
   .mo-promo + div h1 { font-size:22px; margin:4px 0 6px !important; }
   .mo-promo + div .invchip { margin-top:10px !important; }
   .body:has(> .mo-promo) > .btn:not(.ghost) { margin-top:12px !important; }
+  .ob3sign:has(.mo-promo) .ob3pitch { padding-top:10px; }
+  .ob3sign:has(.mo-promo) h1 { font-size:20px; }
+  .ob3sign:has(.mo-promo) .ob3num { margin-top:4px; }
+  .ob3sign:has(.mo-promo) .invchip { margin-top:8px !important; }
+  .ob3sign:has(.mo-promo) .ob3btns { padding-top:10px; gap:6px; }
+  .ob3sign:has(.mo-promo) .ob3btns .btn { min-height:44px; padding-block:0; } /* 44pt, Apple's minimum target */
 }
 </style>
 </head>
@@ -10902,6 +10908,25 @@ if (EDU_ON) {
 const _eduRender = render;
 render = function(){ const r = _eduRender.apply(this, arguments); eduMount(); return r; };
 
+/* ==== PROFILE FIXES (27 Sep, missions thread; found by the profiles thread, built as a candidate on the coordinator's ask)
+   1. A blocked person's profile must not offer "Say hi": the action becomes Unblock, with a line saying what blocked means.
+   2. Manage's declined Sam Ortiz and removed Tom Becker shared the mock ids of Sam Okafor and Tom Becker the recruiter;
+      the Manage entries get their own ids so a tap opens the right person. Community's list is only renamed here, not edited. */
+function fxBlocked(pid){ if (!DB.chat && typeof seedChats==="function") seedChats(); const c = DB.chat && DB.chat["d-"+pid]; return !!(c && c.blockedByMe); }
+function fxUnblock(pid){ if (!DB.chat && typeof seedChats==="function") seedChats(); const c = DB.chat && DB.chat["d-"+pid]; if (c) { c.blockedByMe=false; c.muted=false; } toast(`Unblocked ${f1(DB.people[pid])}. They can message you again.`); render(); }
+function fxProfile(h, pid){
+  if (!fxBlocked(pid)) return h;
+  const p = DB.people[pid]; const n = p ? f1(p) : "them";
+  return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar"><button class="btn sec" onclick="fxUnblock('${pid}')">Unblock ${n}</button>`)
+          .replace(/<button class="btn" data-coldask="[^"]*">[^<]*<\/button>/, `<button class="btn sec" onclick="fxUnblock('${pid}')">Unblock ${n}</button>`)
+          .replace(/(<div class="sbar">)/, `<div class="m12" style="padding:0 16px 8px">Blocked. ${n} can't message you and isn't told.</div>$1`);
+}
+const _fxProfileSheet = profileSheet; profileSheet = function(pid){ return fxProfile(_fxProfileSheet(pid), pid); };
+const _fxSProfile = sProfile; sProfile = function(pid){ return fxProfile(_fxSProfile(pid), pid); };
+
+if (typeof C_MM !== "undefined") C_MM.forEach(m=>{ if (m.id==="sam" && m.n==="Sam Ortiz") m.id="sam-ortiz"; if (m.id==="tom" && m.n==="Tom Becker" && /becker/.test(m.e||"")) m.id="tom-becker"; });
+const _fxPortSheet = portSheet; portSheet = function(type, id){ let h = _fxPortSheet(type, id); if (typeof h==="string" && h.includes('data-mml="tom" data-mm="tom"')) h = h.replace('data-mml="tom" data-mm="tom"', 'data-mml="tom-becker" data-mm="tom-becker"'); return h; };
+
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
    Kai questions and asks land on real matches. Fictional people; adds only, never edits a seeded person. ==== */
@@ -11367,10 +11392,11 @@ function moTimeline(root) {
 function moPromoStill(root) { root.classList.add("still"); }
 // Short phones: scale the whole reel down (to 44% at most) so the sign-in buttons stay above the fold (hosting's phone check, 390x664)
 function moPromoFit(root) {
-  const body = root.parentElement, btns = body ? body.querySelectorAll(".btn") : [], last = btns[btns.length-1]; if (!last) return;
+  const body = root.closest(".body"), btns = body ? body.querySelectorAll(".btn") : [], last = btns[btns.length-1]; if (!last) return;
   root.style.zoom = root.style.margin = "";
+  const bleed = parseFloat(getComputedStyle(root).marginLeft) || 0; // the old sign-in bleeds the reel 16px past the body padding; onboarding rev 3 sets it flush
   const over = last.getBoundingClientRect().bottom + 12 - body.getBoundingClientRect().top - body.clientHeight, z = Math.max(.44, Math.min(1, 1 - Math.max(0, over)/440));
-  if (z < .995) { root.style.zoom = z.toFixed(3); root.style.margin = `0 ${(-16/z).toFixed(2)}px`; } // zoom scales the -16px bleed too, so widen it back to the screen edges
+  if (z < .995) { root.style.zoom = z.toFixed(3); if (bleed) root.style.margin = `0 ${(bleed/z).toFixed(2)}px`; } // zoom scales the bleed too, so widen it back to the screen edges
 }
 function moPromoMount(root) {
   if (root._mo) return; root._mo = true;
