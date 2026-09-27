@@ -3793,13 +3793,7 @@ p,
   .cm-pinnote .w { display:inline-flex; align-items:center; gap:4px; }
   .cm-evstrip { display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; margin:0 -16px; padding:0 16px 4px; scrollbar-width:none; }
   .cm-evstrip > .evx-card { flex:0 0 86%; scroll-snap-align:start; }
-  .cm-chrow { border-top:1px solid var(--line); }
-  .cm-chs { display:flex; } .cm-chs span { width:30px; height:30px; border-radius:8px; background:var(--fill); border:2px solid var(--paper); display:flex; align-items:center; justify-content:center; font-size:15px; margin-left:-8px; } .cm-chs span:first-child { margin-left:0; }
 
-  /* asks and offers: the one thing members post (27 Sep 19:58) */
-  .cm-askbtns { display:flex; gap:8px; margin:4px 0 6px; }
-  .cm-askbtns span { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; height:44px; border:1px solid var(--ink); border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; }
-  .cm-ask { align-items:flex-start; } .cm-ask .a { font-weight:500; } .cm-ask .cm-btn, .cm-ask .cm-done { margin-top:18px; flex:0 0 auto; }
   .cm-form textarea.v { width:100%; border:0; outline:0; resize:none; font:inherit; background:transparent; color:var(--ink); padding:0; }
   .cm-mark { display:block; width:100%; height:100%; border-radius:inherit; overflow:hidden; } .cm-mark svg { display:block; width:100%; height:100%; }
   .cm-sq:has(.cm-mark), .avatar.cm-markav { background:none; border:0; overflow:hidden; } .cm-markav { border-radius:12px; }
@@ -3869,16 +3863,6 @@ p,
 .cmhi .cm-btn.q { border-color:transparent; background:var(--bg-fill-strong); color:var(--text-primary); }
 .cmhi .cm-done { font-size:12px; font-weight:700; color:var(--text-secondary); }
 
-/* Asks and offers: two buttons that start a post, then ask rows */
-.cmhi .cm-askbtns { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-absolute-8); margin:var(--space-absolute-4) 0 var(--space-absolute-8); }
-.cmhi .cm-askbtns span { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); display:flex; align-items:center; justify-content:center; gap:var(--space-absolute-8);
-  font-size:15px; font-weight:600; border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); }
-.cmhi .cm-askbtns span:first-child { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
-.cmhi .cm-ask { align-items:flex-start; }
-.cmhi .cm-ask .a { font-weight:400; line-height:1.5; margin-top:var(--space-absolute-4); }
-.cmhi .cm-ask .b { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:var(--space-absolute-4); }
-.cmhi .cm-ask > .cm-btn, .cmhi .cm-ask > .cm-done { margin-top:var(--space-absolute-4); }
-
 /* KeyBrief (organizer): one live object, so it is a card: the inverse surface, radius 20, lifted */
 .cmhi .cm-ostrip.cm-brief { background:var(--bg-inverse-default); color:var(--text-inverse); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-2); margin:var(--space-absolute-16) 0 0; padding:var(--space-absolute-16); }
 .cmhi .cm-brief .cm-oshd .a, .cmhi .cm-brief .cm-bnums .m { color:var(--text-inverse); }
@@ -3912,7 +3896,6 @@ p,
 
 /* Coming up: a rail of Events' own cards; channels with news: one row */
 .cmhi .cm-evstrip { gap:var(--space-absolute-12); padding-bottom:var(--space-absolute-8); }
-.cmhi .cm-chrow { margin-top:var(--space-absolute-16); padding:var(--space-absolute-12) 0; border-top:var(--border-width-hairline) solid var(--border-default); }
 
 /* KeySearchField + KeyChip: white on the page ground, so they read as controls */
 .cmhi .cm-search .search, .cmhi .cm-form .search { height:var(--space-absolute-44, 44px); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); font-size:15px; color:var(--text-primary); padding:0 var(--space-absolute-12); }
@@ -4036,6 +4019,13 @@ p,
 .cmroom.cmbg-rows .brow.me { justify-content:flex-start; }
 .cmroom.cmbg-rows .bub.me .bf { color:var(--text-tertiary); }
 .cmroom.cmbg-rows .brow { margin-top:var(--space-absolute-14); }
+
+/* Overview: Talking now (Apoorv 22:27 audit) */
+.cm-talk .cm-che { width:40px; height:40px; border-radius:12px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-size:18px; flex:0 0 auto; }
+.cm-talk .cm-1l { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+.cm-talk .cm-tr { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex:0 0 auto; }
+.cmhi .cm-talk .cm-che { background:var(--bg-fill-default); border-radius:var(--radius-absolute-12); }
+.cmhi .cm-talk { --face-ring:var(--bg-page); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -12663,21 +12653,21 @@ const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"]; return
    This list is the section-to-component map Design system builds from. */
 const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
   [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
-  [".cm-sec, .cm-newm","KeyListSection"],[".cm-askbtns > span, .cm-btn, .cm-form .btn","KeyButton"],[".cm-ask, .cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
-  [".evx-card","KeyEventCard"],[".ch.slim, .cm-chrow","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
+  [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn","KeyButton"],[".cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
   [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
   [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
 /* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
 const cKaiMarks = root => { if (typeof kaiMark!=="function") return; root.querySelectorAll(".cm-kt, .cm-osk").forEach(el => { if (!el.dataset.kn) { el.innerHTML = kaiMark(el.classList.contains("cm-osk")?28:40); el.dataset.kn = 1; } }); };
 /* data-kv is the Figma variant string, as Figma writes it (Design system, 20:46) */
 const cKv = (el, n) => { const c = el.classList;
-  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-askbtns > span:first-child, .cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
+  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
     : n==="KeyChip" ? `variant=${c.contains("cm-osjob")?"deep":el.parentElement.classList.contains("cm-chtiles")?"channel":"default"}, state=${c.contains("on")?"selected":"default"}`
-    : n==="KeyRow" ? `type=${c.contains("cm-ask")?"ask":c.contains("cm-rit")?"ritual":"kai"}`
+    : n==="KeyRow" ? `type=${c.contains("cm-rit")?"ritual":"kai"}`
     : n==="KeyMemberRow" ? `state=${el.querySelector(".cm-done")?"new":"default"}`
     : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
     : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
-    : n==="KeyChannelRow" ? `type=${c.contains("cm-chrow")?"summary":"channel"}, state=${c.contains("u")?"unread":"read"}`
+    : n==="KeyChannelRow" ? `type=${c.contains("cm-talk")?"preview":"channel"}, state=${c.contains("u")?"unread":"read"}`
     : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
 const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
@@ -12774,10 +12764,10 @@ const C_RIT = {
 const cRituals = f => C_RIT[f.id] || [];
 const C_DAYN = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday" };
 
-/* ---- Overview (Apoorv 27 Sep 18:32 and 19:34; research in community-audit/overview/):
-   organizers get one brief on top (cOrgBrief). Then Asks and offers, the one thing members post. Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
-   Then Posts as they are scoped today: the pinned note, Kai's library posts and organizer broadcasts. Then the rest of the calendar as a strip,
-   and one row for unread channels. New members live in People. ---- */
+/* ---- Overview (Apoorv 27 Sep 18:32, 19:34; 22:37 dropped Asks and offers after community-audit/overview/asks-offers-audit.md):
+   organizers get one brief on top (cOrgBrief). Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
+   Then Talking now, the liveliest channels; People for you here, Kai's picks for your missions; later events as a strip;
+   and From the family, the pinned note, Kai's library posts and organizer broadcasts. New members live in People. ---- */
 const C_WEEK_END = 927;   /* mock week: Mon 21 to Sun 27 Sep, the week the Monday ritual is live */
 /* members who joined this week, with Say hi in place (People, under the search) */
 function cNewStrip(f){
@@ -12785,28 +12775,6 @@ function cNewStrip(f){
   const face = p => `<div class="cm-nm" data-profile="${p.id}">${av(p.initials,"lg")}<b>${p.name.split(" ")[0]}</b><span>${p.company.split(",")[0]}</span>${(STATE.cGreeted||{})[p.id]?'<em class="cm-done">Greeted</em>':`<em class="cm-btn q" data-cgreet="${p.id}">Say hi</em>`}</div>`;
   return joined.length ? `<div class="cm-sec cm-newm"><div class="cm-nmh">Joined this week</div><div class="cm-nms">${joined.map(face).join("")}</div></div>` : "";
 }
-/* ---- Asks and offers (Apoorv 27 Sep 19:58 picked typed member posts over an open feed; member-posts-research.md).
-   A member posts one Ask or one Offer, nothing else. Kai suggests who can help; replies go to Messages, never a public comment
-   thread (Burke and Kraut 2014: one-to-one messages build ties, broadcasting weakens them). Nothing is sent without a tap. ---- */
-const C_ASKS = {
-  xoogler:[
-    {id:"a1", k:"ask", pid:"omar", tag:"Intro", text:"Intro to someone on Stripe's payments risk team? Two questions on chargebacks.", when:"3h", n:1},
-    {id:"a2", k:"offer", pid:"sana", tag:"Interviews", text:"Mock PM interviews for anyone prepping for an AI lab loop this month.", when:"1d", n:5},
-    {id:"a3", k:"ask", pid:"maya", tag:"Cofounder", text:"Looking for a technical cofounder who has scaled infra. Warm intros welcome.", when:"2d", n:2},
-    {id:"a4", k:"offer", pid:"kofi", tag:"Advice", text:"Office hours for pre-seed founders on Thursdays. 20 minutes, bring the deck.", when:"4d", n:3}
-  ]
-};
-const C_ASK_TAGS = ["Intro","Hiring","Advice","Cofounder","Feedback"];
-const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Stripe"],["karan","PM at Stripe"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at a16z"],["tom","Recruiter at OpenAI"],["pooja","Hires engineers at Uber"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Figma"]], Cofounder:[["felix","CTO at Relay, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Figma"],["hana","Design Lead at Notion"],["paul","Staff PM at Google Search"]] };
-const cAsks = f => [...(STATE.cMyAsks||[]).filter(a=>a.fam===f.id), ...(C_ASKS[f.id]||[])];
-const cAskOf = id => cAsks(cF()).find(a=>a.id===id);
-function cAskRow(a){
-  const p = a.pid==="me" ? DB.user : DB.people[a.pid]; const done = (STATE.cHelped||{})[a.id];
-  const act = a.pid==="me" ? `<span class="cm-btn q" data-csheet2="cmatch|${a.id}">${cPl(3,"match")}</span>`
-    : done ? '<span class="cm-done">Replied</span>' : `<span class="cm-btn" data-csheet2="chelp|${a.id}">${a.k==="ask"?"I can help":"Take it"}</span>`;
-  return `<div class="cm-row cm-ask" data-csheet2="${a.pid==="me"?"cmatch":"chelp"}|${a.id}">${av(p.initials)}<div class="m"><div class="cm-k">${a.k==="ask"?"Ask":"Offer"} · ${a.tag}</div><div class="a">${a.text}</div><div class="b">${a.pid==="me"?"You":p.name.split(" ")[0]} · ${a.when}${a.n?` · ${a.k==="ask"?`${a.n} helping`:`${a.n} took it`}`:""}</div></div>${act}</div>`;
-}
-const cAskBtns = f => `<div class="cm-askbtns"><span data-csheet2="cask|ask">${LI("hand",18)}Ask ${f.name}</span><span data-csheet2="cask|offer">${LI("gift",18)}Offer help</span></div>`;
 function cWeek(){
   const f = cF();
   const busy = (DB.channels[f.id]||[]).filter(c=>c.joined&&c.unread&&!(STATE.chMute||{})[c.id]).sort((a,b)=>b.unread-a.unread);
@@ -12819,15 +12787,26 @@ function cWeek(){
   const week = [...live.map(rit), ...soon.map(e=>evCard(e,"row",{fam:false}))].filter(Boolean);
   const pinP = f.pinned && Object.values(DB.people).find(p=>p.name===f.pinned.who);
   const pinNote = f.pinned ? `<div class="cm-lp cm-pinnote"><div class="cm-lby">${av(pinP?pinP.initials:"?","sm")}<span class="n">${f.pinned.who.split(" ")[0]}</span><span class="w">${LI("pin",12)} Pinned</span></div><div class="cm-lrow"><div class="m"><div class="x">${f.pinned.text}</div></div></div></div>` : "";
+  /* Apoorv 22:27: members come for conversations and people, not to post (asks-offers-audit.md). So the order is what has a clock,
+     where people are talking, people Kai picked for you here, later events, then the family's own posts. Asks go through missions
+     and the weekly Asks ritual; offers are "I can help with" on the profile. */
+  if (!DB.chat && typeof seedChats==="function") seedChats();
+  const inWeek = live.map(r=>r[5]);
+  const talk = (DB.channels[f.id]||[]).filter(c=>c.joined&&!c.readonly&&!(STATE.chMute||{})[c.id]&&!inWeek.includes(c.id)).map(c=>({c, m:((DB.chat||{})[c.id]||{}).msgs||[]})).filter(x=>x.m.length)
+    .sort((a,b)=>(b.c.unread||0)-(a.c.unread||0) || b.m.length-a.m.length).slice(0,3);
+  const who = id => id==="priya" ? DB.user : DB.people[id]||DB.people.chris;
+  const talkRow = ({c,m}) => { const last = m[m.length-1], faces = [...new Set(m.slice(-4).map(x=>x.from))].slice(0,3);
+    return `<div class="cm-row cm-talk${c.unread?" u":""}" data-channel="${c.id}"><div class="cm-sq cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}</div><div class="b cm-1l">${last.from==="priya"?"You":who(last.from).name.split(" ")[0]}: ${last.text}</div></div><div class="cm-tr"><span class="cm-faces">${faces.map(id=>av(who(id).initials,"sm")).join("")}</span>${c.unread?`<b class="cm-count sm">${c.unread}</b>`:''}</div></div>`; };
+  const picks = cPicks(f, cFamPeople(f)).slice(0,3);
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("week")}
     ${cOrgBrief()}
-    <div class="cm-sec cm-asks">${cHead("Asks and offers","All",'data-cposttype="asks"')}${cAskBtns(f)}${cAsks(f).slice(0,3).map(cAskRow).join("")}</div>
     ${week.length?`<div class="cm-sec cm-wk">${cHead("This week")}${week.join("")}</div>`:''}
-    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("Posts","All",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
+    ${talk.length?`<div class="cm-sec cm-talks">${cHead("Talking now","Channels",'data-ctab="chat"')}${talk.map(talkRow).join("")}</div>`:''}
+    ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>People for you here`,"People",'data-ctab="people"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
     ${later.length?`<div class="cm-sec">${cHead("Coming up","Events",'data-ctab="fevents"')}<div class="cm-evstrip">${later.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
-    ${busy.length?`<div class="cm-row cm-chrow" data-ctab="chat"><div class="cm-chs">${busy.slice(0,3).map(c=>`<span>${CH_EMO[c.id]||'#'}</span>`).join("")}</div><div class="m"><div class="a">${busy.reduce((t,c)=>t+c.unread,0)} new in ${busy.slice(0,2).map(c=>c.name.replace(/^#/,'')).join(", ")}${busy.length>2?` and ${busy.length-2} more`:''}</div></div><span class="s">›</span></div>`:''}
+    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("From the family","Posts",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
   </div>
   ${navHTML("families")}`;
 }
@@ -13101,7 +13080,7 @@ sPosts = function(){
   const queue = hist==="waiting" ? pend : hist==="approved" ? judged.filter(p=>p.st==="live") : hist==="rejected" ? judged.filter(p=>p.st==="rejected") : [...pend, ...judged];
   const list = (t==="All" ? live : t==="saved" ? saved : t==="drafts" ? drafts : t==="requests" ? queue : live.filter(p=>p.cat===t)).filter(p=>!qq||(p.title+p.text+p.who+p.tags.join(" ")).toLowerCase().includes(qq)).filter(p=>!(STATE.cHidden||{})[p.id]);
   const mode = t==="requests" ? (cOrg()&&(STATE.cApprove||"waiting")==="waiting"?"requests":"") : t==="drafts" ? "drafts" : "";
-  const chips = [["All","All"],["asks","Asks and offers"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
+  const chips = [["All","All"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
   const liveRow = STATE.liveBroadcast && (t==="All"||t==="Announcements") ? `<div class="cm-lp cm-live"><div class="cm-k"><span class="cm-livedot"></span>Live now · Announcements</div><div class="cm-lrow"><div class="m"><div class="t">Office hours with ${f.id==="desi"?"Neha":"Daniel"}</div><div class="x">41 members listening. Kai keeps the follow-ups for you.</div></div></div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
   const empty = { saved:"Nothing saved yet. Tap Save on a post to keep it here.", drafts:"No drafts.", requests:"Nothing waiting for approval." }[t] || `No posts in ${t==="All"?f.name:t} yet.`;
   return `${famHdr()}<div class="body" style="padding-top:0">
@@ -13109,8 +13088,8 @@ sPosts = function(){
     <div class="cm-bar">${famPills("posts")}<div class="cm-search"><input class="search" id="cpq" placeholder="Search posts in ${f.name}" value="${STATE.cPostQ||""}"></div>${cChips(chips, t, "cptype")}</div>
     ${t==="requests"&&cOrg()?`<div class="cm-cnt"><span class="cm-sort" data-csheet="cappr">${({waiting:"Waiting",approved:"Approved",rejected:"Rejected",all:"All decisions"})[hist]}${C_CHEV_SVG}</span><span>${cPl(list.length,"post")}</span></div>`:''}
     ${t==="All"||cCats(f).includes(t)?`<div class="cm-row cm-inv" data-csheet="cnewpost">${av(DB.user.initials)}<div class="m"><div class="a">Write a post</div></div>${cOrg()?`<span class="cm-btn q" data-clive="1">${STATE.liveBroadcast?"End live":"Go live"}</span>`:''}</div>`:''}
-    ${t==="asks" ? `${cAskBtns(f)}${cAsks(f).filter(a=>!qq||(a.text+a.tag).toLowerCase().includes(qq)).map(cAskRow).join("")}` : `${liveRow}
-    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}`}
+    ${liveRow}
+    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}
   </div>
   ${navHTML("families")}`;
 };
@@ -13557,24 +13536,6 @@ function cSheet(type, id){
         <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a" style="color:var(--danger)">Leave ${f.name}</div></div></div>
       </div>`;
   }
-  if (type==="cask") { const ask = id!=="offer", tag = STATE.cAskTag || null;
-    return `<h2>${ask?`Ask ${f.name}`:"Offer help"}</h2>
-      <div class="field"><div class="k">${ask?"What do you need?":"What can you offer?"}</div><textarea id="caskt" class="v" rows="3" placeholder="${ask?"One line. Who or what would help?":"One line. What, and for whom?"}">${STATE.cAskDraft||""}</textarea></div>
-      <div class="cm-lbl">About</div>${cChips(C_ASK_TAGS.map(x=>[x,x]), tag, "casktag")}
-      <p class="xs faint">Kai suggests who can ${ask?"help":"use it"}. Replies come to your messages, not a comment thread.</p>
-      <button class="btn" ${tag?'':'disabled'} data-caskpost="${ask?"ask":"offer"}">${ask?"Post ask":"Post offer"}</button>`; }
-  if (type==="cmatch") { const a = cAskOf(id); if (!a) return "";
-    const sent = STATE.cAskSent||{};
-    return `<h2>Kai found 3 people who ${a.k==="ask"?"can help":"could use this"}</h2><p class="xs faint" style="margin-top:-4px">From your ${a.k}: ${a.text}</p>
-      <div class="cm-list">${(C_ASK_MATCH[a.tag]||C_ASK_MATCH.Advice).map(([pid,why])=>{ const p=DB.people[pid]; return `<div class="cm-row" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${why}</div></div>${sent[a.id+pid]?'<span class="cm-done">Drafted</span>':`<span class="cm-btn q" data-caskdm="${a.id}|${pid}">Ask</span>`}</div>`; }).join("")}</div>
-      <p class="xs faint">Kai drafts each message in Messages. Nothing goes out until you send it.</p>`; }
-  if (type==="chelp") { const a = cAskOf(id); if (!a) return ""; const p = DB.people[a.pid]; const first = p.name.split(" ")[0];
-    const draft = a.k==="ask" ? `Hi ${first}, saw your ask in ${f.name}. I can help with this. Want to find 20 minutes this week?` : `Hi ${first}, I'd love to take you up on this. Could we find a slot in the next two weeks?`;
-    return `<div class="cm-selhdr" style="margin-bottom:6px">${av(p.initials)}<div style="flex:1"><div class="t">${p.name}</div><div class="xs faint">${a.k==="ask"?"Ask":"Offer"} · ${a.tag} · ${a.when}</div></div></div>
-      <div class="cm-text" style="margin-bottom:12px">${a.text}</div>
-      <div class="cm-lbl">Draft reply</div><div class="field"><div class="v">${draft}</div></div>
-      <p class="xs faint">Goes to ${first} in Messages. Only the two of you see it.</p>
-      <div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" onclick="toast('Edit the draft')">Edit</button><button class="btn" style="flex:1;margin:0" data-chelpsend="${a.id}">Send to ${first}</button></div>`; }
   if (type==="cinvite") {
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
@@ -13765,7 +13726,8 @@ portSheet = function(type, id){ const h = cSheet(type, id); return h!==null ? `<
 
 /* ---- swipe between family tabs (Apoorv 27 Sep 21:32: the tabs sit out of thumb reach). Instagram and X profiles, Telegram folders and
    Material's swipeable tabs do this. A sideways drag on the content moves one tab; whatever already moves sideways keeps its gesture:
-   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), fields, row swipes and an open sheet.
+   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), a field being typed in (an idle search
+   field still swipes, as over a UITextField in a paging scroll view), row swipes and an open sheet.
    The drag only takes over once it is clearly sideways, so vertical scroll stays native; long presses give way once a finger travels. ---- */
 function cSwipe(){
   const i = C_TAB_SCR.indexOf(STATE.screen), body = phone.querySelector(".view .body");
@@ -13777,7 +13739,7 @@ function cSwipe(){
   const drag = (dx, on) => { const p = body.querySelector(":scope > .cm-pane"); if (!p || calm) return; p.style.transition = on ? "none" : "transform .2s cubic-bezier(.2,.8,.2,1), opacity .2s"; p.style.transform = dx ? `translateX(${dx}px)` : ""; p.style.opacity = dx ? String(1 - Math.abs(dx)/160) : ""; };
   body.addEventListener("pointerdown", e=>{
     s = null;
-    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("input,textarea,select,[contenteditable],.swr,.cm-tabs") || rail(e.target)) return;
+    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("textarea,select,[contenteditable],.swr,.cm-tabs") || e.target===document.activeElement && e.target.matches("input") || rail(e.target)) return;
     s = { x:e.clientX, y:e.clientY, t:e.timeStamp, id:e.pointerId, lock:false };
   });
   body.addEventListener("pointermove", e=>{
@@ -13868,13 +13830,6 @@ portWire = function(){
   q("[data-cvote]", el=>{ const [id,d]=el.dataset.cvote.split("|"); STATE.cVote=Object.assign(STATE.cVote||{}); STATE.cVote[id] = STATE.cVote[id]===+d ? 0 : +d; render(); });
   q("[data-csave]", el=>{ const id=el.dataset.csave; STATE.cSave=Object.assign(STATE.cSave||{}); STATE.cSave[id]=!STATE.cSave[id]; STATE.sheet=null; render(); toast(STATE.cSave[id]?"Saved. Find it under Saved.":"Removed from Saved."); });
   q("[data-cnewcat]", el=>{ STATE.cNewCat=el.dataset.cnewcat; render(); });
-  q("[data-cposttype]", el=>{ STATE.postType=el.dataset.cposttype; go("posts"); });
-  q("[data-casktag]", el=>{ const t=phone.querySelector("#caskt"); STATE.cAskDraft = t ? t.value : STATE.cAskDraft; STATE.cAskTag=el.dataset.casktag; render(); });
-  q("[data-caskpost]", el=>{ const t=phone.querySelector("#caskt"); const text=(t&&t.value.trim()) || STATE.cAskDraft || (el.dataset.caskpost==="ask"?"Intro to someone who has run a PM hiring loop at an AI lab?":"Happy to review PM resumes this week.");
-    const a = { id:"m"+Date.now(), fam:cF().id, k:el.dataset.caskpost, pid:"me", tag:STATE.cAskTag, text, when:"Now", n:0 };
-    STATE.cMyAsks = [a, ...(STATE.cMyAsks||[])]; STATE.cAskTag = null; STATE.cAskDraft = ""; STATE.sheet = null; openSheet("cmatch", a.id); });
-  q("[data-caskdm]", el=>{ const [aid,pid]=el.dataset.caskdm.split("|"); STATE.cAskSent=Object.assign(STATE.cAskSent||{}, {[aid+pid]:true}); render(); toast(`Kai drafted a message to ${DB.people[pid].name.split(" ")[0]} in Messages. Send it when it reads right.`); });
-  q("[data-chelpsend]", el=>{ const a=cAskOf(el.dataset.chelpsend); STATE.cHelped=Object.assign(STATE.cHelped||{}, {[a.id]:true}); closeSheet(); toast(`Sent to ${DB.people[a.pid].name.split(" ")[0]} in Messages.`); });
   q("[data-cpostsave]", el=>{ const st=el.dataset.cpostsave; const f=cF(); DB.posts.unshift({ id:"pn"+DB.posts.length, fam:f.id, cat:STATE.cNewCat||cCats(f)[1], who:DB.user.name, ini:DB.user.initials, sub:"", when:"Now", title:"Your new post", text:"What you wrote.", read:"1 min read", tags:[], up:0, cm:0, st, mine:true }); STATE.cNewCat=null; STATE.sheet=null; STATE.postType = st==="live" ? "All" : "drafts"; render(); toast(st==="live"?"Posted.":st==="pending"?"Sent to the organizers. It's under Drafts until it's approved.":"Saved to Drafts."); });
   q("[data-cpdel]", el=>{ DB.posts = DB.posts.filter(p=>p.id!==el.dataset.cpdel); STATE.sheet=null; if (STATE.screen==="manage:cpost") go("posts"); else render(); toast("Deleted."); });
   q("[data-cppin]", el=>{ const p=DB.posts.find(x=>x.id===el.dataset.cppin); p.pinned=!p.pinned; STATE.sheet=null; render(); });

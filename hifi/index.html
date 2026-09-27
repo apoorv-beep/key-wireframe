@@ -15358,8 +15358,24 @@ sheetHTML = function() {
   return h.replace('<div class="sheet ', `<div data-kc="KeyKaiSheet" data-kv="height=${full?"full":"half"}" class="sheet ks ${full?"":"half "}${grew?"grew ":""}`);
 };
 const _ksKaiAsk = kaiAsk;
+// A general question gets an answer, never the canned "Noted": a known ask in other words goes to its scripted answer; follow-ups
+// read your own paths; anything else searches your families only (talkFallback), so nobody is surfaced by employer across Key.
+const KS_CANON = [ [/hir(e|ing)|roles?|jobs?|openings?/i, /\bpms?\b|product/i, "Who's hiring PMs in Xoogler?"], [/constraint/i, /./, "Add a constraint to my role mission"], [/catch me up|#jobs/i, /./, "Catch me up on #jobs"] ];
+function ksFollowUps() {
+  const mine = DB.opps.filter(o => ownerOf(o)==="you" && !isNewOf(o) && targetOf(o));
+  if (!mine.length) return { text:"Nothing is waiting on you. When someone replies or a path needs a nudge, it shows here and on the mission." };
+  return { text:`${mine.length===1?"One thing":`${mine.length} things`} waiting on you.`, mini:mine.slice(0,3).map(o => `${targetOf(o).name} · ${kickerOf(o)[0]}`), chips:mine.slice(0,2).map(o => `Review the ask to ${firstName(targetOf(o))}`) };
+}
 kaiAsk = function(t) {
   if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull && !/start the conversation/i.test(t)) { STATE.sheetFull = true; STATE.kaiGrew = true; }
+  const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
+  const general = !scope && !STATE.logMode && !KAI_COMPOSER.some(x => x.t===t);
+  if (general && /\?\s*$|^(who|which|what|how|where|when|can|is|are|do|does|any)\b/i.test(t.trim())) {
+    const c = KS_CANON.find(([a, b2]) => a.test(t) && b2.test(t));
+    if (c) { const k = KAI_COMPOSER.find(x => x.t===c[2]); STATE.kaiMsgs = STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"u", text:ksQ(t) }, { who:"k", text:k.r, mini:k.mini, chips:k.chips }); render(); return; }
+    if (/follow up|follow-up|waiting on me|owe/i.test(t)) { STATE.kaiMsgs = STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"u", text:ksQ(t) }, Object.assign({ who:"k" }, ksFollowUps())); render(); return; }
+    if (!TALK_LIVE && typeof talkFallback==="function") { STATE.kaiMsgs = STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"u", text:ksQ(t) }); talkFallback(t); return; }
+  }
   return _ksKaiAsk.apply(this, arguments);
 };
 // The thread follows the newest message; Enter sends, Shift+Enter breaks the line.
