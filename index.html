@@ -2871,6 +2871,7 @@ p,
   .cm-live .ck { display:flex; align-items:center; gap:6px; color:var(--ink); }
   .cm-livedot { width:8px; height:8px; border-radius:50%; background:#B23B3B; }
   .cm-pane { overflow-x:clip; }
+  .cm-swipe { touch-action:pan-y; }   /* vertical scroll stays native; a sideways drag reaches cSwipe */
   .cm-pane.cm-in-l { animation:cmInL .26s cubic-bezier(.2,.8,.2,1); }
   .cm-pane.cm-in-r { animation:cmInR .26s cubic-bezier(.2,.8,.2,1); }
   .cm-pane.cm-fade { animation:cmFade .18s ease-out; }
@@ -3165,6 +3166,239 @@ p,
   .cm-form textarea.v { width:100%; border:0; outline:0; resize:none; font:inherit; background:transparent; color:var(--ink); padding:0; }
   .cm-mark { display:block; width:100%; height:100%; border-radius:inherit; overflow:hidden; } .cm-mark svg { display:block; width:100%; height:100%; }
   .cm-sq:has(.cm-mark), .avatar.cm-markav { background:none; border:0; overflow:hidden; } .cm-markav { border-radius:12px; }
+
+/* ==== COMMUNITY HI-FI (27 Sep, community thread; Apoorv 20:28 "start porting into high fidelity, starting with community").
+   The blend (design-system README, 25 Sep): page ground, rows with hairlines, a card only for one live object, shadow as depth.
+   Values are key-tokens.css variables only (Design system's convention, 20:36); type is the 14 named styles.
+   Scoped to .cmhi, which render() puts on the phone while a family screen is up, so no other tab changes. ==== */
+.phone.cmhi, .cmhi .screen, .cmhi .body { background:var(--bg-page); }
+.cmhi .body { color:var(--text-primary); }
+
+/* KeyHeader: page ground, the family name opens the family menu, two icon buttons that float */
+.cmhi .hdr.top { background:var(--component-header-bg); padding:var(--space-absolute-12) var(--space-absolute-16) var(--space-absolute-8); gap:var(--space-absolute-10); }
+.cmhi .hdr.top > .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); }
+.cmhi .hdr .cm-fname { font-size:20px; font-weight:600; letter-spacing:-.015em; display:inline-flex; align-items:center; gap:var(--space-absolute-4); }
+.cmhi .hdr .cm-fname svg { color:var(--icon-tertiary); }
+/* header icons are bare (Apoorv 27 Sep 22:03); the 40px box stays as the touch target */
+.cmhi .hdr .icon, .cmhi .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; color:var(--icon-primary); box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+
+/* KeyAvatar: filled, no outline; you are the inverse fill */
+.cmhi .avatar { border:0; background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-weight:700; letter-spacing:.01em; }
+.cmhi .avatar[data-you] { background:var(--component-avatar-you-bg); color:var(--component-avatar-you-ink); }
+
+/* KeyCover + KeyFamilyLogo: the organizer's photo, or the family's pictogram cover; the logo sits on the page edge */
+.cmhi .cover.cm-cover { height:176px; margin:0 calc(-1 * var(--space-absolute-16)); border:0; background:var(--component-cover-bg); overflow:visible; }
+.cmhi .cover.cm-cover > .cv { border-radius:0; }
+.cmhi .cover.cm-cover > .cv svg { width:100%; height:100%; }
+.cmhi .cover.cm-cover .flogo.big { left:var(--space-absolute-16); bottom:calc(-1 * var(--space-absolute-28)); width:var(--space-absolute-72, 72px); height:var(--space-absolute-72, 72px);
+  border:0; border-radius:var(--radius-absolute-20); overflow:hidden; background:var(--bg-inverse-default); box-shadow:0 0 0 var(--space-absolute-4) var(--bg-page), var(--elevation-1); z-index:1; }
+.cmhi .cover.cm-cover .flogo.big .cm-mark, .cmhi .cover.cm-cover .flogo.big .cm-mark svg { display:block; width:100%; height:100%; }
+
+/* hero: name, the proof line, Invite (and Manage) as icon buttons beside the name */
+.cmhi .famname.cm-hero { padding:var(--space-absolute-40) 0 var(--space-absolute-12); }
+.cmhi .cm-hero .t { font-size:22px; font-weight:800; letter-spacing:-.02em; line-height:1.15; color:var(--text-primary); }
+.cmhi .cm-hero .m { font-size:13px; font-weight:400; line-height:1.5; color:var(--text-secondary); margin-top:var(--space-absolute-2); }
+/* icon buttons off the header are radius-12 tiles (Apoorv 22:03) */
+.cmhi .cm-ibtn { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:var(--component-card-bg); color:var(--icon-primary); box-shadow:var(--elevation-1); }
+.cmhi .cm-ibtn .cm-count.sm { box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); }
+
+/* KeyTabs: text tabs on the sticky page ground, ink underline on the one you're on */
+.cmhi .cm-tabs, .cmhi .cm-bar { background:var(--component-pills-sticky-bg); }
+.cmhi .cm-tabs { gap:var(--space-absolute-20); border-bottom:var(--border-width-hairline) solid var(--border-default); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); }
+.cmhi .cm-tab { font-size:15px; font-weight:600; color:var(--text-tertiary); padding:var(--space-absolute-10) 0 var(--space-absolute-12); border-bottom:var(--border-width-focus) solid transparent; margin-bottom:calc(-1 * var(--border-width-hairline)); }
+.cmhi .cm-tab.on { color:var(--text-primary); border-bottom-color:var(--text-primary); }
+.cmhi .cm-dot { background:var(--text-primary); }
+
+/* KeyListSection: a titled run of rows on the page, no box. Title is body/l, the link is a label */
+.cmhi .cm-sec { padding:var(--space-absolute-24) 0 var(--space-absolute-4); border:0; margin:0; }
+.cmhi .cm-h { display:flex; align-items:baseline; justify-content:space-between; margin:0 0 var(--space-absolute-8); }
+.cmhi .cm-h > span:first-child { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); }
+.cmhi .cm-h i { font-style:normal; font-size:13px; font-weight:600; color:var(--text-tertiary); margin-left:var(--space-absolute-4); }
+.cmhi .cm-more { font-size:13px; font-weight:600; color:var(--text-secondary); }
+
+/* KeyRow: 16 up and down, one hairline between rows, the action on the right */
+.cmhi .cm-row { padding:var(--space-absolute-12) 0; gap:var(--space-absolute-12); border:0; }
+.cmhi .cm-row + .cm-row, .cmhi .ch.slim + .ch.slim { border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmhi .cm-form .cm-row + .cm-row { border-top-color:var(--border-subtle); }
+.cmhi .cm-row > .avatar, .cmhi .cm-av > .avatar:not(.lg) { width:var(--space-absolute-40); height:var(--space-absolute-40); font-size:13px; }
+.cmhi .cm-row .a { font-size:15px; font-weight:600; line-height:1.4; color:var(--text-primary); }
+.cmhi .cm-row .b { font-size:13px; font-weight:400; line-height:1.5; color:var(--text-secondary); }
+.cmhi .cm-row .s { color:var(--icon-tertiary); }
+.cmhi .cm-k { font-size:11px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; line-height:1.2; color:var(--text-tertiary); }
+
+/* KeyButton: secondary outline for a row's action, tonal for a quiet one, 12 radius */
+.cmhi .cm-btn { height:var(--space-absolute-32); padding:0 var(--space-absolute-14); display:inline-flex; align-items:center; border-radius:var(--radius-absolute-12);
+  border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); font-size:13px; font-weight:600; white-space:nowrap; }
+.cmhi .cm-btn.q { border-color:transparent; background:var(--bg-fill-strong); color:var(--text-primary); }
+.cmhi .cm-done { font-size:12px; font-weight:700; color:var(--text-secondary); }
+
+/* Asks and offers: two buttons that start a post, then ask rows */
+.cmhi .cm-askbtns { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-absolute-8); margin:var(--space-absolute-4) 0 var(--space-absolute-8); }
+.cmhi .cm-askbtns span { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); display:flex; align-items:center; justify-content:center; gap:var(--space-absolute-8);
+  font-size:15px; font-weight:600; border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); }
+.cmhi .cm-askbtns span:first-child { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+.cmhi .cm-ask { align-items:flex-start; }
+.cmhi .cm-ask .a { font-weight:400; line-height:1.5; margin-top:var(--space-absolute-4); }
+.cmhi .cm-ask .b { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-ask > .cm-btn, .cmhi .cm-ask > .cm-done { margin-top:var(--space-absolute-4); }
+
+/* KeyBrief (organizer): one live object, so it is a card: the inverse surface, radius 20, lifted */
+.cmhi .cm-ostrip.cm-brief { background:var(--bg-inverse-default); color:var(--text-inverse); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-2); margin:var(--space-absolute-16) 0 0; padding:var(--space-absolute-16); }
+.cmhi .cm-brief .cm-oshd .a, .cmhi .cm-brief .cm-bnums .m { color:var(--text-inverse); }
+.cmhi .cm-brief .cm-oshd .b, .cmhi .cm-brief .cm-bnums .m span, .cmhi .cm-brief .cm-bnums .s { color:var(--text-on-deep-muted); }
+.cmhi .cm-brief .cm-osbar { background:var(--bg-on-deep-fill); border-radius:var(--radius-absolute-infinite); }
+.cmhi .cm-brief .cm-osbar i { background:var(--component-chip-deep-ink); border-radius:inherit; }
+.cmhi .cm-osjob { height:var(--space-absolute-36, 36px); border-radius:var(--radius-absolute-infinite); background:var(--component-chip-deep-bg); border:var(--border-width-hairline) solid var(--component-chip-deep-border); color:var(--component-chip-deep-ink); font-size:13px; font-weight:600; }
+
+/* This week: the ritual's day tile is the row lead */
+.cmhi .cm-day { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:var(--bg-fill-strong); color:var(--text-primary); font-size:11px; font-weight:800; letter-spacing:.06em; }
+.cmhi .cm-day.on { background:var(--bg-inverse-default); color:var(--text-inverse); }
+.cmhi .cm-wk > .evx-card { margin-top:var(--space-absolute-8); }
+
+/* KeyPostRow: author line, overline kicker, title, two lines, tags, the action bar; hairline between posts */
+.cmhi .cm-lp { padding:var(--space-absolute-16) 0; border:0; }
+.cmhi .cm-lp + .cm-lp { border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmhi .cm-lby { gap:var(--space-absolute-8); }
+.cmhi .cm-lby .avatar.sm { width:var(--space-absolute-24); height:var(--space-absolute-24); font-size:10px; }
+.cmhi .cm-lby .n { font-size:13px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-lby .w { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmhi .cm-lp .cm-k { margin-top:var(--space-absolute-12); }
+.cmhi .cm-lrow .t { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-lrow .x { font-size:15px; font-weight:400; line-height:1.5; color:var(--text-secondary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-limg { border-radius:var(--radius-absolute-12); background:var(--component-cover-bg); }
+.cmhi .cm-ltags span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
+.cmhi .cm-lbar { color:var(--icon-tertiary); font-size:13px; font-weight:600; }
+.cmhi .cm-lbar > span.on, .cmhi .cm-vote > span.on { color:var(--icon-primary); }
+.cmhi .cm-vote { border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-infinite); background:var(--component-card-bg); }
+.cmhi .cm-pinnote { background:var(--component-card-bg); border-radius:var(--radius-absolute-12); padding:var(--space-absolute-12); margin-bottom:var(--space-absolute-4); }
+.cmhi .cm-pinnote + .cm-lp { border-top:0; }
+
+/* Coming up: a rail of Events' own cards; channels with news: one row */
+.cmhi .cm-evstrip { gap:var(--space-absolute-12); padding-bottom:var(--space-absolute-8); }
+.cmhi .cm-chrow { margin-top:var(--space-absolute-16); padding:var(--space-absolute-12) 0; border-top:var(--border-width-hairline) solid var(--border-default); }
+
+/* KeySearchField + KeyChip: white on the page ground, so they read as controls */
+.cmhi .cm-search .search, .cmhi .cm-form .search { height:var(--space-absolute-44, 44px); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); font-size:15px; color:var(--text-primary); padding:0 var(--space-absolute-12); }
+.cmhi .cm-search .search::placeholder { color:var(--component-input-placeholder); }
+.cmhi .cm-fbtn, .cmhi .cm-view { border-radius:var(--radius-absolute-12); background:var(--component-card-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); color:var(--icon-primary); }
+.cmhi .cm-chip { height:var(--space-absolute-32); padding:0 var(--space-absolute-14); display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite);
+  background:var(--component-chip-bg); border:var(--border-width-hairline) solid var(--component-chip-border); color:var(--component-chip-ink); font-size:13px; font-weight:600; }
+.cmhi .cm-chip.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+
+/* People: KeyPersonTile for who joined this week, KeyMemberRow for the directory */
+.cmhi .cm-newm { padding:var(--space-absolute-20) 0 var(--space-absolute-4); }
+.cmhi .cm-nmh { font-size:17px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary); margin-bottom:var(--space-absolute-12); }
+.cmhi .cm-nms { gap:var(--space-absolute-12); }
+.cmhi .cm-nm { background:var(--component-card-bg); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); padding:var(--space-absolute-16) var(--space-absolute-12); gap:var(--space-absolute-4); }
+.cmhi .cm-nm .avatar.lg { width:var(--space-absolute-64); height:var(--space-absolute-64); font-size:20px; margin-bottom:var(--space-absolute-4); }
+.cmhi .cm-nm b { font-size:15px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-nm span { font-size:13px; color:var(--text-secondary); }
+.cmhi .cm-nm .cm-btn { margin-top:var(--space-absolute-8); }
+.cmhi .cm-on { background:var(--component-live-dot); box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); border:0; }
+.cmhi .cm-sort { font-size:13px; font-weight:600; color:var(--text-secondary); }
+.cmhi .cm-cell { background:var(--component-card-bg); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); }
+.cmhi .cm-mgr .cm-sq, .cmhi .cm-sq { border-radius:var(--radius-absolute-12); background:var(--bg-fill-strong); color:var(--icon-primary); border:0; }
+
+/* KeyChannelRow: the emoji tile leads, unread is the ink badge */
+.cmhi .ch.slim { padding:var(--space-absolute-10) 0; gap:var(--space-absolute-12); border:0; }
+.cmhi .ch.slim .che { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); background:var(--component-card-bg); box-shadow:var(--elevation-1); border:0; }
+.cmhi .ch.slim .chn { font-size:15px; font-weight:400; color:var(--text-secondary); }
+.cmhi .ch.slim.u .chn { font-weight:600; color:var(--text-primary); }
+.cmhi .ch.slim .unread, .cmhi .cm-count { background:var(--component-badge-bg); color:var(--component-badge-ink); }
+.cmhi .cat { font-size:11px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:var(--text-tertiary); padding:var(--space-absolute-20) 0 var(--space-absolute-4); }
+
+/* sheets (KeyBottomSheet content): title, a real input, chips, one primary button */
+.cmhi .cm-form > h2 { font-size:20px; font-weight:600; letter-spacing:-.015em; color:var(--text-primary); }
+.cmhi .cm-form > h2 + p, .cmhi .cm-form > p { font-size:15px; color:var(--text-secondary); line-height:1.5; }
+.cmhi .cm-form textarea.v, .cmhi .cm-form .field { border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--border-control); font-size:15px; color:var(--text-primary); }
+.cmhi .cm-form textarea.v:focus { border-color:var(--component-input-border-focus); outline:0; }
+.cmhi .cm-form .btn { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font-size:15px; font-weight:600; }
+.cmhi .cm-form .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
+.cmhi .cm-kt, .cmhi .cm-osk { background:none; border:0; box-shadow:none; width:auto; height:auto; }
+.cmhi .cm-kt svg, .cmhi .cm-osk svg { display:block; }
+.cmhi .cm-form .field textarea.v { border:0; padding:0; background:transparent; }
+.cmhi .cm-form .btn.sec { background:transparent; border:var(--border-width-thin) solid var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
+/* KeyFaceStack, built once with Events and Messages (Events' spec, 20:54): 24 faces overlapping by 4, a 1.5 ring in the colour of the surface
+   underneath (--face-ring, set by each context), KeyAvatar's fill and 10/600 initials, at most three faces and the rest as words in the names line */
+.cmhi .cm-faces, .cmhi .cm-osfs { display:flex; }
+.cmhi .cm-runby, .cmhi .cm-row:has(> .cm-faces) { --face-ring:var(--bg-page); }
+.cmhi .cm-brief .cm-osjob { --face-ring:var(--component-chip-deep-bg); }
+.cmhi .cm-faces .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf { display:flex; align-items:center; justify-content:center; padding:0; width:var(--space-absolute-24); height:var(--space-absolute-24); margin:0; border:0; border-radius:var(--radius-absolute-infinite);
+  box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; line-height:1; }
+.cmhi .cm-faces .avatar + .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf + .cm-osf { margin-left:calc(-1 * var(--space-absolute-4)); }
+
+/* ---- 27 Sep 21:19 round: the hero name opens the family page (switching lives in the header name and the nav's family tab);
+   the family page is visual first; tabs land pinned ---- */
+.cm-hero .t[data-cabout] { display:inline-flex; align-items:center; gap:var(--space-absolute-2, 2px); cursor:pointer; }
+.cm-tchev { display:inline-flex; color:var(--icon-tertiary, #606974); }
+.flogo.big[data-cabout] { cursor:pointer; }
+.cm-pubhd { padding-bottom:var(--space-absolute-4, 4px); }
+.cm-known { margin-top:var(--space-absolute-8, 8px); }
+.cm-proof .cm-stats { gap:var(--space-absolute-32, 32px); }
+.cm-proof .cm-meta { margin-top:var(--space-absolute-8, 8px); }
+.cm-chtiles { display:flex; flex-wrap:wrap; gap:var(--space-absolute-8, 8px); }
+.cm-chtiles span { display:inline-flex; align-items:center; gap:var(--space-absolute-8, 8px); height:var(--space-absolute-40, 40px); padding:0 var(--space-absolute-14, 14px) 0 var(--space-absolute-6, 6px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--component-card-bg, #fff); box-shadow:var(--elevation-1); font-size:13px; font-weight:600; }
+.cm-chtiles i { font-style:normal; width:var(--space-absolute-28, 28px); height:var(--space-absolute-28, 28px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-fill-default, #F4F6F9); display:flex; align-items:center; justify-content:center; font-size:15px; }
+.cm-rules { display:flex; flex-direction:column; }
+.cm-rules span { font-size:15px; font-weight:600; padding:var(--space-absolute-10, 10px) 0; }
+.cm-rules span + span { border-top:var(--border-width-hairline, 1px) solid var(--border-default, #E2E7ED); }
+.cm-steps { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:var(--space-absolute-12, 12px); }
+.cm-steps > div { display:flex; flex-direction:column; gap:var(--space-absolute-4, 4px); }
+.cm-steps b { width:var(--space-absolute-32, 32px); height:var(--space-absolute-32, 32px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-inverse-default, #12161A); color:var(--text-inverse, #F9FAFC); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
+.cm-steps span { font-size:15px; font-weight:600; }
+.cm-steps i { font-style:normal; font-size:13px; color:var(--text-secondary, #525B66); }
+.cm-runsec .cm-runby { margin-top:0; font-size:15px; font-weight:600; color:var(--text-primary, #12161A); }
+.cm-danger-t { color:var(--state-danger-default, #C8322F); }
+.cmhi .cm-pubhd .cm-promise { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-badges span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
+.cmhi .cm-proof .cm-stats b { font-size:34px; font-weight:700; letter-spacing:-.03em; line-height:1.1; color:var(--text-primary); }
+.cmhi .cm-proof .cm-stats span { font-size:13px; color:var(--text-secondary); }
+.cmhi .famname.cm-pubhd { padding-top:var(--space-absolute-40); }
+.cmhi .cm-rhythm .cm-day { background:var(--component-card-bg); box-shadow:var(--elevation-1); color:var(--icon-primary); }
+
+/* ---- Channel rooms in hi-fi (Apoorv 21:21). Bubbles, date pills and the composer match Messages' hi-fi (messages-hifi.css) so a chat
+   looks the same wherever it opens. The ground is one of three options he is choosing between (.cmbg-white is the default):
+   white with grey bubbles (iMessage, Messenger), white with message rows (Slack, Discord), or the tinted ground with white bubbles
+   (WhatsApp, Telegram). ---- */
+.cmroom .screen, .cmroom .body.chatbody { background:var(--bg-surface-default); }
+.cmroom.cmbg-tint .screen, .cmroom.cmbg-tint .body.chatbody { background:var(--bg-page); }
+.cmroom .hdr.chdr { background:color-mix(in srgb, var(--bg-surface-default) 92%, transparent); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+.cmroom .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; color:var(--icon-primary); }
+.cmroom .hdr .icon { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
+.cmroom .hav.emo { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+.cmroom .hdr .hn { font-size:17px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary); }
+.cmroom .hdr .hm .xs { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmroom .hfaces { --face-ring:var(--bg-surface-default); }
+.cmroom .hfaces span { width:var(--space-absolute-24); height:var(--space-absolute-24); margin-left:calc(-1 * var(--space-absolute-4)); border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--face-ring); }
+.cmroom .hfaces span:first-child { margin-left:0; }
+.cmroom .hfaces span:nth-child(n+4) { display:none; } /* no plus-N bubble: three faces, the count is already under the name */
+.cmroom .chatbody { padding:0 var(--space-absolute-16) var(--space-absolute-16); }
+.cmroom .bav { width:var(--space-absolute-32); height:var(--space-absolute-32); border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; }
+.cmroom .brow { gap:var(--space-absolute-8); margin-top:var(--space-absolute-8); }
+.cmroom .bub { border-radius:var(--radius-absolute-16); padding:var(--space-absolute-8) var(--space-absolute-12) var(--space-absolute-6); box-shadow:none; font-size:15px; line-height:1.5; color:var(--text-primary); background:var(--bg-fill-strong); }
+.cmroom.cmbg-tint .bub { background:var(--component-card-bg); }
+.cmroom .bub.me { background:var(--component-msg-user-bg); color:var(--component-msg-user-ink); }
+.cmroom .bub.oth.first { border-top-left-radius:var(--radius-absolute-4); }
+.cmroom .bub .bn { font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:var(--space-absolute-2); }
+.cmroom .bub .bf { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmroom .bub.me .bf { color:var(--text-on-deep-muted); }
+.cmroom .dsep::before, .cmroom .syspill::before { border-top-color:var(--border-default); }
+.cmroom .dsep span, .cmroom .syspill span { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-secondary); font-size:12px; font-weight:700; border-radius:var(--radius-absolute-infinite); padding:var(--space-absolute-2) var(--space-absolute-10); }
+.cmroom .rchip, .cmroom .thchip { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); box-shadow:var(--elevation-1); color:var(--text-primary); font-size:12px; font-weight:700; }
+.cmroom .thchip .tf { border:0; background:var(--component-avatar-bg); color:var(--component-avatar-ink); }
+.cmroom .kaiact { gap:var(--space-absolute-6); margin-top:var(--space-absolute-6); }
+.cmroom .kaiact .chip { height:var(--space-absolute-28); display:inline-flex; align-items:center; padding:0 var(--space-absolute-10); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); color:var(--text-primary); font-size:13px; font-weight:600; }
+.cmroom .mention { background:var(--bg-fill-default); color:var(--text-primary); font-weight:600; border-radius:var(--radius-absolute-4); }
+.cmroom .bub.me .mention { background:var(--bg-on-deep-fill); color:var(--text-inverse); }
+.cmroom .foot.cbar { background:color-mix(in srgb, var(--bg-surface-default) 94%, transparent); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmroom .kbox { border:var(--border-width-hairline) solid var(--border-control); border-radius:var(--radius-absolute-20); background:var(--component-input-bg); }
+.cmroom .csend { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+.cmroom .mtile { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-12); }
+/* rows: channels read like a room of posts (Slack, Discord): no bubble, name and time on one line, a hairline-free run of messages */
+.cmroom.cmbg-rows .bub, .cmroom.cmbg-rows .bub.me { background:transparent; color:var(--text-primary); padding:0; border-radius:0; min-width:0; }
+.cmroom.cmbg-rows .brow.me { justify-content:flex-start; }
+.cmroom.cmbg-rows .bub.me .bf { color:var(--text-tertiary); }
+.cmroom.cmbg-rows .brow { margin-top:var(--space-absolute-14); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -11532,6 +11766,33 @@ const C_CHEVSM_SVG = LI("chevron-down", 14);
 const C_SMILEPLUS_SVG = LI("smile-plus", 22);
 /* the family's own mark (nav thread's marks.js, Apoorv 27 Sep 19:57: real logos everywhere); the initial until marks.js loads */
 const cMark = f => typeof FAM_MARK!=="undefined" && FAM_MARK[f.id] ? `<span class="cm-mark">${FAM_MARK[f.id]}</span>` : f.initial;
+/* Hi-fi (27 Sep, his 20:28): the family cover is the organizer's photo; until they add one it is drawn from Events' pictogram cover kit
+   (his 19:19 pick), one composition per family, so a family and its events share one visual language. */
+/* One file serves both copies (Apoorv 21:22): the wireframe demo stays lo-fi; the high-fidelity copy sets `const KEY_HIFI = true` before this file. */
+const cHiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+const C_COVER = { xoogler:["dinner","tide"], michigan:["summit","midnight"], desi:["dinner","ember"], aipm:["demo","dusk"] };
+const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"]; return cHiFi() && typeof cvaCover==="function" && typeof evPreset==="function" ? cvaCover(c[0], evPreset(c[1]), f.id) : ""; };
+/* Every community part carries its library name (data-kc), so the screen and the Figma library can be checked against each other.
+   This list is the section-to-component map Design system builds from. */
+const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
+  [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
+  [".cm-sec, .cm-newm","KeyListSection"],[".cm-askbtns > span, .cm-btn, .cm-form .btn","KeyButton"],[".cm-ask, .cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-chrow","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
+  [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
+  [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
+/* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
+const cKaiMarks = root => { if (typeof kaiMark!=="function") return; root.querySelectorAll(".cm-kt, .cm-osk").forEach(el => { if (!el.dataset.kn) { el.innerHTML = kaiMark(el.classList.contains("cm-osk")?28:40); el.dataset.kn = 1; } }); };
+/* data-kv is the Figma variant string, as Figma writes it (Design system, 20:46) */
+const cKv = (el, n) => { const c = el.classList;
+  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-askbtns > span:first-child, .cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
+    : n==="KeyChip" ? `variant=${c.contains("cm-osjob")?"deep":el.parentElement.classList.contains("cm-chtiles")?"channel":"default"}, state=${c.contains("on")?"selected":"default"}`
+    : n==="KeyRow" ? `type=${c.contains("cm-ask")?"ask":c.contains("cm-rit")?"ritual":"kai"}`
+    : n==="KeyMemberRow" ? `state=${el.querySelector(".cm-done")?"new":"default"}`
+    : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
+    : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
+    : n==="KeyChannelRow" ? `type=${c.contains("cm-chrow")?"summary":"channel"}, state=${c.contains("u")?"unread":"read"}`
+    : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
+const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
 const C_MUTE_SVG = LI("bell-off", 14);
 /* one long press opens a row's menu; the click that follows it is swallowed so the sheet stays open */
@@ -11542,7 +11803,7 @@ document.addEventListener("pointerup", ()=>{ if (cSwallowUntil) setTimeout(()=>{
 /* ---- header: two icons (search, notifications). The family name opens the family menu; Invite (and Manage for organizers) are icons beside the name. ---- */
 famHdr = function(){
   const f = cF();
-  return topHdr(`<span class="cm-fname" data-csheet="cfam" role="button" aria-label="${f.name} menu">${f.name}${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
+  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family">${f.name}${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
 };
 const _cFamHeader = famHeader;
 famHeader = function(title, back){ return _cFamHeader(title, back).replace(/<div class="icon" onclick="go\('fsettings'\)">[\s\S]*?<\/svg><\/div>/, ""); };
@@ -11551,7 +11812,7 @@ const _cFamTop = famTop;
 famTop = function(){
   const f = cF();
   const acts = `<div class="cm-hacts"><span class="cm-ibtn" data-csheet="cinvite" role="button" aria-label="Invite to ${f.name}">${C_INVITE_SVG}</span>${cOrg()?`<span class="cm-ibtn" data-cgo="manage" role="button" aria-label="Manage ${f.name}">${C_SHIELD_SVG}${cWaiting()?`<b class="cm-count sm">${cWaiting()}</b>`:''}</span>`:''}</div>`;
-  return _cFamTop().replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-csheet="cfam">${f.name}</div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
+  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big" data-cabout="${f.id}">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-cabout="${f.id}" role="button">${f.name}<span class="cm-tchev">${LI("chevron-right",18)}</span></div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
 };
 
 /* ---- tabs (move between places) ---- */
@@ -11571,7 +11832,11 @@ render = function(){
   const S = STATE.screen;
   if (S!=="fchannels") _cRender();
   else { STATE.screen = "family"; STATE._cCh = true; try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; } }
-  if (C_TAB_SCR.includes(S)) cPane();
+  if (C_TAB_SCR.includes(S)) { cPane(); cSwipe(); }
+  const room = cHiFi() && /^channel:/.test(STATE.screen||""), hi = room || (cHiFi() && !!phone.querySelector(".screen .cm-fname, .screen .cm-hi"));
+  phone.classList.toggle("cmhi", hi); phone.classList.toggle("cmroom", room);
+  ["white","rows","tint"].forEach(k => phone.classList.toggle("cmbg-"+k, room && (STATE.cmBg||"white")===k));
+  if (hi) { cKc(phone); cKaiMarks(phone); }
 };
 /* Switching family tabs: the header, cover and tabs stay put; only the content under the tabs slides in from the side you moved toward. */
 const _cTabIndexOf = tabIndexOf;
@@ -11594,7 +11859,11 @@ function cPane(){
   body.appendChild(pane);
   pane.style.minHeight = Math.max(0, body.clientHeight - bar.offsetHeight) + "px";
   const t = STATE.cPane; STATE.cPane = null; if (!t) return;
-  body.scrollTop = Math.min(t.y, bar.offsetTop);
+  /* A tab lands with the tabs pinned under the header and its content in view (his 21:19; X, Instagram and Facebook Groups profiles
+     do this): from the hero the page glides up to the pin point; from deeper down the new tab starts at its own top. A chip only filters. */
+  const pin = bar.offsetTop, calm = navigator.webdriver || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  body.scrollTop = Math.min(t.y, pin);
+  if (t.dir!=="f" && body.scrollTop < pin) { if (calm) body.scrollTop = pin; else requestAnimationFrame(()=>body.scrollTo({ top:pin, behavior:"smooth" })); }
   pane.classList.add(t.dir==="l" ? "cm-in-l" : t.dir==="r" ? "cm-in-r" : "cm-fade");
 }
 
@@ -11963,7 +12232,7 @@ function cPostDetail(){
   const f = cF(); const p = DB.posts.find(x=>x.id===STATE.cPostId) || cPosts(f)[0];
   const mine = ((STATE.cMyCmts||{})[p.id]||[]).map(t=>[DB.user.name,DB.user.initials,t,"Now"]);
   const cmts = [...mine, ["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
-  return `${famHeader(p.cat,"posts")}<div class="body cm-pd" style="padding-top:4px">
+  return `${famHeader(p.cat,"posts")}<div class="body cm-pd cm-hi" style="padding-top:4px">
     <div class="cm-lby">${cAv(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k" style="margin-top:14px">${p.pinned?"Pinned · ":p.featured?"Most popular · ":""}${p.cat} · ${p.read}</div>
     <h2 class="cm-pt">${p.title}</h2>
@@ -12282,27 +12551,26 @@ sPublicPage = function(){
   const who = d.run.map(r=>r[1]).join(" and ");
   const step = (n, a, b) => `<div class="cm-row cm-step" style="cursor:default"><div class="cm-num">${n}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div></div>`;
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div style="flex:1"></div><span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
-  <div class="body cm-page" style="padding-top:0">
-    ${member?`<div class="cm-note">This is what people see before they join.</div>`:''}
-    <div class="cover" style="margin-top:${member?0:-10}px"><div class="flogo big">${cMark(f)}</div></div>
-    <div class="famname"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
-      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div>
-      <div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>Run by ${who}</span></div></div>
-    ${member?'':`<div class="cm-sec">${known.length?`<div class="cm-row" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div><div class="b">People you know. Others show only if they allow it.</div></div></div>`:''}
-      <div class="cm-row" style="cursor:default">${cAv(DB.user.invitedBy&&f.id==="xoogler"?"DR":"kai","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
-    <div class="cm-sec">${cHead("Who it's for")}<div class="cm-text">${d.forWho}</div></div>
-    <div class="cm-sec">${cHead("What happens here")}
-      ${d.out.length?`<div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta" style="margin-top:6px">Last quarter, from what members reported</div>`:''}
-      ${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-meta">${w}</span></div>`).join("")}</div>
-    ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}${chans.map(([e,n,m])=>`<div class="cm-row" style="cursor:default"><div class="cm-che">${e}</div><div class="m"><div class="a">${n}</div></div><span class="cm-meta">${m} members</span></div>`).join("")}<div class="cm-meta" style="margin-top:6px">Messages stay inside. You see them once you're in.</div></div>`:''}
-    ${evs.length?`<div class="cm-sec">${cHead("Open events")}${evs.map(e=>evCard(e,"row",{fam:false})).join("")}<div class="cm-meta" style="margin-top:6px">Anyone can register for these.</div></div>`:''}
-    <div class="cm-sec">${cHead("House rules")}<div class="cm-text">${d.rules}</div></div>
-    ${member?'':`<div class="cm-sec">${cHead("How joining works")}
-      ${open ? step(1,"Join","You're in straight away")+step(2,"Say hi in the channels","Kai suggests who to meet first")
-        : step(1,"Apply","About 8 minutes. Kai fills most of it from your profile.")+step(2,`${d.run[0][1].split(" ")[0]} reviews it`,`Reviews ${d.cadence}. Usually ${d.decide}.`)+step(3,"You're in","Channels, people and events open up")}</div>`}
+  <div class="body cm-page cm-hi" style="padding-top:0">
+    <div class="cover cm-cover" style="margin-top:${member?0:-10}px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
+    <div class="famname cm-pubhd"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
+      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div></div>
+    ${!member&&known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
+    ${d.out.length?`<div class="cm-sec cm-proof"><div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta">Last quarter, from what members reported</div></div>`:''}
+    ${evs.length?`<div class="cm-sec">${cHead("Open events")}<div class="cm-evstrip">${evs.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
+    <div class="cm-sec cm-rhythm">${cHead("Every week and month")}${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="cm-day">${LI("repeat",18)}</div><div class="m"><div class="a">${t}</div><div class="b">${w}</div></div></div>`).join("")}</div>
+    ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}<div class="cm-chtiles">${chans.map(([e,n])=>`<span><i>${e}</i>${n}</span>`).join("")}</div></div>`:''}
+    <div class="cm-sec cm-runsec">${cHead("Run by")}<div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>${who}</span></div></div>
+    <div class="cm-sec">${cHead("House rules")}<div class="cm-rules">${d.rules.split(/\.\s*/).filter(Boolean).map(r=>`<span>${r}</span>`).join("")}</div></div>
+    ${member?'':`<div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>`}
+    ${member?`<div class="cm-sec cm-you">${cHead(`You in ${f.name}`)}
+      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">Notifications</div><div class="b">${({all:"All activity",mentions:"Mentions only",off:"Off"})[STATE.cNotif||"all"]}</div></div><span class="s">›</span></div>
+      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">What Kai reads and who sees you</div></div><span class="s">›</span></div>
+      ${cOrg()?`<div class="cm-row" data-cgo="manage:settings"><div class="m"><div class="a">Edit the family page</div><div class="b">Info, joining, roles, library</div></div><span class="s">›</span></div>`:''}
+      <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a cm-danger-t">Leave ${f.name}</div></div></div></div>`:''}
     ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
-  <div class="foot">${member?`<div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" data-cgo="family">Open ${f.name}</button><button class="btn" style="flex:1;margin:0" data-csheet="cinvite">Invite</button></div>`
+  <div class="foot">${member?`<button class="btn" data-csheet="cinvite">Invite to ${f.name}</button>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
     : (STATE.applied&&f.id==="xoogler") ? `<button class="btn sec" disabled>Applied · ${d.run[0][1].split(" ")[0]} is reviewing</button>`
     : `<button class="btn" onclick="${f.id==="xoogler"?"STATE.appPage=0;go('application')":`toast('Opens the ${f.name} application')`}">${open?"Join "+f.name:"Apply · about 8 min"}</button>`}</div>`;
@@ -12608,11 +12876,53 @@ const _cPortSheet = portSheet;
 /* one spacing rhythm for every community sheet (Apoorv 26 Sep: the New channel sheet crowded its fields) */
 portSheet = function(type, id){ const h = cSheet(type, id); return h!==null ? `<div class="cm-form">${h}</div>` : _cPortSheet(type, id); };
 
+/* ---- swipe between family tabs (Apoorv 27 Sep 21:32: the tabs sit out of thumb reach). Instagram and X profiles, Telegram folders and
+   Material's swipeable tabs do this. A sideways drag on the content moves one tab; whatever already moves sideways keeps its gesture:
+   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), fields, row swipes and an open sheet.
+   The drag only takes over once it is clearly sideways, so vertical scroll stays native; long presses give way once a finger travels. ---- */
+function cSwipe(){
+  const i = C_TAB_SCR.indexOf(STATE.screen), body = phone.querySelector(".view .body");
+  if (i<0 || !body || !body.querySelector(":scope > .cm-pane")) return;
+  body.classList.add("cm-swipe");
+  const calm = navigator.webdriver || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rail = el => { for (; el && el!==body; el = el.parentElement) { const o = getComputedStyle(el).overflowX; if ((o==="auto"||o==="scroll") && el.scrollWidth > el.clientWidth + 1) return true; } return false; };
+  let s = null;
+  const drag = (dx, on) => { const p = body.querySelector(":scope > .cm-pane"); if (!p || calm) return; p.style.transition = on ? "none" : "transform .2s cubic-bezier(.2,.8,.2,1), opacity .2s"; p.style.transform = dx ? `translateX(${dx}px)` : ""; p.style.opacity = dx ? String(1 - Math.abs(dx)/160) : ""; };
+  body.addEventListener("pointerdown", e=>{
+    s = null;
+    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("input,textarea,select,[contenteditable],.swr,.cm-tabs") || rail(e.target)) return;
+    s = { x:e.clientX, y:e.clientY, t:e.timeStamp, id:e.pointerId, lock:false };
+  });
+  body.addEventListener("pointermove", e=>{
+    if (!s || e.pointerId!==s.id) return;
+    const dx = e.clientX-s.x, dy = e.clientY-s.y;
+    if (!s.lock) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) >= Math.abs(dx)) { s = null; return; }
+      if (Math.abs(dx) < 12 || Math.abs(dx) < 1.5*Math.abs(dy)) return;
+      s.lock = true; try { body.setPointerCapture(e.pointerId); } catch(_) {}
+    }
+    const edge = (dx<0 && i===C_TAB_SCR.length-1) || (dx>0 && i===0);
+    drag(Math.max(-56, Math.min(56, dx*(edge ? .12 : .35))), true);
+  });
+  const end = e=>{
+    if (!s || e.pointerId!==s.id) return;
+    const t = s; s = null; if (!t.lock) return;
+    cSwallowUntil = Date.now()+400;
+    const dx = e.clientX-t.x, v = Math.abs(dx)/Math.max(1, e.timeStamp-t.t), j = i + (dx<0 ? 1 : -1);
+    if (e.type==="pointerup" && j>=0 && j<C_TAB_SCR.length && (Math.abs(dx) > body.clientWidth*.22 || (v > .45 && Math.abs(dx) > 30))) go(C_TAB_SCR[j]);
+    else drag(0, false);
+  };
+  body.addEventListener("pointerup", end); body.addEventListener("pointercancel", end);
+}
+
 /* ---- wiring ---- */
 function cLong(sel, fn){
   phone.querySelectorAll(sel).forEach(el=>{
     let t = null;
-    el.addEventListener("pointerdown", ()=>{ t = setTimeout(()=>{ t = null; cSwallowUntil = Date.now()+800; fn(el); }, 480); });
+    let x0 = 0, y0 = 0;
+    el.addEventListener("pointerdown", e=>{ x0 = e.clientX; y0 = e.clientY; t = setTimeout(()=>{ t = null; cSwallowUntil = Date.now()+800; fn(el); }, 480); });
+    /* a finger that travels is scrolling or swiping tabs, not pressing */
+    el.addEventListener("pointermove", e=>{ if (t && Math.hypot(e.clientX-x0, e.clientY-y0) > 8) { clearTimeout(t); t = null; } });
     ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev, ()=>{ if (t) clearTimeout(t); t = null; }));
     el.addEventListener("contextmenu", e=>{ e.preventDefault(); fn(el); });
   });
