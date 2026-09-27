@@ -4094,6 +4094,74 @@ p,
 .p2sbar .sec2 { display:block; }
 /* a list rule `.pn{padding-left:18px}` elsewhere also hits the profile name; keep the name flush with the lines under it */
 .pname .pn, .ph .pn { padding-left:0; }
+
+/* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
+   Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
+   the status, the captions, an Ideas tray on request, and four round buttons (Mute, Ideas, Type, red End). The reel's star
+   field sits behind everything (kai-call.js). Token names with the values Design system gave as fallbacks. ==== */
+.call.kc { background:var(--component-call-bg, #0B0E11); color:var(--component-call-ink-default, #F9FAFC); }
+.call.kc > canvas.kc-fld { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.call.kc > *:not(canvas) { position:relative; z-index:1; }
+.call.kc > .kc-ideas, .call.kc > .kc-type { position:absolute; z-index:5; }
+.kc-top { display:grid; grid-template-columns:44px 1fr 44px; align-items:center; padding:52px 12px 0; flex:0 0 auto; }
+.kc-ib { width:44px; height:44px; display:grid; place-items:center; color:var(--icon-on-deep, #F9FAFC); border-radius:var(--radius-absolute-infinite, 999px); background:none; border:0; cursor:pointer; }
+.kc-ib.off { color:var(--component-call-ink-muted, #A6AFBB); }
+.kc-ib svg, .kc-b svg, .kc-bar svg { fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.kc-who { text-align:center; }
+.kc-who .n { font:var(--type-body-l, 600 17px/1.3 Manrope, system-ui, sans-serif); display:inline-flex; align-items:center; gap:8px; }
+.kc-who .t { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); margin-top:3px; font-variant-numeric:tabular-nums; }
+.kc-k { width:22px; height:22px; border-radius:999px; background:var(--component-kai-bg, #12161A); box-shadow:0 0 0 1px rgba(249,250,252,.15); display:inline-grid; place-items:center; }
+.kc-k svg { width:62%; height:62%; }
+.call.kc .viz { padding:6px 0 0; transition:padding .42s cubic-bezier(.2,.8,.2,1); }
+.call.kc .viz::before { top:6px; width:240px; height:240px; }
+.call.kc .viz canvas { width:240px; height:240px; transition:width .42s cubic-bezier(.2,.8,.2,1), height .42s cubic-bezier(.2,.8,.2,1); }
+.call.kc .vizs { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); letter-spacing:0; color:var(--component-call-ink-muted, #A6AFBB); text-align:center; margin-top:2px; }
+.call.kc .vizt { display:none; }
+.call.kc .tr { flex:1; min-height:0; overflow:auto; scrollbar-width:none; padding:14px 28px 0; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 56px); mask-image:linear-gradient(to bottom, transparent 0, #000 56px); transition:opacity .3s; }
+.call.kc .tr::-webkit-scrollbar { display:none; }
+.call.kc .line { font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); margin:0 0 12px; }
+.call.kc .line.k:not(.now) { color:var(--component-call-ink-muted, #A6AFBB); }
+.call.kc .line.k.now { font:var(--type-body-l, 600 17px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-default, #F9FAFC); }
+.call.kc .line.u { color:var(--component-call-user-ink, #DCB854); border-left:0; padding-left:0; }
+.call.kc.nocap .viz { padding-top:60px; }
+.call.kc.nocap .viz::before { top:60px; width:290px; height:290px; }
+.call.kc.nocap .viz canvas { width:290px; height:290px; }
+.call.kc.nocap .tr { opacity:0; pointer-events:none; }
+.kc-ideas, .kc-type { left:12px; right:12px; bottom:134px; background:rgba(18,22,26,.95); border:1px solid rgba(249,250,252,.08); border-radius:var(--radius-absolute-24, 24px); box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35));
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); transform:translateY(12px); opacity:0; pointer-events:none; transition:opacity .22s cubic-bezier(.2,.8,.2,1), transform .26s cubic-bezier(.2,.8,.2,1); }
+.kc-ideas.open, .kc-type.open { transform:none; opacity:1; pointer-events:auto; }
+.kc-ideas { padding:6px; }
+.kc-ideas .h { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); padding:8px 12px 6px; }
+.kc-idea { display:flex; width:100%; text-align:left; gap:10px; align-items:center; padding:12px; border-radius:var(--radius-absolute-16, 16px); font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); color:var(--component-call-ink-default, #F9FAFC); background:none; border:0; cursor:pointer; }
+.kc-idea + .kc-idea { box-shadow:0 -1px 0 rgba(249,250,252,.08); }
+.kc-idea:hover, .kc-idea:active { background:rgba(249,250,252,.06); }
+.kc-idea span { flex:1; } .kc-idea svg { width:18px; height:18px; color:var(--component-call-ink-muted, #A6AFBB); fill:none; stroke:currentColor; stroke-width:1.75; }
+.kc-type { display:flex; gap:8px; align-items:flex-end; padding:8px 8px 8px 16px; }
+.kc-type textarea { flex:1; background:none; border:0; resize:none; outline:none; color:var(--component-call-ink-default, #F9FAFC); font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); padding:8px 0; height:40px; }
+.kc-type textarea::placeholder { color:var(--component-call-ink-muted, #A6AFBB); }
+.kc-send { width:40px; height:40px; border-radius:999px; background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); display:grid; place-items:center; border:0; cursor:pointer; }
+.kc-send svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.kc-ctl { display:flex; justify-content:center; gap:20px; padding:18px 0 38px; flex:0 0 auto; }
+.kc-b { display:flex; flex-direction:column; align-items:center; gap:7px; width:64px; background:none; border:0; padding:0; cursor:pointer; color:inherit; }
+.kc-b .d { width:64px; height:64px; border-radius:999px; display:grid; place-items:center; background:rgba(249,250,252,.14); color:var(--icon-on-deep, #F9FAFC); transition:background .16s, color .16s, transform .12s; -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
+.kc-b .d svg { width:28px; height:28px; }
+.kc-b:active .d { transform:scale(.94); }
+.kc-b .l { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); }
+.kc-b.on .d { background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); }
+.kc-b.on .l { color:var(--component-call-ink-default, #F9FAFC); }
+.kc-b.end .d { background:var(--component-call-end-bg, #C8322F); color:var(--component-call-end-ink, #F9FAFC); }
+/* KeyCallBar: the call, minimised, with its own round Mute and End */
+.callbar.kc-bar { margin:4px 12px 6px; background:var(--component-callbar-bg, #0B0E11); color:var(--component-callbar-ink, #F9FAFC); border-radius:999px; display:flex; align-items:center; gap:10px; padding:6px 6px 6px 8px; box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35)); cursor:pointer; border:0; }
+.callbar.kc-bar canvas.mo-mini { width:36px; height:36px; margin:0; }
+.callbar.kc-bar .cbm { flex:1; min-width:0; }
+.callbar.kc-bar .cbm b { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); display:block; }
+.callbar.kc-bar .cbl { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.callbar.kc-bar .kc-sb { width:40px; height:40px; border-radius:999px; display:grid; place-items:center; background:rgba(249,250,252,.14); color:#F9FAFC; flex:0 0 auto; }
+.callbar.kc-bar .kc-sb.on { background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); }
+.callbar.kc-bar .kc-sb.end { background:var(--component-call-end-bg, #C8322F); }
+.callbar.kc-bar .kc-sb svg { width:20px; height:20px; }
+@media (max-height:620px) { .kc-top { padding-top:44px; } .call.kc .viz canvas { width:170px; height:170px; } .call.kc .viz::before { width:170px; height:170px; } .kc-b .d { width:56px; height:56px; } .kc-ctl { padding:12px 0 24px; } .kc-ideas, .kc-type { bottom:112px; } }
+@media (prefers-reduced-motion: reduce) { .kc-ideas, .kc-type, .call.kc .viz, .call.kc .viz canvas { transition:none; } }
 </style>
 </head>
 <body>
@@ -14306,6 +14374,139 @@ portWire = function() {
   const call = phone.querySelector(".call");
   if (call) { call.dataset.who = MO_SIG.who; moWho(MO_SIG.who); if (MO_ON && (MO_SIG.who==="kai") && MO_SIG.els.length && !MO_SIG.els[0].isConnected) { const now = phone.querySelector(".call .line.k.now"); if (now) { MO_SIG.els = STATE.callStep===0 ? [phone.querySelector(".call .line.k"), now] : [now]; moWrapWords(MO_SIG.els); } } }
   if (STATE.callActive && !vizRAF) vizRAF = requestAnimationFrame(vizLoop);
+};
+
+/* ==== KeyStarField (Kai hi-fi thread, 27 Sep; Apoorv 21:59: "more accurate to the reel, not linear movement").
+   The sign-in reel's community field, same shader and numbers as motion.js moFieldBuild: 1,800 soft points in a 3D cloud, a few
+   gold, each breathing on its own orbit, twinkling, faded by depth, seen through a camera that sways while the cloud turns.
+   Here it sits between the reel's ask and path framings (field .75, dim .5, camera at 10) and leans in a little with the voice.
+   One renderer, rendered once a frame and copied into every call canvas, so extra phones never open another GL context.
+   Needs THREE (r128); without it the call keeps its plain dark ground. ==== */
+const KF = { r:null, fail:false };
+function kfBuild() {
+  const T = THREE, renderer = new T.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0);
+  const scene = new T.Scene(), camera = new T.PerspectiveCamera(38, 1, 0.1, 60), group = new T.Group(); scene.add(group);
+  const u = { uTime:{value:0}, uPx:{value:renderer.getPixelRatio()}, uDim:{value:1}, uField:{value:0} };
+  const N = 1800, pos = new Float32Array(N*3), col = new Float32Array(N*3), size = new Float32Array(N), seed = new Float32Array(N);
+  let s = 7; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < N; i++) {
+    const a = rnd()*Math.PI*2, v = Math.acos(2*rnd()-1), r = Math.pow(rnd(), 0.55)*5.2;
+    pos[i*3] = Math.sin(v)*Math.cos(a)*r*1.15; pos[i*3+1] = Math.cos(v)*r*0.62; pos[i*3+2] = Math.sin(v)*Math.sin(a)*r - 1.2;
+    const gold = rnd() < 0.045, k = 0.55 + rnd()*0.45;
+    if (gold) { col[i*3] = 0.86; col[i*3+1] = 0.72; col[i*3+2] = 0.33; } else { col[i*3] = 0.66*k+0.3; col[i*3+1] = 0.70*k+0.3; col[i*3+2] = 0.76*k+0.3; }
+    size[i] = (gold ? 2.6 : 1.2) + rnd()*rnd()*3.2; seed[i] = rnd();
+  }
+  const g = new T.BufferGeometry();
+  g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aCol", new T.BufferAttribute(col,3)); g.setAttribute("aSize", new T.BufferAttribute(size,1)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
+  group.add(new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader:`uniform float uTime,uPx,uDim,uField; attribute vec3 aCol; attribute float aSize,aSeed; varying vec3 vCol; varying float vA;
+      void main(){ vec3 p = position + .16*vec3(sin(uTime*.31+aSeed*6.28), cos(uTime*.23+aSeed*4.1), sin(uTime*.19+aSeed*5.3));
+        p *= mix(1.35, 1., uField);
+        vec4 mv = modelViewMatrix*vec4(p,1.); gl_PointSize = aSize*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv;
+        float d = clamp((-mv.z-5.)/10., 0., 1.);
+        vA = (1.-d*.85) * uDim * uField * (.6 + .4*sin(uTime*1.1 + aSeed*40.)); vCol = aCol; }`,
+    fragmentShader:`varying vec3 vCol; varying float vA; void main(){ float r = length(gl_PointCoord - .5); float a = 1. - smoothstep(0., .5, r); gl_FragColor = vec4(vCol, a*a*vA); }` })));
+  return { renderer, scene, camera, group, u, w:0, h:0, lv:0 };
+}
+// Draw one frame into each canvas; lv is the voice level (0 to 1), eased so the cloud leans in and settles back.
+function kfFrame(canvases, t, lv) {
+  if (!canvases.length || !window.THREE || KF.fail) return false;
+  if (!KF.r) { try { KF.r = kfBuild(); } catch (e) { KF.fail = true; return false; } }
+  const F = KF.r, c0 = canvases[0], w = c0.clientWidth, h = c0.clientHeight; if (!w || !h) return false;
+  if (F.w !== w || F.h !== h) { F.w = w; F.h = h; F.renderer.setSize(w, h, false); F.camera.aspect = w/h; F.camera.updateProjectionMatrix(); }
+  F.lv += ((lv || 0) - F.lv) * .08;
+  F.u.uTime.value = t; F.u.uField.value = .75 + .15*F.lv; F.u.uDim.value = .5 + .22*F.lv;
+  F.camera.position.set(Math.sin(t*.11)*.35, Math.sin(t*.17)*.12, 10 - .8*F.lv); F.camera.lookAt(0, 0, 0);
+  F.group.rotation.y = .2*Math.sin(t*.16) + t*.02;
+  F.renderer.render(F.scene, F.camera);
+  const src = F.renderer.domElement;
+  canvases.forEach(c => { if (c.width !== src.width || c.height !== src.height) { c.width = src.width; c.height = src.height; }
+    const g = c.getContext("2d"); g.clearRect(0, 0, c.width, c.height); g.globalCompositeOperation = "lighter"; g.drawImage(src, 0, 0); g.drawImage(src, 0, 0); }); // drawn twice: on a phone-sized canvas the reel's full-screen points read a little too faint
+  return true;
+}
+
+/* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34, 21:59). Load after motion.js and kai-field.js, before data.js.
+   Overrides sCall and callBarHTML, wraps answer, portWire and vizLoop. Keeps every hook motion.js and the wiring use:
+   #vizc, #vizs, #tr, .line.k / .line.k.now / .line.u, [data-ans], [data-cmute], [data-cend], [data-expand], [data-timer],
+   canvas.mo-mini. New state: STATE.callIdeas, STATE.callTyping, STATE.callCap. ==== */
+STATE.callIdeas = false; STATE.callTyping = false; STATE.callCap = true;
+const KC_IC = { mic:'<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  micoff:'<line x1="2" x2="22" y1="2" y2="22"/><path d="M18.89 13.23A7.12 7.12 0 0 0 19 12v-2"/><path d="M5 10v2a7 7 0 0 0 12 5"/><path d="M15 9.34V5a3 3 0 0 0-5.68-1.33"/><path d="M9 9v3a3 3 0 0 0 5.12 2.12"/><line x1="12" x2="12" y1="19" y2="22"/>',
+  end:'<path d="M10.1 13.9a14 14 0 0 0 3.732 2.668 1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2 18 18 0 0 1-12.728-5.272"/><path d="M22 2 2 22"/><path d="M4.76 13.582A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 .244.473"/>',
+  bulb:'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  kbd:'<path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/>',
+  down:'<path d="m6 9 6 6 6-6"/>', cc:'<rect width="18" height="14" x="3" y="5" rx="2" ry="2"/><path d="M7 15h4M15 15h2M7 11h2M13 11h4"/>', up:'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>' };
+const kcI = (n, s=24) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true">${KC_IC[n]}</svg>`;
+const KC_K = `<span class="kc-k" data-kc="KeyKaiMark" data-kv="surface=deep"><svg viewBox="2 4 30 26"><defs><linearGradient id="kcFoil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E7B8"/><stop offset=".5" stop-color="#DCB854"/><stop offset="1" stop-color="#A87F2A"/></linearGradient></defs><path fill="url(#kcFoil)" d="M19.7705 19.6201L24.3896 14.9902H29.9658L23.6924 21.3389L30.6123 28.2852H24.9062L19.7705 22.9404V28.2852H14.8428V22.8262L14.8418 22.8408L9.70508 28.1846H4L10.9189 21.2393L4.64746 14.8896H10.2217L14.8418 19.5195L14.8428 19.5332V6H19.7705V19.6201Z"/></svg></span>`;
+const kcQ = s => String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+
+sCall = function() {
+  const lines = [];
+  lines.push(`<p class="line k">Hi ${DB.user.name.split(" ")[0]}. I'd like to understand you, not fill in a form. ${STATE.connect.calendar?"I can see who you meet with, so I'll start from there. ":""}Six questions, about ten minutes. Answer however you like, and I'll read it back so you can fix anything.</p>`);
+  for (let i=0;i<STATE.callStep;i++){ lines.push(`<p class="line k">${INTAKE[i].q}</p>`); lines.push(`<p class="line u">${STATE.callAnswers[i]}</p>`); }
+  if (STATE.callStep<INTAKE.length) lines.push(`<p class="line k now">${INTAKE[STATE.callStep].q}</p>`);
+  const ideas = STATE.callStep<INTAKE.length ? INTAKE[STATE.callStep].a : [];
+  const who = typeof MO_SIG!=="undefined" ? MO_SIG.who : "idle";
+  const status = STATE.callMuted ? "Muted" : ({ kai:"Kai is speaking", you:"Listening", think:"Kai is thinking", idle:"Your turn" })[who] || "Your turn";
+  const b = (on, attr, ic, l, cls="") => `<button class="kc-b${on?" on":""}${cls}" ${attr} aria-pressed="${!!on}"><span class="d">${kcI(ic,28)}</span><span class="l">${l}</span></button>`;
+  return `<div class="call kc${STATE.callCap?"":" nocap"}" data-who="${who}" data-kc="KeyCallScreen" data-kv="who=${who}, muted=${!!STATE.callMuted}, captions=${!!STATE.callCap}">
+    <canvas class="kc-fld" aria-hidden="true" data-kc="KeyStarField" data-kv="framing=call"></canvas>
+    <div class="kc-top"><button class="kc-ib" data-kcmin aria-label="Minimise call">${kcI("down")}</button>
+      <div class="kc-who"><div class="n">${KC_K}Kai</div><div class="t"><span data-timer>${fmt(STATE.callSeconds)}</span> · ${Math.min(STATE.callStep+1,INTAKE.length)} of ${INTAKE.length}</div></div>
+      <button class="kc-ib${STATE.callCap?"":" off"}" data-kccap aria-label="${STATE.callCap?"Hide":"Show"} captions" aria-pressed="${!!STATE.callCap}">${kcI("cc")}</button></div>
+    <div class="viz" data-kc="KeyVoiceVisualizer" data-kv="size=240"><canvas id="vizc" width="260" height="260"></canvas></div>
+    <div class="vizs" id="vizs">${status}</div>
+    <div class="tr" id="tr" data-kc="KeyLiveTranscript" data-kv="lines=3">${lines.join("")}</div>
+    <div class="kc-ideas${STATE.callIdeas?" open":""}" role="dialog" aria-label="Ideas"><div class="h">Say one of these, or just talk</div>
+      ${ideas.map(a=>`<button class="kc-idea" data-ans="${kcQ(a)}"><span>${a}</span>${kcI("up",18)}</button>`).join("")}</div>
+    <div class="kc-type${STATE.callTyping?" open":""}"><textarea id="kcType" rows="1" placeholder="Type your answer"></textarea><button class="kc-send" data-kcsend aria-label="Send">${kcI("up",20)}</button></div>
+    <div class="kc-ctl" data-kc="KeyCallControls" data-kv="buttons=4">
+      ${b(STATE.callMuted, "data-cmute", STATE.callMuted?"micoff":"mic", STATE.callMuted?"Unmute":"Mute")}
+      ${b(STATE.callIdeas, "data-kcideas", "bulb", "Ideas")}
+      ${b(STATE.callTyping, "data-kctype", "kbd", "Type")}
+      ${b(false, "data-cend", "end", "End", " end")}
+    </div>
+  </div>`;
+};
+callBarHTML = function() {
+  const last = STATE.callStep<INTAKE.length ? INTAKE[STATE.callStep].q : "Wrapping up";
+  return `<div class="callbar kc-bar" data-expand data-kc="KeyCallBar" data-kv="state=${STATE.callMuted?"muted":"live"}"><canvas class="mo-mini" width="36" height="36"></canvas><div class="cbm"><b>Kai · <span data-timer>${fmt(STATE.callSeconds)}</span></b><div class="cbl">${last}</div></div>
+    <span class="kc-sb${STATE.callMuted?" on":""}" data-cmute role="button" aria-label="${STATE.callMuted?"Unmute":"Mute"}">${kcI(STATE.callMuted?"micoff":"mic",20)}</span><span class="kc-sb end" data-cend role="button" aria-label="End call">${kcI("end",20)}</span></div>`;
+};
+const _kcAnswer = answer;
+answer = function(a) {
+  if (STATE.callActive && STATE.callMuted) { toast("You're muted. Unmute to answer."); return; }
+  STATE.callIdeas = false; STATE.callTyping = false;
+  phone.querySelectorAll(".kc-ideas.open, .kc-type.open").forEach(el=>el.classList.remove("open"));
+  phone.querySelectorAll("[data-kcideas], [data-kctype]").forEach(el=>{ el.classList.remove("on"); el.setAttribute("aria-pressed","false"); });
+  return _kcAnswer.apply(this, arguments);
+};
+const _kcEnd = endCall;
+endCall = function() { STATE.callIdeas = false; STATE.callTyping = false; return _kcEnd.apply(this, arguments); };
+const _kcPortWire = portWire;
+portWire = function() {
+  _kcPortWire.apply(this, arguments);
+  const call = phone.querySelector(".call.kc"); if (!call) return;
+  const tr = call.querySelector("#tr"); if (tr) tr.scrollTop = tr.scrollHeight;
+  const tog = (key, on, off) => { STATE[key] = !STATE[key]; if (off) STATE[off] = false;
+    call.querySelector(".kc-ideas").classList.toggle("open", STATE.callIdeas); call.querySelector(".kc-type").classList.toggle("open", STATE.callTyping);
+    [["data-kcideas","callIdeas"],["data-kctype","callTyping"]].forEach(([a,k])=>{ const el = call.querySelector(`[${a}]`); el.classList.toggle("on", STATE[k]); el.setAttribute("aria-pressed", String(STATE[k])); });
+    if (STATE.callTyping) setTimeout(()=>{ const t = call.querySelector("#kcType"); if (t) t.focus(); }, 60); };
+  const on = (sel, fn) => { const el = call.querySelector(sel); if (el) el.onclick = e => { e.stopPropagation(); fn(); }; };
+  on("[data-kcmin]", () => { STATE.callIdeas = false; STATE.callTyping = false; minimizeCall(); });
+  on("[data-kccap]", () => { STATE.callCap = !STATE.callCap; render(); });
+  on("[data-kcideas]", () => { if (typeof MO_SIG!=="undefined" && MO_SIG.who==="think") return; tog("callIdeas", true, "callTyping"); });
+  on("[data-kctype]", () => tog("callTyping", true, "callIdeas"));
+  const send = () => { const t = call.querySelector("#kcType"); const v = t && t.value.trim(); if (!v) { toast("Type an answer first"); return; } answer(v); };
+  on("[data-kcsend]", send);
+  const t = call.querySelector("#kcType"); if (t) t.onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } };
+};
+const _kcViz = vizLoop;
+vizLoop = function() {
+  _kcViz.apply(this, arguments);
+  const f = phone.querySelector("canvas.kc-fld");
+  if (f && typeof kfFrame === "function") kfFrame([f], performance.now()/1000, typeof MO_SIG!=="undefined" ? MO_SIG.level||0 : 0);
 };
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
