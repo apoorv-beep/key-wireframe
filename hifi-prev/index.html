@@ -3386,12 +3386,12 @@ p,
 .pop-still #phone > .screen { transition:none; } .pop-still .tipdim { animation:none; }
 
 /* family marks (v63): the initial's box becomes a clipped square SVG */
-.fm { padding:0; overflow:hidden; background:#fff; color:transparent; font-size:0; }
-.fm > svg { width:100%; height:100%; display:block; }
-.flogo.fm { border:1px solid var(--line); }
-.flogo.big.fm { border:3px solid #fff; box-shadow:0 0 0 1px var(--line); }
-.famchip i.fm { border:1px solid var(--line); }
-.tab.fam .ic.logo.fm { border:1.5px solid var(--line); background:#fff; }
+.fmk { padding:0; overflow:hidden; background:#fff; color:transparent; font-size:0; }
+.fmk > svg { width:100%; height:100%; display:block; }
+.flogo.fmk { border:1px solid var(--line); }
+.flogo.big.fmk { border:3px solid #fff; box-shadow:0 0 0 1px var(--line); }
+.famchip i.fmk { border:1px solid var(--line); }
+.tab.fam .ic.logo.fmk { border:1.5px solid var(--line); background:#fff; }
 /* Kai's mark (v64): foil K, always on ink */
 .kn { display:block; flex:0 0 auto; }
 .avatar.kn-on { background:transparent; border:0; padding:0; overflow:hidden; }
@@ -5692,6 +5692,9 @@ function sSentThread(oid) {
   <div class="foot"><div class="row" style="gap:8px"><button class="btn sec" style="flex:1" data-nudge="${oid}">Nudge once</button><button class="btn sec" style="flex:0 0 auto" onclick="openSheet('confirm','withdraw|${to.name.split(" ")[0]}')">Withdraw</button></div><div class="xs faint" style="margin-top:8px;text-align:center">You can't add to a request until they reply. That's what keeps asks light.</div></div>`;
 }
 
+// Hi-fi copy only (27 Sep): feature modules gate their hi-fi layer on this flag; the wireframe never defines it.
+const KEY_HIFI = true;
+
 /* ==== PORTED FROM PRODUCTION, 25 Sep 2026 ====
    Messages list, the conversation screen (DM, group, event chat, channel), threads, chat details,
    the message and conversation sheets, new chat, and the bell notifications screen.
@@ -7337,7 +7340,7 @@ const _dStatus = scMissionStatus; scMissionStatus = function(m, ps){ const r=_dS
 const _dIntake = applyIntake; applyIntake = function(){
   _dIntake();
   if (!STATE.member) return;
-  if (!DB.people.ravi) DB.people.ravi = { id:"ravi", name:"Ravi Menon", initials:"RM", title:"CTO", company:"Stripe", line:"Ex-Google Pay. Not on Key; Daniel reaches him on WhatsApp.", families:[], openTo:[], notNow:[], slots:"", help:[], lookingFor:"", offKey:true };
+  if (!DB.people.ravi) DB.people.ravi = { id:"ravi", name:"Ravi Menon", initials:"RM", title:"CTO", company:"Stripe", line:"Ex-Google Pay. Not on Key; Daniel reaches him on WhatsApp.", families:[], openTo:[], notNow:[], slots:"", help:[], lookingFor:"", shared:[], offKey:true };
   const m1 = DB.missions.find(m=>m.type==="Looking");
   if (m1) {
     m1.brief = dCopy(m1.brief||"");
@@ -12712,10 +12715,10 @@ function fmId(letter){
 }
 function fmApply(root){
   (root||document).querySelectorAll(FM_SEL).forEach(el => {
-    if (el.classList.contains("fm") || el.children.length) return;
+    if (el.classList.contains("fmk") || el.children.length) return;
     const t = el.textContent.trim(); if (t.length!==1) return;
     const id = fmId(t); if (!id) return;
-    el.innerHTML = FAM_MARK[id]; el.classList.add("fm"); el.setAttribute("data-fam", id); el.setAttribute("aria-label", t);
+    el.innerHTML = FAM_MARK[id]; el.classList.add("fmk"); el.setAttribute("data-fam", id); el.setAttribute("aria-label", t);
   });
 }
 const _fmRender = render; render = function(){ const r = _fmRender.apply(this, arguments); fmApply(); return r; };
