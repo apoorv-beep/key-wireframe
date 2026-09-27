@@ -2829,6 +2829,23 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-omn { min-width:74px; font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
   .cm-orgmonth .cm-kairow { border-bottom:0; border-top:1px solid var(--line); margin-top:4px; }
 
+  /* The organizer strip: Kai's inverse fill, faces first, one tap per job (27 Sep). */
+  .cm-ostrip { background:var(--ink); color:#fff; border-radius:16px; padding:12px 0 12px; margin:4px 0 14px; }
+  .cm-oshd { display:flex; align-items:center; gap:10px; padding:0 14px; cursor:pointer; }
+  .cm-oshd .m { flex:1; min-width:0; } .cm-oshd .a { font-weight:700; font-size:15px; } .cm-oshd .b { font-size:12px; color:rgba(255,255,255,.7); margin-top:1px; }
+  .cm-oshd .s { color:rgba(255,255,255,.7); }
+  .cm-osk { width:28px; height:28px; border-radius:8px; background:#fff; color:var(--ink); display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+  .cm-osk .li { fill:currentColor; }
+  .cm-osn { font-size:12px; font-weight:600; color:rgba(255,255,255,.7); font-variant-numeric:tabular-nums; }
+  .cm-osbar { height:3px; border-radius:2px; background:rgba(255,255,255,.18); margin:10px 14px 12px; overflow:hidden; }
+  .cm-osbar i { display:block; height:100%; background:#fff; border-radius:2px; transition:width .26s cubic-bezier(.2,.8,.2,1); }
+  .cm-osjobs { display:flex; gap:8px; overflow-x:auto; padding:0 14px; scrollbar-width:none; }
+  .cm-osjobs::-webkit-scrollbar { display:none; }
+  .cm-osjob { flex:0 0 auto; display:flex; align-items:center; gap:7px; min-height:40px; padding:6px 12px 6px 6px; border-radius:999px; border:0; background:rgba(255,255,255,.12); color:#fff; font:inherit; font-size:13px; cursor:pointer; }
+  .cm-osjob b { font-weight:700; } .cm-osjob i { font-style:normal; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.7); }
+  .cm-osfs { display:flex; } .cm-osf { width:26px; height:26px; border-radius:50%; background:#fff; color:var(--ink); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--ink); }
+  .cm-osf + .cm-osf { margin-left:-9px; }
+
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
    Tip surface = component.tip.bg (surface.default) at elevation 3; the target gets the focus ring. ==== */
@@ -7314,6 +7331,269 @@ function oAssign(){ const s=oState(); s.log.push(["Kai","asked Ines to greet thi
 const _oMission = sMission; sMission = function(id){ if (id==="morg") return oPage(); return _oMission(id); };
 const _oPortSheet = portSheet; portSheet = function(type, id){ if (type==="osheet") return oSheet(id); return _oPortSheet(type, id); };
 
+/* ==== BRIEF AS TEXT, QUESTION-FIRST LOG (27 Sep, missions thread; his 17:13 and 17:48; research log-brief-input.md, log-capture.md)
+   Brief: tapping it opens the words themselves, editable, with Kai as an action beside them. No composer on the mission page:
+   Kai asks and you tap (the lifted questions at the top, the Now rows at home, a push after a calendar event). The one
+   free path is a mic-first sheet that files itself under the right mission. Every tap pays back with one line. */
+
+/* ---- Brief sheet ---- */
+function bBriefSheet(id){
+  const m = DB.missions.find(x=>x.id===id); if (!m) return scSheet("Brief","","");
+  const cons = (m.constraints||[]).map((c,i)=>`<span class="chip on" onclick="bDrop('${id}',${i})">${c} <span style="opacity:.6">×</span></span>`).join("");
+  const meta = m.standing ? "Standing, no end date" : (m.done ? `Done when: ${m.done}` : "");
+  const act = (ic, a, b, on) => `<div class="row" ${on}><div class="avatar" style="border-radius:8px">${LI(ic,14)}</div><div class="m"><div class="a plain">${a}</div><div class="b">${b}</div></div><span class="chev">›</span></div>`;
+  return scSheet("Brief", "Your words. Kai reads every change on the next pass", `
+    <div class="draftbox" style="margin-top:6px"><textarea id="brief-${id}" rows="5">${m.brief||""}</textarea>${cons?`<div class="chips" style="margin-top:8px">${cons}</div>`:""}${meta?`<div class="drow"><span class="m12">${meta}</span></div>`:""}</div>
+    <div class="rows" style="margin-top:10px">
+      ${act("sparkle","Make it specific with Kai","Two questions, then Kai rewrites it here",`onclick="bAskKai('${id}','Two questions to make this specific: what would make you say no to a path, and what does done look like?')"`)}
+      ${m.standing?"":act("flag","Change when it's done", m.done||"Set the finish line", `onclick="bAskKai('${id}','What should count as done? Say it in a line and I set it.')"`)}
+      ${act(m.status==="paused"?"play":"pause", m.status==="paused"?"Resume":"Pause this mission", m.status==="paused"?"Paths pick up where they were":"Paths stay where they are. Kai stops looking", `onclick="bPause('${id}')"`)}
+    </div>
+    <div class="acts" style="margin-top:12px"><button class="btn" onclick="bKeep('${id}')">Keep</button><span class="quiet" onclick="closeSheet()">Close</span></div>`);
+}
+function bKeep(id){ const m=DB.missions.find(x=>x.id===id); const el=document.getElementById("brief-"+id); const v=el?el.value.trim():""; 
+  if (m && v && v!==m.brief) { m.brief=v; if (typeof missionLogAdd==="function") missionLogAdd(m,"You","changed the brief."); if (typeof missionLogAdd==="function") missionLogAdd(m,"Kai","read it. The next pass uses it, and the receipts say what changed."); toast("Kept. Kai reads it on the next pass."); }
+  else toast("Nothing changed."); closeSheet(); }
+function bDrop(id,i){ const m=DB.missions.find(x=>x.id===id); if (m&&m.constraints) { const c=m.constraints.splice(i,1)[0]; if (typeof missionLogAdd==="function") missionLogAdd(m,"You",`dropped "${c}" from the brief.`); } render(); }
+function bAskKai(id, q){ const m=DB.missions.find(x=>x.id===id); openSheet("kai"); STATE.kaiScope={ kind:"mission", id, label:m?m.name:"", sugg:[] }; STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"k", text:q }); render(); }
+function bPause(id){ const m=DB.missions.find(x=>x.id===id); if (!m) return; m.status = m.status==="paused" ? "active" : "paused"; if (typeof missionLogAdd==="function") missionLogAdd(m,"You", m.status==="paused"?"paused this. Paths stay where they are.":"resumed this."); closeSheet(); toast(m.status==="paused"?"Paused. Resume from the brief any time.":"Resumed. Kai's next pass is Friday."); }
+
+/* ---- the quick log sheet: faces first, one more tap, payback in place; mic for everything else ---- */
+function lgState(){ STATE.lg = STATE.lg || { open:null, done:{}, last:null }; return STATE.lg; }
+function lgPaths(mid){ return DB.opps.filter(o=>(!mid||o.missionId===mid) && o.state!=="dropped" && o.state!=="candidate" && o.state!=="done" && (!o.kind||o.kind==="person"||!!o.roleTitle||o.kind==="offer"||o.kind==="resource")); }
+function lgSheet(mid){
+  const s=lgState(); const os=lgPaths(mid); const m = mid ? DB.missions.find(x=>x.id===mid) : null;
+  const mname=o=>{ const x=DB.missions.find(z=>z.id===o.missionId); return x?x.name:""; };
+  const row=o=>{ const open=s.open===o.id; const d=s.done[o.id]; const t=targetOf(o);
+    const line = d ? (d==="talked"?`In conversation. Kai asks how it went in a week`:d==="nothing"?`Nothing yet. Kai asks again if it moves`:d==="good"?`Went well. Kept`:`Not a fit. Kept, ${f1(t)} sees nothing`) : (mid?scStatus(o):mname(o));
+    return `<div class="row" onclick="STATE.lg.open=${open?"null":`'${o.id}'`};render()">${av(scIni(o))}<div class="m"><div class="a">${scName(o)}</div><div class="b">${line}</div></div>${d?`<span class="k green">Logged</span>`:`<span class="chev">${open?"▾":"›"}</span>`}</div>
+      ${open&&!d?`<div class="acts" style="margin:0 0 10px;flex-wrap:wrap;gap:6px"><button class="mini" onclick="event.stopPropagation();lgTap('${o.id}','talked')">We talked</button><button class="mini sec" onclick="event.stopPropagation();lgTap('${o.id}','good')">Went well</button><button class="mini sec" onclick="event.stopPropagation();lgTap('${o.id}','nofit')">Not a fit</button><span class="quiet" onclick="event.stopPropagation();lgTap('${o.id}','nothing')">Nothing yet</span></div>`:""}`; };
+  const more = s.last ? `<div class="rows" style="margin:6px 0 10px"><div class="fr"><span><b>Kai</b> ${s.last}</span></div></div>` : "";
+  return scSheet("What moved?", "Tap a face, then one more tap. Or hold the mic and say it", `
+    ${more}
+    ${os.length?`<div class="rows">${os.map(row).join("")}</div>`:`<div class="m12" style="padding:8px 0">No open paths${m?" on this mission":""}. Say what happened below.</div>`}
+    <div class="sl">Anything else</div>
+    <div class="draftbox" style="margin-top:4px"><textarea id="lg-free" rows="2" placeholder="${m?`Learned something, changed your mind, something moved`:`Kai files it under the right mission`}"></textarea><div class="drow"><span class="mini sec" onclick="toast('Hold to talk. Kai writes it down.')">${LI("mic",14)}</span><span class="m12">Hold to talk, or type</span><span class="mini" onclick="lgFree(${mid?`'${mid}'`:"null"})">Keep</span></div></div>
+    <div class="acts" style="margin-top:10px"><span class="quiet" style="margin:0 auto" onclick="STATE.lg.last=null;closeSheet()">Done</span></div>`);
+}
+function lgTap(oid, kind){
+  const o=DB.opps.find(x=>x.id===oid); if (!o) return; const s=lgState(); const t=targetOf(o); s.open=null;
+  if (kind==="good"||kind==="nofit") { s.done[oid]=kind; STATE.lg.last=null; logOutcome(oid, kind); return; }   /* journal.js opens the keep sheet: the deeper log, after the tap */
+  s.done[oid]=kind; o.log=o.log||[];
+  if (kind==="talked") { o.log.push(["You","we talked. Logged with one tap.","now"]); if (o.state!=="conversation") { o.state="conversation"; o.met=true; o.asked=null; if (typeof lit==="function") lit(o,"In conversation","now"); } s.last=`${f1(t)} moved to In conversation. I ask how it went in a week, and ${viaOf(o)?f1(viaOf(o))+" sees Moved":"nothing is sent"}.`; }
+  else { o.log.push(["You","nothing yet","now"]); s.last=`Okay. Nothing changes for ${f1(t)}; I ask again only if it moves.`; }
+  STATE.metrics.journal=(STATE.metrics.journal||0)+1; render();
+}
+function lgFree(mid){
+  const el=document.getElementById("lg-free"); const v=el?el.value.trim():""; if (!v) { toast("Say it, or type a line."); return; }
+  const s=lgState();
+  if (mid==="morg" && typeof oState==="function") { const os=oState(); if (/\?$/.test(v)) { openSheet("kai"); STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"u", text:v }); if (typeof kaiAsk==="function") kaiAsk(v); return; } os.log.push(["You", v, "now"]); os.log.push(["Kai", /skip|stop|not this week/i.test(v) ? "Noted. That job is off this week and back on Monday unless you say otherwise." : "Noted. It shows on next Monday's pass.", "now"]); s.last=`Kept for Monday's pass. <span class="pn" onclick="closeSheet()">See the log</span>`; if (el) el.value=""; render(); return; }
+  let m = mid ? DB.missions.find(x=>x.id===mid) : null; let o=null;
+  if (!m) { o = lgPaths(null).find(x=>{ const t=targetOf(x); return t && new RegExp("\\b"+f1(t)+"\\b","i").test(v); }) || null; if (o) m=DB.missions.find(x=>x.id===o.missionId); }
+  if (!m) m = DB.missions.filter(x=>x.status!=="closed").sort((a,b)=>((b.mlog||[]).length)-((a.mlog||[]).length))[0];
+  if (!m) return;
+  if (typeof missionLogAdd==="function") missionLogAdd(m,"You",v);
+  const learned = /^(learned|i'd take|i would take|changed my mind|i now|turns out)/i.test(v);
+  if (typeof missionLogAdd==="function") missionLogAdd(m,"Kai", learned?"kept. It changes what clears the bar on the next pass.":"noted. It shows on the next pass.");
+  if (learned) m.jLearned=(m.jLearned||0)+1;
+  s.last = `Filed under ${m.name}${o?`, on ${f1(targetOf(o))}`:""}. ${learned?"It changes what clears the bar next pass.":"I use it on the next pass."} <span class="pn" onclick="lgMove('${m.id}','${v.replace(/'/g,"\\'")}')">Change</span>`;
+  if (el) el.value=""; render();
+}
+function lgMove(mid, v){ const ms=DB.missions.filter(x=>x.status!=="closed"); const i=ms.findIndex(x=>x.id===mid); const from=ms[i]; const to=ms[(i+1)%ms.length]; if (!to||to===from) { toast("Only one mission."); return; }
+  if (from&&from.mlog) { const k=from.mlog.length; from.mlog=from.mlog.filter(l=>l[1]!==v && !(l[0]==="Kai"&&/^(kept|noted)\./.test(l[1])&&from.mlog.indexOf(l)>=k-2)); }
+  if (typeof missionLogAdd==="function") { missionLogAdd(to,"You",v); missionLogAdd(to,"Kai","noted. It shows on the next pass."); }
+  STATE.lg.last=`Moved to ${to.name}. <span class="pn" onclick="lgMove('${to.id}','${v.replace(/'/g,"\\'")}')">Change</span>`; render(); }
+
+/* ---- a push after a calendar event: the question comes to you, one tap answers it (Whoop, Hinge We Met, Gong) ---- */
+function lgCalendarPush(){
+  if (STATE.lgPushed || !STATE.member || !STATE.intakeDone || STATE.persona!=="priya") return;
+  const o = DB.opps.find(x=>x.personId==="rahul" && x.state!=="done" && x.state!=="dropped"); if (!o) return;
+  STATE.lgPushed = true;
+  setTimeout(()=>{ if (STATE.persona!=="priya") return; pushNote("Coffee with Rahul just ended", "How did it go? One tap. Kai keeps the rest.", [["Went well", ()=>{ STATE.push=null; lgTap(o.id,"good"); }], ["Didn't happen", ()=>{ STATE.push=null; o.log.push(["You","the coffee didn't happen","now"]); toast("Okay. Kai asks again when the calendar says so."); render(); }]]); }, 1400);
+}
+
+/* ---- mission page: the words as a sheet, the composer gone, the log opened by a face ---- */
+const _bMission = sMission; sMission = function(id){
+  let h = _bMission(id);
+  h = h.replace(/data-kaibrief="([^"]+)"/g, (_,x)=>`onclick="openSheet('bsheet','${x}')"`)
+       .replace("Make it specific with Kai</div>", "Tap to edit. Kai reads every change</div>")
+       .replace("Change the purpose or the number with Kai</div>", "Tap to edit. Kai reads every change</div>");
+  const i = h.indexOf('<div class="mlog">'); const j = h.indexOf('<div class="body-gap">');
+  if (i>=0 && j>i) h = h.slice(0,i) + h.slice(j);
+  const m = DB.missions.find(x=>x.id===id);
+  if (m && STATE.member && !m.org && !m.host && !m.evKind) h = h.replace('<div class="sl">Log<span', `<div class="row" onclick="STATE.lg=STATE.lg||{open:null,done:{},last:null};STATE.lg.last=null;openSheet('lsheet','${id}')"><div class="avatar" style="border-radius:8px">${LI("mic",14)}</div><div class="m"><div class="a plain">Say what moved</div><div class="b">Tap a face, or hold to talk. Kai files it here</div></div><span class="chev">›</span></div><div class="sl">Log<span`);
+  return h;
+};
+/* organizer page: same treatment, the composer becomes the mic row */
+const _bOPage = typeof oPage==="function" ? oPage : null;
+if (_bOPage) oPage = function(){ let h=_bOPage(); const i=h.indexOf('<div class="mlog">'); const j=h.indexOf('<div class="body-gap">'); if (i>=0&&j>i) h=h.slice(0,i)+`<div class="row" onclick="STATE.lg=STATE.lg||{open:null,done:{},last:null};STATE.lg.last=null;openSheet('lsheet','morg')"><div class="avatar" style="border-radius:8px">${LI("mic",14)}</div><div class="m"><div class="a plain">Tell Kai what changed</div><div class="b">Hold to talk. Grace said yes, skip welcomes this week, who went quiet</div></div><span class="chev">›</span></div>`+h.slice(j); return h; };
+
+/* home: the mic in the header, everywhere you are; the calendar push once */
+const _bHome = sHome; sHome = function(){
+  let h = _bHome(); if (!STATE.member || !STATE.intakeDone) return h;
+  h = h.replace(`<div class="icon" onclick="openSheet('newmission')">+</div>`, `<div class="icon" onclick="STATE.lg=STATE.lg||{open:null,done:{},last:null};STATE.lg.last=null;openSheet('lsheet','')">${LI("mic",18)}</div><div class="icon" onclick="openSheet('newmission')">+</div>`);
+  lgCalendarPush(); return h;
+};
+const _bPortSheet = portSheet; portSheet = function(type, id){ if (type==="bsheet") return bBriefSheet(id); if (type==="lsheet") return lgSheet(id||null); return _bPortSheet(type, id); };
+
+/* ==== EVENT MISSIONS B TO F AND THE SERIES VIEW (27 Sep, missions thread; his 17:48 points 3, 4, 6; research events-missions.md,
+   approval-privacy.md, series-events.md). Kind A (fill the room) is decisions.js m3. Here: B cut no-shows, C introduce people,
+   D close the loop, E find a co-host, F grow the series. Priya hosts the Linear teardown (e4) and runs "Coffee with new PMs" (s-coffee).
+   Events owns the event page and Manage; they call msEventMissions(eid) for the rows that lead here. Data below is local until
+   events.js hands over evConfirm, evPairs, e.debrief, evCoHostCandidates and evSeriesAttendance; each read falls back. */
+
+Object.assign(LUCIDE, { "calendar-check":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>', "moon":'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>', "hand":'<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>', "repeat":'<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>' });
+
+const EVM_B = { e4: { going:["rahul","ana","maya","chris","kate"], after:{ rahul:"confirmed", ana:"confirmed", chris:"confirmed", maya:"quiet", kate:"no" }, wait:["felix","priti"], excluded:"Not asked: Ana, she co-hosts; Marco, he already said he can't." } };
+const EVM_C = { e4: [ { a:"rahul", b:"maya", why:"Rahul hires ML engineers; Maya leads engineering at a seed startup and asked for hiring advice" }, { a:"kate", b:"arjun", why:"Kate ships learning loops at Duolingo; Arjun builds agents for logistics and asked for a PM's eye" }, { a:"ana", b:"jordan", why:"Ana runs platform at Sierra; Jordan is looking for a PM role in agents" }, { a:"sana", b:"dev", why:"Both asked about legal-tech agents this month" } ] };
+const EVM_D = { e10p: { name:"Coffee with new PMs", day:"Thu, Sep 17", going:5, came:4, met:3, rating:"4.8 by 4", shared:[["kate","jordan","Kate met Jordan. Both let you know"]], asks:[ { pid:"jordan", what:"asked to be at the next one", act:"Invite Oct 1", kind:"invite" }, { pid:"kate", what:"asked for the reading list you mentioned", act:"Send", kind:"send" } ], noshow:["sana"] } };
+const EVM_E = { e4: [ { pid:"rahul", why:"Co-runs PM Teardowns with you. Five for five. Hosts nothing yet", draft:"Rahul, five for five and you already co-run the calendar. Co-host Oct 23 with me? Kai fills the room." }, { pid:"kate", why:"Came to three of five and asked about hosting in the chat", draft:"Kate, you asked about hosting. The Figma teardown on Oct 23 is yours if you want it; I'll be there and Kai fills the room." } ] };
+const EVM_S = { "s-coffee": { name:"Coffee with new PMs", cadence:"Every other Thursday, 8am", next:"e10", dates:5, show:78, back:62, fresh:2,
+  people:[ { pid:"kate", came:4, of:5, last:"Sep 17", tag:"regular" }, { pid:"jordan", came:3, of:5, last:"Sep 17", tag:"regular" }, { pid:"rahul", came:3, of:5, last:"Sep 3", tag:"regular" }, { pid:"sana", came:2, of:5, last:"Aug 6", tag:"lapsed" }, { pid:"arjun", came:1, of:1, last:"Sep 17", tag:"new" }, { pid:"dev", came:1, of:1, last:"Sep 17", tag:"new" } ],
+  rules:[ ["autoinvite","Regulars are invited when the next date is published",true], ["carry","The waitlist carries to the next date",true], ["debrief","Kai asks who met whom the morning after, as Kai",true] ] } };
+
+function evmS(){ STATE.evm = STATE.evm || { b:{ ok:false, offered:{} }, c:{}, d:{ done:{} }, e:{ sent:{}, open:null }, f:{ nudged:{}, invited:{}, rules:{} }, log:{} }; return STATE.evm; }
+function evmLog(m, who, text){ if (typeof missionLogAdd==="function") missionLogAdd(m, who, text, "now"); }
+function evmEv(eid){ return typeof evE==="function" ? evE(eid) : (DB.fevents||[]).find(e=>e.id===eid); }
+function evmSeries(sid){ const live = (typeof DB.series!=="undefined" && DB.series) ? DB.series.find(s=>s.id===sid) : null; const loc = EVM_S[sid] || EVM_S["s-coffee"]; return live ? Object.assign({}, loc, { name:live.name||loc.name, cadence:live.cadence||loc.cadence }) : loc; }
+function evmAttendance(sid){ if (typeof evSeriesAttendance==="function") { const a=evSeriesAttendance(sid); if (a&&a.length) return a.map(x=>Object.assign({ tag: x.of>=3&&x.came/x.of>=0.6?"regular":x.of<=1?"new":"lapsed" }, x)); } return evmSeries(sid).people; }
+
+/* the missions themselves, for the host */
+function evmEnsure(){
+  const mine = STATE.persona==="priya" && STATE.member;
+  const want = mine ? [
+    { id:"ev-b.e4", evKind:"b", ev:"e4", type:"Hosting", name:"Cut no-shows, Oct 9", brief:"Two days before the Linear teardown Kai asks each guest to confirm, as Kai for you. A no frees the seat and Kai offers it to the waitlist. You see the text before it goes.", done:"Everyone going has confirmed", status:"active" },
+    { id:"ev-c.e4", evKind:"c", ev:"e4", type:"Hosting", name:"Introductions at the teardown", brief:"Kai pairs guests who asked for each other without knowing it. You approve each pair. Both are asked, and each hears only if both say yes.", done:"Every pair approved or skipped", status:"active" },
+    { id:"ev-d.e10p", evKind:"d", ev:"e10p", type:"Hosting", name:"How the Sep 17 coffee went", brief:"Kai asked each guest who they met the morning after. You see counts; names come to you only when a guest taps to share them. Asks from the morning land here.", done:"Every ask answered", status:"active" },
+    { id:"ev-e.e4", evKind:"e", ev:"e4", type:"Hosting", name:"Find a co-host for Oct 23", brief:"Kai picks people who come to every teardown or asked about hosting. You ask; Kai fills the room for whoever says yes.", done:"One co-host said yes", status:"active" },
+    { id:"ev-f.s-coffee", evKind:"f", ev:"s-coffee", series:true, type:"Hosting", name:"Grow Coffee with new PMs", brief:"Kai tracks who comes back, who is going quiet and who is new across every date, and brings you the three people to reach each time. Members see Regular on their own profile, nobody else sees counts.", standing:true, done:"Standing, no end date", status:"active" } ] : [];
+  for (let i=DB.missions.length-1;i>=0;i--) if (DB.missions[i].evKind && !want.some(w=>w.id===DB.missions[i].id)) DB.missions.splice(i,1);
+  want.forEach(w=>{ if (!DB.missions.some(m=>m.id===w.id)) DB.missions.push(w); });
+}
+const _evmCycle = cyclePersona; cyclePersona = function(to){ _evmCycle(to); evmEnsure(); };
+const _evmApply = applyIntake; applyIntake = function(){ _evmApply.apply(this, arguments); evmEnsure(); if (!STATE.oPushed) { STATE.oPushed=true; if (typeof queuePush==="function") queuePush("chris", "Monday pass for Xoogler", "12 things this week: 2 to welcome, 3 going quiet, 2 asks unanswered. Nothing is sent until you say so.", [["Open", ()=>go("mission:morg"), "mission:morg"], ["Later", ()=>{ toast("It waits on the Community tab."); }]]); } };
+
+/* status per kind, fixed labels */
+function evmStatus(m){ const s=evmS();
+  if (m.evKind==="b") { const d=EVM_B.e4; if (!s.b.ok) return ["Next step","green",`Re-confirm goes Wed 10:00 · ${d.going.length} going, ${d.wait.length} waiting`]; const c=Object.values(d.after).filter(x=>x==="confirmed").length, q=Object.values(d.after).filter(x=>x==="quiet").length, n=Object.values(d.after).filter(x=>x==="no").length; const off=Object.keys(s.b.offered).length; return q||(n&&off<n) ? ["Waiting","grey",`${c} confirmed · ${q} quiet${n?` · ${n} seat${n===1?"":"s"} freed`:""}`] : ["Went well","green",`${c+off} confirmed, room full`]; }
+  if (m.evKind==="c") { const ps=EVM_C.e4; const ans=Object.keys(s.c).length, yes=Object.values(s.c).filter(Boolean).length; return ans<ps.length ? ["New pick","green",`${ps.length-ans} pair${ps.length-ans===1?"":"s"} to approve`] : yes ? ["Waiting","grey",`${yes} asked · each hears only if both say yes`] : ["Went well","green","No pairs this time"]; }
+  if (m.evKind==="d") { const d=EVM_D.e10p; const left=d.asks.filter(a=>!s.d.done[a.pid]).length; return left ? ["Next step","green",`${d.came} of ${d.going} came · ${d.met} met someone · ${left} ask${left===1?"":"s"}`] : ["Went well","green",`${d.came} of ${d.going} came · ${d.met} met someone`]; }
+  if (m.evKind==="e") { const n=Object.keys(s.e.sent).length; return n ? ["Waiting","grey",`Asked ${n} · Kai tells you when they answer`] : ["New pick","green",`${EVM_E.e4.length} people could co-host`]; }
+  if (m.evKind==="f") { const ppl=evmAttendance(m.ev); const r=ppl.filter(p=>p.tag==="regular").length, l=ppl.filter(p=>p.tag==="lapsed"&&!s.f.nudged[p.pid]).length, n=ppl.filter(p=>p.tag==="new").length; return l ? ["Next step","green",`${r} regulars · ${l} going quiet · ${n} new`] : ["Went well","green",`${r} regulars · ${n} new`]; }
+  return ["New pick","green",""]; }
+
+/* one hook for Events: the rows on the event page and in Manage */
+function msEventMissions(eid){ const out=[]; const s=evmS(); const has=id=>DB.missions.some(m=>m.id===id);
+  const e=evmEv(eid); const sid = e && e.seriesId ? e.seriesId : (eid==="e10"?"s-coffee":null);
+  if (eid==="e4" && has("ev-b.e4")) out.push({ kind:"b", label: s.b.ok?"Re-confirm is on":"Re-confirm the guests", count: s.b.ok?0:EVM_B.e4.going.length, go:"mission:ev-b.e4" });
+  if (eid==="e4" && has("ev-c.e4")) { const left=EVM_C.e4.length-Object.keys(s.c).length; out.push({ kind:"c", label: left?"Introductions to approve":"Introductions", count:left, go:"mission:ev-c.e4" }); }
+  if (eid==="e4" && has("ev-e.e4")) out.push({ kind:"e", label:"Find a co-host", count:EVM_E.e4.length-Object.keys(s.e.sent).length, go:"mission:ev-e.e4" });
+  if (eid==="e10p" && has("ev-d.e10p")) out.push({ kind:"d", label:"How it went", count:EVM_D.e10p.asks.filter(a=>!s.d.done[a.pid]).length, go:"mission:ev-d.e10p" });
+  if (sid && has("ev-f."+sid)) out.push({ kind:"f", label:"Track the series", count:0, go:"mission:ev-f."+sid });
+  if (!out.length && typeof evMissionKinds==="function" && e) return evMissionKinds(e)||[];
+  return out; }
+
+/* ---- pages ---- */
+function evmHdr(m, eid){ return `<div class="hdr sc"><div class="back" onclick="goBack()">‹</div><div class="mg t3">${LI(m.series?"repeat":"calendar",14)}</div><div style="flex:1"></div>${eid&&evmEv(eid)?`<div class="icon" onclick="go('eventd:manage.${eid}')">${LI("settings",18)}</div>`:""}</div>`; }
+function evmTop(m){ const [k,tone,txt]=evmStatus(m); return `<div class="t20">${m.name}</div><div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>`; }
+function evmBrief(m){ return `<div class="sl">Brief</div><div class="row first" onclick="openSheet('bsheet','${m.id}')"><div class="m"><div class="a plain">${m.brief}</div><div class="b">${m.standing?"Standing, no end date":"Done when: "+m.done} · Tap to edit</div></div><span class="chev">›</span></div>`; }
+function evmEvent(eid, name, sub){ const e=evmEv(eid); return `<div class="sl">Event</div><div class="rows"><div class="row first" ${e?`onclick="go('eventd:${eid}')"`:""}><div class="m"><div class="a">${e?e.name:name}</div><div class="b">${e?`${e.when} · ${e.going} going`:sub}</div></div><span class="chev">›</span></div></div>`; }
+function evmLogRows(m){ const l=(m.mlog||[]).slice().reverse().slice(0,6); return l.length?`<div class="sl">Log</div><div class="rows">${l.map(x=>`<div class="lrow"><span class="when">${x[2]}</span><span><b>${x[0]}</b> ${x[1]}</span></div>`).join("")}</div>`:""; }
+const evmP = pid => DB.people[pid] || { id:pid, name:pid, initials:pid.slice(0,2).toUpperCase() };
+function evmRow(pid, b, right, on){ const p=evmP(pid); return `<div class="row" ${on||`onclick="openSheet('profile','${pid}')"`}>${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${b}</div></div>${right||""}</div>`; }
+function evmPair(a,b,why,right){ const pa=evmP(a), pb=evmP(b); return `<div class="row"><div class="avs" style="margin:0;gap:4px">${av(pa.initials)}${av(pb.initials)}</div><div class="m"><div class="a">${f1(pa)} and ${f1(pb)}</div><div class="b">${why}</div></div>${right}</div>`; }
+
+/* B: the digest before it fires (approval research: see the text and the list at the moment of commitment), then states, then seats */
+function evmPageB(m){ const s=evmS(); const d=EVM_B.e4; const lab={ confirmed:["Confirmed","green"], quiet:["Quiet","grey"], no:["Can't go","grey"] };
+  const digest = s.b.ok ? "" : `<div class="lift kq"><span class="k green">Kai asks</span><div class="a">Re-confirm ${d.going.length} guests Wednesday 10:00?</div><div class="b">Sent as Kai, for you: "Hi Rahul, it's Kai, Priya's assistant on Key. Priya is hosting Friday and asked me to check you can still make it." A no frees the seat.</div><div class="acts"><button class="btn" onclick="evmB('ok')">OK</button><button class="btn sec" onclick="openSheet('evmsheet','b-preview')">Preview</button><span class="quiet" onclick="evmB('pause')">Not this event</span></div></div>`;
+  const guests = d.going.map(pid=>evmRow(pid, s.b.ok ? (d.after[pid]==="no"?"Freed a seat":d.after[pid]==="quiet"?"No answer yet · Kai asks once more Thursday":"Answered in an hour") : "Going · asked Wednesday", s.b.ok?`<span class="k ${lab[d.after[pid]][1]}">${lab[d.after[pid]][0]}</span>`:`<span class="k grey">Going</span>`)).join("");
+  const freed = s.b.ok ? Object.values(d.after).filter(x=>x==="no").length : 0;
+  const wait = d.wait.map((pid,i)=>evmRow(pid, s.b.offered[pid]?"Took the seat":(freed>i?"A seat is free · Kai offers it, from you":"Waitlist · first in line when a seat frees"), s.b.offered[pid]?`<span class="k green">Going</span>`:(freed>i?`<button class="mini" onclick="event.stopPropagation();evmB('offer','${pid}')">Offer the seat</button>`:`<span class="k grey">Waiting</span>`))).join("");
+  return `${evmHdr(m,"e4")}<div class="body sc">${evmTop(m)}${digest}
+    <div class="sl">Going<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${d.going.length}</span></div><div class="rows">${guests}</div><div class="m12" style="margin-top:6px">${d.excluded}</div>
+    <div class="sl">Waitlist<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${d.wait.length}</span></div><div class="rows">${wait}</div>
+    ${evmEvent("e4","Product teardown: Linear","Oct 9")}${evmBrief(m)}${evmLogRows(m)}<div class="body-gap"></div></div>${navHTML("missions")}`; }
+function evmB(act, pid){ const s=evmS(); const m=DB.missions.find(x=>x.id==="ev-b.e4"); if (!m) return;
+  if (act==="ok") { s.b.ok=true; evmLog(m,"You","OK'd the re-confirm. Kai sends it Wednesday 10:00, as Kai."); evmLog(m,"Kai","re-confirmed 5. Three yes, Maya quiet, Kate can't go. One seat freed."); toast("Set. Kai sends Wednesday and tells you who answered."); }
+  if (act==="pause") { evmLog(m,"You","skipped re-confirm for this event."); toast("Off for this event. Manage turns it back on."); m.status="paused"; }
+  if (act==="offer") { s.b.offered[pid]=true; if (typeof evInvite==="function") evInvite("e4", pid, { kai:true }); evmLog(m,"You",`offered the seat to ${evmP(pid).name}.`); evmLog(m,"Kai",`${f1(evmP(pid))} took it within the hour.`); toast(`Offered to ${f1(evmP(pid))}. Kai tells you when it's taken.`); }
+  STATE.sheet=null; render(); }
+
+/* C: one pair per row, Yes or No each, and what Kai did not pair */
+function evmPageC(m){ const s=evmS(); const ps=EVM_C.e4;
+  const rows = ps.map((p,i)=>evmPair(p.a,p.b,p.why, s.c[i]===undefined?`<div class="r" style="display:flex;gap:6px"><button class="mini" onclick="evmC(${i},true)">Yes</button><button class="mini sec" onclick="evmC(${i},false)">No</button></div>`:s.c[i]?`<span class="k grey">Waiting</span>`:`<span class="k grey">Skipped</span>`)).join("");
+  return `${evmHdr(m,"e4")}<div class="body sc">${evmTop(m)}
+    <div class="sl">Pairs<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${ps.length}</span></div><div class="rows">${rows}</div>
+    <div class="m12" style="margin-top:6px">Yes asks both, in your name, and each hears only if both say yes. No leaves no trace. Not pairing: two guests who asked for a quiet evening.</div>
+    <div class="sl">After</div><div class="rows"><div class="row first"><div class="avatar" style="border-radius:8px">${LI("moon",14)}</div><div class="m"><div class="a plain">Friday night Kai asks each guest who they met</div><div class="b">You see counts. A name reaches you only when a guest shares it</div></div></div></div>
+    ${evmEvent("e4","Product teardown: Linear","Oct 9")}${evmBrief(m)}${evmLogRows(m)}<div class="body-gap"></div></div>${navHTML("missions")}`; }
+function evmC(i, ok){ const s=evmS(); const m=DB.missions.find(x=>x.id==="ev-c.e4"); const p=EVM_C.e4[i]; s.c[i]=ok; if (typeof evPairSet==="function") evPairSet("e4", i, ok);
+  if (m) evmLog(m,"You", ok?`asked ${f1(evmP(p.a))} and ${f1(evmP(p.b))}. Each hears only if both say yes.`:`skipped ${f1(evmP(p.a))} and ${f1(evmP(p.b))}. Nobody sees it.`); toast(ok?`Asked both. Kai tells you if it's a match.`:"Skipped. Nobody sees it."); render(); }
+
+/* D: the morning after, as numbers you can act on; names only when shared */
+function evmPageD(m){ const s=evmS(); const d=EVM_D.e10p;
+  const stat=(n,l)=>`<div style="flex:1;text-align:center"><div class="t20" style="margin:0">${n}</div><div class="m12">${l}</div></div>`;
+  const asks = d.asks.map(a=>evmRow(a.pid, a.what, s.d.done[a.pid]?`<span class="k green">Done</span>`:`<button class="mini" onclick="event.stopPropagation();evmD('${a.pid}','${a.kind}')">${a.act}</button>`)).join("");
+  const shared = d.shared.map(([a,b,why])=>evmPair(a,b,why,`<span class="k green">Met</span>`)).join("");
+  const noshow = d.noshow.map(pid=>evmRow(pid, s.d.done["ns:"+pid]?"Asked again for Oct 1":"Said yes, didn't come · no reason is asked", s.d.done["ns:"+pid]?`<span class="k grey">Invited</span>`:`<button class="mini sec" onclick="event.stopPropagation();evmD('${pid}','noshow')">Ask again</button>`)).join("");
+  return `${evmHdr(m,null)}<div class="body sc">${evmTop(m)}
+    <div class="lift" style="display:flex;gap:8px;padding:14px 8px;margin-top:10px">${stat(d.going,"said yes")}${stat(d.came,"came")}${stat(d.met,"met someone")}${stat(d.rating.split(" ")[0],"rating")}</div>
+    <div class="sl">Asks from the morning<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${d.asks.length}</span></div><div class="rows">${asks}</div>
+    <div class="sl">Shared with you</div><div class="rows">${shared}</div><div class="m12" style="margin-top:6px">${d.met} said they met someone. Two names stay with them; Kai never tells you who unless they tap to share.</div>
+    <div class="sl">Didn't come</div><div class="rows">${noshow}</div>
+    <div class="sl">Event</div><div class="rows"><div class="row first"><div class="m"><div class="a">${d.name}</div><div class="b">${d.day} · ${d.going} going · Blue Bottle, Palo Alto</div></div></div><div class="row" onclick="go('mission:ev-f.s-coffee')"><div class="avatar" style="border-radius:8px">${LI("repeat",14)}</div><div class="m"><div class="a plain">Part of Coffee with new PMs</div><div class="b">Every other Thursday · next Oct 1</div></div><span class="chev">›</span></div></div>
+    ${evmBrief(m)}${evmLogRows(m)}<div class="body-gap"></div></div>${navHTML("missions")}`; }
+function evmD(pid, kind){ const s=evmS(); const m=DB.missions.find(x=>x.id==="ev-d.e10p"); const p=evmP(pid);
+  if (kind==="noshow") { s.d.done["ns:"+pid]=true; if (typeof evInvite==="function") evInvite("e10", pid, { kai:true }); if (m) evmLog(m,"You",`asked ${p.name} again for Oct 1.`); toast(`Invited ${f1(p)} to Oct 1.`); }
+  else { s.d.done[pid]=true; if (kind==="invite" && typeof evInvite==="function") evInvite("e10", pid, { kai:true }); if (m) evmLog(m,"You", kind==="invite"?`invited ${p.name} to Oct 1.`:`sent ${f1(p)} the reading list.`); toast(kind==="invite"?`Invited ${f1(p)}.`:`Sent to ${f1(p)}.`); }
+  render(); }
+
+/* E: two people, a line each in your voice, you send */
+function evmPageE(m){ const s=evmS(); const cs = typeof evCoHostCandidates==="function" && evmEv("e4") ? (evCoHostCandidates(evmEv("e4"))||[]).map(([pid,why])=>({ pid, why, draft:(EVM_E.e4.find(c=>c.pid===pid)||{}).draft||`${f1(evmP(pid))}, co-host the Oct 23 teardown with me? Kai fills the room.` })) : EVM_E.e4;
+  const rows = cs.map(c=>{ const open=s.e.open===c.pid; const p=evmP(c.pid); return `${evmRow(c.pid, c.why, s.e.sent[c.pid]?`<span class="k grey">Waiting</span>`:`<span class="chev">${open?"▾":"›"}</span>`, `onclick="STATE.evm.e.open=${open?"null":`'${c.pid}'`};render()"`)}
+    ${open&&!s.e.sent[c.pid]?`<div class="draftbox" style="margin:4px 0 8px"><textarea id="evm-e-${c.pid}" rows="3">${c.draft}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span></div></div><div class="acts" style="margin:0 0 10px"><button class="btn" onclick="evmE('${c.pid}')">Send to ${f1(p)}</button><span class="quiet" onclick="STATE.evm.e.open=null;render()">Not now</span></div>`:""}`; }).join("");
+  return `${evmHdr(m,"e4")}<div class="body sc">${evmTop(m)}
+    <div class="sl">Could co-host<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${cs.length}</span></div><div class="rows">${rows}</div><div class="m12" style="margin-top:6px">Picked from who comes every time and who asked. Sent from you; Kai sends nothing.</div>
+    ${evmEvent("e13","Product teardown: Figma","Oct 23")}${evmBrief(m)}${evmLogRows(m)}<div class="body-gap"></div></div>${navHTML("missions")}`; }
+function evmE(pid){ const s=evmS(); const m=DB.missions.find(x=>x.id==="ev-e.e4"); s.e.sent[pid]=true; s.e.open=null; if (typeof evAddCoHost==="function" && false) evAddCoHost("e13", pid); if (m) evmLog(m,"You",`asked ${evmP(pid).name} to co-host Oct 23.`); toast(`Sent to ${f1(evmP(pid))}. Kai tells you when they answer.`); render(); }
+
+/* F: the series as a page. Next, then the three bars, then the people by what they do, then the rules */
+function evmPageF(m){ const s=evmS(); const sid=m.ev; const S=evmSeries(sid); const ppl=evmAttendance(sid); const next=evmEv(S.next);
+  const bar=(l,v,sub)=>`<div class="row first" style="display:block;padding:10px 0"><div style="display:flex;justify-content:space-between;font-size:13px"><span>${l}</span><span class="m12" style="font-variant-numeric:tabular-nums">${sub}</span></div><div style="height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden"><div style="width:${v}%;height:100%;background:var(--ink)"></div></div></div>`;
+  const who=(p,right,on)=>evmRow(p.pid, `${p.came} of ${p.of}${p.last?` · last ${p.last}`:""}`, right, on);
+  const reg=ppl.filter(p=>p.tag==="regular"), lap=ppl.filter(p=>p.tag==="lapsed"), fresh=ppl.filter(p=>p.tag==="new");
+  const rule=([id,l,on])=>{ const v = s.f.rules[id]===undefined ? on : s.f.rules[id]; return `<div class="row" onclick="STATE.evm.f.rules['${id}']=${!v};render()"><div class="m"><div class="a plain">${l}</div></div><span class="k ${v?"green":"grey"}">${v?"On":"Off"}</span></div>`; };
+  return `${evmHdr(m,S.next)}<div class="body sc">${evmTop(m)}<div class="funnel-l">${S.cadence} · ${S.dates} so far · ${ppl.length} people</div>
+    <div class="sl">Next</div><div class="rows"><div class="row first" ${next?`onclick="go('eventd:${S.next}')"`:""}><div class="m"><div class="a">${next?next.name:S.name}</div><div class="b">${next?`${next.when} · ${next.going} going`:"Oct 1"}</div></div><span class="chev">›</span></div></div>
+    <div class="sl">Across the series</div><div class="rows">${bar("Show up when they say yes",S.show,S.show+"%")}${bar("Come back",S.back,S.back+"%")}${bar("New faces each time",Math.round(S.fresh/6*100),S.fresh+" of 6 seats")}</div>
+    ${reg.length?`<div class="sl">Regulars<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${reg.length}</span></div><div class="rows">${reg.map(p=>who(p,`<span class="k gold">Regular</span>`)).join("")}</div>`:""}
+    ${lap.length?`<div class="sl">Going quiet<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${lap.length}</span></div><div class="rows">${lap.map(p=>who(p, s.f.nudged[p.pid]?`<span class="k grey">Waiting</span>`:`<button class="mini" onclick="event.stopPropagation();evmF('nudge','${p.pid}')">Reach out</button>`)).join("")}</div>`:""}
+    ${fresh.length?`<div class="sl">New last time<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${fresh.length}</span></div><div class="rows">${fresh.map(p=>who(p, s.f.invited[p.pid]?`<span class="k grey">Invited</span>`:`<button class="mini sec" onclick="event.stopPropagation();evmF('invite','${p.pid}')">Invite again</button>`)).join("")}</div>`:""}
+    <div class="sl">Rules</div><div class="rows">${S.rules.map(rule).join("")}</div><div class="m12" style="margin-top:6px">Only you see counts. Members see Regular on their own profile and nothing about anyone else.</div>
+    ${evmBrief(m)}${evmLogRows(m)}<div class="body-gap"></div></div>${navHTML("missions")}`; }
+function evmF(act, pid){ const s=evmS(); const m=DB.missions.find(x=>x.evKind==="f"); const p=evmP(pid);
+  if (act==="nudge") { s.f.nudged[pid]=true; if (m) evmLog(m,"You",`reached out to ${p.name}. Kai drafted: "Missed you the last two. Oct 1 is Arjun's first as a regular, come?"`); toast(`Sent to ${f1(p)}, from you.`); }
+  if (act==="invite") { s.f.invited[pid]=true; if (typeof evInvite==="function") evInvite("e10", pid, { kai:true }); if (m) evmLog(m,"You",`invited ${p.name} to Oct 1.`); toast(`Invited ${f1(p)}.`); }
+  render(); }
+
+function evmSheet(id){ if (id==="b-preview") return scSheet("What Kai sends Wednesday", "As Kai, for you. Replies come to Kai and land here", `<div class="rows" style="margin-top:6px"><div class="fr"><span><b>Kai</b> Hi Rahul, it's Kai, Priya's assistant on Key. Priya is hosting Product teardown: Linear on Friday and asked me to check you can still make it. <b>Yes, I'm coming</b> · <b>Can't make it</b></span></div></div><div class="m12" style="margin-top:8px">Goes to 5 people. Not Ana, she co-hosts; not Marco, he already said no.</div><div class="acts" style="margin-top:12px"><button class="btn" onclick="evmB('ok')">OK, send Wednesday</button><span class="quiet" onclick="closeSheet()">Back</span></div>`); return null; }
+
+/* routing: mission pages, the home group, the Now row */
+const _evmMission = sMission; sMission = function(id){ const m=DB.missions.find(x=>x.id===id); if (m && m.evKind && STATE.member) { const f={ b:evmPageB, c:evmPageC, d:evmPageD, e:evmPageE, f:evmPageF }[m.evKind]; if (f) return f(m); } return _evmMission(id); };
+const _evmSection = missionSection; missionSection = function(m){
+  if (!STATE.member) return _evmSection(m);
+  const evs = DB.missions.filter(x=>x.evKind && x.status!=="closed"); if (!evs.length) return _evmSection(m);
+  const first = DB.missions.find(x=>(x.host||x.evKind) && x.status!=="closed");
+  if (m.evKind || (m.host && m!==first)) return "";
+  if (m.host && m===first) {
+    const rows = [m].concat(evs).map(x=>{ const [k,tone,txt] = x.host ? (typeof dHostStatus==="function"?dHostStatus(x):["Next step","green",""]) : evmStatus(x); const ic = x.host?"user-plus":{ b:"calendar-check", c:"users", d:"moon", e:"hand", f:"repeat" }[x.evKind]; return `<div class="row" data-mission="${x.id}"><div class="avatar" style="border-radius:8px">${LI(ic,14)}</div><div class="m"><div class="a">${x.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }).join("");
+    return `<div class="msec sc t3"><div class="msh" onclick="go('events')"><div class="mg t3">${LI("calendar",14)}</div><div class="mst">You host</div><span class="chev">›</span></div><div class="st"><span class="k green">Next step</span><span>Linear teardown Oct 9 · Coffee Oct 1 · ${evs.length+1} things Kai can do</span></div><div class="rows">${rows}</div></div>`;
+  }
+  return _evmSection(m);
+};
+const _evmToday = todayItems; todayItems = function(){ const items=_evmToday(); if (STATE.persona==="priya" && STATE.member && DB.missions.some(x=>x.id==="ev-c.e4")) { const left=EVM_C.e4.length-Object.keys(evmS().c).length; if (left) items.push(`<div class="trow sc" onclick="go('mission:ev-c.e4')"><div class="avs" style="margin:0;gap:4px">${av(evmP("rahul").initials)}${av(evmP("maya").initials)}</div><div class="m"><div class="a">${left} introductions to approve</div><div class="b">Linear teardown, Oct 9 · each hears only if both say yes</div></div><button class="mini" onclick="event.stopPropagation();go('mission:ev-c.e4')">Approve</button></div>`); } return items; };
+const _evmPortSheet = portSheet; portSheet = function(type, id){ if (type==="evmsheet") { const h=evmSheet(id); if (h!==null) return h; } return _evmPortSheet(type, id); };
+
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
    with one card design everywhere. Calendars live in a strip at the top, on their own pages, and on the Calendars screen.
@@ -9509,11 +9789,12 @@ function cWeek(){
   const evs = cFamEvents(f).filter(e=>!e.past).sort((a,b)=>a.sort-b.sort).slice(0,2);
   const posts = cPosts(f).filter(p=>p.st==="live").slice(0,2);
   const pend = cPosts(f).filter(p=>p.st==="pending").length;
-  const todo = cOrg() ? [["manage:applications","Want to join",cWaiting(),"Oldest is 6 days"],["posts:requests","Posts to approve",pend,""],["manage:greeting","New members not greeted",2,""],["manage:reports","Reported",1,"A message in #jobs"]].filter(x=>x[2]) : [];
+  const todo = cOrg() ? [["manage:applications","Want to join",cWaiting(),"Oldest is 6 days"],["posts:requests","Posts to approve",pend,""],cOrgStrip()?["",0]:["manage:greeting","New members not greeted",2,""],["manage:reports","Reported",1,"A message in #jobs"]].filter(x=>x[2]) : [];
   const greet = p => (STATE.cGreeted||{})[p.id] ? '<span class="cm-done">Greeted</span>' : `<span class="cm-btn q" data-cgreet="${p.id}">Say hi</span>`;
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("week")}
+    ${cOrgStrip()}
     ${cOrg()?`<div class="cm-row cm-insrow" data-cgo="manage:insights"><div class="cm-sparkw">${cSpark(C_WAU.slice(-8), 64, 28)}</div><div class="m"><div class="a">${C_WAU[C_WAU.length-1]} active this week</div><div class="b">Up ${C_WAU[C_WAU.length-1]-C_WAU[C_WAU.length-2]} from last week</div></div><span class="cm-more">Insights</span><span class="s">›</span></div>`:''}
     ${todo.length?`<div class="cm-sec">${cHead("To do")}${todo.map(([go,a,n,b])=>`<div class="cm-row" data-cgo="${go}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div><span class="cm-count">${n}</span><span class="s">›</span></div>`).join("")}</div>`:''}
     ${f.pinned?`<div class="cm-sec">${cHead("Pinned")}<div class="cm-text">${f.pinned.text}</div><div class="cm-meta">${f.pinned.who}</div></div>`:''}
@@ -9838,6 +10119,21 @@ function cPostDetail(){
 const C_ORGJOBS = [["welcome",2,"to welcome","joined this week, nobody has greeted them yet"],["quiet",3,"going quiet","posted most weeks, nothing in three weeks"],["unanswered",2,"asks unanswered","no reply after two days"],["thank",2,"to thank","answered, introduced or hosted this month"],["meet",2,"pairs to introduce","Kai's suggestion, from what they asked and offer"],["host",1,"to ask to host","came to three or more events, never hosted"]];
 const cOrgGo = () => DB.missions.find(m=>m.id==="morg") ? `go('mission:morg')` : `toast('Opens your Kai mission for running ${cF().name}')`;
 const cOrgRow = () => `<div class="cm-row cm-kairow cm-orgm" onclick="${cOrgGo()}"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">How Kai helps you run ${cF().name}</div><div class="b">${C_ORGJOBS.slice(0,3).map(([,n,l])=>`${n} ${l}`).join(" · ")}</div></div><span class="cm-count">${C_ORGJOBS.reduce((t,j)=>t+j[1],0)}</span><span class="s">›</span></div>`;
+/* The organizer strip (Apoorv's yes, 27 Sep 17:48, to missions' research round two): Kai's week at the top of the family tab, organizers
+   only, only while something is open. Each job is one tap into its sheet (org.js "osheet"), with the faces it concerns; the header opens
+   the mission. Shopify Home cards, Airbnb's host Today, copilot suggestions in the working surface; the Monday push lands on the mission. */
+function cOrgStrip(){
+  if (typeof oStatus!=="function" || !DB.missions.some(m=>m.id==="morg")) return "";   /* the mission exists only for an organizer (org.js oEnsure) */
+  const jobs = oJobs().map(j=>({ ...j, open:oOpen(j.id) })).filter(j=>j.open.length);
+  if (!jobs.length) return "";
+  const done = oDoneN(), total = oTotal(), [lab,,line] = oStatus();
+  const face = pid => { const p = DB.people[pid]; return `<span class="cm-osf">${p?p.initials:"?"}</span>`; };
+  return `<div class="cm-ostrip">
+    <div class="cm-oshd" onclick="go('mission:morg')"><span class="cm-osk">${C_SPARK}</span><div class="m"><div class="a">This week with Kai</div><div class="b">${line}</div></div><span class="cm-osn">${lab}</span><span class="s">›</span></div>
+    <div class="cm-osbar" aria-label="${done} of ${total} done"><i style="width:${Math.round(done/total*100)}%"></i></div>
+    <div class="cm-osjobs">${jobs.map(j=>`<button class="cm-osjob" onclick="openSheet('osheet','${j.id}')" aria-label="${O_VERB[j.id]} ${j.open.length}"><span class="cm-osfs">${j.open.slice(0,2).map(c=>face(c.pid)).join("")}</span><b>${O_VERB[j.id]}</b><i>${j.open.length}</i></button>`).join("")}</div>
+  </div>`;
+}
 function cOrgMonth(){
   const rows = [["28","joined","approved in September"],["21 of 28","welcomed in their first week","a reply or reaction to their first post"],["19 of 23","first posts answered","a reply within two days"],["13","brought in by members","who invited whom"],["49 of 63","came to 2 events","check-ins against registrations"],["3","members hosted","events a member created"],["6","went well","what members told Kai after an intro. New"]];
   return `<div class="cm-sec cm-ins cm-orgmonth">${cHead(`September for ${cF().name} <i>so far</i>`)}
