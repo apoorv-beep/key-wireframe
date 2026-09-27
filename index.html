@@ -10933,6 +10933,7 @@ function fxSrc(){ return STATE.signinWith==="apple" ? "From your Apple account" 
 const _fxConfirm = sConfirm; sConfirm = function(){ return _fxConfirm.apply(this, arguments).replace("Bay Area. LinkedIn", "Bay Area. "+fxSrc()).replace(/<button class="btn ghost" onclick="STATE\.liDeclined=true;go\('connect'\)">Skip, I don't have LinkedIn<\/button>/, ""); };
 const _fxConsent = sConsent; sConsent = function(){ return _fxConsent.apply(this, arguments).replace("Verified from LinkedIn · 2019 to present", fxSrc()+" · 2019 to present"); };
 const _fxAuth = sAuth; sAuth = function(){ return _fxAuth.apply(this, arguments).replace(/<button class="btn sec" onclick="providerAuth\('linkedin'\)">Continue with LinkedIn<\/button>/, ""); };
+if (typeof APP_PAGES!=="undefined") APP_PAGES.forEach(pg=>(pg.qs||[]).forEach(q=>{ if (q[1]==="Verified from LinkedIn · 2019 to present") q[1]="From your Google account · 2019 to present"; }));
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
