@@ -860,7 +860,8 @@ p,
   .stagebar .sgl { width:100%; min-width:0; margin-top:4px; }
 }
 /* The Controls pill steps aside while a push banner shows (journey guide, 26 Sep). */
-body:has(.push) .ctlbtn { display:none; }
+/* a push drops in under the Controls pill on a phone instead of hiding it (journey guide, v65) */
+@media (max-width:500px) { body:has(.ctlbtn) .push { top:calc(env(safe-area-inset-top,0px) + 50px); } }
 
 /* Toasts never swallow taps on the button under them; only Undo is tappable. Above a sticky bottom bar the toast lifts (Events, 26 Sep). */
 .toast.show { pointer-events:none; } .toast.show [data-undo] { pointer-events:auto; }
@@ -12531,6 +12532,39 @@ const _fxConfirm = sConfirm; sConfirm = function(){ return _fxConfirm.apply(this
 const _fxConsent = sConsent; sConsent = function(){ return _fxConsent.apply(this, arguments).replace("Verified from LinkedIn · 2019 to present", fxSrc()+" · 2019 to present"); };
 const _fxAuth = sAuth; sAuth = function(){ return _fxAuth.apply(this, arguments).replace(/<button class="btn sec" onclick="providerAuth\('linkedin'\)">Continue with LinkedIn<\/button>/, ""); };
 if (typeof APP_PAGES!=="undefined") APP_PAGES.forEach(pg=>(pg.qs||[]).forEach(q=>{ if (q[1]==="Verified from LinkedIn · 2019 to present") q[1]="From your Google account · 2019 to present"; }));
+
+/* ==== Journey guide's v61 phone-test snags (27 Sep, v65) ==== */
+/* Skip to home straight after the intake call: jump() only seeds when there are no missions, but after the call the missions
+   exist and the member's paths (Maya, Rahul, Sana) come from applyIntake once she is a member. Run it, as approveMe does. */
+const _fxJump = jump; jump = function(s){
+  _fxJump(s);
+  if ((s==="home"||s==="family") && STATE.intakeDone && !DB.opps.some(o=>o.missionId==="m1")) { applyIntake(); STATE.push=null; STATE.sheet=null; render(); }
+};
+/* Daniel's pass is Monday (organizer mission, v49); the member copy says Friday. */
+function fxPass(h){ return STATE.persona==="chris" ? h.replace(/Kai's next pass is Friday/g, "Kai's next pass is Monday") : h; }
+const _fxPassHome = sHome; sHome = function(){ return fxPass(_fxPassHome.apply(this, arguments)); };
+const _fxPassMission = sMission; sMission = function(){ return fxPass(_fxPassMission.apply(this, arguments)); };
+/* "Who can intro me to someone at Anthropic?" drafts a path ask instead of "Noted": find members at that company, offer the ask. */
+const _fxKaiAsk = kaiAsk; kaiAsk = function(t){
+  const m = /\b(intro|introduce|introduction|connect me|reach|know (?:anyone|someone))\b[\s\S]*?\bat ([A-Z][\w.&-]*(?: [A-Z][\w.&-]*)?)/i.exec(t||"");
+  if (m && STATE.persona==="priya") {
+    const co = m[2].toLowerCase();
+    const hits = Object.values(DB.people).filter(p => p.id!=="chris" && (p.company||"").toLowerCase().includes(co));
+    if (hits.length) {
+      STATE.kaiMsgs = STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:t});
+      const lines = hits.map(p => `${p.name}, ${p.title} at ${p.company}${(p.shared||[])[0]?` (${p.shared[0].toLowerCase()})`:""}`);
+      const first = hits.find(p => DB.opps.some(o=>o.personId===p.id && o.state==="new")) || hits[0];
+      const chips = DB.opps.some(o=>o.personId===first.id && o.state==="new") ? [`Review the ask to ${firstName(first)}`, "Not now"] : ["Start a mission", "Not now"];
+      STATE.kaiMsgs.push({who:"k", text:`${hits.length===1?"One person":hits.length+" people"} on Key at ${m[2]}: ${lines.join("; ")}. ${firstName(first)} is the warmest route. I drafted the ask in your voice; nothing goes out until you send it.`, chips});
+      if (!DB.threads.some(x=>x.title===t)) DB.threads.unshift({ id:"g"+(DB.threads.length+3), kind:"general", family:"xoogler", title:t, last:`${firstName(first)} at ${m[2]}: draft ready`, when:"now", msgs:[{who:"u",text:t},{who:"k",text:`${firstName(first)} at ${m[2]}: draft ready`}] });
+      render(); return;
+    }
+  }
+  if (/^not now$/i.test(t||"")) { STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:t}); STATE.kaiMsgs.push({who:"k",text:"Kept. It stays in this thread."}); render(); return; }
+  return _fxKaiAsk.apply(this, arguments);
+};
+/* Events' "Following" bell sheet calls LI("bell-ring"), which LUCIDE lacked (hosting's v64 check): Lucide's bell-ring. */
+if (typeof LUCIDE!=="undefined" && !LUCIDE["bell-ring"]) LUCIDE["bell-ring"] = '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/>';
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
