@@ -3403,12 +3403,12 @@ p,
 /* ==== BOTTOM NAV (27 Sep, bottom nav thread). One travelling lens, real Lucide icons, one small move per tab.
    nav.js adds .kn to the bar and places the lens; without motion the lens simply sits under the active tab. ==== */
 .nav.knav { --kn-ink:#0B0E11; --kn-mute:#8F99A5 /* key/450, text/tertiary */; --kn-lens:#E8ECF1 /* key/150 */;
-  --kn-bg:rgba(255,255,255,.78) /* component/nav/bg: a little see-through, his 20:09 */; --kn-pill:999px /* semantic/pill */;
+  --kn-bg:rgba(255,255,255,.92) /* component/nav/bg: a little see-through (his 20:09); .92 so text behind never competes with labels */; --kn-pill:999px /* semantic/pill */;
   --kn-elev3:0 2px 6px rgba(11,14,17,.08), 0 18px 40px -16px rgba(11,14,17,.30) /* elev/3 */; --kn-ease:cubic-bezier(.2,.8,.2,1);
   left:12px; right:12px; bottom:20px; height:64px; padding:0 6px; align-items:center; border-radius:var(--kn-pill);
   border:1px solid rgba(11,14,17,.06); background:var(--kn-bg);
   box-shadow:var(--kn-elev3);
-  -webkit-backdrop-filter:blur(24px) saturate(1.8); backdrop-filter:blur(24px) saturate(1.8);
+  -webkit-backdrop-filter:blur(32px) saturate(1.8); backdrop-filter:blur(32px) saturate(1.8);
   touch-action:none; user-select:none; -webkit-user-select:none; font-family:Manrope, -apple-system, sans-serif; }
 .nav.knav .kn-lens { position:absolute; top:6px; bottom:6px; left:0; right:0; border-radius:var(--kn-pill); background:var(--kn-lens);
   box-shadow:inset 0 0 0 1px rgba(11,14,17,.04); pointer-events:none; opacity:0; }
@@ -3520,6 +3520,17 @@ p,
   .nav.knav .tab, .nav.knav .tab * { transition-duration:.12s !important; transition-delay:0s !important; transition-property:color, fill, stroke, opacity, font-weight, background-color, border-color !important; }
   .nav.knav .tab.kn-press .ic, .nav.knav .kai.kn-press .ic { transform:none; }
   .nav.knav .unread.kn-bout { display:none; } }
+
+/* Narrow phones (SE 1st gen, 320): tighter bar so labels keep a gap and Messages clears the Kai disc */
+@media (max-width:360px) {
+  .nav.knav { left:8px; right:8px; padding:0 4px; }
+  .nav.knav .tab .kl, .nav.knav .kai .kl { font-size:10px; }
+  .nav.knav .kai { flex:0 0 58px; }
+  .nav.knav .kai .ic { width:50px; height:50px; margin-top:-36px; }
+  .nav.knav .kai .ic svg.kk { width:27px; height:23px; }
+  .nav.knav .tab.fam { flex:0 0 70px; }
+  .nav.knav .tab.fam .fname { max-width:44px; }
+}
 </style>
 </head>
 <body>
@@ -7006,7 +7017,7 @@ sHome = function(){
     ${now.length?`<div class="sl">Now<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${now.length}</span></div><div class="rows">${now.join("")}</div>`:''}
     ${active.map(missionSection).join("")}
     ${tailRow}
-    ${done.length?`<div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed · ${done.length}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">${LI("check",14)}</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}`:''}
+    <div class="row" style="margin-top:12px" onclick="STATE.completedOpen=!STATE.completedOpen;render()"><div class="m"><div class="a plain" style="color:var(--ink2)">Completed${done.length?` · ${done.length}`:""}</div></div><span class="chev">${open?"▾":"›"}</span></div>${open&&!done.length?`<div class="empty" style="margin:4px 0 8px">Nothing completed yet. A mission you close lands here with what came of it.</div>`:""}${open?done.map(m=>`<div class="row" data-mission="${m.id}"><div class="avatar" style="border-radius:8px">${LI("check",14)}</div><div class="m"><div class="a">${m.name}</div><div class="b">${m.closedNote||"Closed"}</div></div><span class="chev">›</span></div>`).join(""):""}
   </div>
   ${navHTML("missions")}${overlay}`;
 };
@@ -8000,17 +8011,18 @@ function evmSheet(id){ if (id==="b-preview") return scSheet("What Kai sends Wedn
 
 /* routing: mission pages, the home group, the Now row */
 const _evmMission = sMission; sMission = function(id){ const m=DB.missions.find(x=>x.id===id); if (m && m.evKind && STATE.member) { const f={ b:evmPageB, c:evmPageC, d:evmPageD, e:evmPageE, f:evmPageF }[m.evKind]; if (f) return f(m); } return _evmMission(id); };
+/* Home (Apoorv 21:37): no "You host" group. A host mission and a series mission are ordinary rows with the Hosting label; the per-event
+   jobs (re-confirm, introductions, how it went, co-host) live on the event's mission page and in Manage, never as their own home rows. */
 const _evmSection = missionSection; missionSection = function(m){
-  if (!STATE.member) return _evmSection(m);
-  const evs = DB.missions.filter(x=>x.evKind && x.status!=="closed"); if (!evs.length) return _evmSection(m);
-  const first = DB.missions.find(x=>(x.host||x.evKind) && x.status!=="closed");
-  if (m.evKind || (m.host && m!==first)) return "";
-  if (m.host && m===first) {
-    const rows = [m].concat(evs).map(x=>{ const [k,tone,txt] = x.host ? (typeof dHostStatus==="function"?dHostStatus(x):["Next step","green",""]) : evmStatus(x); const ic = x.host?"user-plus":{ b:"calendar-check", c:"users", d:"moon", e:"hand", f:"repeat" }[x.evKind]; return `<div class="row" data-mission="${x.id}"><div class="avatar" style="border-radius:8px">${LI(ic,14)}</div><div class="m"><div class="a">${x.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }).join("");
-    return `<div class="msec sc t3"><div class="msh" onclick="go('events')"><div class="mg t3">${LI("calendar",14)}</div><div class="mst">You host</div><span class="chev">›</span></div><div class="st"><span class="k green">Next step</span><span>Linear teardown Oct 9 · Coffee Oct 1 · ${evs.length+1} things Kai can do</span></div><div class="rows">${rows}</div></div>`;
-  }
+  if (STATE.member && m.evKind && !m.series) return "";
+  if (STATE.member && m.series) { const [k,tone,txt]=evmStatus(m); return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
   return _evmSection(m);
 };
+const _evmHostPage = sMission; sMission = function(id){ let h=_evmHostPage(id); const m=DB.missions.find(x=>x.id===id);
+  if (m && m.host && m.ev && STATE.member) { const jobs=(msEventMissions(m.ev)||[]).filter(j=>j.go); if (jobs.length) { const ic={ b:"calendar-check", c:"users", d:"moon", e:"hand", f:"repeat" };
+    const rows=jobs.map(j=>`<div class="row" onclick="go('${j.go}')"><div class="avatar" style="border-radius:8px">${LI(ic[j.kind]||"sparkle",14)}</div><div class="m"><div class="a">${j.label}</div>${j.count?`<div class="b">${j.count} waiting on you</div>`:""}</div><span class="chev">›</span></div>`).join("");
+    h=h.replace('<div class="sl">Event</div>', `<div class="sl">Kai can also</div><div class="rows">${rows}</div><div class="sl">Event</div>`); } }
+  return h; };
 const _evmToday = todayItems; todayItems = function(){ const items=_evmToday(); if (STATE.persona==="priya" && STATE.member && DB.missions.some(x=>x.id==="ev-c.e4")) { const left=EVM_C.e4.length-Object.keys(evmS().c).length; if (left) items.push(`<div class="trow sc" onclick="go('mission:ev-c.e4')"><div class="avs" style="margin:0;gap:4px">${av(evmP("rahul").initials)}${av(evmP("maya").initials)}</div><div class="m"><div class="a">${left} introductions to approve</div><div class="b">Linear teardown, Oct 9 · each hears only if both say yes</div></div><button class="mini" onclick="event.stopPropagation();go('mission:ev-c.e4')">Approve</button></div>`); } return items; };
 const _evmPortSheet = portSheet; portSheet = function(type, id){ if (type==="evmsheet") { const h=evmSheet(id); if (h!==null) return h; } return _evmPortSheet(type, id); };
 

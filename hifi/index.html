@@ -618,6 +618,486 @@
   .unread { min-width:20px; height:20px; border-radius:999px; background:var(--ink); color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; padding:0 6px; }
   .dots { display:flex; gap:6px; justify-content:center; margin:12px 0 0; }
   .dots i { width:6px; height:6px; border-radius:50%; background:var(--line); } .dots i.on { background:var(--ink); }
+:root {
+  --bg-page: #F9FAFC;
+  --bg-surface-default: #FFFFFF;
+  --bg-surface-raised: #FFFFFF;
+  --bg-fill-default: #F4F6F9;
+  --bg-fill-strong: #E8ECF1;
+  --bg-inverse-default: #12161A;
+  --bg-inverse-pressed: #242B33;
+  --bg-deep: #0B0E11;
+  --bg-on-deep-fill: #242B33;
+  --bg-cover-fallback: #E8ECF1;
+  --mark-gold: #DCB854;
+  --state-live: #178A4A;
+  --state-danger-default: #C8322F;
+  --state-danger-fill: #FCE9E8;
+  --focus-ring: #12161A;
+  --skeleton-base: #F4F6F9;
+  --skeleton-shine: #FFFFFF99;
+  --hero-gradient-end: #F9FAFC;
+  --scrim: #0B0E1173;
+  --overlay: #0B0E11E0;
+  --fill-gold: #FBF3DC;
+  --component-button-primary-bg-default: #12161A;
+  --component-button-primary-bg-pressed: #242B33;
+  --component-button-primary-ink: #F9FAFC;
+  --component-button-secondary-border: #12161A;
+  --component-button-secondary-ink: #12161A;
+  --component-button-ghost-ink: #525B66;
+  --component-button-danger-ink: #C8322F;
+  --component-chip-bg: #FFFFFF;
+  --component-chip-border: #E2E7ED;
+  --component-chip-ink: #12161A;
+  --component-chip-selected-bg: #12161A;
+  --component-chip-selected-ink: #F9FAFC;
+  --component-chip-suggested-border: #525B66;
+  --component-chip-deep-bg: #242B33;
+  --component-chip-deep-border: #606974;
+  --component-chip-deep-ink: #F9FAFC;
+  --component-tag-bg: #F4F6F9;
+  --component-tag-border: #E2E7ED;
+  --component-tag-ink: #525B66;
+  --component-tag-new-border: #12161A;
+  --component-tag-new-ink: #12161A;
+  --component-tag-gold-border: #E8CD82;
+  --component-tag-gold-ink: #7E6011;
+  --component-badge-bg: #12161A;
+  --component-badge-ink: #F9FAFC;
+  --component-input-bg: #FFFFFF;
+  --component-input-border-default: #E2E7ED;
+  --component-input-border-focus: #12161A;
+  --component-input-placeholder: #606974;
+  --component-search-bg: #F4F6F9;
+  --component-avatar-bg: #E8ECF1;
+  --component-avatar-ink: #525B66;
+  --component-avatar-you-bg: #12161A;
+  --component-avatar-you-ink: #F9FAFC;
+  --component-avatar-ring-gold: #E8CD82;
+  --component-card-bg: #FFFFFF;
+  --component-card-border: #F4F6F9;
+  --component-card-tinted-bg: #F4F6F9;
+  --component-card-outlined-border: #12161A;
+  --component-mission-bg: #F4F6F9;
+  --component-mission-border: #E2E7ED;
+  --component-move-bg: #FFFFFF;
+  --component-move-border: #E2E7ED;
+  --component-receipt-type-bg: #F4F6F9;
+  --component-receipt-type-ink: #525B66;
+  --component-receipt-vouched-border: #E8CD82;
+  --component-receipt-vouched-ink: #7E6011;
+  --component-glyph-node-bg: #FFFFFF;
+  --component-glyph-node-border: #525B66;
+  --component-glyph-line-pending: #E2E7ED;
+  --component-glyph-line-done: #12161A;
+  --component-glyph-line-vouched: #E8CD82;
+  --component-cmark-filled: #12161A;
+  --component-cmark-outline: #606974;
+  --component-progress-track: #E2E7ED;
+  --component-progress-fill: #12161A;
+  --component-segmented-active-bg: #12161A;
+  --component-segmented-active-ink: #F9FAFC;
+  --component-header-bg: #F9FAFC;
+  --component-compactbar-bg: #FFFFFFF5;
+  --component-nav-bg: #FFFFFFC7;
+  --component-nav-border: #E2E7ED;
+  --component-nav-ink-default: #606974;
+  --component-nav-ink-active: #12161A;
+  --component-kai-bg: #12161A;
+  --component-kai-ink: #F9FAFC;
+  --component-sheet-bg: #FFFFFF;
+  --component-sheet-handle: #A6AFBB;
+  --component-push-bg: #E2E7EDF0;
+  --component-push-border: #E2E7ED;
+  --component-toast-bg: #0B0E11;
+  --component-toast-ink: #F9FAFC;
+  --component-tip-bg: #0B0E11;
+  --component-call-bg: #0B0E11;
+  --component-call-ink-default: #F9FAFC;
+  --component-call-ink-muted: #A6AFBB;
+  --component-call-user-ink: #DCB854;
+  --component-call-end-bg: #C8322F;
+  --component-call-end-ink: #F9FAFC;
+  --component-callbar-bg: #0B0E11;
+  --component-callbar-ink: #F9FAFC;
+  --component-handshake-bg: #0B0E11E0;
+  --component-handshake-link: #DCB854;
+  --component-handshake-ink: #F9FAFC;
+  --component-msg-user-bg: #12161A;
+  --component-msg-user-ink: #F9FAFC;
+  --component-msg-kai-bg: #F4F6F9;
+  --component-msg-kai-ink: #12161A;
+  --component-msg-system-border: #E2E7ED;
+  --component-msg-system-ink: #606974;
+  --component-listening-border: #525B66;
+  --component-empty-border: #E2E7ED;
+  --component-empty-ink: #606974;
+  --component-requests-hairline: #E8CD82;
+  --component-live-dot: #178A4A;
+  --component-cover-bg: #E8ECF1;
+  --component-cover-foil-light: #E8C98C;
+  --component-cover-foil-mid: #C9A45E;
+  --component-cover-foil-deep: #5C4526;
+  --component-cover-scrim: #0B0E118C;
+  --component-cover-past-wash: #F9FAFC8C;
+  --component-pills-sticky-bg: #F9FAFCF5;
+  --component-tile-count-ink: #12161A;
+  --foil-from: #F7E7B8;
+  --foil-mid: #DCB854;
+  --foil-to: #A87F2A;
+  --text-primary: #12161A;
+  --text-secondary: #525B66;
+  --text-tertiary: #606974;
+  --text-disabled: #A6AFBB;
+  --text-inverse: #F9FAFC;
+  --text-on-deep-default: #F9FAFC;
+  --text-on-deep-muted: #A6AFBB;
+  --text-on-deep-user: #DCB854;
+  --text-gold: #7E6011;
+  --border-default: #E2E7ED;
+  --border-subtle: #EDF1F5;
+  --border-strong: #C6CED8;
+  --border-gold: #E8CD82;
+  --border-on-deep: #606974;
+  --border-control: #808996;
+  --icon-primary: #12161A;
+  --icon-secondary: #525B66;
+  --icon-tertiary: #606974;
+  --icon-disabled: #A6AFBB;
+  --icon-inverse: #F9FAFC;
+  --icon-accent: #DCB854;
+  --icon-on-deep: #F9FAFC;
+  --actions-going: #158045;
+  --actions-not-going: #C8322F;
+  --actions-rejected: #C8322F;
+  --actions-declined: #606974;
+  --actions-waitlisted: #525B66;
+  --actions-pending-approval: #525B66;
+  --actions-invited: #12161A;
+  --actions-to-be-decided: #606974;
+  --actions-in-person: #525B66;
+  --actions-online: #525B66;
+  --actions-hybrid: #525B66;
+  --actions-manual: #606974;
+  --actions-hyperlink: #12161A;
+  --shadow-elev-1-contact: #0B0E110A;
+  --shadow-elev-1-ambient: #0B0E1129;
+  --shadow-elev-2-contact: #0B0E110D;
+  --shadow-elev-2-ambient: #0B0E1138;
+  --shadow-elev-3-contact: #0B0E110F;
+  --shadow-elev-3-ambient: #0B0E1142;
+  --shadow-elev-4-lift: #0B0E1166;
+  --space-absolute-0: 0px;
+  --space-absolute-2: 2px;
+  --space-absolute-4: 4px;
+  --space-absolute-6: 6px;
+  --space-absolute-8: 8px;
+  --space-absolute-10: 10px;
+  --space-absolute-12: 12px;
+  --space-absolute-14: 14px;
+  --space-absolute-16: 16px;
+  --space-absolute-18: 18px;
+  --space-absolute-20: 20px;
+  --space-absolute-22: 22px;
+  --space-absolute-24: 24px;
+  --space-absolute-28: 28px;
+  --space-absolute-32: 32px;
+  --space-absolute-40: 40px;
+  --space-absolute-48: 48px;
+  --space-absolute-56: 56px;
+  --space-absolute-64: 64px;
+  --space-absolute-80: 80px;
+  --space-absolute-96: 96px;
+  --space-semantic-stack-xs: 4px;
+  --space-semantic-stack-s: 8px;
+  --space-semantic-stack-m: 12px;
+  --space-semantic-stack-l: 16px;
+  --space-semantic-stack-xl: 24px;
+  --space-semantic-inline-xs: 4px;
+  --space-semantic-inline-s: 8px;
+  --space-semantic-inline-m: 12px;
+  --space-semantic-inline-l: 16px;
+  --space-semantic-inset-s: 12px;
+  --space-semantic-inset-m: 16px;
+  --space-semantic-inset-l: 24px;
+  --radius-absolute-0: 0px;
+  --radius-absolute-2: 2px;
+  --radius-absolute-4: 4px;
+  --radius-absolute-6: 6px;
+  --radius-absolute-8: 8px;
+  --radius-absolute-10: 10px;
+  --radius-absolute-12: 12px;
+  --radius-absolute-16: 16px;
+  --radius-absolute-20: 20px;
+  --radius-absolute-24: 24px;
+  --radius-absolute-28: 28px;
+  --radius-absolute-32: 32px;
+  --radius-absolute-infinite: 999px;
+  --radius-tokens-rounded-2: 2px;
+  --radius-tokens-rounded-4: 4px;
+  --radius-tokens-rounded-6: 6px;
+  --radius-tokens-rounded-8: 8px;
+  --radius-tokens-rounded-10: 10px;
+  --radius-tokens-rounded-12: 12px;
+  --radius-tokens-rounded-16: 16px;
+  --radius-tokens-rounded-20: 20px;
+  --radius-tokens-rounded-24: 24px;
+  --radius-tokens-rounded-28: 28px;
+  --radius-tokens-rounded-32: 32px;
+  --radius-tokens-none: 0px;
+  --radius-tokens-rounded-full: 999px;
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --duration-ambient: 1400ms;
+  --duration-undo: 5000ms;
+  --border-width-hairline: 1px;
+  --border-width-thin: 1.5px;
+  --border-width-focus: 2px;
+  --border-width-lit: 2.5px;
+  --border-width-icon: 2px;
+  --border-offset-focus: 2px;
+  --opacity-disabled: 0.4;
+  --opacity-pressed: 0.06;
+  --opacity-tile-off: 0.5;
+  --opacity-sticky: 0.96;
+  --opacity-push: 0.98;
+  --blur-backdrop: 8px;
+  --blur-reveal: 8px;
+  --blur-peek: 4px;
+  --elevation-1: 0px 1px 2px 0px #0B0E110A, 0px 10px 26px -12px #0B0E1129;
+  --elevation-2: 0px 2px 4px 0px #0B0E110D, 0px 14px 32px -14px #0B0E1138;
+  --elevation-3: 0px 3px 6px 0px #0B0E110F, 0px 18px 40px -16px #0B0E1142;
+  --elevation-4: 0px -10px 40px -8px #0B0E1166;
+  --elevation-0: 0px 0px 0px 0px #0B0E1100;
+  --component-nav-ink: #0B0E11;
+  --component-nav-mute: #8F99A5;
+  --component-nav-lens: #E8ECF1;
+  --component-nav-knockout: #FFFFFF;
+  --component-tip-art-bg: #FFFFFF;
+  --component-tip-button-bg: #FFFFFF;
+  --component-tip-button-ink: #0B0E11;
+  --shadow-lift-contact: #0B0E111A;
+  --shadow-lift-ambient: #0B0E118C;
+  --elevation-lift: 0px 2px 4px 0px #0B0E111A, 0px 22px 48px -14px #0B0E118C;
+  --type-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  --type-display-xl: 700 34px/37.4px var(--type-family);
+  --type-display-xl-tracking: -1.02px;
+  --type-display-l: 700 28px/32.2px var(--type-family);
+  --type-display-l-tracking: -0.7px;
+  --type-display-m: 700 24px/27.6px var(--type-family);
+  --type-display-m-tracking: -0.48px;
+  --type-display-s: 800 22px/25.3px var(--type-family);
+  --type-display-s-tracking: -0.44px;
+  --type-title: 600 20px/24px var(--type-family);
+  --type-title-tracking: -0.3px;
+  --type-body-l: 600 17px/22.1px var(--type-family);
+  --type-body-l-tracking: -0.17px;
+  --type-body-m: 400 15px/22.5px var(--type-family);
+  --type-body-m-tracking: 0px;
+  --type-body-m-strong: 600 15px/22.5px var(--type-family);
+  --type-body-m-strong-tracking: 0px;
+  --type-body-s: 400 13px/19.5px var(--type-family);
+  --type-body-s-tracking: 0px;
+  --type-label: 600 13px/15.6px var(--type-family);
+  --type-label-tracking: 0.06px;
+  --type-label-strong: 700 12px/14.4px var(--type-family);
+  --type-label-strong-tracking: 0.06px;
+  --type-caption: 500 12px/15.6px var(--type-family);
+  --type-caption-tracking: 0.12px;
+  --type-button-l: 700 17px/20.4px var(--type-family);
+  --type-button-l-tracking: -0.09px;
+  --type-overline: 800 11px/13.2px var(--type-family);
+  --type-overline-tracking: 1.21px;
+}
+.dark {
+  --bg-page: #0B0E11;
+  --bg-surface-default: #12161A;
+  --bg-surface-raised: #1A1F25;
+  --bg-fill-default: #1A1F25;
+  --bg-fill-strong: #242B33;
+  --bg-inverse-default: #F9FAFC;
+  --bg-inverse-pressed: #E2E7ED;
+  --bg-deep: #000000;
+  --bg-on-deep-fill: #242B33;
+  --bg-cover-fallback: #1A1F25;
+  --mark-gold: #DCB854;
+  --state-live: #34C171;
+  --state-danger-default: #F0716D;
+  --state-danger-fill: #3A1416;
+  --focus-ring: #E8CD82;
+  --skeleton-base: #1A1F25;
+  --skeleton-shine: #242B3399;
+  --hero-gradient-end: #0B0E11;
+  --scrim: #00000099;
+  --overlay: #000000EB;
+  --fill-gold: #221C0D66;
+  --component-button-primary-bg-default: #F9FAFC;
+  --component-button-primary-bg-pressed: #E2E7ED;
+  --component-button-primary-ink: #12161A;
+  --component-button-secondary-border: #F9FAFC;
+  --component-button-secondary-ink: #F9FAFC;
+  --component-button-ghost-ink: #A6AFBB;
+  --component-button-danger-ink: #F0716D;
+  --component-chip-bg: #12161A;
+  --component-chip-border: #242B33;
+  --component-chip-ink: #F9FAFC;
+  --component-chip-selected-bg: #F9FAFC;
+  --component-chip-selected-ink: #12161A;
+  --component-chip-suggested-border: #A6AFBB;
+  --component-chip-deep-bg: #242B33;
+  --component-chip-deep-border: #525B66;
+  --component-chip-deep-ink: #F9FAFC;
+  --component-tag-bg: #1A1F25;
+  --component-tag-border: #242B33;
+  --component-tag-ink: #A6AFBB;
+  --component-tag-new-border: #F9FAFC;
+  --component-tag-new-ink: #F9FAFC;
+  --component-tag-gold-border: #A87F2A;
+  --component-tag-gold-ink: #E8CD82;
+  --component-badge-bg: #F9FAFC;
+  --component-badge-ink: #12161A;
+  --component-input-bg: #12161A;
+  --component-input-border-default: #242B33;
+  --component-input-border-focus: #F9FAFC;
+  --component-input-placeholder: #8F99A5;
+  --component-search-bg: #1A1F25;
+  --component-avatar-bg: #242B33;
+  --component-avatar-ink: #A6AFBB;
+  --component-avatar-you-bg: #F9FAFC;
+  --component-avatar-you-ink: #12161A;
+  --component-avatar-ring-gold: #A87F2A;
+  --component-card-bg: #12161A;
+  --component-card-border: #242B33;
+  --component-card-tinted-bg: #1A1F25;
+  --component-card-outlined-border: #F9FAFC;
+  --component-mission-bg: #1A1F25;
+  --component-mission-border: #242B33;
+  --component-move-bg: #12161A;
+  --component-move-border: #242B33;
+  --component-receipt-type-bg: #1A1F25;
+  --component-receipt-type-ink: #A6AFBB;
+  --component-receipt-vouched-border: #A87F2A;
+  --component-receipt-vouched-ink: #E8CD82;
+  --component-glyph-node-bg: #12161A;
+  --component-glyph-node-border: #A6AFBB;
+  --component-glyph-line-pending: #242B33;
+  --component-glyph-line-done: #F9FAFC;
+  --component-glyph-line-vouched: #A87F2A;
+  --component-cmark-filled: #F9FAFC;
+  --component-cmark-outline: #8F99A5;
+  --component-progress-track: #242B33;
+  --component-progress-fill: #F9FAFC;
+  --component-segmented-active-bg: #F9FAFC;
+  --component-segmented-active-ink: #12161A;
+  --component-header-bg: #0B0E11;
+  --component-compactbar-bg: #1A1F25F5;
+  --component-nav-bg: #12161AC7;
+  --component-nav-border: #242B33;
+  --component-nav-ink-default: #8F99A5;
+  --component-nav-ink-active: #F9FAFC;
+  --component-kai-bg: #F9FAFC;
+  --component-kai-ink: #12161A;
+  --component-sheet-bg: #1A1F25;
+  --component-sheet-handle: #A6AFBB;
+  --component-push-bg: #1A1F25F0;
+  --component-push-border: #242B33;
+  --component-toast-bg: #000000;
+  --component-toast-ink: #12161A;
+  --component-tip-bg: #000000;
+  --component-call-bg: #000000;
+  --component-call-ink-default: #F9FAFC;
+  --component-call-ink-muted: #A6AFBB;
+  --component-call-user-ink: #DCB854;
+  --component-call-end-bg: #C8322F;
+  --component-call-end-ink: #F9FAFC;
+  --component-callbar-bg: #000000;
+  --component-callbar-ink: #F9FAFC;
+  --component-handshake-bg: #000000EB;
+  --component-handshake-link: #DCB854;
+  --component-handshake-ink: #F9FAFC;
+  --component-msg-user-bg: #F9FAFC;
+  --component-msg-user-ink: #12161A;
+  --component-msg-kai-bg: #1A1F25;
+  --component-msg-kai-ink: #F9FAFC;
+  --component-msg-system-border: #242B33;
+  --component-msg-system-ink: #8F99A5;
+  --component-listening-border: #A6AFBB;
+  --component-empty-border: #242B33;
+  --component-empty-ink: #8F99A5;
+  --component-requests-hairline: #A87F2A;
+  --component-live-dot: #34C171;
+  --component-cover-bg: #1A1F25;
+  --component-cover-foil-light: #E8C98C;
+  --component-cover-foil-mid: #C9A45E;
+  --component-cover-foil-deep: #5C4526;
+  --component-cover-scrim: #0B0E118C;
+  --component-cover-past-wash: #0B0E118C;
+  --component-pills-sticky-bg: #0B0E11F5;
+  --component-tile-count-ink: #F9FAFC;
+  --foil-from: #F7E7B8;
+  --foil-mid: #DCB854;
+  --foil-to: #A87F2A;
+  --text-primary: #F9FAFC;
+  --text-secondary: #A6AFBB;
+  --text-tertiary: #8F99A5;
+  --text-disabled: #525B66;
+  --text-inverse: #12161A;
+  --text-on-deep-default: #F9FAFC;
+  --text-on-deep-muted: #A6AFBB;
+  --text-on-deep-user: #DCB854;
+  --text-gold: #E8CD82;
+  --border-default: #242B33;
+  --border-subtle: #1A1F25;
+  --border-strong: #39424C;
+  --border-gold: #A87F2A;
+  --border-on-deep: #525B66;
+  --border-control: #808996;
+  --icon-primary: #F9FAFC;
+  --icon-secondary: #A6AFBB;
+  --icon-tertiary: #8F99A5;
+  --icon-disabled: #525B66;
+  --icon-inverse: #12161A;
+  --icon-accent: #DCB854;
+  --icon-on-deep: #F9FAFC;
+  --actions-going: #34C171;
+  --actions-not-going: #F0716D;
+  --actions-rejected: #F0716D;
+  --actions-declined: #8F99A5;
+  --actions-waitlisted: #A6AFBB;
+  --actions-pending-approval: #A6AFBB;
+  --actions-invited: #F9FAFC;
+  --actions-to-be-decided: #8F99A5;
+  --actions-in-person: #A6AFBB;
+  --actions-online: #A6AFBB;
+  --actions-hybrid: #A6AFBB;
+  --actions-manual: #8F99A5;
+  --actions-hyperlink: #F9FAFC;
+  --shadow-elev-1-contact: #0B0E111A;
+  --shadow-elev-1-ambient: #0B0E112E;
+  --shadow-elev-2-contact: #0B0E111F;
+  --shadow-elev-2-ambient: #0B0E113D;
+  --shadow-elev-3-contact: #0B0E1124;
+  --shadow-elev-3-ambient: #0B0E1147;
+  --shadow-elev-4-lift: #0B0E1180;
+  --elevation-1: 0px 1px 2px 0px #0B0E111A, 0px 10px 26px -12px #0B0E112E;
+  --elevation-2: 0px 2px 4px 0px #0B0E111F, 0px 14px 32px -14px #0B0E113D;
+  --elevation-3: 0px 3px 6px 0px #0B0E1124, 0px 18px 40px -16px #0B0E1147;
+  --elevation-4: 0px -10px 40px -8px #0B0E1180;
+  --elevation-0: 0px 0px 0px 0px #0B0E1100;
+  --component-nav-ink: #F9FAFC;
+  --component-nav-mute: #808996;
+  --component-nav-lens: #242B33;
+  --component-nav-knockout: #12161A;
+  --component-tip-art-bg: #FFFFFF;
+  --component-tip-button-bg: #FFFFFF;
+  --component-tip-button-ink: #0B0E11;
+  --shadow-lift-contact: #0B0E1133;
+  --shadow-lift-ambient: #0B0E11A6;
+  --elevation-lift: 0px 2px 4px 0px #0B0E1133, 0px 22px 48px -14px #0B0E11A6;
+}
+
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
    TEXT ONLY. No colour, no surface, no spacing, no layout. Every rule here sets font-family, font-size, font-weight,
    letter-spacing or line-height and nothing else.
@@ -3458,7 +3938,7 @@ p,
 .nav.knav .tab.fam .chevs { width:8px; height:11px; }
 /* badges sit on the icon's shoulder */
 .nav.knav .tab .ic .unread { top:-6px !important; right:-11px !important; min-width:18px; height:18px; padding:0 5px; box-sizing:border-box; border-radius:9px;
-  font-size:10.5px; font-weight:800; line-height:18px; box-shadow:0 0 0 2px rgba(255,255,255,.95); }
+  font-size:11px; font-weight:800; line-height:18px; /* type/overline 11/800 */ box-shadow:0 0 0 2px rgba(255,255,255,.95); }
 /* Kai: the inverse fill with the sparkle, raised a little, always the one dark thing in the bar */
 .nav.knav .kai { color:var(--kn-ink); }
 .nav.knav .kai { gap:9px; justify-content:flex-end; padding-bottom:6px; box-sizing:border-box; }
@@ -3531,6 +4011,89 @@ p,
   .nav.knav .tab.fam { flex:0 0 70px; }
   .nav.knav .tab.fam .fname { max-width:44px; }
 }
+
+/* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
+.p2 { display:flex; flex-direction:column; gap:14px; }
+.p2btl { display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; color:var(--ink); background:var(--fill); border:0; border-radius:12px; padding:8px 12px; cursor:pointer; }
+.p2btl > span:nth-child(2) { flex:1; min-width:0; }
+.p2btl b { display:block; font-size:14px; font-weight:600; }
+.p2btl small { display:block; font-size:12px; color:var(--ink2); }
+.p2btl > svg { color:var(--ink3); flex:0 0 auto; }
+.p2btl.you { background:#FBF3DC; }
+.p2btl.you small { color:#7A5C10; font-weight:600; }
+.p2ico { width:32px; height:32px; border-radius:50%; background:#fff; display:grid; place-items:center; flex:0 0 auto; color:var(--ink); }
+.p2now { display:flex; flex-direction:column; }
+.p2bld { font-size:20px; line-height:1.25; font-weight:700; letter-spacing:-.01em; margin-bottom:6px; }
+.p2lf, .p2sh { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink3); margin-bottom:6px; }
+.p2nd { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+.p2nd > span:first-child { flex:1; min-width:0; }
+.p2nd b { display:block; font-size:15px; font-weight:600; }
+.p2nd small { display:block; font-size:13px; color:var(--ink2); }
+.p2fit { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#7A5C10; background:#FBF3DC; border-radius:6px; padding:2px 6px; margin-bottom:4px; }
+.p2nd small.p2why { color:#7A5C10; }
+.p2x { flex:0 0 auto; font:inherit; font-size:13px; font-weight:600; height:34px; padding:0 12px; border-radius:17px; border:1px solid var(--ink); background:#fff; color:var(--ink); cursor:pointer; }
+.p2nd.hit .p2x { background:var(--ink); color:#fff; }
+.p2x.done, .p2nd.hit .p2x.done { background:var(--fill); border-color:var(--fill); color:var(--ink2); }
+.p2chips { display:flex; flex-wrap:wrap; gap:8px; }
+.p2chip { display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:14px; height:36px; padding:0 12px; border-radius:18px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; }
+.p2chip.asked { background:var(--fill); color:var(--ink2); }
+.p2rail { display:flex; gap:10px; overflow-x:auto; margin:0 -16px; padding:2px 16px 4px; scrollbar-width:none; }
+.p2rail::-webkit-scrollbar { display:none; }
+.p2wk { flex:0 0 140px; display:flex; flex-direction:column; align-items:flex-start; gap:2px; text-align:left; font:inherit; color:var(--ink); background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; cursor:pointer; }
+.p2wk .p2lg { width:36px; height:36px; font-size:15px; margin-bottom:6px; }
+.p2wk b { font-size:14px; font-weight:600; }
+.p2wk small { font-size:12px; color:var(--ink2); }
+.p2wk small.p2you { color:#7A5C10; font-weight:600; }
+.p2lg { width:32px; height:32px; border-radius:8px; display:grid; place-items:center; color:#fff; font-size:13px; font-weight:700; flex:0 0 auto; }
+.p2lk { display:flex; align-items:center; gap:12px; width:100%; text-align:left; font:inherit; color:var(--ink); background:transparent; border:0; border-bottom:1px solid var(--line); padding:10px 0; cursor:pointer; }
+.p2lk > b { flex:1; font-size:15px; font-weight:500; }
+.p2lk small { font-size:12px; color:var(--ink2); }
+.p2lk > svg { color:var(--ink3); }
+.p2lk .p2lg[style*="#F2F3F5"] { color:var(--ink); }
+.p2sw { width:44px; height:26px; border-radius:13px; background:var(--fill2); position:relative; cursor:pointer; flex:0 0 auto; transition:background .2s; }
+.p2sw::after { content:""; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.2); transition:transform .2s; }
+.p2sw[aria-checked="true"] { background:var(--ink); }
+.p2sw[aria-checked="true"]::after { transform:translateX(18px); }
+/* dock: Ask Kai (with Kai's first answer) + round Message */
+.p2sbar, .pact.p2pact { display:flex; gap:8px; align-items:stretch; }
+.btn.p2kai { flex:1; min-width:0; display:flex; align-items:center; justify-content:flex-start; gap:10px; height:auto; min-height:54px; padding:8px 14px; text-align:left; background:#0B0E11; border-color:#0B0E11; color:#fff; }
+.btn.p2kai > span { min-width:0; }
+.btn.p2kai b { display:block; font-size:15px; font-weight:600; line-height:1.2; }
+.btn.p2kai small { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; font-size:12px; font-weight:400; line-height:1.3; color:rgba(255,255,255,.72); }
+.btn.p2round { flex:0 0 54px; width:54px; height:54px; min-height:54px; padding:0; border-radius:50%; display:grid; place-items:center; align-self:center; }
+.p2fw { display:flex; align-items:center; gap:10px; margin-top:8px; }
+.p2fw span { font-size:12px; color:var(--ink2); }
+.p2follow { display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 16px 0 12px; border-radius:18px; border:1px solid var(--ink); background:var(--ink); color:#fff; font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+.p2follow.on { background:#fff; color:var(--ink); border-color:var(--line); }
+/* sheets */
+.p2shd { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.p2shd h2 { margin:0; font-size:19px; }
+.p2note { background:var(--fill); border-radius:12px; padding:10px 12px; margin-bottom:12px; }
+.p2note small { display:flex; align-items:center; gap:4px; font-size:12px; color:var(--ink2); }
+.p2note textarea { width:100%; border:0; background:transparent; font:inherit; font-size:15px; resize:none; outline:none; padding:4px 0 0; color:var(--ink); }
+.p2tl { margin-bottom:12px; }
+.p2tl > div { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); font-size:14px; }
+.p2tl > div > span:first-child { flex:0 0 76px; color:var(--ink3); font-size:13px; }
+.p2acts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px; }
+.p2acts button { white-space:nowrap; display:flex; align-items:center; gap:8px; font:inherit; font-size:14px; font-weight:600; height:44px; padding:0 12px; border-radius:12px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; }
+.p2acts button.on { background:var(--ink); border-color:var(--ink); color:#fff; }
+.p2kd { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink2); margin:8px 0 6px; }
+.p2ta { display:block; margin-bottom:12px; }
+.p2ans { background:var(--fill); border-radius:14px; padding:12px 14px; margin-bottom:12px; }
+.p2ans .q { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--ink2); }
+.p2ans p { margin:6px 0 8px; font-size:15px; }
+.p2ans .src { display:flex; flex-wrap:wrap; gap:6px; }
+.p2ans .src span { font-size:11px; color:var(--ink2); background:#fff; border-radius:6px; padding:2px 6px; }
+.p2ans .acts { display:flex; gap:8px; margin-top:10px; }
+.p2ans .acts button { font:inherit; font-size:14px; font-weight:600; height:38px; padding:0 14px; border-radius:19px; border:0; background:var(--ink); color:#fff; cursor:pointer; }
+.p2kq { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+.p2kq button { display:flex; align-items:center; gap:8px; text-align:left; font:inherit; font-size:15px; min-height:44px; padding:8px 12px; border-radius:12px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer; }
+@media (prefers-reduced-motion: reduce) { .p2sw, .p2sw::after { transition:none; } }
+.p2sbar { flex-wrap:wrap; }
+.p2sbar .sec2 { flex:1 0 100%; text-align:center; }
+.p2sbar .sec2 { display:block; }
+/* a list rule `.pn{padding-left:18px}` elsewhere also hits the profile name; keep the name flush with the lines under it */
+.pname .pn, .ph .pn { padding-left:0; }
 </style>
 </head>
 <body>
@@ -12713,6 +13276,183 @@ const _fxKaiAsk = kaiAsk; kaiAsk = function(t){
 };
 /* Events' "Following" bell sheet calls LI("bell-ring"), which LUCIDE lacked (hosting's v64 check): Lucide's bell-ring. */
 if (typeof LUCIDE!=="undefined" && !LUCIDE["bell-ring"]) LUCIDE["bell-ring"] = '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/>';
+
+/* ==== PROFILE v2 (profiles thread, 27 Sep 2026; Apoorv's yes 21:24 on the plan https://claude.ai/artifact/5VbBEXosR5xCAP4PZhtWfG)
+   Prototype it follows: https://claude.ai/artifact/QcL7jJaDepUPC5Qa78zA8G
+   What it changes, for another member's profile (sheet and full page share one body):
+   1. Between you: one line under the photo, the most urgent thing only (waiting on you > waiting on them > event together > last talked), hidden when there is nothing.
+      Tap opens "You and <name>": private note, short history, Remind me, Add to a mission, Follow, Messages.
+   2. Follow: a Follow button under the name (where the link icons were; links live in "Elsewhere"). Private (never told, no counts), no push;
+      updates go to a weekly in-app digest (sheet p2digest). Mute and follow are exclusive. Own profile gets "Let members follow you".
+   3. Give first: "You fit this" on her stated needs only, with the reason; "What could I offer <name>?" in Ask Kai.
+   4. Option C: the main action is Ask Kai about <name>, labelled with Kai's first answer; Message is the second button.
+      Ask Kai opens the app's own Kai sheet (openSheet("kai")) scoped to the person, with its suggestion pills; drafts use keyComposer.
+   Load after port.js, cycle.js and fixes (it wraps profileBody, profileSheet, sProfile, portSheet, kaiAsk). Remove this file to back it out. */
+
+Object.assign(LUCIDE, {   /* Lucide icons this module needs that the base set lacks */
+  "history":'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  "badge-check":'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
+  "message-circle-question":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  "external-link":'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  "target":'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  "ban":'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>'
+});
+STATE.p2keep = STATE.p2keep || { rahul:1 };   // example so the digest has something on first open
+STATE.p2mute = STATE.p2mute || {};
+STATE.p2done = STATE.p2done || {};
+STATE.p2notes = STATE.p2notes || {};
+STATE.p2letKeep = STATE.p2letKeep !== false;
+
+const P2 = {
+  maya: { now:"Building infra for agents",
+    needs:[{t:"A product partner", s:"Someone who has shipped AI features", fit:"You shipped two AI features at Google Cloud", a:"offer"},
+           {t:"Seed investors in agent infra", s:"Raising this quarter", a:"suggest"},
+           {t:"Her first two engineers", s:"Backend, Go or Rust", a:"suggest"}],
+    work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Stripe","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
+    school:[["M","#00274C","U of Michigan","MS CS · 2014","Michigan, like you"]],
+    note:"Wants a PM who has shipped agents. Ask about her Stripe years.",
+    kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for her first two engineers", digestAct:"Suggest" },
+  rahul: { now:"Building the eng team for a new product line",
+    needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google Cloud", a:"offer"}],
+    work:[["A","#C96442","Anthropic","Eng Director · now"],["G","#1A73E8","Google Search","2012 – 2021","Google, like you"]],
+    school:[], note:"", kaiPre:"Direct is fine. You've met 3 times", digest:"Rahul now leads Anthropic's eval team", digestAct:"Say congrats" },
+  chris: { now:"Runs Xoogler and hosts most of its events", needs:[], work:[["X","#121316","Xoogler","President · now"],["G","#1A73E8","Google","2008 – 2016","Google, like you"]],
+    school:[], note:"", kaiPre:"He introduced you to Jordan", digest:"Daniel posted the October dinner list", digestAct:"Join" }
+};
+function p2d(pid){ const p=DB.people[pid]||{}; const d=P2[pid]||{};
+  return { now:d.now||p.line||"", needs:d.needs||(p.lookingFor?[{t:p.lookingFor, s:"", a:"suggest"}]:[]),
+    work:d.work||(p.company?[[p.company[0],"#121316",p.company,(p.title||"")+" · now"]]:[]), school:d.school||[],
+    note:STATE.p2notes[pid]!==undefined?STATE.p2notes[pid]:(d.note||""), kaiPre:d.kaiPre||"How to reach "+firstName(p),
+    digest:d.digest||(p.lookingFor?`${firstName(p)} is looking for ${p.lookingFor.charAt(0).toLowerCase()+p.lookingFor.slice(1)}`:`${firstName(p)} updated their profile`), digestAct:d.digestAct||"Open" }; }
+function p2Opp(pid){ return DB.opps.find(x=>x.personId===pid && x.state!=="dropped"); }
+function p2Logo(l,c){ return `<span class="p2lg" style="background:${c}">${l}</span>`; }
+
+/* ---- 1. Between you ---- */
+function p2Between(pid){
+  const p=DB.people[pid], f=firstName(p), o=p2Opp(pid), via=o&&viaOf(o), ev=sharedEventsFor(pid)[0];
+  if (STATE.p2done["msg"+pid]) return { tone:"", ico:"send", b:`Your note${via?" via "+firstName(via):""}`, s:"Waiting · sent just now" };
+  if (o && ownerOf(o)==="you" && !isNewOf(o)) return { tone:"you", ico:"message-circle", b:`${f} replied`, s:"Waiting on you" };
+  if (o && ownerOf(o)==="them") return { tone:"", ico:"clock", b:via&&!o.viaAgreed?`Your ask via ${firstName(via)}`:`Your note to ${f}`, s:"Waiting on them" };
+  if (ev) return { tone:"", ico:"calendar", b:`Both going to the ${ev.name}`, s:ev.day };
+  if ((p.shared||[])[0]) return { tone:"", ico:"history", b:`Last: ${p.shared[0]}`, s:"From your calendar and Key" };
+  return null;
+}
+function p2BetweenLine(pid){ const x=p2Between(pid); if(!x) return "";
+  return `<button class="p2btl ${x.tone}" onclick="event.stopPropagation();openSheet('p2between','${pid}')"><span class="p2ico">${LI(x.ico,16)}</span><span><b>${x.b}</b><small>${x.s}</small></span>${LI("chevron-right",16)}</button>`; }
+
+/* ---- body shared by the sheet and the full page ---- */
+function p2Body(pid){
+  const p=DB.people[pid], f=firstName(p), d=p2d(pid), fams=DB.families.filter(fm=>(p.families||[]).some(n=>fm.name===n||fm.name.startsWith(n))), evs=sharedEventsFor(pid);
+  const need=(n,i)=>{ const done=STATE.p2done["need"+pid+i]; const lbl=n.fit?"Offer yourself":n.a==="share"?"Share what worked":"Suggest";
+    return `<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}${n.fit?`<small class="p2why">${n.fit}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2need','${pid}|${i}')">${done?(n.fit?"Offered":"Suggested"):lbl}</button></div>`; };
+  const links=(typeof profileLinks==="function"?profileLinks(pid):[]);
+  return `<div class="p2">
+    ${p2BetweenLine(pid)}
+    ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
+    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">Ask ${f} about</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
+    ${d.work.length?`<div class="p2sec"><div class="p2sh">Work</div><div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
+    ${d.school.length?`<div class="p2sec"><div class="p2sh">School</div><div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
+    ${evs.length?`<div class="p2sec"><div class="p2sh">You're both going</div>${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
+    ${fams.length?`<div class="p2sec"><div class="p2sh">You're both in</div>${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members`},true)).join("")}</div>`:''}
+    ${links.length?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<button class="p2lk" onclick="event.stopPropagation();toast('Opens ${l} in your browser')">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${LI("external-link",16)}</button>`).join("")}</div>`:''}
+  </div>`;
+}
+
+/* ---- option C dock: Ask Kai with its first answer, then Message ---- */
+function p2Dock(pid){ const p=DB.people[pid], d=p2d(pid), sent=STATE.p2done["msg"+pid];
+  return `<button class="btn p2kai" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
+function p2Blocked(pid){ return typeof fxBlocked==="function" && fxBlocked(pid); }
+
+const _p2ProfileBody = profileBody;
+profileBody = function(pid, opts){
+  if (pid==="priya") { const h=_p2ProfileBody(pid, opts); if (!(opts&&opts.edit)) return h;
+    return h + `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
+  return p2Body(pid);
+};
+const _p2ProfileSheet = profileSheet;
+function p2FollowBtn(pid){ const k=STATE.p2keep[pid];
+  return `<div class="p2fw"><button class="p2follow ${k?'on':''}" aria-pressed="${!!k}" onclick="event.stopPropagation();p2Keep('${pid}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>${k?`<span>In your weekly digest</span>`:''}</div>`; }
+const p2NoHeroLinks = (h, pid) => h.replace(/<div class="plinks">[\s\S]*?<\/div>/, p2Blocked(pid) ? "" : p2FollowBtn(pid));
+profileSheet = function(pid){ let h=_p2ProfileSheet(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid); if (p2Blocked(pid)) return h;
+  return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
+const _p2SProfile = sProfile;
+sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid);
+  h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="toast('Share, report, block (out of scope)')">···</div>`,
+    `<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('p2more','${pid}')">···</div>`);
+  if (!p2Blocked(pid)) h = h.replace(/<div class="pact">[\s\S]*?<\/div>/, `<div class="pact p2pact">${p2Dock(pid)}</div>`);
+  return h; };
+
+function p2Keep(pid){ const f=firstName(DB.people[pid]); STATE.p2keep[pid]=!STATE.p2keep[pid]; const muted=STATE.p2keep[pid]&&STATE.p2mute[pid]; if (muted) STATE.p2mute[pid]=0;
+  const inSheet = STATE.sheet&&STATE.sheet.type==="p2between"; render();
+  toast(STATE.p2keep[pid]?`Following. ${f}'s updates show in your weekly digest. ${f} isn't told`+(muted?". Unmuted":""):`Unfollowed. ${f} was never told`); if (inSheet) openSheet("p2between", pid); }
+function p2Send(kind, pid, msg){ STATE.p2done[kind]=1; if (kind.startsWith("need")||kind.startsWith("msg")) STATE.p2done["msg"+pid]=1; closeSheet(); setTimeout(()=>toast(msg||"Sent"), 200); }
+function p2Composer(draft, send, ph){ return `<div class="p2kd">${kaiMark(14)}Kai drafted · edit anything</div>${keyComposer({ id:"p2ci", wrap:false, draft, placeholder:ph||"Message", attach:false, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="${send}"` })}`; }
+
+/* ---- Ask Kai: the app's own Kai sheet, scoped to the person; answers end in action pills ---- */
+function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2Opp(pid), via=o&&viaOf(o), fit=d.needs.filter(n=>n.fit), fams=(p.families||[]).join(" and "), ev=sharedEventsFor(pid)[0];
+    const A = {
+      common:["What do we have in common?", `You're both in ${fams||"Xoogler"}${ev?`, and you're both going to the ${ev.name}`:""}${(d.work.find(w=>w[4]))?". "+d.work.find(w=>w[4])[4].replace(", like you"," for both of you"):""}.`, [["Families"],["Events"],["Work"]], ev?[["See the event",`STATE.sheet=null;go('eventd:${ev.id}')`]]:[]],
+      how:[`How should I reach ${f}?`, via?`${firstName(via)} knows you both and can vouch for you. ${f} prefers intros through people they trust.`:`Direct is fine. ${(p.shared||[])[0]?"You have history: "+p.shared[0]+".":""}`, [["Routes"]], [[via?`Message via ${firstName(via)}`:`Message ${f}`,`openSheet('p2msg','${pid}')`]]],
+      give:[`What could I offer ${f}?`, fit.length?`${fit.map(n=>`${f} is looking for ${n.t.charAt(0).toLowerCase()+n.t.slice(1)}, and ${n.fit.charAt(0).toLowerCase()+n.fit.slice(1)}`).join(". ")}. Only you see this.`:`Nothing you've shared matches what ${f} has asked for. You could suggest someone who does.`, [["What they're looking for"],["Your profile"]], fit.length?[["Offer yourself",`openSheet('p2need','${pid}|${d.needs.indexOf(fit[0])}')`]]:(d.needs.length?[["Suggest someone",`openSheet('p2need','${pid}|0')`]]:[])],
+      now:[`What is ${f} working on?`, `${d.now||p.line}.${d.needs.length?" Looking for "+d.needs.map(n=>n.t.charAt(0).toLowerCase()+n.t.slice(1)).join(", ")+".":""}`, [["Their profile"]], (p.help||[])[0]?[[`Ask about ${p.help[0]}`,`openSheet('p2ask','${pid}|${p.help[0]}')`]]:[]]
+    };
+  return A; }
+function p2KaiScope(pid){ const p=DB.people[pid]; return { kind:"profile", id:pid, label:p.name, sugg:Object.values(p2KaiQs(pid)).map(a=>a[0]) }; }
+function p2AskKai(pid){ STATE.kaiMsgs=[]; STATE.kaiScope=p2KaiScope(pid); openSheet("kai"); }
+const _p2KaiScopeFor = kaiScopeFor;
+kaiScopeFor = function(){ const sc=_p2KaiScopeFor(); return sc&&sc.kind==="profile"&&sc.id!=="priya"&&DB.people[sc.id] ? p2KaiScope(sc.id) : sc; };
+// talk.js wraps kaiAsk after this module loads, so this wrapper installs once every module has run and sits outermost
+setTimeout(()=>{ const _p2KaiAsk = kaiAsk;
+kaiAsk = function(t){
+  const sc = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
+  if (sc && sc.kind==="profile" && DB.people[sc.id]) {
+    const act=(STATE.p2kaiActs||{})[t]; if (act) { STATE.p2kaiActs={}; closeSheet(); setTimeout(()=>new Function(act)(), 250); return; }
+    const A=p2KaiQs(sc.id), hit=Object.values(A).find(a=>a[0]===t);
+    if (hit) { STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({ who:"u", text:t });
+      STATE.p2kaiActs=Object.fromEntries(hit[3]);
+      const next=Object.values(A).map(a=>a[0]).filter(q=>q!==t&&!STATE.kaiMsgs.some(m=>m.who==="u"&&m.text===q)).slice(0,2);
+      STATE.kaiMsgs.push({ who:"k", text:hit[1], mini:[`From ${hit[2].map(x=>x[0].toLowerCase()).join(", ")} on Key`], chips:[...hit[3].map(x=>x[0]), ...next] });
+      render(); return; }
+  }
+  return _p2KaiAsk(t);
+}; }, 0);
+
+/* ---- sheets ---- */
+const _p2PortSheet = portSheet;
+portSheet = function(type, id){
+  if (!type || !type.startsWith("p2")) return _p2PortSheet(type, id);
+  const [pid, arg] = String(id||"").split("|"); const p=DB.people[pid]||DB.people.maya, f=firstName(p), d=p2d(p.id), o=p2Opp(p.id), via=o&&viaOf(o);
+  const head = t => `<div class="p2shd">${av(p.initials)}<h2>${t}</h2></div>`;
+  const sendTo = via&&!o.viaAgreed ? `Send via ${firstName(via)}` : "Send";
+  if (type==="p2between") { const x=p2Between(p.id), ev=sharedEventsFor(p.id)[0], k=STATE.p2keep[p.id];
+    const tl=[...(STATE.p2done["msg"+p.id]?[["Now",`Your note${via?" via "+firstName(via):""}, waiting`]]:[]), ...(ev?[[ev.day,`Both going to the ${ev.name}`]]:[]), ...(p.shared||[]).map(s=>{ const m=s.match(/(.*?),\s*(\w+)$/); return m?[m[2],m[1]]:["Before",s]; })];
+    return `${head(`You and ${f}`)}
+      <div class="p2note"><small>${LI("lock",12)}Your note · only you see it</small><textarea rows="2" placeholder="Add a note only you can see" oninput="STATE.p2notes['${p.id}']=this.value">${d.note}</textarea></div>
+      ${tl.length?`<div class="p2tl">${tl.map(([w,t])=>`<div><span>${w}</span><span>${t}</span></div>`).join("")}</div>`:''}
+      <div class="p2acts">
+        ${x&&x.tone==="you"&&o?`<button class="on" data-act="${o.id}">${LI("message-circle",16)}Reply</button>`:`<button onclick="openSheet('p2remind','${p.id}')">${LI("clock",16)}Remind me</button>`}
+        <button onclick="openSheet('p2mission','${p.id}')">${LI("target",16)}Add to mission</button>
+        <button class="${k?'on':''}" onclick="p2Keep('${p.id}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>
+        <button onclick="STATE.sheet=null;go('dm:d-${p.id}')">${LI("message-square",16)}Messages</button>
+      </div>
+      <div class="xrow" onclick="openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="s xs faint">Everyone you follow</div></div>${LI("chevron-right",16)}</div>`; }
+  if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
+  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("target",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
+  if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
+  if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
+  if (type==="p2need") { const n=d.needs[+arg]||{t:""};
+    if (!n.fit && n.a!=="share") return `<h2>Who fits “${n.t.charAt(0).toLowerCase()+n.t.slice(1)}”?</h2><div class="xs faint" style="margin-bottom:6px">People you know. Kai drafts a note to both, you send it.</div>${["sana","arjun","ana"].filter(x=>DB.people[x]&&x!==p.id).map(x=>`<div class="xrow" onclick="p2Send('need${p.id}${arg}','${p.id}','Drafted a note to both. Sent when you tap send in Messages')">${av(DB.people[x].initials)}<div class="m"><div class="a">${DB.people[x].name}</div><div class="s xs faint">${DB.people[x].title}, ${DB.people[x].company}</div></div>${LI("chevron-right",16)}</div>`).join("")}<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Share their name and email'),200)"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Someone not on Key</div></div></div>`;
+    return `${head(n.fit?`Offer yourself to ${f}`:n.t)}${p2Composer(n.fit?`Hi ${f}, I saw you're looking for ${n.t.charAt(0).toLowerCase()+n.t.slice(1)}. ${n.fit}. Could we compare notes?`:`Hi ${f}, happy to share what worked for me.`, `p2Send('need${p.id}${arg}','${p.id}','Sent${via&&!o.viaAgreed?" via "+firstName(via):""}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`; }
+  if (type==="p2more") { const m=STATE.p2mute[p.id];
+    return `${[["share","Share profile",`closeSheet();setTimeout(()=>toast('Link copied. Only members can open it'),200)`],["bell-off",m?"Unmute":"Mute",`p2MuteT('${p.id}')`],["ban","Block",`p2Block('${p.id}')`,1],["flag","Report",`closeSheet();setTimeout(()=>toast('Reported. Key's team reviews it. ${f} isn\\'t told'),200)`,1]].map(([i,t,js,dz])=>`<div class="xrow" onclick="${js}"><span class="sico" style="${dz?'color:var(--danger)':''}">${LI(i,18)}</span><div class="m"><div class="a" style="${dz?'color:var(--danger)':''}">${t}</div></div></div>`).join("")}`; }
+  if (type==="p2digest") { const kept=Object.keys(STATE.p2keep).filter(x=>STATE.p2keep[x]&&DB.people[x]);
+    return `<div class="xs faint" style="text-transform:uppercase;letter-spacing:.05em;font-weight:800">Weekly digest · in the app, no push</div><h2>Your people this week</h2>
+      ${kept.length?kept.map(x=>{ const dd=p2d(x); return `<div class="xrow" onclick="STATE.sheet=null;STATE.profileId='${x}';go('profile')">${av(DB.people[x].initials)}<div class="m"><div class="a">${dd.digest}</div><div class="s xs faint">${DB.people[x].families[0]||""} · this week</div></div><button class="btn sm" onclick="event.stopPropagation();closeSheet();setTimeout(()=>toast('Kai drafted it. You send it'),200)">${dd.digestAct}</button></div>`; }).join(""):`<div class="xs faint">Tap Follow on someone's profile to see their updates here.</div>`}
+      <div class="xs faint" style="margin-top:10px">${LI("lock",12)} Nobody is told you follow them, and nobody sees counts. Updates never include messages, who someone met, private missions or anything they hid.</div>`; }
+  return _p2PortSheet(type, id);
+};
+function p2MuteT(pid){ const f=firstName(DB.people[pid]); STATE.p2mute[pid]=!STATE.p2mute[pid]; const had=STATE.p2keep[pid]; if (STATE.p2mute[pid]) STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(STATE.p2mute[pid]?(had?`Muted. You also unfollowed ${f}`:`Muted ${f}`):`Unmuted ${f}`),200); }
+function p2Block(pid){ if (!DB.chat && typeof seedChats==="function") seedChats(); DB.chat=DB.chat||{}; const c=DB.chat["d-"+pid]; if (c) c.blockedByMe=true; else DB.chat["d-"+pid]={ id:"d-"+pid, kind:"dm", with:pid, msgs:[], blockedByMe:true }; STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(`Blocked ${firstName(DB.people[pid])}. They can't message you and aren't told`),200); }
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
