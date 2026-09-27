@@ -5010,16 +5010,17 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .msec.sc .msh > .k { flex:0 0 auto; }
 /* KeyMissionTrack: five stages, faces sit on the stage they reached, the bar fills up to the furthest one */
 #phone.hf-mis .mh-track { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px; margin-top:14px; }
-#phone.hf-mis .mh-stg { display:flex; flex-direction:column; gap:6px; min-width:0; }
-#phone.hf-mis .mh-sf { height:24px; display:flex; align-items:center; }
+#phone.hf-mis .mh-stg { display:flex; flex-direction:column; gap:6px; min-width:0; container-type:inline-size; }
+@container (max-width:58px) { #phone.hf-mis .mh-sf > span + span { display:none; } }
+#phone.hf-mis .mh-sf { height:32px; display:flex; align-items:center; }
 #phone.hf-mis .mh-sf > span { line-height:0; cursor:pointer; }
-#phone.hf-mis .mh-sf > span + span { margin-left:-8px; }
-#phone.hf-mis .sc .mh-sf .avatar { width:24px; height:24px; font:var(--type-overline); letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
+#phone.hf-mis .mh-sf > span + span { margin-left:-5px; }
+#phone.hf-mis .sc .mh-sf .avatar { width:32px; height:32px; font:var(--type-label); letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
 #phone.hf-mis .sc .avatar.mh-sq { border-radius:var(--radius-absolute-8); }
-#phone.hf-mis .mh-sf em { margin-left:4px; font:var(--type-label-strong); font-style:normal; color:var(--text-secondary); }
 #phone.hf-mis .mh-stg > i { display:block; height:6px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
 #phone.hf-mis .mh-stg.past > i { background:var(--component-progress-fill); }
-#phone.hf-mis .mh-ends { display:flex; justify-content:space-between; margin-top:6px; font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-mis .mh-ends { margin-top:8px; font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-mis .mh-ends b { font-weight:700; color:var(--text-secondary); }
 /* Kai's work, on Kai's dark plate with the foil K */
 #phone.hf-mis .mh-kai { display:flex; align-items:center; gap:8px; margin:12px 0 10px; padding:8px 12px 8px 8px; border-radius:var(--radius-absolute-12); background:var(--component-kai-bg); color:var(--text-on-deep-muted); font:var(--type-body-s); }
 #phone.hf-mis .mh-kai > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -15857,13 +15858,14 @@ const MH_ST = ["New pick","Next step","Waiting","In conversation","Went well"];
 const mhSt = o => scK(o)[2]==="Met" ? 3 : MH_ST.indexOf(scK(o)[0]);
 const mhAv = o => av(scIni(o), o.roleTitle ? "mh-sq" : "");
 
-/* KeyMissionTrack: the mission's people sit on the stage they have reached, New pick to Went well (the fixed labels), two faces a stage */
+/* KeyMissionTrack: the mission's people sit on the stage they have reached, New pick to Went well (the fixed labels), two 32 faces a stage (one where the
+   stage is too narrow); how many are at each stage is said in words under the track, never a +N */
 function mhTrack(ps){
   const col = MH_ST.map(()=>[]); ps.forEach(o=>{ const i = mhSt(o); if (i>=0) col[i].push(o); });
   const far = col.reduce((a,c,i)=>c.length?i:a, -1);
   return `<div class="mh-track" data-kc="KeyMissionTrack" data-kv="stages=5, at=${far+1}">${col.map((c,i)=>`<div class="mh-stg${c.length?" on":""}${i<=far?" past":""}" aria-label="${MH_ST[i]}: ${c.length}">
-    <div class="mh-sf">${c.slice(0,2).map(o=>`<span data-opp="${o.id}">${mhAv(o)}</span>`).join("")}${c.length>2?`<em>${c.length}</em>`:""}</div><i></i></div>`).join("")}</div>
-    <div class="mh-ends"><span>${MH_ST[0]}</span><span>${MH_ST[4]}</span></div>`;
+    <div class="mh-sf">${c.slice(0,2).map(o=>`<span data-opp="${o.id}">${mhAv(o)}</span>`).join("")}</div><i></i></div>`).join("")}</div>
+    <div class="mh-ends">${col.map((c,i)=>c.length?`<span>${MH_ST[i]} <b>${c.length}</b></span>`:"").filter(Boolean).join(" · ")}</div>`;
 }
 /* KeyMissionCard: one object per mission. Title and state, the track, what Kai did, then only the people whose move it is, as rows */
 const _mhSection = missionSection; missionSection = function(m){
