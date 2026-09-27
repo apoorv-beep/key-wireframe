@@ -3732,6 +3732,146 @@ p,
 #phone > .screen.pop-from { transform:none !important; border-radius:0 !important; transition:none !important; }
 .pop-still #phone > .screen { transition:none; } .pop-still .tipdim { animation:none; }
 
+/* ==== MESSAGES: one avatar per kind (27 Sep, messages thread) ==== */
+.mx-av { position:relative; width:var(--mx); height:var(--mx); flex:0 0 auto; cursor:pointer; }
+.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px dashed var(--ink3); box-sizing:border-box; }
+.mx-av .mx-f.solo { inset:0; font-size:calc(var(--mx) * .32); }
+.mx-av.grp .mx-f { width:calc(var(--mx) * .63); height:calc(var(--mx) * .63); font-size:calc(var(--mx) * .22); }
+.mx-av.grp .bk { left:0; top:0; background:var(--fill); }
+.mx-av.grp .ft { right:0; bottom:0; box-shadow:0 0 0 2.5px #fff; }
+.mx-av.ev { border-radius:calc(var(--mx) * .24); overflow:hidden; }
+.mx-av.ev > .mx-evt, .mx-av.ev .mx-evt > * { width:100%; height:100%; }
+.mx-av .mx-fs { position:absolute; inset:0; }
+.mx-av.sqp { border-radius:calc(var(--mx) * .24); background-size:cover; background-position:center; }
+.mx-hav { flex:0 0 auto; cursor:pointer; display:flex; }
+.cihead .mx-hav, .mx-hav.mx-big { justify-content:center; margin:0 auto 10px; }
+.mx-row { gap:12px; }
+.mx-row .mx-when { display:block; font-size:12px; font-weight:500; color:var(--ink3); letter-spacing:0; margin-top:1px; }
+.mx-row[data-kind="event"] .a { line-height:1.2; }
+.mx-note { font-weight:600; color:var(--ink); }
+.mx-note .li { vertical-align:-2px; }
+.mx-later { position:relative; }
+.evt-screen .mx-av .mx-f { background:rgb(var(--ev-ink-rgb) / .14); border:0; color:var(--ev-ink); }
+
+/* Requests card on small phones (hosting's SE check, 22:36): label and count stay on one line, the preview gets the full width under them, and below 360 the weekly cap drops to its own line */
+.reqrow { display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; grid-template-areas:"f a c s" "f b b s"; column-gap:12px; align-items:center; }
+.reqrow .m, .reqrow .rcap { display:contents; }
+.reqrow .rfaces { grid-area:f; }
+.reqrow .a { grid-area:a; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.reqrow .b { grid-area:b; min-width:0; white-space:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.reqrow .rcap .xs { grid-area:c; white-space:nowrap; justify-self:end; }
+.reqrow .rcap .s { grid-area:s; }
+@media (max-width:360px) {
+  .reqrow { grid-template-columns:auto minmax(0,1fr) auto; grid-template-areas:"f a s" "f b s" "f c s"; }
+  .reqrow .rcap .xs { justify-self:start; }
+}
+
+/* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
+   (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
+   shadows from --elevation-*, type from the 14 named styles (named in each comment). Lucide at 1.75 stroke. ==== */
+#phone.hf-msg svg.li { stroke-width:1.75; }
+#phone.hf-msg > .screen, #phone.hf-msg .body, #phone.hf-msg .chatbody, #phone.hf-msg .hdr { background:var(--bg-page); }
+#phone.hf-msg .hdr { border-bottom:0; }
+
+/* KeyHeader: display/l 28 B */
+#phone.hf-msg .hdr.top .t { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .hdr.top > .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); border:0; background:var(--component-avatar-you-bg); color:var(--component-avatar-you-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); /* label/strong */ }
+/* KeyIconButton, header: bare, no container (Apoorv 22:03); the 40 hit area keeps a radius-12 pressed fill */
+#phone.hf-msg .hdr .icon { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:transparent; box-shadow:none; color:var(--icon-primary); }
+#phone.hf-msg .hdr .icon:active, #phone.hf-msg .hdr .back:active { background:var(--bg-fill-default); }
+/* KeyUnreadBadge: label/strong 12 B */
+#phone.hf-msg .hdr .icon .badge, #phone.hf-msg .unread, #phone.hf-msg .pill .pc { background:var(--component-badge-bg); color:var(--component-badge-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+#phone.hf-msg .hdr .icon .badge { box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); border:0; }
+
+/* KeySearchField: body/m 15 R */
+#phone.hf-msg .toolrow { gap:var(--space-absolute-8); }
+#phone.hf-msg .toolrow .search { height:var(--space-absolute-48); box-sizing:border-box; display:flex; align-items:center; gap:var(--space-absolute-8); padding:0 var(--space-absolute-16); border:var(--border-width-hairline) solid var(--component-input-border-default); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); color:var(--component-input-placeholder); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
+#phone.hf-msg .toolrow .search::before { content:""; width:var(--space-absolute-16); height:var(--space-absolute-16); flex:0 0 auto; background:var(--icon-tertiary); -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat; }
+/* KeyIconButton primary */
+#phone.hf-msg .toolrow .icon { width:var(--space-absolute-48); height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); border:0; background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+
+/* KeyRequestsRow: one object, so one card; the gold hairline marks people asking. body/l 17 SB over body/s 13 R */
+#phone.hf-msg .reqrow { column-gap:var(--space-absolute-12); border:var(--border-width-hairline) solid var(--border-gold); border-radius:var(--radius-absolute-20); background:var(--component-card-bg); box-shadow:var(--elevation-1); padding:var(--space-absolute-14) var(--space-absolute-16); margin:var(--space-absolute-12) 0 var(--space-absolute-14); }
+#phone.hf-msg .reqrow .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .reqrow .b { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+#phone.hf-msg .reqrow .rcap .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); /* caption */ }
+#phone.hf-msg .reqrow .rfaces .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); border:var(--space-absolute-2) solid var(--component-card-bg); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+
+/* KeyChip filter: label 13 SB */
+#phone.hf-msg .pills { gap:var(--space-absolute-8); padding-bottom:var(--space-absolute-6); }
+#phone.hf-msg .pill { height:var(--space-absolute-32); box-sizing:border-box; display:flex; align-items:center; gap:var(--space-absolute-6); padding:0 var(--space-absolute-12) !important; font:var(--type-label) !important; letter-spacing:var(--type-label-tracking) !important; border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); }
+#phone.hf-msg .pill.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+#phone.hf-msg .pill .pc { min-width:var(--space-absolute-18); height:var(--space-absolute-18); border-radius:var(--radius-absolute-infinite); display:inline-flex; align-items:center; justify-content:center; padding:0 var(--space-absolute-4); }
+#phone.hf-msg .pill.on .pc { background:var(--component-chip-selected-ink); color:var(--component-chip-selected-bg); }
+
+/* KeyConversationRow: rows on the page, hairline from the text edge. Name body/l 17 SB, preview body/m 15 R, time caption 12 M */
+#phone.hf-msg .convlist .swc { background:var(--bg-page); }
+#phone.hf-msg .conv.mx-row { gap:var(--space-absolute-12); padding:var(--space-absolute-12) 0; border-bottom:0; position:relative; }
+#phone.hf-msg .conv.mx-row::after { content:""; position:absolute; left:var(--space-absolute-56); right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .conv .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .conv .b { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-secondary); margin-top:var(--space-absolute-2); }
+#phone.hf-msg .conv .b.u { color:var(--text-primary); }
+#phone.hf-msg .conv .s { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); gap:var(--space-absolute-6); }
+#phone.hf-msg .conv .s > div[style*="font-weight:700"] { color:var(--text-primary) !important; }
+/* KeyTag: label/strong 12 B */
+#phone.hf-msg .tag { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--component-tag-ink); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); border-radius:var(--radius-absolute-6); padding:0 var(--space-absolute-6); margin-left:var(--space-absolute-4); vertical-align:var(--space-absolute-2); }
+/* KeyStateLabel line on event rows: caption 12 M */
+#phone.hf-msg .mx-row .mx-when { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .mx-note { color:var(--text-primary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+
+/* KeyAvatar (person, group) and KeyEventThumb (event): solid fills; group faces ringed in the page colour */
+#phone.hf-msg .mx-av .mx-f, #phone.hf-msg .avatar, #phone.hf-msg .bav, #phone.hf-msg .tf { border:0 !important; background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+#phone.hf-msg .mx-av .mx-f.solo { font:var(--type-body-m-strong); }
+#phone.hf-msg .hdr.chdr .mx-av .mx-f.solo, #phone.hf-msg .bav, #phone.hf-msg .tf { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); }
+/* KeyFaceStack layout=diagonal inside KeyConversationAvatar kind=group: two faces at 63% of the stack, KeyAvatar's fill and initials,
+   ring var(--face-ring) set by each context to its own ground */
+#phone.hf-msg .mx-av.grp .mx-f { background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); }
+#phone.hf-msg .convlist, #phone.hf-msg .mx-big { --face-ring:var(--bg-page); }
+#phone.hf-msg .mx-av.ev { border-radius:var(--radius-absolute-12); }
+
+/* KeyChatScreen header: frosted surface, hairline. body/l 17 SB, caption 12 M */
+#phone.hf-msg .hdr.chdr { background:color-mix(in srgb, var(--bg-surface-default) 92%, transparent); backdrop-filter:blur(var(--blur-backdrop)); -webkit-backdrop-filter:blur(var(--blur-backdrop)); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .hdr.chdr .hn { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .hdr.chdr .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:transparent; color:var(--icon-primary); }
+#phone.hf-msg .hdr.chdr .icon { box-shadow:none; background:transparent; }
+
+/* KeyChatBubble: theirs surface, yours ink, the speaker's corner squares off. body/m 15 R, name label 13 SB, time caption 12 M */
+#phone.hf-msg .bub { border-radius:var(--radius-absolute-16); padding:var(--space-absolute-8) var(--space-absolute-12) var(--space-absolute-6); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); box-shadow:none; background:var(--component-card-bg); color:var(--text-primary); }
+#phone.hf-msg .bub.me { background:var(--component-msg-user-bg); color:var(--component-msg-user-ink); }
+#phone.hf-msg .bub.oth.first { border-top-left-radius:var(--radius-absolute-4); }
+#phone.hf-msg .bub.me.first { border-top-right-radius:var(--radius-absolute-4); }
+#phone.hf-msg .bub .bn { font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-primary); }
+#phone.hf-msg .bub .bf { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .bub.me .bf { color:var(--text-on-deep-muted); }
+#phone.hf-msg .bav { width:var(--space-absolute-28); height:var(--space-absolute-28); border-radius:var(--radius-absolute-infinite); font:var(--type-overline); letter-spacing:var(--type-overline-tracking); /* overline */ }
+/* KeyDateSeparator: label/strong 12 B */
+#phone.hf-msg .dsep::before { border-top-color:var(--border-default); }
+#phone.hf-msg .dsep span { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-secondary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); padding:var(--space-absolute-2) var(--space-absolute-10); border-radius:var(--radius-absolute-infinite); }
+/* KeyAttachment */
+#phone.hf-msg .mtile { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-12); }
+#phone.hf-msg .mtile .plus { border-radius:var(--radius-absolute-12); background:var(--component-cover-scrim); color:var(--text-inverse); font:var(--type-title); letter-spacing:var(--type-title-tracking); /* title */ }
+#phone.hf-msg .filecard { background:var(--bg-fill-default); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); }
+#phone.hf-msg .bub.me .filecard { background:var(--bg-on-deep-fill); border-color:var(--border-on-deep); }
+/* KeyReactionChip, KeyThreadCount: label/strong 12 B */
+#phone.hf-msg .rchip, #phone.hf-msg .thchip { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); box-shadow:var(--elevation-1); color:var(--text-primary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+
+/* KeyComposer (held; his five prod screenshots), on tokens */
+#phone.hf-msg .foot.cbar { background:color-mix(in srgb, var(--bg-surface-default) 94%, transparent); backdrop-filter:blur(var(--blur-backdrop)); -webkit-backdrop-filter:blur(var(--blur-backdrop)); border-top:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .kbox { border:var(--border-width-hairline) solid var(--border-control); border-radius:var(--radius-absolute-20); background:var(--component-input-bg); }
+#phone.hf-msg .kbox .ci::placeholder { color:var(--component-input-placeholder); }
+/* send is a button tile: radius 12 (Apoorv 22:03) */
+#phone.hf-msg .csend { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+/* scheduled strip over the composer: label 13 SB */
+#phone.hf-msg .schedstrip { border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+
+/* Later: display/s 22 XB title; KeyTabs body/m strong 15 SB */
+#phone.hf-msg .hdr > div[style*="flex:1"] > div[style*="font-size:18px"] { font:var(--type-display-s) !important; letter-spacing:var(--type-display-s-tracking) !important; }
+#phone.hf-msg .citabs.later { background:var(--bg-page); border-bottom:var(--border-width-hairline) solid var(--border-default); padding-left:var(--space-absolute-16); }
+#phone.hf-msg .citabs.later span { color:var(--text-tertiary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+#phone.hf-msg .citabs.later span.on { color:var(--text-primary); box-shadow:inset 0 calc(-1 * var(--border-width-focus)) 0 var(--text-primary); }
+#phone.hf-msg .xrow.lrow { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-14) 0; }
+
 /* ==== BOTTOM NAV (27 Sep, bottom nav thread). One travelling lens, real Lucide icons, one small move per tab.
    nav.js adds .kn to the bar and places the lens; without motion the lens simply sits under the active tab. ==== */
 .nav.knav { --kn-ink:#0B0E11; --kn-mute:#8F99A5 /* key/450, text/tertiary */; --kn-lens:#E8ECF1 /* key/150 */;
@@ -13665,6 +13805,129 @@ function knWire(nav, lens){
 }
 const _navRender = render;  /* not _knRender: the working copy's Kai-mark module (v64) already uses that name */
 render = function(){ const r = _navRender.apply(this, arguments); if (KN_ON) knMount(); return r; };
+
+/* ==== MESSAGES: FOR LATER IN THE HEADER, ONE AVATAR PER KIND (27 Sep, messages thread; Apoorv 20:06)
+   No shipping app puts saved, scheduled and drafts as a row on top of the chat list (Slack: Later tab, Teams: profile menu,
+   WhatsApp: Starred in the menu, Gmail: drawer). Later moves to a clock in the header (third icon), and the chat list
+   shows drafts and scheduled messages on the chat they belong to (Telegram "Draft:", iMessage Send Later).
+   Shape tells the kind: a person is a circle, a group is two overlapping faces (or its own photo), an event is its cover. */
+
+const MX_ROOMS = [{ id:"ev-e4", ev:"e4", after:"g-pm" }];   /* the event Priya hosts, so an upcoming event chat sits in the list */
+function mxSeed() {
+  if (STATE.mxSeeded || !DB.dms || typeof evE!=="function") return; STATE.mxSeeded = true;
+  MX_ROOMS.forEach(r=>{ const e=evE(r.ev); if (!e || DB.dms.some(d=>d.id===r.id)) return; const c=evRoom(e);
+    if (!c.mxSeeded) { c.mxSeeded=true; c.msgs.push(M("maya","Can I bring someone from Linear's design team? She'd love to hear the teardown.",{ day:"Today", time:"9:40 AM" })); }
+    const i=DB.dms.findIndex(d=>d.id===r.after); DB.dms.splice(i+1, 0, { id:r.id, group:e.name, event:true, unread:1, when:"9:40 AM" }); });
+}
+const _mxConvRows = convRows;
+convRows = function(){ seedChats(); mxSeed(); return _mxConvRows(); };
+
+/* ---- one avatar per kind; used in the list, the chat header and chat info so it is identical everywhere ---- */
+function mxEvent(c) { return c && c.kind==="event" && typeof evE==="function" ? evE(c.ev || (c.id==="g-dinner"?"e1":"")) : null; }
+function mxGroupFaces(c) { const ids=(c.memberIds||[]).filter(x=>x!==meId()); const recent=[...(c.msgs||[])].reverse().map(m=>m.from).filter(x=>x&&x!==meId()); return [...new Set(recent.concat(ids))].slice(0,2); }
+function mxAv(c, size) {   /* KeyConversationAvatar: kind=person|group|photo|event, size=32 header|44 list|56 details */
+  const s = size||44, root = (kind, cls, inner, style) => `<div class="mx-av ${cls}" style="--mx:${s}px${style||""}" data-kc="KeyConversationAvatar" data-kv="kind=${kind}, size=${s}">${inner}</div>`;
+  const face = ini => `<span class="mx-f solo" data-kc="KeyAvatar">${ini}</span>`;
+  if (!c) return root("person", "", face("?"));
+  if (c.kind==="dm") return root("person", "", face(P(c.with).initials));
+  const e = mxEvent(c);
+  if (e) return root("event", "ev", `<div class="cv-th mx-evt" data-kc="KeyEventThumb">${evCvArt(e)}</div>`);
+  if (c.photo) return root("photo", "sqp", "", `;background-image:url(${c.photo})`);
+  const f = mxGroupFaces(c);
+  if (f.length<2) return root("person", "", face(convIni(c)));
+  return root("group", "grp", `<span class="mx-fs" data-kc="KeyFaceStack" data-kv="layout=diagonal, size=${s}"><span class="mx-f bk" data-kc="KeyAvatar">${P(f[1]).initials}</span><span class="mx-f ft" data-kc="KeyAvatar">${P(f[0]).initials}</span></span>`);
+}
+
+/* ---- Later: a clock in the header (Apoorv 20:26: a bookmark only says Saved). It holds what you parked to finish or send:
+   Saved, Scheduled, Drafts. Mentions and Threads already live in the bell's chips, as in Slack's Activity, so they leave this screen.
+   The dot shows only while something is waiting (a scheduled send, a draft, a reminder). ---- */
+function mxLaterIcon() { const n=laterCounts(); const waiting=n.scheduled+n.drafts+DB.saved.filter(s=>s.remind).length; return `<div class="icon mx-later" onclick="go('later')" aria-label="Later: saved, scheduled and drafts">${LI("clock",18)}${waiting?`<span class="badge">${waiting}</span>`:''}</div>`; }
+const _mxTopHdr = topHdr;
+topHdr = function(title, extra="", trailing="") { return _mxTopHdr(title, title==="Messages" && STATE.member ? extra+mxLaterIcon() : extra, trailing); };
+const _mxLater = sLater;
+sLater = function() {
+  if (!["saved","scheduled","drafts"].includes(STATE.laterTab||"saved")) STATE.laterTab = "saved";
+  return _mxLater().replace(/<span class="[^"]*" onclick="STATE\.laterTab='(mentions|threads)';render\(\)">[\s\S]*?<\/span>/g, "")
+    .replace('>For later</div><div class="xs faint">Across all your families</div>', '>Later</div><div class="xs faint">Saved, scheduled and drafts, across your families</div>');
+};
+
+/* ---- the list ---- */
+const MX_FILTERS = [["All","All"],["Unread","Unread"],["Groups","Groups"],["Events","Events"],["Archived","Archived"]];
+function mxDraft(id) { const d=(STATE.drafts||{})[id]; return d && d.trim() ? d.trim() : ""; }
+function mxSched(id) { laterSeed(); return DB.scheduled.filter(s=>s.cid===id); }
+function mxPreview(r) {
+  if (r.blocked) return { h:"Blocked" };
+  const d = !r.intro && mxDraft(r.id); if (d) return { h:`<span class="mx-note">Draft</span> ${d}`, mark:true };
+  const s = !r.intro && mxSched(r.id); if (s && s.length) return { h:`<span class="mx-note">${LI("clock",13)} ${s[0].when}</span> ${s[0].text||"Attachment"}`, mark:true };
+  const lm = r.c && r.c.msgs ? lastMsg(r.c) : null;
+  const who = lm && (r.kind==="group"||r.kind==="event") && lm.from && lm.from!==meId() && !lm.deleted && !lm.sys ? first(lm.from)+": " : "";
+  return { h: who + r.last };
+}
+function mxTag(r) {
+  if (r.intro) return ' <span class="tag">Intro</span>';
+  if (r.path) return ' <span class="tag">path</span>';
+  const e = r.kind==="event" && mxEvent(r.c); if (!e) return "";
+  const lbl = { going:"Going", hosting:"Hosting", pending:"Waiting", waitlist:"Waiting", invited:"Invited" }[e.reg];
+  return `<span class="mx-when">${e.past?"":evDayLabel(e).replace(/^(\w+), /,"$1 ")}${lbl&&!e.past?` · ${lbl}`:""}</span>`;
+}
+chatsListHTML = function() {
+  mxSeed(); const f = STATE.convFilter==="Events chat" ? "Events" : (STATE.convFilter||"All");
+  const intros = conversations().filter(x=>x.kind==="intro").map(x=>Object.assign(x,{ intro:true }));
+  const all = intros.concat(convRows());
+  const vis = all.filter(r=>f==="Archived" ? r.archived : !r.archived);
+  const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+  const unreadN = all.filter(r=>r.unread&&!r.archived).length;
+  const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right"><span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",18)}<br>More</span></div>
+    <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
+  const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
+  const top = open[0]; const topFrom = top?DB.people[top.from]:null;
+  const cap = STATE.persona==="chris"?"5 of 8 this week":`${queueAsks().filter(a=>a.state!=="passed"&&a.state!=="open"&&a.state!=="pending").length} of 3 this week`;
+  const reqRow = `<div class="reqrow" data-reqs="1"><div class="rfaces">${open.slice(0,3).map(a=>av(DB.people[a.from].initials,"sm")).join("")||av("·","sm")}</div><div class="m"><div class="a">Requests${open.length?` · ${open.length}`:''}</div><div class="b">${top?`${topFrom.name.split(" ")[0]} ${top.what}`:"Nothing needs a decision"}</div></div><div class="rcap"><div class="xs faint">${cap}</div><div class="s">›</div></div></div>`;
+  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : f==="Events" ? ["No event chats","Register for an event and its chat shows up here."] : f==="Groups" ? ["No groups","Start one with the + button."] : ["No messages","Send first message & Start conversation"];
+  return `<div class="toolrow" style="padding-top:0"><div class="search" onclick="go('msearch')">Search</div><div class="icon" onclick="openSheet('newchat')">+</div></div>
+    ${f==="Archived"?'':reqRow}
+    <div class="pills" style="margin-top:-2px">${MX_FILTERS.map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:13px;padding:6px 11px" data-cf="${k}">${l}${k==="Unread"&&unreadN?` <span class="pc">${unreadN}</span>`:''}</div>`).join("")}</div>
+    <div class="convlist">${list.map(row).join("")||`<div class="estate"><div class="et">${empty[0]}</div><div class="es">${empty[1]}</div></div>`}</div>`;
+};
+
+/* ---- the same avatar in the chat header and chat info ---- */
+const _mxChatHeader = chatHeader;
+chatHeader = function(c) {
+  const h = _mxChatHeader(c); if (STATE.editMsg || !c || c.kind==="channel" || c.kind==="event") return h;
+  return h.replace(/<div class="hav sq"([^>]*)>[^<]*<\/div>/, (m, attrs)=>`<div class="mx-hav"${attrs}>${mxAv(c, 32)}</div>`);
+};
+const _mxChatInfo = sChatInfo;
+sChatInfo = function(cid) {
+  const c = convOf(cid); const h = _mxChatInfo(cid); if (!c || c.kind==="channel") return h;
+  return h.replace(/<div class="hav sq"([^>]*)>[^<]*<\/div>/, (m, attrs)=>`<div class="mx-hav"${attrs}>${mxAv(c, 56)}</div>`)
+          .replace(/<div class="cm-dfaces">(?:<span>[^<]*<\/span>)*<\/div>/, `<div class="cm-dfaces mx-hav mx-big">${mxAv(c, 56)}</div>`);   /* Community's details head */
+};
+
+/* ---- wording: For later is the bookmark now, not a row ---- */
+const MX_WHERE = /under Saved, scheduled and drafts/g, MX_NOW = "in Later, the clock at the top of Messages";
+const _mxToast = toast;
+toast = function(t, undo) { return _mxToast(typeof t==="string" ? t.replace(MX_WHERE, MX_NOW) : t, undo); };
+const _mxSheet = portSheet;
+portSheet = function(type, id) { const h=_mxSheet(type, id); return typeof h==="string" ? h.replace(MX_WHERE, MX_NOW) : h; };
+
+/* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
+   Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
+   Event chats keep Events' theme; channels and chat details belong to Community.
+   One file serves both copies (Apoorv 21:22): the wireframe demo stays lo-fi; the high-fidelity copy sets `const KEY_HIFI = true` before this file. */
+const mxHiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+function hfMsgOn() {
+  const s = STATE.screen||"";
+  if (!mxHiFi() || !STATE.member) return false;
+  if (s==="inbox" || s==="later" || s==="msearch" || s.startsWith("req:") || s.startsWith("sent:")) return true;
+  if (s.startsWith("dm:") || s.startsWith("thread:")) { const c = convOf(s.split(":")[1]); return !!c && c.kind!=="event" && c.kind!=="channel"; }
+  return false;
+}
+const _hfRender = render;
+/* data-kc = the library component each root maps to, for Design system's diff */
+const HF_KC = [[".hdr.top","KeyHeader"],[".hdr.chdr","KeyHeader"],[".hdr .icon","KeyIconButton"],[".toolrow .icon","KeyIconButton"],[".toolrow .search","KeySearchField"],[".reqrow","KeyRequestsRow"],[".pills .pill","KeyChip"],[".unread, .badge, .pc","KeyUnreadBadge"],[".conv","KeyConversationRow"],[".tag","KeyTag"],[".mx-when","KeyStateLabel"],[".schedstrip","KeyScheduledBar"],[".bav, .rfaces .avatar","KeyAvatar"],[".bub","KeyChatBubble"],[".dsep","KeyDateSeparator"],[".rchip","KeyReactionChip"],[".thchip","KeyThreadCount"],[".mgrid, .filecard","KeyAttachment"],[".foot.cbar","KeyComposer"],[".citabs.later","KeyTabs"]];
+function hfTag() { HF_KC.forEach(([sel,kc])=>phone.querySelectorAll(sel).forEach(el=>{ if (!el.dataset.kc) el.setAttribute("data-kc", kc); })); phone.querySelectorAll(".hdr .icon, .hdr .back").forEach(el=>el.setAttribute("data-kv","container=none")); phone.querySelectorAll(".toolrow .icon, .csend").forEach(el=>el.setAttribute("data-kv","container=tile")); if (STATE.screen==="later") { const v=phone.querySelector(".screen > .view")||phone.querySelector(".screen"); if (v) v.setAttribute("data-kc","KeyLaterScreen"); } }
+render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=="undefined" && phone) { const on=hfMsgOn(); phone.classList.toggle("hf-msg", on); if (on) hfTag(); } return r; };
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
