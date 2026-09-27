@@ -927,6 +927,9 @@ body:has(.push) .ctlbtn { display:none; }
 .mlist.in-f, .plist.in-f { animation:kfade 180ms ease-out; }
 @media (prefers-reduced-motion: reduce) { .mlist.in-f, .plist.in-f { animation:none; } }
 
+/* organizer mission (v49): a job row that is done this week */
+.sc .row.dim .a { color:var(--ink3); }
+
 /* ==== SCAN (26 Sep, missions thread): the scan-audit rules on every mission screen.
    Three sizes (20 / 15 / 12), two weights (400 / 600), one accent (the kicker). State once. Facts as rows. Rules off the face.
    One filled primary, one quiet secondary, the rest behind More. Nothing under 12px. Scoped to .sc so ported chat, bell, events and community keep their own design. ==== */
@@ -2479,6 +2482,9 @@ body:has(.push) .ctlbtn { display:none; }
   .evt-grow .m span { font-size:13px; color:var(--ink2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .evt-grow em { font-style:normal; font-size:13px; font-weight:600; color:var(--ink2); white-space:nowrap; }
   .evt-grow .btn.sm { flex:0 0 auto; padding:8px 12px; font-size:13px; border-radius:12px; min-height:0; width:auto; }
+  .evt-grow b small.evt-kaimark { display:inline-flex; align-items:center; gap:3px; background:var(--ev-ink); color:var(--ev-ink-inverse); vertical-align:1px; }
+  .evt-kairow .m span { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-kaihd { display:flex; align-items:center; gap:6px; } .evt-kainote { font-size:13px; color:var(--ink2); margin:10px 0 0; }
   .evt-links { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0; } .evt-links span { padding:9px 14px; border-radius:999px; font-size:13.5px; font-weight:700; background:var(--evt-glass); border:1px solid var(--evt-edge); color:var(--ev-ink); cursor:pointer; }
   .evt-sec2 { font-size:15px; font-weight:800; letter-spacing:-.01em; color:var(--ev-ink); margin:26px 0 -4px; }
   .evt-kpis { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px; }
@@ -2816,6 +2822,12 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-vacts { display:flex; justify-content:space-around; padding:0 16px; }
   .cm-vacts span { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
   .cm-vacts b { font-size:12px; font-weight:500; }
+
+  /* The organizer's Kai mission: the way in from Manage and the monthly summary on Insights (26 Sep). */
+  .cm-orgm { border-bottom:1px solid var(--line); margin-bottom:6px; }
+  .cm-orgmonth .cm-row { gap:12px; }
+  .cm-omn { min-width:74px; font-size:17px; font-weight:800; font-variant-numeric:tabular-nums; }
+  .cm-orgmonth .cm-kairow { border-bottom:0; border-top:1px solid var(--line); margin-top:4px; }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -6948,7 +6960,7 @@ const _dTdecl = tdeclineSheet; tdeclineSheet = function(id){ return _dTdecl(id).
 const _dAskNo = askNoSheet; askNoSheet = function(id){ const a = DB.asks.find(x=>x.id===id); if (a && a.kind==="forwarded") return tdeclineSheet(id); return _dAskNo(id).replace('<div class="acts">', dOtherRow(id,"ask") + '<div class="acts">'); };
 
 /* ---- host's mission (Priya fills her Oct 9 teardown). Invites land in the events module's guest list when it is present. ---- */
-const D_HOST = [
+const D_HOST_LOCAL = [
   { pid:"lena",  why:"Asked about Linear's pricing in #product last week" },
   { pid:"grace", why:"VP Product at Figma. Came to the Figma teardown" },
   { pid:"ines",  why:"New this month. Hasn't been to an event yet" },
@@ -6956,20 +6968,26 @@ const D_HOST = [
   { pid:"omar",  why:"Hiring a founding PM. This room is his pool" },
   { pid:"kofi",  why:"Asked Kai for founders to meet. Two are going" },
 ];
+function dHostList(){ return (typeof EV_KAI_PICKS!=="undefined" && EV_KAI_PICKS.e4) ? EV_KAI_PICKS.e4.map(([pid,why])=>({ pid, why })) : D_HOST_LOCAL; }
 function dHostRows(m){ const e = (typeof evE==="function") ? evE(m.ev) : null; if (e && typeof evHostData==="function") evHostData(e);
   const inv = pid => m.invited.includes(pid) || (e && (e.invitedList||[]).includes(pid)); const going = pid => e && (e.goingList||[]).includes(pid);
-  return { e, todo: D_HOST.filter(c=>!inv(c.pid)&&!going(c.pid)), sent: D_HOST.filter(c=>inv(c.pid)||going(c.pid)).map(c=>Object.assign({ going:going(c.pid) }, c)) }; }
+  const D_HOST = dHostList(); return { e, todo: D_HOST.filter(c=>!inv(c.pid)&&!going(c.pid)), sent: D_HOST.filter(c=>inv(c.pid)||going(c.pid)).map(c=>Object.assign({ going:going(c.pid) }, c)) }; }
 function dHostStatus(m){ const { e, todo, sent } = dHostRows(m); const yes = sent.filter(c=>c.going).length;
   if (todo.length) return ["New pick","green", `${todo.length} to invite${sent.length?`, ${sent.length} invited`:""}`];
-  if (sent.length && yes<sent.length) return ["Waiting","grey", `on ${sent.length-yes} invited · Kai re-confirms two days before`];
+  if (sent.length && yes<sent.length) return ["Waiting","grey", `on ${sent.length-yes} invited${dReconfirm(e)?" · Kai re-confirms two days before":""}`];
   return ["Went well","green", `${e?e.going:0} going`]; }
 function dHostSection(m){ const [k,tone,txt] = dHostStatus(m);
   return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
+function dReconfirm(e){ return e && typeof evReconfirm==="function" ? evReconfirm(e) : true; }
 function dInvite(mid, pid){ const m = DB.missions.find(x=>x.id===mid); const p = DB.people[pid]; if (!m||!p) return;
   if (!m.invited.includes(pid)) m.invited.push(pid);
-  const e = (typeof evE==="function") ? evE(m.ev) : null; if (e) { if (typeof evHostData==="function") evHostData(e); e.invitedList = e.invitedList||[]; if (!e.invitedList.includes(pid)) e.invitedList.push(pid); }
-  if (typeof missionLogAdd==="function") missionLogAdd(m, "You", `invited ${p.name}. Kai re-confirms two days before`, "now");
-  toast(`Invited ${f1(p)}. Kai re-confirms two days before.`); render(); }
+  const e = (typeof evE==="function") ? evE(m.ev) : null; let st = "invited";
+  if (e && typeof evInvite==="function") st = evInvite(m.ev, pid, { kai:true }) || "invited";
+  else if (e) { if (typeof evHostData==="function") evHostData(e); e.invitedList = e.invitedList||[]; if (!e.invitedList.includes(pid)) e.invitedList.push(pid); }
+  const rc = dReconfirm(e) ? " Kai re-confirms two days before" : "";
+  if (st!=="invited") { if (typeof missionLogAdd==="function") missionLogAdd(m, "Kai", `${p.name} is already ${st==="going"?"going":st==="in"?"in":st==="wait"?"on the waitlist":"under review"}. Nothing sent.`, "now"); toast(`${f1(p)} is already ${st==="going"?"going":"on the list"}. Nothing sent.`); render(); return; }
+  if (typeof missionLogAdd==="function") missionLogAdd(m, "You", `invited ${p.name}.${rc}`, "now");
+  toast(`Invited ${f1(p)}.${rc?rc+".":""}`); render(); }
 function dHostPage(m){ const { e, todo, sent } = dHostRows(m); const [k,tone,txt] = dHostStatus(m);
   const row = (c, right) => { const p = DB.people[c.pid]; return `<div class="row" onclick="openSheet('profile','${c.pid}')">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${c.why}</div></div>${right}</div>`; };
   return `<div class="hdr sc"><div class="back" onclick="goBack()">‹</div><div class="mg t3">${LI("calendar",14)}</div><div style="flex:1"></div>${e?`<div class="icon" onclick="go('eventd:manage.${m.ev}')">${LI("settings",18)}</div>`:""}</div>
@@ -6977,7 +6995,7 @@ function dHostPage(m){ const { e, todo, sent } = dHostRows(m); const [k,tone,txt
     <div class="sl">Brief</div><div class="row first" data-kaibrief="${m.id}"><div class="m"><div class="a plain">${m.brief}</div><div class="b">Change the purpose or the number with Kai</div></div><span class="chev">›</span></div>
     ${todo.length?`<div class="sl">To invite<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${todo.length}</span></div><div class="rows">${todo.map(c=>row(c, `<button class="mini" onclick="event.stopPropagation();dInvite('${m.id}','${c.pid}')">Invite</button>`)).join("")}</div><div class="m12" style="margin-top:6px">Kai picked these from interest, attendance and asks. Skip anyone and it learns; nobody sees a skip</div>`:""}
     ${sent.length?`<div class="sl">Invited</div><div class="rows">${sent.map(c=>row(c, `<span class="k ${c.going?"green":"grey"}">${c.going?"Going":"Invited"}</span>`)).join("")}</div>`:""}
-    <div class="sl">Event</div><div class="rows"><div class="row first" onclick="go('eventd:${m.ev}')"><div class="m"><div class="a">${e?e.name:"Product teardown: Linear"}</div><div class="b">${e?`${e.when} · ${e.going} going`:"Oct 9"}</div></div><span class="chev">›</span></div>${e?`<div class="row" onclick="go('eventd:manage.${m.ev}')"><div class="m"><div class="a">Guests and reminders</div><div class="b">Kai re-confirms two days before and asks who met whom after</div></div><span class="chev">›</span></div>`:""}</div>
+    <div class="sl">Event</div><div class="rows"><div class="row first" onclick="go('eventd:${m.ev}')"><div class="m"><div class="a">${e?e.name:"Product teardown: Linear"}</div><div class="b">${e?`${e.when} · ${e.going} going`:"Oct 9"}</div></div><span class="chev">›</span></div>${e?`<div class="row" onclick="go('eventd:manage.${m.ev}')"><div class="m"><div class="a">Guests and reminders</div><div class="b">${dReconfirm(e)?"Kai re-confirms two days before and asks who met whom after":"Kai asks who met whom after"}</div></div><span class="chev">›</span></div>`:""}</div>
     ${(m.mlog||[]).length?`<div class="sl">Activity</div><div class="rows">${(m.mlog||[]).slice().reverse().slice(0,6).map(l=>`<div class="lrow"><span class="when">${l[2]}</span><span><b>${l[0]}</b> ${l[1]}</span></div>`).join("")}</div>`:""}
   </div>${navHTML("missions")}`; }
 const _dMission = sMission; sMission = function(id){ if (id==="h1") return dHirePage(); const m = DB.missions.find(x=>x.id===id); if (m && m.host && STATE.member) return dCopy(dHostPage(m)); return _dMission(id); };
@@ -7074,9 +7092,9 @@ const _jLogOutcome = logOutcome; logOutcome = function(id, v){
 
 /* what Kai already knows about this person, offered as one-tap notes */
 function jKnown(o){
-  const t = targetOf(o); const n = f1(t);
-  if (o.roleTitle) return [`${n} said the ${o.roleTitle} team is still deciding`, `${n} wants a work sample`, `Not the right time on their side`];
-  return [`${n} is hiring, not looking for a cofounder`, `${n} wants to talk again after ${o.personId==="maya"?"her design partners ship":"a few weeks"}`, `${n} offered to intro me to someone`, `Not the right fit for what I'm building`];
+  const t = targetOf(o); const n = f1(t); const good = o.outcome==="good";
+  if (o.roleTitle) return good ? [`${n} is moving me to the next round`, `${n} wants a work sample`, `${n} said the team decides next week`] : [`${n} said the ${o.roleTitle} team is still deciding`, `Not the right time on their side`, `Not the right role for me`];
+  return good ? [`${n} is open to a second conversation`, `${n} wants to talk again after ${o.personId==="maya"?"her design partners ship":"a few weeks"}`, `${n} offered to intro me to someone`, `We agreed on a next step`] : [`${n} is hiring, not looking for a cofounder`, `Not the right fit for what I'm building`, `Not the right time on their side`];
 }
 const J_NEXT = [["week","Follow up in a week"],["send","Send them something"],["intro","Ask for the intro they offered"],["none","Nothing for now"]];
 function jToggle(i){ const p=STATE.jPick||[]; STATE.jPick = p.includes(i) ? p.filter(x=>x!==i) : p.concat([i]); render(); }
@@ -7208,7 +7226,7 @@ function jTakeSheet(o){
   const t=targetOf(o); const res = o.kind==="resource";
   const draft = res ? `Hi ${f1(t)}, could I get the ${o.roleTitle.toLowerCase()} you posted in #resources? We're pre-seed, two of us, building agents for ops teams. Happy to fill in whatever the programme needs.` : `Hi ${f1(t)}, I'd love to take you up on the founder office hours you mentioned in the group. Is a Wednesday in the next two weeks open? Twenty minutes on how to think about a first raise.`;
   return scSheet(res?`Ask ${f1(t)} for it`:`Take ${f1(t)} up on it`, `To ${t.name}${res?". A programme with a form: Kai fills what it can after the yes":". Informal: her call, no form"}`, `<div class="draftbox"><textarea id="draft">${draft}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span><span class="mini sec" onclick="toast('Kai rewrote it shorter.')">Shorter</span>${scDraftMic("draft", `(Spoken) Hey ${f1(t)}, it's Priya. Quick one: `)}</div></div>
-    <div class="acts"><button class="btn" data-send="${o.id}">Send to ${f1(t)}</button><span class="quiet" onclick="openSheet('opp','${o.id}')">Back</span></div>`);
+    <div class="acts"><button class="btn" data-send="${o.id}">Send to ${f1(t)}</button><span class="quiet" onclick="closeSheet()">Close</span></div>`);
 }
 
 /* ---- sheets ---- */
@@ -7216,6 +7234,85 @@ const _jPortSheet = portSheet; portSheet = function(type, id){
   if (type==="jsheet") { const [k,oid] = String(id).split("|"); if (k==="keep") return jKeepSheet(oid); if (k==="review") return jReviewSheet(); if (k==="paused") return jPausedSheet(); }
   return _jPortSheet(type, id);
 };
+
+/* ==== ORGANIZER MISSION: "How Kai helps you run Xoogler" (26 Sep, missions thread; his 06:25 ask, research organizer-missions.md)
+   A standing mission for Daniel, the organizer. Not a task with an end: seven weekly jobs, each a short list of members
+   with a line drafted in his voice. Kai sends nothing; he does. Community's Manage row and Insights summary open this page
+   (cOrgRow/cOrgMonth call go('mission:morg')); the counts come from C_ORGJOBS so the two agree. */
+
+const O_VERB = { welcome:"Greet", quiet:"Reach out", unanswered:"Nudge", thank:"Thank", meet:"Introduce", host:"Ask", month:"Review" };
+const O_PEOPLE = {
+  welcome:    [ { pid:"ines",  why:"Joined Tuesday. Nobody has greeted her yet", draft:"Welcome to Xoogler, Ines. Waymo to here is a good story; what are you hoping to find?" },
+                { pid:"eli",   why:"Joined Wednesday. Read #jobs twice, posted nothing", draft:"Welcome, Eli. Cloud alumni are the biggest room here. Anyone in particular you want to meet?" } ],
+  quiet:      [ { pid:"hana",  why:"Posted most weeks, nothing in three weeks. Missed the last two teardowns", draft:"Hana, missed you at the last two teardowns. Notion still keeping you busy? Thursday's is Linear." },
+                { pid:"jake",  why:"Answered six asks in July, quiet since", draft:"Jake, your Rivian answers in #product were the best thread in July. Anything we can do for you this month?" },
+                { pid:"paul",  why:"RSVPd to three events, came to none", draft:"Paul, three RSVPs and life got in the way each time. Want me to hold a seat Thursday, no pressure?" } ],
+  unanswered: [ { pid:"farah", why:"Asked in #product two days ago, no reply. Grace could answer it", draft:"Grace, Farah asked about pricing research in #product. Two lines from you would answer it." },
+                { pid:"ben",   why:"Asked for a Duolingo-to-startup story yesterday. Kate has one", draft:"Kate, Ben is asking exactly the move you made. Ten minutes?" } ],
+  thank:      [ { pid:"grace", why:"Answered four asks and hosted the Figma teardown", draft:"Grace, four answers and a full room. Thank you. Anything you want back from the community?" },
+                { pid:"sana",  why:"Referred two members this month", draft:"Sana, two referrals this month. That is the thing this place is for. Thank you." } ],
+  meet:       [ { pid:"omar",  pid2:"lena", why:"Omar is hiring a founding PM in payments; Lena builds payments infra at Stripe and asked for founders", draft:"Omar, Lena: you asked for each other without knowing it. Payments, founding team, Stripe. I'll leave you to it." },
+                { pid:"mira",  pid2:"kofi", why:"Mira is raising a pre-seed; Kofi asked Kai for founders in her space", draft:"Mira, Kofi: agents for ops, pre-seed. Kofi asked to meet founders here; Mira is the one." } ],
+  host:       [ { pid:"grace", why:"Full room last time. Asked what to run next", draft:"Grace, the Figma teardown filled. Want to run the November one? Kai fills the room." } ]
+};
+const O_MONTH = { pid:null, why:"Kai drafts your September summary for the board on Oct 1. You edit and send it" };
+function oJobs(){ return (typeof C_ORGJOBS!=="undefined" ? C_ORGJOBS : [["welcome",2,"to welcome",""],["quiet",3,"going quiet",""],["unanswered",2,"asks unanswered",""],["thank",2,"to thank",""],["meet",2,"pairs to introduce",""],["host",1,"to ask to host",""]]).map(j=>({ id:j[0], n:j[1], label:j[2], why:j[3] })); }
+function oState(){ STATE.org = STATE.org || { done:{}, skipped:{}, log:[["Kai","Monday pass. Six jobs, twelve people. Nothing sent until you say so.","Mon"]] }; return STATE.org; }
+function oOpen(jid){ const s=oState(); return (O_PEOPLE[jid]||[]).filter(c=>!s.done[jid+":"+c.pid] && !s.skipped[jid+":"+c.pid]); }
+function oDoneN(){ const s=oState(); return Object.keys(s.done).length; }
+function oTotal(){ return oJobs().reduce((t,j)=>t+j.n,0); }
+function oStatus(){ const left = oJobs().reduce((t,j)=>t+oOpen(j.id).length,0); const d=oDoneN(); return left===0 ? ["Went well","green", `all ${oTotal()} done this week`] : d ? ["Next step","green", `${d} of ${oTotal()} done · ${left} left this week`] : ["New pick","green", `${oTotal()} things this week, none sent yet`]; }
+function oEnsure(){
+  if (STATE.persona!=="chris") { const i=DB.missions.findIndex(m=>m.id==="morg"); if (i>=0) DB.missions.splice(i,1); return; }
+  if (!DB.missions.some(m=>m.id==="morg")) DB.missions.push({ id:"morg", type:"Organizer", org:true, name:"How Kai helps you run Xoogler", brief:"Kai reads joins, posts, replies, RSVPs and check-ins across Xoogler, and brings you the people to greet, reach, thank and introduce. It drafts every line in your voice and sends nothing.", done:"Standing, no end date", standing:true, status:"active" });
+}
+const _oCycle = cyclePersona; cyclePersona = function(to){ _oCycle(to); oEnsure(); };
+const _oApply = applyIntake; applyIntake = function(){ _oApply.apply(this, arguments); oEnsure(); };
+
+/* the page: status, this week's jobs as rows with the verb, the month row, rules, log */
+function oPage(){
+  const m = DB.missions.find(x=>x.id==="morg"); const [k,tone,txt] = oStatus(); const s=oState();
+  const jobRow = j => { const open=oOpen(j.id); const done=(O_PEOPLE[j.id]||[]).length-open.length; const sub = open.length ? (j.why||"") : `Done this week${done?" · "+done:""}`; 
+    return `<div class="row ${open.length?"":"dim"}" onclick="openSheet('osheet','${j.id}')">${av(String(open.length||"✓"))}<div class="m"><div class="a">${open.length?`${open.length} ${j.label}`:j.label.replace(/^\w/,c=>c.toUpperCase())}</div><div class="b">${sub}</div></div>${open.length?`<button class="mini" onclick="event.stopPropagation();openSheet('osheet','${j.id}')">${O_VERB[j.id]}</button>`:`<span class="k grey">Done</span>`}</div>`; };
+  const log = s.log.slice().reverse().slice(0,6).map(l=>`<div class="lrow"><span class="when">${l[2]}</span><span><b>${l[0]}</b> ${l[1]}</span></div>`).join("");
+  return `<div class="hdr sc"><div class="back" onclick="goBack()">‹</div><div class="mg t2">${LI("sparkle",14)}</div><div style="flex:1"></div><div class="icon" onclick="go('manage')">${LI("settings",18)}</div></div>
+  <div class="body sc">
+    <div class="t20">${m?m.name:"How Kai helps you run Xoogler"}</div>
+    <div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>
+    <div class="funnel-l">Standing · a fresh pass every Monday · you send every line</div>
+    <div class="sl">This week<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${oTotal()}</span></div>
+    <div class="rows">${oJobs().map(jobRow).join("")}</div>
+    <div class="sl">This month</div>
+    <div class="rows"><div class="row first" onclick="go('manage:insights')">${av("K")}<div class="m"><div class="a">September for Xoogler so far</div><div class="b">${O_MONTH.why}</div></div><span class="chev">›</span></div></div>
+    <div class="sl">Brief</div>
+    <div class="row first" data-kaibrief="morg"><div class="m"><div class="a plain">${m?m.brief:""}</div><div class="b">Standing, no end date · Kai sends nothing · eight asks a week is your cap</div></div><span class="chev">›</span></div>
+    <div class="sl">Log<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${s.log.length}</span></div>
+    <div class="rows">${log}</div>
+    <div class="mlog">${keyComposer({ id:"oupd", wrap:false, placeholder:"Log it, or ask Kai", mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="oSend()"` })}</div>
+    <div class="mlog-hint">${[["Grace said yes to hosting November","Something moved"],["Skip welcomes this week, Ines is doing them","Change a rule"],["Who went quiet after the dinner?","Ask Kai"]].map(([v,l])=>`<span onclick="const t=document.getElementById('oupd');t.value='${v}';t.dispatchEvent(new Event('input'));t.focus()">${l}</span>`).join("")}</div>
+    <div class="body-gap"></div>
+  </div>${navHTML("missions")}`;
+}
+function oSend(){ const el=document.getElementById("oupd"); const v=el?el.value.trim():""; if (!v) { openSheet("kai"); return; } const s=oState(); if (/\?$/.test(v)) { STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.sheet={type:"kai",id:null}; render(); if (typeof kaiAsk==="function") kaiAsk(v); return; } s.log.push(["You", v, "now"]); s.log.push(["Kai", /skip|stop|not this week/i.test(v) ? "Noted. That job is off this week and back on Monday unless you say otherwise." : "Noted. It shows on next Monday's pass.", "now"]); toast("Logged."); render(); }
+
+/* the job sheet: the people, one drafted line each, Send or Skip; the whole job can wait a week */
+function oSheet(jid){
+  const j = oJobs().find(x=>x.id===jid); const open = oOpen(jid); const s=oState();
+  const row = c => { const p=DB.people[c.pid]; const p2=c.pid2?DB.people[c.pid2]:null; if (!p) return "";
+    const openD = STATE.oDraft===jid+":"+c.pid;
+    return `<div class="row" data-sctog="od:${jid}:${c.pid}" onclick="STATE.oDraft=${openD?"null":`'${jid}:${c.pid}'`};render()">${p2?`<div class="avs" style="margin:0;gap:4px">${av(p.initials)}${av(p2.initials)}</div>`:av(p.initials)}<div class="m"><div class="a">${p.name}${p2?" and "+p2.name:""}</div><div class="b">${c.why}</div></div><span class="chev">${openD?"▾":"›"}</span></div>
+      ${openD?`<div class="draftbox" style="margin:4px 0 8px"><textarea id="od-${c.pid}" rows="3">${c.draft}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span></div></div><div class="acts" style="margin:0 0 10px"><button class="btn" onclick="oDo('${jid}','${c.pid}')">Send to ${f1(p)}${p2?" and "+f1(p2):""}</button><span class="quiet" onclick="oSkip('${jid}','${c.pid}')">Skip</span></div>`:""}`; };
+  const foot = jid==="welcome" ? `<div class="row" onclick="oAssign()"><div class="m"><div class="a plain" style="color:var(--ink2)">Hand greetings to someone this week</div><div class="b">Ines offered. Kai asks her, you're told when it's done</div></div><span class="chev">›</span></div>` : "";
+  return scSheet(open.length?`${open.length} ${j.label}`:`${j.label.replace(/^\w/,c=>c.toUpperCase())}: done`, `${j.why||""}${j.why?". ":""}Tap a name for the line. Kai sends nothing until you do`, `<div class="rows">${open.length?open.map(row).join(""):`<div class="m12" style="padding:8px 0">All done this week. Kai brings the next on Monday.</div>`}</div>${foot}
+    ${open.length?`<div class="acts" style="margin-top:12px"><span class="quiet" style="margin:0 auto" onclick="oLater('${jid}')">Not this week</span></div>`:""}`);
+}
+function oDo(jid, pid){ const s=oState(); const c=(O_PEOPLE[jid]||[]).find(x=>x.pid===pid); const p=DB.people[pid]; const p2=c&&c.pid2?DB.people[c.pid2]:null; s.done[jid+":"+pid]=true; s.log.push(["You", `${O_VERB[jid].toLowerCase().replace(/^greet$/,"greeted").replace(/^reach out$/,"reached out to").replace(/^nudge$/,"nudged").replace(/^thank$/,"thanked").replace(/^introduce$/,"introduced").replace(/^ask$/,"asked")} ${p.name}${p2?" and "+p2.name:""}.`, "now"]); STATE.oDraft=null; STATE.metrics.journal++; if (!oOpen(jid).length) STATE.sheet=null; render(); toast(`Sent to ${f1(p)}${p2?" and "+f1(p2):""}. Kai tells you when they reply.`); }
+function oSkip(jid, pid){ const s=oState(); s.skipped[jid+":"+pid]=true; STATE.oDraft=null; if (!oOpen(jid).length) STATE.sheet=null; render(); toast("Skipped. Back on Monday if it still holds."); }
+function oLater(jid){ const s=oState(); (O_PEOPLE[jid]||[]).forEach(c=>{ s.skipped[jid+":"+c.pid]=true; }); s.log.push(["You", `parked ${oJobs().find(x=>x.id===jid).label} this week.`, "now"]); STATE.sheet=null; render(); toast("Parked. Kai brings it back Monday."); }
+function oAssign(){ const s=oState(); s.log.push(["Kai","asked Ines to greet this week's joiners. You're told when it's done.","now"]); (O_PEOPLE.welcome||[]).forEach(c=>{ s.done["welcome:"+c.pid]=true; }); STATE.sheet=null; render(); toast("Asked Ines. Nothing else changes."); }
+
+const _oMission = sMission; sMission = function(id){ if (id==="morg") return oPage(); return _oMission(id); };
+const _oPortSheet = portSheet; portSheet = function(type, id){ if (type==="osheet") return oSheet(id); return _oPortSheet(type, id); };
 
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
@@ -8441,7 +8538,7 @@ const evFxName = f => f==="emoji" ? "Emoji" : EVT.effectById(f).name;
 DB.fevents.forEach(e=>{ const l=EV_LOOK[e.id]; e.theme = l?l[0]:(EV_OLD[e.theme]||e.theme||"sand"); e.fx = e.fx || (l?l[1]:"breathe"); e.emoji = e.emoji || (l?l[2]:"✨"); });
 const evE = id => DB.fevents.find(x=>x.id===id);
 /* Icons the shared LUCIDE map (port.js) lacks; merged into it so LI() draws them too. */
-const EV_IC = {"hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
+const EV_IC = {"calendar-check":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
 Object.keys(EV_IC).forEach(k=>{ LUCIDE[k] = LUCIDE[k] || EV_IC[k]; });
 const evIc = (n, sz) => LUCIDE[n] ? LI(n, sz||18) : (n||"");
 const evC = id => DB.calendars.find(x=>x.id===id);
@@ -8720,13 +8817,30 @@ function evPublish(){
    Guests, Registration, Updates, Insights, Details. The door is its own screen; invite and share sit on top. ---- */
 const EV_GSTAT = { going:"Going", review:"To review", wait:"Waitlist", invited:"Invited", in:"Checked in", no:"Can't go" };
 const EV_INVITE_POOL = { suggested:["lena","omar","grace","ines","kofi","hana"], past:["zoe","sam","ruth","eli","mira"], family:["jake","aisha","ben","clara","diego"] };
+/* Kai's invite picks for events the member hosts, with why. The host's Invite tap is the yes: Kai never invites anyone on its own.
+   Missions' host mission (D_HOST) shows the same picks for e4. */
+const EV_KAI_PICKS = {
+  e4: [["lena","Asked about Linear's pricing in #product last week"],["grace","VP Product at Figma. Came to the Figma teardown"],["ines","New this month. Hasn't been to an event yet"],["hana","Went to three teardowns, missed the last two"],["omar","Hiring a founding PM. This room is his pool"],["kofi","Asked Kai for founders to meet. Two are going"]],
+  e13: [["hana","Asked in #design how Figma plans its roadmap"],["mira","Building Loop on Figma's plugin API"],["eli","Went to two teardowns this summer"],["zoe","Asked Kai for people who run design reviews"]],
+};
+const evKaiPicks = e => { evHostData(e); const taken = evGuests(e).map(g=>g.pid).concat(e.host, e.kaiSkipped); return (EV_KAI_PICKS[e.id]||[]).filter(([pid])=>DB.people[pid] && !taken.includes(pid)).map(([pid, why])=>({ pid, why })); };
+const evGuestState = (e, pid) => (evGuests(e).find(g=>g.pid===pid)||{}).st || null;
+const evReconfirm = e => { evHostData(e); return e.reminders.some(r=>r.id==="reconfirm" && r.on); };
+/* The one way to invite someone to an event. Returns their guest state (EV_GSTAT key): "invited" when the invite went out,
+   or where they already are, unchanged. o.kai marks them as Kai's pick; o.log:false leaves the activity log to the caller. */
+function evInvite(eid, pid, o){ const e = evE(eid); if (!e || !DB.people[pid] || pid===e.host) return null; evHostData(e); o = o||{};
+  const st = evGuestState(e, pid); if (st && st!=="no") return st;
+  e.notGoing = e.notGoing.filter(x=>x!==pid); e.invitedList.push(pid);
+  if (o.kai && !e.kaiPicked.includes(pid)) e.kaiPicked.push(pid);
+  if (o.log!==false) e.log.unshift(["mail", `You invited ${evFirst(pid)}${o.kai?", Kai's pick":""}`, "Just now"]);
+  return "invited"; }
 function evHostData(e){
   if (e.hostData) return; e.hostData = true;
   if (e.id==="e4") { e.waitList=["felix","priti"]; e.invitedList=["neha","arjun","tom"]; e.notGoing=["marco"]; e.cohosts=["ana"]; }
-  e.waitList=e.waitList||[]; e.invitedList=e.invitedList||[]; e.notGoing=e.notGoing||[]; e.cohosts=e.cohosts||[];
+  e.waitList=e.waitList||[]; e.invitedList=e.invitedList||[]; e.notGoing=e.notGoing||[]; e.cohosts=e.cohosts||[]; e.kaiPicked=e.kaiPicked||[]; e.kaiSkipped=e.kaiSkipped||[];
   e.tickets = e.tickets || [{ name:"General", price:e.price||0, cap:e.cap||0, sold:e.going, on:true, refund:true, fees:"guest" }];
   e.questions = e.questions || [{ q:"What do you want to get out of it?", type:"Short answer", req:true }];
-  e.reminders = e.reminders || [{ icon:"alarm-clock", when:"Day before, 6pm", what:"Time, place and ticket", on:true }, { icon:"bell", when:"3 hours before", what:"Directions and the event chat", on:true }, { icon:"mail", when:"Morning after", what:"Thanks, photos, a one-tap rating", on:true }];
+  e.reminders = e.reminders || [{ id:"reconfirm", icon:"calendar-check", when:"2 days before", what:"Kai asks each guest to confirm. A no frees the spot", on:true }, { icon:"alarm-clock", when:"Day before, 6pm", what:"Time, place and ticket", on:true }, { icon:"bell", when:"3 hours before", what:"Directions and the event chat", on:true }, { icon:"mail", when:"Morning after", what:"Thanks, photos, a one-tap rating", on:true }];
   e.priv = e.priv || { guests:"Guests only", count:"Everyone", place:"After they register", link:"After they register" };
   e.log = e.log || [["hand","Sana asked to join","2h"],["circle-check","You approved Kate","5h"],["megaphone","You sent an update","Yesterday"],["ticket","Maya registered","Yesterday"],["calendar","Listed on Xoogler Talks","3 days ago"],["rocket","You published it","4 days ago"]];
 }
@@ -8735,13 +8849,15 @@ function evGuests(e){ evHostData(e); const out=[]; const add=(pid,st)=>{ if (DB.
   return out; }
 const evSlug = e => e.alias || e.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
 function evGrow(e, g){ const p=DB.people[g.pid];
-  return `<div class="evt-grow" data-evsheet="evguest|${e.id}|${g.pid}">${av(p.initials)}<div class="m"><b>${p.name}${e.cohosts.includes(g.pid)?` <small>Cohost</small>`:""}</b><span>${p.title}${p.company?`, ${p.company}`:""}</span></div>${g.st==="review"?`<button class="btn sm sec" data-evdecline="${e.id}|${g.pid}" onclick="event.stopPropagation()" aria-label="Decline">${evIc("x",15)}</button><button class="btn sm" data-evapprove="${e.id}|${g.pid}" onclick="event.stopPropagation()">Approve</button>`:`<em>${EV_GSTAT[g.st]}</em>`}</div>`; }
+  return `<div class="evt-grow" data-evsheet="evguest|${e.id}|${g.pid}">${av(p.initials)}<div class="m"><b>${p.name}${e.cohosts.includes(g.pid)?` <small>Cohost</small>`:""}${e.kaiPicked.includes(g.pid)?` <small class="evt-kaimark">${evIc("sparkles",11)} Kai's pick</small>`:""}</b><span>${p.title}${p.company?`, ${p.company}`:""}</span></div>${g.st==="review"?`<button class="btn sm sec" data-evdecline="${e.id}|${g.pid}" onclick="event.stopPropagation()" aria-label="Decline">${evIc("x",15)}</button><button class="btn sm" data-evapprove="${e.id}|${g.pid}" onclick="event.stopPropagation()">Approve</button>`:`<em>${EV_GSTAT[g.st]}</em>`}</div>`; }
 function evManage(id){
   const e = evE(id); evHostData(e); const t = STATE.evMtab||"guests"; const gs = evGuests(e); const req = gs.filter(g=>g.st==="review");
   const nIn = gs.filter(g=>g.st==="in").length; const home = evC(e.cal); let body = "";
   if (t==="guests") { const f = STATE.evGf||"all"; const counts = {}; gs.forEach(g=>counts[g.st]=(counts[g.st]||0)+1);
-    const list = f==="all" ? gs : gs.filter(g=>g.st===f);
-    body = `<div class="evt-search"><span>${evIc("search",17)}</span><input placeholder="Search ${gs.length} guests" oninput="evGuestSearch(this.value)"></div>
+    const list = f==="all" ? gs : gs.filter(g=>g.st===f); const picks = evKaiPicks(e); const shown = STATE.evKaiAll ? picks : picks.slice(0,3);
+    body = `${picks.length?`<div class="evt-sec2 evt-kaihd">${evIc("sparkles",16)} Kai's picks</div><div class="evt-glist">${shown.map(c=>{ const p=DB.people[c.pid]; return `<div class="evt-grow evt-kairow" data-profile="${c.pid}">${av(p.initials)}<div class="m"><b>${p.name}</b><span>${c.why}</span></div><button class="btn sm sec" data-evkaiskip="${id}|${c.pid}" onclick="event.stopPropagation()" aria-label="Skip ${p.name}">${evIc("x",15)}</button><button class="btn sm" data-evkaiinv="${id}|${c.pid}" onclick="event.stopPropagation()">Invite</button></div>`; }).join("")}</div>
+    ${picks.length>shown.length?`<div class="evt-links"><span data-evkaiall="1">See all ${picks.length}</span></div>`:""}<p class="evt-kainote">Nobody is invited until you tap Invite. Skips stay private.</p>`:""}
+    <div class="evt-search"><span>${evIc("search",17)}</span><input placeholder="Search ${gs.length} guests" oninput="evGuestSearch(this.value)"></div>
     <div class="evt-fxrow">${[["all",`All ${gs.length}`]].concat(Object.keys(EV_GSTAT).filter(k=>counts[k]).map(k=>[k,`${EV_GSTAT[k]} ${counts[k]}`])).map(([k,l])=>`<span class="chip ${f===k?'on':''}" data-evgf="${k}">${l}</span>`).join("")}</div>
     ${f==="review"&&req.length>1?`<button class="btn" style="margin-top:12px" data-evapproveall="${id}">Approve all ${req.length}</button>`:""}
     <div class="evt-glist">${list.map(g=>evGrow(e,g)).join("")||'<div class="empty">No one here yet.</div>'}</div>
@@ -8910,7 +9026,8 @@ function evSheet(type, id){
   if (type==="evguest") { const [eid,pid]=id.split("|"); const e=evE(eid); const g=evGuests(e).find(x=>x.pid===pid)||{ pid, st:"going" }; const p=DB.people[pid]; const co=e.cohosts.includes(pid);
     const q=e.questions[0]; const ans={ rahul:"Hiring two senior PMs.", maya:"Meet PMs who ship AI features.", dev:"Learn how Linear plans a quarter.", jordan:"First PM job, want to learn.", sana:"Scouting for Perplexity's panel." }[pid]||"Meet people building good products.";
     return `<div class="evt-gs">${av(p.initials,"lg")}<h2>${p.name}</h2><p class="sm muted">${p.title}${p.company?`, ${p.company}`:""}</p></div>
-    ${q?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${q.q}</div><div class="a" style="font-weight:600">${ans}</div></div></div>`:""}
+    ${e.kaiPicked.includes(pid)?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${evIc("sparkles",13)} Kai's pick</div><div class="a" style="font-weight:600">${((EV_KAI_PICKS[eid]||[]).find(([x])=>x===pid)||[])[1]||"From interests, past events and asks"}</div></div></div>`:""}
+    ${q&&g.st!=="invited"?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${q.q}</div><div class="a" style="font-weight:600">${ans}</div></div></div>`:""}
     ${g.st==="review"?`<div class="row" style="gap:8px;margin-top:12px"><button class="btn sec" style="flex:1" data-evdecline="${eid}|${pid}">Decline</button><button class="btn" style="flex:1" data-evapprove="${eid}|${pid}">Approve</button></div>`
       : g.st==="invited"?`<button class="btn sec" style="margin-top:12px" data-evreinvite="${eid}|${pid}">Invite again</button>`
       : `<div class="lbl">Status</div><div class="seg">${[["going","Going"],["wait","Waitlist"],["no","Can't go"]].map(([k,l])=>`<div class="${(g.st==="in"?"going":g.st)===k?'on':''}" data-evgset="${eid}|${pid}|${k}">${l}</div>`).join("")}</div>`}
@@ -9102,9 +9219,12 @@ portWire = function(){
   q("[data-evcohostset]", el=>{ const [eid,pid]=el.dataset.evcohostset.split("|"); const e=evE(eid); const on=e.cohosts.includes(pid); e.cohosts = on ? e.cohosts.filter(x=>x!==pid) : e.cohosts.concat(pid); STATE.sheet=null; render(); toast(on?`${evFirst(pid)} is no longer a cohost.`:`${evFirst(pid)} is a cohost now.`); });
   q("[data-evgremove]", el=>{ const [eid,pid]=el.dataset.evgremove.split("|"); const e=evE(eid); const was=(e.goingList||[]).includes(pid); ["goingList","waitList","invitedList"].forEach(k=>e[k]=(e[k]||[]).filter(x=>x!==pid)); e.notGoing.push(pid); if (was) e.going--; STATE.sheet=null; render(); toast(`${evFirst(pid)} removed.`); });
   q("[data-evreinvite]", el=>{ STATE.sheet=null; render(); toast(`Invited ${evFirst(el.dataset.evreinvite.split("|")[1])} again. One push, nothing more.`); });
+  q("[data-evkaiinv]", el=>{ const [eid,pid]=el.dataset.evkaiinv.split("|"); evInvite(eid, pid, { kai:true }); render(); toast(`Invited ${evFirst(pid)}.${evReconfirm(evE(eid))?" Kai re-confirms two days before.":""}`); });
+  q("[data-evkaiskip]", el=>{ const [eid,pid]=el.dataset.evkaiskip.split("|"); const e=evE(eid); evHostData(e); e.kaiSkipped.push(pid); render(); toast(`Skipped. Kai won't suggest ${evFirst(pid)} for this one.`); });
+  q("[data-evkaiall]", el=>{ STATE.evKaiAll=true; render(); });
   q("[data-evinvtab]", el=>{ STATE.evInvTab=el.dataset.evinvtab; render(); });
   q("[data-evpick]", el=>{ const pid=el.dataset.evpick; const s=STATE.evPick=STATE.evPick||[]; STATE.evPick = s.includes(pid) ? s.filter(x=>x!==pid) : s.concat(pid); render(); });
-  q("[data-evsendinv]", el=>{ const e=evE(el.dataset.evsendinv); evHostData(e); const n=(STATE.evPick||[]).length; if (!n) return; e.invitedList.push(...STATE.evPick); e.log.unshift(["mail",`You invited ${n}`,"Just now"]); STATE.evPick=[]; STATE.sheet=null; render(); toast(`${n} invited. Each gets one push.`); });
+  q("[data-evsendinv]", el=>{ const e=evE(el.dataset.evsendinv); evHostData(e); const n=(STATE.evPick||[]).length; if (!n) return; STATE.evPick.forEach(pid=>evInvite(e.id, pid, { kai:STATE.evInvTab==="suggested", log:false })); e.log.unshift(["mail",`You invited ${n}`,"Just now"]); STATE.evPick=[]; STATE.sheet=null; render(); toast(`${n} invited. Each gets one push.`); });
   q("[data-evtkset]", el=>{ const [k,v]=el.dataset.evtkset.split("|"); STATE.evTk[k] = k==="fees" ? v : k==="on"||k==="refund" ? v==="1" : +v; render(); });
   q("[data-evtksave]", el=>{ const e=evE(el.dataset.evtksave); const k=STATE.evTk; const t={ name:k.name||"General", price:k.price, cap:k.cap, sold:k.sold||0, on:k.on, refund:k.refund, fees:k.fees };
     if (k.isNew) e.tickets.push(t); else e.tickets[k.idx]=t; e.price=Math.max(...e.tickets.map(x=>x.price)); STATE.evTk=null; STATE.sheet=null; render(); toast("Ticket saved."); });
@@ -9711,6 +9831,21 @@ function cPostDetail(){
   ${keyComposer({ id:"ccmt", placeholder:"Add a comment", toolbar:true, fmtOpen:STATE.fmtOpen, sendAttr:`data-ccmt="${p.id}"` })}`;
 }
 
+/* ---- The organizer's standing mission, "How Kai helps you run your community" (Apoorv 06:25; missions audit Part 7b). Missions draws the
+   mission page (id "morg"); Manage holds the way in, Insights the monthly summary. Every count is one prod stores or can compute:
+   join dates, messages and thread replies, reactions, who invited whom, event creators and check-ins. Who should meet is Kai's
+   suggestion, not a stored fact, and "went well" is new (Kai's follow-ups). ---- */
+const C_ORGJOBS = [["welcome",2,"to welcome","joined this week, nobody has greeted them yet"],["quiet",3,"going quiet","posted most weeks, nothing in three weeks"],["unanswered",2,"asks unanswered","no reply after two days"],["thank",2,"to thank","answered, introduced or hosted this month"],["meet",2,"pairs to introduce","Kai's suggestion, from what they asked and offer"],["host",1,"to ask to host","came to three or more events, never hosted"]];
+const cOrgGo = () => DB.missions.find(m=>m.id==="morg") ? `go('mission:morg')` : `toast('Opens your Kai mission for running ${cF().name}')`;
+const cOrgRow = () => `<div class="cm-row cm-kairow cm-orgm" onclick="${cOrgGo()}"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">How Kai helps you run ${cF().name}</div><div class="b">${C_ORGJOBS.slice(0,3).map(([,n,l])=>`${n} ${l}`).join(" · ")}</div></div><span class="cm-count">${C_ORGJOBS.reduce((t,j)=>t+j[1],0)}</span><span class="s">›</span></div>`;
+function cOrgMonth(){
+  const rows = [["28","joined","approved in September"],["21 of 28","welcomed in their first week","a reply or reaction to their first post"],["19 of 23","first posts answered","a reply within two days"],["13","brought in by members","who invited whom"],["49 of 63","came to 2 events","check-ins against registrations"],["3","members hosted","events a member created"],["6","went well","what members told Kai after an intro. New"]];
+  return `<div class="cm-sec cm-ins cm-orgmonth">${cHead(`September for ${cF().name} <i>so far</i>`)}
+    <div class="cm-list">${rows.map(([n,a,b])=>`<div class="cm-row" style="cursor:default"><b class="cm-omn">${n}</b><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
+    <div class="cm-row cm-kairow" onclick="${cOrgGo()}"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">Kai drafts this for your board on Oct 1</div><div class="b">You edit it and send it yourself</div></div><span class="s">›</span></div>
+    ${cSrc("Joins, messages, reactions, invites, events and check-ins · computed. Went well · new")}</div>`;
+}
+
 /* ---- Manage: the organizer hub, opened from the hero's Manage button or the family menu; lists without card wrappers ---- */
 const cUncard = h => h.replace(/<div class="card" style="padding:4px 14px">/g, '<div class="cm-list">');
 const _cSManage = sManage;
@@ -9723,7 +9858,7 @@ sManage = function(){
     .replace(/<div class="rowitem" data-manage="health">[\s\S]*?<div class="s">›<\/div><\/div>/, "")
     .replace(/<div class="rowitem" data-manage="posts">[\s\S]*?<div class="s">›<\/div><\/div>/, `<div class="rowitem" data-cgo="posts:requests"><div class="m"><div class="a">Posts</div><div class="b">${pend?`${pend} waiting for approval · `:''}library settings in Settings</div></div>${pend?`<span class="cm-count">${pend}</span>`:''}<div class="s">›</div></div>`)
     .replace(/(<div class="rowitem" data-manage="settings"><div class="m"><div class="a">)Settings(<\/div><div class="b">)[^<]*/, `$1Family settings$2Info, joining, roles, library, connectors, digest`);
-  return `${famHeader("Manage "+cF().name, "family")}${cUncard(body).replace('<div class="body" style="padding-top:0">','<div class="body" style="padding-top:4px">')}`;
+  return `${famHeader("Manage "+cF().name, "family")}${cUncard(body).replace('<div class="body" style="padding-top:0">','<div class="body" style="padding-top:4px">'+cOrgRow())}`;
 };
 
 
@@ -9759,6 +9894,7 @@ function cInsights(){
       <div class="cm-hd">${Math.round(wau/f.members*100)}% of ${f.members} · <span class="up">up ${wau-prev} from last week</span></div>
       <div class="cm-chart">${cSpark(C_WAU, 360, 72, C_WAU_WK)}</div><div class="cm-axis"><span>${C_WAU_WK[0]}</span><span>This week</span></div>
       ${cSrc("Posted, replied or reacted this week · from messages")}</div>
+    ${cOrgMonth()}
     ${card(`From invite to first message <i>last ${r} days</i>`, fun.map(([l,n],i)=>cHBar(l,n,fun[0][1], i?`${Math.round(n/fun[i-1][1]*100)}% of the step before`:'', `${l}: ${n}`)).join("") + `<div class="cm-meta" style="margin-top:8px">Came through: a member's invite 19 · an event 6 · browsing families 3</div>`, "Invites, applications and first messages · stored")}
     ${card("Waiting to join", `<div class="cm-row" data-cgo="manage:applications"><div class="cm-stat"><b>${cWaiting()}</b><span>waiting</span></div><div class="cm-stat"><b>50 h</b><span>median to decide</span></div><div class="cm-stat"><b>6 d</b><span>oldest</span></div><span class="s">›</span></div>`, "Median time comes from analytics today. Needs an approval time on each member.")}
     ${card("New members who got going", `<div class="cm-meta" style="margin:-4px 0 8px">Posted, reacted or registered for an event in their first 30 days</div>${coh.map(([m,n,so])=>cHBar(m,n,100,so||"",`Joined in ${m}: ${n}% got going${so?" (month not over)":""}`,n+"%")).join("")}`, "Join dates, messages, reactions, registrations · computed")}
