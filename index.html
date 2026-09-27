@@ -2970,6 +2970,14 @@ body:has(.push) .ctlbtn { display:none; }
   .cm-chrow { border-top:1px solid var(--line); }
   .cm-chs { display:flex; } .cm-chs span { width:30px; height:30px; border-radius:8px; background:var(--fill); border:2px solid var(--paper); display:flex; align-items:center; justify-content:center; font-size:15px; margin-left:-8px; } .cm-chs span:first-child { margin-left:0; }
 
+  /* asks and offers: the one thing members post (27 Sep 19:58) */
+  .cm-askbtns { display:flex; gap:8px; margin:4px 0 6px; }
+  .cm-askbtns span { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; height:44px; border:1px solid var(--ink); border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; }
+  .cm-ask { align-items:flex-start; } .cm-ask .a { font-weight:500; } .cm-ask .cm-btn, .cm-ask .cm-done { margin-top:18px; flex:0 0 auto; }
+  .cm-form textarea.v { width:100%; border:0; outline:0; resize:none; font:inherit; background:transparent; color:var(--ink); padding:0; }
+  .cm-mark { display:block; width:100%; height:100%; border-radius:inherit; overflow:hidden; } .cm-mark svg { display:block; width:100%; height:100%; }
+  .cm-sq:has(.cm-mark), .avatar.cm-markav { background:none; border:0; overflow:hidden; } .cm-markav { border-radius:12px; }
+
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
    Tip surface = component.tip.bg (surface.default) at elevation 3; the target gets the focus ring. ==== */
@@ -3298,7 +3306,16 @@ body:has(.push) .ctlbtn { display:none; }
 .toast { background:var(--pop-deep); box-shadow:var(--pop-lift); }
 
 @media (prefers-reduced-motion: reduce) { #phone > .screen { transition:none; } .tipdim { animation:none; } }
+#phone > .screen.pop-from { transform:none !important; border-radius:0 !important; transition:none !important; }
 .pop-still #phone > .screen { transition:none; } .pop-still .tipdim { animation:none; }
+
+/* family marks (v63): the initial's box becomes a clipped square SVG */
+.fm { padding:0; overflow:hidden; background:#fff; color:transparent; font-size:0; }
+.fm > svg { width:100%; height:100%; display:block; }
+.flogo.fm { border:1px solid var(--line); }
+.flogo.big.fm { border:3px solid #fff; box-shadow:0 0 0 1px var(--line); }
+.famchip i.fm { border:1px solid var(--line); }
+.tab.fam .ic.logo.fm { border:1.5px solid var(--line); background:#fff; }
 </style>
 </head>
 <body>
@@ -7790,6 +7807,10 @@ const _evmSection = missionSection; missionSection = function(m){
 const _evmToday = todayItems; todayItems = function(){ const items=_evmToday(); if (STATE.persona==="priya" && STATE.member && DB.missions.some(x=>x.id==="ev-c.e4")) { const left=EVM_C.e4.length-Object.keys(evmS().c).length; if (left) items.push(`<div class="trow sc" onclick="go('mission:ev-c.e4')"><div class="avs" style="margin:0;gap:4px">${av(evmP("rahul").initials)}${av(evmP("maya").initials)}</div><div class="m"><div class="a">${left} introductions to approve</div><div class="b">Linear teardown, Oct 9 · each hears only if both say yes</div></div><button class="mini" onclick="event.stopPropagation();go('mission:ev-c.e4')">Approve</button></div>`); } return items; };
 const _evmPortSheet = portSheet; portSheet = function(type, id){ if (type==="evmsheet") { const h=evmSheet(id); if (h!==null) return h; } return _evmPortSheet(type, id); };
 
+/* Family marks and the Kai K (bottom nav thread, 27 Sep). FAM_MARK[id] is a square SVG; clip it to the family radius. */
+const FAM_MARK = {"xoogler": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#fff\"/><path d=\"M50 50L25.96 25.96A34 34 0 0 1 74.04 25.96Z\" fill=\"#5374AE\"/><path d=\"M50 50L74.04 25.96A34 34 0 0 1 74.04 74.04Z\" fill=\"#D9443A\"/><path d=\"M50 50L74.04 74.04A34 34 0 0 1 25.96 74.04Z\" fill=\"#EDB53C\"/><path d=\"M50 50L25.96 74.04A34 34 0 0 1 25.96 25.96Z\" fill=\"#4FA053\"/><path d=\"M22 22 78 78M78 22 22 78\" stroke=\"#fff\" stroke-width=\"11\"/><circle cx=\"50\" cy=\"50\" r=\"46\" fill=\"none\" stroke=\"#0B0E11\" stroke-width=\"3\"/></svg>", "michigan": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#00274C\"/><path d=\"M15.0 24.8 L41.6 24.8 L50.0 38.8 L58.4 24.8 L85.0 24.8 L85.0 37.4 L78.0 37.4 L78.0 62.6 L85.0 62.6 L85.0 75.2 L58.4 75.2 L58.4 62.6 L64.0 62.6 L64.0 50.0 L50.0 69.6 L36.0 50.0 L36.0 62.6 L41.6 62.6 L41.6 75.2 L15.0 75.2 L15.0 62.6 L22.0 62.6 L22.0 37.4 L15.0 37.4Z\" fill=\"#FFCB05\"/></svg>", "aipm": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#1E2B45\"/><circle cx=\"50\" cy=\"50\" r=\"31\" fill=\"none\" stroke=\"#fff\" stroke-width=\"6\"/><text x=\"50\" y=\"59\" text-anchor=\"middle\" font-family=\"Manrope,Arial,sans-serif\" font-weight=\"800\" font-size=\"26\" fill=\"#fff\" letter-spacing=\"-1\">AI</text></svg>", "desi": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect width=\"100\" height=\"100\" fill=\"#17493B\"/><path d=\"M34 26h34v11H47v10h18v11H47v16H34z\" fill=\"#fff\"/></svg>"};
+const KAI_K = {"k": "M19.7705 19.6201L24.3896 14.9902H29.9658L23.6924 21.3389L30.6123 28.2852H24.9062L19.7705 22.9404V28.2852H14.8428V22.8262L14.8418 22.8408L9.70508 28.1846H4L10.9189 21.2393L4.64746 14.8896H10.2217L14.8418 19.5195L14.8428 19.5332V6H19.7705V19.6201Z", "spark": "M28 11C28 9.712 29.712 8 31 8C29.712 8 28 6.288 28 5C28 6.288 26.288 8 25 8C26.288 8 28 9.712 28 11Z"};
+
 /* ==== EVENTS AND CALENDARS, v2 25 Sep 2026 (events thread).
    Events are the outcome; calendars are where they come from. The Events tab shows events (For you, My events), grouped by date,
    with one card design everywhere. Calendars live in a strip at the top, on their own pages, and on the Calendars screen.
@@ -10952,6 +10973,8 @@ const C_CHECK_SVG = LI("check", 14);
 const C_MINUS_SVG = LI("minus", 14);
 const C_CHEVSM_SVG = LI("chevron-down", 14);
 const C_SMILEPLUS_SVG = LI("smile-plus", 22);
+/* the family's own mark (nav thread's marks.js, Apoorv 27 Sep 19:57: real logos everywhere); the initial until marks.js loads */
+const cMark = f => typeof FAM_MARK!=="undefined" && FAM_MARK[f.id] ? `<span class="cm-mark">${FAM_MARK[f.id]}</span>` : f.initial;
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
 const C_MUTE_SVG = LI("bell-off", 14);
 /* one long press opens a row's menu; the click that follows it is swallowed so the sheet stays open */
@@ -11039,9 +11062,9 @@ const cRituals = f => C_RIT[f.id] || [];
 const C_DAYN = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday" };
 
 /* ---- Overview (Apoorv 27 Sep 18:32 and 19:34; research in community-audit/overview/):
-   organizers get one brief on top (cOrgBrief). Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
+   organizers get one brief on top (cOrgBrief). Then Asks and offers, the one thing members post. Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
    Then Posts as they are scoped today: the pinned note, Kai's library posts and organizer broadcasts. Then the rest of the calendar as a strip,
-   and one row for unread channels. Whether members write posts waits on research (member-posts-research.md). New members live in People. ---- */
+   and one row for unread channels. New members live in People. ---- */
 const C_WEEK_END = 927;   /* mock week: Mon 21 to Sun 27 Sep, the week the Monday ritual is live */
 /* members who joined this week, with Say hi in place (People, under the search) */
 function cNewStrip(f){
@@ -11049,6 +11072,28 @@ function cNewStrip(f){
   const face = p => `<div class="cm-nm" data-profile="${p.id}">${av(p.initials,"lg")}<b>${p.name.split(" ")[0]}</b><span>${p.company.split(",")[0]}</span>${(STATE.cGreeted||{})[p.id]?'<em class="cm-done">Greeted</em>':`<em class="cm-btn q" data-cgreet="${p.id}">Say hi</em>`}</div>`;
   return joined.length ? `<div class="cm-sec cm-newm"><div class="cm-nmh">Joined this week</div><div class="cm-nms">${joined.map(face).join("")}</div></div>` : "";
 }
+/* ---- Asks and offers (Apoorv 27 Sep 19:58 picked typed member posts over an open feed; member-posts-research.md).
+   A member posts one Ask or one Offer, nothing else. Kai suggests who can help; replies go to Messages, never a public comment
+   thread (Burke and Kraut 2014: one-to-one messages build ties, broadcasting weakens them). Nothing is sent without a tap. ---- */
+const C_ASKS = {
+  xoogler:[
+    {id:"a1", k:"ask", pid:"omar", tag:"Intro", text:"Intro to someone on Stripe's payments risk team? Two questions on chargebacks.", when:"3h", n:1},
+    {id:"a2", k:"offer", pid:"sana", tag:"Interviews", text:"Mock PM interviews for anyone prepping for an AI lab loop this month.", when:"1d", n:5},
+    {id:"a3", k:"ask", pid:"maya", tag:"Cofounder", text:"Looking for a technical cofounder who has scaled infra. Warm intros welcome.", when:"2d", n:2},
+    {id:"a4", k:"offer", pid:"kofi", tag:"Advice", text:"Office hours for pre-seed founders on Thursdays. 20 minutes, bring the deck.", when:"4d", n:3}
+  ]
+};
+const C_ASK_TAGS = ["Intro","Hiring","Advice","Cofounder","Feedback"];
+const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Stripe"],["karan","PM at Stripe"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at a16z"],["tom","Recruiter at OpenAI"],["pooja","Hires engineers at Uber"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Figma"]], Cofounder:[["felix","CTO at Relay, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Figma"],["hana","Design Lead at Notion"],["paul","Staff PM at Google Search"]] };
+const cAsks = f => [...(STATE.cMyAsks||[]).filter(a=>a.fam===f.id), ...(C_ASKS[f.id]||[])];
+const cAskOf = id => cAsks(cF()).find(a=>a.id===id);
+function cAskRow(a){
+  const p = a.pid==="me" ? DB.user : DB.people[a.pid]; const done = (STATE.cHelped||{})[a.id];
+  const act = a.pid==="me" ? `<span class="cm-btn q" data-csheet2="cmatch|${a.id}">${cPl(3,"match")}</span>`
+    : done ? '<span class="cm-done">Replied</span>' : `<span class="cm-btn" data-csheet2="chelp|${a.id}">${a.k==="ask"?"I can help":"Take it"}</span>`;
+  return `<div class="cm-row cm-ask" data-csheet2="${a.pid==="me"?"cmatch":"chelp"}|${a.id}">${av(p.initials)}<div class="m"><div class="cm-k">${a.k==="ask"?"Ask":"Offer"} · ${a.tag}</div><div class="a">${a.text}</div><div class="b">${a.pid==="me"?"You":p.name.split(" ")[0]} · ${a.when}${a.n?` · ${a.k==="ask"?`${a.n} helping`:`${a.n} took it`}`:""}</div></div>${act}</div>`;
+}
+const cAskBtns = f => `<div class="cm-askbtns"><span data-csheet2="cask|ask">${LI("hand",18)}Ask ${f.name}</span><span data-csheet2="cask|offer">${LI("gift",18)}Offer help</span></div>`;
 function cWeek(){
   const f = cF();
   const busy = (DB.channels[f.id]||[]).filter(c=>c.joined&&c.unread&&!(STATE.chMute||{})[c.id]).sort((a,b)=>b.unread-a.unread);
@@ -11065,6 +11110,7 @@ function cWeek(){
     ${famTop()}
     ${famPills("week")}
     ${cOrgBrief()}
+    <div class="cm-sec cm-asks">${cHead("Asks and offers","All",'data-cposttype="asks"')}${cAskBtns(f)}${cAsks(f).slice(0,3).map(cAskRow).join("")}</div>
     ${week.length?`<div class="cm-sec cm-wk">${cHead("This week")}${week.join("")}</div>`:''}
     ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("Posts","All",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
     ${later.length?`<div class="cm-sec">${cHead("Coming up","Events",'data-ctab="fevents"')}<div class="cm-evstrip">${later.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
@@ -11342,7 +11388,7 @@ sPosts = function(){
   const queue = hist==="waiting" ? pend : hist==="approved" ? judged.filter(p=>p.st==="live") : hist==="rejected" ? judged.filter(p=>p.st==="rejected") : [...pend, ...judged];
   const list = (t==="All" ? live : t==="saved" ? saved : t==="drafts" ? drafts : t==="requests" ? queue : live.filter(p=>p.cat===t)).filter(p=>!qq||(p.title+p.text+p.who+p.tags.join(" ")).toLowerCase().includes(qq)).filter(p=>!(STATE.cHidden||{})[p.id]);
   const mode = t==="requests" ? (cOrg()&&(STATE.cApprove||"waiting")==="waiting"?"requests":"") : t==="drafts" ? "drafts" : "";
-  const chips = [["All","All"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
+  const chips = [["All","All"],["asks","Asks and offers"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
   const liveRow = STATE.liveBroadcast && (t==="All"||t==="Announcements") ? `<div class="cm-lp cm-live"><div class="cm-k"><span class="cm-livedot"></span>Live now · Announcements</div><div class="cm-lrow"><div class="m"><div class="t">Office hours with ${f.id==="desi"?"Neha":"Daniel"}</div><div class="x">41 members listening. Kai keeps the follow-ups for you.</div></div></div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
   const empty = { saved:"Nothing saved yet. Tap Save on a post to keep it here.", drafts:"No drafts.", requests:"Nothing waiting for approval." }[t] || `No posts in ${t==="All"?f.name:t} yet.`;
   return `${famHdr()}<div class="body" style="padding-top:0">
@@ -11350,8 +11396,8 @@ sPosts = function(){
     <div class="cm-bar">${famPills("posts")}<div class="cm-search"><input class="search" id="cpq" placeholder="Search posts in ${f.name}" value="${STATE.cPostQ||""}"></div>${cChips(chips, t, "cptype")}</div>
     ${t==="requests"&&cOrg()?`<div class="cm-cnt"><span class="cm-sort" data-csheet="cappr">${({waiting:"Waiting",approved:"Approved",rejected:"Rejected",all:"All decisions"})[hist]}${C_CHEV_SVG}</span><span>${cPl(list.length,"post")}</span></div>`:''}
     ${t==="All"||cCats(f).includes(t)?`<div class="cm-row cm-inv" data-csheet="cnewpost">${av(DB.user.initials)}<div class="m"><div class="a">Write a post</div></div>${cOrg()?`<span class="cm-btn q" data-clive="1">${STATE.liveBroadcast?"End live":"Go live"}</span>`:''}</div>`:''}
-    ${liveRow}
-    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}
+    ${t==="asks" ? `${cAskBtns(f)}${cAsks(f).filter(a=>!qq||(a.text+a.tag).toLowerCase().includes(qq)).map(cAskRow).join("")}` : `${liveRow}
+    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}`}
   </div>
   ${navHTML("families")}`;
 };
@@ -11681,7 +11727,7 @@ sPublicPage = function(){
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div style="flex:1"></div><span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
   <div class="body cm-page" style="padding-top:0">
     ${member?`<div class="cm-note">This is what people see before they join.</div>`:''}
-    <div class="cover" style="margin-top:${member?0:-10}px"><div class="flogo big">${f.initial}</div></div>
+    <div class="cover" style="margin-top:${member?0:-10}px"><div class="flogo big">${cMark(f)}</div></div>
     <div class="famname"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
       <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div>
       <div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>Run by ${who}</span></div></div>
@@ -11724,8 +11770,8 @@ sPendingFamily = function(){
     return h.replace(/<div class="body">\s*/, `<div class="body">${block}`);
   }
   if (!d) return h;
-  const f = DB.families.find(x=>x.id===d.fam) || { name:"Xoogler", initial:"X" };
-  const block = `<div class="cm-sec" style="margin-top:4px"><div class="cm-row" style="cursor:default">${av(f.initial,"lg")}<div class="m"><div class="a">${f.name} said not this time</div><div class="b">${d.reason!=="none"?(C_DECLINE.find(x=>x[0]===d.reason)||["",""])[1]+". ":""}${d.again==="never"?"This family isn't taking another application from you.":`You can apply again ${d.again}.`}</div></div></div>
+  const f = DB.families.find(x=>x.id===d.fam) || { id:"xoogler", name:"Xoogler", initial:"X" };
+  const block = `<div class="cm-sec" style="margin-top:4px"><div class="cm-row" style="cursor:default"><div class="avatar lg cm-markav">${cMark(f)}</div><div class="m"><div class="a">${f.name} said not this time</div><div class="b">${d.reason!=="none"?(C_DECLINE.find(x=>x[0]===d.reason)||["",""])[1]+". ":""}${d.again==="never"?"This family isn't taking another application from you.":`You can apply again ${d.again}.`}</div></div></div>
     <div class="cm-text xs faint" style="margin-top:6px">You're told this once. Your application stays private to the organizers.</div></div>`;
   const inv = DB.recommendedFamilies && DB.families.find(x=>x.id==="xoogler");
   return h.replace(/<div class="body">\s*/, `<div class="body">${block}`).replace(/<div class="empty" style="margin-top:4px">[\s\S]*?<\/div>/, "").replace(`<div style="margin-top:10px">${famRecRow({...inv, why:"Ex-Google, from your LinkedIn", kind:"vetted"})}</div>`, "");
@@ -11783,7 +11829,7 @@ function cSheet(type, id){
   if (type==="cfam") {
     const w = cWaiting(), pend = cPosts(f).filter(p=>p.st==="pending").length;
     const r = (attr, a, b, extra) => `<div class="cm-row" ${attr}><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div>${extra||''}<span class="s">›</span></div>`;
-    return `<div class="cm-qv" style="align-items:center"><div class="cm-sq">${f.initial}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members · ${f.kind==="open"?"Open":"Vetted"}</div></div></div>
+    return `<div class="cm-qv" style="align-items:center"><div class="cm-sq">${cMark(f)}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members · ${f.kind==="open"?"Open":"Vetted"}</div></div></div>
       <div class="cm-list" style="margin-top:10px">
         ${r('data-csheet="cinvite"', "Invite people", "They still apply; an organizer decides")}
         ${r(`data-cabout="${f.id}"`, "Family page", "What people see before they join")}
@@ -11799,6 +11845,24 @@ function cSheet(type, id){
         <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a" style="color:var(--danger)">Leave ${f.name}</div></div></div>
       </div>`;
   }
+  if (type==="cask") { const ask = id!=="offer", tag = STATE.cAskTag || null;
+    return `<h2>${ask?`Ask ${f.name}`:"Offer help"}</h2>
+      <div class="field"><div class="k">${ask?"What do you need?":"What can you offer?"}</div><textarea id="caskt" class="v" rows="3" placeholder="${ask?"One line. Who or what would help?":"One line. What, and for whom?"}">${STATE.cAskDraft||""}</textarea></div>
+      <div class="cm-lbl">About</div>${cChips(C_ASK_TAGS.map(x=>[x,x]), tag, "casktag")}
+      <p class="xs faint">Kai suggests who can ${ask?"help":"use it"}. Replies come to your messages, not a comment thread.</p>
+      <button class="btn" ${tag?'':'disabled'} data-caskpost="${ask?"ask":"offer"}">${ask?"Post ask":"Post offer"}</button>`; }
+  if (type==="cmatch") { const a = cAskOf(id); if (!a) return "";
+    const sent = STATE.cAskSent||{};
+    return `<h2>Kai found 3 people who ${a.k==="ask"?"can help":"could use this"}</h2><p class="xs faint" style="margin-top:-4px">From your ${a.k}: ${a.text}</p>
+      <div class="cm-list">${(C_ASK_MATCH[a.tag]||C_ASK_MATCH.Advice).map(([pid,why])=>{ const p=DB.people[pid]; return `<div class="cm-row" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${why}</div></div>${sent[a.id+pid]?'<span class="cm-done">Drafted</span>':`<span class="cm-btn q" data-caskdm="${a.id}|${pid}">Ask</span>`}</div>`; }).join("")}</div>
+      <p class="xs faint">Kai drafts each message in Messages. Nothing goes out until you send it.</p>`; }
+  if (type==="chelp") { const a = cAskOf(id); if (!a) return ""; const p = DB.people[a.pid]; const first = p.name.split(" ")[0];
+    const draft = a.k==="ask" ? `Hi ${first}, saw your ask in ${f.name}. I can help with this. Want to find 20 minutes this week?` : `Hi ${first}, I'd love to take you up on this. Could we find a slot in the next two weeks?`;
+    return `<div class="cm-selhdr" style="margin-bottom:6px">${av(p.initials)}<div style="flex:1"><div class="t">${p.name}</div><div class="xs faint">${a.k==="ask"?"Ask":"Offer"} · ${a.tag} · ${a.when}</div></div></div>
+      <div class="cm-text" style="margin-bottom:12px">${a.text}</div>
+      <div class="cm-lbl">Draft reply</div><div class="field"><div class="v">${draft}</div></div>
+      <p class="xs faint">Goes to ${first} in Messages. Only the two of you see it.</p>
+      <div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" onclick="toast('Edit the draft')">Edit</button><button class="btn" style="flex:1;margin:0" data-chelpsend="${a.id}">Send to ${first}</button></div>`; }
   if (type==="cinvite") {
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
@@ -12050,6 +12114,13 @@ portWire = function(){
   q("[data-cvote]", el=>{ const [id,d]=el.dataset.cvote.split("|"); STATE.cVote=Object.assign(STATE.cVote||{}); STATE.cVote[id] = STATE.cVote[id]===+d ? 0 : +d; render(); });
   q("[data-csave]", el=>{ const id=el.dataset.csave; STATE.cSave=Object.assign(STATE.cSave||{}); STATE.cSave[id]=!STATE.cSave[id]; STATE.sheet=null; render(); toast(STATE.cSave[id]?"Saved. Find it under Saved.":"Removed from Saved."); });
   q("[data-cnewcat]", el=>{ STATE.cNewCat=el.dataset.cnewcat; render(); });
+  q("[data-cposttype]", el=>{ STATE.postType=el.dataset.cposttype; go("posts"); });
+  q("[data-casktag]", el=>{ const t=phone.querySelector("#caskt"); STATE.cAskDraft = t ? t.value : STATE.cAskDraft; STATE.cAskTag=el.dataset.casktag; render(); });
+  q("[data-caskpost]", el=>{ const t=phone.querySelector("#caskt"); const text=(t&&t.value.trim()) || STATE.cAskDraft || (el.dataset.caskpost==="ask"?"Intro to someone who has run a PM hiring loop at an AI lab?":"Happy to review PM resumes this week.");
+    const a = { id:"m"+Date.now(), fam:cF().id, k:el.dataset.caskpost, pid:"me", tag:STATE.cAskTag, text, when:"Now", n:0 };
+    STATE.cMyAsks = [a, ...(STATE.cMyAsks||[])]; STATE.cAskTag = null; STATE.cAskDraft = ""; STATE.sheet = null; openSheet("cmatch", a.id); });
+  q("[data-caskdm]", el=>{ const [aid,pid]=el.dataset.caskdm.split("|"); STATE.cAskSent=Object.assign(STATE.cAskSent||{}, {[aid+pid]:true}); render(); toast(`Kai drafted a message to ${DB.people[pid].name.split(" ")[0]} in Messages. Send it when it reads right.`); });
+  q("[data-chelpsend]", el=>{ const a=cAskOf(el.dataset.chelpsend); STATE.cHelped=Object.assign(STATE.cHelped||{}, {[a.id]:true}); closeSheet(); toast(`Sent to ${DB.people[a.pid].name.split(" ")[0]} in Messages.`); });
   q("[data-cpostsave]", el=>{ const st=el.dataset.cpostsave; const f=cF(); DB.posts.unshift({ id:"pn"+DB.posts.length, fam:f.id, cat:STATE.cNewCat||cCats(f)[1], who:DB.user.name, ini:DB.user.initials, sub:"", when:"Now", title:"Your new post", text:"What you wrote.", read:"1 min read", tags:[], up:0, cm:0, st, mine:true }); STATE.cNewCat=null; STATE.sheet=null; STATE.postType = st==="live" ? "All" : "drafts"; render(); toast(st==="live"?"Posted.":st==="pending"?"Sent to the organizers. It's under Drafts until it's approved.":"Saved to Drafts."); });
   q("[data-cpdel]", el=>{ DB.posts = DB.posts.filter(p=>p.id!==el.dataset.cpdel); STATE.sheet=null; if (STATE.screen==="manage:cpost") go("posts"); else render(); toast("Deleted."); });
   q("[data-cppin]", el=>{ const p=DB.posts.find(x=>x.id===el.dataset.cppin); p.pinned=!p.pinned; STATE.sheet=null; render(); });
@@ -12223,6 +12294,21 @@ eduMount = function(){ _popMount(); if (!phone.querySelector(".tipx")) return; p
 /* Under navigator.webdriver (tests, captures) the sheet step-back is instant unless the URL has ?motion, like motion.js. */
 try { if (navigator.webdriver && !new URLSearchParams(location.search).has("motion")) document.documentElement.classList.add("pop-still"); } catch(e){}
 
+/* The sheet step-back eases in: render() draws a new .screen, so a sheet that opens in that render has no "before" to
+   transition from and the page snapped to its stepped-back size (Apoorv 20:05). When a sheet or drawer appears, start
+   the new .screen at full size for one frame, then let popups.css's transition take it back. Re-renders while a sheet
+   is already open are untouched. */
+const _popRender = render;
+render = function(){
+  const was = !!phone.querySelector("#sheet:not(.closing), .drawer:not(.closing)");
+  const r = _popRender.apply(this, arguments);
+  const scr = phone.querySelector(":scope > .screen");
+  if (!was && scr && phone.querySelector(":scope > #sheet:not(.closing), :scope > .drawer:not(.closing)") && !document.documentElement.classList.contains("pop-still")) {
+    scr.classList.add("pop-from"); void scr.offsetWidth; scr.classList.remove("pop-from");
+  }
+  return r;
+};
+
 /* ==== PROFILE FIXES (27 Sep, missions thread; found by the profiles thread, built as a candidate on the coordinator's ask)
    1. A blocked person's profile must not offer "Say hi": the action becomes Unblock, with a line saying what blocked means.
    2. Manage's declined Sam Ortiz and removed Tom Becker shared the mock ids of Sam Okafor and Tom Becker the recruiter;
@@ -12249,6 +12335,32 @@ const _fxConfirm = sConfirm; sConfirm = function(){ return _fxConfirm.apply(this
 const _fxConsent = sConsent; sConsent = function(){ return _fxConsent.apply(this, arguments).replace("Verified from LinkedIn · 2019 to present", fxSrc()+" · 2019 to present"); };
 const _fxAuth = sAuth; sAuth = function(){ return _fxAuth.apply(this, arguments).replace(/<button class="btn sec" onclick="providerAuth\('linkedin'\)">Continue with LinkedIn<\/button>/, ""); };
 if (typeof APP_PAGES!=="undefined") APP_PAGES.forEach(pg=>(pg.qs||[]).forEach(q=>{ if (q[1]==="Verified from LinkedIn · 2019 to present") q[1]="From your Google account · 2019 to present"; }));
+
+/* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
+   Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
+   scope rows, the famchip) gets FAM_MARK[id] instead, through one DOM pass after each render and a MutationObserver for
+   in-place patches. Nothing in the modules' own files changes. The Desi mark is a placeholder until he names "Funder". */
+const FM_SEL = ".flogo, .flg, .tab.fam .ic.logo, .cm-sq, .rowitem[data-switch] .avatar, .scoperow .avatar, .nscope .avatar.sq, .famchip i, .xrow .avatar";
+const FM_FALLBACK = { X:"xoogler", M:"michigan", D:"desi", A:"aipm" };
+function fmId(letter){
+  const fams = (typeof DB!=="undefined" && DB.families) || [];
+  const f = fams.find(x => x.initial===letter && FAM_MARK[x.id]);
+  return f ? f.id : (FM_FALLBACK[letter] && FAM_MARK[FM_FALLBACK[letter]] ? FM_FALLBACK[letter] : null);
+}
+function fmApply(root){
+  (root||document).querySelectorAll(FM_SEL).forEach(el => {
+    if (el.classList.contains("fm") || el.children.length) return;
+    const t = el.textContent.trim(); if (t.length!==1) return;
+    const id = fmId(t); if (!id) return;
+    el.innerHTML = FAM_MARK[id]; el.classList.add("fm"); el.setAttribute("data-fam", id); el.setAttribute("aria-label", t);
+  });
+}
+const _fmRender = render; render = function(){ const r = _fmRender.apply(this, arguments); fmApply(); return r; };
+let fmQueued = false;
+try {
+  new MutationObserver(() => { if (fmQueued) return; fmQueued = true; requestAnimationFrame(() => { fmQueued = false; fmApply(); }); })
+    .observe(document.body, { childList:true, subtree:true });
+} catch(e) {}
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
