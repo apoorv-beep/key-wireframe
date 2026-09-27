@@ -7461,7 +7461,7 @@ const EVM_S = { "s-coffee": { name:"Coffee with new PMs", cadence:"Every other T
 function evmS(){ STATE.evm = STATE.evm || { b:{ ok:false, offered:{} }, c:{}, d:{ done:{} }, e:{ sent:{}, open:null }, f:{ nudged:{}, invited:{}, rules:{} }, log:{} }; return STATE.evm; }
 function evmLog(m, who, text){ if (typeof missionLogAdd==="function") missionLogAdd(m, who, text, "now"); }
 function evmEv(eid){ return typeof evE==="function" ? evE(eid) : (DB.fevents||[]).find(e=>e.id===eid); }
-function evmSeries(sid){ const live = (typeof DB.series!=="undefined" && DB.series) ? DB.series.find(s=>s.id===sid) : null; const loc = EVM_S[sid] || EVM_S["s-coffee"]; return live ? Object.assign({}, loc, { name:live.name||loc.name, cadence:live.cadence||loc.cadence }) : loc; }
+function evmSeries(sid){ const live = (typeof DB.series!=="undefined" && DB.series) ? DB.series.find(s=>s.id===sid) : null; const loc = EVM_S[sid] || EVM_S["s-coffee"]; return live ? Object.assign({}, loc, { name:live.name||loc.name, cadence:(typeof evCadLabel==="function"?evCadLabel(live):live.cadence)||loc.cadence }) : loc; }
 function evmAttendance(sid){ if (typeof evSeriesAttendance==="function") { const a=evSeriesAttendance(sid); if (a&&a.length) return a.map(x=>Object.assign({ tag: x.of>=3&&x.came/x.of>=0.6?"regular":x.of<=1?"new":"lapsed" }, x)); } return evmSeries(sid).people; }
 
 /* the missions themselves, for the host */
@@ -10926,6 +10926,13 @@ const _fxSProfile = sProfile; sProfile = function(pid){ return fxProfile(_fxSPro
 
 if (typeof C_MM !== "undefined") C_MM.forEach(m=>{ if (m.id==="sam" && m.n==="Sam Ortiz") m.id="sam-ortiz"; if (m.id==="tom" && m.n==="Tom Becker" && /becker/.test(m.e||"")) m.id="tom-becker"; });
 const _fxPortSheet = portSheet; portSheet = function(type, id){ let h = _fxPortSheet(type, id); if (typeof h==="string" && h.includes('data-mml="tom" data-mm="tom"')) h = h.replace('data-mml="tom" data-mm="tom"', 'data-mml="tom-becker" data-mm="tom-becker"'); return h; };
+
+/* 3. LinkedIn words out of the old onboarding (coordinator 18:45 on Apoorv's 18:17 word that LinkedIn sign-in may not be possible).
+      The flow and every tap label the demo script uses stay; only the source line and the LinkedIn buttons change. Easy to back out: delete this block. */
+function fxSrc(){ return STATE.signinWith==="apple" ? "From your Apple account" : "From your Google account"; }
+const _fxConfirm = sConfirm; sConfirm = function(){ return _fxConfirm.apply(this, arguments).replace("Bay Area. LinkedIn", "Bay Area. "+fxSrc()).replace(/<button class="btn ghost" onclick="STATE\.liDeclined=true;go\('connect'\)">Skip, I don't have LinkedIn<\/button>/, ""); };
+const _fxConsent = sConsent; sConsent = function(){ return _fxConsent.apply(this, arguments).replace("Verified from LinkedIn · 2019 to present", fxSrc()+" · 2019 to present"); };
+const _fxAuth = sAuth; sAuth = function(){ return _fxAuth.apply(this, arguments).replace(/<button class="btn sec" onclick="providerAuth\('linkedin'\)">Continue with LinkedIn<\/button>/, ""); };
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
