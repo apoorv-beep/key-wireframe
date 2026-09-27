@@ -719,6 +719,11 @@
   --component-call-user-ink: #DCB854;
   --component-call-end-bg: #C8322F;
   --component-call-end-ink: #F9FAFC;
+  /* Kai call controls. The dial ground is on-deep ink at 14%: an alpha literal,
+     so it does not follow a change to --text-on-deep-default. Sweep it by hand. */
+  --component-call-control-bg: #F9FAFC24;
+  --component-call-control-active-bg: #F9FAFC;
+  --component-call-control-active-ink: #12161A;
   --component-callbar-bg: #0B0E11;
   --component-callbar-ink: #F9FAFC;
   --component-handshake-bg: #0B0E11E0;
@@ -1012,6 +1017,11 @@
   --component-call-user-ink: #DCB854;
   --component-call-end-bg: #C8322F;
   --component-call-end-ink: #F9FAFC;
+  /* Kai call controls. The dial ground is on-deep ink at 14%: an alpha literal,
+     so it does not follow a change to --text-on-deep-default. Sweep it by hand. */
+  --component-call-control-bg: #F9FAFC24;
+  --component-call-control-active-bg: #F9FAFC;
+  --component-call-control-active-ink: #12161A;
   --component-callbar-bg: #000000;
   --component-callbar-ink: #F9FAFC;
   --component-handshake-bg: #000000EB;
@@ -1101,8 +1111,12 @@
 /* Hi-fi base chrome (Apoorv 27 Sep 22:03; hi-fi copy only). Header icon buttons stand bare (KeyIconButton container=none) on a 40px target;
    every other base icon button and small button is a radius-12 tile. Mic and call controls stay round (their modules own them). */
 .phone .hdr > .icon, .phone .hdr > .back { width:40px; height:40px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
-.phone .hdr > .icon .badge { top:2px; right:2px; }
+.phone .hdr > .icon .badge { top:3px; right:2px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
+.phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
+/* Compact phones (SE, 320): the three bare icons narrow to 34 (the 40 height stays the target) and the Messages title steps down to display-m, so titles keep their room. */
+@media (max-width:360px) { .phone .hdr.top { gap:0; } .phone .hdr.top > .icon { width:34px; }
+  #phone.hf-msg .hdr.top > div.t { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); } }
 
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
    TEXT ONLY. No colour, no surface, no spacing, no layout. Every rule here sets font-family, font-size, font-weight,

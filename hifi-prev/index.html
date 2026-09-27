@@ -3218,6 +3218,8 @@ p,
   .evx-hi .btn.sec, .evx-sh .btn.sec, .evx-card .btn.sm.sec { background:var(--bg-surface-default); border-color:var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
   .evx-hi .btn.ghost, .evx-sh .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
   .evx-hi .btn.sm, .evx-sh .btn.sm, .evx-card .btn.sm { font:var(--type-label); letter-spacing:var(--type-label-tracking); border-radius:var(--radius-absolute-12); }
+  /* The calendar page's button pair: one line each down to 320, the pair equal height */
+  .evx-hi .evx-cact .btn { display:inline-flex; align-items:center; justify-content:center; min-width:0; min-height:var(--space-absolute-48); padding:0 var(--space-absolute-12); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); white-space:nowrap; }
   .evx-card .btn.sm { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
   /* KeyChip, KeyFilterRail; Follow is the call to act and Following settles into a tonal chip, as a subscribe button does */
   .evx-hi .pill, .evx-sh .pill { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-chip-bg); border-color:var(--component-chip-border); color:var(--component-chip-ink); }
@@ -3338,6 +3340,8 @@ p,
   .evt-screen .evt-people, .evt-screen .evt-more, .evt-screen .evs-strip, .evt-screen .evt-looks, .evt-screen .evt-fxrow { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-mtabs { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-poster, .evt-screen .evt-roll { border-radius:var(--radius-absolute-24); }
+  /* 4:3, so the name clears the floating RSVP / Manage bar on the first screen at SE; the art is centred and loses only empty ground */
+  .evt-screen .evt-poster { aspect-ratio:4 / 3; }
   .evt-screen .evt-stamp { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); padding:var(--space-absolute-6) var(--space-absolute-10); border-radius:var(--radius-absolute-8); }
   .evt-screen .evt-title { font:var(--type-display-xl); letter-spacing:var(--type-display-xl-tracking); margin:var(--space-absolute-24) 0 var(--space-absolute-8); padding-bottom:var(--space-absolute-4); }
   .evt-screen .evt-live .evt-title { margin:var(--space-absolute-24) 0 var(--space-absolute-4); }
