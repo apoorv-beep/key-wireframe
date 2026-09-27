@@ -3130,7 +3130,6 @@ p,
   .evx-cmeta { font-size:13.5px; color:var(--ink2); }
   .evx-cabout { font-size:14px; line-height:1.45; margin:8px 0 0; }
   .evx-cfolk { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; color:var(--ink2); cursor:pointer; }
-  .evx-cfolk .evx-faces i { width:24px; height:24px; font-size:9px; margin-left:-6px; } .evx-cfolk .evx-faces i:first-child { margin-left:0; }
   .evx-cact { gap:8px; margin:14px 0 4px; }
   .btn.evx-fbtn { display:inline-flex; align-items:center; justify-content:center; gap:6px; } .btn.evx-fbtn svg.li { margin:0; }
   .evx-vseg { margin:2px 0 12px; }
@@ -3193,6 +3192,252 @@ p,
   .evx-about { font-size:14.5px; line-height:1.5; margin:4px 0 8px; }
   .evx-arow { align-items:center; } .evx-aic { width:36px; height:36px; border-radius:10px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-style:normal; color:var(--ink); flex:0 0 auto; }
   .evx-bell.on .a { font-weight:800; }
+
+  /* ==== HIGH FIDELITY, 27 Sep (events thread; Apoorv 20:28). The blend, drawn only from Design system's variables: key-tokens.css loads before this file.
+     The event card and its parts are styled everywhere they appear. .evx-hi marks the Events screens an event's theme doesn't paint (Events, Calendars,
+     a calendar page and its Manage) and .evx-sh wraps Events' sheets; both point the base colours at the tokens, the way a theme does. ==== */
+  .screen:has(> .body.evx-hi), .evx-sh { --ink:var(--text-primary); --ink2:var(--text-secondary); --ink3:var(--text-tertiary); --line:var(--border-default); --fill:var(--bg-fill-default); --fill2:var(--bg-fill-strong); --danger:var(--state-danger-default); }
+  #phone:has(> .screen > .body.evx-hi), #phone > .screen:has(> .body.evx-hi) { background:var(--bg-page); }
+  .evx-sh { display:contents; --line:var(--border-subtle); }
+  .screen:has(> .body.evx-hi) > .hdr .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+  /* Header icons stand bare; every other icon button and button is a radius-12 tile, and pills, tags and the mic stay round (Apoorv 22:03) */
+  .screen:has(> .body.evx-hi) > .hdr .icon, .screen:has(> .body.evx-hi) > .hdr .back { background:transparent; border-color:transparent; color:var(--text-primary); }
+  .evx-hi .lbl, .evx-sh .lbl { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
+  .evx-hi .xs, .evx-sh .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+  .evx-sh .sm { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evx-sh h2 { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+  .evx-hi .empty, .evx-sh .empty { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-tertiary); border-color:var(--border-strong); border-radius:var(--radius-absolute-12); }
+  /* KeyButton: primary, secondary and ghost at radius 12 */
+  .evx-hi .btn, .evx-sh .btn { font:var(--type-button-l); letter-spacing:var(--type-button-l-tracking); border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+  .evx-hi .btn.sec, .evx-sh .btn.sec, .evx-card .btn.sm.sec { background:var(--bg-surface-default); border-color:var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
+  .evx-hi .btn.ghost, .evx-sh .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
+  .evx-hi .btn.sm, .evx-sh .btn.sm, .evx-card .btn.sm { font:var(--type-label); letter-spacing:var(--type-label-tracking); border-radius:var(--radius-absolute-12); }
+  .evx-card .btn.sm { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
+  /* KeyChip, KeyFilterRail; Follow is the call to act and Following settles into a tonal chip, as a subscribe button does */
+  .evx-hi .pill, .evx-sh .pill { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-chip-bg); border-color:var(--component-chip-border); color:var(--component-chip-ink); }
+  .evx-hi .pill.on, .evx-sh .pill.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+  .evx-hi .chip[data-evfollow], .evx-sh .chip[data-evfollow] { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
+  .evx-hi .chip.on[data-evfollow], .evx-sh .chip.on[data-evfollow] { background:var(--bg-fill-strong); border-color:var(--bg-fill-strong); color:var(--text-primary); }
+  /* KeyAvatar: a filled disc, not the wireframe's dashed ring */
+  .evx-hi .avatar, .evx-sh .avatar { border:0; background:var(--bg-fill-strong); color:var(--text-secondary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+  /* KeyRow and KeyCalendarRow: rows on the ground with hairlines, no boxes */
+  .evx-hi .rowitem .m .a, .evx-sh .rowitem .m .a, .evx-hi .trow .a, .evx-sugg .name { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+  .evx-hi .rowitem .m .b, .evx-sh .rowitem .m .b, .evx-hi .trow .b, .evx-sugg .sub { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+  .evx-hi .rowitem .s, .evx-sh .rowitem .s { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+  .evx-hi .today { background:transparent; border:0; border-radius:0; padding:0; }
+  .evx-sugg { border-color:var(--border-default); }
+  .evx-ico, .evx-aic { background:var(--bg-fill-strong); color:var(--text-primary); border-radius:var(--radius-absolute-12); }
+  .evx-sh .evx-aic { background:var(--bg-fill-default); }
+  /* KeySearchField sits on the fill; KeyInput is a white field */
+  .evx-hi .evx-search { background:var(--bg-fill-strong); border-color:transparent; border-radius:var(--radius-absolute-12); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-primary); }
+  .evx-sh .input { background:var(--component-input-bg); border-color:var(--component-input-border-default); border-radius:var(--radius-absolute-12); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-primary); }
+  .evx-sh .input::placeholder, .evx-hi .evx-search::placeholder { color:var(--component-input-placeholder); }
+  /* KeySegmented: a mode switch on a filled track */
+  .evx-hi .seg, .evx-sh .seg { border:0; background:var(--bg-fill-strong); border-radius:var(--radius-absolute-12); padding:3px; gap:2px; }
+  .evx-hi .seg div, .evx-sh .seg div { font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-secondary); border-radius:var(--radius-absolute-10); padding:8px; }
+  .evx-hi .seg div.on, .evx-sh .seg div.on { background:var(--component-segmented-active-bg); color:var(--component-segmented-active-ink); }
+  /* KeyTabs: bold label and underline on a hairline, sticky on the ground */
+  .evx-hi .evx-tabs { background:var(--bg-page); border-bottom-color:var(--border-default); }
+  .evx-hi .evx-tabs div { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-tertiary); }
+  .evx-hi .evx-tabs div.on { color:var(--text-primary); border-bottom-color:var(--text-primary); }
+  /* date headers and the Tonight label */
+  .evx-dh { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); margin:22px 0 0; }
+  .evx-soon { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-fill-strong); color:var(--text-primary); border-radius:var(--radius-absolute-infinite); }
+  /* KeyEventCard, identical everywhere: white, radius 20, lifted while it's live; settled cards sit flat and tinted */
+  .evx-card { background:var(--component-card-bg); border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); padding:10px; gap:14px; }
+  .evx-card.past, .evx-card.locked { background:var(--component-card-tinted-bg); box-shadow:none; outline:1px solid var(--border-default); outline-offset:-1px; }
+  .evx-thumb { border-radius:var(--radius-absolute-12); }
+  .evx-thumb::after { background:linear-gradient(180deg, transparent 30%, var(--component-cover-scrim)); }
+  .evx-series .evx-thumb { box-shadow:5px -5px 0 -1px var(--component-card-bg), 5px -5px 0 0 var(--border-strong), 10px -10px 0 -2px var(--component-card-bg), 10px -10px 0 -1px var(--border-default); }
+  .evx-dd { color:var(--text-inverse); font:var(--type-overline); letter-spacing:var(--type-overline-tracking); }
+  .evx-dd b { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); }
+  .evx-t { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+  .evx-s { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+  .evx-s2 { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-secondary); }
+  .evx-cm { gap:4px; }
+  /* KeyFaceStack */
+  .evx-faces i { width:var(--space-absolute-24); height:var(--space-absolute-24); margin-left:calc(var(--space-absolute-4) * -1); background:var(--component-avatar-bg); border:var(--border-width-thin) solid var(--face-ring, var(--bg-surface-default)); color:var(--component-avatar-ink); font:600 10px/1 var(--type-family); letter-spacing:0; }
+  .evx-card { --face-ring:var(--component-card-bg); } .evx-card.past, .evx-card.locked { --face-ring:var(--component-card-tinted-bg); } .evx-cfolk { --face-ring:var(--bg-page); }
+  /* KeyFamilyChip (the calendar an event comes from) and KeyFamilyLogo */
+  .evx-pill { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); background:var(--bg-fill-default); padding:4px 10px 4px 4px; }
+  .evx-pill i { width:18px; height:18px; color:var(--text-inverse); font:var(--type-overline); letter-spacing:0; }
+  .evx-pill i.evx-fm { background:var(--bg-surface-default); box-shadow:none; outline:1px solid var(--border-default); outline-offset:-1px; border-radius:var(--radius-absolute-4); }
+  /* KeyEventState: Going is the only dark fill; Hosting is the gold tag (border and ink, never a flat gold fill); Waiting is dashed; the rest are outlines */
+  .evx-tag { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-surface-default); color:var(--text-primary); border-color:var(--border-default); border-radius:var(--radius-absolute-infinite); padding:5px 10px; }
+  .evx-tag.go { background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); color:var(--text-inverse); }
+  .evx-tag.host { background:var(--bg-surface-default); border-color:var(--component-tag-gold-border); color:var(--component-tag-gold-ink); }
+  .evx-tag.inv { background:var(--bg-surface-default); border-color:var(--component-tag-new-border); color:var(--component-tag-new-ink); }
+  .evx-tag.wait { background:var(--bg-surface-default); border-color:var(--border-control); color:var(--text-secondary); }
+  .evx-tag.lock { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-secondary); }
+  /* Kai's line on a host's card: Kai's dark plate (missions draws the gold K on it) */
+  .evx-kai { background:var(--bg-deep); color:var(--text-on-deep-default); border-radius:var(--radius-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); padding:9px 12px; }
+  .evx-kai b { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+  /* KeyHScroll of calendar tiles: yours carry a gold ring (text/gold, since the ring alone says it's yours) */
+  .evx-si span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-secondary); }
+  .evx-cct { border-radius:var(--radius-absolute-8); } .evx-cct.big { border-radius:var(--radius-absolute-12); }
+  .evx-cct i { background:var(--bg-surface-default); color:var(--text-primary); font:var(--type-overline); letter-spacing:0; border-radius:var(--radius-absolute-4); box-shadow:var(--elevation-1); }
+  .evx-cct.big i { border-radius:var(--radius-absolute-6); }
+  .evx-cct.mine { box-shadow:none; outline:2px solid var(--text-gold); outline-offset:2px; }
+  .evx-cct.all { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-secondary); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evx-sep { background:var(--border-default); }
+  /* calendar page */
+  .evx-clogo { border-radius:var(--radius-absolute-20); border-color:var(--bg-page); }
+  .evx-clogo i { background:var(--bg-surface-default); color:var(--text-primary); font:var(--type-overline); letter-spacing:0; border-radius:var(--radius-absolute-8); box-shadow:var(--elevation-1); }
+  .evx-clogo i.evx-fm { border-radius:var(--radius-absolute-8); }
+  .evx-cname { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); color:var(--text-primary); }
+  .evx-cmeta { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+  .evx-cabout, .evx-about { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-primary); }
+  .evx-cfolk { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+  .evx-cnav b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+  .evx-cnav span { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-primary); }
+  .evx-cnav i:active { background:var(--bg-fill-strong); }
+  .evx-free { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-tertiary); }
+  .evx-free b { font:var(--type-body-s); color:var(--text-primary); }
+  /* KeyMonthGrid: covers fill their days, a bar under the date is a plan of yours elsewhere */
+  .evx-mgrid .dn { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); }
+  .evx-mc { border-radius:var(--radius-absolute-10); color:var(--text-primary); }
+  .evx-mc b { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evx-mc.has b, .evx-mc em { font:var(--type-overline); letter-spacing:0; border-radius:var(--radius-absolute-6); }
+  .evx-mc.has b { background:var(--bg-surface-default); color:var(--text-primary); box-shadow:var(--elevation-1); }
+  .evx-mc em { background:var(--bg-inverse-default); color:var(--text-inverse); }
+  .evx-mc.today:not(.has) b, .evx-mc.today.has b { background:var(--bg-inverse-default); color:var(--text-inverse); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evx-mc.on::after { border-radius:var(--radius-absolute-10); box-shadow:none; outline:2px solid var(--text-primary); outline-offset:-2px; }
+  .evx-mkey { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-secondary); }
+  /* your plans elsewhere, week and day */
+  .evx-plan { border-color:var(--border-default); border-radius:var(--radius-absolute-12); }
+  .evx-plan b, .evx-wi b, .evx-blk b, .evx-pg b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+  .evx-plan .m span, .evx-wi .m span, .evx-blk .m span, .evx-pg > span:last-child { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-secondary); }
+  .evx-plan em, .evx-wi em, .evx-blk em { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--state-danger-default); }
+  .evx-pcv, .evx-wcv, .evx-bcv { border-radius:var(--radius-absolute-10); }
+  .evx-wd span, .evx-dp span { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); }
+  .evx-wd b, .evx-dp b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+  .evx-wk.today .evx-wd b { background:var(--bg-inverse-default); color:var(--text-inverse); }
+  .evx-wfree { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-tertiary); }
+  .evx-wi.ghost { border-color:var(--border-default); border-radius:var(--radius-absolute-12); }
+  .evx-dp { border-radius:var(--radius-absolute-12); }
+  .evx-dp.on { background:var(--bg-inverse-default); } .evx-dp.on span, .evx-dp.on b { color:var(--text-inverse); } .evx-dp.on.has::after { background:var(--text-inverse); }
+  .evx-hr span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); background:var(--bg-page); }
+  .evx-blk { background:var(--component-card-bg); box-shadow:var(--elevation-1); border-radius:var(--radius-absolute-12); }
+  .evx-blk.ghost { background:transparent; box-shadow:none; border-color:var(--border-default); }
+  .evx-gap { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-10); } .evx-gap span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+  /* past: a grid of covers, like a channel's videos */
+  .evx-pgc { border-radius:var(--radius-absolute-16); }
+  .evx-pgc em { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-surface-default); color:var(--text-primary); }
+  /* ==== THE EVENT PAGE ON THE SCALE, 27 Sep (Apoorv 21:12: the title was cut, spacing uneven). The theme still paints every colour;
+     type, spacing, radii and sizes now come from Design system's variables. One gutter (16, as the header), a 24/32 rhythm between blocks,
+     and the 14 type styles instead of the 31 sizes the page had. The title keeps room below its last line so descenders are never cut. ==== */
+  .evt-screen { --face-ring:var(--ev-ink-inverse); }
+  .evt-screen .evt-hdr { padding:var(--space-absolute-8) var(--space-absolute-16); }
+  .evt-screen .evt-body { padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
+  .evt-screen .evt-people, .evt-screen .evt-more, .evt-screen .evs-strip, .evt-screen .evt-looks, .evt-screen .evt-fxrow { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
+  .evt-screen .evt-mtabs { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
+  .evt-screen .evt-poster, .evt-screen .evt-roll { border-radius:var(--radius-absolute-24); }
+  .evt-screen .evt-stamp { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); padding:var(--space-absolute-6) var(--space-absolute-10); border-radius:var(--radius-absolute-8); }
+  .evt-screen .evt-title { font:var(--type-display-xl); letter-spacing:var(--type-display-xl-tracking); margin:var(--space-absolute-24) 0 var(--space-absolute-8); padding-bottom:var(--space-absolute-4); }
+  .evt-screen .evt-live .evt-title { margin:var(--space-absolute-24) 0 var(--space-absolute-4); }
+  .evt-screen input.input.evt-name { font:var(--type-display-xl) !important; letter-spacing:var(--type-display-xl-tracking); padding:0 0 var(--space-absolute-4); margin:var(--space-absolute-4) 0 var(--space-absolute-16); }
+  .evt-screen .evt-host { gap:var(--space-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-by { gap:var(--space-absolute-8); }
+  .evt-screen .evt-bav { width:var(--space-absolute-24); height:var(--space-absolute-24); font:600 10px/1 var(--type-family); letter-spacing:0; }
+  .evt-screen .evt-follow, .evt-screen .evt-fact em, .evt-screen .evs-h span, .evt-screen .evm-row > em, .evt-screen .evt-person .btn.sm { display:inline-flex; align-items:center; gap:var(--space-absolute-4); min-height:var(--space-absolute-32); padding:0 var(--space-absolute-12); border-radius:var(--radius-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-facts { gap:var(--space-absolute-12); margin:var(--space-absolute-24) 0; }
+  .evt-screen .evt-fact { gap:var(--space-absolute-12); }
+  .evt-screen .evt-fact b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-fact > div:not(.evt-cal) > span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evt-ico, .evt-screen .evt-cal, .evt-screen .evm-n { flex:0 0 var(--space-absolute-48); width:var(--space-absolute-48); height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); }
+  .evt-screen .evt-cal b { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); overflow:visible; }
+  .evt-screen .evt-cal span { overflow:visible; }
+  .evt-screen .evt-cal span, .evt-screen .evm-n { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
+  .evt-screen .evs { margin:0 0 var(--space-absolute-24); }
+  .evt-screen .evs-h { gap:var(--space-absolute-8); margin-bottom:var(--space-absolute-12); }
+  .evt-screen .evs-h b { font:var(--type-label); letter-spacing:var(--type-label-tracking); white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evs-strip { gap:var(--space-absolute-8); }
+  .evt-screen .evs-d { flex:0 0 var(--space-absolute-64); gap:0; padding:var(--space-absolute-8) var(--space-absolute-4); border-radius:var(--radius-absolute-16); }
+  .evt-screen .evs-d b { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); }
+  .evt-screen .evs-d span { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
+  .evt-screen .evs-d em, .evt-screen .evs-moved { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); margin-top:0; }
+  .evt-screen .evs-moved { margin-top:var(--space-absolute-8); }
+  .evt-screen .evt-going { gap:var(--space-absolute-12); margin:0 0 var(--space-absolute-24); }
+  .evt-screen .evt-going b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-going span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  /* KeyFaceStack, size=44: the spec's three faces, 4 overlap and a ring in the ground's colour; the theme picks the fills */
+  .evt-screen .evt-going .evt-faces { padding-left:0; }
+  .evt-screen .evt-going .evt-faces i { width:calc(var(--space-absolute-40) + var(--space-absolute-4)); height:calc(var(--space-absolute-40) + var(--space-absolute-4)); margin-left:calc(var(--space-absolute-4) * -1); border:var(--border-width-thin) solid var(--face-ring); box-shadow:none; font:var(--type-label); letter-spacing:0; }
+  .evt-screen .evt-going .evt-faces i:first-child { margin-left:0; }
+  .evt-screen .evt-ask, .evt-screen .evt-note, .evt-screen .evt-duo, .evt-screen .evm { margin:0 0 var(--space-absolute-16); }
+  .evt-screen .evt-ask { gap:var(--space-absolute-4); padding:var(--space-absolute-16); border-radius:var(--radius-absolute-20); }
+  .evt-screen .evt-ask > b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); }
+  .evt-screen .evt-ask > span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evt-screen .evt-ask .evt-duo { margin:var(--space-absolute-12) 0 0; }
+  .evt-screen .evt-duo { gap:var(--space-absolute-8); } .evt-screen .evt-duo .btn { min-height:var(--space-absolute-48); padding:0 var(--space-absolute-12); border-radius:var(--radius-absolute-12); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-note { gap:var(--space-absolute-8); padding:var(--space-absolute-12) var(--space-absolute-16); border-radius:var(--radius-absolute-16); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-note span { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evm { gap:var(--space-absolute-8); }
+  .evt-screen .evm-h { gap:var(--space-absolute-6); margin:0; font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evm-row { gap:var(--space-absolute-12); padding:var(--space-absolute-12) var(--space-absolute-16) var(--space-absolute-12) var(--space-absolute-12); border-radius:var(--radius-absolute-20); }
+  .evt-screen .evm-row > div { gap:var(--space-absolute-2); }
+  .evt-screen .evm-row > div > b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-screen .evm-row > div > span { display:block; font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  /* KeyFaceStack, size=24, inline with the line it belongs to */
+  .evm-faces { display:inline-flex; vertical-align:middle; gap:0; margin-right:var(--space-absolute-6); }
+  .evm-faces i { width:var(--space-absolute-24); height:var(--space-absolute-24); margin-left:calc(var(--space-absolute-4) * -1); border:var(--border-width-thin) solid var(--face-ring, var(--bg-surface-default)); font:600 10px/1 var(--type-family); letter-spacing:0; }
+  .evm-faces i:first-child { margin-left:0; }
+  .evt-screen .evt-chat { margin-top:0; padding:var(--space-absolute-16); border-radius:var(--radius-absolute-24); }
+  .evt-screen .evt-chat-h { margin-bottom:var(--space-absolute-12); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-chat-h > span:first-child { display:inline-flex; align-items:center; gap:var(--space-absolute-6); }
+  .evt-screen .evt-new { display:inline-flex; align-items:center; min-height:var(--space-absolute-24); padding:0 var(--space-absolute-8); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+  .evt-screen .evt-b { gap:var(--space-absolute-8); margin:var(--space-absolute-8) 0; }
+  .evt-screen .evt-bt { padding:0 var(--space-absolute-12); border:solid transparent; border-width:var(--space-absolute-8) 0; border-radius:var(--radius-absolute-16) var(--radius-absolute-16) var(--radius-absolute-16) var(--radius-absolute-4); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
+  .evt-screen .evt-b.me .evt-bt { border-radius:var(--radius-absolute-16) var(--radius-absolute-16) var(--radius-absolute-4) var(--radius-absolute-16); }
+  .evt-screen .evt-bt b { font:var(--type-body-m-strong); }
+  .evt-screen .evt-act { gap:var(--space-absolute-8); margin:0 0 var(--space-absolute-8); font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evt-screen .evt-act b { font-weight:600; }
+  .evt-screen .evt-react { gap:var(--space-absolute-8); margin-top:var(--space-absolute-12); }
+  .evt-screen .evt-react button { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); }
+  .evt-screen .evt-macts i, .evt-screen .evt-shares i, .evt-screen .evt-links span { border-radius:var(--radius-absolute-12); }
+  .evt-screen .evt-say { height:var(--space-absolute-40); padding:0 var(--space-absolute-16); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
+  .evt-screen .evt-lockline { display:flex; align-items:center; justify-content:center; gap:var(--space-absolute-6); margin-top:var(--space-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-sec { margin:var(--space-absolute-32) 0 var(--space-absolute-12); font:var(--type-title); letter-spacing:var(--type-title-tracking); }
+  .evt-screen .evt-sec + .evt-chat { margin-top:0; }
+  .evt-screen .evt-about { margin:0; font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
+  /* KeyPersonTile, as Community draws it */
+  .evt-screen .evt-people, .evt-screen .evt-more { gap:var(--space-absolute-12); padding-bottom:var(--space-absolute-4); }
+  .evt-screen .evt-person { gap:var(--space-absolute-4); padding:var(--space-absolute-16) var(--space-absolute-12); border-radius:var(--radius-absolute-20); }
+  .evt-screen .evt-pav { width:var(--space-absolute-64); height:var(--space-absolute-64); margin-bottom:var(--space-absolute-4); font:var(--type-title); letter-spacing:0; }
+  .evt-screen .evt-pav em { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); padding:var(--space-absolute-2) var(--space-absolute-6); }
+  .evt-screen .evt-person b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-person span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); min-height:2lh; }
+  .evt-screen .evt-person .btn.sm { margin-top:var(--space-absolute-8); }
+  .evt-screen .evt-person em.evt-sent { margin-top:var(--space-absolute-8); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-mini { gap:var(--space-absolute-4); }
+  .evt-screen .evt-mini b { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-mini span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+  .evt-screen .evt-mini-p { border-radius:var(--radius-absolute-20); margin-bottom:var(--space-absolute-4); }
+  .evt-screen .evt-foot { gap:var(--space-absolute-8) var(--space-absolute-16); margin:var(--space-absolute-40) 0 0; }
+  .evt-screen .evt-foot span { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evx-cta .btn { padding:var(--space-absolute-16); border-radius:var(--radius-absolute-12); font:var(--type-button-l); letter-spacing:var(--type-button-l-tracking); }
+  .evt-screen .evx-cta small { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+  .evt-screen .evt-rsvp { gap:var(--space-absolute-8); }
+  /* the host's screens share the same styles: form rows, the Manage header, the door count */
+  .evt-screen .evt-calpick, .evt-screen .evt-hdr-act, .evt-screen .evt-kai { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .hdr .back, .evt-screen .hdr .icon, .evt-screen .evt-hdr-act { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evt-screen .evt-rows { border-radius:var(--radius-absolute-20); }
+  .evt-screen .evt-frow { gap:var(--space-absolute-12); padding:var(--space-absolute-10) var(--space-absolute-16); }
+  .evt-screen .evt-frow b, .evt-screen .evt-grow b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+  .evt-screen .evt-frow span:not(.evt-tog), .evt-screen .evt-frow em, .evt-screen .evt-grow .m span, .evt-screen .evt-live-sub { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evt-screen .evt-grow em { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evt-screen .evt-mtop b { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); padding-bottom:var(--space-absolute-2); }
+  .evt-screen .evt-mtop span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evt-screen .evt-door b { font:var(--type-display-xl); letter-spacing:var(--type-display-xl-tracking); }
+  .evt-screen .evt-door > span { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
+  .evt-screen .evt-by .evt-ct i.evx-fm { display:flex; top:0; left:0; bottom:auto; width:100%; height:100%; min-width:0; border-radius:inherit; box-shadow:none; }
+  /* final audit, 27 Sep 21:15: nothing that carries information is cut to one line; the cover grid stays inside the gutter; a calendar with no family logo shows its initial on a white tile */
+  .evx-s, .evx-wi b, .evm-prow .m span { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .evt-cvgrid { grid-template-columns:repeat(4, minmax(0, 1fr)); gap:var(--space-absolute-16) var(--space-absolute-12); }
+  .evt-cvk { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+  .evt-cvk i { border-radius:var(--radius-absolute-16); overflow:hidden; } .evt-cvk i > svg { display:block; width:100%; height:100%; }
+  .evx-pill i:not(.evx-fm) { background:var(--bg-surface-default); color:var(--text-primary); outline:1px solid var(--border-default); outline-offset:-1px; border-radius:var(--radius-absolute-4); }
+  .evx-foot { flex-wrap:wrap; row-gap:var(--space-absolute-6); }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -9932,27 +10177,30 @@ function evApprover(c){ if (!c || evIsAdmin(c)) return null; if (c.kind==="famil
 function evCalMark(c){ return c.kind==="personal"&&evIsAdmin(c) ? DB.user.initials : c.kind==="personal" ? (DB.people[c.host]||{initials:c.name[0]}).initials : c.name[0]; }
 /* a family calendar wears the family's own mark (FAM_MARK from the nav thread's marks.js, v63), as Community's cMark does; others keep the initial */
 const evFamMark = c => c && c.family && typeof FAM_MARK!=="undefined" && FAM_MARK[c.family] ? FAM_MARK[c.family] : "";
-const evMarkI = (c, txt, style) => { const m=evFamMark(c); return m ? `<i class="evx-fm">${m}</i>` : `<i${style?` style="${style}"`:""}>${txt}</i>`; };
-function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>`; }
+const evMarkI = (c, txt, style) => { const m=evFamMark(c); return m ? `<i class="evx-fm" data-kc="KeyFamilyLogo">${m}</i>` : `<i${style?` style="${style}"`:""}>${txt}</i>`; };
+function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="background:${evBg(c.theme)}" data-kc="KeyTile">${evMarkI(c, evCalMark(c))}</div>`; }
 
 /* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
 function evCover(e, cls, inner){ return `<div class="evx-cov ${cls||""}" style="background:${evBg(e.theme)}">${inner||""}</div>`; }
-evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th cv-th">${evCvArt(e)}<span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
+evThumb = function(e, cls){ const d=evDate(e); return `<div class="${cls} evx-th cv-th" data-kc="KeyEventThumb">${evCvArt(e)}<span class="evx-dd"><b>${d.getDate()}</b>${EV_MON[d.getMonth()]}</span></div>`; };
 /* One state field with four labels that repeat everywhere (card, event page, Manage), like the mission kickers.
    No label means it's your move, so the card carries the one action instead. */
 function evState(e){ if (e.past) return ""; if (evLocked(e)) return "Members only"; return { invited:"Invited", going:"Going", hosting:"Hosting", pending:"Waiting", waitlist:"Waiting" }[e.reg] || ""; }
-function evTag(e){ const st=evState(e); return st?`<span class="evx-tag ${{Invited:"inv",Going:"go",Hosting:"host",Waiting:"wait","Members only":"lock"}[st]}">${st}</span>`:""; }
+/* Figma variant strings for Design system's diff: state is you and the event, time is the event itself */
+const EV_KV = { Going:"going", Hosting:"hosting", Waiting:"waiting", "Members only":"membersOnly", Invited:"invited" };
+const evKv = e => { const st=EV_KV[evState(e)]; return `${st?`state=${st}, `:""}time=${evLocked(e)?"locked":e.past?"past":STATE.eventDay&&e.id==="e1"?"live":"upcoming"}`; };
+function evTag(e){ const st=evState(e); return st?`<span class="evx-tag ${{Invited:"inv",Going:"go",Hosting:"host",Waiting:"wait","Members only":"lock"}[st]}" data-kc="KeyEventState" data-kv="state=${EV_KV[st]}">${st}</span>`:""; }
 /* Fable round 12's status formula: going count, then how many Kai thinks you should meet. Nothing else. */
 evStatus = function(e){
   if (e.past) return e.met&&e.met.length?`You met ${e.met.map(evFirst).join(", ")}`:"You went";
   const meet = e.reg==="hosting"||evLocked(e) ? 0 : (e.meet||[]).length;
   return `${e.going} going${meet?` · ${meet} to meet`:""}`;
 };
-function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
-function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}">${evMarkI(c, c.name[0], `background:${evBg(c.theme)}`)}${c.name}</span>`:""; }
+function evFaces(e){ const ids=(e.meet&&e.meet.length?e.meet:(e.goingList||[])).slice(0,3); return ids.length?`<span class="evx-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=24">${ids.map(id=>`<i>${(DB.people[id]||{initials:"?"}).initials}</i>`).join("")}</span>`:""; }
+function evPill(c){ return c?`<span class="evx-pill" data-cal="${c.id}" data-kc="KeyFamilyChip">${evMarkI(c, c.name[0])}${c.name}</span>`:""; }
 evCard = function(e, size, opts){
   opts=opts||{}; const time=(e.when||"").split(", ").slice(-1)[0]; const home=evC(e.cal);
-  return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}">${evThumb(e,"evx-thumb")}
+  return `<div class="evx-card ${evLocked(e)?"locked":""} ${e.past?"past":""}" data-ev="${e.id}" data-kc="KeyEventCard" data-kv="${evKv(e)}">${evThumb(e,"evx-thumb")}
     <div class="evx-cm"><div class="evx-t">${evLocked(e)?evIc("lock",14)+" ":""}${e.name}</div>
       <div class="evx-s">${time}${e.end?`–${e.end}`:""} · ${e.fmt==="online"?"Online":e.where}${e.price?` · $${e.price}`:""}</div>
       <div class="evx-s2">${evFaces(e)}<span>${evStatus(e)}</span></div>
@@ -9960,7 +10208,7 @@ evCard = function(e, size, opts){
 };
 function evByDate(list, empty, here){
   if (!list.length) return `<div class="empty">${empty}</div>`;
-  const out=[]; let last=""; list.forEach(e=>{ const k=evDayLabel(e); if (k!==last) { out.push(`<div class="evx-dh">${k}</div>`); last=k; } out.push(evCard(e,"row",{here})); });
+  const out=[]; let last=""; list.forEach(e=>{ const k=evDayLabel(e); if (k!==last) { out.push(`<div class="evx-dh" data-kc="KeySectionLabel">${k}</div>`); last=k; } out.push(evCard(e,"row",{here})); });
   return out.join("");
 }
 /* family's week slot (community thread calls this from the Family tab) */
@@ -9994,7 +10242,7 @@ function evStrip(){
   const mine = DB.calendars.filter(evIsAdmin).sort((a,b)=>(a.kind==="personal"?-1:1));
   const fol = DB.calendars.filter(c=>!evIsAdmin(c) && evFollows(c));
   const item = c => `<div class="evx-si" data-cal="${c.id}">${evCalThumb(c, "big "+(evIsAdmin(c)?"mine":""))}<span>${c.kind==="personal"&&evIsAdmin(c)?"Your calendar":c.name}</span></div>`;
-  return `<div class="evx-strip">${mine.map(item).join("")}<i class="evx-sep"></i>${fol.map(item).join("")}<div class="evx-si" data-evgo="calendars"><div class="evx-cct big all">All</div><span>Calendars</span></div></div>`;
+  return `<div class="evx-strip" data-kc="KeyHScroll">${mine.map(item).join("")}<i class="evx-sep"></i>${fol.map(item).join("")}<div class="evx-si" data-evgo="calendars"><div class="evx-cct big all">All</div><span>Calendars</span></div></div>`;
 }
 sEvents = function(){
   if (!STATE.member) return _evBaseEvents();
@@ -10013,17 +10261,17 @@ sEvents = function(){
     const pa = evC("cal-pa");
     body = `${rows.length?`<div class="lbl" style="margin-top:4px">Your time</div><div class="today">${rows.join("")}</div>`:""}
       ${evByDate(feed, "Nothing from the calendars you follow. Tap All to find some.")}
-      ${pa&&!evFollows(pa)?`<div class="evx-sugg" data-cal="cal-pa"><div class="row" style="gap:10px">${evCalThumb(pa)}<div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every family.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
+      ${pa&&!evFollows(pa)?`<div class="evx-sugg" data-cal="cal-pa" data-kc="KeyCalendarRow"><div class="row" style="gap:10px">${evCalThumb(pa)}<div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every family.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
   } else {
     const m = STATE.evMine;
     const drafts = DB.fevents.filter(e=>e.draft);
     const pick = m==="drafts" ? drafts : m==="past" ? DB.fevents.filter(e=>e.past && (e.reg==="going"||e.rsvp||e.reg==="hosting")).sort((a,b)=>b.sort-a.sort) : DB.fevents.filter(e=>!e.past && !e.draft && e.reg!=="none");
     if (m!=="past") pick.sort((a,b)=>a.sort-b.sort);
-    body = `<div class="pills evx-chips">${[["upcoming","Upcoming"],["past","Past"],...(drafts.length?[["drafts",`Drafts · ${drafts.length}`]]:[])].map(([k,l])=>`<div class="pill ${m===k?'on':''}" data-evmine="${k}">${l}</div>`).join("")}</div>
+    body = `<div class="pills evx-chips" data-kc="KeyFilterRail">${[["upcoming","Upcoming"],["past","Past"],...(drafts.length?[["drafts",`Drafts · ${drafts.length}`]]:[])].map(([k,l])=>`<div class="pill ${m===k?'on':''}" data-evmine="${k}">${l}</div>`).join("")}</div>
       <div class="evx-list">${evByDate(pick, m==="drafts"?"No drafts.":m==="past"?"Nothing yet.":"Nothing yet. Events you register for or host land here.")}</div>
-      ${m==="upcoming"?`<div class="evx-sugg" data-evsheet="evsync|me"><div class="row" style="gap:10px"><div class="evx-ico">${evIc("calendar-sync")}</div><div style="flex:1"><div class="name">Add My events to your calendar</div><div class="sub">What you host and register for, each event once, kept up to date.</div></div><span class="xs muted">›</span></div></div>`:""}`;
+      ${m==="upcoming"?`<div class="evx-sugg" data-evsheet="evsync|me" data-kc="KeyActionRow"><div class="row" style="gap:10px"><div class="evx-ico">${evIc("calendar-sync")}</div><div style="flex:1"><div class="name">Add My events to your calendar</div><div class="sub">What you host and register for, each event once, kept up to date.</div></div><span class="xs muted">›</span></div></div>`:""}`;
   }
-  return `${head}<div class="body">${evStrip()}<div class="evx-tabs">${[["foryou","For you"],["mine","My events"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>${navHTML("events")}`;
+  return `${head}<div class="body evx-hi">${evStrip()}<div class="evx-tabs" data-kc="KeyTabs">${[["foryou","For you"],["mine","My events"]].map(([k,l])=>`<div class="${seg===k?'on':''}" data-evseg="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>${navHTML("events")}`;
 };
 
 /* ---- Calendars screen: every calendar you have a relationship with, and making a new one ---- */
@@ -10032,10 +10280,10 @@ sCalendars = function(){
   const fol = DB.calendars.filter(c=>!evIsAdmin(c) && evFollows(c));
   const fam = DB.calendars.filter(c=>!evFollows(c) && evMemberOf(c));
   const more = DB.calendars.filter(c=>!evFollows(c) && !evMemberOf(c) && !evIsAdmin(c));
-  const crow = c => `<div class="rowitem" data-cal="${c.id}">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${evKind(c)} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed&&!evIsAdmin(c)?" · as a member":""}${evIsAdmin(c)&&(c.requests||[]).length?` · ${c.requests.length} to review`:""}</div></div>${evIsAdmin(c)?`<span class="xs muted">${c.kind==="personal"?"Owner":"Admin"}</span>`:`<span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span>`}</div>`;
+  const crow = c => `<div class="rowitem" data-cal="${c.id}" data-kc="KeyCalendarRow">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${evKind(c)} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed&&!evIsAdmin(c)?" · as a member":""}${evIsAdmin(c)&&(c.requests||[]).length?` · ${c.requests.length} to review`:""}</div></div>${evIsAdmin(c)?`<span class="xs muted">${c.kind==="personal"?"Owner":"Admin"}</span>`:`<span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span>`}</div>`;
   return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
-  <div class="body">
-    <input class="input evx-search" placeholder="Search calendars" oninput="evCalFilter(this.value)">
+  <div class="body evx-hi">
+    <input class="input evx-search" data-kc="KeySearchField" placeholder="Search calendars" oninput="evCalFilter(this.value)">
     <div class="lbl" style="margin-top:4px">Yours</div>${mine.map(crow).join("")}
     <div class="xs faint" style="margin-top:6px">Events you put on these publish at once.</div>
     <div class="lbl">Following</div>${fol.map(crow).join("")||'<div class="empty">Nothing yet.</div>'}
@@ -10134,7 +10382,7 @@ sEventDetail = function(id){
     <div class="evt-host">${home?`<span ${home.kind==="personal"?`data-cal="${home.id}"`:`data-profile="${e.host}"`} class="evt-by"><i class="evt-bav">${host.initials}</i>${e.host===EV_ME?"You":host.name.split(" ")[0]}</span>${home.kind==="personal"?"":`<span data-cal="${home.id}" class="evt-by">${evCalThumb(home,"evt-ct")}${home.name}</span>`}${evIsAdmin(home)?"":`<span class="evt-follow ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?"Following":"+ Follow"}</span>`}`:""}</div>
     ${evFacts(e, live, locked)}
     ${locked?"":evSeriesStrip(e)}
-    ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(5,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} +${e.going-names.length}</span>`:""}</div></div>`}
+    ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=44">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(3,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} and ${e.going-names.length} other${e.going-names.length===1?"":"s"}</span>`:""}</div></div>`}
     ${evStateRow(e, live, locked)}
     ${locked||live?"":evMsBlock(e)}${evSeriesTrack(e)}
     ${inRoom ? evChatCard(e, live, locked) + people : ""}
@@ -10374,15 +10622,15 @@ const EV_CAL_FOLK = { "cal-xd":["rahul","maya","sana","dev","jordan","ana"], "ca
   "cal-spc":["maya","felix","zoe"], "cal-cf":["maya","rahul","dev"] };
 function evCalFolk(c){ const ids=(EV_CAL_FOLK[c.id]||[]).filter(p=>DB.people[p] && p!==EV_ME); if (!ids.length) return "";
   const n = ids.length>2 ? `${evFirst(ids[0])}, ${evFirst(ids[1])} and ${ids.length-2} more you know` : evNames(ids);
-  return `<div class="evx-cfolk" data-evsheet="evcalfolk|${c.id}"><span class="evx-faces">${ids.slice(0,4).map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</span><span>${n} follow${ids.length===1?"s":""}</span></div>`; }
+  return `<div class="evx-cfolk" data-evsheet="evcalfolk|${c.id}"><span class="evx-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=24">${ids.slice(0,3).map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</span><span>${n} follow${ids.length===1?"s":""}</span></div>`; }
 /* the bell is a setting under Follow (YouTube: All, Personalized, None). Default is highlights plus a weekly digest, not a push per event. */
 const EV_BELL = { all:["bell-ring","Every new event","A push each time one is added"], picks:["bell","Highlights","A push for the ones Kai thinks fit you, the rest in a weekly digest"], none:["bell-off","Weekly digest only","No pushes. Its events still show in For you"] };
 const evBellOf = c => c.notify || "picks";
 
 function evCalAt(evs){ if (!STATE.evCalAt) { const n=evs.find(e=>!e.past && evDate(e)>=EV_TODAY); STATE.evCalAt = evYmd(n ? evDate(n) : EV_TODAY); } return evFromYmd(STATE.evCalAt); }
-const evCalNav = label => `<div class="evx-cnav"><b>${label}</b><span data-evcaltoday>Today</span><i data-evcalnav="-1" aria-label="Back">${evIc("chevron-left",18)}</i><i data-evcalnav="1" aria-label="Next">${evIc("chevron-right",18)}</i></div>`;
+const evCalNav = label => `<div class="evx-cnav" data-kc="KeyPeriodNav"><b>${label}</b><span data-evcaltoday>Today</span><i data-evcalnav="-1" aria-label="Back">${evIc("chevron-left",18)}</i><i data-evcalnav="1" aria-label="Next">${evIc("chevron-right",18)}</i></div>`;
 function evPlanRow(e, here){ const clash=here.some(x=>evClash(e,x)); const home=evC(e.cal);
-  return `<div class="evx-plan" data-ev="${e.id}"><span class="evx-pcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(evStartH(e))} · ${evState(e)||"Yours"}${home?` · ${home.kind==="personal"&&evIsAdmin(home)?"Your calendar":home.name}`:""}</span></div>${clash?`<em>Clashes</em>`:""}</div>`; }
+  return `<div class="evx-plan" data-ev="${e.id}" data-kc="KeyPlanRow"><span class="evx-pcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(evStartH(e))} · ${evState(e)||"Yours"}${home?` · ${home.kind==="personal"&&evIsAdmin(home)?"Your calendar":home.name}`:""}</span></div>${clash?`<em>Clashes</em>`:""}</div>`; }
 function evCalFree(evs, d){ const n=evs.find(e=>!e.past && evYmd(evDate(e))>evYmd(d));
   return `<div class="evx-free"><span>Nothing here on ${evDayLbl(d)}.</span>${n?`<b data-evcald="${evYmd(evDate(n))}">Next: ${n.name}, ${evDayLbl(evDate(n))}</b>`:""}</div>`; }
 function evCalDayList(c, evs, plans, d){ const here=evOnDay(evs,d), mine=evOnDay(plans,d);
@@ -10392,21 +10640,21 @@ function evCalDayList(c, evs, plans, d){ const here=evOnDay(evs,d), mine=evOnDay
 function evCalMonth(c, evs, plans){ const at=evCalAt(evs), y=at.getFullYear(), m=at.getMonth(); const lead=(new Date(y,m,1).getDay()+6)%7, n=new Date(y,m+1,0).getDate();
   const cells=[]; for (let i=1;i<=n;i++){ const d=new Date(y,m,i), k=evYmd(d), here=evOnDay(evs,d), mine=evOnDay(plans,d);
     cells.push(`<div class="evx-mc ${here.length?"has":""} ${k===evYmd(EV_TODAY)?"today":""} ${k===STATE.evCalAt?"on":""} ${mine.length?"mine":""} ${here.length&&here.every(e=>e.past)?"past":""}" data-evcald="${k}" aria-label="${evDayLbl(d)}">${here.length?`<span class="evx-mcv">${evCvArt(here[0])}</span>`:""}<b>${i}</b>${here.length>1?`<em>+${here.length-1}</em>`:""}</div>`); }
-  return `${evCalNav(`${EV_MONL[m]} ${y}`)}<div class="evx-mgrid">${["M","T","W","T","F","S","S"].map(x=>`<span class="dn">${x}</span>`).join("")}${"<i></i>".repeat(lead)}${cells.join("")}</div>${plans.some(e=>evDate(e).getMonth()===m)?`<div class="evx-mkey"><i></i>Your plans on other calendars</div>`:""}${evCalDayList(c, evs, plans, at)}`; }
+  return `${evCalNav(`${EV_MONL[m]} ${y}`)}<div class="evx-mgrid" data-kc="KeyMonthGrid">${["M","T","W","T","F","S","S"].map(x=>`<span class="dn">${x}</span>`).join("")}${"<i></i>".repeat(lead)}${cells.join("")}</div>${plans.some(e=>evDate(e).getMonth()===m)?`<div class="evx-mkey"><i></i>Your plans on other calendars</div>`:""}${evCalDayList(c, evs, plans, at)}`; }
 
 /* Week: seven rows, one per day. Empty days say Free, which is the point of looking at a week. */
 function evWkItem(e, other, ghost){ const clash=other.some(o=>evClash(e,o));
   return `<div class="evx-wi ${ghost?"ghost":""}" data-ev="${e.id}"><span class="evx-wcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(evStartH(e))}${ghost?` · ${evState(e)||"Yours"}`:""}</span></div>${clash?`<em>Clashes</em>`:ghost?"":evTag(e)}</div>`; }
 function evCalWeek(c, evs, plans){ const s=evMon0(evCalAt(evs)), days=[...Array(7)].map((_,i)=>evAddDays(s,i)), l=days[6];
   const lbl = s.getMonth()===l.getMonth() ? `${EV_MON[s.getMonth()]} ${s.getDate()} to ${l.getDate()}` : `${EV_MON[s.getMonth()]} ${s.getDate()} to ${EV_MON[l.getMonth()]} ${l.getDate()}`;
-  return evCalNav(lbl) + `<div class="evx-week">${days.map(d=>{ const here=evOnDay(evs,d), mine=evOnDay(plans,d), k=evYmd(d);
+  return evCalNav(lbl) + `<div class="evx-week" data-kc="KeyWeekList">${days.map(d=>{ const here=evOnDay(evs,d), mine=evOnDay(plans,d), k=evYmd(d);
     return `<div class="evx-wk ${k===evYmd(EV_TODAY)?"today":""}"><div class="evx-wd" data-evcald="${k}" data-evview="day"><span>${EV_DOW[d.getDay()]}</span><b>${d.getDate()}</b></div><div class="evx-wl">${[...here.map(e=>[e,false]), ...mine.map(e=>[e,true])].sort((a,b)=>evStartH(a[0])-evStartH(b[0])).map(([e,g])=>evWkItem(e, g?here:mine, g)).join("")||`<span class="evx-wfree">Free</span>`}</div></div>`; }).join("")}</div>`; }
 
 /* Day: the week as a strip of dates on top, then the hours. Blocks carry the event's cover; your other plans are outlined. */
 function evCalDay(c, evs, plans){ const d=evCalAt(evs), s=evMon0(d);
   const strip = [...Array(7)].map((_,i)=>{ const x=evAddDays(s,i), k=evYmd(x); return `<div class="evx-dp ${k===evYmd(d)?"on":""} ${k===evYmd(EV_TODAY)?"today":""} ${evOnDay(evs,x).length?"has":""}" data-evcald="${k}"><span>${EV_DOW[x.getDay()].slice(0,1)}</span><b>${x.getDate()}</b></div>`; }).join("");
   const here=evOnDay(evs,d), mine=evOnDay(plans,d), all=[...here.map(e=>[e,false]), ...mine.map(e=>[e,true])].sort((a,b)=>evStartH(a[0])-evStartH(b[0]));
-  const top = evCalNav(`${EV_MONL[d.getMonth()]} ${d.getFullYear()}`) + `<div class="evx-dstrip">${strip}</div><div class="evx-dh">${evDayLbl(d)}${here[0]&&evSoon(here[0])?` <em class="evx-soon">${evSoon(here[0])}</em>`:""}</div>`;
+  const top = evCalNav(`${EV_MONL[d.getMonth()]} ${d.getFullYear()}`) + `<div class="evx-dstrip" data-kc="KeyDayStrip">${strip}</div><div class="evx-dh">${evDayLbl(d)}${here[0]&&evSoon(here[0])?` <em class="evx-soon">${evSoon(here[0])}</em>`:""}</div>`;
   if (!all.length) return top + evCalFree(evs, d);
   const H=60, G=36, h0=Math.max(0, Math.floor(Math.min(...all.map(([e])=>evStartH(e))))-1), h1=Math.min(24, Math.ceil(Math.max(...all.map(([e])=>evEndH(e))))+1);
   const busy=new Set(); all.forEach(([e])=>{ for (let h=Math.floor(evStartH(e)); h<Math.ceil(evEndH(e)); h++) busy.add(h); });
@@ -10417,10 +10665,10 @@ function evCalDay(c, evs, plans){ const d=evCalAt(evs), s=evMon0(d);
   const cols = all.map(([e],i)=>all.slice(0,i).filter(([o])=>evClash(e,o)).length), wide = all.map(([e],i)=>1+all.filter(([o],j)=>j!==i&&evClash(e,o)).length);
   const blocks = all.map(([e,g],i)=>{ const a=evStartH(e), b=evEndH(e);
     return `<div class="evx-blk ${g?"ghost":""}" data-ev="${e.id}" style="top:${ys[Math.floor(a)]+(a-Math.floor(a))*H+2}px;height:${(b-a)*H-4}px;left:calc(52px + (100% - 52px) * ${cols[i]} / ${wide[i]});width:calc((100% - 52px) / ${wide[i]} - 4px)"><span class="evx-bcv">${evCvArt(e)}</span><div class="m"><b>${e.name}</b><span>${evHr(a)} to ${evHr(b)}${g?` · ${evState(e)||"Yours"}`:""}</span>${wide[i]>1?`<em>Clashes</em>`:g||b-a<2?"":`<div class="evx-bft">${evFaces(e)}${evTag(e)}</div>`}</div></div>`; }).join("");
-  return top + `<div class="evx-hours" style="height:${y}px">${rows.join("")}${blocks}</div>`; }
+  return top + `<div class="evx-hours" style="height:${y}px" data-kc="KeyDayTimeline">${rows.join("")}${blocks}</div>`; }
 
 function evCalPast(c, evs){ const past=evs.filter(e=>e.past).reverse(); if (!past.length) return `<div class="empty">No past events yet.</div>`;
-  return `<div class="evx-pgrid">${past.map(e=>{ const d=evDate(e); return `<div class="evx-pg" data-ev="${e.id}"><span class="evx-pgc">${evCvArt(e)}${e.checkedIn||e.reg==="going"?`<em>You went</em>`:""}</span><b>${e.name}</b><span>${EV_MON[d.getMonth()]} ${d.getDate()} · ${e.going} went</span></div>`; }).join("")}</div>`; }
+  return `<div class="evx-pgrid" data-kc="KeyCoverGrid">${past.map(e=>{ const d=evDate(e); return `<div class="evx-pg" data-ev="${e.id}"><span class="evx-pgc">${evCvArt(e)}${e.checkedIn||e.reg==="going"?`<em>You went</em>`:""}</span><b>${e.name}</b><span>${EV_MON[d.getMonth()]} ${d.getDate()} · ${e.going} went</span></div>`; }).join("")}</div>`; }
 
 function evCalAbout(c, evs, submit){ const went=evs.filter(e=>e.past && (e.checkedIn || e.reg==="going")); const slug=`key.ai/${c.name.toLowerCase().replace(/[^a-z0-9]+/g,"")}`;
   const row = (ic, a, b, attr) => `<div class="rowitem evx-arow" ${attr||""}><i class="evx-aic">${evIc(ic,18)}</i><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${attr?`<span class="xs muted">›</span>`:""}</div>`;
@@ -10434,7 +10682,7 @@ function evCalAbout(c, evs, submit){ const went=evs.filter(e=>e.past && (e.check
 
 sCalendar = function(id){
   if (id.endsWith(".manage")) return evCalManage(id.slice(0,-7));
-  const c = evC(id); if (!c) return `<div class="body"><div class="empty">Calendar not found.</div></div>`;
+  const c = evC(id); if (!c) return `<div class="body evx-hi"><div class="empty">Calendar not found.</div></div>`;
   if (STATE.evCalId!==id) { STATE.evCalId=id; STATE.evCalAt=null; STATE.evCpt="events"; }
   const on=evFollows(c), admin=evIsAdmin(c), nonMember=c.kind==="family" && !evMemberOf(c);
   const evs=evCalEvs(c), plans=evPlansOff(c), tab=STATE.evCpt||"events", view=STATE.evCalView||"list";
@@ -10447,19 +10695,19 @@ sCalendar = function(id){
   let pane = "";
   if (tab==="past") pane = evCalPast(c, evs);
   else if (tab==="about") pane = evCalAbout(c, evs, submit);
-  else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh">[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
+  else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh"[^>]*>[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
       : view==="day" ? evCalDay(c, evs, plans) : view==="week" ? evCalWeek(c, evs, plans) : evCalMonth(c, evs, plans);
-    pane = `<div class="seg evx-vseg">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
+    pane = `<div class="seg evx-vseg" data-kc="KeySegmented">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
-  <div class="body">
-    <div class="evx-cban" style="background:${evBg(c.theme)}"></div>
+  <div class="body evx-hi">
+    <div class="evx-cban" style="background:${evBg(c.theme)}" data-kc="KeyCover"></div>
     <div class="evx-clogo" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>
     <h1 class="evx-cname">${c.kind==="personal"&&admin?"Your calendar":c.name}</h1>
     <div class="evx-cmeta">${evKind(c)}${up.length?` · ${up.length} coming up`:""}</div>
     ${!on&&!admin&&c.about?`<p class="evx-cabout">${c.about}</p>`:""}
     ${evCalFolk(c)}
     <div class="row evx-cact">${actions}</div>
-    <div class="evx-tabs">${[["events","Events"],["past","Past"],["about","About"]].map(([k,l])=>`<div class="${tab===k?"on":""}" data-evcpt="${k}">${l}</div>`).join("")}</div>
+    <div class="evx-tabs" data-kc="KeyTabs">${[["events","Events"],["past","Past"],["about","About"]].map(([k,l])=>`<div class="${tab===k?"on":""}" data-evcpt="${k}">${l}</div>`).join("")}</div>
     <div class="evx-pane">${pane}</div>
   </div>`;
 };
@@ -10472,7 +10720,7 @@ function evCalManage(id){
     <div class="lbl">Followers · ${c.subs}</div>${["rahul","maya","sana","jordan"].map(p=>`<div class="rowitem">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div><div class="b">${DB.people[p].title}</div></div><span class="xs muted" onclick="toast('Removed. They aren\\'t told.')">Remove</span></div>`).join("")}`;
   else body = [["Name and cover",c.name],["Theme",evPreset(c.theme).name],["Who can add events",c.accepts==="anyone"?"Anyone; you approve":c.accepts==="members"?"Members; you approve":"Only admins"],["Visibility","Public · key.ai link"],["Delete calendar",c.kind==="personal"?"Your personal calendar can't be deleted":"Only the creator"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}.')"><div class="m"><div class="a" ${a==="Delete calendar"?'style="color:var(--danger)"':''}>${a}</div><div class="b">${b}</div></div><span class="xs muted">›</span></div>`).join("");
   return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
-  <div class="body"><div class="evx-tabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>`;
+  <div class="body evx-hi"><div class="evx-tabs" data-kc="KeyTabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>`;
 }
 
 /* ==== SERIES AND EVENT MISSIONS (27 Sep, events thread; his calls 3 and 6 in the missions thread).
@@ -10565,13 +10813,13 @@ function evMsItems(e){ const mine=evMissionKinds(e); if (typeof msEventMissions!
   theirs.filter(t=>!mine.some(m=>m.kind===t.kind)).forEach(t=>out.push(Object.assign({ verb:"Open" }, t, { live:true })));
   return out; }
 const evMsTap = (e, m) => m.live ? `data-evmsgo="${m.go}"` : m.act ? `data-evmsact="${m.act}|${e.id}"` : `data-evsheet="evms|${m.kind}|${e.id}"`;
-const evMsFaces = ids => { ids=(ids||[]).filter(p=>DB.people[p]).slice(0,3); return ids.length ? `<i class="evm-faces">${ids.map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</i>` : ""; };
+const evMsFaces = ids => { ids=(ids||[]).filter(p=>DB.people[p]).slice(0,3); return ids.length ? `<i class="evm-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=24">${ids.map(p=>`<i>${DB.people[p].initials}</i>`).join("")}</i>` : ""; };
 function evMsRow(e, m){ return `<div class="evm-row" ${evMsTap(e,m)}><b class="evm-n">${m.icon?evIc(m.icon,20):m.count}</b><div><b>${m.label}</b>${m.sub||(m.faces||[]).length?`<span>${evMsFaces(m.faces)}${m.sub||""}</span>`:""}</div>${m.verb?`<em>${m.verb}</em>`:""}</div>`; }
 function evMsBlock(e, kinds){ const items=evMsItems(e).filter(m=>kinds ? kinds.includes(m.kind) : m.kind!=="f"); if (!items.length) return "";
-  return `<div class="evm">${kinds?"":`<div class="evm-h">${evIc("sparkles",15)} With Kai</div>`}${items.map(m=>evMsRow(e,m)).join("")}</div>`; }
+  return `<div class="evm">${kinds?"":`<div class="evm-h evt-kaihd">${evIc("sparkles",15)} With Kai</div>`}${items.map(m=>evMsRow(e,m)).join("")}</div>`; }
 /* the one prompt a hosted event's card carries on the Events tab */
 function evCardKai(e){ if (e.reg!=="hosting" || e.past || e.draft) return ""; const m=evMsItems(e).filter(x=>x.kind!=="f")[0]; if (!m) return "";
-  return `<div class="evx-kai" ${evMsTap(e,m)}>${evIc("sparkles",14)}<span>${m.label}</span><b>${m.verb||"Open"}</b></div>`; }
+  return `<div class="evx-kai" ${evMsTap(e,m)} data-kc="KeyKaiBar">${evIc("sparkles",14)}<span>${m.label}</span><b>${m.verb||"Open"}</b></div>`; }
 
 /* ---- series on screen: a strip of dates for everyone, and the attendance picture for the host ---- */
 function evSeriesStrip(e, manage){ const s=evSeries(e); if (!s) return ""; const host=e.reg==="hosting"; const every=(s.every||[]).includes(EV_ME);
@@ -10612,7 +10860,7 @@ function evMsSheet(type, id){
       const inv = pid => `<button class="btn sm" data-evkaiinv="${eid}|${pid}" onclick="event.stopPropagation()">Invite</button>`;
       return `<h2>Fill ${e.cap-e.going} open seat${e.cap-e.going===1?"":"s"}</h2><p class="sm muted">${e.name}, ${evDayLabel(e)}. Nobody is invited until you tap Invite.</p>
         ${lapsed.length?`<div class="lbl">Came before, not in yet</div>${lapsed.map(pid=>{ const r=att.find(x=>x.pid===pid); return prow(pid, inv(pid), `Came ${r.came} of ${r.of}`); }).join("")}`:""}
-        ${picks.length?`<div class="lbl">${evIc("sparkles",13)} Kai's picks</div>${picks.map(c=>prow(c.pid, inv(c.pid), c.why)).join("")}`:""}
+        ${picks.length?`<div class="lbl evt-kaihd">${evIc("sparkles",13)} Kai's picks</div>${picks.map(c=>prow(c.pid, inv(c.pid), c.why)).join("")}`:""}
         ${lapsed.length||picks.length?"":`<div class="empty">Kai is looking. Picks land here, and nobody is invited until you tap Invite.</div>`}`; }
     if (kind==="b") { const un=evUnconfirmed(e), yes=(e.goingList||[]).filter(p=>(e.confirmed||{})[p]), when=STATE.evRcWhen||e.rcWhen||"2d"; const d=evDate(e);
       const first = un[0] ? evFirst(un[0]) : "Rahul";
@@ -10789,7 +11037,7 @@ function evSheet(type, id){
   return null;
 }
 const _evPortSheet = portSheet;
-portSheet = function(type, id){ if (typeof type==="string" && type.startsWith("ev")) { const h = evSheet(type, id); if (h!==null) return h; } return _evPortSheet(type, id); };
+portSheet = function(type, id){ if (typeof type==="string" && type.startsWith("ev")) { const h = evSheet(type, id); if (h!==null) return `<div class="evx-sh">${h}</div>`; } return _evPortSheet(type, id); };
 
 /* ---- wiring ---- */
 const _evPortWire = portWire;
