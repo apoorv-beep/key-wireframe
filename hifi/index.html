@@ -1120,12 +1120,13 @@
 .phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
-/* One page title everywhere (his 23:25): tab headers and pushed-page titles (Later, Calendars, the bell's scope) share --type-display-s.
-   Doubled classes outrank Messages (display-l), Community (20/600) and the base 18/19px; Later's title is inline-styled, hence !important there.
-   Chat headers keep their name row (avatar + name + line), which is an identity, not a page title. */
-#phone.phone .hdr.hdr > .t.t, #phone.phone .hdr.hdr > .t.t .tfade, #phone.phone .hdr.hdr > .t.t .cm-fname, #phone.phone .hdr.hdr > .nscope.nscope { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+/* Page titles (his 23:25, Design system's ruling 23:43): top-level pages on --type-display-s; pages with a back button, chat headers included, on --type-title with the line under it on --type-caption. */
+#phone.phone .hdr.hdr.top > .t.t, #phone.phone .hdr.hdr.top > .t.t .tfade { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.phone .hdr.hdr:has(> .back) > .t.t, #phone.phone .hdr.hdr:has(> .back) > .nscope.nscope, #phone.phone .hdr.hdr:has(> .back) .hm > .hn.hn, #phone.phone .hdr.hdr:has(> .back) > .t.t .cm-fname { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+#phone.phone .hdr.hdr:has(> .back) .hm > .xs.xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
 #phone.phone .hdr.hdr > .nscope.nscope { min-width:0; } .phone .hdr > .nscope .nst { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-#phone.phone .hdr.hdr > div[style*="flex:1"] > div:first-child[style*="font-size"] { font:var(--type-display-s) !important; letter-spacing:var(--type-display-s-tracking); }
+#phone.phone .hdr.hdr > div[style*="flex:1"] > div:first-child[style*="font-size"] { font:var(--type-title) !important; letter-spacing:var(--type-title-tracking); }
+#phone.phone .hdr.hdr > div[style*="flex:1"] > .xs.xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
 /* Compact phones (SE, 320): the three bare icons narrow to 40 (the 44 height stays the target, the 24 glyph never shrinks), so titles keep their room. */
 @media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; } }
 
@@ -3243,8 +3244,8 @@ p,
   .evx-hi .btn.sec, .evx-sh .btn.sec, .evx-card .btn.sm.sec { background:var(--bg-surface-default); border-color:var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
   .evx-hi .btn.ghost, .evx-sh .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
   .evx-hi .btn.sm, .evx-sh .btn.sm, .evx-card .btn.sm { font:var(--type-label); letter-spacing:var(--type-label-tracking); border-radius:var(--radius-absolute-12); }
-  /* The calendar page's button pair: one line each down to 320, the pair equal height */
-  .evx-hi .evx-cact .btn { display:inline-flex; align-items:center; justify-content:center; min-width:0; min-height:var(--space-absolute-48); padding:0 var(--space-absolute-16); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); white-space:nowrap; }
+  /* The calendar page's button pair: KeyButton l, one line each down to 320, the pair equal height */
+  .evx-hi .evx-cact .btn { display:inline-flex; align-items:center; justify-content:center; min-width:0; min-height:var(--space-absolute-48); padding:0 var(--space-absolute-16); white-space:nowrap; }
   .evx-card .btn.sm { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
   /* KeyChip, KeyFilterRail; Follow is the call to act and Following settles into a tonal chip, as a subscribe button does */
   .evx-hi .pill, .evx-sh .pill { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-chip-bg); border-color:var(--component-chip-border); color:var(--component-chip-ink); }
@@ -3579,6 +3580,12 @@ p,
   /* v4, 26 Sep: the family name opens the family menu; Invite is an outline button in the hero; People leads organizers into Manage members;
      Posts is the prod library; Channels puts search first and Kai's suggestions in one row. Kai is inverse fill plus sparkle. */
   .cm-fname { display:inline-flex; align-items:center; gap:4px; cursor:pointer; } .cm-fname svg { opacity:.55; }
+  .cm-fn { position:relative; display:inline-flex; } .cm-fn > span { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; transition:opacity .2s ease, transform .2s ease; }
+  .cm-fn-fam { position:absolute; left:0; top:0; bottom:0; opacity:0; transform:translateY(6px); pointer-events:none; }
+  .cm-named .cm-fn-tab { position:absolute; left:0; top:0; bottom:0; opacity:0; transform:translateY(-6px); } .cm-named .cm-fn-fam { position:static; opacity:1; transform:none; }
+  .cm-fn-mark { width:22px; height:22px; border-radius:6px; overflow:hidden; outline:1px solid var(--border-default, #E4E7EC); outline-offset:-1px; display:inline-grid; place-items:center; font-size:11px; font-weight:700; background:#111; color:#fff; flex:none; }
+  .cm-fn-mark > .cm-mark, .cm-fn-mark svg { width:100%; height:100%; display:block; }
+  @media (prefers-reduced-motion: reduce) { .cm-fn > span { transition:none; } }
   .cm-hero .t { cursor:pointer; }
   .cm-hrow { display:flex; align-items:center; gap:10px; } .cm-hrow .t { flex:1; min-width:0; }
   .cm-hacts { display:flex; gap:8px; }
@@ -4726,10 +4733,10 @@ p,
 #phone.hf-prof .p2add { font:var(--type-body-m-strong); color:var(--text-primary); padding:var(--space-absolute-14) 0; }
 
 /* dock: Kai on the deep plate (foil K), Message as a radius-12 tile beside it */
-#phone.hf-prof .btn.p2kai { background:var(--bg-deep); border-color:var(--bg-deep); color:var(--text-on-deep-default); border-radius:var(--radius-absolute-16); box-shadow:var(--elevation-2); min-height:var(--space-absolute-56); padding:var(--space-absolute-8) var(--space-absolute-16); }
+#phone.hf-prof .btn.p2kai { background:var(--bg-deep); border-color:var(--bg-deep); color:var(--text-on-deep-default); border-radius:var(--radius-absolute-12); box-shadow:var(--elevation-2); min-height:var(--space-absolute-56); padding:var(--space-absolute-8) var(--space-absolute-16); }
 #phone.hf-prof .btn.p2kai b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
 #phone.hf-prof .btn.p2kai small { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-on-deep-muted); }
-#phone.hf-prof .btn.p2round { flex-basis:var(--space-absolute-56); width:var(--space-absolute-56); height:var(--space-absolute-56); min-height:var(--space-absolute-56); border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--icon-primary); box-shadow:var(--elevation-2); }
+#phone.hf-prof .btn.p2round { flex-basis:var(--space-absolute-56); width:var(--space-absolute-56); height:var(--space-absolute-56); min-height:var(--space-absolute-56); border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--icon-primary); box-shadow:var(--elevation-2); }
 #phone.hf-prof .btn.p2round.done { background:var(--bg-fill-default); }
 
 /* sheets: headings title 20 SB, notes and answers on the fill, radius 16 */
@@ -4748,6 +4755,15 @@ p,
 #phone.hf-prof .p2 .fcard.compact .fn { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
 #phone.hf-prof .p2 .fcard.compact .fw { font:var(--type-body-s); color:var(--text-secondary); }
 #phone.hf-prof .p2 .fcard.compact .tag { font:var(--type-label-strong); color:var(--component-tag-ink); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); border-radius:var(--radius-absolute-6); }
+
+/* Dock bar (journey guide 23:41): the dock is one bar across the bottom on a fade of the page, so rows scrolling under it never show
+   between Ask Kai and the Message tile; Message is a radius-12 tile (round is only for mic and call). */
+.p2 { padding-bottom:24px; }
+.pact.p2pact { left:0; right:0; bottom:0; padding:24px 12px 14px; background:linear-gradient(to bottom, rgba(255,255,255,0), #fff 40%); }
+.pact.p2pact .btn { box-shadow:0 6px 20px rgba(0,0,0,.14); }
+.btn.p2round { border-radius:12px; }
+#phone.hf-prof .pact.p2pact { padding:var(--space-absolute-24) var(--space-absolute-12) var(--space-absolute-14); background:linear-gradient(to bottom, transparent, var(--bg-page) 40%); }
+#phone.hf-prof .pact.p2pact .btn { box-shadow:var(--elevation-2); }
 
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
    Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
@@ -4943,6 +4959,7 @@ p,
 #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { opacity:0; pointer-events:none; transition:opacity .2s ease; }
 #phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin { opacity:1; }
 @media (prefers-reduced-motion: reduce) { #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { transition:none; } }
+#phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin.mx-under, #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin.mx-under { opacity:0; transition:none; }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -13289,11 +13306,18 @@ let cSwallowUntil = 0;
 document.addEventListener("click", e=>{ if (cSwallowUntil > Date.now()) { e.stopPropagation(); e.preventDefault(); cSwallowUntil = 0; } }, true);
 document.addEventListener("pointerup", ()=>{ if (cSwallowUntil) setTimeout(()=>{ cSwallowUntil = 0; }, 0); }, true);
 
-/* ---- header: two icons (search, notifications). The family name opens the family menu; Invite (and Manage for organizers) are icons beside the name. ---- */
+/* ---- header: two icons (search, notifications). The title names the tab, Families, like every other tab; the family's name
+   takes its place only once the hero has scrolled under it, so the two never show at once (Apoorv 23:27). Either opens the switcher. ---- */
 famHdr = function(){
   const f = cF();
-  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family">${f.name}${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
+  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family"><span class="cm-fn"><span class="cm-fn-tab">Families</span><span class="cm-fn-fam"><span class="cm-fn-mark">${cMark(f)}</span>${f.name}</span></span>${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
 };
+function cHdrName(){
+  const body = phone.querySelector(".view .body"), hdr = phone.querySelector(".hdr.top"), t = body && body.querySelector(".cm-hero .t");
+  if (!hdr || !hdr.querySelector(".cm-fname")) return;
+  const set = () => hdr.classList.toggle("cm-named", !t || t.getBoundingClientRect().bottom <= hdr.getBoundingClientRect().bottom);
+  set(); if (body) body.addEventListener("scroll", set, { passive:true });
+}
 const _cFamHeader = famHeader;
 famHeader = function(title, back){ return _cFamHeader(title, back).replace(/<div class="icon" onclick="go\('fsettings'\)">[\s\S]*?<\/svg><\/div>/, ""); };
 const cWaiting = () => cMM().filter(m=>m.st==="pending").length;
@@ -13322,6 +13346,7 @@ render = function(){
   if (S!=="fchannels") _cRender();
   else { STATE.screen = "family"; STATE._cCh = true; try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; } }
   if (C_TAB_SCR.includes(S)) { cPane(); cSwipe(); }
+  cHdrName();
   const room = cHiFi() && /^channel:/.test(STATE.screen||""), hi = room || (cHiFi() && !!phone.querySelector(".screen .cm-fname, .screen .cm-hi"));
   phone.classList.toggle("cmhi", hi); phone.classList.toggle("cmroom", room);
   ["white","rows","tint"].forEach(k => phone.classList.toggle("cmbg-"+k, room && (STATE.cmBg||"white")===k));
@@ -16211,7 +16236,12 @@ const _mxSheet = portSheet;
 portSheet = function(type, id) { const h=_mxSheet(type, id); return typeof h==="string" ? h.replace(MX_WHERE, MX_NOW) : h; };
 
 /* ---- pinned date pill (hosting's SE check, 23:07): like WhatsApp and Telegram, the pinned date shows while you scroll and fades once you stop, so it never sits on the first sender's name ---- */
-function mxPins(cb) { const t = cb.getBoundingClientRect().top; cb.querySelectorAll(".dsep").forEach(d => d.classList.toggle("mx-pin", d.getBoundingClientRect().top - t <= 9)); }
+function mxPins(cb) {  /* only the latest pinned date shows, and it hands over to the next in-flow date as that one reaches it */
+  const t = cb.getBoundingClientRect().top, ds = [...cb.querySelectorAll(".dsep")];
+  ds.forEach(d => d.classList.toggle("mx-pin", d.getBoundingClientRect().top - t <= 9));
+  const pins = ds.filter(d => d.classList.contains("mx-pin")), last = pins[pins.length-1], next = ds.find(d => !d.classList.contains("mx-pin"));
+  ds.forEach(d => d.classList.toggle("mx-under", d !== last || (!!next && next.getBoundingClientRect().top - t < 9 + d.offsetHeight + 4)));
+}
 let _mxIdle;
 document.addEventListener("scroll", e => {
   const cb = e.target; if (!(cb instanceof Element) || !cb.classList.contains("chatbody")) return;
