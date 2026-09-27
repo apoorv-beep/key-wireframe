@@ -1098,6 +1098,12 @@
   --elevation-lift: 0px 2px 4px 0px #0B0E1133, 0px 22px 48px -14px #0B0E11A6;
 }
 
+/* Hi-fi base chrome (Apoorv 27 Sep 22:03; hi-fi copy only). Header icon buttons stand bare (KeyIconButton container=none) on a 40px target;
+   every other base icon button and small button is a radius-12 tile. Mic and call controls stay round (their modules own them). */
+.phone .hdr > .icon, .phone .hdr > .back { width:40px; height:40px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
+.phone .hdr > .icon .badge { top:2px; right:2px; }
+.phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
+
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
    TEXT ONLY. No colour, no surface, no spacing, no layout. Every rule here sets font-family, font-size, font-weight,
    letter-spacing or line-height and nothing else.
@@ -3200,7 +3206,7 @@ p,
   #phone:has(> .screen > .body.evx-hi), #phone > .screen:has(> .body.evx-hi) { background:var(--bg-page); }
   .evx-sh { display:contents; --line:var(--border-subtle); }
   .screen:has(> .body.evx-hi) > .hdr .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
-  /* Header icons stand bare; every other icon button and button is a radius-12 tile, and pills, tags and the mic stay round (Apoorv 22:03) */
+  /* Header icons stand bare, except on a themed event screen, where they keep the glass plate over the artwork; every other icon button and button is a radius-12 tile; pills, tags and the mic stay round (Apoorv 22:03, Design system 22:06) */
   .screen:has(> .body.evx-hi) > .hdr .icon, .screen:has(> .body.evx-hi) > .hdr .back { background:transparent; border-color:transparent; color:var(--text-primary); }
   .evx-hi .lbl, .evx-sh .lbl { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
   .evx-hi .xs, .evx-sh .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
@@ -3420,7 +3426,7 @@ p,
   .evt-screen .evt-rsvp { gap:var(--space-absolute-8); }
   /* the host's screens share the same styles: form rows, the Manage header, the door count */
   .evt-screen .evt-calpick, .evt-screen .evt-hdr-act, .evt-screen .evt-kai { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
-  .evt-screen .hdr .back, .evt-screen .hdr .icon, .evt-screen .evt-hdr-act { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evt-screen .hdr .back, .evt-screen .hdr .icon, .evt-screen .evt-hdr-act { border-radius:var(--radius-absolute-12); }
   .evt-screen .evt-rows { border-radius:var(--radius-absolute-20); }
   .evt-screen .evt-frow { gap:var(--space-absolute-12); padding:var(--space-absolute-10) var(--space-absolute-16); }
   .evt-screen .evt-frow b, .evt-screen .evt-grow b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
@@ -3483,6 +3489,7 @@ p,
   .cm-live .ck { display:flex; align-items:center; gap:6px; color:var(--ink); }
   .cm-livedot { width:8px; height:8px; border-radius:50%; background:#B23B3B; }
   .cm-pane { overflow-x:clip; }
+  .cm-swipe { touch-action:pan-y; }   /* vertical scroll stays native; a sideways drag reaches cSwipe */
   .cm-pane.cm-in-l { animation:cmInL .26s cubic-bezier(.2,.8,.2,1); }
   .cm-pane.cm-in-r { animation:cmInR .26s cubic-bezier(.2,.8,.2,1); }
   .cm-pane.cm-fade { animation:cmFade .18s ease-out; }
@@ -3777,6 +3784,239 @@ p,
   .cm-form textarea.v { width:100%; border:0; outline:0; resize:none; font:inherit; background:transparent; color:var(--ink); padding:0; }
   .cm-mark { display:block; width:100%; height:100%; border-radius:inherit; overflow:hidden; } .cm-mark svg { display:block; width:100%; height:100%; }
   .cm-sq:has(.cm-mark), .avatar.cm-markav { background:none; border:0; overflow:hidden; } .cm-markav { border-radius:12px; }
+
+/* ==== COMMUNITY HI-FI (27 Sep, community thread; Apoorv 20:28 "start porting into high fidelity, starting with community").
+   The blend (design-system README, 25 Sep): page ground, rows with hairlines, a card only for one live object, shadow as depth.
+   Values are key-tokens.css variables only (Design system's convention, 20:36); type is the 14 named styles.
+   Scoped to .cmhi, which render() puts on the phone while a family screen is up, so no other tab changes. ==== */
+.phone.cmhi, .cmhi .screen, .cmhi .body { background:var(--bg-page); }
+.cmhi .body { color:var(--text-primary); }
+
+/* KeyHeader: page ground, the family name opens the family menu, two icon buttons that float */
+.cmhi .hdr.top { background:var(--component-header-bg); padding:var(--space-absolute-12) var(--space-absolute-16) var(--space-absolute-8); gap:var(--space-absolute-10); }
+.cmhi .hdr.top > .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); }
+.cmhi .hdr .cm-fname { font-size:20px; font-weight:600; letter-spacing:-.015em; display:inline-flex; align-items:center; gap:var(--space-absolute-4); }
+.cmhi .hdr .cm-fname svg { color:var(--icon-tertiary); }
+/* header icons are bare (Apoorv 27 Sep 22:03); the 40px box stays as the touch target */
+.cmhi .hdr .icon, .cmhi .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; color:var(--icon-primary); box-shadow:none; -webkit-backdrop-filter:none; backdrop-filter:none; }
+
+/* KeyAvatar: filled, no outline; you are the inverse fill */
+.cmhi .avatar { border:0; background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-weight:700; letter-spacing:.01em; }
+.cmhi .avatar[data-you] { background:var(--component-avatar-you-bg); color:var(--component-avatar-you-ink); }
+
+/* KeyCover + KeyFamilyLogo: the organizer's photo, or the family's pictogram cover; the logo sits on the page edge */
+.cmhi .cover.cm-cover { height:176px; margin:0 calc(-1 * var(--space-absolute-16)); border:0; background:var(--component-cover-bg); overflow:visible; }
+.cmhi .cover.cm-cover > .cv { border-radius:0; }
+.cmhi .cover.cm-cover > .cv svg { width:100%; height:100%; }
+.cmhi .cover.cm-cover .flogo.big { left:var(--space-absolute-16); bottom:calc(-1 * var(--space-absolute-28)); width:var(--space-absolute-72, 72px); height:var(--space-absolute-72, 72px);
+  border:0; border-radius:var(--radius-absolute-20); overflow:hidden; background:var(--bg-inverse-default); box-shadow:0 0 0 var(--space-absolute-4) var(--bg-page), var(--elevation-1); z-index:1; }
+.cmhi .cover.cm-cover .flogo.big .cm-mark, .cmhi .cover.cm-cover .flogo.big .cm-mark svg { display:block; width:100%; height:100%; }
+
+/* hero: name, the proof line, Invite (and Manage) as icon buttons beside the name */
+.cmhi .famname.cm-hero { padding:var(--space-absolute-40) 0 var(--space-absolute-12); }
+.cmhi .cm-hero .t { font-size:22px; font-weight:800; letter-spacing:-.02em; line-height:1.15; color:var(--text-primary); }
+.cmhi .cm-hero .m { font-size:13px; font-weight:400; line-height:1.5; color:var(--text-secondary); margin-top:var(--space-absolute-2); }
+/* icon buttons off the header are radius-12 tiles (Apoorv 22:03) */
+.cmhi .cm-ibtn { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:var(--component-card-bg); color:var(--icon-primary); box-shadow:var(--elevation-1); }
+.cmhi .cm-ibtn .cm-count.sm { box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); }
+
+/* KeyTabs: text tabs on the sticky page ground, ink underline on the one you're on */
+.cmhi .cm-tabs, .cmhi .cm-bar { background:var(--component-pills-sticky-bg); }
+.cmhi .cm-tabs { gap:var(--space-absolute-20); border-bottom:var(--border-width-hairline) solid var(--border-default); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); }
+.cmhi .cm-tab { font-size:15px; font-weight:600; color:var(--text-tertiary); padding:var(--space-absolute-10) 0 var(--space-absolute-12); border-bottom:var(--border-width-focus) solid transparent; margin-bottom:calc(-1 * var(--border-width-hairline)); }
+.cmhi .cm-tab.on { color:var(--text-primary); border-bottom-color:var(--text-primary); }
+.cmhi .cm-dot { background:var(--text-primary); }
+
+/* KeyListSection: a titled run of rows on the page, no box. Title is body/l, the link is a label */
+.cmhi .cm-sec { padding:var(--space-absolute-24) 0 var(--space-absolute-4); border:0; margin:0; }
+.cmhi .cm-h { display:flex; align-items:baseline; justify-content:space-between; margin:0 0 var(--space-absolute-8); }
+.cmhi .cm-h > span:first-child { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); }
+.cmhi .cm-h i { font-style:normal; font-size:13px; font-weight:600; color:var(--text-tertiary); margin-left:var(--space-absolute-4); }
+.cmhi .cm-more { font-size:13px; font-weight:600; color:var(--text-secondary); }
+
+/* KeyRow: 16 up and down, one hairline between rows, the action on the right */
+.cmhi .cm-row { padding:var(--space-absolute-12) 0; gap:var(--space-absolute-12); border:0; }
+.cmhi .cm-row + .cm-row, .cmhi .ch.slim + .ch.slim { border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmhi .cm-form .cm-row + .cm-row { border-top-color:var(--border-subtle); }
+.cmhi .cm-row > .avatar, .cmhi .cm-av > .avatar:not(.lg) { width:var(--space-absolute-40); height:var(--space-absolute-40); font-size:13px; }
+.cmhi .cm-row .a { font-size:15px; font-weight:600; line-height:1.4; color:var(--text-primary); }
+.cmhi .cm-row .b { font-size:13px; font-weight:400; line-height:1.5; color:var(--text-secondary); }
+.cmhi .cm-row .s { color:var(--icon-tertiary); }
+.cmhi .cm-k { font-size:11px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; line-height:1.2; color:var(--text-tertiary); }
+
+/* KeyButton: secondary outline for a row's action, tonal for a quiet one, 12 radius */
+.cmhi .cm-btn { height:var(--space-absolute-32); padding:0 var(--space-absolute-14); display:inline-flex; align-items:center; border-radius:var(--radius-absolute-12);
+  border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); font-size:13px; font-weight:600; white-space:nowrap; }
+.cmhi .cm-btn.q { border-color:transparent; background:var(--bg-fill-strong); color:var(--text-primary); }
+.cmhi .cm-done { font-size:12px; font-weight:700; color:var(--text-secondary); }
+
+/* Asks and offers: two buttons that start a post, then ask rows */
+.cmhi .cm-askbtns { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-absolute-8); margin:var(--space-absolute-4) 0 var(--space-absolute-8); }
+.cmhi .cm-askbtns span { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); display:flex; align-items:center; justify-content:center; gap:var(--space-absolute-8);
+  font-size:15px; font-weight:600; border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); }
+.cmhi .cm-askbtns span:first-child { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+.cmhi .cm-ask { align-items:flex-start; }
+.cmhi .cm-ask .a { font-weight:400; line-height:1.5; margin-top:var(--space-absolute-4); }
+.cmhi .cm-ask .b { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-ask > .cm-btn, .cmhi .cm-ask > .cm-done { margin-top:var(--space-absolute-4); }
+
+/* KeyBrief (organizer): one live object, so it is a card: the inverse surface, radius 20, lifted */
+.cmhi .cm-ostrip.cm-brief { background:var(--bg-inverse-default); color:var(--text-inverse); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-2); margin:var(--space-absolute-16) 0 0; padding:var(--space-absolute-16); }
+.cmhi .cm-brief .cm-oshd .a, .cmhi .cm-brief .cm-bnums .m { color:var(--text-inverse); }
+.cmhi .cm-brief .cm-oshd .b, .cmhi .cm-brief .cm-bnums .m span, .cmhi .cm-brief .cm-bnums .s { color:var(--text-on-deep-muted); }
+.cmhi .cm-brief .cm-osbar { background:var(--bg-on-deep-fill); border-radius:var(--radius-absolute-infinite); }
+.cmhi .cm-brief .cm-osbar i { background:var(--component-chip-deep-ink); border-radius:inherit; }
+.cmhi .cm-osjob { height:var(--space-absolute-36, 36px); border-radius:var(--radius-absolute-infinite); background:var(--component-chip-deep-bg); border:var(--border-width-hairline) solid var(--component-chip-deep-border); color:var(--component-chip-deep-ink); font-size:13px; font-weight:600; }
+
+/* This week: the ritual's day tile is the row lead */
+.cmhi .cm-day { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:var(--bg-fill-strong); color:var(--text-primary); font-size:11px; font-weight:800; letter-spacing:.06em; }
+.cmhi .cm-day.on { background:var(--bg-inverse-default); color:var(--text-inverse); }
+.cmhi .cm-wk > .evx-card { margin-top:var(--space-absolute-8); }
+
+/* KeyPostRow: author line, overline kicker, title, two lines, tags, the action bar; hairline between posts */
+.cmhi .cm-lp { padding:var(--space-absolute-16) 0; border:0; }
+.cmhi .cm-lp + .cm-lp { border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmhi .cm-lby { gap:var(--space-absolute-8); }
+.cmhi .cm-lby .avatar.sm { width:var(--space-absolute-24); height:var(--space-absolute-24); font-size:10px; }
+.cmhi .cm-lby .n { font-size:13px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-lby .w { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmhi .cm-lp .cm-k { margin-top:var(--space-absolute-12); }
+.cmhi .cm-lrow .t { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-lrow .x { font-size:15px; font-weight:400; line-height:1.5; color:var(--text-secondary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-limg { border-radius:var(--radius-absolute-12); background:var(--component-cover-bg); }
+.cmhi .cm-ltags span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
+.cmhi .cm-lbar { color:var(--icon-tertiary); font-size:13px; font-weight:600; }
+.cmhi .cm-lbar > span.on, .cmhi .cm-vote > span.on { color:var(--icon-primary); }
+.cmhi .cm-vote { border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-infinite); background:var(--component-card-bg); }
+.cmhi .cm-pinnote { background:var(--component-card-bg); border-radius:var(--radius-absolute-12); padding:var(--space-absolute-12); margin-bottom:var(--space-absolute-4); }
+.cmhi .cm-pinnote + .cm-lp { border-top:0; }
+
+/* Coming up: a rail of Events' own cards; channels with news: one row */
+.cmhi .cm-evstrip { gap:var(--space-absolute-12); padding-bottom:var(--space-absolute-8); }
+.cmhi .cm-chrow { margin-top:var(--space-absolute-16); padding:var(--space-absolute-12) 0; border-top:var(--border-width-hairline) solid var(--border-default); }
+
+/* KeySearchField + KeyChip: white on the page ground, so they read as controls */
+.cmhi .cm-search .search, .cmhi .cm-form .search { height:var(--space-absolute-44, 44px); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); font-size:15px; color:var(--text-primary); padding:0 var(--space-absolute-12); }
+.cmhi .cm-search .search::placeholder { color:var(--component-input-placeholder); }
+.cmhi .cm-fbtn, .cmhi .cm-view { border-radius:var(--radius-absolute-12); background:var(--component-card-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); color:var(--icon-primary); }
+.cmhi .cm-chip { height:var(--space-absolute-32); padding:0 var(--space-absolute-14); display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite);
+  background:var(--component-chip-bg); border:var(--border-width-hairline) solid var(--component-chip-border); color:var(--component-chip-ink); font-size:13px; font-weight:600; }
+.cmhi .cm-chip.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+
+/* People: KeyPersonTile for who joined this week, KeyMemberRow for the directory */
+.cmhi .cm-newm { padding:var(--space-absolute-20) 0 var(--space-absolute-4); }
+.cmhi .cm-nmh { font-size:17px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary); margin-bottom:var(--space-absolute-12); }
+.cmhi .cm-nms { gap:var(--space-absolute-12); }
+.cmhi .cm-nm { background:var(--component-card-bg); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); padding:var(--space-absolute-16) var(--space-absolute-12); gap:var(--space-absolute-4); }
+.cmhi .cm-nm .avatar.lg { width:var(--space-absolute-64); height:var(--space-absolute-64); font-size:20px; margin-bottom:var(--space-absolute-4); }
+.cmhi .cm-nm b { font-size:15px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-nm span { font-size:13px; color:var(--text-secondary); }
+.cmhi .cm-nm .cm-btn { margin-top:var(--space-absolute-8); }
+.cmhi .cm-on { background:var(--component-live-dot); box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); border:0; }
+.cmhi .cm-sort { font-size:13px; font-weight:600; color:var(--text-secondary); }
+.cmhi .cm-cell { background:var(--component-card-bg); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); }
+.cmhi .cm-mgr .cm-sq, .cmhi .cm-sq { border-radius:var(--radius-absolute-12); background:var(--bg-fill-strong); color:var(--icon-primary); border:0; }
+
+/* KeyChannelRow: the emoji tile leads, unread is the ink badge */
+.cmhi .ch.slim { padding:var(--space-absolute-10) 0; gap:var(--space-absolute-12); border:0; }
+.cmhi .ch.slim .che { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); background:var(--component-card-bg); box-shadow:var(--elevation-1); border:0; }
+.cmhi .ch.slim .chn { font-size:15px; font-weight:400; color:var(--text-secondary); }
+.cmhi .ch.slim.u .chn { font-weight:600; color:var(--text-primary); }
+.cmhi .ch.slim .unread, .cmhi .cm-count { background:var(--component-badge-bg); color:var(--component-badge-ink); }
+.cmhi .cat { font-size:11px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:var(--text-tertiary); padding:var(--space-absolute-20) 0 var(--space-absolute-4); }
+
+/* sheets (KeyBottomSheet content): title, a real input, chips, one primary button */
+.cmhi .cm-form > h2 { font-size:20px; font-weight:600; letter-spacing:-.015em; color:var(--text-primary); }
+.cmhi .cm-form > h2 + p, .cmhi .cm-form > p { font-size:15px; color:var(--text-secondary); line-height:1.5; }
+.cmhi .cm-form textarea.v, .cmhi .cm-form .field { border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--border-control); font-size:15px; color:var(--text-primary); }
+.cmhi .cm-form textarea.v:focus { border-color:var(--component-input-border-focus); outline:0; }
+.cmhi .cm-form .btn { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font-size:15px; font-weight:600; }
+.cmhi .cm-form .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
+.cmhi .cm-kt, .cmhi .cm-osk { background:none; border:0; box-shadow:none; width:auto; height:auto; }
+.cmhi .cm-kt svg, .cmhi .cm-osk svg { display:block; }
+.cmhi .cm-form .field textarea.v { border:0; padding:0; background:transparent; }
+.cmhi .cm-form .btn.sec { background:transparent; border:var(--border-width-thin) solid var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
+/* KeyFaceStack, built once with Events and Messages (Events' spec, 20:54): 24 faces overlapping by 4, a 1.5 ring in the colour of the surface
+   underneath (--face-ring, set by each context), KeyAvatar's fill and 10/600 initials, at most three faces and the rest as words in the names line */
+.cmhi .cm-faces, .cmhi .cm-osfs { display:flex; }
+.cmhi .cm-runby, .cmhi .cm-row:has(> .cm-faces) { --face-ring:var(--bg-page); }
+.cmhi .cm-brief .cm-osjob { --face-ring:var(--component-chip-deep-bg); }
+.cmhi .cm-faces .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf { display:flex; align-items:center; justify-content:center; padding:0; width:var(--space-absolute-24); height:var(--space-absolute-24); margin:0; border:0; border-radius:var(--radius-absolute-infinite);
+  box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; line-height:1; }
+.cmhi .cm-faces .avatar + .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf + .cm-osf { margin-left:calc(-1 * var(--space-absolute-4)); }
+
+/* ---- 27 Sep 21:19 round: the hero name opens the family page (switching lives in the header name and the nav's family tab);
+   the family page is visual first; tabs land pinned ---- */
+.cm-hero .t[data-cabout] { display:inline-flex; align-items:center; gap:var(--space-absolute-2, 2px); cursor:pointer; }
+.cm-tchev { display:inline-flex; color:var(--icon-tertiary, #606974); }
+.flogo.big[data-cabout] { cursor:pointer; }
+.cm-pubhd { padding-bottom:var(--space-absolute-4, 4px); }
+.cm-known { margin-top:var(--space-absolute-8, 8px); }
+.cm-proof .cm-stats { gap:var(--space-absolute-32, 32px); }
+.cm-proof .cm-meta { margin-top:var(--space-absolute-8, 8px); }
+.cm-chtiles { display:flex; flex-wrap:wrap; gap:var(--space-absolute-8, 8px); }
+.cm-chtiles span { display:inline-flex; align-items:center; gap:var(--space-absolute-8, 8px); height:var(--space-absolute-40, 40px); padding:0 var(--space-absolute-14, 14px) 0 var(--space-absolute-6, 6px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--component-card-bg, #fff); box-shadow:var(--elevation-1); font-size:13px; font-weight:600; }
+.cm-chtiles i { font-style:normal; width:var(--space-absolute-28, 28px); height:var(--space-absolute-28, 28px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-fill-default, #F4F6F9); display:flex; align-items:center; justify-content:center; font-size:15px; }
+.cm-rules { display:flex; flex-direction:column; }
+.cm-rules span { font-size:15px; font-weight:600; padding:var(--space-absolute-10, 10px) 0; }
+.cm-rules span + span { border-top:var(--border-width-hairline, 1px) solid var(--border-default, #E2E7ED); }
+.cm-steps { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:var(--space-absolute-12, 12px); }
+.cm-steps > div { display:flex; flex-direction:column; gap:var(--space-absolute-4, 4px); }
+.cm-steps b { width:var(--space-absolute-32, 32px); height:var(--space-absolute-32, 32px); border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-inverse-default, #12161A); color:var(--text-inverse, #F9FAFC); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; }
+.cm-steps span { font-size:15px; font-weight:600; }
+.cm-steps i { font-style:normal; font-size:13px; color:var(--text-secondary, #525B66); }
+.cm-runsec .cm-runby { margin-top:0; font-size:15px; font-weight:600; color:var(--text-primary, #12161A); }
+.cm-danger-t { color:var(--state-danger-default, #C8322F); }
+.cmhi .cm-pubhd .cm-promise { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
+.cmhi .cm-badges span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
+.cmhi .cm-proof .cm-stats b { font-size:34px; font-weight:700; letter-spacing:-.03em; line-height:1.1; color:var(--text-primary); }
+.cmhi .cm-proof .cm-stats span { font-size:13px; color:var(--text-secondary); }
+.cmhi .famname.cm-pubhd { padding-top:var(--space-absolute-40); }
+.cmhi .cm-rhythm .cm-day { background:var(--component-card-bg); box-shadow:var(--elevation-1); color:var(--icon-primary); }
+
+/* ---- Channel rooms in hi-fi (Apoorv 21:21). Bubbles, date pills and the composer match Messages' hi-fi (messages-hifi.css) so a chat
+   looks the same wherever it opens. The ground is one of three options he is choosing between (.cmbg-white is the default):
+   white with grey bubbles (iMessage, Messenger), white with message rows (Slack, Discord), or the tinted ground with white bubbles
+   (WhatsApp, Telegram). ---- */
+.cmroom .screen, .cmroom .body.chatbody { background:var(--bg-surface-default); }
+.cmroom.cmbg-tint .screen, .cmroom.cmbg-tint .body.chatbody { background:var(--bg-page); }
+.cmroom .hdr.chdr { background:color-mix(in srgb, var(--bg-surface-default) 92%, transparent); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+.cmroom .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; color:var(--icon-primary); }
+.cmroom .hdr .icon { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
+.cmroom .hav.emo { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+.cmroom .hdr .hn { font-size:17px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary); }
+.cmroom .hdr .hm .xs { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmroom .hfaces { --face-ring:var(--bg-surface-default); }
+.cmroom .hfaces span { width:var(--space-absolute-24); height:var(--space-absolute-24); margin-left:calc(-1 * var(--space-absolute-4)); border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--face-ring); }
+.cmroom .hfaces span:first-child { margin-left:0; }
+.cmroom .hfaces span:nth-child(n+4) { display:none; } /* no plus-N bubble: three faces, the count is already under the name */
+.cmroom .chatbody { padding:0 var(--space-absolute-16) var(--space-absolute-16); }
+.cmroom .bav { width:var(--space-absolute-32); height:var(--space-absolute-32); border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; }
+.cmroom .brow { gap:var(--space-absolute-8); margin-top:var(--space-absolute-8); }
+.cmroom .bub { border-radius:var(--radius-absolute-16); padding:var(--space-absolute-8) var(--space-absolute-12) var(--space-absolute-6); box-shadow:none; font-size:15px; line-height:1.5; color:var(--text-primary); background:var(--bg-fill-strong); }
+.cmroom.cmbg-tint .bub { background:var(--component-card-bg); }
+.cmroom .bub.me { background:var(--component-msg-user-bg); color:var(--component-msg-user-ink); }
+.cmroom .bub.oth.first { border-top-left-radius:var(--radius-absolute-4); }
+.cmroom .bub .bn { font-size:13px; font-weight:600; color:var(--text-primary); margin-bottom:var(--space-absolute-2); }
+.cmroom .bub .bf { font-size:12px; font-weight:500; color:var(--text-tertiary); }
+.cmroom .bub.me .bf { color:var(--text-on-deep-muted); }
+.cmroom .dsep::before, .cmroom .syspill::before { border-top-color:var(--border-default); }
+.cmroom .dsep span, .cmroom .syspill span { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-secondary); font-size:12px; font-weight:700; border-radius:var(--radius-absolute-infinite); padding:var(--space-absolute-2) var(--space-absolute-10); }
+.cmroom .rchip, .cmroom .thchip { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); box-shadow:var(--elevation-1); color:var(--text-primary); font-size:12px; font-weight:700; }
+.cmroom .thchip .tf { border:0; background:var(--component-avatar-bg); color:var(--component-avatar-ink); }
+.cmroom .kaiact { gap:var(--space-absolute-6); margin-top:var(--space-absolute-6); }
+.cmroom .kaiact .chip { height:var(--space-absolute-28); display:inline-flex; align-items:center; padding:0 var(--space-absolute-10); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); color:var(--text-primary); font-size:13px; font-weight:600; }
+.cmroom .mention { background:var(--bg-fill-default); color:var(--text-primary); font-weight:600; border-radius:var(--radius-absolute-4); }
+.cmroom .bub.me .mention { background:var(--bg-on-deep-fill); color:var(--text-inverse); }
+.cmroom .foot.cbar { background:color-mix(in srgb, var(--bg-surface-default) 94%, transparent); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); border-top:var(--border-width-hairline) solid var(--border-default); }
+.cmroom .kbox { border:var(--border-width-hairline) solid var(--border-control); border-radius:var(--radius-absolute-20); background:var(--component-input-bg); }
+.cmroom .csend { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+.cmroom .mtile { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-12); }
+/* rows: channels read like a room of posts (Slack, Discord): no bubble, name and time on one line, a hairline-free run of messages */
+.cmroom.cmbg-rows .bub, .cmroom.cmbg-rows .bub.me { background:transparent; color:var(--text-primary); padding:0; border-radius:0; min-width:0; }
+.cmroom.cmbg-rows .brow.me { justify-content:flex-start; }
+.cmroom.cmbg-rows .bub.me .bf { color:var(--text-tertiary); }
+.cmroom.cmbg-rows .brow { margin-top:var(--space-absolute-14); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -4339,13 +4579,17 @@ p,
 .p2sbar .sec2 { display:block; }
 /* a list rule `.pn{padding-left:18px}` elsewhere also hits the profile name; keep the name flush with the lines under it */
 .pname .pn, .ph .pn { padding-left:0; }
+/* Full page: #pbody (z-index 2, the scroller) covers the hero, so the tappable Follow lives in #pbody and is pulled up over the
+   hidden placeholder that holds its place under the name (#pname sits 14px above the body; 36px button + 14px gap = 50px) */
+#pname .p2fw.ph0 { visibility:hidden; }
+.p2 > .p2fw.pg { margin-top:-50px; }
 
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
    Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
    the status, the captions, an Ideas tray on request, and four round buttons (Mute, Ideas, Type, red End). The reel's star
    field sits behind everything (kai-call.js). Token names with the values Design system gave as fallbacks. ==== */
 .call.kc { background:var(--component-call-bg, #0B0E11); color:var(--component-call-ink-default, #F9FAFC); }
-.call.kc > canvas.kc-fld { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.call.kc > canvas.kai-stars { z-index:0; }
 .call.kc > *:not(canvas) { position:relative; z-index:1; }
 .call.kc > .kc-ideas, .call.kc > .kc-type { position:absolute; z-index:5; }
 .kc-top { display:grid; grid-template-columns:44px 1fr 44px; align-items:center; padding:52px 12px 0; flex:0 0 auto; }
@@ -4372,7 +4616,7 @@ p,
 .call.kc.nocap .viz::before { top:60px; width:290px; height:290px; }
 .call.kc.nocap .viz canvas { width:290px; height:290px; }
 .call.kc.nocap .tr { opacity:0; pointer-events:none; }
-.kc-ideas, .kc-type { left:12px; right:12px; bottom:134px; background:rgba(18,22,26,.95); border:1px solid rgba(249,250,252,.08); border-radius:var(--radius-absolute-24, 24px); box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35));
+.kc-ideas, .kc-type { left:12px; right:12px; bottom:152px; background:rgba(18,22,26,.95); border:1px solid rgba(249,250,252,.08); border-radius:var(--radius-absolute-24, 24px); box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35));
   -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); transform:translateY(12px); opacity:0; pointer-events:none; transition:opacity .22s cubic-bezier(.2,.8,.2,1), transform .26s cubic-bezier(.2,.8,.2,1); }
 .kc-ideas.open, .kc-type.open { transform:none; opacity:1; pointer-events:auto; }
 .kc-ideas { padding:6px; }
@@ -4384,7 +4628,7 @@ p,
 .kc-type { display:flex; gap:8px; align-items:flex-end; padding:8px 8px 8px 16px; }
 .kc-type textarea { flex:1; background:none; border:0; resize:none; outline:none; color:var(--component-call-ink-default, #F9FAFC); font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); padding:8px 0; height:40px; }
 .kc-type textarea::placeholder { color:var(--component-call-ink-muted, #A6AFBB); }
-.kc-send { width:40px; height:40px; border-radius:999px; background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); display:grid; place-items:center; border:0; cursor:pointer; }
+.kc-send { width:40px; height:40px; border-radius:var(--radius-absolute-12, 12px); background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); display:grid; place-items:center; border:0; cursor:pointer; }
 .kc-send svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 .kc-ctl { display:flex; justify-content:center; gap:20px; padding:18px 0 38px; flex:0 0 auto; }
 .kc-b { display:flex; flex-direction:column; align-items:center; gap:7px; width:64px; background:none; border:0; padding:0; cursor:pointer; color:inherit; }
@@ -4405,8 +4649,206 @@ p,
 .callbar.kc-bar .kc-sb.on { background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #12161A); }
 .callbar.kc-bar .kc-sb.end { background:var(--component-call-end-bg, #C8322F); }
 .callbar.kc-bar .kc-sb svg { width:20px; height:20px; }
-@media (max-height:620px) { .kc-top { padding-top:44px; } .call.kc .viz canvas { width:170px; height:170px; } .call.kc .viz::before { width:170px; height:170px; } .kc-b .d { width:56px; height:56px; } .kc-ctl { padding:12px 0 24px; } .kc-ideas, .kc-type { bottom:112px; } }
+@media (max-height:620px) { .kc-top { padding-top:44px; } .call.kc .viz canvas { width:170px; height:170px; } .call.kc .viz::before { width:170px; height:170px; } .kc-b .d { width:56px; height:56px; } .kc-ctl { padding:12px 0 24px; } .kc-ideas, .kc-type { bottom:124px; } }
+@media (max-width:360px) { .kc-ctl { gap:12px; padding-left:12px; padding-right:12px; } }
+/* while Kai speaks or thinks there is no question to answer yet: Ideas rests and its tray stays shut */
+.call.kc:is([data-who="kai"], [data-who="think"]) [data-kcideas] { opacity:.4; pointer-events:none; }
+.call.kc:is([data-who="kai"], [data-who="think"]) .kc-ideas.open { opacity:0; transform:translateY(12px); pointer-events:none; }
 @media (prefers-reduced-motion: reduce) { .kc-ideas, .kc-type, .call.kc .viz, .call.kc .viz canvas { transition:none; } }
+
+/* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep). Loads after kai-call.css. KeyKaiSheet: half on open, top on the first
+   message; header, scrolling body and a pinned composer. Token names with the values Design system gave as fallbacks. ==== */
+.sheet.ks { height:calc(100% - 56px); max-height:none; border-radius:var(--radius-absolute-24, 24px) var(--radius-absolute-24, 24px) 0 0; background:var(--bg-surface-default, #FFFFFF); }
+.sheet.ks.half { height:72%; }
+.sheet.ks.grew { animation:ksGrow .44s cubic-bezier(.2,.8,.2,1); }
+@keyframes ksGrow { from { height:72%; } }
+.sheet.ks .sb { display:flex; flex-direction:column; padding:0; overflow:hidden; }
+.sheet.ks svg { fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.sheet.ks .kn-disc, .sheet.ks .kn-disc * { stroke:none; }
+.sheet.ks .kn-disc circle { fill:#0B0E11; }
+.ks-hd { display:flex; align-items:center; gap:2px; padding:2px 8px 4px 20px; flex:0 0 auto; }
+.ks-t { flex:1; min-width:0; display:flex; align-items:center; gap:8px; }
+.ks-t b { font:var(--type-body-l, 600 17px/1.3 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ks-t .kn-disc { flex:0 0 auto; }
+.ks-ib { width:44px; height:44px; display:grid; place-items:center; color:var(--icon-primary, #0B0E11); background:none; border:0; border-radius:999px; cursor:pointer; flex:0 0 auto; }
+.ks-body { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:4px 20px 16px; scrollbar-width:none; }
+.ks-body::-webkit-scrollbar { display:none; }
+.ks-hello h4 { font:var(--type-display-l, 700 28px/1.15 Manrope, system-ui, sans-serif); letter-spacing:-.015em; margin:10px 0 0; color:var(--text-primary, #0B0E11); }
+.ks-hello p { font:var(--type-title, 600 20px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); margin:4px 0 0; }
+.ks-scopes { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.ks-scopes.top { margin:4px 0 10px; }
+.ks-scope { display:inline-flex; align-items:center; gap:6px; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); background:none; border:1px dashed var(--border-strong, #C6CED8); border-radius:999px; padding:7px 12px; cursor:pointer; }
+.ks-scope.on { color:var(--text-primary, #0B0E11); background:var(--bg-fill-default, #F2F5F8); border:1px solid transparent; }
+/* the call invitation: the one dark object on the sheet */
+.ks-call { display:flex; align-items:center; gap:14px; width:100%; text-align:left; margin-top:18px; padding:16px; border:0; border-radius:var(--radius-absolute-24, 24px); background:var(--bg-deep, #0B0E11); color:var(--text-on-deep-default, #F9FAFC); box-shadow:var(--elevation-2, 0 4px 12px -4px rgba(11,14,17,.25)); cursor:pointer; }
+.ks-call .kn-disc { box-shadow:0 0 0 1px rgba(249,250,252,.15); border-radius:999px; flex:0 0 auto; }
+.ks-call .m { flex:1; min-width:0; }
+.ks-call b { font:var(--type-body-m-strong, 600 15px/1.45 Manrope, system-ui, sans-serif); display:block; }
+.ks-call .m span { font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-on-deep-muted, #A6AFBB); display:block; margin-top:2px; }
+.ks-call .go { width:48px; height:48px; border-radius:999px; background:var(--text-on-deep-default, #F9FAFC); color:var(--text-primary, #0B0E11); display:grid; place-items:center; flex:0 0 auto; }
+.ks-nudge { display:flex; align-items:center; gap:12px; width:100%; text-align:left; margin-top:16px; padding:14px 0; background:none; border:0; border-bottom:1px solid var(--border-subtle, #EDF0F4); cursor:pointer; }
+.ks-nudge .m { flex:1; min-width:0; } .ks-nudge b { font:var(--type-body-m-strong, 600 15px/1.45 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); display:block; }
+.ks-nudge .m span { font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); display:block; }
+.ks-try { margin-top:14px; }
+.ks-row { display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:12px 0; background:none; border:0; border-bottom:1px solid var(--border-subtle, #EDF0F4); cursor:pointer; color:var(--text-primary, #0B0E11); }
+.ks-row:last-child { border-bottom:0; }
+.ks-row .lead { width:36px; height:36px; border-radius:var(--radius-absolute-12, 12px); background:var(--bg-fill-default, #F2F5F8); color:var(--icon-secondary, #5B6573); display:grid; place-items:center; flex:0 0 auto; }
+.ks-row .tx { flex:1; font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); }
+.ks-row > svg { color:var(--icon-secondary, #5B6573); }
+.ks-thread { display:flex; flex-direction:column; gap:14px; padding-top:6px; }
+.ks-u { align-self:flex-end; max-width:80%; background:var(--component-msg-user-bg, #0B0E11); color:var(--component-msg-user-ink, #F9FAFC); font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); padding:10px 14px; border-radius:20px 20px 6px 20px; }
+.ks-k { display:grid; grid-template-columns:24px 1fr; gap:10px; align-items:start; animation:ksIn .32s cubic-bezier(.2,.8,.2,1) backwards; }
+.ks-k .kn-disc { margin-top:2px; }
+.ks-k .tx { font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); color:var(--component-msg-kai-ink, #0B0E11); min-width:0; }
+.ks-k .tx p { margin:0; }
+@keyframes ksIn { from { opacity:0; transform:translateY(8px); } }
+.ks-minis { margin-top:8px; }
+.ks-mini { padding:10px 0; border-top:1px solid var(--border-default, #E3E8EE); font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); }
+.ks-mini:last-child { border-bottom:1px solid var(--border-default, #E3E8EE); }
+.ks-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.ks-chip { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); background:none; border:1px dashed var(--border-strong, #C6CED8); border-radius:999px; padding:8px 12px; cursor:pointer; white-space:nowrap; }
+.ks-nudge .ks-chip { flex:0 0 auto; }
+.ks-sys { align-self:center; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary, #8A94A3); text-align:center; }
+.ks-think { display:flex; align-items:center; gap:8px; font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-tertiary, #8A94A3); padding-top:3px; }
+.ks-think i { width:14px; height:14px; border-radius:999px; border:2px solid var(--bg-fill-strong, #E3E8EE); border-top-color:var(--text-secondary, #5B6573); animation:ksSpin .9s linear infinite; }
+@keyframes ksSpin { to { transform:rotate(360deg); } }
+.ks-comp { flex:0 0 auto; padding:8px 12px 28px; border-top:1px solid var(--border-subtle, #EDF0F4); background:var(--bg-surface-default, #FFFFFF); }
+.ks-box { border:1px solid var(--border-default, #E3E8EE); border-radius:var(--radius-absolute-24, 24px); padding:4px 6px 6px; background:var(--bg-surface-default, #FFFFFF); box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); }
+.ks-box textarea { width:100%; border:0; outline:0; resize:none; font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); padding:8px 8px 2px; min-height:36px; color:var(--text-primary, #0B0E11); background:none; }
+.ks-box textarea::placeholder { color:var(--text-tertiary, #8A94A3); }
+.ks-crow { display:flex; align-items:center; gap:4px; }
+.ks-crow .grow { flex:1; }
+.ks-ci { width:36px; height:36px; display:grid; place-items:center; color:var(--icon-secondary, #5B6573); background:none; border:0; border-radius:var(--radius-absolute-12, 12px); cursor:pointer; }
+.ks-ci#kaiMic { border-radius:999px; } /* KeyMicButton, the one round control (Design system 22:06) */
+.ks-go { width:36px; height:36px; display:grid; place-items:center; border:0; border-radius:var(--radius-absolute-12, 12px); background:var(--component-button-primary-bg-default, #0B0E11); color:var(--component-button-primary-ink, #FFFFFF); cursor:pointer; }
+@media (prefers-reduced-motion: reduce) { .sheet.ks.grew, .ks-k { animation:none; } .ks-think i { animation-duration:2.4s; } }
+
+/* ==== MESSAGES: one avatar per kind (27 Sep, messages thread) ==== */
+.mx-av { position:relative; width:var(--mx); height:var(--mx); flex:0 0 auto; cursor:pointer; }
+.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px dashed var(--ink3); box-sizing:border-box; }
+.mx-av .mx-f.solo { inset:0; font-size:calc(var(--mx) * .32); }
+.mx-av.grp .mx-f { width:calc(var(--mx) * .63); height:calc(var(--mx) * .63); font-size:calc(var(--mx) * .22); }
+.mx-av.grp .bk { left:0; top:0; background:var(--fill); }
+.mx-av.grp .ft { right:0; bottom:0; box-shadow:0 0 0 2.5px #fff; }
+.mx-av.ev { border-radius:calc(var(--mx) * .24); overflow:hidden; }
+.mx-av.ev > .mx-evt, .mx-av.ev .mx-evt > * { width:100%; height:100%; }
+.mx-av .mx-fs { position:absolute; inset:0; }
+.mx-av.sqp { border-radius:calc(var(--mx) * .24); background-size:cover; background-position:center; }
+.mx-hav { flex:0 0 auto; cursor:pointer; display:flex; }
+.cihead .mx-hav, .mx-hav.mx-big { justify-content:center; margin:0 auto 10px; }
+.mx-row { gap:12px; }
+.mx-row .mx-when { display:block; font-size:12px; font-weight:500; color:var(--ink3); letter-spacing:0; margin-top:1px; }
+.mx-row[data-kind="event"] .a { line-height:1.2; }
+.mx-note { font-weight:600; color:var(--ink); }
+.mx-note .li { vertical-align:-2px; }
+.mx-later { position:relative; }
+.evt-screen .mx-av .mx-f { background:rgb(var(--ev-ink-rgb) / .14); border:0; color:var(--ev-ink); }
+
+/* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
+   (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
+   shadows from --elevation-*, type from the 14 named styles (named in each comment). Lucide at 1.75 stroke. ==== */
+#phone.hf-msg svg.li { stroke-width:1.75; }
+#phone.hf-msg > .screen, #phone.hf-msg .body, #phone.hf-msg .chatbody, #phone.hf-msg .hdr { background:var(--bg-page); }
+#phone.hf-msg .hdr { border-bottom:0; }
+
+/* KeyHeader: display/l 28 B */
+#phone.hf-msg .hdr.top .t { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .hdr.top > .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); border:0; background:var(--component-avatar-you-bg); color:var(--component-avatar-you-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); /* label/strong */ }
+/* KeyIconButton, header: bare, no container (Apoorv 22:03); the 40 hit area keeps a radius-12 pressed fill */
+#phone.hf-msg .hdr .icon { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:transparent; box-shadow:none; color:var(--icon-primary); }
+#phone.hf-msg .hdr .icon:active, #phone.hf-msg .hdr .back:active { background:var(--bg-fill-default); }
+/* KeyUnreadBadge: label/strong 12 B */
+#phone.hf-msg .hdr .icon .badge, #phone.hf-msg .unread, #phone.hf-msg .pill .pc { background:var(--component-badge-bg); color:var(--component-badge-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+#phone.hf-msg .hdr .icon .badge { box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); border:0; }
+
+/* KeySearchField: body/m 15 R */
+#phone.hf-msg .toolrow { gap:var(--space-absolute-8); }
+#phone.hf-msg .toolrow .search { height:var(--space-absolute-48); box-sizing:border-box; display:flex; align-items:center; gap:var(--space-absolute-8); padding:0 var(--space-absolute-16); border:var(--border-width-hairline) solid var(--component-input-border-default); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); color:var(--component-input-placeholder); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
+#phone.hf-msg .toolrow .search::before { content:""; width:var(--space-absolute-16); height:var(--space-absolute-16); flex:0 0 auto; background:var(--icon-tertiary); -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") center/contain no-repeat; }
+/* KeyIconButton primary */
+#phone.hf-msg .toolrow .icon { width:var(--space-absolute-48); height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); border:0; background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+
+/* KeyRequestsRow: one object, so one card; the gold hairline marks people asking. body/l 17 SB over body/s 13 R */
+#phone.hf-msg .reqrow { border:var(--border-width-hairline) solid var(--border-gold); border-radius:var(--radius-absolute-20); background:var(--component-card-bg); box-shadow:var(--elevation-1); padding:var(--space-absolute-14) var(--space-absolute-16); margin:var(--space-absolute-12) 0 var(--space-absolute-14); }
+#phone.hf-msg .reqrow .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .reqrow .b { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+#phone.hf-msg .reqrow .rcap .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); /* caption */ }
+#phone.hf-msg .reqrow .rfaces .avatar { width:var(--space-absolute-32); height:var(--space-absolute-32); border:var(--space-absolute-2) solid var(--component-card-bg); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+
+/* KeyChip filter: label 13 SB */
+#phone.hf-msg .pills { gap:var(--space-absolute-8); padding-bottom:var(--space-absolute-6); }
+#phone.hf-msg .pill { height:var(--space-absolute-32); box-sizing:border-box; display:flex; align-items:center; gap:var(--space-absolute-6); padding:0 var(--space-absolute-12) !important; font:var(--type-label) !important; letter-spacing:var(--type-label-tracking) !important; border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); }
+#phone.hf-msg .pill.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+#phone.hf-msg .pill .pc { min-width:var(--space-absolute-18); height:var(--space-absolute-18); border-radius:var(--radius-absolute-infinite); display:inline-flex; align-items:center; justify-content:center; padding:0 var(--space-absolute-4); }
+#phone.hf-msg .pill.on .pc { background:var(--component-chip-selected-ink); color:var(--component-chip-selected-bg); }
+
+/* KeyConversationRow: rows on the page, hairline from the text edge. Name body/l 17 SB, preview body/m 15 R, time caption 12 M */
+#phone.hf-msg .convlist .swc { background:var(--bg-page); }
+#phone.hf-msg .conv.mx-row { gap:var(--space-absolute-12); padding:var(--space-absolute-12) 0; border-bottom:0; position:relative; }
+#phone.hf-msg .conv.mx-row::after { content:""; position:absolute; left:var(--space-absolute-56); right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .conv .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .conv .b { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-secondary); margin-top:var(--space-absolute-2); }
+#phone.hf-msg .conv .b.u { color:var(--text-primary); }
+#phone.hf-msg .conv .s { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); gap:var(--space-absolute-6); }
+#phone.hf-msg .conv .s > div[style*="font-weight:700"] { color:var(--text-primary) !important; }
+/* KeyTag: label/strong 12 B */
+#phone.hf-msg .tag { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--component-tag-ink); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); border-radius:var(--radius-absolute-6); padding:0 var(--space-absolute-6); margin-left:var(--space-absolute-4); vertical-align:var(--space-absolute-2); }
+/* KeyStateLabel line on event rows: caption 12 M */
+#phone.hf-msg .mx-row .mx-when { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .mx-note { color:var(--text-primary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+
+/* KeyAvatar (person, group) and KeyEventThumb (event): solid fills; group faces ringed in the page colour */
+#phone.hf-msg .mx-av .mx-f, #phone.hf-msg .avatar, #phone.hf-msg .bav, #phone.hf-msg .tf { border:0 !important; background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+#phone.hf-msg .mx-av .mx-f.solo { font:var(--type-body-m-strong); }
+#phone.hf-msg .hdr.chdr .mx-av .mx-f.solo, #phone.hf-msg .bav, #phone.hf-msg .tf { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); }
+/* KeyFaceStack layout=diagonal inside KeyConversationAvatar kind=group: two faces at 63% of the stack, KeyAvatar's fill and initials,
+   ring var(--face-ring) set by each context to its own ground */
+#phone.hf-msg .mx-av.grp .mx-f { background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); }
+#phone.hf-msg .convlist, #phone.hf-msg .mx-big { --face-ring:var(--bg-page); }
+#phone.hf-msg .mx-av.ev { border-radius:var(--radius-absolute-12); }
+
+/* KeyChatScreen header: frosted surface, hairline. body/l 17 SB, caption 12 M */
+#phone.hf-msg .hdr.chdr { background:color-mix(in srgb, var(--bg-surface-default) 92%, transparent); backdrop-filter:blur(var(--blur-backdrop)); -webkit-backdrop-filter:blur(var(--blur-backdrop)); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .hdr.chdr .hn { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-msg .hdr.chdr .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .hdr .back { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:0; background:transparent; color:var(--icon-primary); }
+#phone.hf-msg .hdr.chdr .icon { box-shadow:none; background:transparent; }
+
+/* KeyChatBubble: theirs surface, yours ink, the speaker's corner squares off. body/m 15 R, name label 13 SB, time caption 12 M */
+#phone.hf-msg .bub { border-radius:var(--radius-absolute-16); padding:var(--space-absolute-8) var(--space-absolute-12) var(--space-absolute-6); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); box-shadow:none; background:var(--component-card-bg); color:var(--text-primary); }
+#phone.hf-msg .bub.me { background:var(--component-msg-user-bg); color:var(--component-msg-user-ink); }
+#phone.hf-msg .bub.oth.first { border-top-left-radius:var(--radius-absolute-4); }
+#phone.hf-msg .bub.me.first { border-top-right-radius:var(--radius-absolute-4); }
+#phone.hf-msg .bub .bn { font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-primary); }
+#phone.hf-msg .bub .bf { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-msg .bub.me .bf { color:var(--text-on-deep-muted); }
+#phone.hf-msg .bav { width:var(--space-absolute-28); height:var(--space-absolute-28); border-radius:var(--radius-absolute-infinite); font:var(--type-overline); letter-spacing:var(--type-overline-tracking); /* overline */ }
+/* KeyDateSeparator: label/strong 12 B */
+#phone.hf-msg .dsep::before { border-top-color:var(--border-default); }
+#phone.hf-msg .dsep span { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-secondary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); padding:var(--space-absolute-2) var(--space-absolute-10); border-radius:var(--radius-absolute-infinite); }
+/* KeyAttachment */
+#phone.hf-msg .mtile { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-12); }
+#phone.hf-msg .mtile .plus { border-radius:var(--radius-absolute-12); background:var(--component-cover-scrim); color:var(--text-inverse); font:var(--type-title); letter-spacing:var(--type-title-tracking); /* title */ }
+#phone.hf-msg .filecard { background:var(--bg-fill-default); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); }
+#phone.hf-msg .bub.me .filecard { background:var(--bg-on-deep-fill); border-color:var(--border-on-deep); }
+/* KeyReactionChip, KeyThreadCount: label/strong 12 B */
+#phone.hf-msg .rchip, #phone.hf-msg .thchip { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); box-shadow:var(--elevation-1); color:var(--text-primary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+
+/* KeyComposer (held; his five prod screenshots), on tokens */
+#phone.hf-msg .foot.cbar { background:color-mix(in srgb, var(--bg-surface-default) 94%, transparent); backdrop-filter:blur(var(--blur-backdrop)); -webkit-backdrop-filter:blur(var(--blur-backdrop)); border-top:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-msg .kbox { border:var(--border-width-hairline) solid var(--border-control); border-radius:var(--radius-absolute-20); background:var(--component-input-bg); }
+#phone.hf-msg .kbox .ci::placeholder { color:var(--component-input-placeholder); }
+/* send is a button tile: radius 12 (Apoorv 22:03) */
+#phone.hf-msg .csend { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+/* scheduled strip over the composer: label 13 SB */
+#phone.hf-msg .schedstrip { border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+
+/* Later: display/s 22 XB title; KeyTabs body/m strong 15 SB */
+#phone.hf-msg .hdr > div[style*="flex:1"] > div[style*="font-size:18px"] { font:var(--type-display-s) !important; letter-spacing:var(--type-display-s-tracking) !important; }
+#phone.hf-msg .citabs.later { background:var(--bg-page); border-bottom:var(--border-width-hairline) solid var(--border-default); padding-left:var(--space-absolute-16); }
+#phone.hf-msg .citabs.later span { color:var(--text-tertiary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+#phone.hf-msg .citabs.later span.on { color:var(--text-primary); box-shadow:inset 0 calc(-1 * var(--border-width-focus)) 0 var(--text-primary); }
+#phone.hf-msg .xrow.lrow { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-14) 0; }
 </style>
 </head>
 <body>
@@ -12179,6 +12621,33 @@ const C_CHEVSM_SVG = LI("chevron-down", 14);
 const C_SMILEPLUS_SVG = LI("smile-plus", 22);
 /* the family's own mark (nav thread's marks.js, Apoorv 27 Sep 19:57: real logos everywhere); the initial until marks.js loads */
 const cMark = f => typeof FAM_MARK!=="undefined" && FAM_MARK[f.id] ? `<span class="cm-mark">${FAM_MARK[f.id]}</span>` : f.initial;
+/* Hi-fi (27 Sep, his 20:28): the family cover is the organizer's photo; until they add one it is drawn from Events' pictogram cover kit
+   (his 19:19 pick), one composition per family, so a family and its events share one visual language. */
+/* One file serves both copies (Apoorv 21:22): the wireframe demo stays lo-fi; the high-fidelity copy sets `const KEY_HIFI = true` before this file. */
+const cHiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+const C_COVER = { xoogler:["dinner","tide"], michigan:["summit","midnight"], desi:["dinner","ember"], aipm:["demo","dusk"] };
+const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"]; return cHiFi() && typeof cvaCover==="function" && typeof evPreset==="function" ? cvaCover(c[0], evPreset(c[1]), f.id) : ""; };
+/* Every community part carries its library name (data-kc), so the screen and the Figma library can be checked against each other.
+   This list is the section-to-component map Design system builds from. */
+const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
+  [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
+  [".cm-sec, .cm-newm","KeyListSection"],[".cm-askbtns > span, .cm-btn, .cm-form .btn","KeyButton"],[".cm-ask, .cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-chrow","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
+  [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
+  [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
+/* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
+const cKaiMarks = root => { if (typeof kaiMark!=="function") return; root.querySelectorAll(".cm-kt, .cm-osk").forEach(el => { if (!el.dataset.kn) { el.innerHTML = kaiMark(el.classList.contains("cm-osk")?28:40); el.dataset.kn = 1; } }); };
+/* data-kv is the Figma variant string, as Figma writes it (Design system, 20:46) */
+const cKv = (el, n) => { const c = el.classList;
+  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-askbtns > span:first-child, .cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
+    : n==="KeyChip" ? `variant=${c.contains("cm-osjob")?"deep":el.parentElement.classList.contains("cm-chtiles")?"channel":"default"}, state=${c.contains("on")?"selected":"default"}`
+    : n==="KeyRow" ? `type=${c.contains("cm-ask")?"ask":c.contains("cm-rit")?"ritual":"kai"}`
+    : n==="KeyMemberRow" ? `state=${el.querySelector(".cm-done")?"new":"default"}`
+    : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
+    : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
+    : n==="KeyChannelRow" ? `type=${c.contains("cm-chrow")?"summary":"channel"}, state=${c.contains("u")?"unread":"read"}`
+    : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
+const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
 const C_MUTE_SVG = LI("bell-off", 14);
 /* one long press opens a row's menu; the click that follows it is swallowed so the sheet stays open */
@@ -12189,7 +12658,7 @@ document.addEventListener("pointerup", ()=>{ if (cSwallowUntil) setTimeout(()=>{
 /* ---- header: two icons (search, notifications). The family name opens the family menu; Invite (and Manage for organizers) are icons beside the name. ---- */
 famHdr = function(){
   const f = cF();
-  return topHdr(`<span class="cm-fname" data-csheet="cfam" role="button" aria-label="${f.name} menu">${f.name}${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
+  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family">${f.name}${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
 };
 const _cFamHeader = famHeader;
 famHeader = function(title, back){ return _cFamHeader(title, back).replace(/<div class="icon" onclick="go\('fsettings'\)">[\s\S]*?<\/svg><\/div>/, ""); };
@@ -12198,7 +12667,7 @@ const _cFamTop = famTop;
 famTop = function(){
   const f = cF();
   const acts = `<div class="cm-hacts"><span class="cm-ibtn" data-csheet="cinvite" role="button" aria-label="Invite to ${f.name}">${C_INVITE_SVG}</span>${cOrg()?`<span class="cm-ibtn" data-cgo="manage" role="button" aria-label="Manage ${f.name}">${C_SHIELD_SVG}${cWaiting()?`<b class="cm-count sm">${cWaiting()}</b>`:''}</span>`:''}</div>`;
-  return _cFamTop().replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-csheet="cfam">${f.name}</div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
+  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big" data-cabout="${f.id}">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-cabout="${f.id}" role="button">${f.name}<span class="cm-tchev">${LI("chevron-right",18)}</span></div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
 };
 
 /* ---- tabs (move between places) ---- */
@@ -12218,7 +12687,11 @@ render = function(){
   const S = STATE.screen;
   if (S!=="fchannels") _cRender();
   else { STATE.screen = "family"; STATE._cCh = true; try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; } }
-  if (C_TAB_SCR.includes(S)) cPane();
+  if (C_TAB_SCR.includes(S)) { cPane(); cSwipe(); }
+  const room = cHiFi() && /^channel:/.test(STATE.screen||""), hi = room || (cHiFi() && !!phone.querySelector(".screen .cm-fname, .screen .cm-hi"));
+  phone.classList.toggle("cmhi", hi); phone.classList.toggle("cmroom", room);
+  ["white","rows","tint"].forEach(k => phone.classList.toggle("cmbg-"+k, room && (STATE.cmBg||"white")===k));
+  if (hi) { cKc(phone); cKaiMarks(phone); }
 };
 /* Switching family tabs: the header, cover and tabs stay put; only the content under the tabs slides in from the side you moved toward. */
 const _cTabIndexOf = tabIndexOf;
@@ -12241,7 +12714,11 @@ function cPane(){
   body.appendChild(pane);
   pane.style.minHeight = Math.max(0, body.clientHeight - bar.offsetHeight) + "px";
   const t = STATE.cPane; STATE.cPane = null; if (!t) return;
-  body.scrollTop = Math.min(t.y, bar.offsetTop);
+  /* A tab lands with the tabs pinned under the header and its content in view (his 21:19; X, Instagram and Facebook Groups profiles
+     do this): from the hero the page glides up to the pin point; from deeper down the new tab starts at its own top. A chip only filters. */
+  const pin = bar.offsetTop, calm = navigator.webdriver || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  body.scrollTop = Math.min(t.y, pin);
+  if (t.dir!=="f" && body.scrollTop < pin) { if (calm) body.scrollTop = pin; else requestAnimationFrame(()=>body.scrollTo({ top:pin, behavior:"smooth" })); }
   pane.classList.add(t.dir==="l" ? "cm-in-l" : t.dir==="r" ? "cm-in-r" : "cm-fade");
 }
 
@@ -12610,7 +13087,7 @@ function cPostDetail(){
   const f = cF(); const p = DB.posts.find(x=>x.id===STATE.cPostId) || cPosts(f)[0];
   const mine = ((STATE.cMyCmts||{})[p.id]||[]).map(t=>[DB.user.name,DB.user.initials,t,"Now"]);
   const cmts = [...mine, ["Maya Chen","MC","The teardown round is exactly where I'd have fallen over. Saving this.","1d"],["Rahul Mehta","RM","Same shape at Anthropic, minus the teardown. We ask for a written one instead.","2d"]];
-  return `${famHeader(p.cat,"posts")}<div class="body cm-pd" style="padding-top:4px">
+  return `${famHeader(p.cat,"posts")}<div class="body cm-pd cm-hi" style="padding-top:4px">
     <div class="cm-lby">${cAv(p.ini)}<div style="min-width:0;flex:1"><div class="n">${p.who.split(",")[0]}</div><div class="w">${p.sub} · ${p.when}</div></div><span class="cm-lmenu" data-csheet2="cpmenu|${p.id}" aria-label="More">${C_DOTS_SVG}</span></div>
     <div class="cm-k" style="margin-top:14px">${p.pinned?"Pinned · ":p.featured?"Most popular · ":""}${p.cat} · ${p.read}</div>
     <h2 class="cm-pt">${p.title}</h2>
@@ -12929,27 +13406,26 @@ sPublicPage = function(){
   const who = d.run.map(r=>r[1]).join(" and ");
   const step = (n, a, b) => `<div class="cm-row cm-step" style="cursor:default"><div class="cm-num">${n}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div></div>`;
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div style="flex:1"></div><span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
-  <div class="body cm-page" style="padding-top:0">
-    ${member?`<div class="cm-note">This is what people see before they join.</div>`:''}
-    <div class="cover" style="margin-top:${member?0:-10}px"><div class="flogo big">${cMark(f)}</div></div>
-    <div class="famname"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
-      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div>
-      <div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>Run by ${who}</span></div></div>
-    ${member?'':`<div class="cm-sec">${known.length?`<div class="cm-row" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div><div class="b">People you know. Others show only if they allow it.</div></div></div>`:''}
-      <div class="cm-row" style="cursor:default">${cAv(DB.user.invitedBy&&f.id==="xoogler"?"DR":"kai","sm")}<div class="m"><div class="a" style="font-weight:500">${why}</div></div></div></div>`}
-    <div class="cm-sec">${cHead("Who it's for")}<div class="cm-text">${d.forWho}</div></div>
-    <div class="cm-sec">${cHead("What happens here")}
-      ${d.out.length?`<div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta" style="margin-top:6px">Last quarter, from what members reported</div>`:''}
-      ${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="m"><div class="a" style="font-weight:500">${t}</div></div><span class="cm-meta">${w}</span></div>`).join("")}</div>
-    ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}${chans.map(([e,n,m])=>`<div class="cm-row" style="cursor:default"><div class="cm-che">${e}</div><div class="m"><div class="a">${n}</div></div><span class="cm-meta">${m} members</span></div>`).join("")}<div class="cm-meta" style="margin-top:6px">Messages stay inside. You see them once you're in.</div></div>`:''}
-    ${evs.length?`<div class="cm-sec">${cHead("Open events")}${evs.map(e=>evCard(e,"row",{fam:false})).join("")}<div class="cm-meta" style="margin-top:6px">Anyone can register for these.</div></div>`:''}
-    <div class="cm-sec">${cHead("House rules")}<div class="cm-text">${d.rules}</div></div>
-    ${member?'':`<div class="cm-sec">${cHead("How joining works")}
-      ${open ? step(1,"Join","You're in straight away")+step(2,"Say hi in the channels","Kai suggests who to meet first")
-        : step(1,"Apply","About 8 minutes. Kai fills most of it from your profile.")+step(2,`${d.run[0][1].split(" ")[0]} reviews it`,`Reviews ${d.cadence}. Usually ${d.decide}.`)+step(3,"You're in","Channels, people and events open up")}</div>`}
+  <div class="body cm-page cm-hi" style="padding-top:0">
+    <div class="cover cm-cover" style="margin-top:${member?0:-10}px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
+    <div class="famname cm-pubhd"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
+      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div></div>
+    ${!member&&known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
+    ${d.out.length?`<div class="cm-sec cm-proof"><div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta">Last quarter, from what members reported</div></div>`:''}
+    ${evs.length?`<div class="cm-sec">${cHead("Open events")}<div class="cm-evstrip">${evs.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
+    <div class="cm-sec cm-rhythm">${cHead("Every week and month")}${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="cm-day">${LI("repeat",18)}</div><div class="m"><div class="a">${t}</div><div class="b">${w}</div></div></div>`).join("")}</div>
+    ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}<div class="cm-chtiles">${chans.map(([e,n])=>`<span><i>${e}</i>${n}</span>`).join("")}</div></div>`:''}
+    <div class="cm-sec cm-runsec">${cHead("Run by")}<div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>${who}</span></div></div>
+    <div class="cm-sec">${cHead("House rules")}<div class="cm-rules">${d.rules.split(/\.\s*/).filter(Boolean).map(r=>`<span>${r}</span>`).join("")}</div></div>
+    ${member?'':`<div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>`}
+    ${member?`<div class="cm-sec cm-you">${cHead(`You in ${f.name}`)}
+      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">Notifications</div><div class="b">${({all:"All activity",mentions:"Mentions only",off:"Off"})[STATE.cNotif||"all"]}</div></div><span class="s">›</span></div>
+      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">What Kai reads and who sees you</div></div><span class="s">›</span></div>
+      ${cOrg()?`<div class="cm-row" data-cgo="manage:settings"><div class="m"><div class="a">Edit the family page</div><div class="b">Info, joining, roles, library</div></div><span class="s">›</span></div>`:''}
+      <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a cm-danger-t">Leave ${f.name}</div></div></div></div>`:''}
     ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
-  <div class="foot">${member?`<div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" data-cgo="family">Open ${f.name}</button><button class="btn" style="flex:1;margin:0" data-csheet="cinvite">Invite</button></div>`
+  <div class="foot">${member?`<button class="btn" data-csheet="cinvite">Invite to ${f.name}</button>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
     : (STATE.applied&&f.id==="xoogler") ? `<button class="btn sec" disabled>Applied · ${d.run[0][1].split(" ")[0]} is reviewing</button>`
     : `<button class="btn" onclick="${f.id==="xoogler"?"STATE.appPage=0;go('application')":`toast('Opens the ${f.name} application')`}">${open?"Join "+f.name:"Apply · about 8 min"}</button>`}</div>`;
@@ -13255,11 +13731,53 @@ const _cPortSheet = portSheet;
 /* one spacing rhythm for every community sheet (Apoorv 26 Sep: the New channel sheet crowded its fields) */
 portSheet = function(type, id){ const h = cSheet(type, id); return h!==null ? `<div class="cm-form">${h}</div>` : _cPortSheet(type, id); };
 
+/* ---- swipe between family tabs (Apoorv 27 Sep 21:32: the tabs sit out of thumb reach). Instagram and X profiles, Telegram folders and
+   Material's swipeable tabs do this. A sideways drag on the content moves one tab; whatever already moves sideways keeps its gesture:
+   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), fields, row swipes and an open sheet.
+   The drag only takes over once it is clearly sideways, so vertical scroll stays native; long presses give way once a finger travels. ---- */
+function cSwipe(){
+  const i = C_TAB_SCR.indexOf(STATE.screen), body = phone.querySelector(".view .body");
+  if (i<0 || !body || !body.querySelector(":scope > .cm-pane")) return;
+  body.classList.add("cm-swipe");
+  const calm = navigator.webdriver || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const rail = el => { for (; el && el!==body; el = el.parentElement) { const o = getComputedStyle(el).overflowX; if ((o==="auto"||o==="scroll") && el.scrollWidth > el.clientWidth + 1) return true; } return false; };
+  let s = null;
+  const drag = (dx, on) => { const p = body.querySelector(":scope > .cm-pane"); if (!p || calm) return; p.style.transition = on ? "none" : "transform .2s cubic-bezier(.2,.8,.2,1), opacity .2s"; p.style.transform = dx ? `translateX(${dx}px)` : ""; p.style.opacity = dx ? String(1 - Math.abs(dx)/160) : ""; };
+  body.addEventListener("pointerdown", e=>{
+    s = null;
+    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("input,textarea,select,[contenteditable],.swr,.cm-tabs") || rail(e.target)) return;
+    s = { x:e.clientX, y:e.clientY, t:e.timeStamp, id:e.pointerId, lock:false };
+  });
+  body.addEventListener("pointermove", e=>{
+    if (!s || e.pointerId!==s.id) return;
+    const dx = e.clientX-s.x, dy = e.clientY-s.y;
+    if (!s.lock) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) >= Math.abs(dx)) { s = null; return; }
+      if (Math.abs(dx) < 12 || Math.abs(dx) < 1.5*Math.abs(dy)) return;
+      s.lock = true; try { body.setPointerCapture(e.pointerId); } catch(_) {}
+    }
+    const edge = (dx<0 && i===C_TAB_SCR.length-1) || (dx>0 && i===0);
+    drag(Math.max(-56, Math.min(56, dx*(edge ? .12 : .35))), true);
+  });
+  const end = e=>{
+    if (!s || e.pointerId!==s.id) return;
+    const t = s; s = null; if (!t.lock) return;
+    cSwallowUntil = Date.now()+400;
+    const dx = e.clientX-t.x, v = Math.abs(dx)/Math.max(1, e.timeStamp-t.t), j = i + (dx<0 ? 1 : -1);
+    if (e.type==="pointerup" && j>=0 && j<C_TAB_SCR.length && (Math.abs(dx) > body.clientWidth*.22 || (v > .45 && Math.abs(dx) > 30))) go(C_TAB_SCR[j]);
+    else drag(0, false);
+  };
+  body.addEventListener("pointerup", end); body.addEventListener("pointercancel", end);
+}
+
 /* ---- wiring ---- */
 function cLong(sel, fn){
   phone.querySelectorAll(sel).forEach(el=>{
     let t = null;
-    el.addEventListener("pointerdown", ()=>{ t = setTimeout(()=>{ t = null; cSwallowUntil = Date.now()+800; fn(el); }, 480); });
+    let x0 = 0, y0 = 0;
+    el.addEventListener("pointerdown", e=>{ x0 = e.clientX; y0 = e.clientY; t = setTimeout(()=>{ t = null; cSwallowUntil = Date.now()+800; fn(el); }, 480); });
+    /* a finger that travels is scrolling or swiping tabs, not pressing */
+    el.addEventListener("pointermove", e=>{ if (t && Math.hypot(e.clientX-x0, e.clientY-y0) > 8) { clearTimeout(t); t = null; } });
     ["pointerup","pointerleave","pointercancel"].forEach(ev=>el.addEventListener(ev, ()=>{ if (t) clearTimeout(t); t = null; }));
     el.addEventListener("contextmenu", e=>{ e.preventDefault(); fn(el); });
   });
@@ -13693,6 +14211,7 @@ profileSheet = function(pid){ let h=_p2ProfileSheet(pid); if (pid==="priya") ret
   return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
 const _p2SProfile = sProfile;
 sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid);
+  if (!p2Blocked(pid)) h = h.replace(`<div class="p2fw">`, `<div class="p2fw ph0" aria-hidden="true">`).replace(`<div class="p2">`, `<div class="p2">${p2FollowBtn(pid).replace('class="p2fw"','class="p2fw pg"')}`);
   h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="toast('Share, report, block (out of scope)')">···</div>`,
     `<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('p2more','${pid}')">···</div>`);
   if (!p2Blocked(pid)) h = h.replace(/<div class="pact">[\s\S]*?<\/div>/, `<div class="pact p2pact">${p2Dock(pid)}</div>`);
@@ -13714,7 +14233,7 @@ function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2O
     };
   return A; }
 function p2KaiScope(pid){ const p=DB.people[pid]; return { kind:"profile", id:pid, label:p.name, sugg:Object.values(p2KaiQs(pid)).map(a=>a[0]) }; }
-function p2AskKai(pid){ STATE.kaiMsgs=[]; STATE.kaiScope=p2KaiScope(pid); openSheet("kai"); }
+function p2AskKai(pid){ STATE.kaiMsgs=[]; openSheet("kai"); STATE.kaiScope=p2KaiScope(pid); render(); }   // openSheet("kai") clears kaiScope, so scope after it
 const _p2KaiScopeFor = kaiScopeFor;
 kaiScopeFor = function(){ const sc=_p2KaiScopeFor(); return sc&&sc.kind==="profile"&&sc.id!=="priya"&&DB.people[sc.id] ? p2KaiScope(sc.id) : sc; };
 // talk.js wraps kaiAsk after this module loads, so this wrapper installs once every module has run and sits outermost
@@ -14624,57 +15143,75 @@ portWire = function() {
   if (STATE.callActive && !vizRAF) vizRAF = requestAnimationFrame(vizLoop);
 };
 
-/* ==== KeyStarField (Kai hi-fi thread, 27 Sep; Apoorv 21:59: "more accurate to the reel, not linear movement").
-   The sign-in reel's community field, same shader and numbers as motion.js moFieldBuild: 1,800 soft points in a 3D cloud, a few
-   gold, each breathing on its own orbit, twinkling, faded by depth, seen through a camera that sways while the cloud turns.
-   Here it sits between the reel's ask and path framings (field .75, dim .5, camera at 10) and leans in a little with the voice.
-   One renderer, rendered once a frame and copied into every call canvas, so extra phones never open another GL context.
-   Needs THREE (r128); without it the call keeps its plain dark ground. ==== */
-const KF = { r:null, fail:false };
-function kfBuild() {
-  const T = THREE, renderer = new T.WebGLRenderer({ antialias:true, alpha:true, preserveDrawingBuffer:true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0);
-  const scene = new T.Scene(), camera = new T.PerspectiveCamera(38, 1, 0.1, 60), group = new T.Group(); scene.add(group);
-  const u = { uTime:{value:0}, uPx:{value:renderer.getPixelRatio()}, uDim:{value:1}, uField:{value:0} };
-  const N = 1800, pos = new Float32Array(N*3), col = new Float32Array(N*3), size = new Float32Array(N), seed = new Float32Array(N);
-  let s = 7; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < N; i++) {
-    const a = rnd()*Math.PI*2, v = Math.acos(2*rnd()-1), r = Math.pow(rnd(), 0.55)*5.2;
-    pos[i*3] = Math.sin(v)*Math.cos(a)*r*1.15; pos[i*3+1] = Math.cos(v)*r*0.62; pos[i*3+2] = Math.sin(v)*Math.sin(a)*r - 1.2;
-    const gold = rnd() < 0.045, k = 0.55 + rnd()*0.45;
-    if (gold) { col[i*3] = 0.86; col[i*3+1] = 0.72; col[i*3+2] = 0.33; } else { col[i*3] = 0.66*k+0.3; col[i*3+1] = 0.70*k+0.3; col[i*3+2] = 0.76*k+0.3; }
-    size[i] = (gold ? 2.6 : 1.2) + rnd()*rnd()*3.2; seed[i] = rnd();
+/* ==== Kai stars (Motion design thread, 27 Sep; Apoorv 21:34 and 21:59: the sign-in reel's stars, behind the hi-fi Kai call).
+   The reel's field, ported to one 2D canvas so the call needs no WebGL: the same 3D cloud (an ellipsoid 1.15 : .62 : 1 wide,
+   tall, deep), the same 38 degree camera orbiting on its .11 / .17 clocks and looking at the centre, the same slow turn of the
+   cloud (.2 sin(.16t) + .02t), each point's own small 3D loop (.16 on .31 / .23 / .19 clocks), size and fade by depth, the same
+   .6 to 1 twinkle and soft additive points. Two call rules on top: points are spaced in 3D by a minimum distance, so nothing
+   clumps (Apoorv's no-clusters rule), and they are cool grey-white only (no gold: gold marks people and Kai's K).
+   When someone speaks, the camera eases in a little, the turn quickens, and points near the globe brighten, then settle.
+   Off under reduced motion and webdriver (unless ?motion): one still frame, no animation loop.
+   Use: const s = kaiStars(el, { cx:.5, cy:.36, clear:120 }); s.level(v) each frame or on voice (0 to 1); s.stop(). ==== */
+function kaiStars(host, o) {
+  o = Object.assign({ cx:.5, cy:.4, clear:110, count:520, fadeBottom:.72 }, o || {});
+  const moving = (!navigator.webdriver || /[?&]motion/.test(location.search)) && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const c = document.createElement("canvas"); c.className = "kai-stars"; c.setAttribute("aria-hidden", "true");
+  c.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0";
+  host.insertBefore(c, host.firstChild);
+  const g = c.getContext("2d"); let W = 0, H = 0, dpr = 1, lv = 0, tgt = 0, raf = 0, t0 = performance.now(), last = t0, turn = 0;
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  // the cloud: uniform in the reel's ellipsoid, every point at least MIN apart in 3D (world units; the reel's cloud is 5.2 in radius)
+  const MIN = .62, pts = [];
+  for (let tries = 0; pts.length < o.count && tries < o.count * 40; tries++) {
+    const x = (rnd() * 2 - 1) * 5.98, y = (rnd() * 2 - 1) * 3.22, z = (rnd() * 2 - 1) * 5.2;
+    if ((x / 5.98) ** 2 + (y / 3.22) ** 2 + (z / 5.2) ** 2 > 1) continue;
+    if (pts.some(p => (p.x - x) ** 2 + (p.y - y) ** 2 + (p.z + 1.2 - z) ** 2 < MIN * MIN)) continue;
+    pts.push({ x, y, z:z - 1.2, s:1.2 + rnd() * rnd() * 3.2, sd:rnd() });
   }
-  const g = new T.BufferGeometry();
-  g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aCol", new T.BufferAttribute(col,3)); g.setAttribute("aSize", new T.BufferAttribute(size,1)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
-  group.add(new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
-    vertexShader:`uniform float uTime,uPx,uDim,uField; attribute vec3 aCol; attribute float aSize,aSeed; varying vec3 vCol; varying float vA;
-      void main(){ vec3 p = position + .16*vec3(sin(uTime*.31+aSeed*6.28), cos(uTime*.23+aSeed*4.1), sin(uTime*.19+aSeed*5.3));
-        p *= mix(1.35, 1., uField);
-        vec4 mv = modelViewMatrix*vec4(p,1.); gl_PointSize = aSize*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv;
-        float d = clamp((-mv.z-5.)/10., 0., 1.);
-        vA = (1.-d*.85) * uDim * uField * (.6 + .4*sin(uTime*1.1 + aSeed*40.)); vCol = aCol; }`,
-    fragmentShader:`varying vec3 vCol; varying float vA; void main(){ float r = length(gl_PointCoord - .5); float a = 1. - smoothstep(0., .5, r); gl_FragColor = vec4(vCol, a*a*vA); }` })));
-  return { renderer, scene, camera, group, u, w:0, h:0, lv:0 };
-}
-// Draw one frame into each canvas; lv is the voice level (0 to 1), eased so the cloud leans in and settles back.
-function kfFrame(canvases, t, lv) {
-  if (!canvases.length || !window.THREE || KF.fail) return false;
-  if (!KF.r) { try { KF.r = kfBuild(); } catch (e) { KF.fail = true; return false; } }
-  const F = KF.r, c0 = canvases[0], w = c0.clientWidth, h = c0.clientHeight; if (!w || !h) return false;
-  if (F.w !== w || F.h !== h) { F.w = w; F.h = h; F.renderer.setSize(w, h, false); F.camera.aspect = w/h; F.camera.updateProjectionMatrix(); }
-  F.lv += ((lv || 0) - F.lv) * .08;
-  F.u.uTime.value = t; F.u.uField.value = .75 + .15*F.lv; F.u.uDim.value = .5 + .22*F.lv;
-  F.camera.position.set(Math.sin(t*.11)*.35, Math.sin(t*.17)*.12, 10 - .8*F.lv); F.camera.lookAt(0, 0, 0);
-  F.group.rotation.y = .2*Math.sin(t*.16) + t*.02;
-  F.renderer.render(F.scene, F.camera);
-  const src = F.renderer.domElement;
-  canvases.forEach(c => { if (c.width !== src.width || c.height !== src.height) { c.width = src.width; c.height = src.height; }
-    const g = c.getContext("2d"); g.clearRect(0, 0, c.width, c.height); g.globalCompositeOperation = "lighter"; g.drawImage(src, 0, 0); g.drawImage(src, 0, 0); }); // drawn twice: on a phone-sized canvas the reel's full-screen points read a little too faint
-  return true;
+  // one soft sprite with the reel's falloff, (1 - smoothstep(0, .5, r))^2, in the reel's grey-white
+  const SP = 32, sprite = document.createElement("canvas"); sprite.width = sprite.height = SP;
+  { const sg = sprite.getContext("2d"), im = sg.createImageData(SP, SP);
+    for (let j = 0; j < SP; j++) for (let i = 0; i < SP; i++) { const r = Math.hypot(i + .5 - SP / 2, j + .5 - SP / 2) / SP, u = Math.min(1, r / .5), a = 1 - u * u * (3 - 2 * u);
+      const q = (j * SP + i) * 4; im.data[q] = 214; im.data[q + 1] = 222; im.data[q + 2] = 232; im.data[q + 3] = Math.round(a * a * 255); }
+    sg.putImageData(im, 0, 0); }
+  function size() { const b = host.getBoundingClientRect(), w = host.clientWidth || b.width, h = host.clientHeight || b.height; if (!w || !h) return false;
+    dpr = Math.min(window.devicePixelRatio || 1, 2); if (w === W && h === H) return true; W = w; H = h; c.width = W * dpr; c.height = H * dpr; return true; }
+  function draw(now) {
+    const dt = Math.min(.05, Math.max(0, now - last) / 1000), t = (now - t0) / 1000; last = now;
+    lv += (tgt - lv) * (1 - Math.exp(-dt * 4)); turn += dt * (.02 + lv * .05);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); g.globalCompositeOperation = "lighter";
+    // the reel's camera: orbit on .11 / .17, resting at z 9, easing in toward 8.4 with the voice; looks at the centre
+    const ex = Math.sin(t * .11) * .35, ey = Math.sin(t * .17) * .12, ez = 9 - lv * .6, el = Math.hypot(ex, ey, ez);
+    const fx = -ex / el, fy = -ey / el, fz = -ez / el;
+    let rx = -fz, rz = fx; const rl = Math.hypot(rx, rz); rx /= rl; rz /= rl; // right = forward x (0,1,0)
+    const ux = -rz * fy, uy = rz * fx - rx * fz, uz = rx * fy; // up = right x forward
+    const ry = .2 * Math.sin(t * .16) + (moving ? turn : .04), cr = Math.cos(ry), sr = Math.sin(ry);
+    const cx = W * o.cx, cy = H * o.cy, foc = (H / 2) / Math.tan(19 * Math.PI / 180);
+    for (const p of pts) {
+      const px = p.x + .16 * Math.sin(t * .31 + p.sd * 6.28), py = p.y + .16 * Math.cos(t * .23 + p.sd * 4.1), pz = p.z + .16 * Math.sin(t * .19 + p.sd * 5.3);
+      const dx = px * cr + pz * sr - ex, dy = py - ey, dz = -px * sr + pz * cr - ez; // turn the cloud, then relative to the camera
+      const depth = dx * fx + dy * fy + dz * fz; if (depth < .6) continue;
+      const sx = cx + (dx * rx + dz * rz) / depth * foc, sy = cy - (dx * ux + dy * uy + dz * uz) / depth * foc;
+      if (sx < -8 || sy < -8 || sx > W + 8 || sy > H + 8) continue;
+      const d = Math.hypot(sx - cx, sy - cy), clear = Math.min(1, Math.max(0, (d - o.clear) / 60)); // nothing sits on the globe
+      const low = Math.min(1, Math.max(0, (H * .98 - sy) / (H * (1 - o.fadeBottom)))); // or under the call buttons
+      const fade = 1 - Math.min(1, Math.max(0, (depth - 5) / 10)) * .85, tw = .6 + .4 * Math.sin(t * 1.1 + p.sd * 40);
+      const near = Math.max(0, 1 - d / (o.clear * 3));
+      const a = fade * tw * clear * low * (1 + near * lv * 1.2); if (a < .02) continue;
+      const r = p.s * (8.5 / depth) * (1 + near * lv * .35); // gl_PointSize is a diameter; the sprite's soft edge eats the rest
+      g.globalAlpha = Math.min(1, a); g.drawImage(sprite, sx - r, sy - r, r * 2, r * 2);
+    }
+    g.globalAlpha = 1; g.globalCompositeOperation = "source-over";
+  }
+  function loop(now) { if (!host.isConnected) return stop(); if (!document.hidden && size()) draw(now); raf = requestAnimationFrame(loop); }
+  function stop() { cancelAnimationFrame(raf); raf = 0; removeEventListener("resize", onResize); }
+  const onResize = () => { if (size() && !moving) draw(t0 + 2000); };
+  addEventListener("resize", onResize);
+  if (moving) raf = requestAnimationFrame(loop); else if (size()) draw(t0 + 2000); else requestAnimationFrame(() => size() && draw(t0 + 2000));
+  return { level(v) { tgt = Math.max(0, Math.min(1, v || 0)); }, stop, canvas:c };
 }
 
-/* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34, 21:59). Load after motion.js and kai-field.js, before data.js.
+/* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34, 21:59). Load after motion.js and Motion's kai-stars.js, before data.js.
    Overrides sCall and callBarHTML, wraps answer, portWire and vizLoop. Keeps every hook motion.js and the wiring use:
    #vizc, #vizs, #tr, .line.k / .line.k.now / .line.u, [data-ans], [data-cmute], [data-cend], [data-expand], [data-timer],
    canvas.mo-mini. New state: STATE.callIdeas, STATE.callTyping, STATE.callCap. ==== */
@@ -14699,7 +15236,6 @@ sCall = function() {
   const status = STATE.callMuted ? "Muted" : ({ kai:"Kai is speaking", you:"Listening", think:"Kai is thinking", idle:"Your turn" })[who] || "Your turn";
   const b = (on, attr, ic, l, cls="") => `<button class="kc-b${on?" on":""}${cls}" ${attr} aria-pressed="${!!on}"><span class="d">${kcI(ic,28)}</span><span class="l">${l}</span></button>`;
   return `<div class="call kc${STATE.callCap?"":" nocap"}" data-who="${who}" data-kc="KeyCallScreen" data-kv="who=${who}, muted=${!!STATE.callMuted}, captions=${!!STATE.callCap}">
-    <canvas class="kc-fld" aria-hidden="true" data-kc="KeyStarField" data-kv="framing=call"></canvas>
     <div class="kc-top"><button class="kc-ib" data-kcmin aria-label="Minimise call">${kcI("down")}</button>
       <div class="kc-who"><div class="n">${KC_K}Kai</div><div class="t"><span data-timer>${fmt(STATE.callSeconds)}</span> · ${Math.min(STATE.callStep+1,INTAKE.length)} of ${INTAKE.length}</div></div>
       <button class="kc-ib${STATE.callCap?"":" off"}" data-kccap aria-label="${STATE.callCap?"Hide":"Show"} captions" aria-pressed="${!!STATE.callCap}">${kcI("cc")}</button></div>
@@ -14725,6 +15261,7 @@ callBarHTML = function() {
 const _kcAnswer = answer;
 answer = function(a) {
   if (STATE.callActive && STATE.callMuted) { toast("You're muted. Unmute to answer."); return; }
+  if (STATE.callActive && typeof MO_SIG!=="undefined" && /^(kai|think)$/.test(MO_SIG.who)) { toast("Kai is still asking. Answer when it's your turn."); return; } // nothing is dropped: the tray and any typing stay
   STATE.callIdeas = false; STATE.callTyping = false;
   phone.querySelectorAll(".kc-ideas.open, .kc-type.open").forEach(el=>el.classList.remove("open"));
   phone.querySelectorAll("[data-kcideas], [data-kctype]").forEach(el=>{ el.classList.remove("on"); el.setAttribute("aria-pressed","false"); });
@@ -14736,6 +15273,7 @@ const _kcPortWire = portWire;
 portWire = function() {
   _kcPortWire.apply(this, arguments);
   const call = phone.querySelector(".call.kc"); if (!call) return;
+  if (typeof kaiStars==="function" && !call.querySelector("canvas.kai-stars")) { KC_ST = kaiStars(call, STATE.callCap ? { cx:.5, cy:.25, clear:118 } : { cx:.5, cy:.33, clear:148 }); KC_ST.canvas.dataset.kc = "KeyStarField"; KC_ST.canvas.dataset.kv = "framing=call"; }
   const tr = call.querySelector("#tr"); if (tr) tr.scrollTop = tr.scrollHeight;
   const tog = (key, on, off) => { STATE[key] = !STATE[key]; if (off) STATE[off] = false;
     call.querySelector(".kc-ideas").classList.toggle("open", STATE.callIdeas); call.querySelector(".kc-type").classList.toggle("open", STATE.callTyping);
@@ -14750,12 +15288,209 @@ portWire = function() {
   on("[data-kcsend]", send);
   const t = call.querySelector("#kcType"); if (t) t.onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } };
 };
+let KC_ST = null; // Motion's kai-stars.js (the reel's field on a 2D canvas), mounted behind each call render
 const _kcViz = vizLoop;
 vizLoop = function() {
   _kcViz.apply(this, arguments);
-  const f = phone.querySelector("canvas.kc-fld");
-  if (f && typeof kfFrame === "function") kfFrame([f], performance.now()/1000, typeof MO_SIG!=="undefined" ? MO_SIG.level||0 : 0);
+  if (KC_ST) KC_ST.level(typeof MO_SIG!=="undefined" ? MO_SIG.level||0 : 0);
 };
+
+/* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:36 and 21:59 "push that out as well"). Load after kai-call.js,
+   before data.js. The engineer's Kai sheet frames in the new language: opens as a half sheet, grows to the top on the first
+   message, K on ink, white ground, rows with hairlines, one dark object (the call invitation) when there is a call to start.
+   Overrides kaiSheet and wraps sheetHTML and kaiAsk. Keeps every hook the wiring uses: [data-kai], [data-kaihist],
+   [data-kainew], [data-kaiscope], #kaiIn, #kaiSendBtn, #kaiMic, and talkPending messages from the live Kai. ==== */
+if (typeof KEY_HIFI!=="undefined" && KEY_HIFI) { // hi-fi copy only; the demo wireframe keeps its Kai sheet
+const KS_IC = { hist:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  pen:'<path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/>',
+  plus:'<path d="M5 12h14"/><path d="M12 5v14"/>', mic:'<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  up:'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>', right:'<path d="m9 18 6-6-6-6"/>', x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  phone:'<path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>',
+  flag:'<path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  msg:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>', list:'<path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/>',
+  cal:'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>' };
+const ksI = (n, s=20) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true">${KS_IC[n]}</svg>`;
+const ksLead = t => /mission|log what/i.test(t) ? "flag" : /who|hiring|meet|people|connected|intro/i.test(t) ? "users" : /follow up|noticed|pause/i.test(t) ? "list" : /thursday|dinner|calendar|event/i.test(t) ? "cal" : "msg";
+const ksQ = s => String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const ksStrip = s => String(s).replace(/<[^>]*>/g, "");
+
+kaiSheet = function() {
+  const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
+  const avail = kaiScopeFor();
+  const list = STATE.kaiMsgs||[], empty = !list.length, first = DB.user.name.split(" ")[0];
+  const nudge = kaiNudgeFor();
+  const sugg = (scope ? scope.sugg : ["Who's hiring PMs in Xoogler?","Start a mission","What did I say I'd follow up on?"]).slice(0,3);
+  const scopeChip = scope ? `<button class="ks-scope on" data-kaiscope="clear" data-kc="KeyChip" data-kv="state=on">About ${ksQ(scope.label.length>28?scope.label.slice(0,28)+"…":scope.label)}${ksI("x",14)}</button>`
+    : avail ? `<button class="ks-scope" data-kaiscope="set" data-kc="KeyChip" data-kv="state=off">${ksI("plus",14)}Ask about ${ksQ(avail.label.length>26?avail.label.slice(0,26)+"…":avail.label)}</button>` : "";
+  const firstU = list.find(m=>m.who==="u");
+  const title = empty || !firstU ? "Kai" : ksStrip(firstU.text);
+  const head = `<div class="ks-hd"><span class="ks-t">${kaiMark(28)}<b>${ksQ(title)}</b></span>
+    <button class="ks-ib" data-kaihist="1" aria-label="All chats">${ksI("hist")}</button><button class="ks-ib" data-kainew="1" aria-label="New chat">${ksI("pen")}</button></div>`;
+  const isCall = nudge && /start the (conversation|call)/i.test(nudge.ask);
+  const callCard = isCall ? `<button class="ks-call" data-kai="Start the conversation" data-kc="KeyKaiCallCard" data-kv="state=ready">${kaiMark(44)}
+      <span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="go">${ksI("phone")}</span></button>` : "";
+  const nudgeRow = nudge && !isCall ? `<button class="ks-nudge" data-kai="${ksQ(nudge.ask)}"><span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="ks-chip">${ksQ(nudge.ask)}</span></button>` : "";
+  const hello = `<div class="ks-hello"><h4>Hey ${ksQ(first)}.</h4><p>${scope?`What about ${ksQ(scope.label.length>30?scope.label.slice(0,30)+"…":scope.label)}?`:"What are you looking for?"}</p></div>
+    ${scopeChip?`<div class="ks-scopes">${scopeChip}</div>`:""}${callCard}${nudgeRow}
+    <div class="ks-try">${sugg.map(c=>`<button class="ks-row" data-kai="${ksQ(c)}"><span class="lead">${ksI(ksLead(c))}</span><span class="tx">${c}</span>${ksI("right",18)}</button>`).join("")}</div>`;
+  const msg = m => m.who==="u" ? `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${m.text}</div>`
+    : m.who==="sys" ? `<div class="ks-sys">${m.text}</div>`
+    : m.talkPending ? `<div class="ks-k" data-kc="KeyKaiThinking">${kaiMark(24)}<div class="ks-think"><i></i>Looking across your communities</div></div>`
+    : `<div class="ks-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${m.text}</p>${m.mini?`<div class="ks-minis">${m.mini.map(x=>`<div class="ks-mini">${x}</div>`).join("")}</div>`:""}${m.chips?`<div class="ks-chips">${m.chips.map(c=>`<button class="ks-chip" data-kai="${ksQ(c)}" data-kc="KeyKaiChip">${c}</button>`).join("")}</div>`:""}</div></div>`;
+  const body = empty ? hello : `${scopeChip?`<div class="ks-scopes top">${scopeChip}</div>`:""}<div class="ks-thread">${list.map(msg).join("")}</div>`;
+  return `${head}<div class="ks-body">${body}</div>
+    <div class="ks-comp" data-kc="KeyComposer" data-kv="surface=sheet"><div class="ks-box">
+      <textarea class="kin" id="kaiIn" rows="1" placeholder="${scope?"Ask about "+ksQ(scope.label.split(" ").slice(0,3).join(" "))+"…":"Ask Kai anything"}"></textarea>
+      <div class="ks-crow"><button class="ks-ci" onclick="toast('Attach a person, a message or a link')" aria-label="Attach">${ksI("plus")}</button><span class="grow"></span>
+      <button class="ks-ci" id="kaiMic" aria-label="Hold to talk">${ksI("mic")}</button><button class="ks-go" id="kaiSendBtn" aria-label="Send">${ksI("up",18)}</button></div></div></div>`;
+};
+
+// Half sheet on open; the first message grows it to the top, once, with the sheet's own ease.
+const _ksSheetHTML = sheetHTML;
+sheetHTML = function() {
+  const h = _ksSheetHTML.apply(this, arguments);
+  if (!STATE.sheet || STATE.sheet.type!=="kai") return h;
+  const full = STATE.sheetFull, grew = STATE.kaiGrew; STATE.kaiGrew = false;
+  return h.replace('<div class="sheet ', `<div data-kc="KeyKaiSheet" data-kv="height=${full?"full":"half"}" class="sheet ks ${full?"":"half "}${grew?"grew ":""}`);
+};
+const _ksKaiAsk = kaiAsk;
+kaiAsk = function(t) {
+  if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull && !/start the conversation/i.test(t)) { STATE.sheetFull = true; STATE.kaiGrew = true; }
+  return _ksKaiAsk.apply(this, arguments);
+};
+// The thread follows the newest message; Enter sends, Shift+Enter breaks the line.
+const _ksPortWire = portWire;
+portWire = function() {
+  _ksPortWire.apply(this, arguments);
+  const b = phone.querySelector(".sheet.ks .ks-body"); if (b && (STATE.kaiMsgs||[]).length) b.scrollTop = b.scrollHeight;
+  const i = phone.querySelector(".sheet.ks #kaiIn"), s = phone.querySelector(".sheet.ks #kaiSendBtn");
+  if (i && s && !i.dataset.ks) { i.dataset.ks = 1; i.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); s.click(); } }); }
+};
+}
+
+/* ==== MESSAGES: FOR LATER IN THE HEADER, ONE AVATAR PER KIND (27 Sep, messages thread; Apoorv 20:06)
+   No shipping app puts saved, scheduled and drafts as a row on top of the chat list (Slack: Later tab, Teams: profile menu,
+   WhatsApp: Starred in the menu, Gmail: drawer). Later moves to a clock in the header (third icon), and the chat list
+   shows drafts and scheduled messages on the chat they belong to (Telegram "Draft:", iMessage Send Later).
+   Shape tells the kind: a person is a circle, a group is two overlapping faces (or its own photo), an event is its cover. */
+
+const MX_ROOMS = [{ id:"ev-e4", ev:"e4", after:"g-pm" }];   /* the event Priya hosts, so an upcoming event chat sits in the list */
+function mxSeed() {
+  if (STATE.mxSeeded || !DB.dms || typeof evE!=="function") return; STATE.mxSeeded = true;
+  MX_ROOMS.forEach(r=>{ const e=evE(r.ev); if (!e || DB.dms.some(d=>d.id===r.id)) return; const c=evRoom(e);
+    if (!c.mxSeeded) { c.mxSeeded=true; c.msgs.push(M("maya","Can I bring someone from Linear's design team? She'd love to hear the teardown.",{ day:"Today", time:"9:40 AM" })); }
+    const i=DB.dms.findIndex(d=>d.id===r.after); DB.dms.splice(i+1, 0, { id:r.id, group:e.name, event:true, unread:1, when:"9:40 AM" }); });
+}
+const _mxConvRows = convRows;
+convRows = function(){ seedChats(); mxSeed(); return _mxConvRows(); };
+
+/* ---- one avatar per kind; used in the list, the chat header and chat info so it is identical everywhere ---- */
+function mxEvent(c) { return c && c.kind==="event" && typeof evE==="function" ? evE(c.ev || (c.id==="g-dinner"?"e1":"")) : null; }
+function mxGroupFaces(c) { const ids=(c.memberIds||[]).filter(x=>x!==meId()); const recent=[...(c.msgs||[])].reverse().map(m=>m.from).filter(x=>x&&x!==meId()); return [...new Set(recent.concat(ids))].slice(0,2); }
+function mxAv(c, size) {   /* KeyConversationAvatar: kind=person|group|photo|event, size=32 header|44 list|56 details */
+  const s = size||44, root = (kind, cls, inner, style) => `<div class="mx-av ${cls}" style="--mx:${s}px${style||""}" data-kc="KeyConversationAvatar" data-kv="kind=${kind}, size=${s}">${inner}</div>`;
+  const face = ini => `<span class="mx-f solo" data-kc="KeyAvatar">${ini}</span>`;
+  if (!c) return root("person", "", face("?"));
+  if (c.kind==="dm") return root("person", "", face(P(c.with).initials));
+  const e = mxEvent(c);
+  if (e) return root("event", "ev", `<div class="cv-th mx-evt" data-kc="KeyEventThumb">${evCvArt(e)}</div>`);
+  if (c.photo) return root("photo", "sqp", "", `;background-image:url(${c.photo})`);
+  const f = mxGroupFaces(c);
+  if (f.length<2) return root("person", "", face(convIni(c)));
+  return root("group", "grp", `<span class="mx-fs" data-kc="KeyFaceStack" data-kv="layout=diagonal, size=${s}"><span class="mx-f bk" data-kc="KeyAvatar">${P(f[1]).initials}</span><span class="mx-f ft" data-kc="KeyAvatar">${P(f[0]).initials}</span></span>`);
+}
+
+/* ---- Later: a clock in the header (Apoorv 20:26: a bookmark only says Saved). It holds what you parked to finish or send:
+   Saved, Scheduled, Drafts. Mentions and Threads already live in the bell's chips, as in Slack's Activity, so they leave this screen.
+   The dot shows only while something is waiting (a scheduled send, a draft, a reminder). ---- */
+function mxLaterIcon() { const n=laterCounts(); const waiting=n.scheduled+n.drafts+DB.saved.filter(s=>s.remind).length; return `<div class="icon mx-later" onclick="go('later')" aria-label="Later: saved, scheduled and drafts">${LI("clock",18)}${waiting?`<span class="badge">${waiting}</span>`:''}</div>`; }
+const _mxTopHdr = topHdr;
+topHdr = function(title, extra="", trailing="") { return _mxTopHdr(title, title==="Messages" && STATE.member ? extra+mxLaterIcon() : extra, trailing); };
+const _mxLater = sLater;
+sLater = function() {
+  if (!["saved","scheduled","drafts"].includes(STATE.laterTab||"saved")) STATE.laterTab = "saved";
+  return _mxLater().replace(/<span class="[^"]*" onclick="STATE\.laterTab='(mentions|threads)';render\(\)">[\s\S]*?<\/span>/g, "")
+    .replace('>For later</div><div class="xs faint">Across all your families</div>', '>Later</div><div class="xs faint">Saved, scheduled and drafts, across your families</div>');
+};
+
+/* ---- the list ---- */
+const MX_FILTERS = [["All","All"],["Unread","Unread"],["Groups","Groups"],["Events","Events"],["Archived","Archived"]];
+function mxDraft(id) { const d=(STATE.drafts||{})[id]; return d && d.trim() ? d.trim() : ""; }
+function mxSched(id) { laterSeed(); return DB.scheduled.filter(s=>s.cid===id); }
+function mxPreview(r) {
+  if (r.blocked) return { h:"Blocked" };
+  const d = !r.intro && mxDraft(r.id); if (d) return { h:`<span class="mx-note">Draft</span> ${d}`, mark:true };
+  const s = !r.intro && mxSched(r.id); if (s && s.length) return { h:`<span class="mx-note">${LI("clock",13)} ${s[0].when}</span> ${s[0].text||"Attachment"}`, mark:true };
+  const lm = r.c && r.c.msgs ? lastMsg(r.c) : null;
+  const who = lm && (r.kind==="group"||r.kind==="event") && lm.from && lm.from!==meId() && !lm.deleted && !lm.sys ? first(lm.from)+": " : "";
+  return { h: who + r.last };
+}
+function mxTag(r) {
+  if (r.intro) return ' <span class="tag">Intro</span>';
+  if (r.path) return ' <span class="tag">path</span>';
+  const e = r.kind==="event" && mxEvent(r.c); if (!e) return "";
+  const lbl = { going:"Going", hosting:"Hosting", pending:"Waiting", waitlist:"Waiting", invited:"Invited" }[e.reg];
+  return `<span class="mx-when">${e.past?"":evDayLabel(e).replace(/^(\w+), /,"$1 ")}${lbl&&!e.past?` · ${lbl}`:""}</span>`;
+}
+chatsListHTML = function() {
+  mxSeed(); const f = STATE.convFilter==="Events chat" ? "Events" : (STATE.convFilter||"All");
+  const intros = conversations().filter(x=>x.kind==="intro").map(x=>Object.assign(x,{ intro:true }));
+  const all = intros.concat(convRows());
+  const vis = all.filter(r=>f==="Archived" ? r.archived : !r.archived);
+  const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
+  const unreadN = all.filter(r=>r.unread&&!r.archived).length;
+  const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right"><span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",18)}<br>More</span></div>
+    <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
+  const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
+  const top = open[0]; const topFrom = top?DB.people[top.from]:null;
+  const cap = STATE.persona==="chris"?"5 of 8 this week":`${queueAsks().filter(a=>a.state!=="passed"&&a.state!=="open"&&a.state!=="pending").length} of 3 this week`;
+  const reqRow = `<div class="reqrow" data-reqs="1"><div class="rfaces">${open.slice(0,3).map(a=>av(DB.people[a.from].initials,"sm")).join("")||av("·","sm")}</div><div class="m"><div class="a">Requests${open.length?` · ${open.length}`:''}</div><div class="b">${top?`${topFrom.name.split(" ")[0]} ${top.what}`:"Nothing needs a decision"}</div></div><div class="rcap"><div class="xs faint">${cap}</div><div class="s">›</div></div></div>`;
+  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : f==="Events" ? ["No event chats","Register for an event and its chat shows up here."] : f==="Groups" ? ["No groups","Start one with the + button."] : ["No messages","Send first message & Start conversation"];
+  return `<div class="toolrow" style="padding-top:0"><div class="search" onclick="go('msearch')">Search</div><div class="icon" onclick="openSheet('newchat')">+</div></div>
+    ${f==="Archived"?'':reqRow}
+    <div class="pills" style="margin-top:-2px">${MX_FILTERS.map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:13px;padding:6px 11px" data-cf="${k}">${l}${k==="Unread"&&unreadN?` <span class="pc">${unreadN}</span>`:''}</div>`).join("")}</div>
+    <div class="convlist">${list.map(row).join("")||`<div class="estate"><div class="et">${empty[0]}</div><div class="es">${empty[1]}</div></div>`}</div>`;
+};
+
+/* ---- the same avatar in the chat header and chat info ---- */
+const _mxChatHeader = chatHeader;
+chatHeader = function(c) {
+  const h = _mxChatHeader(c); if (STATE.editMsg || !c || c.kind==="channel" || c.kind==="event") return h;
+  return h.replace(/<div class="hav sq"([^>]*)>[^<]*<\/div>/, (m, attrs)=>`<div class="mx-hav"${attrs}>${mxAv(c, 32)}</div>`);
+};
+const _mxChatInfo = sChatInfo;
+sChatInfo = function(cid) {
+  const c = convOf(cid); const h = _mxChatInfo(cid); if (!c || c.kind==="channel") return h;
+  return h.replace(/<div class="hav sq"([^>]*)>[^<]*<\/div>/, (m, attrs)=>`<div class="mx-hav"${attrs}>${mxAv(c, 56)}</div>`)
+          .replace(/<div class="cm-dfaces">(?:<span>[^<]*<\/span>)*<\/div>/, `<div class="cm-dfaces mx-hav mx-big">${mxAv(c, 56)}</div>`);   /* Community's details head */
+};
+
+/* ---- wording: For later is the bookmark now, not a row ---- */
+const MX_WHERE = /under Saved, scheduled and drafts/g, MX_NOW = "in Later, the clock at the top of Messages";
+const _mxToast = toast;
+toast = function(t, undo) { return _mxToast(typeof t==="string" ? t.replace(MX_WHERE, MX_NOW) : t, undo); };
+const _mxSheet = portSheet;
+portSheet = function(type, id) { const h=_mxSheet(type, id); return typeof h==="string" ? h.replace(MX_WHERE, MX_NOW) : h; };
+
+/* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
+   Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
+   Event chats keep Events' theme; channels and chat details belong to Community.
+   One file serves both copies (Apoorv 21:22): the wireframe demo stays lo-fi; the high-fidelity copy sets `const KEY_HIFI = true` before this file. */
+const mxHiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+function hfMsgOn() {
+  const s = STATE.screen||"";
+  if (!mxHiFi() || !STATE.member) return false;
+  if (s==="inbox" || s==="later" || s==="msearch" || s.startsWith("req:") || s.startsWith("sent:")) return true;
+  if (s.startsWith("dm:") || s.startsWith("thread:")) { const c = convOf(s.split(":")[1]); return !!c && c.kind!=="event" && c.kind!=="channel"; }
+  return false;
+}
+const _hfRender = render;
+/* data-kc = the library component each root maps to, for Design system's diff */
+const HF_KC = [[".hdr.top","KeyHeader"],[".hdr.chdr","KeyHeader"],[".hdr .icon","KeyIconButton"],[".toolrow .icon","KeyIconButton"],[".toolrow .search","KeySearchField"],[".reqrow","KeyRequestsRow"],[".pills .pill","KeyChip"],[".unread, .badge, .pc","KeyUnreadBadge"],[".conv","KeyConversationRow"],[".tag","KeyTag"],[".mx-when","KeyStateLabel"],[".schedstrip","KeyScheduledBar"],[".bav, .rfaces .avatar","KeyAvatar"],[".bub","KeyChatBubble"],[".dsep","KeyDateSeparator"],[".rchip","KeyReactionChip"],[".thchip","KeyThreadCount"],[".mgrid, .filecard","KeyAttachment"],[".foot.cbar","KeyComposer"],[".citabs.later","KeyTabs"]];
+function hfTag() { HF_KC.forEach(([sel,kc])=>phone.querySelectorAll(sel).forEach(el=>{ if (!el.dataset.kc) el.setAttribute("data-kc", kc); })); phone.querySelectorAll(".hdr .icon, .hdr .back").forEach(el=>el.setAttribute("data-kv","container=none")); phone.querySelectorAll(".toolrow .icon, .csend").forEach(el=>el.setAttribute("data-kv","container=tile")); if (STATE.screen==="later") { const v=phone.querySelector(".screen > .view")||phone.querySelector(".screen"); if (v) v.setAttribute("data-kc","KeyLaterScreen"); } }
+render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=="undefined" && phone) { const on=hfMsgOn(); phone.classList.toggle("hf-msg", on); if (on) hfTag(); } return r; };
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
