@@ -3399,6 +3399,43 @@ p,
 .navt.kai.kn-on { font-size:0; }
 .kchip.kn-on .kn { margin-right:1px; }
 .cm-kaiav.kn-on { background:transparent; border:0; }
+
+/* ==== BRIEF BANNER (v67): the welcome and the catch-up, one object card above the missions ==== */
+.brief { position:relative; overflow:hidden; border-radius:20px; padding:16px 16px 14px; margin:2px 0 16px; cursor:pointer; color:#fff; background:#0B0E11; box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 26px -12px rgba(0,0,0,.28); isolation:isolate; }
+.brief .br-bg { position:absolute; inset:0; z-index:-1; pointer-events:none; }
+.brief .br-bg i { position:absolute; border-radius:50%; filter:blur(28px); opacity:.9; }
+.brief .br-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.brief .br-hi { font-size:24px; line-height:1.1; font-weight:800; letter-spacing:-.02em; }
+.brief .br-line { margin-top:8px; font-size:14px; line-height:1.35; opacity:.86; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.brief .br-line b { font-weight:700; opacity:1; }
+.brief .br-foot { display:flex; align-items:center; justify-content:space-between; margin-top:14px; gap:10px; }
+.brief .br-faces { display:flex; align-items:center; }
+.brief .br-faces .avatar { width:36px; height:36px; font-size:12px; border:2px solid #0B0E11; border-style:solid; margin-right:-8px; color:var(--ink); background:#fff; }
+.brief .br-more { margin-left:14px; font-size:12px; font-weight:700; opacity:.85; }
+.brief .br-cta { font-size:14px; font-weight:700; display:flex; align-items:center; gap:2px; white-space:nowrap; }
+.brief .br-cta .chev { font-size:18px; line-height:1; }
+/* 1 · Ink: near-black plate, a warm light from the top-left, the K in foil */
+.brief.look1 .br-bg { background:radial-gradient(120% 90% at 0% 0%, rgba(247,231,184,.22), transparent 55%), radial-gradient(80% 60% at 100% 100%, rgba(83,116,174,.35), transparent 60%); }
+.brief.look1 .br-bg i { display:none; }
+.brief.look1::after, .brief.look3::after { content:""; position:absolute; left:0; right:0; top:0; height:2px; background:linear-gradient(90deg, #F7E7B8, #DCB854 40%, #A87F2A 75%, transparent); opacity:.9; }
+.brief.look1 .br-faces .avatar, .brief.look3 .br-faces .avatar { box-shadow:0 0 0 1.5px #DCB854; }
+/* 2 · Aurora: a white plate with the family's four colours as soft light behind ink type */
+.brief.look2 { background:#fff; color:var(--ink); }
+.brief.look2 .br-bg i:nth-child(1) { width:200px; height:160px; left:-40px; top:-70px; background:#EDB53C; opacity:.55; }
+.brief.look2 .br-bg i:nth-child(2) { width:220px; height:180px; right:-60px; top:-40px; background:#5374AE; opacity:.42; }
+.brief.look2 .br-bg i:nth-child(3) { width:220px; height:140px; left:30%; bottom:-90px; background:#4FA053; opacity:.38; }
+.brief.look2 .br-bg::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.7)); }
+.brief.look2 .br-faces .avatar { border-color:#fff; }
+.brief.look2 .br-line { opacity:.75; }
+/* 3 · Poster: one deep colour field, the greeting as a poster headline */
+.brief.look3 { background:#17493B; padding-top:22px; }
+.brief.look3 .br-hi { font-size:32px; letter-spacing:-.03em; }
+.brief.look3 .br-bg { background:radial-gradient(90% 70% at 100% 0%, rgba(247,231,184,.28), transparent 60%); }
+.brief.look3 .br-bg i { display:none; }
+.brief.look3 .br-faces .avatar { border-color:#17493B; }
+@media (prefers-reduced-motion: no-preference) { .brief { animation:brIn .32s cubic-bezier(.2,.8,.2,1) both; } }
+@keyframes brIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+html.pop-still .brief, html.mo-still .brief { animation:none; }
 </style>
 </head>
 <body>
@@ -6424,7 +6461,7 @@ const _laterBubble = bubbleHTML;
 bubbleHTML = function(c, m, firstOfRun, opts={}) { let h=_laterBubble(c, m, firstOfRun, opts); const n=m.thread?(m.threadCount||m.thread.length):0;
   if (n && !opts.inThread && m.thread.length) { const last=m.thread[m.thread.length-1]; const faces=[...new Set(m.thread.map(r=>r.from))].slice(0,3).map(id=>`<span class="tf">${P(id).initials}</span>`).join(""); h=h.replace(/<svg class="li"[^>]*>(?:(?!<\/svg>).)*<\/svg> View \d+ (reply|replies)<\/div>/, `<span class="tfaces">${faces}</span>${n} ${n===1?'reply':'replies'} <span class="faint">· ${last.time}</span></div>`); }
   if (m.alsoFrom) h=h.replace('<div class="bx">', `<div class="xs faint" style="margin-bottom:2px">Also sent from a thread</div><div class="bx">`);
-  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', '<div class="bf"><span class="svd">${LI("bookmark",11)}</span>');
+  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', `<div class="bf"><span class="svd">${LI("bookmark",11)}</span>`);
   return h; };
 const _laterSheet = portSheet;
 portSheet = function(type, id) {
@@ -12626,6 +12663,68 @@ function knApply(root){
 }
 const _knRender = render; render = function(){ const r = _knRender.apply(this, arguments); knApply(); return r; };
 const _fmApplyOnly = fmApply; fmApply = function(root){ _fmApplyOnly(root); knApply(root); };
+
+/* ==== BRIEF BANNER (missions thread, 27 Sep 21:30, v67) ====
+   His call: the Now section goes; the brief is a hero banner at the top of Home that welcomes the member and holds everything
+   that moved; a tap opens the full brief. Missions stay a separate list under it. Three looks to compare from the stage bar
+   (STATE.briefLook 1 ink, 2 aurora, 3 poster). Kai's questions (the old Now rows) live inside the brief, so nothing is lost. */
+STATE.briefLook = STATE.briefLook || 1;
+let BR_HOME = false;
+const _brToday = todayItems; todayItems = function(){ return BR_HOME ? [] : _brToday.apply(this, arguments); };
+function brGreeting(){ const h = new Date().getHours(); const w = h<12 ? "Morning" : h<18 ? "Afternoon" : "Evening"; return `${w}, ${firstName(me())}`; }
+function brItems(){
+  const items = [];
+  (STATE.intakeDone ? _brToday() : []).forEach(h => {
+    const a = /class="a">([^<]*)</.exec(h), ini = /class="avatar[^"]*"[^>]*>([^<]*)</.exec(h);
+    items.push({ kind:"ask", ini: ini ? ini[1] : "K", title: a ? a[1] : "Kai asks", html:h });
+  });
+  (DB.opps||[]).forEach(o => {
+    const t = (o.timeline||[]).filter(x => x[2] && !/Surfaced|Interested/.test(x[0]) && /today|now/i.test(x[1]||""));
+    if (!t.length || items.some(i => i.html && i.html.includes(`"${o.id}"`))) return;
+    const p = targetOf(o); if (!p) return; const m = DB.missions.find(x => x.id===o.missionId);
+    items.push({ kind:"moved", ini:p.initials, title:`${firstName(p)}: ${t[t.length-1][0].toLowerCase()}`, sub: m ? m.name : "", go:`go('path:${o.id}')` });
+  });
+  (DB.activity||[]).filter(a => a.unread && a.who!=="Kai" && a.cat!=="system").slice(0,3).forEach(a => items.push({ kind:"act", ini:a.ini, title:`${a.who} ${a.text}`.replace(/\.$/,""), go: a.to ? `go('${a.to}')` : "" }));
+  const ev = (DB.events||[]).find(e => e.rsvp && !e.past);
+  if (ev) items.push({ kind:"event", ini: (ev.title||"E")[0], title:`${ev.title}${ev.when?" · "+ev.when:""}`, sub:"You're going", go:`go('eventd:${ev.id}')` });
+  return items;
+}
+function brFaces(items, n){
+  const seen = new Set(); const f = [];
+  items.forEach(i => { if (f.length<n && i.ini && !seen.has(i.ini)) { seen.add(i.ini); f.push(i.ini); } });
+  return f.map(x => av(x)).join("") + (items.length>n ? `<span class="br-more">+${items.length-n}</span>` : "");
+}
+function brBanner(){
+  const items = brItems(); const n = items.length;
+  const short = t => t.replace(/\s*·.*$/,"").replace(/^(\w+):\s/,"$1 ");
+  const line = n ? `<b>${n===1?"One thing":n+" things"} moved</b> · ${items.slice(0,2).map(i=>short(i.title)).join(" · ")}` : "Nothing new yet. Kai is still looking.";
+  const cta = n ? "Catch up" : "See your brief";
+  return `<div class="brief look${STATE.briefLook}" onclick="openSheet('brief')" role="button"><div class="br-bg"><i></i><i></i><i></i></div>
+    <div class="br-top"><div class="br-hi">${brGreeting()}</div><div class="br-k">${typeof kaiMark==="function"?kaiMark(28):""}</div></div>
+    <div class="br-line">${line}</div>
+    <div class="br-foot"><div class="br-faces">${brFaces(items,4)}</div><div class="br-cta">${cta} <span class="chev">›</span></div></div></div>`;
+}
+function brSheet(){
+  const items = brItems();
+  const row = i => i.html ? i.html : `<div class="row" onclick="STATE.sheet=null;${i.go}">${av(i.ini)}<div class="m"><div class="a">${i.title}</div>${i.sub?`<div class="b">${i.sub}</div>`:""}</div><span class="chev">›</span></div>`;
+  const asks = items.filter(i => i.kind==="ask"), moved = items.filter(i => i.kind!=="ask");
+  return `<div class="t20">${brGreeting()}</div><div class="m12" style="margin-bottom:6px">${items.length ? `${items.length===1?"One thing":items.length+" things"} moved today. Everything here is yours to act on; nothing is sent without you.` : "Nothing moved since you were last here. Kai keeps looking and asks only when it has something."}</div>
+    ${asks.length?`<div class="sl">Kai asks<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400;margin-left:6px">${asks.length}</span></div><div class="rows">${asks.map(row).join("")}</div>`:""}
+    ${moved.length?`<div class="sl">Moved</div><div class="rows">${moved.map(row).join("")}</div>`:""}
+    <div class="chips" style="margin-top:14px"><span class="chip" onclick="STATE.sheet=null;openSheet('kai')">Ask Kai about this</span><span class="chip" onclick="(DB.activity||[]).forEach(a=>a.unread=false);STATE.sheet=null;render();toast('Caught up.')">Caught up</span></div>`;
+}
+const _brPortSheet = portSheet; portSheet = function(type, id){ if (type==="brief") return brSheet(); return _brPortSheet(type, id); };
+const _brHome = sHome; sHome = function(){
+  if (!(STATE.member && STATE.intakeDone)) return _brHome.apply(this, arguments);
+  BR_HOME = true; let h; try { h = _brHome.apply(this, arguments); } finally { BR_HOME = false; }
+  h = h.replace(/<div class="sl">Now<\/div><div class="rows"><div class="row first" onclick="openSheet\('dsheet','done'\)">[\s\S]*?<span class="chev">›<\/span><\/div><\/div>/, "");
+  return h.replace('<div class="body sc">', '<div class="body sc">' + brBanner());
+};
+/* stage bar: pick the look */
+try {
+  const sb = document.querySelector(".stagebar");
+  if (sb && !sb.querySelector("[data-brlook]")) sb.insertAdjacentHTML("beforeend", `<div class="sgrp"><span class="sgl">Brief look</span>${[["1","Ink"],["2","Aurora"],["3","Poster"]].map(([n,l])=>`<button data-brlook="${n}" onclick="STATE.briefLook=${n};render()">${l}</button>`).join("")}</div>`);
+} catch(e) {}
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,
