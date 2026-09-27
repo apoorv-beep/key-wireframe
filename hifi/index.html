@@ -3399,6 +3399,127 @@ p,
 .navt.kai.kn-on { font-size:0; }
 .kchip.kn-on .kn { margin-right:1px; }
 .cm-kaiav.kn-on { background:transparent; border:0; }
+
+/* ==== BOTTOM NAV (27 Sep, bottom nav thread). One travelling lens, real Lucide icons, one small move per tab.
+   nav.js adds .kn to the bar and places the lens; without motion the lens simply sits under the active tab. ==== */
+.nav.knav { --kn-ink:#0B0E11; --kn-mute:#8F99A5 /* key/450, text/tertiary */; --kn-lens:#E8ECF1 /* key/150 */;
+  --kn-bg:rgba(255,255,255,.78) /* component/nav/bg: a little see-through, his 20:09 */; --kn-pill:999px /* semantic/pill */;
+  --kn-elev3:0 2px 6px rgba(11,14,17,.08), 0 18px 40px -16px rgba(11,14,17,.30) /* elev/3 */; --kn-ease:cubic-bezier(.2,.8,.2,1);
+  left:12px; right:12px; bottom:20px; height:64px; padding:0 6px; align-items:center; border-radius:var(--kn-pill);
+  border:1px solid rgba(11,14,17,.06); background:var(--kn-bg);
+  box-shadow:var(--kn-elev3);
+  -webkit-backdrop-filter:blur(24px) saturate(1.8); backdrop-filter:blur(24px) saturate(1.8);
+  touch-action:none; user-select:none; -webkit-user-select:none; font-family:Manrope, -apple-system, sans-serif; }
+.nav.knav .kn-lens { position:absolute; top:6px; bottom:6px; left:0; right:0; border-radius:var(--kn-pill); background:var(--kn-lens);
+  box-shadow:inset 0 0 0 1px rgba(11,14,17,.04); pointer-events:none; opacity:0; }
+.nav.knav .kn-lens.on { opacity:1; }
+.nav.knav .tab, .nav.knav .kai { position:relative; z-index:1; height:52px; padding:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px;
+  font-size:11px; font-weight:600; letter-spacing:.005em; color:var(--kn-mute); -webkit-tap-highlight-color:transparent; }
+.nav.knav .tab .ic { width:24px; height:24px; margin:0; border:0; border-radius:0; background:none; display:flex; align-items:center; justify-content:center;
+  transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
+.nav.knav .tab .ic svg.kn-i { width:24px; height:24px; overflow:visible; fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.nav.knav .tab .kl { line-height:1; }
+/* ink follows the lens (Motion's review): the outgoing tab fades out over 120ms at once, the incoming one fades in over
+   160ms from 100ms. nav.js starts each at the other's look (.kn-from / .kn-was) and lets these transitions run. */
+.nav.knav .tab { transition:color .12s ease-out; }
+.nav.knav .tab .kl { transition:font-weight .12s ease-out; }
+.nav.knav .kn-i .f, .nav.knav .kn-i .w, .nav.knav .kn-i .n, .nav.knav .kn-i .opt { transition:fill .12s ease-out, stroke .12s ease-out, opacity .12s ease-out; }
+.nav.knav .tab.fam .ic.logo { transition:transform .22s cubic-bezier(.3,1.5,.5,1), background-color .12s ease-out, border-color .12s ease-out, color .12s ease-out; }
+.nav.knav .tab.on { transition:color .16s ease-out .1s; }
+.nav.knav .tab.on .kl { transition:font-weight .16s ease-out .1s; }
+.nav.knav .tab.on .kn-i .f, .nav.knav .tab.on .kn-i .w, .nav.knav .tab.on .kn-i .n, .nav.knav .tab.on .kn-i .opt { transition-duration:.16s; transition-delay:.1s; }
+.nav.knav .tab.fam.on .ic.logo { transition:transform .22s cubic-bezier(.3,1.5,.5,1), background-color .16s ease-out .1s, border-color .16s ease-out .1s, color .16s ease-out .1s; }
+
+/* inactive: outline in the muted ink; active: the shape fills in ink and its details turn white */
+.nav.knav .kn-i .f { fill:rgba(11,14,17,0); }
+.nav.knav .kn-i .n { fill:rgba(255,255,255,0); }
+.nav.knav .tab:not(.on) .kn-i .opt { opacity:0; }
+.nav.knav .tab.on, .nav.knav .tab.kn-over, .nav.knav .tab.kn-was { color:var(--kn-ink); }
+.nav.knav .tab.on .kl, .nav.knav .tab.kn-was .kl { font-weight:700; }
+.nav.knav .tab.on .kn-i .f, .nav.knav .tab.kn-was .kn-i .f { fill:var(--kn-ink); }
+.nav.knav .tab.on .kn-i .w, .nav.knav .tab.kn-was .kn-i .w { stroke:#fff; }
+.nav.knav .tab.on .kn-i .n, .nav.knav .tab.kn-was .kn-i .n { fill:#fff; stroke:#fff; stroke-width:1.2; }
+.nav.knav .tab.kn-was .kn-i .opt { opacity:1; }
+/* the incoming tab's starting look, and the scrub (the lens has left the active tab) */
+.nav.knav .tab.on.kn-from, .nav.knav.kn-scrub .tab.on:not(.kn-over) { color:var(--kn-mute); }
+.nav.knav .tab.on.kn-from .kl, .nav.knav.kn-scrub .tab.on:not(.kn-over) .kl { font-weight:600; }
+.nav.knav .tab.on.kn-from .kn-i .f, .nav.knav.kn-scrub .tab.on:not(.kn-over) .kn-i .f { fill:rgba(11,14,17,0); }
+.nav.knav .tab.on.kn-from .kn-i .w, .nav.knav.kn-scrub .tab.on:not(.kn-over) .kn-i .w { stroke:currentColor; }
+.nav.knav .tab.on.kn-from .kn-i .n, .nav.knav.kn-scrub .tab.on:not(.kn-over) .kn-i .n { fill:rgba(255,255,255,0); stroke:currentColor; stroke-width:1.9; }
+.nav.knav .tab.on.kn-from .kn-i .opt, .nav.knav.kn-scrub .tab.on:not(.kn-over) .kn-i .opt { opacity:0; }
+/* family tab: its own mark stays the icon */
+.nav.knav .tab.fam .ic.logo { width:24px; height:24px; border-radius:7px; border:1.6px solid currentColor; background:transparent; color:inherit; font-size:11px; font-weight:800; }
+.nav.knav .tab.fam.on .ic.logo, .nav.knav .tab.fam.kn-was .ic.logo { background:var(--kn-ink); border-color:var(--kn-ink); color:#fff; }
+.nav.knav .tab.fam.on.kn-from .ic.logo, .nav.knav.kn-scrub .tab.fam.on:not(.kn-over) .ic.logo { background:transparent; border-color:currentColor; color:inherit; }
+/* the family label: short name, one line, never closer than 6px to the lens edge (tab minus 2 x 9px); the name itself caps at 54px and truncates at the end; the chevron never shrinks */
+/* the family slot is wider (82 vs 64.25 for the others): it is a switcher, and its name needs the room */
+.nav.knav .tab.fam { flex:0 0 82px; }
+.nav.knav .tab.fam .lr { gap:2px; max-width:calc(100% - 18px); min-width:0; } .nav.knav .tab.fam .fname { min-width:0; max-width:54px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .nav.knav .tab.fam .lr > span:last-child { flex:0 0 auto; display:flex; }
+.nav.knav .tab.fam .chevs { width:8px; height:11px; }
+/* badges sit on the icon's shoulder */
+.nav.knav .tab .ic .unread { top:-6px !important; right:-11px !important; min-width:18px; height:18px; padding:0 5px; box-sizing:border-box; border-radius:9px;
+  font-size:10.5px; font-weight:800; line-height:18px; box-shadow:0 0 0 2px rgba(255,255,255,.95); }
+/* Kai: the inverse fill with the sparkle, raised a little, always the one dark thing in the bar */
+.nav.knav .kai { color:var(--kn-ink); }
+.nav.knav .kai { gap:9px; justify-content:flex-end; padding-bottom:6px; box-sizing:border-box; }
+.nav.knav .kai .ic { width:56px; height:56px; margin:-40px auto 0; background:var(--kn-ink); color:#fff; font-size:0;
+  box-shadow:0 0 0 4px rgba(255,255,255,.9), 0 10px 22px -8px rgba(11,14,17,.55); transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
+.nav.knav .kai .ic svg { width:22px; height:22px; fill:currentColor; stroke:none; }
+.nav.knav .kai .ic svg.kk { width:30px; height:26px; margin-left:2px; } .nav.knav .kai .ic svg.kk.gold { fill:url(#knFoil); }
+/* a family with a real mark shows it in full colour; active adds an ink ring */
+.nav.knav .tab.fam .ic.logo.mk { position:relative; border:0; background:none; overflow:hidden; border-radius:7px; transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
+.nav.knav .tab.fam .ic.logo.mk::after { content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(11,14,17,.12); pointer-events:none; }
+.nav.knav .tab.fam .ic.logo.mk svg { width:100%; height:100%; display:block; }
+.nav.knav .tab.fam.on .ic.logo.mk, .nav.knav .tab.fam.kn-was .ic.logo.mk { background:none; }
+.nav.knav .tab.fam.on.kn-from .ic.logo.mk, .nav.knav.kn-scrub .tab.fam.on:not(.kn-over) .ic.logo.mk { background:none; }
+.nav.knav .kai .kl { font-size:11px; font-weight:700; line-height:1; }
+/* press: down to .9 at once, spring back on release */
+.nav.knav .tab.kn-press .ic, .nav.knav .kai.kn-press .ic { transform:scale(.9); transition:transform .09s ease-out; }
+.nav.knav .tab.fam.kn-press .ic.logo { transition:transform .09s ease-out; }
+
+/* one move per tab, played once as the lens arrives (from 100ms) */
+@keyframes knPop { 0% { transform:scale(.72); } 55% { transform:scale(1.1); } 100% { transform:scale(1); } }
+@keyframes knNeedle { 0% { transform:rotate(-200deg); } 70% { transform:rotate(14deg); } 100% { transform:rotate(0); } }
+@keyframes knTilt { 0% { transform:rotate(0) scale(.8); } 40% { transform:rotate(-12deg) scale(1.08); } 70% { transform:rotate(5deg) scale(1); } 100% { transform:rotate(0) scale(1); } }
+@keyframes knLine { 0% { transform:scaleX(0); } 100% { transform:scaleX(1); } }
+@keyframes knPins { 0% { transform:translateY(-4px); } 60% { transform:translateY(1px); } 100% { transform:none; } }
+@keyframes knPage { 0% { transform:scaleY(.6); } 60% { transform:scaleY(1.06); } 100% { transform:scaleY(1); } }
+@keyframes knFlip { 0% { transform:perspective(120px) rotateY(-100deg); } 70% { transform:perspective(120px) rotateY(12deg); } 100% { transform:perspective(120px) rotateY(0); } }
+@keyframes knSpark { 0% { transform:rotate(-90deg) scale(.6); } 70% { transform:rotate(8deg) scale(1.1); } 100% { transform:rotate(0) scale(1); } }
+.nav.knav .kn-i * { transform-box:fill-box; transform-origin:center; }
+.nav.knav .tab.kn-in[data-kn="missions"] .kn-i { animation:knPop .42s .1s var(--kn-ease); }
+.nav.knav .tab.kn-in[data-kn="missions"] .kn-i .n { transform-box:view-box; transform-origin:12px 12px; animation:knNeedle .56s .14s var(--kn-ease); }
+.nav.knav .tab.kn-in[data-kn="inbox"] .kn-i { transform-origin:20% 90%; animation:knTilt .46s .1s var(--kn-ease); }
+.nav.knav .tab.kn-in[data-kn="inbox"] .kn-i .w { animation:knLine .3s .22s var(--kn-ease); transform-origin:left center; }
+.nav.knav .tab.kn-in[data-kn="events"] .kn-i .f { animation:knPage .4s .1s var(--kn-ease); transform-origin:center bottom; }
+.nav.knav .tab.kn-in[data-kn="events"] .kn-i .pin { animation:knPins .36s .15s var(--kn-ease); }
+.nav.knav .tab.kn-in[data-kn="families"] .ic.logo { animation:knPop .42s .1s var(--kn-ease); }
+.nav.knav .tab.kn-flip .ic.logo { animation:knFlip .5s var(--kn-ease); }
+.nav.knav .tab.kn-again .ic { animation:knPop .34s var(--kn-ease); }
+.nav.knav .kai.kn-in .ic svg { animation:knSpark .32s var(--kn-ease); }
+/* badges say what changed: in from nothing, pop on a rise, cross-fade on a fall, out when cleared */
+@keyframes knBIn { 0% { transform:scale(0); } 100% { transform:scale(1); } }
+@keyframes knBUp { 0% { transform:scale(1); } 40% { transform:scale(1.25); } 100% { transform:scale(1); } }
+@keyframes knBFade { 0% { opacity:0; } 100% { opacity:1; } }
+@keyframes knBOut { 0% { transform:scale(1); } 100% { transform:scale(0); } }
+.nav.knav .unread.kn-bin { animation:knBIn .3s cubic-bezier(.3,1.5,.5,1) backwards; }
+.nav.knav .unread.kn-bup { animation:knBUp .36s var(--kn-ease); }
+.nav.knav .unread.kn-bfade { animation:knBFade .12s ease-out backwards; }
+.nav.knav .unread.kn-bout { animation:knBOut .15s ease-in forwards; pointer-events:none; }
+
+/* the pane moves with the lens: same curve, same length (Motion's tab rule, 28px + fade) */
+.view.v-tab-left, .view.v-tab-right { animation-duration:.26s; animation-timing-function:cubic-bezier(.2,.8,.2,1); }
+.view.v-tab-left { animation-name:knPaneL; } .view.v-tab-right { animation-name:knPaneR; }
+@keyframes knPaneL { from { transform:translateX(28px); opacity:0; } to { transform:none; opacity:1; } }
+@keyframes knPaneR { from { transform:translateX(-28px); opacity:0; } to { transform:none; opacity:1; } }
+
+.nav.knav.still *, .nav.knav.still { animation:none !important; transition:none !important; }
+/* reduced motion: nothing moves, the ink still cross-fades in 120ms (nav.js fades the lens) */
+@media (prefers-reduced-motion: reduce) {
+  .nav.knav *, .view.v-tab-left, .view.v-tab-right { animation:none !important; }
+  .nav.knav .tab, .nav.knav .tab * { transition-duration:.12s !important; transition-delay:0s !important; transition-property:color, fill, stroke, opacity, font-weight, background-color, border-color !important; }
+  .nav.knav .tab.kn-press .ic, .nav.knav .kai.kn-press .ic { transform:none; }
+  .nav.knav .unread.kn-bout { display:none; } }
 </style>
 </head>
 <body>
@@ -12626,6 +12747,126 @@ function knApply(root){
 }
 const _knRender = render; render = function(){ const r = _knRender.apply(this, arguments); knApply(); return r; };
 const _fmApplyOnly = fmApply; fmApply = function(root){ _fmApplyOnly(root); knApply(root); };
+
+/* ==== BOTTOM NAV (27 Sep, bottom nav thread). Wraps navHTML (after edu.js) and render; load after popups.js, before data.js.
+   The bar keeps every id, class and handler the rest of the build relies on (.tab, .on, #kaiBtn, #famTab, .unread):
+   this only swaps the placeholder squares for Lucide icons (compass, message-circle, calendar) and adds one lens that travels between tabs.
+   Motion: the lens stretches toward the new tab (leading edge first, trailing edge 50ms later), 260/280ms on the tab curve;
+   the icon plays one small move; a drag along the bar scrubs the lens and lands on release (iOS 26 tab bar).
+   Timings follow the Motion thread review (motion-research/bottom-nav-motion-spec.md). Off under webdriver (unless ?motion);
+   under prefers-reduced-motion nothing moves and the ink and lens cross-fade in 120ms. ==== */
+let KN_ON = true, KN_KAI = "gold";  /* Kai's K: gold foil on the inverse fill (his pick, 27 Sep 20:09); "ink" keeps it white */
+const KN_LIVE = !navigator.webdriver || /[?&]motion/.test(location.search);  /* tests and captures get the still bar */
+const KN_MOTION = KN_LIVE && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);  /* reduced motion: ink cross-fades only */
+const KN_EASE = "cubic-bezier(.2,.8,.2,1)";
+const KN_ICON = {
+  missions: '<circle class="f" cx="12" cy="12" r="10"/><path class="n" d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/>',
+  inbox: '<path class="f" d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path class="w opt" d="M8.2 10.4h7.6"/><path class="w opt" d="M8.2 13.8h4.6"/>',
+  events: '<rect class="f" x="3" y="4" width="18" height="18" rx="3"/><path class="w" d="M3 10h18"/><path class="pin" d="M8 2v4"/><path class="pin" d="M16 2v4"/>',
+};
+const KN_SPARK = '<svg viewBox="0 0 24 24"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/></svg>';
+const knState = { id:null, l:null, r:null, badges:{}, badgeEl:{}, again:null, kai:false, fam:null, sheet:false };
+
+function knTabId(el){ if (el.id==="famTab") return "families"; const m=(el.getAttribute("onclick")||"").match(/go\('([^']+)'\)/); return m ? (m[1]==="home"?"missions":m[1]) : ""; }
+const _knNav = navHTML;
+navHTML = function(on){
+  const h = _knNav(on); if (!KN_ON) return h;
+  const t = document.createElement("template"); t.innerHTML = h;
+  const nav = t.content.querySelector(".nav"); if (!nav) return h;
+  nav.insertAdjacentHTML("afterbegin", '<i class="kn-lens"></i>');
+  nav.querySelectorAll(".tab").forEach(tab=>{
+    const id = knTabId(tab); tab.dataset.kn = id;
+    /* each tab starts at the other state's look; knMount lets nav.css's transitions carry it (must be in the markup,
+       before the first style pass, or the swap itself becomes a transition) */
+    if (KN_LIVE && knState.id && on && knState.id!==on) { if (id===on) tab.classList.add("kn-from"); if (id===knState.id) tab.classList.add("kn-was"); }
+    if (KN_ICON[id]) tab.querySelector(".ic").insertAdjacentHTML("afterbegin", `<svg class="kn-i" viewBox="0 0 24 24">${KN_ICON[id]}</svg>`);
+    [...tab.childNodes].filter(n=>n.nodeType===3 && n.textContent.trim()).forEach(n=>{ const s=document.createElement("span"); s.className="kl"; s.textContent=n.textContent; n.replaceWith(s); });
+  });
+  const fm = typeof FAM_MARK!=="undefined" && FAM_MARK[fam().id], logo = nav.querySelector("#famTab .ic.logo");
+  if (fm && logo) { logo.classList.add("mk"); logo.innerHTML = fm; }
+  const fn = nav.querySelector("#famTab .fname"), sn = typeof FAM_SHORT!=="undefined" && FAM_SHORT[fam().id];
+  if (fn) { fn.title = fn.textContent; if (sn) fn.textContent = sn; }
+  const kai = nav.querySelector(".kai");
+  if (kai) { kai.querySelector(".ic").classList.add("kn-on"); /* the base knApply() leaves a marked Kai alone */ kai.querySelector(".ic").innerHTML = typeof KAI_K!=="undefined" ? `<svg class="kk${KN_KAI==="gold"?" gold":""}" viewBox="2 4 30 26"><defs><linearGradient id="knFoil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7E7B8"/><stop offset=".5" stop-color="#DCB854"/><stop offset="1" stop-color="#A87F2A"/></linearGradient></defs><path d="${KAI_K.k}"/></svg>` : KN_SPARK; [...kai.childNodes].filter(n=>n.nodeType===3 && n.textContent.trim()).forEach(n=>{ const s=document.createElement("span"); s.className="kl"; s.textContent=n.textContent; n.replaceWith(s); }); }
+  return t.innerHTML;
+};
+
+function knRect(nav, tab){ const nr=nav.getBoundingClientRect(), tr=tab.getBoundingClientRect(), sx = nr.width/nav.offsetWidth || 1, inset = 3;
+  return { l:(tr.left-nr.left)/sx+inset, r:(nr.right-tr.right)/sx+inset }; }
+function knMove(lens, from, to){
+  lens.style.left = to.l+"px"; lens.style.right = to.r+"px";
+  if (!KN_LIVE || !from) return;
+  if (!KN_MOTION) { lens.animate([{ opacity:0 },{ opacity:1 }], { duration:120, easing:"ease-out" }); return; }
+  const right = to.l > from.l, lead = 260, trail = 280, lag = 50;  /* settles at 330ms */
+  lens.animate([{ right:from.r+"px" },{ right:to.r+"px" }], { duration:right?lead:trail, delay:right?0:lag, easing:KN_EASE, fill:"backwards" });
+  lens.animate([{ left:from.l+"px" },{ left:to.l+"px" }], { duration:right?trail:lead, delay:right?lag:0, easing:KN_EASE, fill:"backwards" });
+  lens.animate([{ transform:"scaleY(1)" },{ transform:"scaleY(.9)", offset:.45 },{ transform:"scaleY(1)" }], { duration:320, easing:"ease-out" });
+}
+function knBadges(nav){
+  const sheet = !!STATE.sheet, wait = !sheet && knState.sheet ? 280 : 0; knState.sheet = sheet;
+  if (sheet) return;  /* nothing on the bar plays under a sheet; the change shows once the page steps forward */
+  nav.querySelectorAll(".tab").forEach(tab=>{
+    const k = tab.dataset.kn, b = tab.querySelector(".unread"), v = b ? b.textContent : "", was = knState.badges[k];
+    if (KN_LIVE && was!==undefined && was!==v) {
+      const play = (el, cls)=>{ el.style.animationDelay = wait+"ms"; el.classList.add(cls); };
+      if (b && !was) play(b, "kn-bin");
+      else if (b && +v > +was) play(b, "kn-bup");
+      else if (b) play(b, "kn-bfade");
+      else if (knState.badgeEl[k]) { const g = knState.badgeEl[k].cloneNode(true); tab.querySelector(".ic").appendChild(g); play(g, "kn-bout"); setTimeout(()=>g.remove(), wait+200); }
+    }
+    knState.badges[k] = v; knState.badgeEl[k] = b ? b.cloneNode(true) : null;
+  });
+}
+function knMount(){
+  const nav = phone.querySelector(".screen > .nav"); if (!nav || !nav.querySelector(".kn-lens")) return;
+  nav.classList.add("knav"); /* added here, not in navHTML: render() splits the bar out by its exact opening tag. Not "kn": the base styles .kn (Kai-mark svgs) as display:block */
+  if (!KN_LIVE) nav.classList.add("still");
+  const lens = nav.querySelector(".kn-lens"), on = nav.querySelector(".tab.on");
+  if (on) {
+    const to = knRect(nav, on), id = on.dataset.kn, moved = knState.id && knState.id!==id, from = moved ? { l:knState.l, r:knState.r } : null;
+    lens.classList.add("on"); knMove(lens, from, to);
+    const swap = nav.querySelectorAll(".kn-from,.kn-was"); if (swap.length) { void nav.offsetWidth; requestAnimationFrame(()=>swap.forEach(t=>t.classList.remove("kn-from","kn-was"))); }
+    if (KN_MOTION && moved) on.classList.add("kn-in");
+    if (KN_MOTION && knState.again===id) on.classList.add("kn-again");
+    knState.id = id; knState.l = to.l; knState.r = to.r;
+  }
+  knState.again = null;
+  const f = fam().id, ft = nav.querySelector("#famTab");
+  if (KN_MOTION && ft && knState.fam && knState.fam!==f) ft.classList.add("kn-flip");  /* the mark turns over only when the family changes */
+  knState.fam = f;
+  const kai = nav.querySelector(".kai"); if (KN_MOTION && kai && knState.kai) kai.classList.add("kn-in"); knState.kai = false;
+  knBadges(nav);
+  knWire(nav, lens);
+}
+/* press feedback and scrubbing. Tabs keep their own onclick / pointer handlers; a scrub captures the pointer so they
+   never see the release, and lands on the tab under the finger. */
+function knWire(nav, lens){
+  let x0 = null, scrub = false, over = null, pressed = null;
+  const hit = x => [...nav.querySelectorAll(".tab")].find(t=>{ const r=t.getBoundingClientRect(); return x>=r.left && x<=r.right; });
+  nav.addEventListener("pointerdown", e=>{
+    pressed = e.target.closest(".tab,.kai"); if (pressed) pressed.classList.add("kn-press");
+    if (pressed && pressed.classList.contains("kai")) knState.kai = true;
+    if (pressed && pressed.classList.contains("tab") && pressed.classList.contains("on")) knState.again = pressed.dataset.kn;
+    x0 = pressed && pressed.classList.contains("tab") ? e.clientX : null; scrub = false; over = pressed;
+  });
+  nav.addEventListener("pointermove", e=>{
+    if (x0===null) return;
+    if (!scrub && Math.abs(e.clientX-x0) > 12) { scrub = true; nav.setPointerCapture(e.pointerId); nav.classList.add("kn-scrub"); knState.again = null;
+      const ft = nav.querySelector("#famTab"); if (ft && ft.onpointercancel) ft.onpointercancel(); if (pressed) pressed.classList.remove("kn-press"); }
+    if (!scrub) return;
+    const t = hit(e.clientX); if (!t || t===over) return;
+    const from = { l:parseFloat(lens.style.left), r:parseFloat(lens.style.right) }; over = t;
+    lens.classList.add("on"); knMove(lens, isNaN(from.l)?null:from, knRect(nav, t));
+    nav.querySelectorAll(".tab").forEach(x=>x.classList.toggle("kn-over", x===t));
+  });
+  const end = e=>{ if (pressed) pressed.classList.remove("kn-press");
+    if (scrub && over) { const id = over.dataset.kn; scrub = false; x0 = null;
+      if (id==="families") go("family"); else if (!over.classList.contains("on")) go(id==="missions"?"home":id); else knMount(); return; }
+    x0 = null; scrub = false; };
+  nav.addEventListener("pointerup", end); nav.addEventListener("pointercancel", ()=>{ if (pressed) pressed.classList.remove("kn-press"); x0 = null; scrub = false; knMount(); });
+}
+const _navRender = render;  /* not _knRender: the working copy's Kai-mark module (v64) already uses that name */
+render = function(){ const r = _navRender.apply(this, arguments); if (KN_ON) knMount(); return r; };
 
 /* ==== MORE MEMBERS (26 Sep, "Mock database" thread). 40 members across Xoogler, Michigan Product Alumni and Desi Founders, each with
    the rules replies.js reads (openTo, notNow, slots), plus roles, asks and offers they posted to the pool. Enough that typed searches,

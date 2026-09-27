@@ -6424,7 +6424,7 @@ const _laterBubble = bubbleHTML;
 bubbleHTML = function(c, m, firstOfRun, opts={}) { let h=_laterBubble(c, m, firstOfRun, opts); const n=m.thread?(m.threadCount||m.thread.length):0;
   if (n && !opts.inThread && m.thread.length) { const last=m.thread[m.thread.length-1]; const faces=[...new Set(m.thread.map(r=>r.from))].slice(0,3).map(id=>`<span class="tf">${P(id).initials}</span>`).join(""); h=h.replace(/<svg class="li"[^>]*>(?:(?!<\/svg>).)*<\/svg> View \d+ (reply|replies)<\/div>/, `<span class="tfaces">${faces}</span>${n} ${n===1?'reply':'replies'} <span class="faint">· ${last.time}</span></div>`); }
   if (m.alsoFrom) h=h.replace('<div class="bx">', `<div class="xs faint" style="margin-bottom:2px">Also sent from a thread</div><div class="bx">`);
-  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', '<div class="bf"><span class="svd">${LI("bookmark",11)}</span>');
+  if (savedIndex(c.id,m.id)>=0) h=h.replace('<div class="bf">', `<div class="bf"><span class="svd">${LI("bookmark",11)}</span>`);
   return h; };
 const _laterSheet = portSheet;
 portSheet = function(type, id) {
