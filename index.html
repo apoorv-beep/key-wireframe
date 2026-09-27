@@ -2826,6 +2826,11 @@ p,
   .evt-cvk i { border-radius:16px; overflow:hidden; } .evt-cvk i > svg { display:block; width:100%; height:100%; }
   .evx-pill i:not(.evx-fm) { background:#fff; color:var(--ink); border-radius:4px; box-shadow:0 0 0 1px var(--line); }
   .evx-foot { flex-wrap:wrap; row-gap:6px; }
+  /* 4:3 cover and photo roll (27 Sep, hosting's phone check), so the event's name clears the floating RSVP / Manage bar on the first screen; on short or narrow screens (320 x 568, 360 wide) 3:2 and the title one size down. The art is centred and loses only empty ground */
+  .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:4 / 3; }
+  @media (max-height: 600px), (max-width: 360px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:700 28px/32.2px Manrope, -apple-system, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.7px; } }
+  /* Events' filter and follow chips at the library's control height, 36 (Design system, 27 Sep) */
+  .pill[data-evmine], .pill[data-evrf], .chip[data-evfollow] { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:36px; padding-top:0; padding-bottom:0; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -3156,13 +3161,7 @@ p,
   .cm-pinnote .w { display:inline-flex; align-items:center; gap:4px; }
   .cm-evstrip { display:flex; gap:12px; overflow-x:auto; scroll-snap-type:x mandatory; margin:0 -16px; padding:0 16px 4px; scrollbar-width:none; }
   .cm-evstrip > .evx-card { flex:0 0 86%; scroll-snap-align:start; }
-  .cm-chrow { border-top:1px solid var(--line); }
-  .cm-chs { display:flex; } .cm-chs span { width:30px; height:30px; border-radius:8px; background:var(--fill); border:2px solid var(--paper); display:flex; align-items:center; justify-content:center; font-size:15px; margin-left:-8px; } .cm-chs span:first-child { margin-left:0; }
 
-  /* asks and offers: the one thing members post (27 Sep 19:58) */
-  .cm-askbtns { display:flex; gap:8px; margin:4px 0 6px; }
-  .cm-askbtns span { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; height:44px; border:1px solid var(--ink); border-radius:12px; font-size:15px; font-weight:600; cursor:pointer; }
-  .cm-ask { align-items:flex-start; } .cm-ask .a { font-weight:500; } .cm-ask .cm-btn, .cm-ask .cm-done { margin-top:18px; flex:0 0 auto; }
   .cm-form textarea.v { width:100%; border:0; outline:0; resize:none; font:inherit; background:transparent; color:var(--ink); padding:0; }
   .cm-mark { display:block; width:100%; height:100%; border-radius:inherit; overflow:hidden; } .cm-mark svg { display:block; width:100%; height:100%; }
   .cm-sq:has(.cm-mark), .avatar.cm-markav { background:none; border:0; overflow:hidden; } .cm-markav { border-radius:12px; }
@@ -3232,16 +3231,6 @@ p,
 .cmhi .cm-btn.q { border-color:transparent; background:var(--bg-fill-strong); color:var(--text-primary); }
 .cmhi .cm-done { font-size:12px; font-weight:700; color:var(--text-secondary); }
 
-/* Asks and offers: two buttons that start a post, then ask rows */
-.cmhi .cm-askbtns { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-absolute-8); margin:var(--space-absolute-4) 0 var(--space-absolute-8); }
-.cmhi .cm-askbtns span { height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); display:flex; align-items:center; justify-content:center; gap:var(--space-absolute-8);
-  font-size:15px; font-weight:600; border:var(--border-width-thin) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); }
-.cmhi .cm-askbtns span:first-child { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
-.cmhi .cm-ask { align-items:flex-start; }
-.cmhi .cm-ask .a { font-weight:400; line-height:1.5; margin-top:var(--space-absolute-4); }
-.cmhi .cm-ask .b { font-size:12px; font-weight:500; color:var(--text-tertiary); margin-top:var(--space-absolute-4); }
-.cmhi .cm-ask > .cm-btn, .cmhi .cm-ask > .cm-done { margin-top:var(--space-absolute-4); }
-
 /* KeyBrief (organizer): one live object, so it is a card: the inverse surface, radius 20, lifted */
 .cmhi .cm-ostrip.cm-brief { background:var(--bg-inverse-default); color:var(--text-inverse); border:0; border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-2); margin:var(--space-absolute-16) 0 0; padding:var(--space-absolute-16); }
 .cmhi .cm-brief .cm-oshd .a, .cmhi .cm-brief .cm-bnums .m { color:var(--text-inverse); }
@@ -3275,7 +3264,6 @@ p,
 
 /* Coming up: a rail of Events' own cards; channels with news: one row */
 .cmhi .cm-evstrip { gap:var(--space-absolute-12); padding-bottom:var(--space-absolute-8); }
-.cmhi .cm-chrow { margin-top:var(--space-absolute-16); padding:var(--space-absolute-12) 0; border-top:var(--border-width-hairline) solid var(--border-default); }
 
 /* KeySearchField + KeyChip: white on the page ground, so they read as controls */
 .cmhi .cm-search .search, .cmhi .cm-form .search { height:var(--space-absolute-44, 44px); border-radius:var(--radius-absolute-12); background:var(--component-input-bg); border:var(--border-width-hairline) solid var(--component-input-border-default); font-size:15px; color:var(--text-primary); padding:0 var(--space-absolute-12); }
@@ -3399,6 +3387,13 @@ p,
 .cmroom.cmbg-rows .brow.me { justify-content:flex-start; }
 .cmroom.cmbg-rows .bub.me .bf { color:var(--text-tertiary); }
 .cmroom.cmbg-rows .brow { margin-top:var(--space-absolute-14); }
+
+/* Overview: Talking now (Apoorv 22:27 audit) */
+.cm-talk .cm-che { width:40px; height:40px; border-radius:12px; background:var(--fill); display:flex; align-items:center; justify-content:center; font-size:18px; flex:0 0 auto; }
+.cm-talk .cm-1l { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+.cm-talk .cm-tr { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex:0 0 auto; }
+.cmhi .cm-talk .cm-che { background:var(--bg-fill-default); border-radius:var(--radius-absolute-12); }
+.cmhi .cm-talk { --face-ring:var(--bg-page); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -3765,6 +3760,15 @@ p,
   .reqrow { grid-template-columns:auto minmax(0,1fr) auto; grid-template-areas:"f a s" "f b s" "f c s"; }
   .reqrow .rcap .xs { justify-self:start; }
 }
+
+/* Later on small phones (hosting's SE check, 22:47): tabs keep the 16 gutter, and the reminder glyph lines up with the row's right edge instead of spilling into the gutter */
+.citabs.later { padding-inline:16px; }
+.citabs.later ~ .body .lrow .m { flex:1; min-width:0; }
+.citabs.later ~ .body .lrow .sico { flex:0 0 auto; width:auto; margin-right:-6px; }
+/* DMs and groups: the date pill pins under the header while scrolling (the latest day on top; one width so earlier pills never peek out), so a chat never opens with a pill cut under the header (WhatsApp, Telegram and Slack pin the day the same way); the hairline goes, since a pinned line would cross the bubbles */
+#phone:has(.hdr .mx-hav) .chatbody .dsep { position:sticky; top:8px; z-index:2; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep::before { display:none; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep span { display:inline-block; min-width:112px; box-sizing:border-box; }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -4140,6 +4144,279 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2sbar .sec2 { display:block; }
 /* a list rule `.pn{padding-left:18px}` elsewhere also hits the profile name; keep the name flush with the lines under it */
 .pname .pn, .ph .pn { padding-left:0; }
+/* Full page: #pbody (z-index 2, the scroller) covers the hero, so the tappable Follow lives in #pbody and is pulled up over the
+   hidden placeholder that holds its place under the name (#pname sits 14px above the body; 36px button + 14px gap = 50px) */
+#pname .p2fw.ph0 { visibility:hidden; }
+.p2 > .p2fw.pg { margin-top:-50px; }
+
+/* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
+.ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
+.ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
+.ob3in { position:relative; }
+.ob3sign { display:flex; flex-direction:column; min-height:100%; padding:0 0 18px; }
+.ob3sign .ob3vis { margin:0; }
+.ob3sign .mvis.full, .ob3sign .mo-promo { margin:0; }
+.ob3sign .ob3pitch { padding:16px 16px 0; }
+.ob3sign h1 { font-size:26px; line-height:1.1; letter-spacing:-.02em; margin:0; }
+.ob3sign .ob3num { font-size:11px; letter-spacing:.08em; color:var(--ink3); margin-top:8px; font-variant-numeric:tabular-nums; }
+.ob3sign .ob3btns { padding:14px 16px 0; display:grid; gap:8px; }
+.ob3sign .btn { margin:0; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn.sec { background:#fff; color:var(--ink); border-color:var(--line); }
+.ob3legal { font-size:11px; color:var(--ink3); text-align:center; padding:10px 16px 0; }
+.ob3hero { position:relative; height:300px; overflow:hidden; background:repeating-linear-gradient(45deg,#dcdcdc 0 10px,#e9e9e9 10px 20px); }
+.ob3hero .ini { position:absolute; inset:0; display:grid; place-items:center; font-size:96px; font-weight:800; color:rgba(0,0,0,.13); letter-spacing:-.04em; }
+.ob3hero .grad { position:absolute; left:0; right:0; bottom:0; height:60%; background:linear-gradient(to bottom,rgba(255,255,255,0),#fff); }
+.ob3hero .cam { position:absolute; right:14px; top:54px; width:36px; height:36px; border-radius:50%; background:#fff; display:grid; place-items:center; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.12); }
+.ob3hero .top { position:absolute; top:10px; left:0; right:0; }
+.ob3hero .nm { position:absolute; left:16px; right:16px; bottom:10px; }
+.ob3hero .nm .n { font-size:28px; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+.ob3hero .nm .t { font-size:15px; color:var(--ink2); margin-top:4px; }
+.ob3edit { cursor:pointer; border-bottom:1px dashed transparent; } .ob3edit:hover { border-bottom-color:var(--ink3); }
+.ob3logos { display:flex; align-items:center; gap:6px; } .ob3logos b { width:30px; height:30px; border-radius:8px; background:var(--fill); display:grid; place-items:center; font-size:12px; font-weight:800; }
+.ob3logos span { font-size:12px; color:var(--ink3); margin-left:4px; }
+.ob3src { display:flex; align-items:center; gap:10px; margin-top:12px; }
+.ob3li { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#0A66C2; background:#E8F0FB; border-radius:999px; padding:5px 10px; }
+.ob3not { margin-left:auto; font-size:13px; color:var(--ink2); text-decoration:underline; cursor:pointer; }
+.ob3fld { border:1px solid var(--line); border-radius:12px; padding:10px 12px; display:grid; gap:2px; margin-top:8px; }
+.ob3fld label { font-size:11px; color:var(--ink3); } .ob3fld input { border:0; outline:0; font:inherit; font-size:16px; font-weight:600; padding:0; background:transparent; color:var(--ink); }
+.ob3chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.ob3map { position:relative; height:320px; overflow:hidden; background:linear-gradient(#E9EEF3,#DDE5EC); }
+.ob3map > svg { position:absolute; inset:0; width:100%; height:100%; }
+.ob3map .city { position:absolute; left:16px; bottom:16px; background:#fff; border-radius:999px; padding:8px 14px; font-weight:700; font-size:14px; box-shadow:0 2px 10px rgba(0,0,0,.1); display:flex; align-items:center; gap:6px; }
+.ob3map .top { position:absolute; top:10px; left:0; right:0; }
+.ob3t { font-size:24px; font-weight:800; letter-spacing:-.02em; line-height:1.15; margin:16px 0 0; }
+.ob3sub { font-size:14px; color:var(--ink2); margin-top:6px; }
+.ob3tiles { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px; }
+.ob3tile { aspect-ratio:1; border:1.5px solid var(--line); border-radius:18px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; background:#fff; }
+.ob3tile.on { border-color:var(--ink); border-width:2px; }
+.ob3tile b { font-size:17px; } .ob3tile .s { font-size:13px; color:var(--ink2); }
+.ob3tile .sw { width:40px; height:24px; border-radius:12px; background:var(--line); position:relative; } .ob3tile .sw::after { content:""; position:absolute; width:20px; height:20px; border-radius:50%; background:#fff; top:2px; left:2px; transition:left .2s; } .ob3tile.on .sw { background:var(--ink); } .ob3tile.on .sw::after { left:18px; }
+.ob3priv { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink2); margin-top:14px; }
+.ob3lock { background:linear-gradient(160deg,#2c3038,#16181c); border-radius:20px; padding:14px; display:grid; gap:8px; margin-top:12px; }
+.ob3n { background:rgba(255,255,255,.92); border-radius:14px; padding:10px 12px; display:grid; gap:2px; } .ob3n:nth-child(2){ background:rgba(255,255,255,.82); } .ob3n:nth-child(3){ background:rgba(255,255,255,.72); }
+.ob3n .h { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; } .ob3n .h em { margin-left:auto; font-style:normal; font-weight:400; font-size:11px; color:var(--ink3); } .ob3n .b { font-size:13px; }
+.ob3n .avatar { width:20px; height:20px; font-size:9px; }
+.ob3wel { background:#16181c; color:#fff; min-height:100%; display:flex; flex-direction:column; padding:28px 16px 18px; }
+.ob3wel .k { font-size:11px; letter-spacing:.12em; color:#DCB854; font-weight:700; }
+.ob3wel h1 { color:#fff; font-size:28px; letter-spacing:-.02em; margin:6px 0 16px; }
+.ob3card { border-radius:22px; overflow:hidden; background:#22252b; box-shadow:0 0 0 1px #DCB854, 0 20px 40px rgba(0,0,0,.35); }
+.ob3card .ph { position:relative; height:240px; background:repeating-linear-gradient(45deg,#3a3d44 0 10px,#33363c 10px 20px); }
+.ob3card .ph .ini { position:absolute; inset:0; display:grid; place-items:center; font-size:84px; font-weight:800; color:rgba(255,255,255,.12); }
+.ob3card .ph .grad { position:absolute; left:0; right:0; bottom:0; height:60%; background:linear-gradient(to bottom,rgba(34,37,43,0),#22252b); }
+.ob3card .ph .nm { position:absolute; left:16px; bottom:10px; } .ob3card .ph .nm .n { font-size:24px; font-weight:800; } .ob3card .ph .nm .t { font-size:13px; color:#C9CCD3; margin-top:2px; }
+.ob3card .meta { display:flex; justify-content:space-between; padding:10px 16px 14px; font-size:11px; letter-spacing:.08em; font-variant-numeric:tabular-nums; } .ob3card .meta span:first-child { color:#DCB854; } .ob3card .meta span:last-child { color:#C9CCD3; }
+.ob3wel .btn { margin:0; } .ob3wel .gold { background:#DCB854; border-color:#DCB854; color:#141414; } .ob3wel .btn.ghost { color:#fff; }
+.ob3wel .ob3acts { display:grid; gap:6px; margin-top:auto; padding-top:18px; }
+@media (prefers-reduced-motion:no-preference) { .ob3card { animation:ob3rise .7s cubic-bezier(.2,.8,.2,1) backwards; } @keyframes ob3rise { from { transform:translateY(24px) scale(.96); opacity:0; } } }
+
+.ob3from { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--ink2); } .ob3from b { width:20px; height:20px; border-radius:6px; background:var(--fill); display:grid; place-items:center; font-size:11px; }
+.ob3hero .t.ph0 { color:var(--ink3); }
+/* Onboarding rev 4 screens */
+.ob4sign .ob4door { position:relative; padding:12px 16px 0; display:grid; gap:10px; }
+.ob4em { display:flex; align-items:center; gap:8px; border:1.5px solid var(--ink); border-radius:14px; padding:4px 4px 4px 14px; background:#fff; }
+.ob4em input { flex:1; min-width:0; border:0; outline:0; font:inherit; font-size:16px; padding:10px 0; background:transparent; color:var(--ink); }
+.ob4em button { flex:none; width:44px; height:44px; border-radius:10px; border:0; background:var(--ink); color:#fff; display:grid; place-items:center; cursor:pointer; }
+.ob4or { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink3); } .ob4or::before, .ob4or::after { content:""; flex:1; height:1px; background:var(--line); }
+.ob4soc { display:flex; justify-content:center; gap:14px; }
+.ob4soc button { width:56px; height:56px; border-radius:50%; border:1px solid var(--line); background:#fff; color:#111; display:grid; place-items:center; cursor:pointer; }
+.ob4sign .ob3legal { padding:0; }
+.ob4q { display:flex; flex-direction:column; }
+.ob4q .ob3t { margin-top:8px; } .ob4pc + .ob4step .ob3t { margin-top:18px; }
+.ob4av { position:relative; width:96px; height:96px; border-radius:50%; background:var(--fill); display:grid; place-items:center; font-size:34px; font-weight:800; color:var(--ink2); margin:10px 0 6px; cursor:pointer; letter-spacing:-.02em; }
+.ob4av i { position:absolute; right:-2px; bottom:-2px; width:32px; height:32px; border-radius:50%; background:#fff; display:grid; place-items:center; box-shadow:0 1px 4px rgba(0,0,0,.14); color:var(--ink); font-style:normal; }
+.ob4note { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink2); margin-top:10px; } .ob4note b { width:18px; height:18px; border-radius:5px; background:var(--fill); display:grid; place-items:center; font-size:10px; flex:none; }
+.ob4me { display:flex; align-items:center; gap:10px; padding:10px 0 4px; } .ob4me b { font-size:15px; }
+.ob4blank > svg { opacity:.45; filter:grayscale(1); }
+.ob4ask { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; border:2px dashed rgba(20,20,20,.3); display:grid; place-items:center; color:rgba(20,20,20,.45); }
+.ob4list { margin-top:16px; border-top:1px solid var(--line); }
+.ob4row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); cursor:pointer; }
+.ob4row .ic { width:32px; flex:none; display:grid; place-items:center; color:var(--ink); } .ob4row .tx { flex:1; min-width:0; } .ob4row b { font-size:16px; }
+.ob4sw { flex:none; width:44px; height:26px; border-radius:13px; background:var(--line); position:relative; transition:background .2s; } .ob4sw::after { content:""; position:absolute; width:22px; height:22px; border-radius:50%; background:#fff; top:2px; left:2px; transition:left .2s; box-shadow:0 1px 2px rgba(0,0,0,.2); } .ob4sw.on { background:var(--ink); } .ob4sw.on::after { left:20px; }
+@media (prefers-reduced-motion:no-preference) { .ob4pin { animation:ob4drop .5s cubic-bezier(.2,.8,.2,1) backwards; transform-box:fill-box; transform-origin:center; } @keyframes ob4drop { from { transform:translateY(-24px); opacity:0; } } .ob4got div { animation:ob3rise .5s cubic-bezier(.2,.8,.2,1) backwards; } .ob4got div:nth-child(1){animation-delay:.5s} .ob4got div:nth-child(2){animation-delay:.62s} .ob4got div:nth-child(3){animation-delay:.74s} }
+@media (prefers-reduced-motion:reduce) { .ob4sw, .ob4sw::after { transition:none; } }
+.ob4anchor.btn { display:block; height:0; min-height:0; padding:0; margin:0; border:0; visibility:hidden; }
+.ob3sign.ob4sign { padding-bottom:0; }
+@media (max-height:600px) { .ob4sign h1 { font-size:21px; } .ob4sign .ob3pitch { padding-top:10px; } .ob4sign .ob4door { gap:8px; padding-top:8px; } .ob4soc button { width:48px; height:48px; } }
+.ob4em, .ob4soc button { position:relative; }
+.ob4last { position:absolute; top:-9px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:10px; font-weight:700; letter-spacing:.02em; line-height:1; padding:4px 7px; border-radius:999px; background:var(--ink); color:#fff; pointer-events:none; }
+.ob4em .ob4last { left:auto; right:56px; transform:none; }
+
+/* Links step: rows with hairlines; LinkedIn history as chips under its source */
+.ob4sub{margin:4px 0 0}
+.ob4sec{padding:14px 0 0}
+.ob4st{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin:14px 0 8px}
+.ob4sec>.ob4st{margin-top:0}
+.ob4cs{display:flex;flex-wrap:wrap;gap:8px}
+.ob4c{display:flex;align-items:flex-start;gap:6px;text-align:left;border:1px solid var(--line);background:none;border-radius:12px;padding:8px 10px;font:inherit;font-size:13px;color:var(--ink2);cursor:pointer;max-width:100%}
+.ob4c span{min-width:0;overflow-wrap:anywhere}.ob4c small{display:block;font-size:11px;color:var(--ink3)}
+.ob4c svg{flex:none;margin-top:1px}
+.ob4c.on{border-color:var(--ink);color:var(--ink);background:var(--fill)}
+.ob4in{display:flex;align-items:center;gap:6px;border:1px solid var(--ink);border-radius:10px;padding:0 6px 0 10px;height:42px;font-size:14px}
+.ob4in span{color:var(--ink3)}.ob4in input{flex:1;min-width:0;border:0;outline:0;background:none;font:inherit;color:var(--ink)}
+.ob4sm{border:0;background:var(--ink);color:#fff;border-radius:8px;height:30px;padding:0 12px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.ob4acts{margin-top:18px;align-items:center;gap:14px}
+
+/* Live profile card (Name, Work, Location): the reflection of what they have given, prominent and building step by step */
+.ob4pc{display:flex;align-items:center;gap:14px;padding:16px;margin:6px 0 4px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 1px 2px rgba(20,20,20,.04),0 8px 24px rgba(20,20,20,.06)}
+.ob4pc{flex-wrap:wrap}
+.ob4pc-ics{display:flex;align-items:center;gap:8px}.ob4pc-ics svg{color:var(--ink2)}
+.ob4pc-li{flex-basis:100%;min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:2px;padding-top:12px;margin-top:2px;border-top:1px solid var(--line);animation:ob4pc-li 320ms cubic-bezier(.2,.8,.2,1) backwards}
+.ob4pc-r{min-width:0;display:flex;align-items:center;gap:8px;min-height:28px;font-size:14px;color:var(--ink)}
+.ob4pc-r svg{flex:none;color:var(--ink3)}.ob4pc-r span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob4pc-r small{flex:none;font-size:12px;color:var(--ink3)}
+.ob4pc-src>svg{color:#0A66C2}
+.ob4pc-src{min-width:0;display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--ink3)}.ob4pc-src svg{flex:none}
+.ob4pc-src span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ob4pc-src .obl-lnk{padding:0;font-size:13px}
+@keyframes ob4pc-li{from{opacity:0;transform:translateY(6px)}}
+@media (prefers-reduced-motion:reduce){.ob4pc-li{animation:none}}
+.ob4pc-av{position:relative;width:64px;height:64px;flex:none;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.ob4pc[data-step="name"] .ob4pc-av{cursor:pointer}
+.ob4pc-av i{position:absolute;right:-4px;bottom:-4px;width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.16);color:var(--ink);font-style:normal}
+.ob4pc-tx{flex:1;min-width:0;display:grid;gap:4px}
+.ob4pc-f{display:flex;align-items:center;gap:6px;min-width:0;font-size:14px;color:var(--ink2)}
+.ob4pc-f span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ob4pc-f svg{flex:none;color:var(--ink3)}
+.ob4pc-name{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+.ob4pc-f.is-empty span{color:var(--ink3);font-weight:500}
+.ob4pc-f.is-now.is-empty span{border-bottom:1.5px dashed var(--line)}
+.ob4step{display:flex;flex-direction:column}
+.ob4locpc{position:relative;z-index:2;margin:-44px 16px 6px}
+.ob4locpc .ob4pc{margin:0}
+
+.btn:disabled{opacity:.3;pointer-events:none}
+.foot .ob4skip{text-align:center;font-size:15px;font-weight:600;color:var(--ink2);padding:12px 0 2px;cursor:pointer}
+.ob4loc{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:#fff;font:inherit;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer}
+/* Welcome card in the profile hero's layout: photo area, big name, role, city */
+.ob4wc .ph{height:190px;background:linear-gradient(160deg,#41444c,#26292f)}
+.ob4wc .ph .ini{font-size:72px;color:rgba(255,255,255,.16)}
+.ob4wc .shade{position:absolute;inset:auto 0 0;height:70%;background:linear-gradient(to bottom,rgba(34,37,43,0),#22252b)}
+.ob4wc .nm{position:relative;padding:0 18px 4px;margin-top:-34px}
+.ob4wc .nm h2{margin:0;font-size:30px;font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1.1}
+.ob4wc .role{margin-top:6px;font-size:15px;font-weight:600;color:#E6E7EA}
+.ob4wc .where{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:14px;color:#A9ACB3}
+.ob4wc .plinks{margin-top:10px;display:flex;gap:8px;color:#E6E7EA}
+.ob4wc .plink{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center}
+.ob4wnext{margin-top:16px;font-size:14px;line-height:1.5;color:#A9ACB3}
+
+.ob4mail{display:flex;gap:8px;margin-top:10px}.ob4mail .chip{margin:0}
+/* LinkedIn search and pick; links with detected logos */
+.obl-q{margin-top:16px;padding:12px 14px;border-radius:14px;background:var(--fill)}
+.obl-ql{font-size:12px;font-weight:600;color:var(--ink3)}
+.obl-qc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.obl-qc span{padding:4px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ink)}
+.obl-bar{height:3px;border-radius:3px;background:var(--line);margin-top:12px;overflow:hidden}.obl-bar i{display:block;height:100%;width:40%;border-radius:3px;background:var(--ink);animation:oblbar 1.1s cubic-bezier(.4,0,.2,1) infinite}
+@keyframes oblbar{from{transform:translateX(-100%)}to{transform:translateX(250%)}}
+@media (prefers-reduced-motion:reduce){.obl-bar i{animation:none;width:100%;opacity:.4}}
+.obl-st{font-size:13px;font-weight:700;color:var(--ink);margin:18px 0 6px}
+.obl-cand{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.obl-st+.obl-cand{border-top:1px solid var(--line)}
+.obl-cand .ini,.obl-pk .obl-li{width:44px;height:44px;flex:none;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-weight:800;font-size:15px;color:var(--ink)}
+.obl-cand .m,.obl-pk .m,.obl-row .m,.obl-adder .m{flex:1;min-width:0}
+.obl-cand .a,.obl-pk .a,.obl-row .a,.obl-adder .a{font-size:15px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px}
+.obl-cand .b,.obl-pk .b,.obl-row .b{font-size:13px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.obl-cand em{font-style:normal;color:var(--ink);font-weight:600}
+.obl-me{flex:none;padding:8px 12px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:700}
+.obl-lnk{border:0;background:none;padding:10px 0 0;font:inherit;font-size:13px;font-weight:600;color:var(--ink2);text-decoration:underline;cursor:pointer}
+.obl-picked{margin-top:14px}
+.obl-pk{display:flex;align-items:center;gap:12px}.obl-pk .obl-lnk{padding:0}
+.obl-pk .obl-li{color:#0A66C2}
+.obl-in{margin-top:4px}
+.obl-it{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:14px;color:var(--ink)}.obl-it svg{color:var(--ink3);flex:none}.obl-it span{flex:1;min-width:0}.obl-it small{font-size:12px;color:var(--ink3)}
+.obl-note{font-size:12px;color:var(--ink3);margin-top:4px}
+.obl-links{margin-top:6px}
+.obl-row,.obl-adder{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.obl-st+.obl-row{border-top:1px solid var(--line)}
+.obl-row .ic,.obl-adder .ic{width:32px;flex:none;display:grid;place-items:center;color:var(--ink)}
+.obl-row em{font-style:normal;font-size:11px;font-weight:700;color:#0A66C2;background:rgba(10,102,194,.08);padding:2px 7px;border-radius:999px}
+.obl-ask{cursor:pointer}.obl-ask .a{color:var(--ink)}.obl-ask .ic{color:var(--ink3)}
+.obl-add,.obl-x{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--ink);cursor:pointer;flex:none}
+.obl-x{border:0;color:var(--ink3)}
+.obl-adder input{width:100%;border:0;outline:0;background:none;font:inherit;font-size:14px;color:var(--ink);padding:2px 0 0}
+.obl-adder{border-bottom:1.5px solid var(--ink)}
+.obl-know{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 0 0 44px;color:var(--ink3)}.obl-know b{font-size:12px;font-weight:500}
+.obl-flash{padding:8px 0 0 44px;font-size:13px;font-weight:600;color:var(--ink)}
+.obl-more{display:flex;align-items:center;gap:8px;margin-top:12px;border:0;background:none;padding:6px 0;font:inherit;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer}
+.obl-stage{margin-top:8px;font-size:12px;color:var(--ink2)}
+.obl-srcnote{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:var(--ink3)}
+.obl-alt{display:flex;gap:18px}
+.obl-match{display:inline-flex;align-items:center;gap:4px;margin-top:4px;font-size:12px;font-weight:700;color:var(--ink)}
+
+/* ==== Onboarding cascade (Motion design thread, 27 Sep 20:12 ask): no sideways step. The answer you just gave folds up into
+   your profile card, the card moves to its new place, the next line of the card opens, and the next question rises from below.
+   Only under html.obc, which obc.js sets when motion is on (never under reduced motion or webdriver). ==== */
+html.obc { --obc-dec:cubic-bezier(.2,.8,.2,1); --obc-in:cubic-bezier(.4,0,1,1); }
+/* the base step slide is replaced on every onboarding step */
+html.obc .view.obc-run { animation:none !important; }
+html.obc .obc-ghost { position:absolute; z-index:5; pointer-events:none; margin:0; transform-origin:0 0; }
+/* the next question: each part rises 24px from below, one after another */
+html.obc .view.obc-run .ob4step > * { animation:obc-rise 320ms var(--obc-dec) calc(180ms + var(--obc-i,0)*50ms) backwards; }
+html.obc .view.obc-run.obc-bare > .body > * { animation:obc-rise 320ms var(--obc-dec) calc(140ms + var(--obc-i,0)*50ms) backwards; }
+html.obc .view.obc-run.obc-back .ob4step > *, html.obc .view.obc-run.obc-back > .body > * { animation:obc-drop 260ms var(--obc-dec) calc(90ms + var(--obc-i,0)*30ms) backwards; }
+@keyframes obc-rise { from { opacity:0; transform:translateY(24px); } }
+@keyframes obc-drop { from { opacity:0; transform:translateY(-12px); } }
+/* the card's new line opens under the last one */
+html.obc .view.obc-run .ob4pc-f.obc-open { animation:obc-line 280ms var(--obc-dec) 120ms backwards; }
+@keyframes obc-line { from { opacity:0; transform:translateY(8px); clip-path:inset(0 0 100% 0); } }
+/* the line that just took your answer settles into place */
+html.obc .view.obc-run .ob4pc-f.obc-got span { animation:obc-got 360ms var(--obc-dec) 160ms backwards; }
+@keyframes obc-got { from { color:var(--ink); transform:translateY(-3px); } }
+/* Location: the map comes up behind the card */
+html.obc .view.obc-run .ob3map svg { animation:obc-map 520ms var(--obc-dec) backwards; }
+@keyframes obc-map { from { opacity:0; transform:scale(1.04); } }
+/* live typing: the initials give once when they change */
+html.obc #ob4ini.obc-pop { animation:obc-pop 220ms cubic-bezier(.3,1.5,.5,1); }
+@keyframes obc-pop { from { transform:scale(.86); } }
+/* the ending: the card you built becomes your member card. It lifts out of the dark tilted and settles, one foil pass
+   crosses the photo, then what's ready and the way in (the one celebration in the flow) */
+html.obc .view:not(.obc-wel) .ob3card { animation:none; }
+html.obc .view.obc-wel .ob3wel { perspective:900px; animation:obc-fade 420ms cubic-bezier(.2,0,0,1) backwards; }
+html.obc .view.obc-wel .ob3wel .k { animation:obc-fade 340ms cubic-bezier(.2,0,0,1) 300ms backwards; }
+html.obc .view.obc-wel .ob3wel h1 { animation:obc-rise 340ms var(--obc-dec) 420ms backwards; }
+html.obc .view.obc-wel .ob3card { animation:obc-card 900ms var(--obc-dec) 600ms backwards; }
+html.obc .view.obc-wel .ob3card .ph { overflow:hidden; }
+html.obc .view.obc-wel .ob3card .ph::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:0; background-size:250% 100%;
+  background-image:linear-gradient(105deg, transparent 38%, rgba(255,255,255,.28) 50%, transparent 62%); animation:obc-foil 1.3s cubic-bezier(.2,0,0,1) 1.4s; }
+html.obc .view.obc-wel .ob3card .nm, html.obc .view.obc-wel .ob3card .meta { animation:obc-fade 340ms cubic-bezier(.2,0,0,1) 1.1s backwards; }
+html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .view.obc-wel .ob3acts > * { animation:obc-rise 340ms var(--obc-dec) calc(1.6s + var(--obc-i,0)*80ms) backwards; }
+@keyframes obc-fade { from { opacity:0; } }
+@keyframes obc-card { from { opacity:0; transform:translateY(60px) rotateX(24deg) scale(.9); } }
+@keyframes obc-foil { 0% { opacity:1; background-position:130% 0; } 100% { opacity:1; background-position:-30% 0; } }
+
+/* ==== Welcome, the end of onboarding (Motion design thread, 27 Sep; Apoorv 22:34: "a lot more attractive and fun", Key's logo,
+   no member number, the text under the card rethought or scrapped). Load after onboard4.css and obc.css.
+   The member lands back in the sign-in reel's star field. Key's logo writes itself in, left to right, then the card they built
+   step by step is issued to them, the way Wallet adds a card. No glow, no halo, no border (his 23:02). ==== */
+.obw { position:relative; min-height:100%; display:flex; flex-direction:column; padding:0 20px 18px; background:#0B0E11; color:#F9FAFC; overflow:hidden; isolation:isolate; }
+.obw > *:not(.kai-stars) { position:relative; z-index:1; }
+.obw-mid { margin-block:auto; padding-block:12px; }
+.obw-top { height:150px; flex:none; display:grid; place-items:center; }
+/* Key's logo (web light-full-logo.svg, the same mask the reel's finale uses), plain white */
+.obw-logo { position:relative; width:140px; height:76px;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2213 31 79 43%22%3E%3Cpath fill=%22%23000%22 d=%22M28.9509 51.1783L29.124 53.6382L28.9509 56.098L21.3936 64.0154H13L23.1803 53.7251L13.9531 44.3193H22.1545L28.9509 51.1783Z%22/%3E%3Cpath fill=%22%23000%22 d=%22M64.6586 44.9178C62.9276 44.0959 61.0305 43.6921 59.1178 43.7391C57.1181 43.6816 55.1379 44.1495 53.3719 45.0955C51.841 45.9462 50.584 47.2202 49.7504 48.7687C48.9011 50.3655 48.4713 52.1531 48.4986 53.9642C48.4324 55.9987 48.9362 58.0111 49.9516 59.7712C50.9022 61.3366 52.2864 62.5885 53.9355 63.3712C55.7326 64.214 57.696 64.6374 59.6775 64.61C61.1773 64.6309 62.6757 64.495 64.1482 64.2049C65.1416 64.0141 66.1012 63.6796 66.9972 63.2092C67.6192 62.8786 68.1853 62.4539 68.6787 61.9495L65.8623 57.4387C65.4831 57.7968 65.0533 58.0947 64.5871 58.326C63.9729 58.6383 63.325 58.88 62.6563 59.0473C61.8395 59.2472 61.002 59.3439 60.1618 59.3348C59.3074 59.3544 58.4582 59.1976 57.6674 58.8735C57.0116 58.5991 56.439 58.1548 56.0092 57.5864C55.6041 57.0389 55.3664 56.3842 55.3249 55.7034H69.489C69.5319 55.4512 69.5526 55.1951 69.5487 54.9377V54.168C69.5487 51.863 69.1241 49.9395 68.2736 48.3976C67.4556 46.8896 66.1934 45.6744 64.6599 44.9191L64.6586 44.9178ZM55.4924 51.8983C55.5235 51.3403 55.6859 50.798 55.9676 50.3145C56.2702 49.8036 56.7039 49.3841 57.2233 49.0993C57.8414 48.7687 58.5361 48.6066 59.2347 48.6302C59.9203 48.6014 60.5994 48.7726 61.1902 49.1241C61.6772 49.4273 62.0745 49.8585 62.3368 50.3707C62.5809 50.8424 62.7186 51.3625 62.7394 51.893L55.4924 51.897V51.8983ZM84.8919 44.3141L79.6005 57.7053L74.8765 44.3141H67.6542L75.8309 64.018L71.3043 74H78.5513L92 44.3141H84.8932H84.8919ZM52.1539 64.0154H43.7591L36.203 56.098V64.0154H28.9521V31H36.203V51.1783L42.9994 44.3193H51.2034L41.9736 53.725L52.1539 64.0154Z%22/%3E%3C/svg%3E") center/contain no-repeat; mask:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2213 31 79 43%22%3E%3Cpath fill=%22%23000%22 d=%22M28.9509 51.1783L29.124 53.6382L28.9509 56.098L21.3936 64.0154H13L23.1803 53.7251L13.9531 44.3193H22.1545L28.9509 51.1783Z%22/%3E%3Cpath fill=%22%23000%22 d=%22M64.6586 44.9178C62.9276 44.0959 61.0305 43.6921 59.1178 43.7391C57.1181 43.6816 55.1379 44.1495 53.3719 45.0955C51.841 45.9462 50.584 47.2202 49.7504 48.7687C48.9011 50.3655 48.4713 52.1531 48.4986 53.9642C48.4324 55.9987 48.9362 58.0111 49.9516 59.7712C50.9022 61.3366 52.2864 62.5885 53.9355 63.3712C55.7326 64.214 57.696 64.6374 59.6775 64.61C61.1773 64.6309 62.6757 64.495 64.1482 64.2049C65.1416 64.0141 66.1012 63.6796 66.9972 63.2092C67.6192 62.8786 68.1853 62.4539 68.6787 61.9495L65.8623 57.4387C65.4831 57.7968 65.0533 58.0947 64.5871 58.326C63.9729 58.6383 63.325 58.88 62.6563 59.0473C61.8395 59.2472 61.002 59.3439 60.1618 59.3348C59.3074 59.3544 58.4582 59.1976 57.6674 58.8735C57.0116 58.5991 56.439 58.1548 56.0092 57.5864C55.6041 57.0389 55.3664 56.3842 55.3249 55.7034H69.489C69.5319 55.4512 69.5526 55.1951 69.5487 54.9377V54.168C69.5487 51.863 69.1241 49.9395 68.2736 48.3976C67.4556 46.8896 66.1934 45.6744 64.6599 44.9191L64.6586 44.9178ZM55.4924 51.8983C55.5235 51.3403 55.6859 50.798 55.9676 50.3145C56.2702 49.8036 56.7039 49.3841 57.2233 49.0993C57.8414 48.7687 58.5361 48.6066 59.2347 48.6302C59.9203 48.6014 60.5994 48.7726 61.1902 49.1241C61.6772 49.4273 62.0745 49.8585 62.3368 50.3707C62.5809 50.8424 62.7186 51.3625 62.7394 51.893L55.4924 51.897V51.8983ZM84.8919 44.3141L79.6005 57.7053L74.8765 44.3141H67.6542L75.8309 64.018L71.3043 74H78.5513L92 44.3141H84.8932H84.8919ZM52.1539 64.0154H43.7591L36.203 56.098V64.0154H28.9521V31H36.203V51.1783L42.9994 44.3193H51.2034L41.9736 53.725L52.1539 64.0154Z%22/%3E%3C/svg%3E") center/contain no-repeat;
+  background:#F9FAFC; }
+.obw h1 { margin:0 0 22px; text-align:center; font-size:34px; line-height:1.1; font-weight:800; letter-spacing:-.03em; color:#F9FAFC; text-wrap:balance; }
+/* the card: their live profile card from onboarding, issued as a member card */
+.obw-stage { perspective:1000px; }
+.obw-card { position:relative; border-radius:22px; background:#fff; color:#0B0E11; will-change:transform;
+  box-shadow:0 1px 2px rgba(0,0,0,.2), 0 30px 60px -20px rgba(0,0,0,.7); }
+.obw-card .ob4pc { margin:0; border:0; box-shadow:none; background:transparent; padding:18px 18px 16px; }
+.obw-card .ob4pc-av { width:72px; height:72px; font-size:24px; box-shadow:0 0 0 2px #fff, 0 0 0 3.5px var(--component-avatar-ring-gold, #E8CD82); }
+.obw-card .ob4pc-name { font-size:22px; }
+.obw-card .ob4pc-tx { gap:5px; }
+.obw-foot { display:flex; align-items:center; gap:8px; margin:0 18px; padding:11px 0 13px; border-top:1px solid #EEF1F4;
+  font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-gold, #7E6011); }
+.obw-foot svg { flex:none; }
+/* light that follows a finger or pointer across the card once it has landed */
+.obw-sheen { position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .3s;
+  background:radial-gradient(260px 160px at var(--mx,50%) var(--my,0%), rgba(255,255,255,.0), rgba(220,228,236,.35) 60%, rgba(255,255,255,0)); mix-blend-mode:multiply; }
+.obw-card.is-tilt .obw-sheen { opacity:1; }
+.obw-go { padding-top:18px; }
+.obw-go button { width:100%; min-height:52px; border:0; border-radius:14px; background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
+.obw-go button:active { transform:scale(.98); }
+@media (max-height:640px) { .obw-top { height:112px; } .obw-logo { width:104px; height:56px; } .obw h1 { font-size:28px; margin-bottom:16px; } }
+.obw-card .ob4pc-src .obl-lnk { display:none; }
+/* the card's history rows are grid items; without min-width:0 their nowrap text pushed them past the card at 320 wide */
+.obw-card .ob4pc-li { min-width:0; grid-template-columns:minmax(0,1fr); }
+@media (max-width:360px) { .obw { padding-inline:16px; } .obw h1 { font-size:28px; }
+  .obw-card .ob4pc { padding:16px 14px 14px; gap:12px; } .obw-card .ob4pc-av { width:56px; height:56px; font-size:20px; } .obw-foot { margin-inline:14px; } }
 </style>
 </head>
 <body>
@@ -11916,21 +12193,21 @@ const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"]; return
    This list is the section-to-component map Design system builds from. */
 const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
   [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
-  [".cm-sec, .cm-newm","KeyListSection"],[".cm-askbtns > span, .cm-btn, .cm-form .btn","KeyButton"],[".cm-ask, .cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
-  [".evx-card","KeyEventCard"],[".ch.slim, .cm-chrow","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
+  [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn","KeyButton"],[".cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
   [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
   [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
 /* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
 const cKaiMarks = root => { if (typeof kaiMark!=="function") return; root.querySelectorAll(".cm-kt, .cm-osk").forEach(el => { if (!el.dataset.kn) { el.innerHTML = kaiMark(el.classList.contains("cm-osk")?28:40); el.dataset.kn = 1; } }); };
 /* data-kv is the Figma variant string, as Figma writes it (Design system, 20:46) */
 const cKv = (el, n) => { const c = el.classList;
-  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-askbtns > span:first-child, .cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
+  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-form .btn:not(.sec):not(.ghost)")?"primary":c.contains("ghost")?"ghost":"secondary"}`
     : n==="KeyChip" ? `variant=${c.contains("cm-osjob")?"deep":el.parentElement.classList.contains("cm-chtiles")?"channel":"default"}, state=${c.contains("on")?"selected":"default"}`
-    : n==="KeyRow" ? `type=${c.contains("cm-ask")?"ask":c.contains("cm-rit")?"ritual":"kai"}`
+    : n==="KeyRow" ? `type=${c.contains("cm-rit")?"ritual":"kai"}`
     : n==="KeyMemberRow" ? `state=${el.querySelector(".cm-done")?"new":"default"}`
     : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
     : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
-    : n==="KeyChannelRow" ? `type=${c.contains("cm-chrow")?"summary":"channel"}, state=${c.contains("u")?"unread":"read"}`
+    : n==="KeyChannelRow" ? `type=${c.contains("cm-talk")?"preview":"channel"}, state=${c.contains("u")?"unread":"read"}`
     : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
 const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
@@ -12027,10 +12304,10 @@ const C_RIT = {
 const cRituals = f => C_RIT[f.id] || [];
 const C_DAYN = { Mon:"Monday", Tue:"Tuesday", Wed:"Wednesday", Thu:"Thursday", Fri:"Friday" };
 
-/* ---- Overview (Apoorv 27 Sep 18:32 and 19:34; research in community-audit/overview/):
-   organizers get one brief on top (cOrgBrief). Then Asks and offers, the one thing members post. Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
-   Then Posts as they are scoped today: the pinned note, Kai's library posts and organizer broadcasts. Then the rest of the calendar as a strip,
-   and one row for unread channels. New members live in People. ---- */
+/* ---- Overview (Apoorv 27 Sep 18:32, 19:34; 22:37 dropped Asks and offers after community-audit/overview/asks-offers-audit.md):
+   organizers get one brief on top (cOrgBrief). Then This week: only what has a clock on it, soonest first (today's ritual, this week's event).
+   Then Talking now, the liveliest channels; People for you here, Kai's picks for your missions; later events as a strip;
+   and From the family, the pinned note, Kai's library posts and organizer broadcasts. New members live in People. ---- */
 const C_WEEK_END = 927;   /* mock week: Mon 21 to Sun 27 Sep, the week the Monday ritual is live */
 /* members who joined this week, with Say hi in place (People, under the search) */
 function cNewStrip(f){
@@ -12038,28 +12315,6 @@ function cNewStrip(f){
   const face = p => `<div class="cm-nm" data-profile="${p.id}">${av(p.initials,"lg")}<b>${p.name.split(" ")[0]}</b><span>${p.company.split(",")[0]}</span>${(STATE.cGreeted||{})[p.id]?'<em class="cm-done">Greeted</em>':`<em class="cm-btn q" data-cgreet="${p.id}">Say hi</em>`}</div>`;
   return joined.length ? `<div class="cm-sec cm-newm"><div class="cm-nmh">Joined this week</div><div class="cm-nms">${joined.map(face).join("")}</div></div>` : "";
 }
-/* ---- Asks and offers (Apoorv 27 Sep 19:58 picked typed member posts over an open feed; member-posts-research.md).
-   A member posts one Ask or one Offer, nothing else. Kai suggests who can help; replies go to Messages, never a public comment
-   thread (Burke and Kraut 2014: one-to-one messages build ties, broadcasting weakens them). Nothing is sent without a tap. ---- */
-const C_ASKS = {
-  xoogler:[
-    {id:"a1", k:"ask", pid:"omar", tag:"Intro", text:"Intro to someone on Stripe's payments risk team? Two questions on chargebacks.", when:"3h", n:1},
-    {id:"a2", k:"offer", pid:"sana", tag:"Interviews", text:"Mock PM interviews for anyone prepping for an AI lab loop this month.", when:"1d", n:5},
-    {id:"a3", k:"ask", pid:"maya", tag:"Cofounder", text:"Looking for a technical cofounder who has scaled infra. Warm intros welcome.", when:"2d", n:2},
-    {id:"a4", k:"offer", pid:"kofi", tag:"Advice", text:"Office hours for pre-seed founders on Thursdays. 20 minutes, bring the deck.", when:"4d", n:3}
-  ]
-};
-const C_ASK_TAGS = ["Intro","Hiring","Advice","Cofounder","Feedback"];
-const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Stripe"],["karan","PM at Stripe"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at a16z"],["tom","Recruiter at OpenAI"],["pooja","Hires engineers at Uber"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Figma"]], Cofounder:[["felix","CTO at Relay, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Figma"],["hana","Design Lead at Notion"],["paul","Staff PM at Google Search"]] };
-const cAsks = f => [...(STATE.cMyAsks||[]).filter(a=>a.fam===f.id), ...(C_ASKS[f.id]||[])];
-const cAskOf = id => cAsks(cF()).find(a=>a.id===id);
-function cAskRow(a){
-  const p = a.pid==="me" ? DB.user : DB.people[a.pid]; const done = (STATE.cHelped||{})[a.id];
-  const act = a.pid==="me" ? `<span class="cm-btn q" data-csheet2="cmatch|${a.id}">${cPl(3,"match")}</span>`
-    : done ? '<span class="cm-done">Replied</span>' : `<span class="cm-btn" data-csheet2="chelp|${a.id}">${a.k==="ask"?"I can help":"Take it"}</span>`;
-  return `<div class="cm-row cm-ask" data-csheet2="${a.pid==="me"?"cmatch":"chelp"}|${a.id}">${av(p.initials)}<div class="m"><div class="cm-k">${a.k==="ask"?"Ask":"Offer"} · ${a.tag}</div><div class="a">${a.text}</div><div class="b">${a.pid==="me"?"You":p.name.split(" ")[0]} · ${a.when}${a.n?` · ${a.k==="ask"?`${a.n} helping`:`${a.n} took it`}`:""}</div></div>${act}</div>`;
-}
-const cAskBtns = f => `<div class="cm-askbtns"><span data-csheet2="cask|ask">${LI("hand",18)}Ask ${f.name}</span><span data-csheet2="cask|offer">${LI("gift",18)}Offer help</span></div>`;
 function cWeek(){
   const f = cF();
   const busy = (DB.channels[f.id]||[]).filter(c=>c.joined&&c.unread&&!(STATE.chMute||{})[c.id]).sort((a,b)=>b.unread-a.unread);
@@ -12072,15 +12327,26 @@ function cWeek(){
   const week = [...live.map(rit), ...soon.map(e=>evCard(e,"row",{fam:false}))].filter(Boolean);
   const pinP = f.pinned && Object.values(DB.people).find(p=>p.name===f.pinned.who);
   const pinNote = f.pinned ? `<div class="cm-lp cm-pinnote"><div class="cm-lby">${av(pinP?pinP.initials:"?","sm")}<span class="n">${f.pinned.who.split(" ")[0]}</span><span class="w">${LI("pin",12)} Pinned</span></div><div class="cm-lrow"><div class="m"><div class="x">${f.pinned.text}</div></div></div></div>` : "";
+  /* Apoorv 22:27: members come for conversations and people, not to post (asks-offers-audit.md). So the order is what has a clock,
+     where people are talking, people Kai picked for you here, later events, then the family's own posts. Asks go through missions
+     and the weekly Asks ritual; offers are "I can help with" on the profile. */
+  if (!DB.chat && typeof seedChats==="function") seedChats();
+  const inWeek = live.map(r=>r[5]);
+  const talk = (DB.channels[f.id]||[]).filter(c=>c.joined&&!c.readonly&&!(STATE.chMute||{})[c.id]&&!inWeek.includes(c.id)).map(c=>({c, m:((DB.chat||{})[c.id]||{}).msgs||[]})).filter(x=>x.m.length)
+    .sort((a,b)=>(b.c.unread||0)-(a.c.unread||0) || b.m.length-a.m.length).slice(0,3);
+  const who = id => id==="priya" ? DB.user : DB.people[id]||DB.people.chris;
+  const talkRow = ({c,m}) => { const last = m[m.length-1], faces = [...new Set(m.slice(-4).map(x=>x.from))].slice(0,3);
+    return `<div class="cm-row cm-talk${c.unread?" u":""}" data-channel="${c.id}"><div class="cm-sq cm-che">${CH_EMO[c.id]||'#'}</div><div class="m"><div class="a">${c.name.replace(/^#/,'')}</div><div class="b cm-1l">${last.from==="priya"?"You":who(last.from).name.split(" ")[0]}: ${last.text}</div></div><div class="cm-tr"><span class="cm-faces">${faces.map(id=>av(who(id).initials,"sm")).join("")}</span>${c.unread?`<b class="cm-count sm">${c.unread}</b>`:''}</div></div>`; };
+  const picks = cPicks(f, cFamPeople(f)).slice(0,3);
   return `${famHdr()}<div class="body" style="padding-top:0">
     ${famTop()}
     ${famPills("week")}
     ${cOrgBrief()}
-    <div class="cm-sec cm-asks">${cHead("Asks and offers","All",'data-cposttype="asks"')}${cAskBtns(f)}${cAsks(f).slice(0,3).map(cAskRow).join("")}</div>
     ${week.length?`<div class="cm-sec cm-wk">${cHead("This week")}${week.join("")}</div>`:''}
-    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("Posts","All",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
+    ${talk.length?`<div class="cm-sec cm-talks">${cHead("Talking now","Channels",'data-ctab="chat"')}${talk.map(talkRow).join("")}</div>`:''}
+    ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>People for you here`,"People",'data-ctab="people"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
     ${later.length?`<div class="cm-sec">${cHead("Coming up","Events",'data-ctab="fevents"')}<div class="cm-evstrip">${later.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
-    ${busy.length?`<div class="cm-row cm-chrow" data-ctab="chat"><div class="cm-chs">${busy.slice(0,3).map(c=>`<span>${CH_EMO[c.id]||'#'}</span>`).join("")}</div><div class="m"><div class="a">${busy.reduce((t,c)=>t+c.unread,0)} new in ${busy.slice(0,2).map(c=>c.name.replace(/^#/,'')).join(", ")}${busy.length>2?` and ${busy.length-2} more`:''}</div></div><span class="s">›</span></div>`:''}
+    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("From the family","Posts",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
   </div>
   ${navHTML("families")}`;
 }
@@ -12354,7 +12620,7 @@ sPosts = function(){
   const queue = hist==="waiting" ? pend : hist==="approved" ? judged.filter(p=>p.st==="live") : hist==="rejected" ? judged.filter(p=>p.st==="rejected") : [...pend, ...judged];
   const list = (t==="All" ? live : t==="saved" ? saved : t==="drafts" ? drafts : t==="requests" ? queue : live.filter(p=>p.cat===t)).filter(p=>!qq||(p.title+p.text+p.who+p.tags.join(" ")).toLowerCase().includes(qq)).filter(p=>!(STATE.cHidden||{})[p.id]);
   const mode = t==="requests" ? (cOrg()&&(STATE.cApprove||"waiting")==="waiting"?"requests":"") : t==="drafts" ? "drafts" : "";
-  const chips = [["All","All"],["asks","Asks and offers"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
+  const chips = [["All","All"],...cCats(f).map(c=>[c,c]),"|",["saved","Saved",saved.length||undefined],["drafts","Drafts",drafts.length||undefined],...(cOrg()?[["requests","To approve",pend.length||undefined]]:[])];
   const liveRow = STATE.liveBroadcast && (t==="All"||t==="Announcements") ? `<div class="cm-lp cm-live"><div class="cm-k"><span class="cm-livedot"></span>Live now · Announcements</div><div class="cm-lrow"><div class="m"><div class="t">Office hours with ${f.id==="desi"?"Neha":"Daniel"}</div><div class="x">41 members listening. Kai keeps the follow-ups for you.</div></div></div><div class="row" style="gap:8px;margin-top:10px"><span class="cm-btn" onclick="toast('Joins the room (out of scope here)')">Join</span><span class="cm-btn q" onclick="toast('Kai sends you the recap and any follow-ups.')">Recap later</span></div></div>` : "";
   const empty = { saved:"Nothing saved yet. Tap Save on a post to keep it here.", drafts:"No drafts.", requests:"Nothing waiting for approval." }[t] || `No posts in ${t==="All"?f.name:t} yet.`;
   return `${famHdr()}<div class="body" style="padding-top:0">
@@ -12362,8 +12628,8 @@ sPosts = function(){
     <div class="cm-bar">${famPills("posts")}<div class="cm-search"><input class="search" id="cpq" placeholder="Search posts in ${f.name}" value="${STATE.cPostQ||""}"></div>${cChips(chips, t, "cptype")}</div>
     ${t==="requests"&&cOrg()?`<div class="cm-cnt"><span class="cm-sort" data-csheet="cappr">${({waiting:"Waiting",approved:"Approved",rejected:"Rejected",all:"All decisions"})[hist]}${C_CHEV_SVG}</span><span>${cPl(list.length,"post")}</span></div>`:''}
     ${t==="All"||cCats(f).includes(t)?`<div class="cm-row cm-inv" data-csheet="cnewpost">${av(DB.user.initials)}<div class="m"><div class="a">Write a post</div></div>${cOrg()?`<span class="cm-btn q" data-clive="1">${STATE.liveBroadcast?"End live":"Go live"}</span>`:''}</div>`:''}
-    ${t==="asks" ? `${cAskBtns(f)}${cAsks(f).filter(a=>!qq||(a.text+a.tag).toLowerCase().includes(qq)).map(cAskRow).join("")}` : `${liveRow}
-    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}`}
+    ${liveRow}
+    ${list.map(p=>cPostRow(p, mode)).join("") || `<div class="empty">${empty}</div>`}
   </div>
   ${navHTML("families")}`;
 };
@@ -12810,24 +13076,6 @@ function cSheet(type, id){
         <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a" style="color:var(--danger)">Leave ${f.name}</div></div></div>
       </div>`;
   }
-  if (type==="cask") { const ask = id!=="offer", tag = STATE.cAskTag || null;
-    return `<h2>${ask?`Ask ${f.name}`:"Offer help"}</h2>
-      <div class="field"><div class="k">${ask?"What do you need?":"What can you offer?"}</div><textarea id="caskt" class="v" rows="3" placeholder="${ask?"One line. Who or what would help?":"One line. What, and for whom?"}">${STATE.cAskDraft||""}</textarea></div>
-      <div class="cm-lbl">About</div>${cChips(C_ASK_TAGS.map(x=>[x,x]), tag, "casktag")}
-      <p class="xs faint">Kai suggests who can ${ask?"help":"use it"}. Replies come to your messages, not a comment thread.</p>
-      <button class="btn" ${tag?'':'disabled'} data-caskpost="${ask?"ask":"offer"}">${ask?"Post ask":"Post offer"}</button>`; }
-  if (type==="cmatch") { const a = cAskOf(id); if (!a) return "";
-    const sent = STATE.cAskSent||{};
-    return `<h2>Kai found 3 people who ${a.k==="ask"?"can help":"could use this"}</h2><p class="xs faint" style="margin-top:-4px">From your ${a.k}: ${a.text}</p>
-      <div class="cm-list">${(C_ASK_MATCH[a.tag]||C_ASK_MATCH.Advice).map(([pid,why])=>{ const p=DB.people[pid]; return `<div class="cm-row" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${why}</div></div>${sent[a.id+pid]?'<span class="cm-done">Drafted</span>':`<span class="cm-btn q" data-caskdm="${a.id}|${pid}">Ask</span>`}</div>`; }).join("")}</div>
-      <p class="xs faint">Kai drafts each message in Messages. Nothing goes out until you send it.</p>`; }
-  if (type==="chelp") { const a = cAskOf(id); if (!a) return ""; const p = DB.people[a.pid]; const first = p.name.split(" ")[0];
-    const draft = a.k==="ask" ? `Hi ${first}, saw your ask in ${f.name}. I can help with this. Want to find 20 minutes this week?` : `Hi ${first}, I'd love to take you up on this. Could we find a slot in the next two weeks?`;
-    return `<div class="cm-selhdr" style="margin-bottom:6px">${av(p.initials)}<div style="flex:1"><div class="t">${p.name}</div><div class="xs faint">${a.k==="ask"?"Ask":"Offer"} · ${a.tag} · ${a.when}</div></div></div>
-      <div class="cm-text" style="margin-bottom:12px">${a.text}</div>
-      <div class="cm-lbl">Draft reply</div><div class="field"><div class="v">${draft}</div></div>
-      <p class="xs faint">Goes to ${first} in Messages. Only the two of you see it.</p>
-      <div class="row" style="gap:8px"><button class="btn sec" style="flex:1;margin:0" onclick="toast('Edit the draft')">Edit</button><button class="btn" style="flex:1;margin:0" data-chelpsend="${a.id}">Send to ${first}</button></div>`; }
   if (type==="cinvite") {
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
@@ -13018,7 +13266,8 @@ portSheet = function(type, id){ const h = cSheet(type, id); return h!==null ? `<
 
 /* ---- swipe between family tabs (Apoorv 27 Sep 21:32: the tabs sit out of thumb reach). Instagram and X profiles, Telegram folders and
    Material's swipeable tabs do this. A sideways drag on the content moves one tab; whatever already moves sideways keeps its gesture:
-   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), fields, row swipes and an open sheet.
+   the 24px back edge, rails and chip rows that scroll (Android's NestedScrollableHost rule), a field being typed in (an idle search
+   field still swipes, as over a UITextField in a paging scroll view), row swipes and an open sheet.
    The drag only takes over once it is clearly sideways, so vertical scroll stays native; long presses give way once a finger travels. ---- */
 function cSwipe(){
   const i = C_TAB_SCR.indexOf(STATE.screen), body = phone.querySelector(".view .body");
@@ -13030,7 +13279,7 @@ function cSwipe(){
   const drag = (dx, on) => { const p = body.querySelector(":scope > .cm-pane"); if (!p || calm) return; p.style.transition = on ? "none" : "transform .2s cubic-bezier(.2,.8,.2,1), opacity .2s"; p.style.transform = dx ? `translateX(${dx}px)` : ""; p.style.opacity = dx ? String(1 - Math.abs(dx)/160) : ""; };
   body.addEventListener("pointerdown", e=>{
     s = null;
-    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("input,textarea,select,[contenteditable],.swr,.cm-tabs") || rail(e.target)) return;
+    if (e.button>0 || STATE.sheet || e.clientX - phone.getBoundingClientRect().left < 24 || e.target.closest("textarea,select,[contenteditable],.swr,.cm-tabs") || e.target===document.activeElement && e.target.matches("input") || rail(e.target)) return;
     s = { x:e.clientX, y:e.clientY, t:e.timeStamp, id:e.pointerId, lock:false };
   });
   body.addEventListener("pointermove", e=>{
@@ -13121,13 +13370,6 @@ portWire = function(){
   q("[data-cvote]", el=>{ const [id,d]=el.dataset.cvote.split("|"); STATE.cVote=Object.assign(STATE.cVote||{}); STATE.cVote[id] = STATE.cVote[id]===+d ? 0 : +d; render(); });
   q("[data-csave]", el=>{ const id=el.dataset.csave; STATE.cSave=Object.assign(STATE.cSave||{}); STATE.cSave[id]=!STATE.cSave[id]; STATE.sheet=null; render(); toast(STATE.cSave[id]?"Saved. Find it under Saved.":"Removed from Saved."); });
   q("[data-cnewcat]", el=>{ STATE.cNewCat=el.dataset.cnewcat; render(); });
-  q("[data-cposttype]", el=>{ STATE.postType=el.dataset.cposttype; go("posts"); });
-  q("[data-casktag]", el=>{ const t=phone.querySelector("#caskt"); STATE.cAskDraft = t ? t.value : STATE.cAskDraft; STATE.cAskTag=el.dataset.casktag; render(); });
-  q("[data-caskpost]", el=>{ const t=phone.querySelector("#caskt"); const text=(t&&t.value.trim()) || STATE.cAskDraft || (el.dataset.caskpost==="ask"?"Intro to someone who has run a PM hiring loop at an AI lab?":"Happy to review PM resumes this week.");
-    const a = { id:"m"+Date.now(), fam:cF().id, k:el.dataset.caskpost, pid:"me", tag:STATE.cAskTag, text, when:"Now", n:0 };
-    STATE.cMyAsks = [a, ...(STATE.cMyAsks||[])]; STATE.cAskTag = null; STATE.cAskDraft = ""; STATE.sheet = null; openSheet("cmatch", a.id); });
-  q("[data-caskdm]", el=>{ const [aid,pid]=el.dataset.caskdm.split("|"); STATE.cAskSent=Object.assign(STATE.cAskSent||{}, {[aid+pid]:true}); render(); toast(`Kai drafted a message to ${DB.people[pid].name.split(" ")[0]} in Messages. Send it when it reads right.`); });
-  q("[data-chelpsend]", el=>{ const a=cAskOf(el.dataset.chelpsend); STATE.cHelped=Object.assign(STATE.cHelped||{}, {[a.id]:true}); closeSheet(); toast(`Sent to ${DB.people[a.pid].name.split(" ")[0]} in Messages.`); });
   q("[data-cpostsave]", el=>{ const st=el.dataset.cpostsave; const f=cF(); DB.posts.unshift({ id:"pn"+DB.posts.length, fam:f.id, cat:STATE.cNewCat||cCats(f)[1], who:DB.user.name, ini:DB.user.initials, sub:"", when:"Now", title:"Your new post", text:"What you wrote.", read:"1 min read", tags:[], up:0, cm:0, st, mine:true }); STATE.cNewCat=null; STATE.sheet=null; STATE.postType = st==="live" ? "All" : "drafts"; render(); toast(st==="live"?"Posted.":st==="pending"?"Sent to the organizers. It's under Drafts until it's approved.":"Saved to Drafts."); });
   q("[data-cpdel]", el=>{ DB.posts = DB.posts.filter(p=>p.id!==el.dataset.cpdel); STATE.sheet=null; if (STATE.screen==="manage:cpost") go("posts"); else render(); toast("Deleted."); });
   q("[data-cppin]", el=>{ const p=DB.posts.find(x=>x.id===el.dataset.cppin); p.pinned=!p.pinned; STATE.sheet=null; render(); });
@@ -13468,7 +13710,7 @@ function p2Body(pid){
   return `<div class="p2">
     ${p2BetweenLine(pid)}
     ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
-    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">Ask ${f} about</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
+    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">${f} can help with</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
     ${d.work.length?`<div class="p2sec"><div class="p2sh">Work</div><div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${d.school.length?`<div class="p2sec"><div class="p2sh">School</div><div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${evs.length?`<div class="p2sec"><div class="p2sh">You're both going</div>${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
@@ -13496,6 +13738,7 @@ profileSheet = function(pid){ let h=_p2ProfileSheet(pid); if (pid==="priya") ret
   return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
 const _p2SProfile = sProfile;
 sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid);
+  if (!p2Blocked(pid)) h = h.replace(`<div class="p2fw">`, `<div class="p2fw ph0" aria-hidden="true">`).replace(`<div class="p2">`, `<div class="p2">${p2FollowBtn(pid).replace('class="p2fw"','class="p2fw pg"')}`);
   h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="toast('Share, report, block (out of scope)')">···</div>`,
     `<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('p2more','${pid}')">···</div>`);
   if (!p2Blocked(pid)) h = h.replace(/<div class="pact">[\s\S]*?<\/div>/, `<div class="pact p2pact">${p2Dock(pid)}</div>`);
@@ -13517,7 +13760,7 @@ function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2O
     };
   return A; }
 function p2KaiScope(pid){ const p=DB.people[pid]; return { kind:"profile", id:pid, label:p.name, sugg:Object.values(p2KaiQs(pid)).map(a=>a[0]) }; }
-function p2AskKai(pid){ STATE.kaiMsgs=[]; STATE.kaiScope=p2KaiScope(pid); openSheet("kai"); }
+function p2AskKai(pid){ STATE.kaiMsgs=[]; openSheet("kai"); STATE.kaiScope=p2KaiScope(pid); render(); }   // openSheet("kai") clears kaiScope, so scope after it
 const _p2KaiScopeFor = kaiScopeFor;
 kaiScopeFor = function(){ const sc=_p2KaiScopeFor(); return sc&&sc.kind==="profile"&&sc.id!=="priya"&&DB.people[sc.id] ? p2KaiScope(sc.id) : sc; };
 // talk.js wraps kaiAsk after this module loads, so this wrapper installs once every module has run and sits outermost
@@ -13572,6 +13815,96 @@ portSheet = function(type, id){
 };
 function p2MuteT(pid){ const f=firstName(DB.people[pid]); STATE.p2mute[pid]=!STATE.p2mute[pid]; const had=STATE.p2keep[pid]; if (STATE.p2mute[pid]) STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(STATE.p2mute[pid]?(had?`Muted. You also unfollowed ${f}`:`Muted ${f}`):`Unmuted ${f}`),200); }
 function p2Block(pid){ if (!DB.chat && typeof seedChats==="function") seedChats(); DB.chat=DB.chat||{}; const c=DB.chat["d-"+pid]; if (c) c.blockedByMe=true; else DB.chat["d-"+pid]={ id:"d-"+pid, kind:"dm", with:pid, msgs:[], blockedByMe:true }; STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(`Blocked ${firstName(DB.people[pid])}. They can't message you and aren't told`),200); }
+
+/* ---- reach: a person's photo and name on pick cards, mission rows and the path header open their profile (22:29 trace:
+   most taps landed on the card and opened the path, so the profile was only reachable from the name text on Home) ---- */
+const _p2Wire = wire;
+wire = function(){
+  const ph = document.querySelector(".phone");
+  if (ph) {
+    const pidOf = id => { const o = DB.opps.find(x=>x.id===id); return o && o.personId && o.personId!=="priya" && DB.people[o.personId] ? o.personId : null; };
+    ph.querySelectorAll("[data-opp]").forEach(card => { const pid = pidOf(card.dataset.opp); if (!pid) return;
+      const p = DB.people[pid];   // only the person's own face and name, never a company logo or role title on the same card
+      card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
+    const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
+      if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
+  }
+  return _p2Wire.apply(this, arguments);
+};
+
+/* ==== YOUR OWN PROFILE (same layout as everyone else's, plus the edit flows from the prototype, rounds 4 to 7) ====
+   Pencils per section, "Tell Kai what's new" (Kai proposes a checklist; yes lands under Recently with its source),
+   a "Kai noticed" card, Looking for rows each with a show switch, links under Elsewhere with switches,
+   "Only you see" rows into Context, Rules, Connectors and Sources, and View as (member, match, outside) from the eye. */
+function p2Own(){
+  if (!STATE.p2own) { const C=DB.contextV2;
+    STATE.p2own = { bld:(C.who[1]||C.who[0]||[""])[0], needs:C.after.slice(0,2).map((a,i)=>({ t:a[0], m:(DB.missions[i]||{}).name||a[0], on:1 })), recent:[], sug:0,
+      links:{ linkedin:1, github:1, site:0 } }; }
+  return STATE.p2own; }
+const P2_SUG = [
+  { lbl:"Right now", ch:"Leading the Gemini agents launch", src:"From your Kai call, 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
+  { lbl:"Can help with", ch:"Add AI features at scale", src:"From your journal, twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
+];
+function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
+  const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f="Priya";
+  const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
+  if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
+  const sug = edit ? P2_SUG[o.sug] : null;
+  const needs = o.needs.filter(n=>edit||n.on);
+  const links = profileLinks("priya").filter(([k])=>edit||o.links[k]);
+  const help = C.offer.map(x=>x[0]);
+  return `<div class="p2">
+    ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
+    ${sug?`<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b>Kai noticed</b><small>${sug.src}</small></div><div class="p2kc"><span>${sug.lbl}</span><b>${sug.ch}</b></div><div class="p2acts2"><button class="on" onclick="p2Sug('yes')">Update</button><button onclick="p2Sug('edit')">Edit</button><button onclick="p2Sug('no')">Not now</button></div></div>`:''}
+    <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
+      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
+    <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
+    <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail"><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Cloud</b><small>Senior PM · 2020 – now</small></div><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Ads</b><small>PM · 2018 – 2020</small></div></div></div>
+    ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
+    ${edit?`<div class="p2sec"><div class="p2sh">Only you see</div>${[["context","brain","What Kai knows about you",`${C.who.length+C.after.length+C.offer.length+C.work.length} things · ${C.inferred.length} waiting for your yes`],["rules","shield","Rules",`Intros ${String(DB.rules.intros).toLowerCase()} · ${DB.rules.capacity} requests a week`],["people","users","Connectors","Who can vouch for you"],["sources","link","Sources","Contacts, calendar, channels"]].map(([id,i,a,b])=>`<button class="p2lk" onclick="event.stopPropagation();go('you:${id}')">${p2Logo(LI(LUCIDE[i]?i:"lock",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">${a}</b><small>${b}</small></span>${LI("chevron-right",16)}</button>`).join("")}</div>`:''}
+    ${links.length||edit?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
+  </div>`;
+}
+function p2Sug(a){ const o=p2Own(), g=P2_SUG[o.sug]; if (!g) return;
+  if (a==="edit") { openSheet(g.lbl==="Right now"?"p2editnow":"p2editask",""); return; }
+  if (a==="yes") { g.apply(o); o.recent.unshift([`${g.lbl}: ${g.ch.replace(/^Add /,"")}`, g.src.replace(/^From/,"from")]); toast("Updated. It's under Recently"); } else toast("Kai won't ask about this again");
+  o.sug++; render(); }
+function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
+function p2LinkVis(k){ const o=p2Own(); o.links[k]=!o.links[k]; render(); toast(o.links[k]?"Shown on your profile":"Hidden"); }
+function p2OwnApply(){ const o=p2Own(), c=[...document.querySelectorAll('.sheet [data-p2prop]')].map(x=>x.getAttribute("aria-checked")==="true");
+  if (c[0]) { o.bld="Leading the Gemini agents launch"; o.recent.unshift(["Right now: Leading the Gemini agents launch","from what you told Kai · just now"]); }
+  if (c[1]) { o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); o.recent.unshift(["Looking for: Two PMs for Gemini agents","from what you told Kai · just now"]); }
+  if (c[2]) { if(!DB.contextV2.offer.some(x=>x[0]==="Agents launches")) DB.contextV2.offer.push(["Agents launches","you told Kai","Sep 27","help nudges",true]); o.recent.unshift(["I can help with: Agents launches","from what you told Kai · just now"]); }
+  closeSheet(); setTimeout(()=>toast("Profile updated"),200); }
+
+const _p2ProfileBody2 = profileBody;
+profileBody = function(pid, opts){
+  if (pid==="priya" && STATE.member) return p2OwnBody(opts&&opts.edit ? "edit" : (STATE.p2viewAs||"member"));
+  return _p2ProfileBody2(pid, opts); };
+const _p2SOwn = sOwnProfile;
+sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
+  h = h.replace(/<div class="plinks">[\s\S]*?<\/div>/, "");
+  h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`,
+    `<div class="pbtn" aria-label="See your profile as someone else" onclick="openSheet('p2viewas','')">${LI("eye",18)}</div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
+  const va = STATE.ownPreview ? ({member:"a member of your families",match:"someone Kai matched with you",outside:"someone outside your families"})[STATE.p2viewAs||"member"] : "";
+  h = h.replace(/<span class="xs muted" style="flex:1">This is what a member sees.<\/span>/, `<span class="xs muted" style="flex:1">What ${va} sees.</span>`);
+  if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
+  return h; };
+
+const _p2PortSheet2 = portSheet;
+portSheet = function(type, id){
+  const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
+  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();render()"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
+  if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
+  if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
+  if (type==="p2editask") { const C=DB.contextV2; return `<h2>I can help with</h2><div class="p2chips">${C.offer.map(([c])=>`<button class="p2chip" onclick="DB.contextV2.offer=DB.contextV2.offer.filter(x=>x[0]!=='${c.replace(/'/g,"")}');openSheet('p2editask','')">${c}${LI("x",14)}</button>`).join("")}</div><div class="p2sh" style="margin-top:16px">Kai suggests, from what you've told it</div><div class="p2chips">${["AI features at scale","Michigan MS to Google"].filter(c=>!C.offer.some(x=>x[0]===c)).map(c=>`<button class="p2chip sugg" onclick="DB.contextV2.offer.push(['${c}','Kai suggested','Sep 27','help nudges',true]);openSheet('p2editask','')">${LI("plus",14)}${c}</button>`).join("")}</div><button class="btn" style="margin-top:16px" onclick="closeSheet();render()">Done</button>`; }
+  if (type==="p2editwork") return `<h2>Work</h2>${[["Google Cloud","Senior PM · 2020 – now"],["Google Ads","PM · 2018 – 2020"]].map(([a,b])=>`<div class="xrow" onclick="toast('Edit role')">${p2Logo("G","#1A73E8")}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("pencil",16)}</div>`).join("")}<div class="xrow" onclick="toast('Add a role')"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Add a role</div></div></div><button class="btn sec" style="margin-top:12px" onclick="openSheet('p2feed','')">Or tell Kai and it fills it in</button>`;
+  if (type==="p2missions") { const M=(DB.missions.length?DB.missions.map(m=>m.name):["Senior PM role","Technical cofounder"]).concat(["Meet PMs in Seattle"]); const ow=p2Own();
+    return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
+  if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  return _p2PortSheet2(type, id);
+};
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -14614,6 +14947,474 @@ portWire = function() {
   if (STATE.callActive && !vizRAF) vizRAF = requestAnimationFrame(vizLoop);
 };
 
+/* ==== ONBOARDING REV 4 (27 Sep, Stress test onboarding thread; Apoorv 21:43, 22:10 and 22:34). Rev 3 helpers, then rev 4 screens. Brand link icons: Simple Icons (CC0). */
+/* ---- Onboarding rev 3 (Stress test onboarding thread, Apoorv's yes 27 Sep 17:51) ----
+   Five steps, visual first: Sign in, You, Location, Connect, Notify, then the Welcome card.
+   Screen ids stay the base ones: "welcome" is You, "confirm" is Location (the LinkedIn "Is this you?" screen is gone),
+   "notify" shows the Welcome card once notifications are answered. Load after tools/motion.js so the reel stays on sign-in. */
+const OB3_STEPS = ["Sign in","You","Location","Connect","Notify"];
+const OB3_PINICON = '<path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>';
+const OB3_CITIES = ["San Francisco Bay Area","New York","Seattle","London","Remote"];
+function ob3Pin(s) { return `<svg viewBox="0 0 24 24" width="${s||16}" height="${s||16}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${OB3_PINICON}</svg>`; }
+function ob3Hdr(step, back) {
+  return `<div class="ob3hdr">${back?`<div class="back" onclick="STATE.backNav=true;go('${back}')">‹</div>`:''}<div class="n">${step} of ${OB3_STEPS.length}</div></div>
+    <div class="ob3bar">${OB3_STEPS.map((l,i)=>`<i class="${i<step?'d':''}" title="${l}"></i>`).join("")}</div>`;
+}
+function ob3City() { return STATE.ob3City || OB3_CITIES[0]; }
+function ob3Role() { return (STATE.ob3Cleared||STATE.signinWith==="email") ? (STATE.ob3Role||"") : (STATE.ob3Role!==undefined ? STATE.ob3Role : DB.user.title); }
+function ob3Co() { return (STATE.ob3Cleared||STATE.signinWith==="email") ? (STATE.ob3Co||"") : (STATE.ob3Co!==undefined ? STATE.ob3Co : DB.user.company); }
+function ob3Line() { const r=ob3Role(), c=ob3Co(); return [r&&c?`${r} · ${c}`:(r||c), STATE.ob3Placed?ob3City():""].filter(Boolean).join(" · "); }
+function ob3HasName() { const p=STATE.signinWith||"google"; return p!=="email" && !(p==="apple"&&STATE.appleHidName); }
+
+const _ob3Signin = sSignin;
+sSignin = function() {
+  STATE.ob3Wel = false;
+  const vis = (typeof MO_REEL!=="undefined" && MO_REEL && typeof moPromoHTML==="function") ? moPromoHTML() : `<div class="mvis full"><div class="mvl">Marketing visual</div></div>`;
+  const chip = DB.user.invitedBy ? `<div class="invchip" style="margin-top:12px"><div class="avatar sm" style="border-radius:8px">X</div><span>You're invited to join <b>${DB.user.family}</b>${DB.family&&DB.family.members?` · ${DB.family.members} members`:''}</span></div>`
+    : STATE.entry==="event" ? `<div class="invchip" style="margin-top:12px"><div class="avatar sm" style="border-radius:8px">X</div><span>You're registered for <b>Xoogler dinner, Thursday</b></span></div>` : "";
+  return `<div class="body" style="padding:0"><div class="ob3sign">
+    <div class="ob3vis">${vis}</div>
+    <div class="ob3pitch"><h1>Meet the right people, through people who vouch for you</h1><div class="ob3num">11,000 MEMBERS · 227 COMMUNITIES</div>${chip}</div>
+    <div style="flex:1"></div>
+    <div class="ob3btns">
+      <button class="btn" onclick="STATE.authIntent='signup';providerAuth('apple')">Continue with Apple</button>
+      <button class="btn sec" onclick="STATE.authIntent='signup';providerAuth('google')"><b>G</b> Continue with Google</button>
+      <button class="btn sec" onclick="STATE.authIntent='signup';STATE.ob3Email=true;go('auth')">${LI("mail",16)} Continue with email</button>
+      <button class="btn ghost" onclick="STATE.authIntent='login';STATE.ob3Email=false;go('auth')">I already have an account</button>
+    </div>
+    <div class="ob3legal">Terms · Privacy · 18 and over. Nothing is sent to anyone without your yes.</div>
+  </div></div>`;
+};
+
+const _ob3Auth = sAuth;
+sAuth = function() {
+  if (!(STATE.ob3Email && STATE.authIntent==="signup")) return _ob3Auth.apply(this, arguments);
+  return `${ob3Hdr(1,'signin')}
+  <div class="body">
+    <div class="ob3t">Your email</div>
+    <div class="ob3sub">We send a six-digit code. No password.</div>
+    <div class="ob3fld"><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com" value="${STATE.authEmail||""}"></div>
+    ${STATE.authNote?`<div class="card" style="margin-top:14px;border-color:var(--ink)"><div class="name" style="font-size:16px">${STATE.authNote.t}</div><div class="xs muted" style="margin-top:2px">${STATE.authNote.b}</div></div>`:''}
+  </div>
+  <div class="foot"><button class="btn" onclick="STATE.authEmail=document.getElementById('authEmail').value||'priya.new@gmail.com';STATE.signinWith='email';go('code')">Send code</button></div>`;
+};
+
+sWelcome = function() {
+  const named = ob3HasName() || STATE.ob3Name;
+  const cleared = STATE.ob3Cleared, editing = cleared || STATE.ob3Edit;
+  const nameTxt = named ? (STATE.ob3Name || DB.user.name) : "";
+  const line = ob3Line();
+  const fields = `${!named?`<div class="ob3fld"><label>Your name</label><input id="ob3name" placeholder="First and last name" oninput="STATE.ob3NameDraft=this.value"></div>`:''}
+    <div class="ob3fld"><label>Role</label><input id="ob3role" placeholder="What you do" value="${ob3Role()}" oninput="STATE.ob3Role=this.value"></div>
+    <div class="ob3fld"><label>Company or school</label><input id="ob3co" placeholder="Where you do it" value="${ob3Co()}" oninput="STATE.ob3Co=this.value"></div>
+    <div class="ob3chips">${["Founder","Between roles","Student","Freelance"].map(c=>`<span class="chip ${ob3Role()===c?'on':''}" onclick="STATE.ob3Role='${c}';render()">${c}</span>`).join("")}</div>`;
+  const matched = !cleared && STATE.signinWith!=="email";
+  return `<div class="body" style="padding:0">
+    <div class="ob3hero">
+      <div class="top">${ob3Hdr(2,'signin')}</div>
+      <div class="ini">${named?DB.user.initials:"?"}</div>
+      <div class="cam" onclick="toast('Choose a photo, or keep the one from ${STATE.signinWith==="apple"?"Apple":"Google"}.')">${LI("camera",18)}</div>
+      <div class="grad"></div>
+      <div class="nm"><div class="n">${nameTxt || "Your card"}</div>${line?`<div class="t ob3edit" onclick="STATE.ob3Edit=true;render()">${line}</div>`:''}</div>
+    </div>
+    <div style="padding:6px 16px 20px">
+      ${matched ? `<div class="ob3logos"><b>G</b><b>S</b><b>M</b><span>Google · Stripe · Michigan</span></div>
+        <div class="ob3src"><span class="ob3li">in · From LinkedIn</span><span class="ob3not" onclick="STATE.ob3Cleared=true;STATE.ob3Edit=false;STATE.ob3Role='';STATE.ob3Co='';render()">Not you?</span></div>` : ''}
+      ${editing || !matched ? fields : ''}
+    </div>
+  </div>
+  <div class="foot"><button class="btn" onclick="ob3You()">${matched&&!editing?"Looks right":"Continue"}</button></div>`;
+};
+function ob3You() {
+  const n = document.getElementById("ob3name"); if (n && !n.value.trim()) { toast("Add your name so members know who you are."); return; }
+  if (n) STATE.ob3Name = n.value.trim();
+  if (!ob3Role() && !ob3Co()) { toast("Add what you do, or pick one."); return; }
+  STATE.ob3Edit = false; go("confirm");
+}
+
+sConfirm = function() {
+  const pick = STATE.ob3PickCity;
+  return `<div class="body" style="padding:0">
+    <div class="ob3map"><div class="top">${ob3Hdr(3,'welcome')}</div>
+      <svg viewBox="0 0 360 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M-10 220 C80 180 130 250 210 200 S330 170 380 140" stroke="#C7D3DE" stroke-width="14" fill="none"/><path d="M60 -10 L110 340 M250 -10 L210 340 M-10 90 L380 120" stroke="#fff" stroke-width="6"/><circle cx="180" cy="170" r="58" fill="#141414" fill-opacity=".08" stroke="#141414" stroke-opacity=".25"/><circle cx="180" cy="170" r="8" fill="#141414"/></svg>
+      <div class="city" onclick="STATE.ob3PickCity=!STATE.ob3PickCity;render()">${ob3Pin(14)} ${ob3City()}</div>
+    </div>
+    <div style="padding:0 16px 20px">
+      <div class="ob3t">Events and people near you</div>
+      <div class="ob3sub">Approximate only. Members see your city, never where you are.</div>
+      ${pick?`<div class="ob3chips">${OB3_CITIES.map(c=>`<span class="chip ${c===ob3City()?'on':''}" onclick="STATE.ob3City='${c}';STATE.ob3PickCity=false;render()">${c}</span>`).join("")}</div>`:''}
+    </div>
+  </div>
+  <div class="foot"><button class="btn" onclick="osPrompt('Allow \\u201cKey\\u201d to use your location?','Key uses your approximate location for events and people near you.',()=>{ STATE.locOn=true; STATE.ob3Placed=true; go('connect'); })">${ob3Pin(16)} Use my location</button><button class="btn ghost" onclick="STATE.ob3Placed=true;go('connect')">Continue with ${ob3City()}</button></div>`;
+};
+
+sConnect = function() {
+  const tile = (k, icon, t, s) => `<div class="ob3tile ${STATE.connect[k]?'on':''}" onclick="ob3Conn('${k}')">${LI(icon,22)}<div><b>${t}</b><div class="s">${s}</div></div><div class="sw"></div></div>`;
+  return `${ob3Hdr(4,'confirm')}
+  <div class="body">
+    <div class="ob3t">Start from people you know</div>
+    <div class="ob3tiles">${tile("contacts","users","Contacts","Warmer paths")}${tile("calendar","calendar","Calendar","Easy intros")}</div>
+    <div class="ob3priv">${LI("lock",14)} Private to Kai. Nobody is messaged. <span style="text-decoration:underline;cursor:pointer" onclick="STATE.ob3Why=!STATE.ob3Why;render()">How</span></div>
+    ${STATE.ob3Why?`<div class="xs muted" style="margin-top:8px;display:grid;gap:4px"><div><b>Contacts:</b> Kai looks for paths through people you know. We don't keep anyone who isn't on Key, and never show your contacts to anyone.</div><div><b>Calendar:</b> Key events go in, intros land when you're free, a brief before you meet a member. Who and when, never what.</div></div>`:''}
+  </div>
+  <div class="foot"><button class="btn" onclick="finishOnboarding()">Continue</button>${STATE.connect.contacts||STATE.connect.calendar?'':`<button class="btn ghost" onclick="finishOnboarding()">Skip for now</button>`}</div>`;
+};
+function ob3Conn(k) {
+  if (STATE.connect[k]) { STATE.connect[k] = false; render(); return; }
+  osPrompt(k==="contacts"?'“Key” Would Like to Access Your Contacts':'“Key” Would Like to Access Your Calendar', k==="contacts"?'Kai looks for paths through people you know. Nothing is shown to other members.':'Kai sees who you meet and when. Nothing is shown to other members.', ()=>{ STATE.connect[k] = true; });
+}
+
+sNotify = function() {
+  if (STATE.ob3Wel) return ob3Welcome();
+  const n = (ini, gold, h, when, b) => `<div class="ob3n"><div class="h"><div class="avatar ${gold?'':''}">${ini}</div>${h}<em>${when}</em></div><div class="b">${b}</div></div>`;
+  return `${ob3Hdr(5,'connect')}
+  <div class="body">
+    <div class="ob3lock">${n("X",1,"Xoogler","now","You're in. Welcome, Priya.")}${n("MC",0,"Maya said yes","2m","Happy to meet Thursday.")}${n("K",0,"Kai","1h","Did you and Ana talk? One tap.")}</div>
+    <div class="ob3t">Know the moment it moves</div>
+    <div class="ob3sub">Only these three kinds. No marketing.</div>
+  </div>
+  <div class="foot"><button class="btn" onclick="STATE.notifAsked=true;osPrompt('\\u201cKey\\u201d Would Like to Send You Notifications','Notifications may include alerts, sounds, and icon badges.',()=>{ STATE.notifOn=true; STATE.ob3Wel=true; })">${LI("bell",16)} Turn on notifications</button><button class="btn ghost" onclick="STATE.notifAsked=true;STATE.ob3Wel=true;render()">Not now</button></div>`;
+};
+function ob3Welcome() {
+  const invited = !!DB.user.invitedBy, ev = STATE.entry==="event";
+  const next = invited ? [`Apply to ${DB.user.family}`, "STATE.appPage=0;go('family-step')"] : ev ? ["See who's going", "go('events')"] : ["Find your communities", "go('doorway')"];
+  const line = [ob3Role()&&ob3Co()?`${ob3Role()} · ${ob3Co()}`:(ob3Role()||ob3Co()), ob3City()].filter(Boolean).join(" · ");
+  return `<div class="body" style="padding:0"><div class="ob3wel">
+    <div class="k">WELCOME TO KEY</div>
+    <h1>You're set up, ${(STATE.ob3Name||DB.user.name).split(" ")[0]}</h1>
+    <div class="ob3card"><div class="ph"><div class="ini">${DB.user.initials}</div><div class="grad"></div><div class="nm"><div class="n">${STATE.ob3Name||DB.user.name}</div><div class="t">${line}</div></div></div>
+      <div class="meta"><span>MEMBER · SEP 2026</span><span>No. 11,027</span></div></div>
+    <div class="ob3acts"><button class="btn gold" onclick="${next[1]}">${next[0]}</button><button class="btn ghost" onclick="toast('Your Key card is in Wallet.')">Add to Wallet</button><button class="btn ghost" style="color:#C9CCD3" onclick="go('home')">Go to Key</button></div>
+  </div></div>`;
+}
+const _ob3Code = sCode;
+sCode = function() { return _ob3Code.apply(this, arguments).replace(obHdr(1,'signin'), ob3Hdr(1,'auth')); };
+const _ob3Go = go;
+go = function(s) {
+  if (s==="home" && STATE.screen==="notify" && STATE.notifAsked && !STATE.ob3Wel) { STATE.os = null; STATE.ob3Wel = true; render(); return; }
+  return _ob3Go.apply(this, arguments);
+};
+
+/* ---- Onboarding rev 4 prototype (Apoorv 27 Sep 18:27): collect first, then show ----
+   One-screen sign-in (email first, Apple and Google below; new and returning share it), then one question per step:
+   Name, Work, Location, Connect, Notify, then a welcome. Nothing is shown that the person hasn't given.
+   Screen ids: welcome = Name, consent = Work, confirm = Location, connect, notify (+ the welcome once answered). No LinkedIn. */
+const OB4_CITIES = ["San Francisco","San Jose","Oakland","New York","Seattle","Austin","Los Angeles","Boston","London","Bengaluru","Toronto","Chicago"];
+const OB4_APPLE = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.94 1.16 9.21.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.6-.75 3-.75s1.79.75 3.01.72c1.25-.02 2.03-1.13 2.79-2.25.88-1.29 1.24-2.53 1.26-2.6-.03-.01-2.42-.93-2.46-3.71zM14.08 5.84c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.77-.97 2.82 1.03.08 2.07-.52 2.71-1.28z"/></svg>';
+const OB4_G = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.9a5.04 5.04 0 0 1-2.19 3.31v2.75h3.54c2.07-1.91 3.25-4.72 3.25-8.07z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.54-2.75c-.99.66-2.25 1.06-3.74 1.06-2.87 0-5.3-1.94-6.17-4.54H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.83 14.11a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.9l3.65-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15A10.96 10.96 0 0 0 12 1 11 11 0 0 0 2.18 7.05l3.65 2.84C6.7 7.3 9.13 5.38 12 5.38z"/></svg>';
+
+ob3City = function() { return STATE.ob3City || ""; };
+ob3Role = function() { return STATE.ob3Role || ""; };
+ob3Co = function() { return STATE.ob3Co || ""; };
+function ob4Name() { return (STATE.ob3Name || "").trim(); }
+function ob4Ini(n) { const p = (n||"").trim().split(/\s+/).filter(Boolean); return p.length ? (p[0][0] + (p.length>1 ? p[p.length-1][0] : "")).toUpperCase() : ""; }
+function ob4Work() { const r = ob3Role(), c = ob3Co(); return r && c ? `${r} at ${c}` : (r || c); }
+/* "Last used" pill (Apoorv 18:46, after PostHog's sign-in): this device remembers how you signed in last. */
+function ob4Last() { try { return JSON.parse(localStorage.getItem("key-ob-last")) || {}; } catch(e) { return {}; } }
+function ob4SetLast(m, email) { try { localStorage.setItem("key-ob-last", JSON.stringify({ m, email: email||"" })); } catch(e) {} }
+function ob4Pill(m) { return ob4Last().m===m ? `<span class="ob4last">Last used</span>` : ""; }
+function ob4Esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
+
+/* Sign in: one screen, no scroll. Same door for new and returning members. */
+sSignin = function() {
+  STATE.ob3Wel = false;
+  const vis = (typeof MO_REEL!=="undefined" && MO_REEL && typeof moPromoHTML==="function") ? moPromoHTML() : `<div class="mvis full"><div class="mvl">Marketing visual</div></div>`;
+  const chip = DB.user.invitedBy ? `<div class="invchip" style="margin-top:10px"><div class="avatar sm" style="border-radius:8px">X</div><span>You're invited to join <b>${DB.user.family}</b></span></div>`
+    : STATE.entry==="event" ? `<div class="invchip" style="margin-top:10px"><div class="avatar sm" style="border-radius:8px">X</div><span>You're registered for <b>Xoogler dinner, Thursday</b></span></div>` : "";
+  return `<div class="body" style="padding:0"><div class="ob3sign ob4sign">
+    <div class="ob3vis">${vis}</div>
+    <div class="ob3pitch"><h1>Meet the right people, through people who vouch for you</h1><div class="ob3num">11,000 MEMBERS · 227 COMMUNITIES</div>${chip}</div>
+    <div style="flex:1"></div>
+    <div class="ob4door">
+      <div class="ob4em">${ob4Pill("email")}<input id="ob4email" type="email" inputmode="email" autocomplete="email" placeholder="Your email" value="${ob4Esc(STATE.authEmail || (ob4Last().m==="email" ? ob4Last().email : ""))}" onkeydown="if(event.key==='Enter')ob4Email()"><button aria-label="Continue with email" onclick="ob4Email()">${LI("chevron-right",20)}</button></div>
+      <div class="ob4or"><span>or</span></div>
+      <div class="ob4soc"><button aria-label="Continue with Apple" onclick="ob4Provider('apple')">${OB4_APPLE}${ob4Pill("apple")}</button><button aria-label="Continue with Google" onclick="ob4Provider('google')">${OB4_G}${ob4Pill("google")}</button></div>
+      <div class="ob3legal">New or returning, it's the same door. By continuing you agree to the Terms and Privacy.</div>
+      <span class="btn ob4anchor" aria-hidden="true"></span>
+    </div>
+  </div></div>`;
+};
+function ob4Email() {
+  const v = (document.getElementById("ob4email")||{}).value || "";
+  if (v && !/^\S+@\S+\.\S+$/.test(v)) { toast("That email doesn't look right."); return; }
+  STATE.authEmail = v || "priya.new@gmail.com"; ob4SetLast("email", STATE.authEmail); STATE.signinWith = "email"; STATE.authIntent = "signup"; STATE.authNote = null; go("code");
+}
+function ob4Provider(p) { ob4SetLast(p); STATE.authIntent = "signup"; STATE.ob3Name = (p==="google" || (p==="apple" && !STATE.appleHidName)) ? DB.user.name : ""; providerAuth(p); }
+sCode = function() {
+  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('signin')">‹</div></div>
+  <div class="body">
+    <div class="ob3t">Check your email</div>
+    <div class="ob3sub">We sent a six-digit code to <b>${ob4Esc(STATE.authEmail)}</b>. No password, ever.</div>
+    <div class="otp">${[7,2,4,'','',''].map((v,i)=>`<div class="ob ${i===3?'on':''}">${v}</div>`).join("")}</div>
+    <p class="xs faint" style="margin-top:14px">Didn't get it? <span style="text-decoration:underline">Resend</span> · <span style="text-decoration:underline" onclick="go('signin')">Change email</span></p>
+  </div>
+  <div class="foot"><button class="btn" onclick="afterCode()">Continue</button></div>`;
+};
+/* One door: an existing account signs straight in; a new email starts onboarding. */
+afterCode = function() { if (accountExists(STATE.authEmail)) { quickLogin(); toast("Welcome back."); return; } STATE.ob3Name = ""; go("welcome"); };
+const _ob4Quick = quickLogin;
+quickLogin = function() { const w = STATE.signinWith; _ob4Quick.apply(this, arguments); STATE.signinWith = w || "email"; STATE.linkedinConfirmed = false; render(); };
+
+
+/* Live profile card: the reflection of what they have given so far. Only given or in-progress fields show; the next field rises in on the next step. */
+LUCIDE["graduation-cap"] = LUCIDE["graduation-cap"] || '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>';
+const OB4_PC = { name:["user","Your name"], work:["briefcase","Your role and company"], city:["map-pin","Your city"], links:["link","Your links"] };
+function ob4PcVal(f) { return f==="name" ? ob4Name() : f==="work" ? ob4Work() : f==="city" ? ob3City() : obLNames(); }
+function ob4Pc(now) {
+  const order = ["name","work","city","links"], upto = order.indexOf(now), n = ob4Name();
+  const slot = f => { const v = ob4PcVal(f), st = f===now ? "is-now" : "is-done";
+    const ics = f==="links" && obL().links.length ? `<span id="ob4pc-links" class="ob4pc-ics" aria-label="${ob4Esc(v)}">${obL().links.map(x=>obLIcon(x[0],18)).join("")}</span>` : "";
+    return `<div class="ob4pc-f ob4pc-${f} ${st} ${v?'':'is-empty'}" data-f="${f}">${f==="name"?"":f==="city"?ob3Pin(14):ics?"":LI(OB4_PC[f][0],14)}${ics || `<span id="ob4pc-${f}">${ob4Esc(v) || OB4_PC[f][1]}</span>`}</div>`; };
+  const p = now==="links" && obL().phase==="picked" && obL().pick;
+  const li = p ? `<div class="ob4pc-li">
+      ${p.roles.slice(1).map(r=>`<div class="ob4pc-r">${LI("briefcase",14)}<span>${ob4Esc(r[0])}</span><small>${r[1]}</small></div>`).join("")}
+      ${p.schools.map(r=>`<div class="ob4pc-r">${LI("graduation-cap",14)}<span>${ob4Esc(r[0])}</span><small>${r[1]}</small></div>`).join("")}
+      <div class="ob4pc-src">${obLIcon("linkedin",14)}<span>From ${ob4Esc(p.url)}</span><button class="obl-lnk" onclick="obLSearch()">Change</button></div>
+    </div>` : "";
+  return `<div class="ob4pc" data-step="${now}">
+    <div class="ob4pc-av" ${now==="name"?`onclick="toast('Choose a photo.')"`:""}><span id="ob4ini">${ob4Ini(n) || LI("user",26)}</span>${now==="name"?`<i>${LI("camera",13)}</i>`:""}</div>
+    <div class="ob4pc-tx">${order.slice(0, upto+1).map(slot).join("")}</div>${li}
+  </div>`;
+}
+function ob4PcSet(f) { const el = document.getElementById("ob4pc-"+f); if (!el) return; const v = ob4PcVal(f); el.textContent = v || OB4_PC[f][1]; el.parentNode.classList.toggle("is-empty", !v);
+  if (f==="name") { const i = document.getElementById("ob4ini"); if (i) i.innerHTML = ob4Ini(v) || LI("user",26); } }
+
+/* Six steps after sign-in; Links sits between Location and Connect. */
+OB3_STEPS.splice(0, OB3_STEPS.length, "Name", "Work", "Location", "Links", "Connect", "Notify");
+
+/* 1 Name (photo optional) */
+sWelcome = function() {
+  const n = ob4Name(), g = STATE.signinWith==="google";
+  return `${ob3Hdr(1, STATE.signinWith==="email"?'code':'signin')}
+  <div class="body ob4q">
+    ${ob4Pc("name")}
+    <div class="ob4step" data-step="name">
+    <div class="ob3t">What's your name?</div>
+    <div class="ob3sub">This is how members will see you.</div>
+    <div class="ob3fld"><label>Name</label><input id="ob3name" autocomplete="name" placeholder="First and last name" value="${ob4Esc(n)}" oninput="STATE.ob3Name=this.value;ob4PcSet('name')"></div>
+    ${g&&n?`<div class="ob4note"><b>G</b> From your Google account. Change it if you go by something else.</div>`:''}
+    <div class="ob4note">${LI("camera",14)} Add a photo now or later.</div>
+    </div>
+  </div>
+  <div class="foot"><button class="btn" onclick="ob4NameNext()">Continue</button></div>`;
+};
+function ob4NameNext() { if (ob4Name().split(/\s+/).length < 2) { toast("Add your first and last name."); return; } DB.user.name = ob4Name(); DB.user.initials = ob4Ini(ob4Name()); go("consent"); }
+
+/* 2 Work */
+sConsent = function() {
+  const chip = c => `<span class="chip ${ob3Role()===c?'on':''}" onclick="STATE.ob3Role=${ob3Role()===c?"''":`'${c}'`};render()">${c}</span>`;
+  return `${ob3Hdr(2,'welcome')}
+  <div class="body ob4q">
+    ${ob4Pc("work")}
+    <div class="ob4step" data-step="work">
+    <div class="ob3t">Where do you work?</div>
+    <div class="ob3sub">Members find you by this. You can change it any time.</div>
+    <div class="ob3fld"><label>Role</label><input id="ob3role" placeholder="Your role" value="${ob4Esc(ob3Role())}" oninput="STATE.ob3Role=this.value;ob4PcSet('work')"></div>
+    <div class="ob3fld"><label>Company or school</label><input id="ob3co" placeholder="Your company or school" value="${ob4Esc(ob3Co())}" oninput="STATE.ob3Co=this.value;ob4PcSet('work')"></div>
+    <div class="ob3chips">${["Founder","Student","Between roles","Freelance"].map(chip).join("")}</div>
+    </div>
+  </div>
+  <div class="foot"><button class="btn" onclick="ob4WorkNext()">Continue</button></div>`;
+};
+function ob4WorkNext() { if (!ob3Role() && !ob3Co()) { toast("Add your role or company, or pick one."); return; } DB.user.title = ob3Role(); DB.user.company = ob3Co(); go("confirm"); }
+
+/* 3 Location: nothing is guessed. The map stays blank until they share or type a city. */
+sConfirm = function() {
+  const c = ob3City(), q = (STATE.ob4Q||"").toLowerCase();
+  const sugg = q ? OB4_CITIES.filter(x=>x.toLowerCase().startsWith(q)).slice(0,4) : [];
+  return `<div class="body" style="padding:0">
+    <div class="ob3map ${c?'':'ob4blank'}"><div class="top">${ob3Hdr(3,'consent')}</div>
+      <svg viewBox="0 0 360 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M-10 220 C80 180 130 250 210 200 S330 170 380 140" stroke="#C7D3DE" stroke-width="14" fill="none"/><path d="M60 -10 L110 340 M250 -10 L210 340 M-10 90 L380 120" stroke="#fff" stroke-width="6"/>${c?`<circle cx="180" cy="170" r="58" fill="#141414" fill-opacity=".08" stroke="#141414" stroke-opacity=".25"/><circle class="ob4pin" cx="180" cy="170" r="8" fill="#141414"/>`:''}</svg>
+      ${c?'':`<div class="ob4ask">${ob3Pin(22)}</div>`}
+    </div>
+    <div class="ob4locpc">${ob4Pc("city")}</div>
+    <div class="ob4step" data-step="city" style="padding:0 16px 20px">
+      <div class="ob3t">Where are you based?</div>
+      <div class="ob3sub">For events and people near you. Members only ever see your city.</div>
+      ${c?`<div class="ob4note" style="margin-top:12px"><span style="text-decoration:underline;cursor:pointer" onclick="STATE.ob3City='';STATE.ob4Q='';render()">Change city</span></div>`
+        :`<div class="ob3fld"><label>City</label><input id="ob4city" placeholder="Type your city" value="${ob4Esc(STATE.ob4Q)}" oninput="STATE.ob4Q=this.value;ob4Sugg();document.getElementById('ob4locgo').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')ob4CityGo()"></div><div class="ob3chips" id="ob4sugg">${sugg.map(x=>`<span class="chip" onclick="ob4SetCity('${x}')">${x}</span>`).join("")}</div>
+          <button class="ob4loc" onclick="osPrompt('Allow \\u201cKey\\u201d to use your location?','Key uses your approximate location for events and people near you.',()=>ob4SetCity('San Francisco'))">${ob3Pin(16)} Use my location</button>`}
+    </div>
+  </div>
+  <div class="foot"><button class="btn" id="ob4locgo" ${c||(STATE.ob4Q||"").trim()?"":"disabled"} onclick="ob4CityGo()">Continue</button>${c?"":`<div class="ob4skip" onclick="STATE.ob3City='';go('you:oblinks')">Skip for now</div>`}</div>`;
+};
+function ob4Sugg() {
+  const q = (STATE.ob4Q||"").toLowerCase(), el = document.getElementById("ob4sugg"); if (!el) return;
+  const s = q ? OB4_CITIES.filter(x=>x.toLowerCase().startsWith(q)).slice(0,4) : [];
+  el.innerHTML = (s.length ? s : q ? [STATE.ob4Q.trim()] : []).map(x=>`<span class="chip" onclick="ob4SetCity('${ob4Esc(x).replace(/'/g,"")}')">${ob4Esc(x)}</span>`).join("");
+}
+/* Continue takes a typed city as it is (a suggestion's spelling when it matches one), so a chip below the fold is never required. */
+function ob4CityGo() {
+  const q = (STATE.ob4Q||"").trim(); if (!ob3City() && q) { STATE.ob3City = OB4_CITIES.find(x=>x.toLowerCase()===q.toLowerCase()) || q; STATE.ob4Q = ""; }
+  if (!ob3City()) return; STATE.ob3Placed = true; go("you:oblinks");
+}
+function ob4SetCity(c) { STATE.ob3City = c; STATE.ob4Q = ""; if (STATE.os) STATE.os = null; render(); }
+
+/* 4 Connect: a plain list. The phone's own contacts and calendar cover every account synced to it. */
+sConnect = function() {
+  const on = k => STATE.connect[k];
+  const row = (k, icon, t, s) => `<div class="ob4row" onclick="ob4Conn('${k}')"><div class="ic">${LI(icon,20)}</div><div class="tx"><b>${t}</b><div class="xs muted">${s}</div></div><div class="ob4sw ${on(k)?'on':''}" role="switch" aria-checked="${!!on(k)}"></div></div>`;
+  const mail = STATE.connect.email;
+  return `${ob3Hdr(5,'you:oblinks')}
+  <div class="body ob4q">
+    <div class="ob3t">Start from people you know</div>
+    <div class="ob3sub">Kai finds warm paths through people you already know. Nobody is messaged, and nothing is shown to other members.</div>
+    <div class="ob4list">
+      ${row("contacts","users","Contacts","Everyone on your phone, including Google, Outlook and iCloud contacts")}
+      ${row("calendar","calendar","Calendar","Google, Outlook and iCloud calendars on your phone. One permission")}
+      <div class="ob4row" onclick="${mail?"STATE.connect.email=null;render()":"STATE.ob4Mail=!STATE.ob4Mail;render()"}"><div class="ic">${LI("mail",20)}</div><div class="tx"><b>Email</b><div class="xs muted">${mail?`${mail} connected. Who you actually write to, never what`:"Who you actually write to, never what"}</div>${STATE.ob4Mail&&!mail?`<div class="ob4mail"><span class="chip" onclick="event.stopPropagation();ob4Mail('Gmail')">Gmail</span><span class="chip" onclick="event.stopPropagation();ob4Mail('Outlook')">Outlook</span></div>`:''}</div><div class="ob4sw ${mail||STATE.ob4Mail?'on':''}" role="switch" aria-checked="${!!mail}"></div></div>
+    </div>
+    <div class="ob3priv">${LI("lock",14)} Private to Kai. Turn any of these off in Settings.</div>
+  </div>
+  <div class="foot"><button class="btn" onclick="finishOnboarding()">${on("contacts")||on("calendar")||mail?"Continue":"Skip for now"}</button></div>`;
+};
+function ob4Conn(k) {
+  if (STATE.connect[k]) { STATE.connect[k] = false; render(); return; }
+  osPrompt(k==="contacts"?'“Key” Would Like to Access Your Contacts':'“Key” Would Like to Access Your Calendars', k==="contacts"?'Kai looks for paths through people you know. Nothing is shown to other members.':'Kai sees who you meet and when, never what. Nothing is shown to other members.', ()=>{ STATE.connect[k] = true; });
+}
+function ob4Mail(p) { STATE.ob4Mail = false; osPrompt(p==="Gmail"?'Key wants to access your Google Account':'Key wants to access your Microsoft account', 'See who you email and when: names and addresses only, never message content.', ()=>{ STATE.connect.email = p; }); }
+
+/* 5 Notify keeps rev 3's lock-screen preview; the name in it is theirs. */
+const _ob4Notify = sNotify;
+sNotify = function() { const h = _ob4Notify.apply(this, arguments); return STATE.ob3Wel ? h : h.replace(ob3Hdr(5,'connect'), ob3Hdr(6,'connect')).replace("Welcome, Priya.", `Welcome, ${ob4Esc(ob4Name().split(" ")[0]||"Priya")}.`); };
+
+/* Welcome: their profile as members will see it, in the profile hero's layout (photo area, big name, role, city), then straight into Key. */
+ob3Welcome = function() {
+  const n = ob4Name() || DB.user.name, c = ob3City(), links = STATE.ob4Links||[];
+  return `<div class="body" style="padding:0"><div class="ob3wel ob4wel">
+    <div class="k">WELCOME TO KEY</div>
+    <h1>You're in, ${ob4Esc(n.split(" ")[0])}</h1>
+    <div class="ob3card ob4wc"><div class="ph"><div class="ini">${ob4Ini(n)}</div><div class="shade"></div></div>
+      <div class="nm"><h2>${ob4Esc(n)}</h2>${ob4Work()?`<div class="role">${ob4Esc(ob4Work())}</div>`:""}${c?`<div class="where">${ob3Pin(14)}${ob4Esc(c)}</div>`:""}
+        ${links.length?`<div class="plinks">${links.map(([k])=>`<span class="plink">${LINK_ICONS[k]}</span>`).join("")}</div>`:""}</div>
+      <div class="meta"><span>MEMBER SINCE SEP 2026</span><span>No. 11,027</span></div></div>
+    <div class="ob4wnext">This is your profile. Members see it once you join a family, the first step inside.</div>
+    <div class="ob3acts"><button class="btn gold" onclick="go('home')">Enter Key</button></div>
+  </div></div>`;
+};
+
+/* No LinkedIn in this prototype, so no family is recommended "from your LinkedIn". */
+(DB.recommendedFamilies||[]).forEach(f=>{ if (/LinkedIn/.test(f.why||"")) f.why = "Open to Michigan alumni"; });
+
+/* 4 LinkedIn and links. Key searches LinkedIn (through its data provider) with exactly what the member typed at Name, Work and
+   Location, shows that search, and lets them pick their account. The picked account brings in everything on it: roles,
+   education and the links listed on it. Other links go in one field that recognises the service from the address. */
+const OBL_PATHS = {"x": "M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z", "instagram": "M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077", "dribbble": "M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4 1.73 1.358 3.92 2.166 6.29 2.166 1.42 0 2.77-.29 4-.814zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702-1.81-1.61-4.19-2.586-6.795-2.586-.825 0-1.63.1-2.4.285zm10.335 3.483c-.218.29-1.935 2.493-5.724 4.04.24.49.47.985.68 1.486.08.18.15.36.22.53 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.31-6.38z", "behance": "M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z", "medium": "M4.21 0A4.201 4.201 0 0 0 0 4.21v15.58A4.201 4.201 0 0 0 4.21 24h15.58A4.201 4.201 0 0 0 24 19.79v-1.093c-.137.013-.278.02-.422.02-2.577 0-4.027-2.146-4.09-4.832a7.592 7.592 0 0 1 .022-.708c.093-1.186.475-2.241 1.105-3.022a3.885 3.885 0 0 1 1.395-1.1c.468-.237 1.127-.367 1.664-.367h.023c.101 0 .202.004.303.01V4.211A4.201 4.201 0 0 0 19.79 0Zm.198 5.583h4.165l3.588 8.435 3.59-8.435h3.864v.146l-.019.004c-.705.16-1.063.397-1.063 1.254h-.003l.003 10.274c.06.676.424.885 1.063 1.03l.02.004v.145h-4.923v-.145l.019-.005c.639-.144.994-.353 1.054-1.03V7.267l-4.745 11.15h-.261L6.15 7.569v9.445c0 .857.358 1.094 1.063 1.253l.02.004v.147H4.405v-.147l.019-.004c.705-.16 1.065-.397 1.065-1.253V6.987c0-.857-.358-1.094-1.064-1.254l-.018-.004zm19.25 3.668c-1.086.023-1.733 1.323-1.813 3.124H24V9.298a1.378 1.378 0 0 0-.342-.047Zm-1.862 3.632c-.1 1.756.86 3.239 2.204 3.634v-3.634z", "substack": "M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z", "youtube": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z", "producthunt": "M13.604 8.4h-3.405V12h3.405c.995 0 1.801-.806 1.801-1.801 0-.993-.805-1.799-1.801-1.799zM12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm1.604 14.4h-3.405V18H7.801V6h5.804c2.319 0 4.2 1.88 4.2 4.199 0 2.321-1.881 4.201-4.201 4.201z", "wellfound": "M23.998 8.128c.063-1.379-1.612-2.376-2.795-1.664-1.23.598-1.322 2.52-.156 3.234 1.2.862 2.995-.09 2.951-1.57zm0 7.748c.063-1.38-1.612-2.377-2.795-1.665-1.23.598-1.322 2.52-.156 3.234 1.2.863 2.995-.09 2.951-1.57zm-20.5 1.762L0 6.364h3.257l2.066 8.106 2.245-8.106h3.267l2.244 8.106 2.065-8.106h3.257l-3.54 11.274H11.39c-.73-2.713-1.46-5.426-2.188-8.14l-2.233 8.14H3.5z", "googlescholar": "M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z", "calendly": "M19.655 14.262c.281 0 .557.023.828.064 0 .005-.005.01-.005.014-.105.267-.234.534-.381.786l-1.219 2.106c-1.112 1.936-3.177 3.127-5.411 3.127h-2.432c-2.23 0-4.294-1.191-5.412-3.127l-1.218-2.106a6.251 6.251 0 0 1 0-6.252l1.218-2.106C6.736 4.832 8.8 3.641 11.035 3.641h2.432c2.23 0 4.294 1.191 5.411 3.127l1.219 2.106c.147.252.271.519.381.786 0 .004.005.009.005.014-.267.041-.543.064-.828.064-1.816 0-2.501-.607-3.291-1.306-.764-.676-1.711-1.517-3.44-1.517h-1.029c-1.251 0-2.387.455-3.2 1.278-.796.805-1.233 1.904-1.233 3.099v1.411c0 1.196.437 2.295 1.233 3.099.813.823 1.949 1.278 3.2 1.278h1.034c1.729 0 2.676-.841 3.439-1.517.791-.703 1.471-1.306 3.287-1.301Zm.005-3.237c.399 0 .794-.036 1.179-.11-.002-.004-.002-.01-.002-.014-.073-.414-.193-.823-.349-1.218.731-.12 1.407-.396 1.986-.819 0-.004-.005-.013-.005-.018-.331-1.085-.832-2.101-1.489-3.03-.649-.915-1.435-1.719-2.331-2.395-1.867-1.398-4.088-2.138-6.428-2.138-1.448 0-2.855.28-4.175.841-1.273.543-2.423 1.315-3.407 2.299S2.878 6.552 2.341 7.83c-.557 1.324-.842 2.726-.842 4.175 0 1.448.281 2.855.842 4.174.542 1.274 1.314 2.423 2.298 3.407s2.129 1.761 3.407 2.299c1.324.556 2.727.841 4.175.841 2.34 0 4.561-.74 6.428-2.137a10.815 10.815 0 0 0 2.331-2.396c.652-.929 1.158-1.949 1.489-3.03 0-.004.005-.014.005-.018-.579-.423-1.255-.699-1.986-.819.161-.395.276-.804.349-1.218.005-.009.005-.014.005-.023.869.166 1.692.506 2.404 1.035.685.505.552 1.075.446 1.416C22.184 20.437 17.619 24 12.221 24c-6.625 0-12-5.375-12-12s5.37-12 12-12c5.398 0 9.963 3.563 11.471 8.464.106.341.239.915-.446 1.421-.717.529-1.535.873-2.404 1.034.128.716.128 1.45 0 2.166-.387-.074-.782-.11-1.182-.11-4.184 0-3.968 2.823-6.736 2.823h-1.029c-1.899 0-3.15-1.357-3.15-3.095v-1.411c0-1.738 1.251-3.094 3.15-3.094h1.034c2.768 0 2.552 2.823 6.731 2.827Z", "threads": "M18.263 11.097c-.03-3.486-1.92-5.586-5.111-5.586-2.13 0-3.922.963-4.863 2.499l2.062 1.438c.535-.843 1.272-1.543 2.628-1.543 1.528 0 2.318.85 2.544 2.431a15 15 0 0 0-2.236-.173c-4.125 0-6.068 1.867-6.068 4.336s1.943 3.99 4.804 3.99c3.139 0 5.013-2.115 5.781-4.735.798.361 1.348 1.204 1.348 2.47 0 3.387-3.907 5.232-7.22 5.232-4.885 0-8.077-3.207-8.077-8.424 0-6.392 4.223-10.487 9.9-10.487 3.808 0 5.69 1.671 6.97 3.914l2.108-1.475C21.44 2.078 18.331 0 13.663 0 6.227 0 1.168 5.277 1.168 12.934c0 7 4.953 11.066 10.856 11.066 4.878 0 9.809-2.846 9.809-7.716 0-2.545-1.46-4.231-3.569-5.187m-6.33 4.855c-1.077 0-2.026-.512-2.026-1.453 0-1.483 1.822-1.934 3.606-1.934.678 0 1.34.045 1.927.173-.422 1.927-1.671 3.215-3.508 3.214Z", "bluesky": "M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026", "figma": "M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z", "github": "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"};
+const OBL_SVC = [ // key, label, host test; the first three are the ones we ask for
+  ["linkedin","LinkedIn",/(^|\.)linkedin\.com$/],["github","GitHub",/(^|\.)github\.com$/],["x","X",/(^|\.)(x|twitter)\.com$/],
+  ["instagram","Instagram",/(^|\.)instagram\.com$/],["dribbble","Dribbble",/(^|\.)dribbble\.com$/],["behance","Behance",/(^|\.)behance\.net$/],
+  ["substack","Substack",/(^|\.)substack\.com$/],["medium","Medium",/(^|\.)medium\.com$/],["youtube","YouTube",/(^|\.)(youtube\.com|youtu\.be)$/],
+  ["producthunt","Product Hunt",/(^|\.)producthunt\.com$/],["wellfound","Wellfound",/(^|\.)(wellfound\.com|angel\.co)$/],
+  ["googlescholar","Google Scholar",/^scholar\.google\./],["figma","Figma",/(^|\.)figma\.com$/],["calendly","Calendly",/(^|\.)calendly\.com$/],
+  ["threads","Threads",/(^|\.)threads\.(net|com)$/],["bluesky","Bluesky",/(^|\.)bsky\.app$/] ];
+Object.keys(OBL_PATHS).forEach(k=>{ if (!LINK_ICONS[k]) LINK_ICONS[k] = `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="${OBL_PATHS[k]}"/></svg>`; }); // profiles show the same logos
+function obLIcon(k, s) { s = s || 18; if (LINK_ICONS[k] && k!=="github") return LINK_ICONS[k].replace(/width="\d+" height="\d+"/, `width="${s}" height="${s}"`);
+  return OBL_PATHS[k] ? `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="currentColor" aria-hidden="true"><path d="${OBL_PATHS[k]}"/></svg>` : LI("link", s); }
+function obLDetect(u) { // "x.com/priya" -> ["x","X","x.com/priya"]; anything unrecognised is a website
+  const clean = String(u||"").trim().replace(/^https?:\/\//i,"").replace(/^www\./i,"").replace(/\/$/,""); let host = clean.split(/[/?#]/)[0].toLowerCase();
+  const hit = OBL_SVC.find(([,,re])=>re.test(host)); return hit ? [hit[0], hit[1], clean] : [host.includes(".") ? "site" : "", "Website", clean];
+}
+function obL() { return STATE.obL || (STATE.obL = { phase:null, pick:null, links:[], adding:false, typed:"", manual:false, flash:"" }); }
+function obLCands() { // what the search returns for the name, work and city they gave; the first matches all three
+  const n = ob4Name() || DB.user.name, h = n.toLowerCase().replace(/\s+/g,""), c = ob3City() || "San Francisco", w = ob4Work() || "Product manager at Google";
+  const me = { id:"a", n, h:w, c, url:"linkedin.com/in/"+h, match:true,
+    roles:[[w,"2022 to now"],["Associate PM at Flipkart","2019 to 2022"],["Analyst at Deloitte","2017 to 2019"]], schools:[["University of Michigan","MBA"],["IIT Bombay","B.Tech"]],
+    found:[["github","GitHub","github.com/"+n.split(" ")[0].toLowerCase()+"codes"],["site","Website",n.split(" ")[0].toLowerCase()+".design"]] };
+  const other = (id, hh, city, u) => ({ id, n, h:hh, c:city, url:"linkedin.com/in/"+u, roles:[[hh,"2021 to now"]], schools:[], found:[] });
+  const m = STATE.obLMode || "many";
+  return m==="none" ? [] : m==="one" ? [me] : [me, other("b","Product designer at Figma","New York",h+"-nyc"), other("c","Student at UT Austin","Austin",h+"22")];
+}
+function obLStart() { const L = obL(); L.phase = "search"; L.pick = null; L.manual = false; setTimeout(()=>{ if (L.phase!=="search" || STATE.obL!==L) return; L.phase = "results"; render(); }, 1600); }
+function obLSearch() { obLStart(); render(); }
+function obLPick(id) {
+  const L = obL(), p = obLCands().find(x=>x.id===id); L.pick = p; L.phase = "picked";
+  L.links = L.links.filter(x=>!x[3] && x[0]!=="linkedin"); // links from a previously picked account go; ones they added stay
+  L.links.unshift(["linkedin","LinkedIn",p.url,"li"]); p.found.forEach(f=>{ if (!L.links.some(x=>x[0]===f[0])) L.links.push([...f,"li"]); });
+  render(); const b = document.querySelector(".view .body.ob4q"); if (b) b.scrollTop = 0; // the card is what changed: bring it into view
+}
+function obLNone() { const L = obL(); L.phase = "none"; L.manual = true; render(); const i = document.getElementById("obl-li"); if (i) i.focus(); }
+function obLManual() { // they typed their own address: that one page is read, as with a picked account
+  const v = ((document.getElementById("obl-li")||{}).value||"").trim().replace(/^https?:\/\//,"").replace(/^(www\.)?linkedin\.com\/in\//,"").replace(/\/$/,"");
+  if (!v) { toast("Add the part after linkedin.com/in/."); return; }
+  STATE.obLMode = "one"; obLPick("a"); obL().pick.url = obL().links[0][2] = "linkedin.com/in/"+v; render();
+}
+function obLNames() { return obL().links.map(x=>x[1]).filter((x,i,a)=>a.indexOf(x)===i).slice(0,3).join(" · ") + (obL().links.length>3 ? ` +${obL().links.length-3}` : ""); }
+function obLDrop(i) { const L = obL(), x = L.links[i]; L.links.splice(i,1); if (x[0]==="linkedin") { L.pick = null; L.phase = "results"; } render(); }
+function obLType(v) { // live: the icon and name follow what they type
+  obL().typed = v; const [k, l] = obLDetect(v), ic = document.getElementById("obl-ic"), nm = document.getElementById("obl-nm");
+  if (ic) ic.innerHTML = k ? obLIcon(k,20) : LI("link",20); if (nm) nm.textContent = v.trim() ? (k ? l : "Keep typing") : "Paste or type a link";
+}
+function obLAdd() {
+  const L = obL(), [k, l, u] = obLDetect(L.typed); if (!k || !u) { toast("That doesn't look like a link yet."); return; }
+  L.links.push([k, l, u]); L.typed = ""; L.flash = `Added your ${l} link.`; render(); setTimeout(()=>{ L.flash = ""; }, 50);
+  const i = document.getElementById("obl-add"); if (i) i.focus();
+}
+function obLGithub() { osPrompt("Key wants to sign in with GitHub", "Reads your public username and avatar only.", ()=>{ obL().links.push(["github","GitHub","github.com/"+(ob4Name().split(" ")[0]||"priya").toLowerCase()+"codes"]); }); }
+function obLSite() { const L = obL(); L.adding = true; L.typed = ""; render(); const i = document.getElementById("obl-add"); if (i) i.focus(); }
+function obLSearchHTML() {
+  const L = obL(), q = [ob4Name(), ob4Work(), ob3City()].filter(Boolean);
+  const bar = `<div class="obl-q"><div class="obl-ql">${L.phase==="search"?"Searching LinkedIn for":"Searched LinkedIn for"}</div><div class="obl-qc">${q.map(x=>`<span>${ob4Esc(x)}</span>`).join("")}</div>${L.phase==="search"?`<div class="obl-bar"><i></i></div><div class="obl-stage">Checking your sign-in email, then your name, company and city</div>`:""}</div>`;
+  const src = `<div class="obl-srcnote">${LI("lock",12)} We search LinkedIn through a data partner. Nothing is posted to LinkedIn.</div>`;
+  if (L.phase==="search") return bar + src;
+  const cs = obLCands();
+  if (L.phase==="results") return bar + (cs.length ? `<div class="obl-st">Which one is you?</div>
+    ${cs.map(x=>`<div class="obl-cand" onclick="obLPick('${x.id}')"><div class="ini">${ob4Ini(x.n)}</div><div class="m"><div class="a">${ob4Esc(x.n)}</div><div class="b">${ob4Esc(x.h)}</div><div class="b">${ob4Esc(x.c)}</div>${x.match?`<div class="obl-match">${LI("check",12)} Matches your work and city</div>`:""}</div><span class="obl-me">This is me</span></div>`).join("")}
+    <button class="obl-lnk" onclick="obLNone()">None of these is me</button>${src}`
+    : `<div class="obl-st">No LinkedIn account matches that name, work and city.</div>`) + (cs.length ? "" : obLManualHTML());
+  if (L.phase==="none") return bar + obLManualHTML();
+  return ""; // picked: the card above carries the account, roles, schools and links
+}
+function obLManualHTML() { return `<div class="obl-st">Add your LinkedIn address instead</div><div class="ob4in"><span>linkedin.com/in/</span><input id="obl-li" placeholder="your-name" onkeydown="if(event.key==='Enter')obLManual()"><button class="ob4sm" onclick="obLManual()">Add</button></div><div class="obl-alt"><button class="obl-lnk" onclick="go('consent')">Edit my details</button><button class="obl-lnk" onclick="obLSearch()">Search again</button></div>`; }
+function obLLinksHTML(inSheet) {
+  const L = obL(), has = k => L.links.some(x=>x[0]===k);
+  const row = (x, i) => `<div class="obl-row"><span class="ic">${obLIcon(x[0],20)}</span><div class="m"><div class="a">${x[1]}${x[3]&&x[0]!=="linkedin"?`<em>From LinkedIn</em>`:""}</div><div class="b">${ob4Esc(x[2])}</div></div><button class="obl-x" aria-label="Remove ${x[1]}" onclick="obLDrop(${i})">${LI("x",16)}</button></div>`;
+  const ask = (k, l, sub, act) => `<div class="obl-row obl-ask" onclick="${act}"><span class="ic">${obLIcon(k,20)}</span><div class="m"><div class="a">${l}</div><div class="b">${sub}</div></div><span class="obl-add">${LI("plus",16)}</span></div>`;
+  const adder = L.adding ? `<div class="obl-adder"><span class="ic" id="obl-ic">${L.typed?obLIcon(obLDetect(L.typed)[0]||"link",20):LI("link",20)}</span><div class="m"><div class="a" id="obl-nm">${L.typed?obLDetect(L.typed)[1]:"Paste or type a link"}</div><input id="obl-add" value="${ob4Esc(L.typed)}" placeholder="x.com/you, dribbble.com/you, yoursite.com" oninput="obLType(this.value)" onkeydown="if(event.key==='Enter')obLAdd()"></div><button class="ob4sm" onclick="obLAdd()">Add</button></div>
+      <div class="obl-know">${["x","instagram","dribbble","behance","substack","medium","youtube","producthunt","googlescholar","figma"].map(k=>`<span title="${OBL_SVC.find(s=>s[0]===k)[1]}">${obLIcon(k,14)}</span>`).join("")}<b>and any website</b></div>` : "";
+  return `<div class="obl-links">${inSheet||L.phase==="picked"?"":`<div class="obl-st">Your links</div>`}
+    ${L.links.map(row).join("")}
+    ${has("github")?"":ask("github","GitHub","Sign in with GitHub","obLGithub()")}
+    ${has("site")?"":ask("site","Website","Portfolio or personal site","obLSite()")}
+    ${adder}
+    ${L.flash?`<div class="obl-flash">${L.flash}</div>`:""}
+    ${L.adding?"":`<button class="obl-more" onclick="obLSite()">${LI("plus",16)} Add more links</button>`}</div>`;
+}
+function obLKeep() {
+  const L = obL(), p = L.pick;
+  STATE.ob4Links = L.links.map(x=>[x[0], x[0]==="site" ? x[2] : x[1]]);
+  STATE.obLAdded = p ? `${p.roles.length} role${p.roles.length===1?"":"s"}${p.schools.length?` and ${p.schools.length} school${p.schools.length===1?"":"s"}`:""} from LinkedIn` : "";
+}
+function sLinks() {
+  const L = obL(); if (!L.phase) obLStart();
+  const ok = L.phase==="picked" || L.links.length;
+  return `${ob3Hdr(4,'confirm')}
+  <div class="body ob4q">
+    ${ob4Pc("links")}
+    <div class="ob4step" data-step="links">
+      <div class="ob3t">${L.phase==="picked"?"Your links":"Find your LinkedIn"}</div>
+      <div class="ob3sub">${L.phase==="picked"?"Members see these on your profile.":"We look for your account with what you just told us. Pick yours and your roles, education and links come in."}</div>
+      ${obLSearchHTML()}
+      ${L.phase==="search"?"":obLLinksHTML()}
+    </div>
+  </div>
+  <div class="foot"><button class="btn" ${ok?"":"disabled"} onclick="obLKeep();go('connect')">Continue</button><div class="ob4skip" onclick="obLKeep();go('connect')">Skip for now</div></div>`;
+}
+const _ob4YouSection = sYouSection;
+sYouSection = function(id) { return id==="oblinks" ? sLinks() : _ob4YouSection.apply(this, arguments); };
+
+/* Skipped links come back as the first checklist item, as a sheet with the same rows. */
+const _ob4PortSheet = portSheet;
+portSheet = function(type, id) { return type==="oblinks" ? `<h2>Add your links</h2><p class="sm muted ob4sub">Members see these on your profile.</p>${obLLinksHTML(true)}<div class="acts ob4acts"><button class="btn" style="margin:0;flex:1" onclick="obLKeep();STATE.sheet=null;render();toast('Saved to your profile.')">Save</button><div class="sec2" onclick="closeSheet()">Not now</div></div>` : _ob4PortSheet.apply(this, arguments); };
+const _ob4Walk = walkSteps;
+walkSteps = function() {
+  const has = (STATE.ob4Links||[]).length;
+  return [{ id:"links", title:"Add your links", why:"LinkedIn, GitHub, your website. You pick what shows.", done:!!has, doneLine: has ? [STATE.ob4Links.map(x=>x[1]).join(", "), STATE.obLAdded].filter(Boolean).join(". ") : "", expand:"Change them any time under You.", cta:"Add links", act:"openSheet('oblinks','')" }, ..._ob4Walk.apply(this, arguments)];
+};
+const _ob4Links = profileLinks;
+profileLinks = function(pid) { return pid==="priya" ? (STATE.ob4Links||[]) : _ob4Links.apply(this, arguments); };
+const _ob4WalkHTML = walkHTML;
+walkHTML = function() { return _ob4WalkHTML.apply(this, arguments).replace("First, pick where you belong. Two short steps after that, and Kai takes it from there.", "Start with your profile, then pick where you belong. Kai takes it from there."); };
+
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
    Restart clears it. Starts clean when the page is driven by a test (navigator.webdriver) unless the URL has ?keep, and always with ?fresh.
@@ -15244,6 +16045,212 @@ function wire() {
   const tr=phone.querySelector("#tr"); if(tr) tr.scrollTop=tr.scrollHeight;
 }
 render();
+</script>
+<script>
+/* ==== Onboarding cascade (Motion design thread, 27 Sep). Wraps go(): before a step change it keeps a copy of the step you
+   are leaving; after, it folds that copy into the card line that now holds your answer, moves the card from its old place to
+   its new one (FLIP), opens the next line and lets obc.css raise the next question from below. Off under reduced motion
+   and webdriver, where the steps simply change. Hooks (onboarding prototype v5): .ob4pc[data-step], .ob4pc-f[data-f],
+   .is-now, .ob4step, #ob4ini, ob4PcSet. ==== */
+const OBC_ON = typeof MO_ON !== "undefined" ? MO_ON : !navigator.webdriver && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (OBC_ON) document.documentElement.classList.add("obc");
+const OBC_STEPS = ["welcome","consent","confirm","you:oblinks","connect","notify"];
+function obcSnap() {
+  const v = phone.querySelector(".screen > .view"); if (!v || !OBC_STEPS.includes(STATE.screen) || STATE.ob3Wel) return null;
+  const pc = v.querySelector(".ob4pc"), st = v.querySelector(".ob4step"), body = v.querySelector(":scope > .body"), r = el => el.getBoundingClientRect();
+  return { screen:STATE.screen, step:pc ? pc.dataset.step : null, pc:pc && r(pc), body:body && [body.cloneNode(true), r(body)], st:st && [st.cloneNode(true), r(st)],
+    flds:st ? [...st.querySelectorAll(".ob3fld")].map(f=>{ const c = f.cloneNode(true), i = f.querySelector("input"); if (i) c.querySelector("input").value = i.value; return [c, r(f)]; }) : [] };
+}
+function obcGhost(pair, scr, k) { // a copy of what was on screen, put back where it was, in the screen's own (unscaled) pixels
+  const [el, r] = pair; el.classList.add("obc-ghost");
+  el.style.cssText += `;left:${(r.left-scr.left)/k}px;top:${(r.top-scr.top)/k}px;width:${r.width/k}px;height:${r.height/k}px`;
+  phone.querySelector(".screen").appendChild(el); return el;
+}
+function obcRun(b) {
+  const v = phone.querySelector(".screen > .view"), S = STATE.screen; if (!v || !OBC_STEPS.includes(S) || S === b.screen || STATE.ob3Wel) return;
+  const back = OBC_STEPS.indexOf(S) < OBC_STEPS.indexOf(b.screen), sc = phone.querySelector(".screen"), scr = sc.getBoundingClientRect(), k = scr.width / sc.offsetWidth || 1;
+  const pc = v.querySelector(".ob4pc"), card = pc && b.pc, out = "cubic-bezier(.4,0,1,1)", done = g => () => g.remove();
+  v.classList.add("obc-run"); if (back) v.classList.add("obc-back"); if (!card) v.classList.add("obc-bare");
+  (card ? v.querySelectorAll(".ob4step > *") : v.querySelectorAll(":scope > .body > *")).forEach((el,i)=>el.style.setProperty("--obc-i", Math.min(i,5)));
+  if (!card || back) { // to or from a step without the card, or going back: what was there lifts away (or drops, going back)
+    if (b.body) { const g = obcGhost(b.body, scr, k); g.animate([{ opacity:1, transform:"none" }, { opacity:0, transform:`translateY(${back?16:-24}px)` }], { duration:back?140:180, easing:out, fill:"forwards" }).onfinish = done(g); }
+    if (card) pc.animate([{ transform:`translateY(${(b.pc.top-pc.getBoundingClientRect().top)/k}px)` }, { transform:"none" }], { duration:320, easing:"cubic-bezier(.2,.8,.2,1)" });
+    return;
+  }
+  // forward between card steps: the card travels to its new place, the question you answered fades up, and your answer
+  // itself shrinks into the card line that now holds it; then the next line opens and the next question rises (obc.css)
+  const r = pc.getBoundingClientRect(), got = pc.querySelector(`.ob4pc-f[data-f="${b.step}"]`), now = pc.querySelector(".ob4pc-f.is-now");
+  pc.animate([{ transform:`translate(${(b.pc.left-r.left)/k}px,${(b.pc.top-r.top)/k}px)` }, { transform:"none" }], { duration:360, easing:"cubic-bezier(.2,.8,.2,1)" });
+  if (now) now.classList.add("obc-open"); if (got) got.classList.add("obc-got");
+  if (b.st) { const g = obcGhost(b.st, scr, k); g.querySelectorAll(".ob3fld").forEach(f=>f.style.visibility = "hidden");
+    g.animate([{ opacity:1, transform:"none" }, { opacity:0, transform:"translateY(-12px)" }], { duration:180, easing:out, fill:"forwards" }).onfinish = done(g); }
+  const t = got && got.getBoundingClientRect();
+  if (t) b.flds.forEach((f, i) => { const g = obcGhost(f, scr, k), s = Math.min(.6, Math.max(.3, t.height / f[1].height * 1.4));
+    g.style.zIndex = 6; g.style.background = "#fff";
+    g.animate([{ opacity:1, transform:"none" }, { opacity:1, offset:.55 }, { opacity:0, transform:`translate(${(t.left-f[1].left)/k}px,${(t.top+t.height/2-f[1].top-f[1].height*s/2)/k}px) scale(${s})` }],
+      { duration:320, delay:i*40, easing:"cubic-bezier(.4,0,.2,1)", fill:"both" }).onfinish = done(g); });
+}
+const _obcGo = go; // go() sets the new screen before it renders, so the step being left is copied here, first
+go = function() {
+  const b = OBC_ON ? obcSnap() : null;
+  const r = _obcGo.apply(this, arguments);
+  if (b) obcRun(b);
+  return r;
+};
+const _obcPcSet = ob4PcSet;
+ob4PcSet = function(f) {
+  const i = document.getElementById("ob4ini"), was = i && i.textContent;
+  _obcPcSet.apply(this, arguments);
+  if (OBC_ON && i && i.isConnected && i.textContent !== was) { i.classList.remove("obc-pop"); void i.offsetWidth; i.classList.add("obc-pop"); }
+};
+let obcWel = false; // Notify answered: the Welcome renders in place (no go), so it is caught here
+const _obcRender = render;
+render = function() {
+  const r = _obcRender.apply(this, arguments), w = !!STATE.ob3Wel && STATE.screen === "notify";
+  if (OBC_ON && w && !obcWel) { const v = phone.querySelector(".screen > .view"); if (v) { v.classList.add("obc-wel"); v.querySelectorAll(".ob4got > *, .ob4more, .ob3acts > *").forEach((el,i)=>el.style.setProperty("--obc-i", Math.min(i,5))); } }
+  obcWel = w; return r;
+};
+
+</script>
+<script>
+/* ==== Kai stars (Motion design thread, 27 Sep; Apoorv 21:34 and 21:59: the sign-in reel's stars, behind the hi-fi Kai call).
+   The reel's field, ported to one 2D canvas so the call needs no WebGL: the same 3D cloud (an ellipsoid 1.15 : .62 : 1 wide,
+   tall, deep), the same 38 degree camera orbiting on its .11 / .17 clocks and looking at the centre, the same slow turn of the
+   cloud (.2 sin(.16t) + .02t), each point's own small 3D loop (.16 on .31 / .23 / .19 clocks), size and fade by depth, the same
+   .6 to 1 twinkle and soft additive points. Two call rules on top: points are spaced in 3D by a minimum distance, so nothing
+   clumps (Apoorv's no-clusters rule), and they are cool grey-white only (no gold: gold marks people and Kai's K).
+   When someone speaks, the camera eases in a little, the turn quickens, and points near the globe brighten, then settle.
+   Off under reduced motion and webdriver (unless ?motion): one still frame, no animation loop.
+   Use: const s = kaiStars(el, { cx:.5, cy:.36, clear:120 }); s.level(v) each frame or on voice (0 to 1); s.stop(). ==== */
+function kaiStars(host, o) {
+  o = Object.assign({ cx:.5, cy:.4, clear:110, count:520, fadeBottom:.72 }, o || {});
+  const moving = (!navigator.webdriver || /[?&]motion/.test(location.search)) && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const c = document.createElement("canvas"); c.className = "kai-stars"; c.setAttribute("aria-hidden", "true");
+  c.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0";
+  host.insertBefore(c, host.firstChild);
+  const g = c.getContext("2d"); let W = 0, H = 0, dpr = 1, lv = 0, tgt = 0, raf = 0, t0 = performance.now(), last = t0, turn = 0;
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  // the cloud: uniform in the reel's ellipsoid, every point at least MIN apart in 3D (world units; the reel's cloud is 5.2 in radius)
+  const MIN = .62, pts = [];
+  for (let tries = 0; pts.length < o.count && tries < o.count * 40; tries++) {
+    const x = (rnd() * 2 - 1) * 5.98, y = (rnd() * 2 - 1) * 3.22, z = (rnd() * 2 - 1) * 5.2;
+    if ((x / 5.98) ** 2 + (y / 3.22) ** 2 + (z / 5.2) ** 2 > 1) continue;
+    if (pts.some(p => (p.x - x) ** 2 + (p.y - y) ** 2 + (p.z + 1.2 - z) ** 2 < MIN * MIN)) continue;
+    pts.push({ x, y, z:z - 1.2, s:1.2 + rnd() * rnd() * 3.2, sd:rnd() });
+  }
+  // one soft sprite with the reel's falloff, (1 - smoothstep(0, .5, r))^2, in the reel's grey-white
+  const SP = 32, sprite = document.createElement("canvas"); sprite.width = sprite.height = SP;
+  { const sg = sprite.getContext("2d"), im = sg.createImageData(SP, SP);
+    for (let j = 0; j < SP; j++) for (let i = 0; i < SP; i++) { const r = Math.hypot(i + .5 - SP / 2, j + .5 - SP / 2) / SP, u = Math.min(1, r / .5), a = 1 - u * u * (3 - 2 * u);
+      const q = (j * SP + i) * 4; im.data[q] = 214; im.data[q + 1] = 222; im.data[q + 2] = 232; im.data[q + 3] = Math.round(a * a * 255); }
+    sg.putImageData(im, 0, 0); }
+  function size() { const b = host.getBoundingClientRect(), w = host.clientWidth || b.width, h = host.clientHeight || b.height; if (!w || !h) return false;
+    dpr = Math.min(window.devicePixelRatio || 1, 2); if (w === W && h === H) return true; W = w; H = h; c.width = W * dpr; c.height = H * dpr; return true; }
+  function draw(now) {
+    const dt = Math.min(.05, Math.max(0, now - last) / 1000), t = (now - t0) / 1000; last = now;
+    lv += (tgt - lv) * (1 - Math.exp(-dt * 4)); turn += dt * (.02 + lv * .05);
+    g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); g.globalCompositeOperation = "lighter";
+    // the reel's camera: orbit on .11 / .17, resting at z 9, easing in toward 8.4 with the voice; looks at the centre
+    const ex = Math.sin(t * .11) * .35, ey = Math.sin(t * .17) * .12, ez = 9 - lv * .6, el = Math.hypot(ex, ey, ez);
+    const fx = -ex / el, fy = -ey / el, fz = -ez / el;
+    let rx = -fz, rz = fx; const rl = Math.hypot(rx, rz); rx /= rl; rz /= rl; // right = forward x (0,1,0)
+    const ux = -rz * fy, uy = rz * fx - rx * fz, uz = rx * fy; // up = right x forward
+    const ry = .2 * Math.sin(t * .16) + (moving ? turn : .04), cr = Math.cos(ry), sr = Math.sin(ry);
+    const cx = W * o.cx, cy = H * o.cy, foc = (H / 2) / Math.tan(19 * Math.PI / 180);
+    for (const p of pts) {
+      const px = p.x + .16 * Math.sin(t * .31 + p.sd * 6.28), py = p.y + .16 * Math.cos(t * .23 + p.sd * 4.1), pz = p.z + .16 * Math.sin(t * .19 + p.sd * 5.3);
+      const dx = px * cr + pz * sr - ex, dy = py - ey, dz = -px * sr + pz * cr - ez; // turn the cloud, then relative to the camera
+      const depth = dx * fx + dy * fy + dz * fz; if (depth < .6) continue;
+      const sx = cx + (dx * rx + dz * rz) / depth * foc, sy = cy - (dx * ux + dy * uy + dz * uz) / depth * foc;
+      if (sx < -8 || sy < -8 || sx > W + 8 || sy > H + 8) continue;
+      const d = Math.hypot(sx - cx, sy - cy), clear = Math.min(1, Math.max(0, (d - o.clear) / 60)); // nothing sits on the globe
+      const low = Math.min(1, Math.max(0, (H * .98 - sy) / (H * (1 - o.fadeBottom)))); // or under the call buttons
+      const fade = 1 - Math.min(1, Math.max(0, (depth - 5) / 10)) * .85, tw = .6 + .4 * Math.sin(t * 1.1 + p.sd * 40);
+      const near = Math.max(0, 1 - d / (o.clear * 3));
+      const a = fade * tw * clear * low * (1 + near * lv * 1.2); if (a < .02) continue;
+      const r = p.s * (8.5 / depth) * (1 + near * lv * .35); // gl_PointSize is a diameter; the sprite's soft edge eats the rest
+      g.globalAlpha = Math.min(1, a); g.drawImage(sprite, sx - r, sy - r, r * 2, r * 2);
+    }
+    g.globalAlpha = 1; g.globalCompositeOperation = "source-over";
+  }
+  function loop(now) { if (!host.isConnected) return stop(); if (!document.hidden && size()) draw(now); raf = requestAnimationFrame(loop); }
+  function stop() { cancelAnimationFrame(raf); raf = 0; removeEventListener("resize", onResize); }
+  const onResize = () => { if (size() && !moving) draw(t0 + 2000); };
+  addEventListener("resize", onResize);
+  if (moving) raf = requestAnimationFrame(loop); else if (size()) draw(t0 + 2000); else requestAnimationFrame(() => size() && draw(t0 + 2000));
+  return { level(v) { tgt = Math.max(0, Math.min(1, v || 0)); }, stop, canvas:c };
+}
+
+/* ==== Welcome, the end of onboarding (Motion design thread, 27 Sep; Apoorv 22:34). Load after onboard4.js, obc.js and
+   kai-stars.js (wireframes/motion-research/kai-stars/). Replaces ob3Welcome; uses the onboarding thread's live card (ob4Pc),
+   so whatever that card absorbs from LinkedIn shows here too, and only fields the member filled in.
+   Motion runs once per arrival, about 2.4 s, and never blocks the button. Off under reduced motion and webdriver (unless
+   ?motion): the finished screen and one still frame of the field. ==== */
+const OBW_ON = typeof MO_ON !== "undefined" ? MO_ON
+  : (!navigator.webdriver || /[?&]motion/.test(location.search)) && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const OBW_E = "cubic-bezier(.2,.8,.2,1)", OBW_X = "cubic-bezier(.16,1,.3,1)"; // the house decel, and expo-out for the logo resolving
+
+function obwHTML(d) {
+  return `<div class="body" style="padding:0"><div class="obw">
+    <div class="obw-mid"><div class="obw-top"><div class="obw-logo" role="img" aria-label="Key"></div></div>
+    <h1>You're in, ${d.first}.</h1>
+    <div class="obw-stage"><div class="obw-card">${d.card}
+      <div class="obw-foot">Member since ${d.since}</div><div class="obw-sheen"></div></div></div></div>
+    <div class="obw-go"><button type="button" onclick="${d.go}">Enter Key</button></div>
+  </div></div>`;
+}
+// Their card as it stood at the last step, every row settled; rows they left empty are not shown.
+function obwCard() {
+  if (typeof ob4Pc !== "function") return "";
+  return ob4Pc("links").replace(/ is-now/g, " is-done").replace(/<div class="ob4pc-f [^"]*is-empty[^"]*"[^>]*>[\s\S]*?<\/div>/g, "");
+}
+function obwSince() { return new Date().toLocaleString("en-US", { month:"long", year:"numeric" }); }
+
+function obwPlay(root, first) {
+  const q = s => root.querySelector(s), card = q(".obw-card");
+  const stars = typeof kaiStars === "function" ? kaiStars(root, { cx:.5, cy:.1, clear:0, fadeBottom:.86 }) : null;
+  obwTilt(card);
+  if (!OBW_ON || !first) return;
+  const a = (el, kf, o) => el && el.animate(kf, Object.assign({ fill:"backwards", easing:OBW_E }, o));
+  // 1 the field comes up and the camera eases in, as if arriving; it settles by 2.2 s
+  if (stars) { a(stars.canvas, [{ opacity:0 }, { opacity:1 }], { duration:900, easing:"ease-out" });
+    const t0 = performance.now(); (function lean(now) { const t = (now - t0) / 1000; stars.level(t < .4 ? t / .4 * .7 : Math.max(0, .7 * (1 - (t - .4) / 1.8)));
+      if (t < 2.3 && root.isConnected) requestAnimationFrame(lean); })(t0); }
+  // 2 Key's logo writes itself in, left to right, rising a few pixels as it goes
+  a(q(".obw-logo"), [{ opacity:0, transform:"translateY(10px)", clipPath:"inset(0 100% 0 0)" }, { opacity:1, transform:"none", clipPath:"inset(0 0% 0 0)" }], { duration:800, delay:150, easing:"cubic-bezier(.65,0,.35,1)" });
+  // 3 their name
+  a(q("h1"), [{ opacity:0, transform:"translateY(14px)" }, { opacity:1, transform:"none" }], { duration:500, delay:650 });
+  // 4 the card is issued: up from below, tipped back, settling flat (Wallet adding a card)
+  a(card, [{ opacity:0, transform:"translateY(140px) rotateX(-32deg) scale(.92)" }, { opacity:1, transform:"none" }], { duration:950, delay:850, easing:"cubic-bezier(.2,.9,.25,1)" });
+  a(q(".obw-foot"), [{ opacity:0, transform:"translateY(6px)" }, { opacity:1, transform:"none" }], { duration:400, delay:1550 });
+  // 5 the way in
+  a(q(".obw-go"), [{ opacity:0, transform:"translateY(16px)" }, { opacity:1, transform:"none" }], { duration:500, delay:1650 });
+}
+// Once it has landed the card answers a finger or pointer: up to 6 degrees of tilt and a soft light where you touch.
+function obwTilt(card) {
+  if (!card || !OBW_ON) return;
+  const set = e => { const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height; if (x < 0 || x > 1 || y < 0 || y > 1) return;
+    card.style.transition = "transform 120ms ease-out"; card.classList.add("is-tilt");
+    card.style.transform = `rotateX(${((.5 - y) * 12).toFixed(2)}deg) rotateY(${((x - .5) * 12).toFixed(2)}deg)`;
+    card.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); card.style.setProperty("--my", (y * 100).toFixed(1) + "%"); };
+  const off = () => { card.style.transition = `transform 600ms ${OBW_E}`; card.style.transform = ""; card.classList.remove("is-tilt"); };
+  card.addEventListener("pointermove", set); card.addEventListener("pointerdown", set);
+  card.addEventListener("pointerleave", off); card.addEventListener("pointerup", off); card.addEventListener("pointercancel", off);
+}
+
+if (typeof ob3Welcome === "function" && typeof render === "function") {
+  ob3Welcome = function() {
+    const n = (typeof ob4Name === "function" && ob4Name()) || DB.user.name;
+    return obwHTML({ first:ob4Esc(n.split(" ")[0]), card:obwCard(), since:obwSince(), go:"go('home')" });
+  };
+  let obwSeen = false; // plays once per arrival; a re-render while they are on it only restores the field
+  const _obwRender = render;
+  render = function() { const r = _obwRender.apply(this, arguments);
+    const w = typeof phone !== "undefined" && phone.querySelector(".screen > .view .obw");
+    if (w) { obwPlay(w, !obwSeen); obwSeen = true; } else if (!STATE.ob3Wel) obwSeen = false;
+    return r; };
+}
+
 </script>
 </body>
 </html>
