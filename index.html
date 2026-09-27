@@ -3750,9 +3750,9 @@ const GEAR_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" st
 function famHdr() { const f=fam(); return topHdr(f.name, "", `<div class="icon" onclick="go('fsettings')">${GEAR_SVG}</div>`); }
 function topHdr(title, extra="", trailing="") {
   const unreadYou = STATE.persona==="priya" ? notifUnread() + (STATE.member?todayItems().length:0) : 0;
-  return `<div class="hdr top">${av(DB.user.initials)}<div class="t"><span class="tfade">${title}</span></div>${extra}<div class="icon" onclick="STATE.back=STATE.screen;STATE.searchFam=null;go('explore')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div><div class="icon" onclick="go('notifications')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg>${unreadYou?`<span class="badge">${unreadYou}</span>`:''}</div>${trailing}</div>`;
+  return `<div class="hdr top">${av(me().initials)}<div class="t"><span class="tfade">${title}</span></div>${extra}<div class="icon" onclick="STATE.back=STATE.screen;STATE.searchFam=null;go('explore')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div><div class="icon" onclick="go('notifications')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg>${unreadYou?`<span class="badge">${unreadYou}</span>`:''}</div>${trailing}</div>`;
 }
-function av(initials, cls="") { return `<div class="avatar ${cls}" ${initials===DB.user.initials&&cls===""?'data-you="1"':''}>${initials}</div>`; }
+function av(initials, cls="") { return `<div class="avatar ${cls}" ${initials===me().initials&&cls===""?'data-you="1"':''}>${initials}</div>`; }
 
 function render() {
   const S = STATE.screen;
