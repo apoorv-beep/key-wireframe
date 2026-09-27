@@ -1108,14 +1108,19 @@
   --elevation-lift: 0px 2px 4px 0px #0B0E1133, 0px 22px 48px -14px #0B0E11A6;
 }
 
-/* Hi-fi base chrome (Apoorv 27 Sep 22:03; hi-fi copy only). Header icon buttons stand bare (KeyIconButton container=none) on a 40px target;
+/* Hi-fi base chrome (Apoorv 27 Sep 22:03; hi-fi copy only). Header icon buttons stand bare (KeyIconButton container=none) on a 44px target
+   with the bottom nav's glyph, 24px at 1.9 stroke (his 23:13; iOS bars use 22 to 24pt glyphs in 44pt targets, Material 24dp in 48dp);
    every other base icon button and small button is a radius-12 tile. Mic and call controls stay round (their modules own them). */
-.phone .hdr > .icon, .phone .hdr > .back { width:40px; height:40px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
+.phone .hdr > .icon, .phone .hdr > .back { width:44px; height:44px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
+.phone .hdr > .icon svg, .phone .hdr > .back svg, .phone .pbar .pbtn svg { width:24px; height:24px; stroke-width:1.9; }
+.phone .pbar .pbtn { width:44px; height:44px; border-radius:var(--radius-absolute-12); }
+/* One header size on every page: Community (.cmhi, .cmroom) and Messages (#phone.hf-msg) set 40; the doubled classes outrank them. */
+#phone.phone .hdr.hdr > .icon.icon, #phone.phone .hdr.hdr > .back.back { width:44px; height:44px; }
 .phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
-/* Compact phones (SE, 320): the three bare icons narrow to 32 (the 40 height stays the target) and the Messages title steps down to display-s, the size every other tab title uses, so titles keep their room. */
-@media (max-width:360px) { .phone .hdr.top { gap:0; } .phone .hdr.top > .icon { width:32px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; }
+/* Compact phones (SE, 320): the three bare icons narrow to 40 (the 44 height stays the target, the 24 glyph never shrinks) and the Messages title steps down to display-s, the size every other tab title uses, so titles keep their room. */
+@media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; }
   #phone.hf-msg .hdr.top > div.t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); } }
 
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
@@ -3216,12 +3221,12 @@ p,
   /* ==== HIGH FIDELITY, 27 Sep (events thread; Apoorv 20:28). The blend, drawn only from Design system's variables: key-tokens.css loads before this file.
      The event card and its parts are styled everywhere they appear. .evx-hi marks the Events screens an event's theme doesn't paint (Events, Calendars,
      a calendar page and its Manage) and .evx-sh wraps Events' sheets; both point the base colours at the tokens, the way a theme does. ==== */
-  .screen:has(> .body.evx-hi), .evx-sh { --ink:var(--text-primary); --ink2:var(--text-secondary); --ink3:var(--text-tertiary); --line:var(--border-default); --fill:var(--bg-fill-default); --fill2:var(--bg-fill-strong); --danger:var(--state-danger-default); }
-  #phone:has(> .screen > .body.evx-hi), #phone > .screen:has(> .body.evx-hi) { background:var(--bg-page); }
+  .screen:has(.body.evx-hi), .evx-sh { --ink:var(--text-primary); --ink2:var(--text-secondary); --ink3:var(--text-tertiary); --line:var(--border-default); --fill:var(--bg-fill-default); --fill2:var(--bg-fill-strong); --danger:var(--state-danger-default); }
+  #phone:has(> .screen .body.evx-hi), #phone > .screen:has(.body.evx-hi) { background:var(--bg-page); }
   .evx-sh { display:contents; --line:var(--border-subtle); }
-  .screen:has(> .body.evx-hi) > .hdr .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+  .screen:has(.body.evx-hi) .hdr .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
   /* Header icons stand bare, except on a themed event screen, where they keep the glass plate over the artwork; every other icon button and button is a radius-12 tile; pills, tags and the mic stay round (Apoorv 22:03, Design system 22:06) */
-  .screen:has(> .body.evx-hi) > .hdr .icon, .screen:has(> .body.evx-hi) > .hdr .back { background:transparent; border-color:transparent; color:var(--text-primary); }
+  .screen:has(.body.evx-hi) .hdr .icon, .screen:has(.body.evx-hi) .hdr .back { background:transparent; border-color:transparent; color:var(--text-primary); }
   .evx-hi .lbl, .evx-sh .lbl { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
   .evx-hi .xs, .evx-sh .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
   .evx-sh .sm { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); }
@@ -3233,7 +3238,7 @@ p,
   .evx-hi .btn.ghost, .evx-sh .btn.ghost { background:transparent; border-color:transparent; color:var(--component-button-ghost-ink); }
   .evx-hi .btn.sm, .evx-sh .btn.sm, .evx-card .btn.sm { font:var(--type-label); letter-spacing:var(--type-label-tracking); border-radius:var(--radius-absolute-12); }
   /* The calendar page's button pair: one line each down to 320, the pair equal height */
-  .evx-hi .evx-cact .btn { display:inline-flex; align-items:center; justify-content:center; min-width:0; min-height:var(--space-absolute-48); padding:0 var(--space-absolute-12); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); white-space:nowrap; }
+  .evx-hi .evx-cact .btn { display:inline-flex; align-items:center; justify-content:center; min-width:0; min-height:var(--space-absolute-48); padding:0 var(--space-absolute-16); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); white-space:nowrap; }
   .evx-card .btn.sm { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); padding:8px 14px; }
   /* KeyChip, KeyFilterRail; Follow is the call to act and Following settles into a tonal chip, as a subscribe button does */
   .evx-hi .pill, .evx-sh .pill { font:var(--type-label); letter-spacing:var(--type-label-tracking); background:var(--component-chip-bg); border-color:var(--component-chip-border); color:var(--component-chip-ink); }
@@ -3465,6 +3470,10 @@ p,
   .evx-foot { flex-wrap:wrap; row-gap:var(--space-absolute-6); }
   /* Short or narrow screens (320 x 568, 360 wide): the cover and roll go 3:2 and the title one size down, so the whole name clears the floating RSVP / Manage bar */
   @media (max-height: 600px), (max-width: 360px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); } }
+  /* The calendar page's Add to calendar: the full label from 360 up; below 360 a calendar-plus icon and "Add", sized to its content, so both buttons keep their 16 padding */
+  .btn.evx-sync { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-absolute-6); }
+  .btn.evx-sync svg.li { display:none; margin:0; flex:none; }
+  @media (max-width: 359px) { .evx-cact:has(> .evx-sync) { display:grid; grid-template-columns:minmax(0, 1fr) auto; } .btn.evx-sync svg.li { display:block; } .evx-sync-x { display:none; } }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -4166,6 +4175,8 @@ p,
 .mo-bub p { margin:0; font-size:15px; font-weight:600; padding:10px 14px; max-width:78%; box-shadow:0 14px 30px -12px rgba(0,0,0,.7); }
 .mo-bub.them p { background:var(--mo-on-deep); color:var(--mo-ink); border-radius:18px 18px 18px 6px; }
 .mo-bub.me p { background:var(--mo-deep-fill); color:var(--mo-on-deep); border-radius:18px 18px 6px 18px; box-shadow:inset 0 0 0 1px rgba(249,250,252,.08), 0 14px 30px -12px rgba(0,0,0,.7); }
+/* Compact phones (320): the reply bubble wrapped to two lines and slid under the card; one line at 13px. */
+@media (max-width:360px) { .mo-bub p { font-size:13px; padding:9px 12px; } }
 
 /* the path card: one actionable thing, lifted while it asks something of you */
 .mo-card { position:absolute; left:14px; right:14px; bottom:16px; z-index:5; background:var(--mo-surface); color:var(--mo-ink); border-radius:20px; padding:14px 14px 12px;
@@ -4807,6 +4818,9 @@ p,
 #phone:has(.hdr .mx-hav) .chatbody .dsep { position:sticky; top:8px; z-index:2; }
 #phone:has(.hdr .mx-hav) .chatbody .dsep::before { display:none; }
 #phone:has(.hdr .mx-hav) .chatbody .dsep span { display:inline-block; min-width:112px; box-sizing:border-box; }
+#phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { opacity:0; pointer-events:none; transition:opacity .2s ease; }
+#phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin { opacity:1; }
+@media (prefers-reduced-motion: reduce) { #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { transition:none; } }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -5189,6 +5203,162 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 /* Apoorv 23:08: no dotted rings on avatars in hi-fi. Letter tiles (company, date, family) lose the ring too and sit on a soft fill instead. */
 .avatar, .hav, .hfaces span, .bav, .navt, .mopt .mi, .famchip i { border-style:solid !important; border-color:transparent !important; }
 .avatar:not(.ph-face):not(.kn-on), .hav:not(.ph-face), .hfaces span:not(.ph-face), .bav:not(.ph-face), .navt:not(.ph-face) { background-color:var(--fill); }
+
+/* Onboarding hi-fi layer (Motion thread, 27 Sep; Apoorv 23:09: "identify if theres anything which is still lofi ... make hifi for those").
+   Hi-fi copy only. obh.js puts .hf-ob on #phone while an onboarding step is up, so nothing here reaches another screen or the wireframe.
+   Type is the 14 --type-* styles, colour, radius and depth are key-tokens.css names. The Welcome keeps its own obw.css. */
+#phone.hf-ob .screen { background:var(--bg-page); }
+#phone.hf-ob svg.li { stroke-width:1.75; }
+
+/* Step header: bare chevron on a 40px target, caption count, 4px progress in ink */
+#phone.hf-ob .ob3hdr { padding:6px 12px 8px 8px; }
+#phone.hf-ob .ob3hdr .back, #phone.hf-ob .hdr > .back { width:40px; height:40px; border:0; border-radius:var(--radius-absolute-12); background:transparent; color:var(--icon-primary); display:grid; place-items:center; }
+#phone.hf-ob .ob3hdr .n { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); font-variant-numeric:tabular-nums; }
+#phone.hf-ob .ob3bar i { height:4px; border-radius:var(--radius-absolute-2); background:var(--bg-fill-strong); }
+#phone.hf-ob .ob3bar i.d { background:var(--bg-inverse-default); }
+
+/* Step copy */
+#phone.hf-ob .ob3t { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); color:var(--text-primary); text-wrap:balance; }
+#phone.hf-ob .ob3sub { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-secondary); margin-top:8px; }
+#phone.hf-ob .ob3sub b { font-weight:600; color:var(--text-primary); }
+#phone.hf-ob .ob3priv, #phone.hf-ob .obl-srcnote { font:var(--type-body-s); color:var(--text-tertiary); }
+
+/* KeyField: white surface, default hairline, ink at focus, caption label */
+#phone.hf-ob .ob3fld { background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); padding:10px 14px 12px; gap:4px; margin-top:12px; transition:border-color .16s; }
+#phone.hf-ob .ob3fld:focus-within { border-color:var(--bg-inverse-default); box-shadow:0 0 0 1px var(--bg-inverse-default); }
+#phone.hf-ob .ob3fld label { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-ob .ob3fld input { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-ob .ob3fld input::placeholder { color:var(--text-disabled); font-weight:400; }
+#phone.hf-ob .ob3chips .chip { font:var(--type-label); letter-spacing:var(--type-label-tracking); height:36px; padding:0 14px; display:inline-flex; align-items:center; border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); color:var(--text-primary); }
+
+/* Buttons: primary ink, text buttons without underlines */
+#phone.hf-ob .foot { background:var(--bg-page); border-top-color:var(--border-subtle); }
+#phone.hf-ob .foot .btn { font:var(--type-button-l); letter-spacing:var(--type-button-l-tracking); background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); color:var(--text-inverse); border-radius:var(--radius-absolute-16); }
+#phone.hf-ob .foot .btn:disabled { opacity:1; background:var(--bg-fill-strong); border-color:var(--bg-fill-strong); color:var(--text-disabled); }
+#phone.hf-ob .foot .btn.ghost, #phone.hf-ob .foot .ob4skip { background:transparent; border-color:transparent; font:var(--type-body-m-strong); color:var(--text-secondary); }
+#phone.hf-ob .obh-tb, #phone.hf-ob .obl-lnk { border:0; background:none; padding:0; font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-primary); text-decoration:none; cursor:pointer; }
+#phone.hf-ob .obh-tbs { display:flex; align-items:center; gap:16px; margin-top:16px; font:var(--type-body-s); color:var(--text-tertiary); }
+
+/* Sign in */
+#phone.hf-ob .ob3sign h1 { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); color:var(--text-primary); text-wrap:balance; }
+#phone.hf-ob .ob3sign .ob3num { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); margin-top:10px; }
+#phone.hf-ob .invchip { gap:8px; padding:4px 12px 4px 4px; border:var(--border-width-hairline) solid var(--border-default); background:var(--bg-surface-default); border-radius:var(--radius-absolute-infinite); font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-ob .invchip b { font-weight:600; color:var(--text-primary); }
+#phone.hf-ob .invchip .obh-fam { width:24px; height:24px; border-radius:var(--radius-absolute-6); overflow:hidden; display:grid; place-items:center; flex:none; background:none; }
+#phone.hf-ob .obh-fam svg { width:100%; height:100%; display:block; }
+#phone.hf-ob .ob4em { border:var(--border-width-thin) solid var(--bg-inverse-default); border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); padding:4px 4px 4px 16px; }
+#phone.hf-ob .ob4em input { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); font-weight:400; color:var(--text-primary); }
+#phone.hf-ob .ob4em input::placeholder { color:var(--text-disabled); }
+#phone.hf-ob .ob4em button { border-radius:var(--radius-absolute-8); background:var(--bg-inverse-default); color:var(--icon-inverse); }
+#phone.hf-ob .ob4or { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-ob .ob4or::before, #phone.hf-ob .ob4or::after { background:var(--border-default); }
+#phone.hf-ob .ob4soc { gap:12px; }
+#phone.hf-ob .ob4soc button { width:64px; height:52px; border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--border-default); background:var(--bg-surface-default); color:var(--icon-primary); box-shadow:var(--elevation-1); }
+#phone.hf-ob .ob4last { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-inverse-default); color:var(--text-inverse); padding:3px 7px; }
+#phone.hf-ob .ob3legal { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+@media (max-height:600px) { #phone.hf-ob .ob3sign h1 { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); } }
+#phone.hf-ob .ob3sign:has(.mo-promo) h1 { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); }
+
+/* The marketing reel on the sign-in screen, onto the type scale */
+#phone.hf-ob .mo-ask .k { font:var(--type-title); letter-spacing:var(--type-title-tracking); }
+#phone.hf-ob .mo-ask .u, #phone.hf-ob .mo-nm { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); }
+#phone.hf-ob .mo-chip em, #phone.hf-ob .mo-state, #phone.hf-ob .mo-why .tg { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+#phone.hf-ob .mo-chip b, #phone.hf-ob .mo-push b, #phone.hf-ob .mo-btn, #phone.hf-ob .mo-going { font:var(--type-body-m-strong); }
+#phone.hf-ob .mo-push em, #phone.hf-ob .mo-ro, #phone.hf-ob .mo-why { font:var(--type-body-s); }
+#phone.hf-ob .mo-push .tm, #phone.hf-ob .mo-evk, #phone.hf-ob .mo-stats em { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+#phone.hf-ob .mo-bub p { font:var(--type-body-m); }
+#phone.hf-ob .mo-skip, #phone.hf-ob .mo-evm, #phone.hf-ob .mo-stats span { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+#phone.hf-ob .mo-evt { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); }
+#phone.hf-ob .mo-stats b { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); }
+#phone.hf-ob .mo-push { border-radius:var(--radius-absolute-16); }
+#phone.hf-ob .mo-push .ic { border-radius:var(--radius-absolute-8); }
+#phone.hf-ob .mo-ev { border-radius:var(--radius-absolute-24); }
+
+/* Code */
+#phone.hf-ob .otp { gap:8px; margin-top:20px; }
+#phone.hf-ob .otp .ob { height:60px; border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); font:var(--type-display-m); color:var(--text-primary); font-variant-numeric:tabular-nums; }
+#phone.hf-ob .otp .ob.on { border:var(--border-width-focus) solid var(--bg-inverse-default); }
+#phone.hf-ob .otp .ob.on::after { content:""; width:2px; height:26px; border-radius:1px; background:var(--bg-inverse-default); animation:obh-caret 1.1s steps(1) infinite; }
+@keyframes obh-caret { 50% { opacity:0; } }
+
+/* Live profile card: white surface, elevation-1, no outline */
+#phone.hf-ob .ob4pc { border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); }
+#phone.hf-ob .ob4pc-av { background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
+#phone.hf-ob .ob4pc-av i { background:var(--bg-surface-default); box-shadow:var(--elevation-1); color:var(--icon-primary); }
+#phone.hf-ob .ob4pc .ob4pc-name { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.hf-ob .ob4pc-f, #phone.hf-ob .ob4pc-r { font:var(--type-body-m); color:var(--text-secondary); }
+#phone.hf-ob .ob4pc-r { color:var(--text-primary); }
+#phone.hf-ob .ob4pc-f svg, #phone.hf-ob .ob4pc-r svg, #phone.hf-ob .ob4pc-ics svg { color:var(--icon-tertiary); }
+#phone.hf-ob .ob4pc-f.is-empty span { color:var(--text-disabled); font-weight:400; }
+#phone.hf-ob .ob4pc-f.is-now.is-empty span { border-bottom:var(--border-width-thin) dashed var(--border-strong); }
+#phone.hf-ob .ob4pc-li { border-top-color:var(--border-subtle); }
+#phone.hf-ob .ob4pc-r small, #phone.hf-ob .ob4pc-src { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); font-variant-numeric:tabular-nums; }
+
+/* Location: a drawn street map (obh.js) and one ink pin; blank until they share or type a city */
+#phone.hf-ob .ob3map { background:var(--bg-fill-default); }
+#phone.hf-ob .ob3map::before, #phone.hf-ob .ob3map::after { content:""; position:absolute; left:0; right:0; pointer-events:none; }
+#phone.hf-ob .ob3map::before { top:0; height:110px; background:linear-gradient(var(--bg-page) 30%, transparent); z-index:1; }
+#phone.hf-ob .ob3map::after { bottom:0; height:96px; background:linear-gradient(transparent, var(--bg-page)); }
+#phone.hf-ob .ob3map .top { z-index:2; }
+#phone.hf-ob .ob4blank > svg { opacity:.55; filter:none; }
+#phone.hf-ob .ob4ask { width:56px; height:56px; border:0; border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); box-shadow:var(--elevation-2); color:var(--icon-secondary); z-index:1; }
+#phone.hf-ob .ob4loc { height:52px; border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ob .ob4locpc { margin-top:-56px; }
+
+/* Links */
+#phone.hf-ob .obl-q { background:var(--bg-surface-default); border-radius:var(--radius-absolute-16); padding:14px 16px 16px; box-shadow:var(--elevation-1); }
+#phone.hf-ob .obl-ql { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
+#phone.hf-ob .obl-qc { gap:8px; margin-top:10px; }
+#phone.hf-ob .obl-qc span { font:var(--type-label); letter-spacing:var(--type-label-tracking); padding:7px 12px; border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-default); border:0; color:var(--text-primary); }
+#phone.hf-ob .obl-bar { height:2px; border-radius:1px; background:var(--bg-fill-strong); margin-top:16px; }
+#phone.hf-ob .obl-bar i { background:var(--bg-inverse-default); }
+#phone.hf-ob .obl-stage { font:var(--type-body-s); color:var(--text-secondary); margin-top:10px; }
+#phone.hf-ob .obl-st { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
+#phone.hf-ob .obl-cand, #phone.hf-ob .obl-row, #phone.hf-ob .obl-adder, #phone.hf-ob .obl-st + .obl-cand, #phone.hf-ob .obl-st + .obl-row { border-color:var(--border-default); }
+#phone.hf-ob .obl-cand .a, #phone.hf-ob .obl-pk .a, #phone.hf-ob .obl-row .a, #phone.hf-ob .obl-adder .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ob .obl-cand .b, #phone.hf-ob .obl-pk .b, #phone.hf-ob .obl-row .b { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-ob .obl-cand .ini { background:var(--bg-fill-default); font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ob .obl-me { font:var(--type-label); background:var(--bg-inverse-default); color:var(--text-inverse); border-radius:var(--radius-absolute-12); padding:9px 14px; }
+#phone.hf-ob .obl-row .ic, #phone.hf-ob .obl-adder .ic { width:40px; height:40px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-ob .obl-row em { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-secondary); background:var(--bg-fill-default); padding:3px 8px; border-radius:var(--radius-absolute-infinite); }
+#phone.hf-ob .obl-x { width:40px; height:40px; border-radius:var(--radius-absolute-12); color:var(--icon-tertiary); }
+#phone.hf-ob .obl-more { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ob .obl-adder { border-bottom:var(--border-width-thin) solid var(--bg-inverse-default); }
+#phone.hf-ob .obl-adder input { font:var(--type-body-m); }
+#phone.hf-ob .obl-note, #phone.hf-ob .obl-know b { font:var(--type-caption); color:var(--text-tertiary); }
+
+/* Connect: rows with hairlines, 40px icon tiles, KeyToggle */
+#phone.hf-ob .ob4list { border-top-color:var(--border-default); margin-top:20px; }
+#phone.hf-ob .ob4row { gap:14px; padding:16px 0; border-bottom-color:var(--border-default); }
+#phone.hf-ob .ob4row .ic { width:40px; height:40px; border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); box-shadow:inset 0 0 0 1px var(--border-default); color:var(--icon-primary); }
+#phone.hf-ob .ob4row b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-ob .ob4row .xs { font:var(--type-body-s); color:var(--text-secondary); margin-top:2px; }
+#phone.hf-ob .ob4sw { width:51px; height:31px; border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-strong); transition:background .2s cubic-bezier(.2,.8,.2,1); }
+#phone.hf-ob .ob4sw::after { width:27px; height:27px; top:2px; left:2px; background:var(--bg-surface-default); box-shadow:var(--elevation-1); transition:transform .24s cubic-bezier(.2,.8,.2,1); }
+#phone.hf-ob .ob4sw.on { background:var(--bg-inverse-default); }
+#phone.hf-ob .ob4sw.on::after { left:2px; transform:translateX(20px); }
+#phone.hf-ob .ob4mail .chip { font:var(--type-label); border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--border-default); background:var(--bg-surface-default); }
+
+/* Notify: three real-looking lock-screen notifications on the deep plate */
+#phone.hf-ob .ob3lock { background:var(--bg-deep); border-radius:var(--radius-absolute-24); padding:12px; gap:8px; margin-top:12px; }
+#phone.hf-ob .ob3n, #phone.hf-ob .ob3n:nth-child(2), #phone.hf-ob .ob3n:nth-child(3) { background:var(--bg-page); border-radius:var(--radius-absolute-20); padding:12px 14px 12px 12px; gap:2px; }
+#phone.hf-ob .ob3n .h { gap:10px; font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ob .ob3n .h em { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-ob .ob3n .b { font:var(--type-body-s); color:var(--text-secondary); padding-left:42px; margin-top:-8px; }
+#phone.hf-ob .ob3n .avatar { width:32px; height:32px; flex:none; font:var(--type-label-strong); background:var(--bg-fill-default); color:var(--text-primary); border-radius:50%; }
+#phone.hf-ob .ob3n .avatar.obh-fam { border-radius:var(--radius-absolute-8); overflow:hidden; background:none; }
+#phone.hf-ob .ob3n .avatar.obh-kai { background:none; }
+#phone.hf-ob .ob3n .avatar.obh-kai svg { width:32px; height:32px; }
+#phone.hf-ob .ob3n .h { align-items:flex-start; }
+#phone.hf-ob .ob3n .h .obh-t { flex:1; min-width:0; padding-top:1px; font:var(--type-body-m-strong); color:var(--text-primary); }
+
+@media (max-width:360px) {
+  #phone.hf-ob .ob3t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
+  #phone.hf-ob .ob4soc button { width:56px; height:48px; }
+  #phone.hf-ob .otp { gap:6px; } #phone.hf-ob .otp .ob { height:52px; }
+  #phone.hf-ob .mo-bub p { font:var(--type-body-s); font-weight:600; }
+}
+@media (prefers-reduced-motion:reduce) { #phone.hf-ob .otp .ob.on::after { animation:none; } #phone.hf-ob .ob4sw, #phone.hf-ob .ob4sw::after { transition:none; } }
 </style>
 </head>
 <body>
@@ -11471,8 +11641,8 @@ sCalendar = function(id){
   const submit = !admin && (c.accepts==="anyone" || (c.accepts==="members" && evMemberOf(c)));
   const actions = admin
     ? `<button class="btn" style="flex:1" data-evnewon="${c.id}">Add event</button><button class="btn sec" style="flex:1" data-evgo="cal:${c.id}.manage">Manage${(c.requests||[]).length?` · ${c.requests.length}`:""}</button>`
-    : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`
-    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec" style="flex:1" data-evsheet="evsync|${c.id}">Add to calendar</button>`}`;
+    : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`
+    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`}`;
   const up = evs.filter(e=>!e.past);
   let pane = "";
   if (tab==="past") pane = evCalPast(c, evs);
@@ -15901,6 +16071,16 @@ toast = function(t, undo) { return _mxToast(typeof t==="string" ? t.replace(MX_W
 const _mxSheet = portSheet;
 portSheet = function(type, id) { const h=_mxSheet(type, id); return typeof h==="string" ? h.replace(MX_WHERE, MX_NOW) : h; };
 
+/* ---- pinned date pill (hosting's SE check, 23:07): like WhatsApp and Telegram, the pinned date shows while you scroll and fades once you stop, so it never sits on the first sender's name ---- */
+function mxPins(cb) { const t = cb.getBoundingClientRect().top; cb.querySelectorAll(".dsep").forEach(d => d.classList.toggle("mx-pin", d.getBoundingClientRect().top - t <= 9)); }
+let _mxIdle;
+document.addEventListener("scroll", e => {
+  const cb = e.target; if (!(cb instanceof Element) || !cb.classList.contains("chatbody")) return;
+  mxPins(cb); cb.classList.add("mx-scrolling"); clearTimeout(_mxIdle); _mxIdle = setTimeout(() => cb.classList.remove("mx-scrolling"), 1200);
+}, true);
+const _mxRender = render;
+render = function(...a) { const r = _mxRender.apply(this, a); const cb = document.querySelector("#phone .chatbody"); if (cb) requestAnimationFrame(() => mxPins(cb)); return r; };
+
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
    Event chats keep Events' theme; channels and chat details belong to Community.
@@ -16290,7 +16470,7 @@ function obL() { return STATE.obL || (STATE.obL = { phase:null, pick:null, links
 function obLCands() { // what the search returns for the name, work and city they gave; the first matches all three
   const n = ob4Name() || DB.user.name, h = n.toLowerCase().replace(/\s+/g,""), c = ob3City() || "San Francisco", w = ob4Work() || "Product manager at Google";
   const me = { id:"a", n, h:w, c, url:"linkedin.com/in/"+h, match:true,
-    roles:[[w,"2022 to now"],["Associate PM at Flipkart","2019 to 2022"],["Analyst at Deloitte","2017 to 2019"]], schools:[["University of Michigan","MBA"],["IIT Bombay","B.Tech"]],
+    roles:[[w,"2020 to now"],["Associate PM at Flipkart","2017 to 2020"],["Analyst at Deloitte","2015 to 2017"]], schools:[["University of Michigan","MBA"],["IIT Bombay","B.Tech"]],
     found:[["github","GitHub","github.com/"+n.split(" ")[0].toLowerCase()+"codes"],["site","Website",n.split(" ")[0].toLowerCase()+".design"]] };
   const other = (id, hh, city, u) => ({ id, n, h:hh, c:city, url:"linkedin.com/in/"+u, roles:[[hh,"2021 to now"]], schools:[], found:[] });
   const m = STATE.obLMode || "many";
@@ -16380,12 +16560,30 @@ portSheet = function(type, id) { return type==="oblinks" ? `<h2>Add your links</
 const _ob4Walk = walkSteps;
 walkSteps = function() {
   const has = (STATE.ob4Links||[]).length;
-  return [{ id:"links", title:"Add your links", why:"LinkedIn, GitHub, your website. You pick what shows.", done:!!has, doneLine: has ? [STATE.ob4Links.map(x=>x[1]).join(", "), STATE.obLAdded].filter(Boolean).join(". ") : "", expand:"Change them any time under You.", cta:"Add links", act:"openSheet('oblinks','')" }, ..._ob4Walk.apply(this, arguments)];
+  return [..._ob4Walk.apply(this, arguments), { id:"links", title:"Add your links", why:"LinkedIn, GitHub, your website. You pick what shows.", done:!!has, doneLine: has ? [STATE.ob4Links.map(x=>x[1]).join(", "), STATE.obLAdded].filter(Boolean).join(". ") : "", expand:"Change them any time under You.", cta:"Add links", act:"openSheet('oblinks','')" }];
 };
 const _ob4Links = profileLinks;
 profileLinks = function(pid) { return pid==="priya" ? (STATE.ob4Links||[]) : _ob4Links.apply(this, arguments); };
 const _ob4WalkHTML = walkHTML;
-walkHTML = function() { return _ob4WalkHTML.apply(this, arguments).replace("First, pick where you belong. Two short steps after that, and Kai takes it from there.", "Start with your profile, then pick where you belong. Kai takes it from there."); };
+walkHTML = function() { return _ob4WalkHTML.apply(this, arguments).replace("First, pick where you belong. Two short steps after that, and Kai takes it from there.", "First, pick where you belong. Kai takes it from there."); };
+
+/* The Xoogler application prefills only from what onboarding gathered: the LinkedIn import when they picked their account, else what they typed. */
+const _ob4AppQs = APP_PAGES.map(pg=>pg.qs.map(q=>q.slice()));
+const _ob4App = sApplication;
+sApplication = function() {
+  APP_PAGES.forEach((pg,i)=>{ pg.qs = _ob4AppQs[i].map(q=>q.slice()); });
+  if (ob4Name()) {
+    const p = obL().phase==="picked" && obL().pick, g = p && p.roles.find(r=>/google/i.test(r[0])), co = ob3Co(), atG = /google/i.test(co);
+    const from = g ? +(g[1].match(/\d{4}/)||[])[0] : 0, row = (q, v) => { const x = APP_PAGES[0].qs.find(y=>y[0]===q); x[1] = v; x[2] = !!v; };
+    row("Full name", ob4Name());
+    row("Employment at Google", g ? `From your LinkedIn · ${from} to present` : atG ? `${ob3Role() ? ob3Role()+", " : ""}${co}` : "");
+    row("Years at Google", from ? String(new Date().getFullYear() - from) : "");
+    row("Team at Google", "");
+    row("Current company", co);
+    const loc = APP_PAGES[2].qs.find(y=>y[0]==="Location"); loc[1] = ob3City(); loc[2] = !!ob3City();
+  }
+  return _ob4App.apply(this, arguments);
+};
 
 // Header counts cap at 9+ so the badge stays a small mark on the corner of a bare icon (hosting's SE check, 27 Sep).
 const _hfLastRender = render; render = function(){ const r=_hfLastRender.apply(this, arguments); document.querySelectorAll(".hdr > .icon .badge").forEach(b=>{ if (+b.textContent>9) b.textContent="9+"; }); return r; };
@@ -17217,6 +17415,61 @@ if (typeof ob3Welcome === "function" && typeof render === "function") {
     const w = typeof phone !== "undefined" && phone.querySelector(".screen > .view .obw");
     if (w) { obwPlay(w, !obwSeen); obwSeen = true; } else if (!STATE.ob3Wel) obwSeen = false;
     return r; };
+}
+
+</script>
+<script>
+/* ==== ONBOARDING HI-FI LAYER (Motion thread, 27 Sep; Apoorv 23:09 "make hifi for those") ====
+   Hi-fi copy only: runs when KEY_HIFI is set, after onboard4.js, obc.js and obw.js. Puts .hf-ob on #phone while an onboarding step
+   is up (obh.css scopes to it), draws the Location map, and swaps the lo-fi leftovers: text back arrows for the Lucide chevron,
+   the "X" family placeholder for the family's mark, the Kai notification's letter for kaiMark, underlined links for text buttons. */
+if (typeof KEY_HIFI !== "undefined" && KEY_HIFI) {
+  const OBH_STEPS = ["signin","auth","code","welcome","consent","confirm","you:oblinks","connect","notify"];
+
+  function obhMap(on) {
+    return `<svg viewBox="0 0 360 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><pattern id="obhBlk" width="36" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)"><rect x="3" y="3" width="30" height="22" rx="3" fill="var(--bg-fill-strong)"/></pattern>
+</defs>
+      <rect width="360" height="320" fill="var(--bg-fill-default)"/>
+      <rect width="360" height="320" fill="url(#obhBlk)"/>
+      <path d="M-10 262 C50 244 96 270 150 258 S250 222 300 214 S350 200 370 196 V330 H-10Z" fill="var(--border-strong)" fill-opacity=".5"/>
+      <path d="M-10 262 C50 244 96 270 150 258 S250 222 300 214 S350 200 370 196" fill="none" stroke="var(--bg-surface-default)" stroke-width="2"/>
+      <path d="M200 -10 L150 330" stroke="var(--bg-surface-default)" stroke-width="12"/><path d="M-10 118 L370 150" stroke="var(--bg-surface-default)" stroke-width="9"/>
+      ${on ? `<circle cx="180" cy="168" r="56" fill="var(--bg-inverse-default)" fill-opacity=".07"/>
+      <g class="ob4pin"><ellipse cx="180" cy="170" rx="9" ry="3" fill="var(--bg-inverse-default)" fill-opacity=".18"/>
+        <path d="M180 170 C171 158 162 150 162 138 a18 18 0 1 1 36 0 c0 12 -9 20 -18 32z" fill="var(--bg-inverse-default)"/><circle cx="180" cy="138" r="6" fill="var(--bg-surface-default)"/></g>` : ""}
+    </svg>`;
+  }
+  const _obhConfirm = sConfirm;
+  sConfirm = function() { return _obhConfirm.apply(this, arguments).replace(/<svg viewBox="0 0 360 320"[\s\S]*?<\/svg>/, obhMap(!!ob3City())); };
+
+  const _obhCode = sCode;
+  sCode = function() {
+    return _obhCode.apply(this, arguments).replace(/<p class="xs faint"[\s\S]*?<\/p>/,
+      `<div class="obh-tbs"><span>Didn't get it?</span><button type="button" class="obh-tb" onclick="toast('Sent a new code.')">Resend</button><button type="button" class="obh-tb" onclick="go('signin')">Change email</button></div>`);
+  };
+
+  function obhPass() {
+    const v = phone.querySelector(".screen > .view"); if (!v) return;
+    v.querySelectorAll(".ob3hdr .back, .hdr > .back").forEach(b => { if (!b.querySelector("svg")) { b.innerHTML = LI("chevron-left", 24); b.setAttribute("role", "button"); b.setAttribute("aria-label", "Back"); } });
+    const fam = typeof fmId === "function" && typeof FAM_MARK !== "undefined" ? FAM_MARK[fmId("X")] : null;
+    v.querySelectorAll(".invchip .avatar, .ob3n .avatar").forEach(a => {
+      if (a.dataset.obh) return; const t = a.textContent.trim();
+      if (t === "X" && fam) { a.innerHTML = fam; a.className = "avatar sm obh-fam"; a.removeAttribute("style"); a.setAttribute("aria-label", DB.user.family || "Xoogler"); }
+      else if (t === "K" && a.closest(".ob3n") && typeof kaiMark === "function") { a.innerHTML = kaiMark(32); a.className = "avatar obh-kai"; }
+      a.dataset.obh = 1;
+    });
+    v.querySelectorAll(".ob3n .h").forEach(h => { if (h.querySelector(".obh-t")) return; const tn = [...h.childNodes].find(n => n.nodeType === 3 && n.textContent.trim()); if (!tn) return; const s = document.createElement("span"); s.className = "obh-t"; s.textContent = tn.textContent; h.replaceChild(s, tn); });
+    v.querySelectorAll(".ob4note > span[onclick]").forEach(s => { s.classList.add("obh-tb"); s.style.textDecoration = ""; });
+  }
+  const _obhRender = render;
+  render = function() {
+    const r = _obhRender.apply(this, arguments);
+    const on = OBH_STEPS.includes(STATE.screen) && !STATE.ob3Wel;
+    phone.classList.toggle("hf-ob", on);
+    if (on) obhPass();
+    return r;
+  };
 }
 
 </script>

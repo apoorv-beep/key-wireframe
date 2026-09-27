@@ -1113,15 +1113,21 @@
    every other base icon button and small button is a radius-12 tile. Mic and call controls stay round (their modules own them). */
 .phone .hdr > .icon, .phone .hdr > .back { width:44px; height:44px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
 .phone .hdr > .icon svg, .phone .hdr > .back svg, .phone .pbar .pbtn svg { width:24px; height:24px; stroke-width:1.9; }
+.phone .hdr > .icon svg *, .phone .hdr > .back svg *, .phone .pbar .pbtn svg * { stroke-width:1.9; }
 .phone .pbar .pbtn { width:44px; height:44px; border-radius:var(--radius-absolute-12); }
 /* One header size on every page: Community (.cmhi, .cmroom) and Messages (#phone.hf-msg) set 40; the doubled classes outrank them. */
 #phone.phone .hdr.hdr > .icon.icon, #phone.phone .hdr.hdr > .back.back { width:44px; height:44px; }
 .phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
-/* Compact phones (SE, 320): the three bare icons narrow to 40 (the 44 height stays the target, the 24 glyph never shrinks) and the Messages title steps down to display-s, the size every other tab title uses, so titles keep their room. */
-@media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; }
-  #phone.hf-msg .hdr.top > div.t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); } }
+/* One page title everywhere (his 23:25): tab headers and pushed-page titles (Later, Calendars, the bell's scope) share --type-display-s.
+   Doubled classes outrank Messages (display-l), Community (20/600) and the base 18/19px; Later's title is inline-styled, hence !important there.
+   Chat headers keep their name row (avatar + name + line), which is an identity, not a page title. */
+#phone.phone .hdr.hdr > .t.t, #phone.phone .hdr.hdr > .t.t .tfade, #phone.phone .hdr.hdr > .t.t .cm-fname, #phone.phone .hdr.hdr > .nscope.nscope { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.phone .hdr.hdr > .nscope.nscope { min-width:0; } .phone .hdr > .nscope .nst { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone.phone .hdr.hdr > div[style*="flex:1"] > div:first-child[style*="font-size"] { font:var(--type-display-s) !important; letter-spacing:var(--type-display-s-tracking); }
+/* Compact phones (SE, 320): the three bare icons narrow to 40 (the 44 height stays the target, the 24 glyph never shrinks), so titles keep their room. */
+@media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; } }
 
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
    TEXT ONLY. No colour, no surface, no spacing, no layout. Every rule here sets font-family, font-size, font-weight,
@@ -3474,12 +3480,16 @@ p,
   .btn.evx-sync { display:inline-flex; align-items:center; justify-content:center; gap:var(--space-absolute-6); }
   .btn.evx-sync svg.li { display:none; margin:0; flex:none; }
   @media (max-width: 359px) { .evx-cact:has(> .evx-sync) { display:grid; grid-template-columns:minmax(0, 1fr) auto; } .btn.evx-sync svg.li { display:block; } .evx-sync-x { display:none; } }
+  /* KeyEventThumb's date stamp as Design system drew it (ledger v23): the white corner chip the month grid puts on a day with an event, top left, day over month */
+  .cv-th .evx-dd { top:var(--space-absolute-6); bottom:auto; left:var(--space-absolute-6); min-width:0; padding:3px var(--space-absolute-6) var(--space-absolute-4); border-radius:var(--radius-absolute-8); background:var(--bg-surface-default); color:var(--text-secondary); font:700 9px/12px var(--type-family); letter-spacing:0.72px; }
+  .cv-th .evx-dd b { margin-bottom:-1px; color:var(--text-primary); font:800 17px/21px var(--type-family); letter-spacing:-0.34px; }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
   .cm-tabs { display:flex; gap:18px; padding:0 16px; overflow-x:auto; scrollbar-width:none; background:var(--paper); }
   .cm-tabs.sticky { position:sticky; top:0; z-index:4; margin:0 -16px; border-bottom:1px solid var(--line); }
-  .cm-bar .cm-tabs.sticky { position:static; margin:0; border-bottom:0; }
+  .cm-bar .cm-tabs.sticky { position:static; margin:0; }
+  .cm-bar:has(> .cm-tabs) { border-bottom:0; }   /* the line sits under the tabs on every tab, not under the chips (Apoorv 23:23) */
   .cm-tab { padding:10px 0 8px; font-size:14px; font-weight:500; color:var(--ink3); white-space:nowrap; border-bottom:2px solid transparent; cursor:pointer; }
   .cm-tab.on { color:var(--ink); font-weight:700; border-bottom-color:var(--ink); }
   .cm-chips { display:flex; align-items:center; gap:6px; padding:8px 16px 10px; overflow-x:auto; scrollbar-width:none; }
@@ -4625,7 +4635,119 @@ p,
 .p2rc { padding:8px 0; border-bottom:1px solid var(--line); }
 .p2rc b { display:block; font-size:14px; font-weight:600; }
 .p2rc small { font-size:12px; color:var(--ink2); }
-.p2chip.sugg { border-style:dashed; color:var(--ink2); }
+.p2chip.sugg { background:var(--fill); color:var(--ink2); }
+
+/* Hero header buttons over the photo: radius-12 glass plates like the event page (round is only for mic and call controls) */
+.pscreen .pbar .pbtn { border-radius:12px; background:rgba(255,255,255,.72); border-color:rgba(255,255,255,.5); box-shadow:none; -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
+.pscreen .pbar.show .pbtn { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+.pscreen .pbar .pbtn:active { background:var(--fill); }
+
+/* ==== PROFILE HIGH FIDELITY (Apoorv 23:11, hi-fi copy only: profile2.js sets #phone.hf-prof when KEY_HIFI is on).
+   Tokens only, from design-system/key-tokens.css: type from the 14 named styles, radii and spacing from the absolute scales.
+   Same parts as the other hi-fi screens: KeyButton at radius 12, KeyChip pills, KeyTag, rows on the page with hairlines,
+   the Requests-row card for the one "between you" line, overline section labels, Lucide at 1.75. ==== */
+#phone.hf-prof svg.li { stroke-width:1.75; }
+#phone.hf-prof .pscreen, #phone.hf-prof .pbar.show { background:var(--bg-page); }
+/* hero: the member's photo, fading into the page */
+#phone.hf-prof .pphoto { background:var(--bg-cover-fallback); }
+#phone.hf-prof .pphoto.ph-cover { background-position:center 25%; }
+#phone.hf-prof .pphoto.ph-cover .pini { display:none; }
+#phone.hf-prof .pini { color:var(--text-disabled); opacity:.5; }
+#phone.hf-prof .pgrad { height:55%; background:linear-gradient(to bottom, transparent, var(--bg-page) 88%); }
+#phone.hf-prof .pname .pn { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .pname .pt { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-secondary); margin-top:var(--space-absolute-4); }
+#phone.hf-prof .pname .pf { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-prof .pbar .ptitle b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); }
+#phone.hf-prof .pscreen .pbar .pbtn { color:var(--icon-primary); background:color-mix(in srgb, var(--bg-surface-default) 72%, transparent); border:var(--border-width-hairline) solid color-mix(in srgb, var(--bg-surface-default) 50%, transparent); border-radius:var(--radius-absolute-12); }
+#phone.hf-prof .pscreen .pbar.show .pbtn { background:transparent; border-color:transparent; }
+
+/* section rhythm and labels (overline 11 XB) */
+#phone.hf-prof .p2 { gap:var(--space-absolute-24); }
+#phone.hf-prof .p2lf, #phone.hf-prof .p2sh { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); margin-bottom:var(--space-absolute-8); }
+#phone.hf-prof .p2bld { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); margin-bottom:var(--space-absolute-16); }
+
+/* KeyButton: primary, secondary, at radius 12 (label/strong on small, button/l on the dock) */
+#phone.hf-prof .p2follow, #phone.hf-prof .p2x, #phone.hf-prof .p2acts2 button, #phone.hf-prof .p2acts button { border-radius:var(--radius-absolute-12); font:var(--type-label); letter-spacing:var(--type-label-tracking); font-weight:700; }
+#phone.hf-prof .p2follow { height:var(--space-absolute-40); padding:0 var(--space-absolute-16) 0 var(--space-absolute-12); background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .p2follow.on { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-primary); }
+#phone.hf-prof .p2x { height:var(--space-absolute-40); padding:0 var(--space-absolute-14); background:transparent; border:var(--border-width-hairline) solid var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
+#phone.hf-prof .p2nd.hit .p2x { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .p2x.done, #phone.hf-prof .p2nd.hit .p2x.done { background:var(--bg-fill-default); border-color:var(--bg-fill-default); color:var(--text-secondary); }
+#phone.hf-prof .p2acts2 button, #phone.hf-prof .p2acts button { height:var(--space-absolute-40); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--text-primary); }
+#phone.hf-prof .p2acts2 button.on, #phone.hf-prof .p2acts button.on { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-prof .sheet .btn, #phone.hf-prof .pact .btn:not(.p2kai):not(.p2round) { border-radius:var(--radius-absolute-12); }
+
+/* the one "between you" line: one object, so one card, like the Requests row (gold hairline when it is about you) */
+#phone.hf-prof .p2btl { background:var(--component-card-bg); border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); padding:var(--space-absolute-12) var(--space-absolute-16); gap:var(--space-absolute-12); }
+#phone.hf-prof .p2btl.you { background:var(--component-card-bg); border-color:var(--border-gold); }
+#phone.hf-prof .p2btl b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2btl small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2btl.you small { color:var(--text-gold); font-weight:600; }
+#phone.hf-prof .p2ico { border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); width:var(--space-absolute-40); height:var(--space-absolute-40); }
+
+/* rows on the page with hairlines (Looking for, links, Only you see, Recently, sheet rows) */
+#phone.hf-prof .p2nd, #phone.hf-prof .p2lk, #phone.hf-prof .p2rc, #phone.hf-prof .p2tl > div { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-prof .p2nd b, #phone.hf-prof .p2lk b, #phone.hf-prof .p2rc b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2nd small, #phone.hf-prof .p2lk small, #phone.hf-prof .p2rc small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2nd small.p2why { color:var(--text-gold); font-weight:600; }
+#phone.hf-prof .p2lk > svg { color:var(--icon-tertiary); }
+/* KeyTag gold (people): "You fit this" */
+#phone.hf-prof .p2fit { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); text-transform:none; color:var(--component-tag-gold-ink); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--component-tag-gold-border); border-radius:var(--radius-absolute-6); padding:var(--space-absolute-2) var(--space-absolute-6); margin-bottom:var(--space-absolute-6); }
+/* logo tiles: radius 12 */
+#phone.hf-prof .p2lg { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); font:var(--type-label-strong); }
+#phone.hf-prof .p2lk .p2lg[style*="#F2F3F5"] { background:var(--bg-fill-default) !important; color:var(--icon-primary); }
+
+/* KeyChip: pills (label 13 SB); suggested ones sit on the soft fill with a solid subtle border (no dashes anywhere) */
+#phone.hf-prof .p2chip { height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding:0 var(--space-absolute-14); border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); border:var(--border-width-hairline) solid var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+#phone.hf-prof .p2chip svg { color:var(--icon-secondary); }
+#phone.hf-prof .p2chip.asked { background:var(--bg-fill-default); color:var(--text-secondary); }
+#phone.hf-prof .p2chip.sugg { background:var(--bg-fill-default); border-color:var(--border-subtle); color:var(--text-secondary); }
+
+/* Work and School: rows, not cards (logo tile, then name over years) */
+#phone.hf-prof .p2rail { display:block; overflow:visible; margin:0; padding:0; }
+#phone.hf-prof .p2wk { display:grid; grid-template-columns:var(--space-absolute-40) 1fr; column-gap:var(--space-absolute-12); align-items:center; width:100%; background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); border-radius:0; padding:var(--space-absolute-12) 0; }
+#phone.hf-prof .p2wk .p2lg { grid-row:1 / span 3; margin:0; width:var(--space-absolute-40); height:var(--space-absolute-40); }
+#phone.hf-prof .p2wk b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2wk small { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2wk small.p2you { color:var(--text-gold); font-weight:600; }
+
+/* KeySwitch */
+#phone.hf-prof .p2sw { background:var(--component-progress-track); }
+#phone.hf-prof .p2sw::after { background:var(--bg-surface-default); box-shadow:var(--elevation-1); }
+#phone.hf-prof .p2sw[aria-checked="true"] { background:var(--component-button-primary-bg-default); }
+
+/* your own profile: pencils are bare header-style icons, Kai noticed sits between hairlines with the Kai mark */
+#phone.hf-prof .p2pen { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); color:var(--icon-secondary); margin:calc(-1 * var(--space-absolute-12)) calc(-1 * var(--space-absolute-8)) 0 0; }
+#phone.hf-prof .p2pen:active { background:var(--bg-fill-default); }
+#phone.hf-prof .p2kn { border-color:var(--border-default); padding:var(--space-absolute-16) 0; }
+#phone.hf-prof .p2kh b { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2kh small, #phone.hf-prof .p2kc span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+#phone.hf-prof .p2kc b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2add { font:var(--type-body-m-strong); color:var(--text-primary); padding:var(--space-absolute-14) 0; }
+
+/* dock: Kai on the deep plate (foil K), Message as a radius-12 tile beside it */
+#phone.hf-prof .btn.p2kai { background:var(--bg-deep); border-color:var(--bg-deep); color:var(--text-on-deep-default); border-radius:var(--radius-absolute-16); box-shadow:var(--elevation-2); min-height:var(--space-absolute-56); padding:var(--space-absolute-8) var(--space-absolute-16); }
+#phone.hf-prof .btn.p2kai b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
+#phone.hf-prof .btn.p2kai small { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-on-deep-muted); }
+#phone.hf-prof .btn.p2round { flex-basis:var(--space-absolute-56); width:var(--space-absolute-56); height:var(--space-absolute-56); min-height:var(--space-absolute-56); border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--border-default); color:var(--icon-primary); box-shadow:var(--elevation-2); }
+#phone.hf-prof .btn.p2round.done { background:var(--bg-fill-default); }
+
+/* sheets: headings title 20 SB, notes and answers on the fill, radius 16 */
+#phone.hf-prof .p2shd h2, #phone.hf-prof .sheet h2 { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2note, #phone.hf-prof .p2ans { background:var(--bg-fill-default); border-radius:var(--radius-absolute-16); }
+#phone.hf-prof .p2ans .acts button { border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-label); font-weight:700; }
+#phone.hf-prof .p2ans .src span { border-radius:var(--radius-absolute-6); background:var(--bg-surface-default); color:var(--text-secondary); font:var(--type-caption); }
+#phone.hf-prof .p2tl > div > span:first-child { font:var(--type-caption); color:var(--text-tertiary); }
+/* profile sheet header (base markup sets inline sizes): KeyAvatar 56, name title 20 SB, role body/m */
+#phone.hf-prof .sheet .ph .pn { font:var(--type-title) !important; letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+#phone.hf-prof .sheet .ph .pt { font:var(--type-body-s); color:var(--text-secondary); }
+/* "You're both in": family rows, not cards (logo tile 40 at radius 12, name over members, Member tag) */
+#phone.hf-prof .p2 .fcard.compact { display:flex; align-items:center; gap:var(--space-absolute-12); background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); border-radius:0; box-shadow:none; padding:var(--space-absolute-12) 0; margin:0; }
+#phone.hf-prof .p2 .fcard.compact .fcov { width:var(--space-absolute-40); height:var(--space-absolute-40); flex:0 0 auto; border-radius:var(--radius-absolute-12); overflow:hidden; }
+#phone.hf-prof .p2 .fcard.compact .fm { flex:1; min-width:0; padding:0; }
+#phone.hf-prof .p2 .fcard.compact .fn { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2 .fcard.compact .fw { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2 .fcard.compact .tag { font:var(--type-label-strong); color:var(--component-tag-ink); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); border-radius:var(--radius-absolute-6); }
 
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
    Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
@@ -5188,7 +5310,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
   background:radial-gradient(260px 160px at var(--mx,50%) var(--my,0%), rgba(255,255,255,.0), rgba(220,228,236,.35) 60%, rgba(255,255,255,0)); mix-blend-mode:multiply; }
 .obw-card.is-tilt .obw-sheen { opacity:1; }
 .obw-go { padding-top:18px; }
-.obw-go button { width:100%; min-height:52px; border:0; border-radius:14px; background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
+.obw-go button { width:100%; min-height:52px; border:0; border-radius:var(--radius-absolute-16, 16px); background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
 .obw-go button:active { transform:scale(.98); }
 @media (max-height:640px) { .obw-top { height:112px; } .obw-logo { width:104px; height:56px; } .obw h1 { font-size:28px; margin-bottom:16px; } }
 .obw-card .ob4pc-src .obl-lnk { display:none; }
@@ -5198,11 +5320,13 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
   .obw-card .ob4pc { padding:16px 14px 14px; gap:12px; } .obw-card .ob4pc-av { width:56px; height:56px; font-size:20px; } .obw-foot { margin-inline:14px; } }
 
 /* ==== REAL PHOTOS (Apoorv 27 Sep 22:37, hi-fi copy only): photos.js stamps these classes only when KEY_HIFI is set ==== */
-.ph-face { border-style:solid !important; border-color:transparent !important; background-clip:border-box !important; background-origin:border-box !important; background-size:cover !important; background-position:center 30% !important; background-repeat:no-repeat !important; color:transparent !important; text-shadow:none !important; }
+.ph-face { background-origin:border-box !important; background-size:cover !important; background-position:center 30% !important; background-repeat:no-repeat !important; color:transparent !important; text-shadow:none !important; }
 .ph-cover { background-size:cover !important; background-position:center !important; background-repeat:no-repeat !important; }
 /* Apoorv 23:08: no dotted rings on avatars in hi-fi. Letter tiles (company, date, family) lose the ring too and sit on a soft fill instead. */
 .avatar, .hav, .hfaces span, .bav, .navt, .mopt .mi, .famchip i { border-style:solid !important; border-color:transparent !important; }
 .avatar:not(.ph-face):not(.kn-on), .hav:not(.ph-face), .hfaces span:not(.ph-face), .bav:not(.ph-face), .navt:not(.ph-face) { background-color:var(--fill); }
+/* Overlapping faces keep Design system's knockout ring (--face-ring) so two photos never merge; only the dashed ring goes. */
+.rfaces .avatar, .cm-faces .avatar, .cm-lby .avatar, .avs .avatar, .hfaces span { border-color:var(--face-ring, var(--bg-surface-default, #fff)) !important; }
 
 /* Onboarding hi-fi layer (Motion thread, 27 Sep; Apoorv 23:09: "identify if theres anything which is still lofi ... make hifi for those").
    Hi-fi copy only. obh.js puts .hf-ob on #phone while an onboarding step is up, so nothing here reaches another screen or the wireframe.
@@ -14774,6 +14898,7 @@ wire = function(){
     ph.querySelectorAll("[data-opp]").forEach(card => { const pid = pidOf(card.dataset.opp); if (!pid) return;
       const p = DB.people[pid];   // only the person's own face and name, never a company logo or role title on the same card
       card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
+    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"]').forEach(b => b.setAttribute("onclick", "openSheet('p2viewas','')"));   // You screen: "Who sees what" opens See your profile as
     const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
       if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
   }
@@ -14843,7 +14968,7 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
 const _p2PortSheet2 = portSheet;
 portSheet = function(type, id){
   const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
-  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();render()"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
   if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
   if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
@@ -14854,6 +14979,20 @@ portSheet = function(type, id){
   if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   return _p2PortSheet2(type, id);
 };
+
+/* ==== HIGH FIDELITY (Apoorv 23:11). One file serves both copies: the hi-fi copy sets KEY_HIFI, the wireframe never does.
+   #phone gets .hf-prof on the profile page and on profile sheets only, so other screens keep their own layers.
+   The hero paints the member's photograph through photos.js; until it loads, or if it can't, the hero stays a plain cover fill. ==== */
+const p2HiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+const _p2HfRender = render;
+render = function(){ const r = _p2HfRender.apply(this, arguments);
+  if (p2HiFi() && typeof phone!=="undefined" && phone) {
+    const prof = STATE.screen==="profile", sh = (STATE.sheet&&STATE.sheet.type)||"";
+    phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
+    const pid = STATE.profileId||"priya", ph = prof && phone.querySelector(".pphoto");
+    if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 1000), "ph-cover");
+  }
+  return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -16384,7 +16523,7 @@ sConfirm = function() {
       <div class="ob3t">Where are you based?</div>
       <div class="ob3sub">For events and people near you. Members only ever see your city.</div>
       ${c?`<div class="ob4note" style="margin-top:12px"><span style="text-decoration:underline;cursor:pointer" onclick="STATE.ob3City='';STATE.ob4Q='';render()">Change city</span></div>`
-        :`<div class="ob3fld"><label>City</label><input id="ob4city" placeholder="Type your city" value="${ob4Esc(STATE.ob4Q)}" oninput="STATE.ob4Q=this.value;ob4Sugg();document.getElementById('ob4locgo').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')ob4CityGo()"></div><div class="ob3chips" id="ob4sugg">${sugg.map(x=>`<span class="chip" onclick="ob4SetCity('${x}')">${x}</span>`).join("")}</div>
+        :`<div class="ob3fld"><label>City</label><input id="ob4city" placeholder="Type your city" value="${ob4Esc(STATE.ob4Q)}" onfocus="ob4SuggShow()" oninput="STATE.ob4Q=this.value;ob4Sugg();document.getElementById('ob4locgo').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')ob4CityGo()"></div><div class="ob3chips" id="ob4sugg">${sugg.map(x=>`<span class="chip" onclick="ob4SetCity('${x}')">${x}</span>`).join("")}</div>
           <button class="ob4loc" onclick="osPrompt('Allow \\u201cKey\\u201d to use your location?','Key uses your approximate location for events and people near you.',()=>ob4SetCity('San Francisco'))">${ob3Pin(16)} Use my location</button>`}
     </div>
   </div>
@@ -16394,6 +16533,13 @@ function ob4Sugg() {
   const q = (STATE.ob4Q||"").toLowerCase(), el = document.getElementById("ob4sugg"); if (!el) return;
   const s = q ? OB4_CITIES.filter(x=>x.toLowerCase().startsWith(q)).slice(0,4) : [];
   el.innerHTML = (s.length ? s : q ? [STATE.ob4Q.trim()] : []).map(x=>`<span class="chip" onclick="ob4SetCity('${ob4Esc(x).replace(/'/g,"")}')">${ob4Esc(x)}</span>`).join("");
+  ob4SuggShow();
+}
+/* On a short phone the field and its suggestions start under the footer: scroll them up so the chips sit above Continue. */
+function ob4SuggShow() {
+  const el = document.getElementById("ob4sugg"), b = el && el.closest(".body"); if (!b) return;
+  const inp = document.getElementById("ob4city"), low = Math.max(el.getBoundingClientRect().bottom, inp.getBoundingClientRect().bottom) + 12, edge = b.getBoundingClientRect().bottom;
+  if (low > edge) b.scrollTop += low - edge;
 }
 /* Continue takes a typed city as it is (a suggestion's spelling when it matches one), so a chip below the fold is never required. */
 function ob4CityGo() {
@@ -16587,6 +16733,8 @@ sApplication = function() {
 
 // Header counts cap at 9+ so the badge stays a small mark on the corner of a bare icon (hosting's SE check, 27 Sep).
 const _hfLastRender = render; render = function(){ const r=_hfLastRender.apply(this, arguments); document.querySelectorAll(".hdr > .icon .badge").forEach(b=>{ if (+b.textContent>9) b.textContent="9+"; }); return r; };
+// The bell's scope title is a bare text node beside its count and chevron; wrap it so it can ellipsize at 320 instead of overflowing.
+const _hfScopeRender = render; render = function(){ const r=_hfScopeRender.apply(this, arguments); document.querySelectorAll(".hdr > .nscope").forEach(n=>{ const t=[...n.childNodes].find(x=>x.nodeType===3&&x.textContent.trim()); if (t) { const s=document.createElement("span"); s.className="nst"; s.textContent=t.textContent; n.replaceChild(s,t); } }); return r; };
 
 /* ==== REAL PHOTOS (Apoorv 27 Sep 22:37): "replace those empty avatars with the real people in hifi prototype ... also for the calendar cover photos".
    Hi-fi copy only (KEY_HIFI). Every person avatar that shows a member's initials gets that member's photograph, and every calendar cover
@@ -17460,6 +17608,10 @@ if (typeof KEY_HIFI !== "undefined" && KEY_HIFI) {
       a.dataset.obh = 1;
     });
     v.querySelectorAll(".ob3n .h").forEach(h => { if (h.querySelector(".obh-t")) return; const tn = [...h.childNodes].find(n => n.nodeType === 3 && n.textContent.trim()); if (!tn) return; const s = document.createElement("span"); s.className = "obh-t"; s.textContent = tn.textContent; h.replaceChild(s, tn); });
+    const KC = [[".ob3hdr","KeyWizardStep","part=header"],[".ob3fld","KeyField","state=default"],[".otp","KeyCodeInput","length=6"],[".ob4pc","KeyProfileHero","size=live-card"],
+      [".invchip","KeyInvitePill","mark=family"],[".ob4em","KeyInput","kind=email, action=tile"],[".ob4soc button","KeyIconButton","container=tile, size=52"],[".ob4sw","KeyToggle","size=51x31"],
+      [".ob4row",'KeySettingRow',"lead=tile, trail=toggle"],[".obl-row","KeyRow","lead=tile, trail=remove"],[".ob3lock .ob3n","KeyPushBanner","context=lock-preview"],[".ob3map","KeyMapPin","state="+(ob3City()?"set":"ask")],[".obh-tb, .obl-lnk","KeyButton","variant=text"]];
+    KC.forEach(([q, c, kv]) => v.querySelectorAll(q).forEach(e => { e.dataset.kc = c; e.dataset.kv = kv; }));
     v.querySelectorAll(".ob4note > span[onclick]").forEach(s => { s.classList.add("obh-tb"); s.style.textDecoration = ""; });
   }
   const _obhRender = render;
