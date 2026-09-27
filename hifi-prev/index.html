@@ -1111,12 +1111,12 @@
 /* Hi-fi base chrome (Apoorv 27 Sep 22:03; hi-fi copy only). Header icon buttons stand bare (KeyIconButton container=none) on a 40px target;
    every other base icon button and small button is a radius-12 tile. Mic and call controls stay round (their modules own them). */
 .phone .hdr > .icon, .phone .hdr > .back { width:40px; height:40px; border:0; border-radius:var(--radius-absolute-12); background:transparent; box-shadow:none; color:var(--icon-primary); }
-.phone .hdr > .icon .badge { top:3px; right:2px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
+.phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
-/* Compact phones (SE, 320): the three bare icons narrow to 34 (the 40 height stays the target) and the Messages title steps down to display-m, so titles keep their room. */
-@media (max-width:360px) { .phone .hdr.top { gap:0; } .phone .hdr.top > .icon { width:34px; }
-  #phone.hf-msg .hdr.top > div.t { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); } }
+/* Compact phones (SE, 320): the three bare icons narrow to 32 (the 40 height stays the target) and the Messages title steps down to display-s, the size every other tab title uses, so titles keep their room. */
+@media (max-width:360px) { .phone .hdr.top { gap:0; } .phone .hdr.top > .icon { width:32px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; }
+  #phone.hf-msg .hdr.top > div.t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); } }
 
 /* ==== TYPE (26 Sep, design system thread): Manrope and the 14 text styles from key-tokens.v2.json, applied to the wireframe.
    TEXT ONLY. No colour, no surface, no spacing, no layout. Every rule here sets font-family, font-size, font-weight,
@@ -14307,6 +14307,22 @@ portSheet = function(type, id){
 function p2MuteT(pid){ const f=firstName(DB.people[pid]); STATE.p2mute[pid]=!STATE.p2mute[pid]; const had=STATE.p2keep[pid]; if (STATE.p2mute[pid]) STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(STATE.p2mute[pid]?(had?`Muted. You also unfollowed ${f}`:`Muted ${f}`):`Unmuted ${f}`),200); }
 function p2Block(pid){ if (!DB.chat && typeof seedChats==="function") seedChats(); DB.chat=DB.chat||{}; const c=DB.chat["d-"+pid]; if (c) c.blockedByMe=true; else DB.chat["d-"+pid]={ id:"d-"+pid, kind:"dm", with:pid, msgs:[], blockedByMe:true }; STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(`Blocked ${firstName(DB.people[pid])}. They can't message you and aren't told`),200); }
 
+/* ---- reach: a person's photo and name on pick cards, mission rows and the path header open their profile (22:29 trace:
+   most taps landed on the card and opened the path, so the profile was only reachable from the name text on Home) ---- */
+const _p2Wire = wire;
+wire = function(){
+  const ph = document.querySelector(".phone");
+  if (ph) {
+    const pidOf = id => { const o = DB.opps.find(x=>x.id===id); return o && o.personId && o.personId!=="priya" && DB.people[o.personId] ? o.personId : null; };
+    ph.querySelectorAll("[data-opp]").forEach(card => { const pid = pidOf(card.dataset.opp); if (!pid) return;
+      const p = DB.people[pid];   // only the person's own face and name, never a company logo or role title on the same card
+      card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
+    const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
+      if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
+  }
+  return _p2Wire.apply(this, arguments);
+};
+
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
    scope rows, the famchip) gets FAM_MARK[id] instead, through one DOM pass after each render and a MutationObserver for
@@ -15509,6 +15525,9 @@ const _hfRender = render;
 const HF_KC = [[".hdr.top","KeyHeader"],[".hdr.chdr","KeyHeader"],[".hdr .icon","KeyIconButton"],[".toolrow .icon","KeyIconButton"],[".toolrow .search","KeySearchField"],[".reqrow","KeyRequestsRow"],[".pills .pill","KeyChip"],[".unread, .badge, .pc","KeyUnreadBadge"],[".conv","KeyConversationRow"],[".tag","KeyTag"],[".mx-when","KeyStateLabel"],[".schedstrip","KeyScheduledBar"],[".bav, .rfaces .avatar","KeyAvatar"],[".bub","KeyChatBubble"],[".dsep","KeyDateSeparator"],[".rchip","KeyReactionChip"],[".thchip","KeyThreadCount"],[".mgrid, .filecard","KeyAttachment"],[".foot.cbar","KeyComposer"],[".citabs.later","KeyTabs"]];
 function hfTag() { HF_KC.forEach(([sel,kc])=>phone.querySelectorAll(sel).forEach(el=>{ if (!el.dataset.kc) el.setAttribute("data-kc", kc); })); phone.querySelectorAll(".hdr .icon, .hdr .back").forEach(el=>el.setAttribute("data-kv","container=none")); phone.querySelectorAll(".toolrow .icon, .csend").forEach(el=>el.setAttribute("data-kv","container=tile")); if (STATE.screen==="later") { const v=phone.querySelector(".screen > .view")||phone.querySelector(".screen"); if (v) v.setAttribute("data-kc","KeyLaterScreen"); } }
 render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=="undefined" && phone) { const on=hfMsgOn(); phone.classList.toggle("hf-msg", on); if (on) hfTag(); } return r; };
+
+// Header counts cap at 9+ so the badge stays a small mark on the corner of a bare icon (hosting's SE check, 27 Sep).
+const _hfLastRender = render; render = function(){ const r=_hfLastRender.apply(this, arguments); document.querySelectorAll(".hdr > .icon .badge").forEach(b=>{ if (+b.textContent>9) b.textContent="9+"; }); return r; };
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
