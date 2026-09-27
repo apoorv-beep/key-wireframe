@@ -2840,7 +2840,8 @@ p,
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
   .cm-tabs { display:flex; gap:18px; padding:0 16px; overflow-x:auto; scrollbar-width:none; background:var(--paper); }
   .cm-tabs.sticky { position:sticky; top:0; z-index:4; margin:0 -16px; border-bottom:1px solid var(--line); }
-  .cm-bar .cm-tabs.sticky { position:static; margin:0; border-bottom:0; }
+  .cm-bar .cm-tabs.sticky { position:static; margin:0; }
+  .cm-bar:has(> .cm-tabs) { border-bottom:0; }   /* the line sits under the tabs on every tab, not under the chips (Apoorv 23:23) */
   .cm-tab { padding:10px 0 8px; font-size:14px; font-weight:500; color:var(--ink3); white-space:nowrap; border-bottom:2px solid transparent; cursor:pointer; }
   .cm-tab.on { color:var(--ink); font-weight:700; border-bottom-color:var(--ink); }
   .cm-chips { display:flex; align-items:center; gap:6px; padding:8px 16px 10px; overflow-x:auto; scrollbar-width:none; }
@@ -3536,6 +3537,8 @@ p,
 .mo-bub p { margin:0; font-size:15px; font-weight:600; padding:10px 14px; max-width:78%; box-shadow:0 14px 30px -12px rgba(0,0,0,.7); }
 .mo-bub.them p { background:var(--mo-on-deep); color:var(--mo-ink); border-radius:18px 18px 18px 6px; }
 .mo-bub.me p { background:var(--mo-deep-fill); color:var(--mo-on-deep); border-radius:18px 18px 6px 18px; box-shadow:inset 0 0 0 1px rgba(249,250,252,.08), 0 14px 30px -12px rgba(0,0,0,.7); }
+/* Compact phones (320): the reply bubble wrapped to two lines and slid under the card; one line at 13px. */
+@media (max-width:360px) { .mo-bub p { font-size:13px; padding:9px 12px; } }
 
 /* the path card: one actionable thing, lifted while it asks something of you */
 .mo-card { position:absolute; left:14px; right:14px; bottom:16px; z-index:5; background:var(--mo-surface); color:var(--mo-ink); border-radius:20px; padding:14px 14px 12px;
@@ -4203,7 +4206,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2rc { padding:8px 0; border-bottom:1px solid var(--line); }
 .p2rc b { display:block; font-size:14px; font-weight:600; }
 .p2rc small { font-size:12px; color:var(--ink2); }
-.p2chip.sugg { border-style:dashed; color:var(--ink2); }
+.p2chip.sugg { background:var(--fill); color:var(--ink2); }
 
 /* Hero header buttons over the photo: radius-12 glass plates like the event page (round is only for mic and call controls) */
 .pscreen .pbar .pbtn { border-radius:12px; background:rgba(255,255,255,.72); border-color:rgba(255,255,255,.5); box-shadow:none; -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
@@ -4265,11 +4268,11 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-prof .p2lg { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); font:var(--type-label-strong); }
 #phone.hf-prof .p2lk .p2lg[style*="#F2F3F5"] { background:var(--bg-fill-default) !important; color:var(--icon-primary); }
 
-/* KeyChip: pills (label 13 SB), suggested ones on a dashed hairline */
+/* KeyChip: pills (label 13 SB); suggested ones sit on the soft fill with a solid subtle border (no dashes anywhere) */
 #phone.hf-prof .p2chip { height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding:0 var(--space-absolute-14); border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); border:var(--border-width-hairline) solid var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
 #phone.hf-prof .p2chip svg { color:var(--icon-secondary); }
 #phone.hf-prof .p2chip.asked { background:var(--bg-fill-default); color:var(--text-secondary); }
-#phone.hf-prof .p2chip.sugg { border-style:dashed; border-color:var(--component-chip-suggested-border); color:var(--text-secondary); }
+#phone.hf-prof .p2chip.sugg { background:var(--bg-fill-default); border-color:var(--border-subtle); color:var(--text-secondary); }
 
 /* Work and School: rows, not cards (logo tile, then name over years) */
 #phone.hf-prof .p2rail { display:block; overflow:visible; margin:0; padding:0; }
@@ -4309,6 +4312,13 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 /* profile sheet header (base markup sets inline sizes): KeyAvatar 56, name title 20 SB, role body/m */
 #phone.hf-prof .sheet .ph .pn { font:var(--type-title) !important; letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
 #phone.hf-prof .sheet .ph .pt { font:var(--type-body-s); color:var(--text-secondary); }
+/* "You're both in": family rows, not cards (logo tile 40 at radius 12, name over members, Member tag) */
+#phone.hf-prof .p2 .fcard.compact { display:flex; align-items:center; gap:var(--space-absolute-12); background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); border-radius:0; box-shadow:none; padding:var(--space-absolute-12) 0; margin:0; }
+#phone.hf-prof .p2 .fcard.compact .fcov { width:var(--space-absolute-40); height:var(--space-absolute-40); flex:0 0 auto; border-radius:var(--radius-absolute-12); overflow:hidden; }
+#phone.hf-prof .p2 .fcard.compact .fm { flex:1; min-width:0; padding:0; }
+#phone.hf-prof .p2 .fcard.compact .fn { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2 .fcard.compact .fw { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2 .fcard.compact .tag { font:var(--type-label-strong); color:var(--component-tag-ink); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); border-radius:var(--radius-absolute-6); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -4570,7 +4580,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
   background:radial-gradient(260px 160px at var(--mx,50%) var(--my,0%), rgba(255,255,255,.0), rgba(220,228,236,.35) 60%, rgba(255,255,255,0)); mix-blend-mode:multiply; }
 .obw-card.is-tilt .obw-sheen { opacity:1; }
 .obw-go { padding-top:18px; }
-.obw-go button { width:100%; min-height:52px; border:0; border-radius:14px; background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
+.obw-go button { width:100%; min-height:52px; border:0; border-radius:var(--radius-absolute-16, 16px); background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
 .obw-go button:active { transform:scale(.98); }
 @media (max-height:640px) { .obw-top { height:112px; } .obw-logo { width:104px; height:56px; } .obw h1 { font-size:28px; margin-bottom:16px; } }
 .obw-card .ob4pc-src .obl-lnk { display:none; }
@@ -13987,6 +13997,7 @@ wire = function(){
     ph.querySelectorAll("[data-opp]").forEach(card => { const pid = pidOf(card.dataset.opp); if (!pid) return;
       const p = DB.people[pid];   // only the person's own face and name, never a company logo or role title on the same card
       card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
+    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"]').forEach(b => b.setAttribute("onclick", "openSheet('p2viewas','')"));   // You screen: "Who sees what" opens See your profile as
     const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
       if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
   }
@@ -14056,7 +14067,7 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
 const _p2PortSheet2 = portSheet;
 portSheet = function(type, id){
   const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
-  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();render()"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
   if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
   if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
@@ -14146,7 +14157,7 @@ function brItems(){
     items.push({ kind:"ask", ini: ini ? ini[1] : "K", title: a ? a[1] : "Kai asks", html:h });
   });
   (typeof notifs==="function" ? notifs() : []).filter(n => n.unread && n.type!=="kai" && n.type!=="system").forEach(n =>
-    items.push({ kind: n.fam ? "fam" : "msg", fam:n.fam, n, ini:n.ava?"":n.ini, title:n.title, sub:n.body||"", when:n.when, badge:n.type, go:`(notifs().find(x=>x.id==='${n.id}')||{}).unread=false;go('${n.to||"notifications"}')` }));
+    items.push({ kind: n.fam ? "fam" : "msg", fam:n.fam, n, ini:n.ava?"":n.ini, title:n.title, sub:n.body||"", when:n.when, badge:n.type, go:`if((DB.notifs||[]).some(x=>x.id==='${n.id}'))openNotif('${n.id}');else{(notifs().find(x=>x.id==='${n.id}')||{}).unread=false;go('${n.to||"notifications"}')}` }));
   (DB.opps||[]).forEach(o => {
     const t = (o.timeline||[]).filter(x => x[2] && !/Surfaced|Interested/.test(x[0]) && /today|now/i.test(x[1]||""));
     if (!t.length || items.some(i => i.html && i.html.includes(`"${o.id}"`))) return;
@@ -15438,7 +15449,7 @@ sConfirm = function() {
       <div class="ob3t">Where are you based?</div>
       <div class="ob3sub">For events and people near you. Members only ever see your city.</div>
       ${c?`<div class="ob4note" style="margin-top:12px"><span style="text-decoration:underline;cursor:pointer" onclick="STATE.ob3City='';STATE.ob4Q='';render()">Change city</span></div>`
-        :`<div class="ob3fld"><label>City</label><input id="ob4city" placeholder="Type your city" value="${ob4Esc(STATE.ob4Q)}" oninput="STATE.ob4Q=this.value;ob4Sugg();document.getElementById('ob4locgo').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')ob4CityGo()"></div><div class="ob3chips" id="ob4sugg">${sugg.map(x=>`<span class="chip" onclick="ob4SetCity('${x}')">${x}</span>`).join("")}</div>
+        :`<div class="ob3fld"><label>City</label><input id="ob4city" placeholder="Type your city" value="${ob4Esc(STATE.ob4Q)}" onfocus="ob4SuggShow()" oninput="STATE.ob4Q=this.value;ob4Sugg();document.getElementById('ob4locgo').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')ob4CityGo()"></div><div class="ob3chips" id="ob4sugg">${sugg.map(x=>`<span class="chip" onclick="ob4SetCity('${x}')">${x}</span>`).join("")}</div>
           <button class="ob4loc" onclick="osPrompt('Allow \\u201cKey\\u201d to use your location?','Key uses your approximate location for events and people near you.',()=>ob4SetCity('San Francisco'))">${ob3Pin(16)} Use my location</button>`}
     </div>
   </div>
@@ -15448,6 +15459,13 @@ function ob4Sugg() {
   const q = (STATE.ob4Q||"").toLowerCase(), el = document.getElementById("ob4sugg"); if (!el) return;
   const s = q ? OB4_CITIES.filter(x=>x.toLowerCase().startsWith(q)).slice(0,4) : [];
   el.innerHTML = (s.length ? s : q ? [STATE.ob4Q.trim()] : []).map(x=>`<span class="chip" onclick="ob4SetCity('${ob4Esc(x).replace(/'/g,"")}')">${ob4Esc(x)}</span>`).join("");
+  ob4SuggShow();
+}
+/* On a short phone the field and its suggestions start under the footer: scroll them up so the chips sit above Continue. */
+function ob4SuggShow() {
+  const el = document.getElementById("ob4sugg"), b = el && el.closest(".body"); if (!b) return;
+  const inp = document.getElementById("ob4city"), low = Math.max(el.getBoundingClientRect().bottom, inp.getBoundingClientRect().bottom) + 12, edge = b.getBoundingClientRect().bottom;
+  if (low > edge) b.scrollTop += low - edge;
 }
 /* Continue takes a typed city as it is (a suggestion's spelling when it matches one), so a chip below the fold is never required. */
 function ob4CityGo() {
@@ -15524,7 +15542,7 @@ function obL() { return STATE.obL || (STATE.obL = { phase:null, pick:null, links
 function obLCands() { // what the search returns for the name, work and city they gave; the first matches all three
   const n = ob4Name() || DB.user.name, h = n.toLowerCase().replace(/\s+/g,""), c = ob3City() || "San Francisco", w = ob4Work() || "Product manager at Google";
   const me = { id:"a", n, h:w, c, url:"linkedin.com/in/"+h, match:true,
-    roles:[[w,"2022 to now"],["Associate PM at Flipkart","2019 to 2022"],["Analyst at Deloitte","2017 to 2019"]], schools:[["University of Michigan","MBA"],["IIT Bombay","B.Tech"]],
+    roles:[[w,"2020 to now"],["Associate PM at Flipkart","2017 to 2020"],["Analyst at Deloitte","2015 to 2017"]], schools:[["University of Michigan","MBA"],["IIT Bombay","B.Tech"]],
     found:[["github","GitHub","github.com/"+n.split(" ")[0].toLowerCase()+"codes"],["site","Website",n.split(" ")[0].toLowerCase()+".design"]] };
   const other = (id, hh, city, u) => ({ id, n, h:hh, c:city, url:"linkedin.com/in/"+u, roles:[[hh,"2021 to now"]], schools:[], found:[] });
   const m = STATE.obLMode || "many";
@@ -15614,12 +15632,30 @@ portSheet = function(type, id) { return type==="oblinks" ? `<h2>Add your links</
 const _ob4Walk = walkSteps;
 walkSteps = function() {
   const has = (STATE.ob4Links||[]).length;
-  return [{ id:"links", title:"Add your links", why:"LinkedIn, GitHub, your website. You pick what shows.", done:!!has, doneLine: has ? [STATE.ob4Links.map(x=>x[1]).join(", "), STATE.obLAdded].filter(Boolean).join(". ") : "", expand:"Change them any time under You.", cta:"Add links", act:"openSheet('oblinks','')" }, ..._ob4Walk.apply(this, arguments)];
+  return [..._ob4Walk.apply(this, arguments), { id:"links", title:"Add your links", why:"LinkedIn, GitHub, your website. You pick what shows.", done:!!has, doneLine: has ? [STATE.ob4Links.map(x=>x[1]).join(", "), STATE.obLAdded].filter(Boolean).join(". ") : "", expand:"Change them any time under You.", cta:"Add links", act:"openSheet('oblinks','')" }];
 };
 const _ob4Links = profileLinks;
 profileLinks = function(pid) { return pid==="priya" ? (STATE.ob4Links||[]) : _ob4Links.apply(this, arguments); };
 const _ob4WalkHTML = walkHTML;
-walkHTML = function() { return _ob4WalkHTML.apply(this, arguments).replace("First, pick where you belong. Two short steps after that, and Kai takes it from there.", "Start with your profile, then pick where you belong. Kai takes it from there."); };
+walkHTML = function() { return _ob4WalkHTML.apply(this, arguments).replace("First, pick where you belong. Two short steps after that, and Kai takes it from there.", "First, pick where you belong. Kai takes it from there."); };
+
+/* The Xoogler application prefills only from what onboarding gathered: the LinkedIn import when they picked their account, else what they typed. */
+const _ob4AppQs = APP_PAGES.map(pg=>pg.qs.map(q=>q.slice()));
+const _ob4App = sApplication;
+sApplication = function() {
+  APP_PAGES.forEach((pg,i)=>{ pg.qs = _ob4AppQs[i].map(q=>q.slice()); });
+  if (ob4Name()) {
+    const p = obL().phase==="picked" && obL().pick, g = p && p.roles.find(r=>/google/i.test(r[0])), co = ob3Co(), atG = /google/i.test(co);
+    const from = g ? +(g[1].match(/\d{4}/)||[])[0] : 0, row = (q, v) => { const x = APP_PAGES[0].qs.find(y=>y[0]===q); x[1] = v; x[2] = !!v; };
+    row("Full name", ob4Name());
+    row("Employment at Google", g ? `From your LinkedIn · ${from} to present` : atG ? `${ob3Role() ? ob3Role()+", " : ""}${co}` : "");
+    row("Years at Google", from ? String(new Date().getFullYear() - from) : "");
+    row("Team at Google", "");
+    row("Current company", co);
+    const loc = APP_PAGES[2].qs.find(y=>y[0]==="Location"); loc[1] = ob3City(); loc[2] = !!ob3City();
+  }
+  return _ob4App.apply(this, arguments);
+};
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
