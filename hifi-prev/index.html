@@ -3354,8 +3354,9 @@ p,
   .evt-screen .evt-people, .evt-screen .evt-more, .evt-screen .evs-strip, .evt-screen .evt-looks, .evt-screen .evt-fxrow { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-mtabs { margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
   .evt-screen .evt-poster, .evt-screen .evt-roll { border-radius:var(--radius-absolute-24); }
-  /* 4:3, so the name clears the floating RSVP / Manage bar on the first screen at SE; the art is centred and loses only empty ground */
-  .evt-screen .evt-poster { aspect-ratio:4 / 3; }
+  /* 4:3 cover and photo roll, so the name clears the floating RSVP / Manage bar on the first screen; on short screens (320 x 568) 3:2 and the title one size down. The art is centred and loses only empty ground */
+  .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:4 / 3; }
+  @media (max-height: 600px) { .evt-screen .evt-poster, .evt-screen .evt-roll { aspect-ratio:3 / 2; } .evt-screen .evt-title { font:var(--type-display-l); letter-spacing:var(--type-display-l-tracking); } }
   .evt-screen .evt-stamp { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); padding:var(--space-absolute-6) var(--space-absolute-10); border-radius:var(--radius-absolute-8); }
   .evt-screen .evt-title { font:var(--type-display-xl); letter-spacing:var(--type-display-xl-tracking); margin:var(--space-absolute-24) 0 var(--space-absolute-8); padding-bottom:var(--space-absolute-4); }
   .evt-screen .evt-live .evt-title { margin:var(--space-absolute-24) 0 var(--space-absolute-4); }
@@ -4762,6 +4763,19 @@ p,
 .mx-later { position:relative; }
 .evt-screen .mx-av .mx-f { background:rgb(var(--ev-ink-rgb) / .14); border:0; color:var(--ev-ink); }
 
+/* Requests card on small phones (hosting's SE check, 22:36): label and count stay on one line, the preview gets the full width under them, and below 360 the weekly cap drops to its own line */
+.reqrow { display:grid; grid-template-columns:auto minmax(0,1fr) auto auto; grid-template-areas:"f a c s" "f b b s"; column-gap:12px; align-items:center; }
+.reqrow .m, .reqrow .rcap { display:contents; }
+.reqrow .rfaces { grid-area:f; }
+.reqrow .a { grid-area:a; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.reqrow .b { grid-area:b; min-width:0; white-space:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.reqrow .rcap .xs { grid-area:c; white-space:nowrap; justify-self:end; }
+.reqrow .rcap .s { grid-area:s; }
+@media (max-width:360px) {
+  .reqrow { grid-template-columns:auto minmax(0,1fr) auto; grid-template-areas:"f a s" "f b s" "f c s"; }
+  .reqrow .rcap .xs { justify-self:start; }
+}
+
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
    shadows from --elevation-*, type from the 14 named styles (named in each comment). Lucide at 1.75 stroke. ==== */
@@ -4787,7 +4801,7 @@ p,
 #phone.hf-msg .toolrow .icon { width:var(--space-absolute-48); height:var(--space-absolute-48); border-radius:var(--radius-absolute-12); border:0; background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
 
 /* KeyRequestsRow: one object, so one card; the gold hairline marks people asking. body/l 17 SB over body/s 13 R */
-#phone.hf-msg .reqrow { border:var(--border-width-hairline) solid var(--border-gold); border-radius:var(--radius-absolute-20); background:var(--component-card-bg); box-shadow:var(--elevation-1); padding:var(--space-absolute-14) var(--space-absolute-16); margin:var(--space-absolute-12) 0 var(--space-absolute-14); }
+#phone.hf-msg .reqrow { column-gap:var(--space-absolute-12); border:var(--border-width-hairline) solid var(--border-gold); border-radius:var(--radius-absolute-20); background:var(--component-card-bg); box-shadow:var(--elevation-1); padding:var(--space-absolute-14) var(--space-absolute-16); margin:var(--space-absolute-12) 0 var(--space-absolute-14); }
 #phone.hf-msg .reqrow .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
 #phone.hf-msg .reqrow .b { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
 #phone.hf-msg .reqrow .rcap .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); /* caption */ }
