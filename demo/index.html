@@ -890,6 +890,8 @@ p,
 .chip.sug, .kaiact .chip, .evx-tag.wait, .caltile.add, .mtile.add, .cm-tags .add, .cm-attach span, .oos .box, .start, .schedstrip, .msg.sys, .msg.listen, .bt.kai, .bt.look.locked, .vcard.ghost, .vcard.ghost .av, .wnum, .avatar, .mx-av .mx-f, .empty, .mvis, [style*="dashed"], [style*="dotted"] { border-style:solid !important; }
 .sent, .sent.inf { border-bottom-style:solid !important; }
 .cm-catn { text-decoration-style:solid !important; }
+/* header count badge sits on the glyph's top-right corner, not floating off the 36 box (Apoorv 05:04 screenshot; hi-fi re-anchors its own) */
+.icon .badge { top:1px; right:1px; }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -15151,7 +15153,10 @@ navHTML = function(on){
 };
 
 function knRect(nav, tab){ const nr=nav.getBoundingClientRect(), tr=tab.getBoundingClientRect(), sx = nr.width/nav.offsetWidth || 1, inset = 3;
-  return { l:(tr.left-nr.left)/sx+inset, r:(nr.right-tr.right)/sx+inset }; }
+  /* the lens always holds its label: never narrower than the label's bold width + 8px a side (28 Sep: "Messages" spilled out at narrow widths) */
+  const kl = tab.querySelector(".kl, .lr"), tw = tr.width/sx, need = kl ? kl.getBoundingClientRect().width/sx*1.06 + 16 : 0, grow = Math.max(0, (need - (tw - 2*inset))/2);
+  const l = Math.max(2, (tr.left-nr.left)/sx+inset-grow), r = Math.max(2, (nr.right-tr.right)/sx+inset-grow);
+  return { l, r }; }
 function knMove(lens, from, to){
   lens.style.left = to.l+"px"; lens.style.right = to.r+"px";
   if (!KN_LIVE || !from) return;
