@@ -4682,35 +4682,67 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bs-pg, .bs-vw .bs-src, .bs-vw .bs-slot, .bs-vw .bs-card { position:absolute; inset:0; }
 .bs-vw .bs-pg { overflow:hidden; }
 .bs-vw .bs-card { display:flex; flex-direction:column; }
+.bs-vw .bs-card.bs-brief { display:block; overflow-y:auto; overflow-x:hidden; touch-action:pan-y; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+.bs-vw .bs-card.bs-brief::-webkit-scrollbar { display:none; }
 .bs-vw .bs-art { position:absolute; inset:0; }
 .bs-vw .bs-shade { position:absolute; inset:0; background:linear-gradient(180deg,rgba(11,14,17,.55) 0,transparent 22%,transparent 42%,rgba(11,14,17,.92) 78%); }
+.bs-vw .bs-topg { position:absolute; left:0; right:0; top:0; height:calc(env(safe-area-inset-top,0px) + 132px); background:linear-gradient(180deg,#0B0E11 72%,rgba(11,14,17,0)); z-index:2; opacity:0; transition:opacity .2s; pointer-events:none; }
+.bs-vw.scrolled .bs-topg { opacity:1; }
 .bs-vw .bs-bars { position:absolute; left:12px; right:12px; top:calc(env(safe-area-inset-top,0px) + 46px); display:flex; gap:4px; z-index:3; }
 .bs-vw .bs-bars i { flex:1; height:3px; border-radius:2px; background:rgba(249,250,252,.3); overflow:hidden; position:relative; }
 .bs-vw .bs-bars i::after { content:""; position:absolute; inset:0; background:#F9FAFC; transform:scaleX(var(--p,0)); transform-origin:0 50%; transition:transform .28s cubic-bezier(.2,.8,.2,1); }
-.bs-vw .bs-vh { position:absolute; left:12px; right:8px; top:calc(env(safe-area-inset-top,0px) + 58px); display:flex; align-items:center; gap:10px; z-index:4; }
+.bs-vw .bs-vh { position:absolute; left:12px; right:8px; top:calc(env(safe-area-inset-top,0px) + 58px); display:flex; align-items:center; gap:10px; z-index:4; pointer-events:none; }
+.bs-vw .bs-vh .bs-x { pointer-events:auto; }
 .bs-mk { width:32px; height:32px; border-radius:9px; overflow:hidden; flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; background:#12161A; color:#F9FAFC; }
 .bs-mk.round { border-radius:50%; } .bs-mk svg { width:100%; height:100%; display:block; } .bs-mk.bs-ico svg { width:16px; height:16px; } .bs-mk b { font-size:14px; font-weight:700; }
-.bs-vw .bs-vh b { font-size:14px; line-height:1.2; font-weight:600; } .bs-vw .bs-vh > span:not(.bs-mk) { font-size:11px; font-weight:500; color:#D8DEE6; margin-left:2px; }
+.bs-vw .bs-vh b { font-size:14px; line-height:1.2; font-weight:600; text-shadow:0 1px 2px rgba(11,14,17,.5); } .bs-vw .bs-vh > span:not(.bs-mk) { font-size:11px; font-weight:500; color:#D8DEE6; margin-left:2px; }
 .bs-vw .bs-x { margin-left:auto; width:44px; height:44px; display:grid; place-items:center; border:0; background:none; color:#F9FAFC; cursor:pointer; border-radius:12px; }
+
+
+.bs-vw .bs-hero { position:relative; height:46%; min-height:300px; overflow:hidden; }
+.bs-vw .bs-hero .bs-shade { background:linear-gradient(180deg,rgba(11,14,17,.6) 0,rgba(11,14,17,.1) 30%,rgba(11,14,17,.2) 55%,#0B0E11 100%); }
+.bs-vw .bs-cover .cv, .bs-vw .bs-cover .cv img, .bs-vw .bs-cover svg, .bs-vw .bs-cover > * { width:100%; height:100%; display:block; object-fit:cover; }
+.bs-vw .bs-hero .bs-tz { position:absolute; top:100px; bottom:0; z-index:2; cursor:pointer; } .bs-vw .bs-hero .bs-tz.l { left:0; width:32%; } .bs-vw .bs-hero .bs-tz.r { right:0; width:68%; }
+.bs-vw .bs-hh { position:absolute; left:20px; right:20px; bottom:14px; z-index:3; display:grid; gap:8px; pointer-events:none; }
+.bs-vw .bs-hh .k { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#D8DEE6; }
+.bs-vw .bs-hh h3 { font-size:26px; line-height:1.08; font-weight:700; letter-spacing:-.03em; margin:0; text-wrap:balance; }
+.bs-vw .bs-hh p { font-size:14px; line-height:1.4; margin:0; color:#D8DEE6; }
+.bs-vw .bs-chart .bs-cm { position:absolute; left:20px; top:calc(env(safe-area-inset-top,0px) + 118px); width:96px; height:96px; border-radius:24px; overflow:hidden; box-shadow:0 0 0 1px rgba(249,250,252,.12); display:grid; place-items:center; background:#12161A; }
+.bs-vw .bs-chart .bs-cm .bs-mk { width:96px; height:96px; border-radius:24px; } .bs-vw .bs-chart .bs-cm .bs-mk b { font-size:38px; }
+.bs-vw .bs-chart .bs-cm.bs-endk { background:none; box-shadow:none; }
+
+
+.bs-vw .bs-secs { padding:6px 20px 8px; display:grid; gap:18px; } .bs-vw .bs-sec { min-width:0; }
+.bs-vw .bs-sec h4 { display:flex; align-items:center; gap:8px; margin:0 0 2px; font-size:12px; line-height:1.2; font-weight:700; letter-spacing:.01em; color:#F9FAFC; }
+.bs-vw .bs-sec h4 .bs-si { width:24px; height:24px; border-radius:7px; display:inline-grid; place-items:center; background:rgba(249,250,252,.12); color:#F9FAFC; }
+.bs-vw .bs-sec h4 { cursor:pointer; } .bs-vw .bs-sec h4 em { font-style:normal; font-weight:500; color:#A6AFBB; margin-left:auto; font-size:11px; white-space:nowrap; }
+.bs-vw .bs-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid rgba(249,250,252,.1); cursor:pointer; min-height:60px; }
+.bs-vw .bs-row:first-of-type { border-top:0; }
+.bs-vw .bs-row .m { flex:1; min-width:0; }
+.bs-vw .bs-row .a { font-size:14px; line-height:1.3; font-weight:600; color:#F9FAFC; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.bs-vw .bs-row .b { font-size:11px; line-height:1.35; color:#A6AFBB; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bs-vw .bs-ld { position:relative; width:40px; height:40px; border-radius:12px; overflow:hidden; flex:0 0 auto; display:grid; place-items:center; background:#12161A; }
+.bs-vw .bs-ld .bs-pt em { font-size:14px; letter-spacing:0; transform:none; color:rgba(255,255,255,.75); }
+.bs-vw .bs-ld.bs-ico { color:#F9FAFC; background:rgba(249,250,252,.12); } .bs-vw .bs-ld.bs-kt { background:rgba(249,250,252,.08); } .bs-vw .bs-ld.bs-kt svg { width:40px; height:40px; }
+.bs-vw .bs-ld.bs-cvs svg, .bs-vw .bs-ld.bs-cvs canvas, .bs-vw .bs-ld.bs-cvs > * { width:100%; height:100%; display:block; }
+.bs-vw .bs-rt { flex:0 0 auto; font-size:11px; font-weight:600; color:#D8DEE6; white-space:nowrap; }
+.bs-vw .bs-chev { flex:0 0 auto; color:#A6AFBB; display:inline-flex; }
+.bs-vw .bs-lbl { display:inline-flex; flex:0 0 auto; justify-self:start; width:max-content; height:26px; align-items:center; padding:0 10px; border-radius:999px; background:rgba(249,250,252,.16); font-size:11px; font-weight:700; }
+.bs-vw .bs-lbl.host { background:#158045; }
+
+
+.bs-vw .bs-foot { position:sticky; bottom:0; display:flex; gap:10px; padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 22px); background:linear-gradient(180deg,rgba(11,14,17,0),#0B0E11 40%); }
+.bs-vw .bs-foot button, .bs-vw .bs-acts button { flex:1; height:52px; border-radius:12px; border:0; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; }
+.bs-vw .bs-foot .p, .bs-vw .bs-acts .p { background:#F9FAFC; color:#0B0E11; } .bs-vw .bs-foot .s, .bs-vw .bs-acts .s { flex:0 0 auto; padding:0 22px; background:rgba(249,250,252,.14); color:#F9FAFC; }
+
+
 .bs-vw .bs-body { position:absolute; left:0; right:0; bottom:0; padding:0 20px calc(env(safe-area-inset-bottom,0px) + 28px); display:grid; gap:10px; z-index:2; }
-.bs-vw .bs-body .k { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#D8DEE6; }
 .bs-vw .bs-body h3 { font-size:26px; line-height:1.12; font-weight:700; letter-spacing:-.02em; margin:0; text-wrap:balance; }
 .bs-vw .bs-body p { font-size:14px; line-height:1.45; margin:0; color:#D8DEE6; }
-.bs-vw .bs-body p.q { font-size:16px; line-height:1.4; font-weight:500; color:#F9FAFC; border-left:2px solid rgba(249,250,252,.5); padding-left:12px; }
 .bs-vw .bs-acts { display:flex; gap:10px; margin-top:6px; }
-.bs-vw .bs-acts button { flex:1; height:52px; border-radius:12px; border:0; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; }
-.bs-vw .bs-acts .p { background:#F9FAFC; color:#0B0E11; } .bs-vw .bs-acts .s { flex:0 0 auto; padding:0 18px; background:rgba(249,250,252,.14); color:#F9FAFC; }
-.bs-vw .bs-tz { position:absolute; top:120px; bottom:190px; z-index:2; cursor:pointer; } .bs-vw .bs-tz.l { left:0; width:32%; } .bs-vw .bs-tz.r { right:0; width:68%; }
-.bs-vw .bs-lbl { display:inline-flex; justify-self:start; width:max-content; height:26px; align-items:center; padding:0 10px; border-radius:999px; background:rgba(249,250,252,.16); font-size:11px; font-weight:700; }
-.bs-vw .bs-lbl.host { background:#158045; }
-.bs-vw .bs-chart .bs-cm { position:absolute; left:50%; top:30%; transform:translate(-50%,-50%); width:96px; height:96px; border-radius:24px; overflow:hidden; box-shadow:0 0 0 1px rgba(249,250,252,.12); display:grid; place-items:center; background:#12161A; }
-.bs-vw .bs-chart .bs-cm .bs-mk { width:96px; height:96px; border-radius:24px; } .bs-vw .bs-chart .bs-cm .bs-mk b { font-size:38px; } .bs-vw .bs-chart .bs-cm .bs-mk.bs-ico svg { width:40px; height:40px; }
-.bs-vw .bs-chart .bs-cm.bs-endk { background:none; box-shadow:none; }
-.bs-vw .bs-chap h3 { font-size:32px; letter-spacing:-.03em; } .bs-vw .bs-tap { font-size:11px !important; font-weight:500; color:#A6AFBB !important; margin-top:6px !important; }
-.bs-vw .bs-fs { display:flex; gap:8px; margin-top:4px; }
-.bs-vw .bs-fs i { position:relative; width:44px; height:44px; border-radius:50%; overflow:hidden; box-shadow:0 0 0 2px #0B0E11; font-style:normal; } 
-.bs-vw .bs-fs i .bs-pt em { font-size:18px; letter-spacing:0; transform:none; color:rgba(255,255,255,.7); }
-.bs-vw .bs-card .bs-pt em { font-size:141px; letter-spacing:-.04em; }
+.bs-vw .bs-chap h3 { font-size:32px; letter-spacing:-.03em; }
+.bs-vw [data-kind="end"] .bs-chart .bs-cm { left:50%; top:30%; transform:translate(-50%,-50%); }
+@media (max-height:700px) { .bs-vw .bs-hero { height:40%; min-height:250px; } .bs-vw .bs-hh h3 { font-size:26px; } .bs-vw .bs-chart .bs-cm { width:72px; height:72px; border-radius:20px; } .bs-vw .bs-chart .bs-cm .bs-mk { width:72px; height:72px; } }
 
 
 .sheet .br-sl { margin-top:20px; }
@@ -5997,6 +6029,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .nn .lab { flex:0 0 48px; font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); }
 #phone.hf-mfr .sc .fr { gap:12px; padding:8px 0; align-items:center; border-top:var(--border-width-hairline) solid var(--border-default); font:var(--type-body-m); }
 #phone.hf-mfr .sc .fr.mh-fr::before { display:none; }
+#phone.hf-mfr .sc .rows > .fr:first-child { border-top:0; }
 #phone.hf-mfr .sc .fr .mh-fi { width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-style:normal; }
 #phone.hf-mfr .sc .fr.gold .mh-fi { background:var(--bg-surface-default); box-shadow:inset 0 0 0 var(--border-width-thin) var(--border-gold); color:var(--text-gold); }
 #phone.hf-mfr .sc .fr .who { flex:0 0 64px; font:var(--type-body-m-strong); }
@@ -16686,92 +16719,141 @@ const _brHome = sHome; sHome = function(){
 const _brJump = jump; jump = function(){ STATE._ksScreen = null; const r = _brJump.apply(this, arguments); const b = phone.querySelector(".view .body"); if (b) b.scrollTop = 0; return r; };
 const _brItemsRaw = brItems; let _brPass = 0, _brCache = null; brItems = function(){ if (_brCache && _brCache.pass===_brPass) return _brCache.items; const items = _brItemsRaw(); _brCache = { pass:_brPass, items }; return items; };
 const _brRender = render; render = function(){ _brPass++; return _brRender.apply(this, arguments); };
-
-/* ==== STORIES (KeyStoryViewer): the banner grows into chapters of full-screen cards ==== */
+/* ==== STORIES (KeyStoryViewer): one full screen per community (his 02:53). Each screen is that community's whole brief since you
+   were last here: what needs you, missions that moved, channels active now, people waiting to join (organizers), events, updates on
+   the events you host, new posts. Everything scrolls; every row opens the place it points at. Swipe or Next for the next community;
+   the leftovers that belong to no community sit on one "Across Key" screen; "Caught up" ends it. ==== */
 const BS_E = "cubic-bezier(.2,.8,.2,1)";
 const bsStill = () => (typeof matchMedia==="function" && matchMedia("(prefers-reduced-motion: reduce)").matches) || document.documentElement.classList.contains("mo-still") || !!navigator.webdriver;
 const bsAnim = (el, kf, o) => (bsStill() || !el || !el.animate) ? { finished: Promise.resolve() } : el.animate(kf, Object.assign({ easing:BS_E, fill:"both" }, o));
-const BS_WASH = { kai:"#1B222A", msg:"#1C2129", events:"#1E2A26", moved:"#2A211A" };
+const BS_WASH = { xoogler:"#24406A", michigan:"#0F2E52", desi:"#1B4E3F", key:"#1B222A" };
 function brFamMark(f, size){ const m = typeof FAM_MARK!=="undefined" && FAM_MARK[f.id]; return `<span class="bs-mk" style="width:${size}px;height:${size}px">${m || `<b>${f.initial}</b>`}</span>`; }
-function brVerb(i){
-  if (i.kind==="ask") return "Answer"; if (i.kind==="event") return i.label==="Hosting" ? "Manage" : "Details";
-  if (i.reqs) return "Review"; if (i.kind==="moved") return "See the path";
-  return /mention|replied|introduc/i.test(i.title+" "+(i.sub||"")) ? "Reply" : "Open";
+/* a person's first family, by the names people carry ("Xoogler", "Michigan", "Desi Founders") */
+function brFamOf(p){ const names = (p && p.families) || []; for (const n of names) { const f = DB.families.find(f => f.name===n || f.name.split(" ")[0]===n.split(" ")[0]); if (f) return f.id; } return null; }
+function brPerson(ini){ return Object.values(DB.people||{}).find(p => p.initials===ini); }
+/* section: glyph, name, rows shown (the rest lives on the screen the section opens) */
+const BS_SEC = { needs:["bell-ring","Needs you",4], moved:["compass","Missions moved",3], active:["hash","Active now",3], waiting:["user-plus","Waiting to join",3], events:["calendar","Events",3], hosting:["flag","Updates on your events",2], posts:["file-text","New posts",2], msgs:["message-square","Messages",3], reqs:["mail","Requests",3] };
+const BS_SEC_GO = { needs:"inbox", moved:"home", active:"fchannels", waiting:"manage:applications", events:"fevents", hosting:"events", posts:"posts", msgs:"inbox", reqs:"inbox" };
+const BS_REG = { hosting:"Hosting", going:"Going", pending:"Waiting", waitlist:"Waiting", invited:"Invited" };
+function brEvLabel(e){ return e.reg==="hosting" ? "Hosting" : (e.rsvp===true || e.reg==="going") ? "Going" : BS_REG[e.reg] || (e.going ? `${e.going} going` : ""); }
+function brFamGo(fid, to){ return `STATE.family='${fid}';go('${to}')`; }
+/* one community's brief: sections of rows, each row knows where it goes */
+function brBrief(f){
+  const items = brItems(), S = [], row = (o) => o; const isMe = f.id===STATE.family;
+  const inFam = i => i.kind==="fam" ? i.fam===f.id : i.kind==="ask" ? brAskFam(i)===f.id : false;
+  const needs = items.filter(inFam).map(i => ({ art: i.kind==="ask" ? brKaiTile(i) : brTile(i.ini), a:i.title, b: i.kind==="ask" ? brAskText(i) : i.sub, r:"›", go: i.go || null, item:i }));
+  (typeof myAsks==="function" ? myAsks() : []).filter(a => a.state==="open" && brFamOf(P(a.from))===f.id && !needs.some(n => n.a.includes(firstName(P(a.from))))).forEach(a =>
+    needs.push({ art: brTile(P(a.from).initials, a.from), a: a.kind==="forwarded" ? a.what : `${P(a.from).name} ${a.what}`, b: a.kind==="connector" ? "Intro through you" : a.kind==="forwarded" ? "Introduced to you" : "Asked you directly", r:"›", go:`go('req:${a.id}')` }));
+  if (needs.length) S.push({ id:"needs", rows:needs });
+  const moved = (DB.opps||[]).filter(o => { const p = targetOf(o); return p && brFamOf(p)===f.id && o.state!=="closed"; }).slice(0,4).map(o => { const p = targetOf(o), m = DB.missions.find(x => x.id===o.missionId) || {};
+    return { art: brTile(p.initials, p.id), a:o.next||p.name, b:`${p.name} · ${m.name||""}`, r: o.state==="new" ? "New pick" : "Next step", go:`go('path:${o.id}')` }; });
+  if (moved.length) S.push({ id:"moved", rows:moved });
+  const ch = ((DB.channels||{})[f.id]||[]).filter(c => c.unread && c.joined!==false);
+  if (ch.length) S.push({ id:"active", sum:`${ch.reduce((t,c)=>t+c.unread,0)} new in ${ch.length} channel${ch.length===1?"":"s"}`, rows: ch.map(c => ({ art:`<span class="bs-ld bs-ico">${LI("hash",20)}</span>`, a:c.name, b:c.last||"", r:`${c.unread} new`, go: brFamGo(f.id, `channel:${c.id}`) })) });
+  if (isMe && typeof cOrg==="function" && cOrg() && typeof cMM==="function") { const w = cMM().filter(m => m.st==="pending");
+    if (w.length) S.push({ id:"waiting", rows: w.map(m => ({ art: brTile((m.n||"?").split(" ").map(x=>x[0]).join("").slice(0,2), m.id), a:m.n, b:m.sub||"", r:"Review", go: brFamGo(f.id, "manage:applications") })) }); }
+  const seen = new Set(); const evs = (DB.fevents||[]).filter(e => e.family===f.id && e.bucket!=="past").sort((a,b) => (a.bucket==="week"?0:1)-(b.bucket==="week"?0:1)).filter(e => { if (seen.has(e.name)) return false; seen.add(e.name); return true; }).slice(0,4);
+  if (evs.length) S.push({ id:"events", rows: evs.map(e => ({ art: `<span class="bs-ld bs-cvs">${typeof evCvArt==="function" ? evCvArt(e) : ""}</span>`, a:e.name, b:`${e.when||e.day||""}${e.going&&brEvLabel(e)!==`${e.going} going`?` · ${e.going} going`:""}`, r: brEvLabel(e), lbl: BS_REG[e.reg] || (e.rsvp===true ? "Going" : ""), go:`go('eventd:${e.id}')` })) });
+  const host = (DB.fevents||[]).filter(e => e.family===f.id && e.reg==="hosting" && e.bucket!=="past");
+  const upd = []; host.forEach(e => (DB.missions||[]).filter(m => m.id.startsWith("ev-") && m.id.endsWith("."+e.id)).forEach(m => upd.push({ art:`<span class="bs-ld bs-cvs">${typeof evCvArt==="function" ? evCvArt(e) : ""}</span>`, a:m.name, b:`${e.name} · ${e.going} going`, r:"›", go:`go('mission:${m.id}')` })));
+  if (upd.length) S.push({ id:"hosting", rows:upd.slice(0,3) });
+  const posts = (DB.posts||[]).filter(p => p.fam===f.id && p.who!==me().name && /^(Today|\d+[hm])$/.test(p.when||"")).slice(0,3);
+  if (posts.length) S.push({ id:"posts", rows: posts.map(p => ({ art: brTile(p.ini || p.who.split(" ").map(x=>x[0]).join("").slice(0,2)), a:p.title, b:`${p.who} · ${p.when}`, r:"›", go: brFamGo(f.id, "posts") })) });
+  return S;
 }
-function brChapters(){
-  const items = brItems(); const ch = [];
-  const put = (id, name, mark, list, wash, faces) => { if (list.length) ch.push({ id, name, mark, wash, items:list, faces: faces===false ? [] : list.map(i=>i.ini).filter(x=>x && /^[A-Z]{1,2}$/.test(x) && x!=="K").filter((x,k,a)=>a.indexOf(x)===k).slice(0,3) }); };
-  put("kai", "Kai", typeof kaiMark==="function" ? kaiMark(32) : "K", items.filter(i => i.kind==="ask" || (i.n && i.n.ava==="kai")), BS_WASH.kai);
-  DB.families.forEach(f => put("fam:"+f.id, f.name, brFamMark(f, 32), items.filter(i => i.kind==="fam" && i.fam===f.id && !(i.n && i.n.ava==="kai")), (typeof FAM_COLOR!=="undefined" && FAM_COLOR[f.id]) || "#1B2530"));
-  put("msg", "Requests", `<span class="bs-mk bs-ico">${LI("mail",16)}</span>`, items.filter(i => i.kind==="msg" && !(i.n && i.n.ava==="kai")), BS_WASH.msg);
-  put("events", "Events", `<span class="bs-mk bs-ico">${LI("calendar",16)}</span>`, items.filter(i => i.kind==="event"), BS_WASH.events, false);
-  put("moved", "Your missions", `<span class="bs-mk bs-ico">${LI("compass",16)}</span>`, items.filter(i => i.kind==="moved"), BS_WASH.moved);
-  return ch;
+function brAskFam(i){ const t = (i.html||"").replace(/<[^>]+>/g," "); const f = DB.families.find(f => t.includes(f.name) || t.includes(f.name.split(" ")[0])); if (f) return f.id; const p = brPerson(i.ini); return p ? brFamOf(p) : null; }
+/* what belongs to no community: Kai's other asks, direct messages, requests, the events you go to or host outside a community */
+function brKeyBrief(){
+  const items = brItems(), S = [];
+  const needs = items.filter(i => (i.kind==="ask" && !brAskFam(i)) || (i.kind==="fam" && !DB.families.some(f => f.id===i.fam)) || (i.kind==="msg" && !i.reqs)).map(i => ({ art: i.kind==="ask" ? brKaiTile(i) : brTile(i.ini), a:i.title, b: i.kind==="ask" ? brAskText(i) : i.sub||"", r:"›", go:i.go||null, item:i }));
+  if (needs.length) S.push({ id:"needs", rows:needs });
+  const reqs = (typeof myAsks==="function" ? myAsks() : []).filter(a => a.state==="open" && !brFamOf(P(a.from)));
+  if (reqs.length) S.push({ id:"reqs", rows: reqs.map(a => ({ art: brTile(P(a.from).initials, a.from), a:`${P(a.from).name} ${a.what}`, b:"Through you", r:"›", go:`go('req:${a.id}')` })) });
+  const seen = new Set(); const evs = (DB.fevents||[]).filter(e => !e.family && (e.rsvp===true || e.reg==="hosting") && e.bucket!=="past").filter(e => { if (seen.has(e.name)) return false; seen.add(e.name); return true; }).slice(0,4);
+  if (evs.length) S.push({ id:"events", rows: evs.map(e => ({ art:`<span class="bs-ld bs-cvs">${typeof evCvArt==="function" ? evCvArt(e) : ""}</span>`, a:e.name, b:`${e.when||e.day||""} · ${e.going} going`, r: brEvLabel(e), lbl: e.reg==="hosting" ? "Hosting" : "Going", go:`go('eventd:${e.id}')` })) });
+  return S;
 }
+function brTile(ini, pid){ return `<span class="bs-ld">${brPortrait(ini, pid, 96)}</span>`; }
+function brKaiTile(){ return `<span class="bs-ld bs-kt">${typeof kaiMark==="function" ? kaiMark(40) : "K"}</span>`; }
 function brAskText(i){ const q = /class="b">([^<]*)</.exec(i.html||""); return q ? q[1] : ""; }
-function bsCard(c, ch){
-  if (c.kind==="chapter") return `<div class="bs-card" data-kind="chapter" data-chapter="${ch.id}"><div class="bs-art bs-chart" style="background:radial-gradient(120% 80% at 50% 25%,${ch.wash},#0B0E11 70%)"><div class="bs-cm ${ch.id==="kai"?"bs-endk":""}">${ch.id==="kai" && typeof kaiMark==="function" ? kaiMark(96) : ch.mark}</div></div><div class="bs-shade"></div>
-    <div class="bs-body bs-chap"><h3>${ch.name}</h3><p>${ch.items.length-1} thing${ch.items.length===2?"":"s"} for you</p>${ch.faces.length?`<div class="bs-fs">${ch.faces.map(f=>`<i>${brPortrait(f, null, 96)}</i>`).join("")}</div>`:""}<p class="bs-tap">Tap to start</p></div></div>`;
-  if (c.kind==="end") return `<div class="bs-card" data-kind="end" data-chapter="end"><div class="bs-art bs-chart"><div class="bs-cm bs-endk">${typeof kaiMark==="function" ? kaiMark(96) : ""}</div></div><div class="bs-shade"></div>
+function brScreens(){
+  const L = [];
+  DB.families.forEach(f => { const S = brBrief(f); if (S.length) L.push({ id:"fam:"+f.id, fam:f, name:f.name, mark:brFamMark(f, 32), wash:BS_WASH[f.id]||"#1B2530", secs:S }); });
+  const K = brKeyBrief(); if (K.length) L.push({ id:"key", name:"Across Key", mark: typeof kaiMark==="function" ? kaiMark(32) : "K", round:true, wash:BS_WASH.key, secs:K });
+  L.push({ id:"end", name:"Kai", mark: typeof kaiMark==="function" ? kaiMark(32) : "K", round:true, end:true, secs:[] });
+  return L;
+}
+const bsCount = s => s.secs.reduce((t,x) => t+x.rows.length, 0);
+function bsRow(r, si, ri){
+  const right = r.lbl ? `<span class="bs-lbl ${r.lbl==="Hosting"?"host":""}">${r.lbl}</span>` : r.r==="›" ? `<span class="bs-chev">${LI("chevron-right",18)}</span>` : `<span class="bs-rt">${r.r}</span>`;
+  return `<div class="bs-row" role="button" data-row="${si}:${ri}">${r.art}<div class="m"><div class="a">${r.a}</div>${r.b?`<div class="b">${r.b}</div>`:""}</div>${right}</div>`;
+}
+function bsCard(s){
+  if (s.end) return `<div class="bs-card" data-kind="end" data-chapter="end"><div class="bs-art bs-chart"><div class="bs-cm bs-endk">${typeof kaiMark==="function" ? kaiMark(96) : ""}</div></div><div class="bs-shade"></div>
     <div class="bs-body bs-chap"><h3>Caught up</h3><p>That's everything since you were last here. Kai brings the next things here.</p><div class="bs-acts"><button type="button" class="p" data-bs="done">Done</button><button type="button" class="s" data-bs="list">See as a list</button></div></div></div>`;
-  const i = c; const k = i.kind==="ask" ? "Kai asks" : i.kind==="event" ? (i.ev && i.ev.day) || "This week" : i.kind==="moved" ? (i.sub || "Your mission") : i.badge ? ({mention:"Mention", reply:"Reply", intro:"Introduction", request:"Request", accept:"Accepted", dm:"Message"}[i.badge] || i.badge) : i.reqs ? "Requests" : "Messages";
-  const q = i.kind==="ask" ? brAskText(i) : (i.n && i.n.quote) || "";
-  const sub = i.kind==="ask" ? "" : i.sub || "";
-  return `<div class="bs-card" data-kind="${i.kind}" data-chapter="${ch.id}" data-kc="KeyStoryCard" data-kv="kind=${i.kind}">${brArt(i, 640)}<div class="bs-shade"></div>
-    <div class="bs-body">${i.label?`<span class="bs-lbl ${i.label==="Hosting"?"host":""}">${i.label}</span>`:`<span class="k">${k}</span>`}<h3>${i.title}</h3>${q?`<p class="q">${q}</p>`:""}${sub?`<p>${sub}</p>`:""}
-    <div class="bs-acts"><button type="button" class="p" data-bs="act">${brVerb(i)}</button><button type="button" class="s" data-bs="later">Later</button></div></div></div>`;
+  const n = bsCount(s), need = (s.secs.find(x => x.id==="needs")||{rows:[]}).rows.length;
+  const parts = s.secs.map(x => x.id==="needs" ? `${x.rows.length} need${x.rows.length===1?"s":""} you` : x.id==="active" ? x.sum : `${x.rows.length} ${x.rows.length===1 ? BS_SEC[x.id][1].toLowerCase().replace(/s$/,"").replace("missions moved","mission moved") : BS_SEC[x.id][1].toLowerCase()}`);
+  const cover = s.fam && typeof cCoverArt==="function" ? cCoverArt(s.fam) : "";
+  const art = cover ? `<div class="bs-art bs-cover">${cover}</div>` : `<div class="bs-art bs-chart" style="background:radial-gradient(120% 90% at 30% 20%,${s.wash},#0B0E11 75%)"><div class="bs-cm ${s.fam?"":"bs-endk"}">${s.fam ? brFamMark(s.fam, 96) : (typeof kaiMark==="function" ? kaiMark(96) : "")}</div></div>`;
+  return `<div class="bs-card bs-brief" data-kind="community" data-chapter="${s.id}" data-kc="KeyStoryCard" data-kv="kind=community;rows=${n}">
+    <div class="bs-hero">${art}<div class="bs-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div>
+      <div class="bs-hh"><span class="k">Since you were last here</span><h3>${n===1?"One thing":n+" things"} moved${need?`, ${need} need${need===1?"s":""} you`:""}</h3><p>${parts.join(" · ")}</p></div></div>
+    <div class="bs-secs">${s.secs.map((x,si) => `<section class="bs-sec" data-sec="${x.id}"><h4 role="button" data-secgo="${x.id}"><span class="bs-si">${LI(BS_SEC[x.id][0],16)}</span>${BS_SEC[x.id][1]}<em>${x.sum||x.rows.length}${x.rows.length>BS_SEC[x.id][2]?` · see all`:""}</em></h4>${x.rows.slice(0, BS_SEC[x.id][2]).map((r,ri) => bsRow(r, si, ri)).join("")}</section>`).join("")}</div>
+    <div class="bs-foot"><button type="button" class="p" data-bs="act">${s.fam ? `Open ${s.fam.name.split(" ")[0]}` : "Open inbox"}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`;
 }
 STATE.brSeen = STATE.brSeen || {};
 function brOpen(fromEl){
   if (phone.querySelector(".bs-vw")) return;
-  const L = brChapters().map(ch => Object.assign({}, ch, { items:[{ kind:"chapter" }].concat(ch.items) })).concat([{ id:"end", name:"Kai", mark: typeof kaiMark==="function" ? kaiMark(32) : "K", round:true, items:[{ kind:"end" }] }]);
+  const L = brScreens();
   const vw = document.createElement("div"); vw.className = "bs-vw"; vw.setAttribute("data-kc","KeyStoryViewer"); phone.appendChild(vw);
   const view = phone.querySelector(".view"); if (view) view.classList.add("bs-back");
-  let si = 0, ci = 0, busy = false;
-  const srcHTML = s => `<div class="bs-src" data-chapter="${s.id}">${s.items.map((c,i)=>`<div class="bs-slot" data-i="${i}" style="opacity:${i?0:1}">${bsCard(c, s)}</div>`).join("")}</div>`;
-  const chrome = () => { const s = L[si]; return `<div class="bs-bars">${s.items.map((_,i)=>`<i style="--p:${i<=ci?1:0}"></i>`).join("")}</div>
-    <div class="bs-vh"><span class="bs-mk ${s.round||s.id==="kai"?"round":""}">${s.mark}</span><b>${s.name}</b>${s.id==="end"?"":`<span>${s.items.length-1} new</span>`}<button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>
-    <div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div>`; };
-  const bars = () => vw.querySelectorAll(".bs-bars i").forEach((b,i)=>b.style.setProperty("--p", i<=ci?1:0));
+  let si = 0, busy = false;
+  const srcHTML = s => `<div class="bs-src" data-chapter="${s.id}"><div class="bs-slot" data-i="0">${bsCard(s)}</div></div>`;
+  const chrome = () => { const s = L[si]; return `<div class="bs-bars">${L.map((_,i)=>`<i style="--p:${i<=si?1:0}"></i>`).join("")}</div>
+    <div class="bs-vh"><span class="bs-mk ${s.round?"round":""}">${s.mark}</span><b>${s.name}</b>${s.end?"":`<span>${bsCount(s)} new</span>`}<button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`; };
+  const bars = () => vw.querySelectorAll(".bs-bars i").forEach((b,i)=>b.style.setProperty("--p", i<=si?1:0));
   const seen = () => { STATE.brSeen[L[si].id] = true; };
+  const card = () => vw.querySelector(".bs-src:last-child .bs-card");
+  const atTop = () => { const c = card(); return !c || c.scrollTop <= 0; };
+  const run = go => { if (!go) return; close(false, () => new Function(go)()); };
+  const rowGo = r => {
+    if (r.go) return run(r.go);
+    if (r.item && r.item.html) return close(false, () => { openSheet("brief");
+      const row = [...phone.querySelectorAll("#sheet .trow")].find(x => { const a = x.querySelector(".a"); return a && a.textContent.trim()===r.item.title; });
+      if (!row) return; const btn = row.querySelector("button.mini"); (btn || row).click(); });
+  };
   function wire(){
     vw.querySelector(".bs-x").onclick = e => { e.stopPropagation(); close(); };
-    vw.querySelector(".bs-tz.l").onclick = () => prev(); vw.querySelector(".bs-tz.r").onclick = () => next();
-    vw.querySelectorAll("[data-bs]").forEach(b => b.onclick = e => { e.stopPropagation(); const what = b.dataset.bs; const item = L[si].items[ci];
+    const c = card(); if (c) { c.onscroll = () => vw.classList.toggle("scrolled", c.scrollTop > 150); vw.classList.toggle("scrolled", c.scrollTop > 150); }
+    vw.querySelectorAll(".bs-tz.l").forEach(z => z.onclick = () => prev()); vw.querySelectorAll(".bs-tz.r").forEach(z => z.onclick = () => next());
+    vw.querySelectorAll(".bs-row").forEach(el => el.onclick = e => { e.stopPropagation(); const [a,b] = el.dataset.row.split(":").map(Number); const r = L[si].secs[a].rows[b]; rowGo(r); });
+    vw.querySelectorAll("[data-secgo]").forEach(h => h.onclick = e => { e.stopPropagation(); const s = L[si], to = BS_SEC_GO[h.dataset.secgo]; run(s.fam && ["fchannels","fevents","posts","manage:applications"].includes(to) ? brFamGo(s.fam.id, to) : `go('${to}')`); });
+    vw.querySelectorAll("[data-bs]").forEach(b => b.onclick = e => { e.stopPropagation(); const what = b.dataset.bs, s = L[si];
       if (what==="later") return next();
       if (what==="done") { (notifs()||[]).forEach(a=>a.unread=false); (DB.activity||[]).forEach(a=>a.unread=false); return close(true); }
       if (what==="list") return close(false, () => openSheet("brief"));
-      if (what==="act") return close(false, () => {
-        if (item.go) return new Function(item.go)();
-        openSheet("brief");
-        const row = [...phone.querySelectorAll("#sheet .trow")].find(r => { const a = r.querySelector(".a"); return a && a.textContent.trim()===item.title; });
-        if (!row) return; const btn = row.querySelector("button.mini"); (btn || row).click();
-      });
+      if (what==="act") return run(s.fam ? brFamGo(s.fam.id, "family") : "go('inbox')");
     });
-    let x0 = null, y0 = null;
-    vw.onpointerdown = e => { if (e.target.closest("button")) return; x0 = e.clientX; y0 = e.clientY; };
+    let x0 = null, y0 = null, top0 = true;
+    vw.onpointerdown = e => { if (e.target.closest("button")) return; x0 = e.clientX; y0 = e.clientY; top0 = atTop(); };
     vw.onpointerup = e => { if (x0===null) return; const dx = e.clientX-x0, dy = e.clientY-y0; x0 = null;
-      if (dy > 80 && Math.abs(dy) > Math.abs(dx)) close(); else if (dx < -60) jump(1); else if (dx > 60) jump(-1); };
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) return dx < 0 ? jump(1) : jump(-1);
+      if (dy > 80 && Math.abs(dy) > Math.abs(dx) && top0 && atTop()) close(); };
+    vw.onpointercancel = () => { x0 = null; };
   }
-  const covers = () => vw.querySelectorAll(".bs-cv svg").forEach(g => { g.setAttribute("preserveAspectRatio","xMidYMid slice"); g.removeAttribute("width"); g.removeAttribute("height"); });
-  const paint = () => { vw.innerHTML = `<div class="bs-pg">${srcHTML(L[si])}</div>${chrome()}`; covers(); wire(); if (typeof phApply==="function") phApply(); };
-  async function toCard(n){
-    const slots = vw.querySelectorAll(".bs-src .bs-slot"), a = slots[ci], b = slots[n]; ci = n; bars();
-    bsAnim(b, [{opacity:0},{opacity:1}], {duration:280}); bsAnim(b.querySelector(".bs-art"), [{transform:"scale(1.03)"},{transform:"none"}], {duration:420});
-    bsAnim(b.querySelector(".bs-body"), [{opacity:0,transform:"translateY(8px)"},{opacity:1,transform:"none"}], {duration:320, delay:60});
-    await bsAnim(a, [{opacity:1},{opacity:0}], {duration:280}).finished; if (bsStill()) { a.style.opacity = 0; b.style.opacity = 1; }
-  }
+  const covers = () => vw.querySelectorAll(".bs-cvs svg, .bs-cover svg").forEach(g => { g.setAttribute("preserveAspectRatio","xMidYMid slice"); g.removeAttribute("width"); g.removeAttribute("height"); });
+  const paint = () => { vw.innerHTML = `<div class="bs-pg">${srcHTML(L[si])}</div><div class="bs-topg"></div>${chrome()}`; covers(); wire(); if (typeof phApply==="function") phApply(); };
   async function jump(d){
     const n = si + d; if (busy || n < 0) return; if (n >= L.length) return close(); busy = true; seen();
-    const pg = vw.querySelector(".bs-pg"), old = pg.firstElementChild; si = n; ci = 0;
+    const pg = vw.querySelector(".bs-pg"), old = pg.firstElementChild; si = n;
     pg.insertAdjacentHTML("beforeend", srcHTML(L[si])); const nu = pg.lastElementChild; covers();
     if (L[si].wash) bsAnim(vw, [{backgroundColor:L[si].wash},{backgroundColor:"#0B0E11"}], {duration:900});
     bsAnim(nu, [{opacity:0,transform:"scale(1.02)"},{opacity:1,transform:"none"}], {duration:360});
+    bsAnim(nu.querySelector(".bs-secs"), [{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}], {duration:360, delay:80});
     await bsAnim(old, [{opacity:1,transform:"none"},{opacity:0,transform:"scale(.98)"}], {duration:360}).finished;
-    old.remove(); vw.querySelectorAll(".bs-bars,.bs-vh,.bs-tz").forEach(x=>x.remove()); vw.insertAdjacentHTML("beforeend", chrome()); wire(); busy = false;
+    old.remove(); vw.querySelectorAll(".bs-bars,.bs-vh").forEach(x=>x.remove()); vw.insertAdjacentHTML("beforeend", chrome()); wire(); if (typeof phApply==="function") phApply(); busy = false;
   }
-  const next = () => { const s = L[si]; if (ci < s.items.length-1) return toCard(ci+1); return jump(1); };
-  const prev = () => { if (ci > 0) return toCard(ci-1); if (si > 0) return jump(-1); };
+  const next = () => jump(1), prev = () => jump(-1);
   const clipOf = r => { const R = phone.getBoundingClientRect(); return `inset(${r.top-R.top}px ${R.right-r.right}px ${R.bottom-r.bottom}px ${r.left-R.left}px round 20px)`; };
   async function open(){
     paint(); vw.classList.add("on");
@@ -16787,7 +16869,7 @@ function brOpen(fromEl){
     vw.remove(); if (view) view.classList.remove("bs-back");
     if (rerender) { render(); toast("Caught up."); } if (then) then();
   }
-  vw._bs = { next, prev, jump, close, get chapter(){ return L[si].id; }, get card(){ return ci; } };
+  vw._bs = { next, prev, jump, close, atTop, get chapter(){ return L[si].id; }, get card(){ return 0; }, get screens(){ return L.length; } };
   open();
 }
 
@@ -16797,7 +16879,7 @@ function brOpen(fromEl){
    - open: the bars and the header arrive after the picture has grown (fade 240ms, 180ms in), so nothing reads squashed;
    - chapters move the way you went: the next chapter comes in 24px from the side you swiped or tapped toward, the old one leaves
      24px the other way, on top of Missions' crossfade; the header and bars fade in with it;
-   - pull down follows the finger: the story shrinks and lowers, Home shows through, and letting go past 80px closes it into the
+   - pull down follows the finger (only when the story is scrolled to its top, vw._bs.atTop): the story shrinks and lowers, Home shows through, and letting go past 80px closes it into the
      banner; short of that it eases back (no bounce). A drag never counts as a tap.
    Off under reduced motion, mo-still and webdriver (bsStill), where Missions' own tap and swipe behaviour is unchanged. ==== */
 const BSM_E = "cubic-bezier(.2,.8,.2,1)";
@@ -16833,7 +16915,7 @@ brOpen = function(fromEl){
   const settle = () => { const el = pg(); if (!el) return; const from = el.style.transform || "none", r = el.style.borderRadius || "0px";
     el.style.transform = ""; el.style.borderRadius = ""; vw.style.backgroundColor = ""; chrome().forEach(c => c.style.opacity = "");
     el.animate([{ transform:from, borderRadius:r }, { transform:"none", borderRadius:"0px" }], { duration:360, easing:BSM_E }); };
-  vw.addEventListener("pointerdown", e => { if (e.target.closest("button")) return; s = { x:e.clientX, y:e.clientY, id:e.pointerId, v:false }; dragged = false; }, true);
+  vw.addEventListener("pointerdown", e => { if (e.target.closest("button")) return; s = null; if (vw._bs.atTop && !vw._bs.atTop()) return; s = { x:e.clientX, y:e.clientY, id:e.pointerId, v:false }; dragged = false; }, true);
   vw.addEventListener("pointermove", e => { if (!s || e.pointerId!==s.id) return; const dx = e.clientX - s.x, dy = e.clientY - s.y;
     if (!s.v && dy > 8 && dy > Math.abs(dx)) { s.v = true; try { vw.setPointerCapture(e.pointerId); } catch (_) {} }
     if (s.v) { if (!dragged) free(); dragged = true; set(Math.max(0, dy)); } }, true);
