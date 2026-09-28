@@ -5006,7 +5006,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .mg, #phone.hf-mis .hdr.sc .mg, #phone.hf-mis #sheet .mg { width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--component-mission-bg); color:var(--icon-primary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:0; }
 #phone.hf-mis .sc .mg svg, #phone.hf-mis #sheet .mg svg { width:16px; height:16px; }
 /* KeyMissionMark: glyph on a glass plate over the theme */
-#phone.hf-mis .mh-mark { flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); box-shadow:inset 0 0 0 var(--border-width-hairline) var(--border-on-deep); }
+#phone.hf-mis .mh-mark { flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); }
 #phone.hf-mis .mh-mark.s32 { width:32px; height:32px; } #phone.hf-mis .mh-mark.s44 { width:44px; height:44px; }
 #phone.hf-mis .mh-band .mh-mark { background:var(--bg-on-deep-fill) !important; background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent) !important; backdrop-filter:blur(var(--blur-backdrop)); box-shadow:none; }
 /* KeyMissionHero */
@@ -5168,6 +5168,36 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .card.mh-rbc .chip { height:32px; padding:0 12px; display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite); border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); font:var(--type-label); }
 #phone.hf-mis .card.mh-rbc .btn { height:40px !important; border-radius:var(--radius-absolute-12); font:var(--type-body-m-strong); }
 #phone.hf-mis .card.mh-rbc .btn.sec { background:var(--bg-surface-default); color:var(--component-button-secondary-ink); border:0; box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-button-secondary-border); }
+
+/* Home while pending: proposed missions as hero plates, and the empty state before the call (no dashed box) */
+#phone.hf-mis .msec.sc.mh-mc.mh-pend { margin:0 0 12px; }
+#phone.hf-mis .sl.mh-psl { margin:20px 0 8px; font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
+#phone.hf-mis .mh-empty { display:flex; align-items:flex-start; gap:12px; margin:0 0 16px; padding:16px; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); }
+#phone.hf-mis .mh-empty .mh-mark { background:var(--bg-deep) !important; }
+#phone.hf-mis .mh-empty .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-mis .mh-empty .b { margin-top:2px; font:var(--type-body-s); color:var(--text-secondary); }
+
+/* All paths: header with bare glyphs, stage labels as overlines, rows on hairlines (no card container), a five-part step bar */
+#phone.hf-mis .view.mh-allp .hdr { min-height:56px; padding-top:6px; padding-bottom:6px; align-items:center; }
+#phone.hf-mis .view.mh-allp .hdr > .back { width:44px; height:44px; flex:0 0 44px; margin-left:-10px; display:flex; align-items:center; justify-content:center; color:var(--icon-primary); }
+#phone.hf-mis .view.mh-allp .hdr > .back svg { width:24px; height:24px; stroke-width:1.75; }
+#phone.hf-mis .view.mh-allp .hdr > div > div:first-child { font:var(--type-body-m-strong) !important; color:var(--text-primary); }
+#phone.hf-mis .view.mh-allp .hdr > div > .xs { font:var(--type-caption); color:var(--text-secondary); }
+#phone.hf-mis .view.mh-allp .hdr > .chip { height:32px; padding:0 12px; display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite); border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); font:var(--type-label); }
+#phone.hf-mis .view.mh-allp .body > .lbl { margin:16px 0 4px; font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); }
+#phone.hf-mis .view.mh-allp .card.mh-plist { margin:0; padding:0; border:0; border-radius:0; background:none; box-shadow:none; }
+#phone.hf-mis .mh-plist .rowitem { gap:12px; padding:12px 0; border-top:var(--border-width-hairline) solid var(--border-default); border-bottom:0; }
+#phone.hf-mis .mh-plist .rowitem:first-child { border-top:0; }
+#phone.hf-mis .mh-plist .rowitem > .avatar { width:44px; height:44px; flex:0 0 44px; border:0; font:var(--type-label); background:var(--component-avatar-bg); color:var(--component-avatar-ink); }
+#phone.hf-mis .mh-plist .rowitem .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-mis .mh-plist .rowitem .b { font:var(--type-body-s); color:var(--text-secondary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.hf-mis .mh-mini { display:block; width:48px; height:4px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); overflow:hidden; }
+#phone.hf-mis .mh-mini i { display:block; height:100%; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-fill); }
+
+/* KeyFaceStack in a sheet row (introductions to approve): layout=row, two 32 faces overlapping by one sixth */
+#phone.hf-mis #sheet .trow .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
+#phone.hf-mis #sheet .trow .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
+#phone.hf-mis #sheet .trow .avs > .avatar + .avatar { margin-left:-5px !important; }
 </style>
 <style>@font-face {
   font-family: 'Manrope';
@@ -15906,7 +15936,7 @@ render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=
    are avatar rows, never photo cards; each mission is one card with its people on a five-stage track; the brief is
    Missions' module and stays as the wireframe draws it until the stories direction is picked. Component roots carry data-kc (ledger name) and data-kv (Figma variant). ==== */
 const mhOn = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
-function mhScreen(){ const s = STATE.screen||""; if (s==="readback") return STATE.rbStep===2; if (s.startsWith("mission:")) return true; return STATE.member && (s==="home" || s.startsWith("path:") || s.startsWith("paths:")); }
+function mhScreen(){ const s = STATE.screen||""; if (s==="readback") return STATE.rbStep===2; if (s.startsWith("mission:") || s==="home") return true; return STATE.member && (s.startsWith("path:") || s.startsWith("paths:")); }
 const MH_ST = ["New pick","Next step","Waiting","In conversation","Went well"];
 const mhSt = o => scK(o)[2]==="Met" ? 3 : MH_ST.indexOf(scK(o)[0]);
 const mhAv = o => av(scIni(o), o.roleTitle ? "mh-sq" : "");
@@ -15976,6 +16006,28 @@ function mhReadback(root){
     c.querySelectorAll(".tag").forEach(t=>{ t.classList.add("chip"); t.setAttribute("data-kc","KeyChip"); });
   });
 }
+/* Home while the application is pending: proposed missions are hero plates (Not started); before the call, one quiet
+   empty state with the mark instead of the dashed box */
+function mhPendingHome(root){
+  root.querySelectorAll(".body > .msec:not(.mh-mc)").forEach(sec=>{
+    const h = sec.querySelector(".msh[data-mission]"); const m = h && DB.missions.find(x=>x.id===h.dataset.mission);
+    if (m) { const cap = [...sec.querySelectorAll(".kline span")].map(e=>e.textContent.trim()).filter(Boolean).join(" · ") || "Not started";
+      sec.outerHTML = `<div class="msec sc mh-mc mh-pend" data-kc="KeyMissionCard" data-kv="place=pending">${mhBand(m, [], false, cap)}</div>`; return; }
+    const e = sec.querySelector(".empty"); if (!e) return;
+    const note = (sec.querySelector(".kline span:last-child")||{}).textContent || "";
+    sec.outerHTML = `<div class="sl mh-psl">Missions</div><div class="mh-empty" data-kc="KeyEmptyState" data-kv="lead=mark">${mhMark({ type:"" }, 44)}<div class="m"><div class="a">${note}</div><div class="b">${e.textContent.trim()}</div></div></div>`;
+  });
+}
+/* All paths: rows on hairlines grouped by stage, the step count as a five-part bar */
+function mhAllPaths(root){
+  root.classList.add("mh-allp");
+  root.querySelectorAll(".body > .card").forEach(c=>{ c.classList.add("mh-plist"); c.removeAttribute("style"); c.setAttribute("data-kc","KeyRowList"); });
+  root.querySelectorAll(".body > .lbl").forEach(l=>{ l.setAttribute("data-kc","KeySectionLabel"); l.textContent = l.textContent.replace(/^New(?= ·)/, "New pick"); });
+  root.querySelectorAll(".mh-plist .rowitem > .s").forEach(s=>{ [...s.childNodes].forEach(n=>{ const t = (n.textContent||"").trim(); const x = /^(\d+)\/(\d+)$/.exec(t);
+    if (x && !n.querySelector?.("svg")) { const bar = document.createElement("span"); bar.className = "mh-mini"; bar.setAttribute("aria-label", `Step ${x[1]} of ${x[2]}`); bar.setAttribute("data-kc","KeyProgressBar"); bar.setAttribute("data-kv",`steps=${x[2]}, at=${x[1]}, size=s`);
+      bar.innerHTML = `<i style="width:${Math.round(100*x[1]/x[2])}%"></i>`; n.replaceWith(bar); } }); });
+  const hc = root.querySelector(".hdr > .chip"); if (hc) hc.setAttribute("data-kc","KeyChip");
+}
 /* A mission before you're in: the same hero, Start, and the brief as the document you shape; paths come after the first pass */
 function mhPendingPage(root, id){
   const m = DB.missions.find(x=>x.id===id); const body = root.querySelector(".body.sc"); if (!m || !body || body.querySelector(".mh-band")) return;
@@ -16042,6 +16094,8 @@ function mhDecorate(){
   root.querySelectorAll(".mh-moves .row[data-opp] > .avatar").forEach(a=>{ const o = DB.opps.find(z=>z.id===a.parentElement.dataset.opp); if (o && o.roleTitle) a.classList.add("mh-sq"); });
   const sid = (STATE.screen||"").startsWith("mission:") ? STATE.screen.slice(8) : ""; if (sid) (STATE.member ? mhMissionPage : mhPendingPage)(root, sid);
   if (STATE.screen==="readback") mhReadback(root);
+  if (STATE.screen==="home" && !STATE.member) mhPendingHome(root);
+  if ((STATE.screen||"").startsWith("paths:")) mhAllPaths(root);
   /* the mission menu offers the mark */
   const sh = STATE.sheet; const sb = phone.querySelector("#sheet .sb");
   if (sh && sh.type==="mmenu" && sb && !sb.querySelector(".mh-lookrow")) { const r = sb.querySelector(".xrow"); if (r) r.insertAdjacentHTML("beforebegin", `<div class="xrow mh-lookrow" onclick="STATE.sheet={type:'mhlook',id:'${sh.id}'};render()"><div class="m"><div class="a">Colour and icon</div><div class="b">Make this mission yours</div></div><span class="chev">›</span></div>`); }
@@ -16091,6 +16145,7 @@ function mhTag(r){
   t(".sc .stp", "KeyProgressBar", e=>`steps=${e.children.length}, at=${e.querySelectorAll(".on").length}`);
   t(".sc .nn", "KeyFactRow", "lead=label");
   t(".pact .sbar", "KeyFooterBar", "actions=primary+quiet");
+  t("#sheet .trow .avs", "KeyFaceStack", "layout=row, size=32");
   t(".sc .avs", "KeyFaceStack", e=>e.children.length===2 ? "layout=diagonal, size=32" : "layout=row, size=24");
   t(".sc .lift", "KeyCard", "elevation=1");
   t(".sc .sl", "KeySectionLabel");
