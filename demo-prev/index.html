@@ -248,7 +248,7 @@
   .tile .t { font-size:16px; font-weight:700; }
   .tile .d { font-size:13px; color:var(--ink2); margin-top:2px; }
   .tile .c { font-size:12px; color:var(--ink3); text-align:right; white-space:nowrap; }
-  .empty { border:1.5px solid var(--line); border-radius:14px; padding:14px; color:var(--ink3); font-size:14px; }
+  .empty { border:1.5px dashed var(--line); border-radius:14px; padding:14px; color:var(--ink3); font-size:14px; }
   .oos { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--ink3); }
   .oos .box { border:2px dashed var(--line); border-radius:16px; padding:28px 20px; max-width:300px; }
   .oos h2 { color:var(--ink2); }
@@ -356,7 +356,7 @@
   .obseg { flex:1; } .obseg i { display:block; height:4px; border-radius:2px; background:var(--line); } .obseg.done i, .obseg.on i { background:var(--ink); } .obseg.on i { opacity:1; } .obseg.done i { opacity:.5; }
   .obseg span { display:block; font-size:10px; color:var(--ink3); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .obseg.on span { color:var(--ink); font-weight:600; }
   .hero { padding-top:8px; }
-  .mvis { height:220px; border:1.5px solid var(--line); border-radius:20px; background:var(--fill); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+  .mvis { height:220px; border:1.5px dashed var(--line); border-radius:20px; background:var(--fill); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
   .mvis.full { margin:0 -16px; height:300px; border-radius:0; border-left:0; border-right:0; border-top:0; }
   .mvis .mvl { font-size:15px; font-weight:700; color:var(--ink2); }
   .hsvg { width:100%; height:auto; display:block; }
@@ -527,7 +527,7 @@
   .wstep.done .a { font-size:15px; font-weight:600; color:var(--ink2); } .wstep.done .b { font-size:13px; }
   .wstep .wnum, .wstep .wchk { width:28px; height:28px; border-radius:50%; flex:0 0 auto; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-top:1px; }
   .wstep .wnum { border:1.5px solid var(--line); color:var(--ink3); background:#fff; } .wstep.active .wnum { background:var(--ink); color:#fff; border-color:var(--ink); } .wstep .wchk { background:var(--ink); color:#fff; }
-  .wstep.locked .wnum { color:var(--ink2); }
+  .wstep.locked .wnum { border-style:dashed; color:var(--ink2); }
   .wstep.locked { background:var(--fill); border-radius:16px; padding:14px; margin-top:12px; border-top:0 !important; }
   .evrow { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); cursor:pointer; } .evrow:last-child { border-bottom:0; } .evrow .m { flex:1; min-width:0; } .evrow .a { font-size:15px; font-weight:700; line-height:1.25; } .evrow .b { font-size:13px; color:var(--ink2); margin-top:2px; } .evrow .btn { margin:0; flex:0 0 auto; height:36px; padding:0 12px; width:auto; }
   .evthumb.sm { width:56px; height:56px; border-radius:12px; flex:0 0 auto; aspect-ratio:auto; } .evthumb.sm .evd { left:6px; top:6px; font-size:11px; padding:2px 6px; }
@@ -884,8 +884,6 @@ p,
   .li { flex:0 0 auto; vertical-align:-3px; } .sico .li, .xrow .li { vertical-align:middle; } .back .li { vertical-align:0; } .swa .li { display:block; margin:0 auto 2px; } .nbadge .li, .kbadge .li { vertical-align:-1px; }
   /* Home indicator (journey guide, 26 Sep): the drawn bar sits 8px up and 5px tall, so every foot clears it. */
   #phone:has(.ios-home) .foot { padding-bottom:26px; }
-/* Placeholder faces and the mic square are solid, never dashed rings (trypophobia rule; journey guide 28 Sep). */
-.avatar, .hav, .hfaces span, .bav, .mopt .mi, .navt, .famchip i { border-style:solid; border-color:var(--line); background:var(--fill); }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -3145,7 +3143,8 @@ p,
   .cm-osn { font-size:12px; font-weight:600; color:rgba(255,255,255,.7); font-variant-numeric:tabular-nums; }
   .cm-osbar { height:3px; border-radius:2px; background:rgba(255,255,255,.18); margin:10px 14px 12px; overflow:hidden; }
   .cm-osbar i { display:block; height:100%; background:#fff; border-radius:2px; transition:width .26s cubic-bezier(.2,.8,.2,1); }
-  .cm-osjobs { display:flex; flex-wrap:wrap; gap:8px; padding:0 14px; container-type:inline-size; }   /* the pills wrap so none is cut at 320 (hosting, SE, 28 Sep) */
+  .cm-osjobs { display:flex; gap:8px; overflow-x:auto; padding:0 14px; scrollbar-width:none; }
+  .cm-osjobs::-webkit-scrollbar { display:none; }
   .cm-osjob { flex:0 0 auto; display:flex; align-items:center; gap:7px; min-height:40px; padding:6px 12px 6px 6px; border-radius:999px; border:0; background:rgba(255,255,255,.12); color:#fff; font:inherit; font-size:13px; cursor:pointer; }
   .cm-osjob b { font-weight:700; } .cm-osjob i { font-style:normal; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.7); }
   .cm-osfs { display:flex; } .cm-osf { width:26px; height:26px; border-radius:50%; background:#fff; color:var(--ink); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--ink); }
@@ -3325,7 +3324,6 @@ p,
 .cmhi .cm-faces, .cmhi .cm-osfs { display:flex; }
 .cmhi .cm-runby, .cmhi .cm-row:has(> .cm-faces) { --face-ring:var(--bg-page); }
 .cmhi .cm-brief .cm-osjob { --face-ring:var(--component-chip-deep-bg); }
-.cmhi .cm-brief .cm-osjobs { padding:0; }
 .cmhi .cm-faces .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf { display:flex; align-items:center; justify-content:center; padding:0; width:var(--space-absolute-24); height:var(--space-absolute-24); margin:0; border:0; border-radius:var(--radius-absolute-infinite);
   box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; line-height:1; }
 .cmhi .cm-faces .avatar + .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf + .cm-osf { margin-left:calc(-1 * var(--space-absolute-4)); }
@@ -3435,38 +3433,6 @@ p,
 .cmhi .cm-pendtab .xrow { padding:var(--space-absolute-14, 14px) 0; }
 .cmhi .cm-pendtab .xrow .a { font-size:16px; font-weight:600; }
 .cmhi .cm-pendtab .xrow .b { font-size:14px; color:var(--text-secondary); }
-/* Organizer and settings screens in hi-fi (Manage, Family settings, Outcomes, Bring your family, Here's what Kai found, Your settings):
-   the wireframe's structure on the page ground, rows with hairlines instead of boxed cards, section titles, radius-12 tiles and buttons */
-.cmhi .cm-orgs .card, .cmhi .cm-orgs .toggle { background:transparent; border:0; border-radius:0; box-shadow:none; padding-left:0 !important; padding-right:0 !important; }
-.cmhi .cm-orgs .card[data-orgc], .cmhi .cm-orgs .stack > .card { padding-block:var(--space-absolute-12, 12px); border-bottom:1px solid var(--border-default); }
-.cmhi .cm-orgs .stack { gap:0; }
-.cmhi .cm-orgs .card[style*="dashed"] { border-bottom:0; }
-.cmhi .cm-orgs .card + .card { border-top:0; }
-.cmhi .cm-orgs .toggle { padding-block:var(--space-absolute-12, 12px); border-bottom:1px solid var(--border-default); }
-.cmhi .cm-orgs .rowitem { border-bottom:1px solid var(--border-default); padding-block:var(--space-absolute-12, 12px); }
-.cmhi .cm-orgs .card > .rowitem:last-child { border-bottom:0; }
-.cmhi .cm-orgs .rowitem .a, .cmhi .cm-orgs .card .name { font-size:16px; font-weight:600; color:var(--text-primary); }
-.cmhi .cm-orgs .rowitem .b, .cmhi .cm-orgs .card .sub, .cmhi .cm-orgs .muted, .cmhi .cm-orgs .faint { color:var(--text-secondary); }
-.cmhi .cm-orgs .lbl { margin:var(--space-absolute-24, 24px) 0 var(--space-absolute-4, 4px); font-size:17px; font-weight:600; letter-spacing:-.01em; text-transform:none; color:var(--text-primary); }
-.cmhi .cm-orgs .avatar { border:0; border-radius:var(--radius-absolute-12) !important; background:var(--bg-fill-default); color:var(--text-primary); width:40px; height:40px; font-size:14px; }
-.cmhi .cm-orgs .btn { border-radius:var(--radius-absolute-12); }
-.cmhi .cm-orgs .btn.sec { background:transparent; border:1px solid var(--component-button-secondary-border); color:var(--component-button-secondary-ink); }
-.cmhi .cm-orgs .chip { border-color:var(--border-default); }
-.cmhi .cm-orgs .toggle .sw, .cmhi .cm-orgs .rowitem .sw { flex:none; }
-.cmhi .hdr:has(~ .cm-orgs) { background:var(--component-header-bg, var(--bg-page)); }
-.cmhi .cm-orgs ~ .foot { background:var(--bg-page); border-top-color:var(--border-default); }
-.cmhi .cm-orgs .cm-list .rowitem + .rowitem { border-top:0; }
-.cmhi .cm-orgs .cm-lbl { font-size:17px; font-weight:600; letter-spacing:-.01em; text-transform:none; color:var(--text-primary); margin-bottom:var(--space-absolute-8, 8px); }
-.cmhi .cm-orgs .field { background:transparent; border:0; border-bottom:1px solid var(--border-default); border-radius:0; padding:var(--space-absolute-12, 12px) 0; }
-/* People, Joined this week: rows, not cards (low-fi sweep 00:16) */
-.cmhi .cm-nms { flex-direction:column; gap:0; overflow:visible; }
-.cmhi .cm-nm { flex:none; display:grid; grid-template-columns:40px 1fr auto; grid-template-rows:auto auto; column-gap:var(--space-absolute-12, 12px); align-items:center; text-align:left; background:transparent; border:0; border-bottom:1px solid var(--border-default); border-radius:0; box-shadow:none; padding:var(--space-absolute-12, 12px) 0; }
-.cmhi .cm-nm .avatar.lg { grid-row:1 / 3; width:40px; height:40px; font-size:14px; margin:0; }
-.cmhi .cm-nm b { grid-column:2; margin:0; align-self:end; font-size:16px; }
-.cmhi .cm-nm span { grid-column:2; align-self:start; font-size:14px; }
-.cmhi .cm-nm em { grid-column:3; grid-row:1 / 3; margin:0; }
-/* at SE width the brief's pills drop their face stacks so two fit per line (hosting, 28 Sep); the icon pills keep their icon */
-@container (max-width: 300px) { .cm-osjobs .cm-osjob > .cm-osfs:not(:has(.li)) { display:none; } .cm-osjobs .cm-osjob:has(> .cm-osfs:not(:has(.li))) { padding-left:12px; } }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -3804,7 +3770,7 @@ p,
 
 /* ==== MESSAGES: one avatar per kind (27 Sep, messages thread) ==== */
 .mx-av { position:relative; width:var(--mx); height:var(--mx); flex:0 0 auto; cursor:pointer; }
-.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px solid var(--line); box-sizing:border-box; }
+.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px dashed var(--ink3); box-sizing:border-box; }
 .mx-av .mx-f.solo { inset:0; font-size:calc(var(--mx) * .32); }
 .mx-av.grp .mx-f { width:calc(var(--mx) * .63); height:calc(var(--mx) * .63); font-size:calc(var(--mx) * .22); }
 .mx-av.grp .bk { left:0; top:0; background:var(--fill); }
@@ -3853,20 +3819,6 @@ p,
 .swa.right.mx-acts { width:max(45%, 172px); gap:4px; padding:4px 0 4px 4px; box-sizing:border-box; }
 .swa.right.mx-acts span { flex:1; width:auto; max-width:none; min-width:0; margin:0; padding:0 4px; border-radius:12px; color:var(--ink); background:var(--fill); }
 .swa.right.mx-acts span br { display:none; }
-
-/* the swipe tip's picture: the real tray, not three coloured squares (Apoorv 00:49) */
-.mx-tipsw { display:flex; gap:4px; align-items:stretch; border-radius:12px; overflow:hidden; background:#fff; padding:4px; }
-.mx-tipsw .mx-tr { flex:1; min-width:0; display:flex; align-items:center; gap:8px; margin-left:-28px; padding:6px 8px; }
-.mx-tipsw .mx-ta { width:24px; height:24px; flex:0 0 auto; border-radius:50%; background:var(--line); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--ink2); }
-.mx-tipsw .mx-tm { flex:1; min-width:0; }
-.mx-tipsw .mx-tm i { display:flex; align-items:center; gap:4px; font-style:normal; font-weight:600; font-size:12px; color:var(--ink); white-space:nowrap; }
-.mx-tipsw .mx-tm i svg { color:var(--ink3); }
-.mx-tipsw .mx-tm u { display:block; height:5px; width:70%; margin-top:5px; border-radius:3px; background:var(--line); }
-.mx-tipsw .mx-tt { display:flex; gap:4px; }
-.mx-tipsw .mx-tt span { width:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; background:var(--fill); color:var(--ink); }
-.mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
-/* Messages tips keep an even 16px each side on a narrow phone (hosting, SE 320). */
-#phone .tipx:is([data-tip="inbox"],[data-tip="swipe"],[data-tip="requests"]) { box-sizing:border-box; max-width:min(340px, calc(100% - 32px)); }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -4581,7 +4533,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ob3hero .nm { position:absolute; left:16px; right:16px; bottom:10px; }
 .ob3hero .nm .n { font-size:28px; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
 .ob3hero .nm .t { font-size:15px; color:var(--ink2); margin-top:4px; }
-.ob3edit { cursor:pointer; border-bottom:1px solid transparent; } .ob3edit:hover { border-bottom-color:var(--ink3); }
+.ob3edit { cursor:pointer; border-bottom:1px dashed transparent; } .ob3edit:hover { border-bottom-color:var(--ink3); }
 .ob3logos { display:flex; align-items:center; gap:6px; } .ob3logos b { width:30px; height:30px; border-radius:8px; background:var(--fill); display:grid; place-items:center; font-size:12px; font-weight:800; }
 .ob3logos span { font-size:12px; color:var(--ink3); margin-left:4px; }
 .ob3src { display:flex; align-items:center; gap:10px; margin-top:12px; }
@@ -4637,7 +4589,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ob4note { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--ink2); margin-top:10px; } .ob4note b { width:18px; height:18px; border-radius:5px; background:var(--fill); display:grid; place-items:center; font-size:10px; flex:none; }
 .ob4me { display:flex; align-items:center; gap:10px; padding:10px 0 4px; } .ob4me b { font-size:15px; }
 .ob4blank > svg { opacity:.45; filter:grayscale(1); }
-.ob4ask { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; color:rgba(20,20,20,.45); }
+.ob4ask { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; border:2px dashed rgba(20,20,20,.3); display:grid; place-items:center; color:rgba(20,20,20,.45); }
 .ob4list { margin-top:16px; border-top:1px solid var(--line); }
 .ob4row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); cursor:pointer; }
 .ob4row .ic { width:32px; flex:none; display:grid; place-items:center; color:var(--ink); } .ob4row .tx { flex:1; min-width:0; } .ob4row b { font-size:16px; }
@@ -4687,7 +4639,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ob4pc-f svg{flex:none;color:var(--ink3)}
 .ob4pc-name{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .ob4pc-f.is-empty span{color:var(--ink3);font-weight:500}
-.ob4pc-f.is-now.is-empty span{border-bottom:1.5px solid var(--line)}
+.ob4pc-f.is-now.is-empty span{border-bottom:1.5px dashed var(--line)}
 .ob4step{display:flex;flex-direction:column}
 .ob4locpc{position:relative;z-index:2;margin:-44px 16px 6px}
 .ob4locpc .ob4pc{margin:0}
@@ -4853,9 +4805,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .sheet.ks.mc-sheet .mc-n { font:var(--type-caption); color:var(--text-tertiary); margin:1px 0 2px; }
 .sheet.ks.mc-sheet .ks-k .tx p { font:var(--type-body-l); color:var(--text-primary); }
 .sheet.ks.mc-sheet .ks-k:not(:has(.mc-n)) .tx p { font:var(--type-body-m); }
-/* KeyChip variant=answer, the library's round answer chip (36 high, round, per his 22:03 ruling), solid, wrapping in a row */
-.mc-ans { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-.mc-a { height:36px; padding:0 14px; border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); white-space:nowrap; cursor:pointer; }
+/* KeyChip variant=answer: the tappable answers, big enough to hit, solid (never dashed) */
+.mc-ans { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:12px; }
+.mc-a { min-height:44px; padding:10px 16px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-body-m-strong); text-align:left; cursor:pointer; }
 .mc-a:active { background:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); box-shadow:none; }
 
 /* KeyMissionCard place=proposal, as on "What I'd start for you": white card, the hero plate on top, chips, Approve / Edit / Not this.
@@ -4877,10 +4829,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .mc-acts { display:flex; align-items:center; gap:8px; padding:12px 16px 16px; }
 .mc-pb { flex:1; height:40px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-body-m-strong); cursor:pointer; }
 .mc-pb.mc-b2 { flex:0 0 auto; padding:0 16px; background:var(--bg-surface-default); color:var(--component-button-secondary-ink); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-button-secondary-border); }
-.mc-q { flex:0 0 auto; height:40px; padding:0 4px; border:0; background:none; font:var(--type-body-m-strong); color:var(--component-button-ghost-ink); cursor:pointer; white-space:nowrap; }
-.mc-pb { min-width:0; white-space:nowrap; }
-/* SE (320): the three actions stay on one line at full labels */
-@media (max-width:360px) { .mc-acts { gap:6px; padding:12px 12px 14px; } .mc-chips { padding:12px 12px 0; } .mc-pb.mc-b2 { padding:0 12px; } .mc-q { padding:0 2px; } }
+.mc-q { flex:0 0 auto; height:40px; padding:0 4px; border:0; background:none; font:var(--type-body-m-strong); color:var(--component-button-ghost-ink); cursor:pointer; }
 .mc-ghost { position:absolute; right:-18px; bottom:-30px; z-index:-1; color:var(--text-on-deep-default); opacity:.14; line-height:0; transform:rotate(-12deg); }
 .mc-ghost svg { width:120px; height:120px; stroke-width:1.5; }
 .mc-cth { display:flex; align-items:center; gap:12px; margin-top:8px; }
@@ -5800,7 +5749,7 @@ function walkSteps() {
 function walkHTML() {
   const steps = walkSteps(); const done = steps.filter(x=>x.done).length; const first = steps.find(x=>!x.done);
   if (!STATE.member && !first) return `<div class="card" style="background:var(--fill);margin-top:4px"><div class="row" style="gap:10px;align-items:center"><span class="stdot"></span><div style="flex:1"><div class="name" style="font-size:16px">You're ready. Waiting on Xoogler.</div><div class="xs muted">Kai has your profile and your missions. The moment you're in, it starts.</div></div><span class="s" style="cursor:pointer;color:var(--ink3);font-size:12px" onclick="STATE.walkForce=!STATE.walkForce;render()">${STATE.walkForce?"Hide":"Steps"}</span></div>${STATE.walkForce?`<div style="margin-top:10px">${steps.map(x=>`<div class="wstep done" data-wexp="${x.id}" style="padding:10px 0"><div class="wchk">✓</div><div class="m"><div class="a">${x.title}</div><div class="b">${x.doneLine}</div>${STATE.walkOpen===x.id?`<div class="b" style="margin-top:8px;padding:10px 12px;background:#fff;border-radius:10px;color:var(--ink)">${x.expand}</div>`:''}</div></div>`).join("")}</div>`:''}</div>`;
-  if (STATE.member && first) return `<div class="xrow" style="border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:14px" onclick="${first.act||"STATE.walkOpen='"+first.id+"';render()"}"><div class="wnum" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3)">${steps.indexOf(first)+1}</div><div class="m"><div class="a" style="font-size:15px">${first.title}</div><div class="b" style="font-size:13px">${first.why.split(". ")[0]}.</div></div><span class="s">›</span></div>`;
+  if (STATE.member && first) return `<div class="xrow" style="border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:14px" onclick="${first.act||"STATE.walkOpen='"+first.id+"';render()"}"><div class="wnum" style="width:28px;height:28px;border-radius:50%;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink3)">${steps.indexOf(first)+1}</div><div class="m"><div class="a" style="font-size:15px">${first.title}</div><div class="b" style="font-size:13px">${first.why.split(". ")[0]}.</div></div><span class="s">›</span></div>`;
   const prepared = DB.missions.filter(m=>m.status!=="closed"); const waiting = STATE.intakeDone ? 3 : prepared.length ? 1 : 0;
   const head = STATE.member ? "" : `<div style="padding:4px 4px 0"><div class="name" style="font-size:22px;letter-spacing:-.02em">${done===0?"Let's get you settled in.":STATE.applied&&steps.length-done>1?"Nice, that's sent.":"Almost done."}</div><div class="sm muted" style="margin-top:2px">${done===0?"First, pick where you belong. Two short steps after that, and Kai takes it from there.":steps.length-done===0?"Kai has your profile and your missions. The moment you're in, it starts.":steps.length-done>1?`While ${DB.user.family||"Xoogler"} decides, let's get Kai ready for you.`:"One more and Kai has everything it needs."}</div><div class="mbar" style="margin:12px 0 0;display:flex;gap:4px">${steps.map(x=>`<i class="${x.done?'on':''}" style="flex:1;height:3px;border-radius:2px;background:${x.done?'var(--ink)':'var(--line)'}"></i>`).join("")}</div></div>`;
   const rows = steps.map(x => x.done
@@ -12696,7 +12645,7 @@ const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"], ph = C
 const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
   [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
   [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn","KeyButton"],[".cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
-  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row, .cm-swrow","KeyActionRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
   [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
   [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
 /* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
@@ -12710,7 +12659,6 @@ const cKv = (el, n) => { const c = el.classList;
     : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
     : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
     : n==="KeyChannelRow" ? `type=${c.contains("cm-talk")?"preview":"channel"}, state=${c.contains("u")?"unread":"read"}`
-    : n==="KeyCover" ? "variant=family"
     : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
 const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
@@ -12768,8 +12716,6 @@ function cChips(list, cur, attr){
 
 /* The family tab opens on Overview; Channels is its own screen so Back returns to it. */
 const C_TAB_SCR = ["family","fchannels","people","fevents","posts"];
-/* organizer and settings screens keep the wireframe's structure; in hi-fi they take the page styling (Apoorv 28 Sep 00:12, low-fi sweep) */
-const C_ORG_SCR = /^(manage(:.*)?|report|orgconnect|orgpropose|fsettings)$/;
 const _cRender = render;
 render = function(){
   const S = STATE.screen;
@@ -12777,7 +12723,6 @@ render = function(){
   else { STATE.screen = "family"; STATE._cCh = true; try { _cRender(); } finally { STATE.screen = S; STATE._cCh = false; } }
   if (C_TAB_SCR.includes(S)) { cPane(); cSwipe(); }
   cHdrName();
-  if (cHiFi() && C_ORG_SCR.test(S)) phone.querySelector(".view .body")?.classList.add("cm-hi", "cm-orgs");
   const room = cHiFi() && /^channel:/.test(STATE.screen||""), hi = room || (cHiFi() && !!phone.querySelector(".screen .cm-fname, .screen .cm-hi"));
   phone.classList.toggle("cmhi", hi); phone.classList.toggle("cmroom", room);
   ["white","rows","tint"].forEach(k => phone.classList.toggle("cmbg-"+k, room && (STATE.cmBg||"white")===k));
@@ -14186,8 +14131,7 @@ Object.assign(LUCIDE, {   /* Lucide icons this module needs that the base set la
   "badge-check":'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
   "message-circle-question":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   "external-link":'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
-  /* "target" (concentric rings) is banned (trypophobia, Apoorv): any module that still asks for it gets Lucide flag */
-  "target":'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  "target":'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   "ban":'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>'
 });
 STATE.p2keep = STATE.p2keep || { rahul:1 };   // example so the digest has something on first open
@@ -14888,12 +14832,11 @@ chatsListHTML = function() {
   const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
   const unreadN = all.filter(r=>r.unread&&!r.archived).length;
   const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
-  /* one tray, one side (Apoorv 00:49): the swipe-right Pin duplicated the tray's Pin, so it goes; pinned rows keep the small pin after the name */
   /* swipe left shows what the tip promises (Apoorv 23:45): Pin, Mute, More, as WhatsApp and iOS Mail show two or three; event chats and intro rows have no mute, so Pin and More */
-  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI(r.pinned?"pin-off":"pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
+  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI("pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
     + (r.kind==="event" || r.intro ? "" : `<span onclick="${r.muted?`convOf('${r.id}').muted=null;render();toast('Unmuted')`:`openSheet('mute','${r.id}')`}">${LI(r.muted?"bell":"bell-off",24)}<br>${r.muted?'Unmute':'Mute'}</span>`)
-    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis",24)}<br>More</span>`;
-  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
+    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",24)}<br>More</span>`;
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
     <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
   const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
@@ -14946,11 +14889,7 @@ function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { con
   ["pointerup","pointercancel","pointerleave"].forEach(ev => sw.addEventListener(ev, fit, true)); }); }
 
 /* the swipe tip names what the tray holds (Apoorv 23:45): archive and the rest live under More */
-if (typeof LUCIDE!=="undefined" && !LUCIDE["pin-off"]) LUCIDE["pin-off"] = '<path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>';
-/* the tip draws the real tray (Apoorv 00:49): it points at Daniel's pinned row, so it shows that row slid left with its pin mark, then Unpin, Mute, More as the same labelled tiles */
-(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
-  t.body = "Pin, mute, or More to archive.";
-  t.art = ()=>`<div class="mx-tipsw"><div class="mx-tr"><span class="mx-ta">DR</span><span class="mx-tm"><i>Daniel Reyes ${LI("pin",11)}</i><u></u></span></div><div class="mx-tt">${[["pin-off","Unpin"],["bell-off","Mute"],["ellipsis","More"]].map(([i,l])=>`<span>${LI(i,16)}<b>${l}</b></span>`).join("")}</div></div>`; })();
+(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (t) t.body = "Pin, mute, or More to archive."; })();
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
@@ -16373,7 +16312,7 @@ function mcCard(b, n, old){
   const ver = old ? "Earlier draft" : `Draft${n>1?`, version ${n}`:""}`;
   if (!mcHF()) return `<div class="card mc-card${old?" old":""}"><div ${old?"":`data-mcdoc="1" role="button"`}><div class="xs faint">${ver}</div><div class="mc-ct">${b.name}</div><div class="sm muted">${cap}</div></div>
     ${old?"":`${b.must.length?`<div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px">${b.must.map(c=>`<span class="tag">${c}</span>`).join("")}</div>`:""}
-    <div class="row" style="gap:8px;margin-top:12px;align-items:center"><button class="btn sm" style="margin:0;flex:1;height:40px" data-mcapprove="1">Approve</button><button class="btn sm sec" style="margin:0;height:40px" data-mcedit="menu">Edit</button><span class="sm muted" style="cursor:pointer;padding:0 6px;white-space:nowrap" data-mcdiscard="1">Not this</span></div>`}</div>`;
+    <div class="row" style="gap:8px;margin-top:12px;align-items:center"><button class="btn sm" style="margin:0;flex:1;height:40px" data-mcapprove="1">Approve</button><button class="btn sm sec" style="margin:0;height:40px" data-mcedit="menu">Edit</button><span class="sm muted" style="cursor:pointer;padding:0 6px" data-mcdiscard="1">Not this</span></div>`}</div>`;
   const hero = `<div class="mh-band mc-band" ${old?"":`data-mcdoc="1" role="button"`} style="background:${mcPlate(b)}" data-kc="KeyMissionHero" data-kv="size=card, theme=${b.theme}, state=${old?"replaced":"draft"}">
     ${old||/^(users|compass)$/.test(b.icon)?"":`<i class="mh-ghost">${LI(b.icon, 120)}</i>`}
     <div class="mc-ov">${ver}</div>
@@ -16460,15 +16399,9 @@ const _mcRender = render; render = function(){
   if (nm && !DB.opps.some(o=>o.missionId===sid)) {
     const cap = phone.querySelector(".mh-band.big .mh-bs"); if (cap) cap.textContent = "First search running";
     phone.querySelectorAll(".view .body *").forEach(e=>{ if (!e.children.length && /^No paths yet/.test(e.textContent.trim())) e.remove(); });
-    /* the kicker's status line says the same as the looking line, with an empty count before its separator: the looking line replaces it */
-    phone.querySelectorAll(".view .body .st").forEach(e=>{ if (/^(Looking|Standing)/i.test(e.textContent.trim())) e.remove(); });
     const body = phone.querySelector(".view .body"); const at = body && (body.querySelector(".mh-tabs") || body.firstElementChild);
     if (at && !body.querySelector(".mc-look")) at.insertAdjacentHTML(at.classList.contains("mh-tabs")?"beforebegin":"afterend", `<div class="mc-look" data-kc="KeyKaiLine" data-kv="state=looking">${typeof kaiMark==="function"?kaiMark(20):""}<span>Looking in ${nm.where.join(", ")} for your first New pick. You'll get a push when one lands.</span></div>`);
   }
-  /* the wireframe's mission tile falls back to a sparkle for kinds it doesn't know: a mission made here shows its own Lucide glyph */
-  const mm = sid && DB.missions.find(x=>x.id===sid && x.mhIcon);
-  if (mm) phone.querySelectorAll(".view .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(mm.mhIcon, 14); });
-  phone.querySelectorAll(".view [data-mission]").forEach(r=>{ const x = DB.missions.find(y=>y.id===r.dataset.mission && y.mhIcon); const g = x && r.querySelector(".mg"); if (g && !g.querySelector("svg")) g.innerHTML = LI(x.mhIcon, 14); });
   mcWire(); return r;
 };
 function mcWire(){
