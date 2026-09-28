@@ -5054,13 +5054,14 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 @keyframes mhInR { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:none; } }
 @keyframes mhInL { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:none; } }
 /* Paths: the five stages named, with how many are at each, so the track explains itself */
-#phone.hf-mis .mh-legend { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px; margin:8px 0 12px; }
-#phone.hf-mis .mh-legend > div { display:flex; flex-direction:column; gap:4px; min-width:0; }
+/* labels break between words only, every label gets two lines, and a column widens to its longest word, so no label splits */
+#phone.hf-mis .mh-legend { display:flex; gap:4px; margin:8px 0 12px; }
+#phone.hf-mis .mh-legend > div { flex:1 1 0; min-width:min-content; display:flex; flex-direction:column; gap:4px; }
 #phone.hf-mis .mh-legend i { display:block; height:6px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
 #phone.hf-mis .mh-legend .on i { background:var(--component-progress-fill); }
 #phone.hf-mis .mh-legend b { font:var(--type-title); color:var(--text-tertiary); font-variant-numeric:tabular-nums; }
 #phone.hf-mis .mh-legend .on b { color:var(--text-primary); }
-#phone.hf-mis .mh-legend span { font:var(--type-caption); color:var(--text-secondary); hyphens:auto; -webkit-hyphens:auto; }
+#phone.hf-mis .mh-legend span { width:min-content; min-height:calc(var(--type-caption-lh, 15.6px) * 2); font:var(--type-caption); color:var(--text-secondary); }
 /* Brief: the mission's backbone, a document you shape with Kai */
 #phone.hf-mis .mh-bq { margin:8px 0 12px; font:var(--type-body-l); color:var(--text-primary); }
 #phone.hf-mis .mh-brief .row.mh-bf { align-items:center; }
@@ -5159,6 +5160,14 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .t20.mh-tt { display:flex; align-items:center; gap:12px; margin-top:8px; }
 #phone.hf-mis .sc .t20.mh-tt > .mg { width:44px; height:44px; }
 #phone.hf-mis .sc .t20.mh-tt > .mg svg { width:20px; height:20px; }
+
+/* After the intake call: proposed missions as KeyMissionCard (hero plate, must-haves, Start / Edit / Not this) */
+#phone.hf-mis .body > .card.mh-rbc { margin:0 0 16px; padding:0; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
+#phone.hf-mis .card.mh-rbc > .row { padding:0 16px; margin-top:12px !important; border:0; }
+#phone.hf-mis .card.mh-rbc > .row:last-child { margin:12px 0 16px !important; }
+#phone.hf-mis .card.mh-rbc .chip { height:32px; padding:0 12px; display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite); border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); font:var(--type-label); }
+#phone.hf-mis .card.mh-rbc .btn { height:40px !important; border-radius:var(--radius-absolute-12); font:var(--type-body-m-strong); }
+#phone.hf-mis .card.mh-rbc .btn.sec { background:var(--bg-surface-default); color:var(--component-button-secondary-ink); border:0; box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-button-secondary-border); }
 </style>
 <style>@font-face {
   font-family: 'Manrope';
@@ -15897,7 +15906,7 @@ render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=
    are avatar rows, never photo cards; each mission is one card with its people on a five-stage track; the brief is
    Missions' module and stays as the wireframe draws it until the stories direction is picked. Component roots carry data-kc (ledger name) and data-kv (Figma variant). ==== */
 const mhOn = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
-function mhScreen(){ const s = STATE.screen||""; return STATE.member && (s==="home" || s.startsWith("mission:") || s.startsWith("path:") || s.startsWith("paths:")); }
+function mhScreen(){ const s = STATE.screen||""; if (s==="readback") return STATE.rbStep===2; if (s.startsWith("mission:")) return true; return STATE.member && (s==="home" || s.startsWith("path:") || s.startsWith("paths:")); }
 const MH_ST = ["New pick","Next step","Waiting","In conversation","Went well"];
 const mhSt = o => scK(o)[2]==="Met" ? 3 : MH_ST.indexOf(scK(o)[0]);
 const mhAv = o => av(scIni(o), o.roleTitle ? "mh-sq" : "");
@@ -15918,8 +15927,8 @@ const mhPlate = t => (typeof EV_THEMES!=="undefined" && EV_THEMES[t] ? EV_THEMES
 function mhMark(m, size){ const l = mhLook(m); return `<div class="mh-mark s${size}" style="background:${mhPlate(l.theme)}" data-kc="KeyMissionMark" data-kv="size=${size}, theme=${l.theme}">${LI(l.icon, size>=44?22:18)}</div>`; }
 /* where the mission's people are, in words with the fixed labels: "New pick 3 · Waiting 1" */
 function mhCounts(ps){ const col = MH_ST.map(()=>0); ps.forEach(o=>{ const i=mhSt(o); if (i>=0) col[i]++; }); return col.map((n,i)=>n?`${MH_ST[i]} <b>${n}</b>`:"").filter(Boolean).join(" · "); }
-function mhBand(m, ps, big){
-  const l = mhLook(m); const c = mhCounts(ps);
+function mhBand(m, ps, big, cap){
+  const l = mhLook(m); const c = cap || mhCounts(ps);
   return `<div class="mh-band${big?" big":""}" style="background:${mhPlate(l.theme)}" ${big?"":`data-mission="${m.id}"`} data-kc="KeyMissionHero" data-kv="size=${big?"page":"card"}, theme=${l.theme}">
     ${/^(users|compass)$/.test(l.icon)?"":`<i class="mh-ghost">${LI(l.icon, 120)}</i>`}
     <div class="mh-bt">${mhMark(m, big?44:32)}<div class="mh-bn">${m.name}</div>${big?"":`<span class="mh-go">${LI("chevron-right",20)}</span>`}</div>
@@ -15955,6 +15964,28 @@ const _mhPortSheet = portSheet; portSheet = function(type, id){
     <div class="acts" style="margin-top:16px"><button class="btn" onclick="closeSheet()">Done</button></div></div>`;
 };
 
+/* After the intake call, "What I'd start for you": each proposed mission is the same KeyMissionCard, its hero plate on top
+   (mark, title, the done condition), then its must-haves and Start, Edit, Not this, all with the base handlers */
+function mhReadback(root){
+  root.querySelectorAll(".body > .card:not(.mh-mc)").forEach(c=>{
+    const head = c.querySelector(":scope > .row[onclick*=\"mission:\"]"); if (!head) return;
+    const id = (/mission:([^'"]+)/.exec(head.getAttribute("onclick"))||[])[1]; const m = DB.missions.find(x=>x.id===id); if (!m) return;
+    const cap = m.standing ? "Standing, no end date" : "Done when: " + (m.done||"you close it");
+    head.outerHTML = mhBand(m, [], false, cap).replace(`data-mission="${id}"`, `onclick="STATE.rbReturn=true;go('mission:${id}')"`);
+    c.classList.add("mh-mc", "mh-rbc"); c.setAttribute("data-kc", "KeyMissionCard"); c.setAttribute("data-kv", "place=proposal");
+    c.querySelectorAll(".tag").forEach(t=>{ t.classList.add("chip"); t.setAttribute("data-kc","KeyChip"); });
+  });
+}
+/* A mission before you're in: the same hero, Start, and the brief as the document you shape; paths come after the first pass */
+function mhPendingPage(root, id){
+  const m = DB.missions.find(x=>x.id===id); const body = root.querySelector(".body.sc"); if (!m || !body || body.querySelector(".mh-band")) return;
+  const st = body.querySelector(":scope > .st"); const cap = st ? [...st.children].map(e=>e.textContent.replace(/^\s*·\s*/,"").trim()).filter(Boolean).join(" · ") : "";
+  body.querySelectorAll(":scope > .t20, :scope > .st").forEach(e=>e.remove());
+  body.insertAdjacentHTML("afterbegin", mhBand(m, [], true, cap));
+  const labels = [...body.querySelectorAll(":scope > .sl")]; const sB = labels.find(l=>l.textContent.trim()==="Brief");
+  if (sB) { body.querySelectorAll(":scope > [data-kaibrief], :scope > .row[onclick*=\"'bsheet'\"]").forEach(r=>r.remove()); sB.insertAdjacentHTML("afterend", mhBriefPane(m)); }
+}
+
 /* Mission page: the hero plate, Kai's questions, then three tabs (Paths, Brief, Log) that swipe, each with the room it needs */
 STATE.mhTab = STATE.mhTab || {};
 let mhLastTab = "";
@@ -15969,7 +16000,7 @@ function mhBriefPane(m){
   ];
   return `<div class="mh-brief" data-kc="KeyBriefDoc">
     <div class="mh-bq">${m.brief || "Kai is looking across your families."}</div>
-    <div class="rows">${rows.slice(1).map(r=>`<div class="row mh-bf" data-kaibrief="${m.id}"><i class="mh-fi">${r[0]}</i><div class="m"><div class="b">${r[1]}</div><div class="a">${r[2]}</div></div><span class="chev">›</span></div>`).join("")}</div>
+    <div class="rows">${rows.slice(1).map(r=>`<div class="row mh-bf" ${typeof bBriefSheet==="function" ? `onclick="openSheet('bsheet','${m.id}')"` : `data-kaibrief="${m.id}"`}><i class="mh-fi">${r[0]}</i><div class="m"><div class="b">${r[1]}</div><div class="a">${r[2]}</div></div><span class="chev">›</span></div>`).join("")}</div>
     <div class="acts mh-bacts"><button class="btn" data-kaibrief="${m.id}">${kaiMark(20)}<span>Sharpen it with Kai</span></button></div>
     <div class="m12 mh-bnote">Every change here changes who Kai looks for next.</div></div>`;
 }
@@ -15993,7 +16024,7 @@ function mhMissionPage(root, id){
   const bar = `<div class="mh-tabs" role="tablist" data-kc="KeyTabs" data-kv="count=3, style=underline">${tabs.map(([k,l,n])=>`<button role="tab" aria-selected="${k===tab}" class="${k===tab?"on":""}" onclick="mhTabGo('${id}','${k}')">${l}${n?`<span>${n}</span>`:""}</button>`).join("")}</div>`;
   const pane = document.createElement("div"); pane.className = "mh-pane" + anim; pane.setAttribute("data-tab", tab);
   if (tab==="paths") {
-    pane.insertAdjacentHTML("beforeend", `<div class="mh-legend" lang="en" data-kc="KeyMissionTrack" data-kv="stages=5, labels=on">${MH_ST.map((s,i)=>{ const n = ps.filter(o=>mhSt(o)===i).length; return `<div class="${n?"on":""}"><i></i><b>${n}</b><span>${s}</span></div>`; }).join("")}</div>`);
+    pane.insertAdjacentHTML("beforeend", `<div class="mh-legend" data-kc="KeyMissionTrack" data-kv="stages=5, labels=on">${MH_ST.map((s,i)=>{ const n = ps.filter(o=>mhSt(o)===i).length; return `<div class="${n?"on":""}"><i></i><b>${n}</b><span>${s}</span></div>`; }).join("")}</div>`);
     pathsEls.forEach(e=>pane.appendChild(e));
   } else if (tab==="brief") pane.insertAdjacentHTML("beforeend", mhBriefPane(m));
   else { mic.forEach(e=>pane.appendChild(e)); logEls.forEach(e=>pane.appendChild(e)); }
@@ -16009,7 +16040,8 @@ const MH_SRC = s => /^#/.test(s) ? "hash" : s==="calendar" ? "calendar" : /slack
 function mhDecorate(){
   const root = phone.querySelector(".view"); if (!root) return;
   root.querySelectorAll(".mh-moves .row[data-opp] > .avatar").forEach(a=>{ const o = DB.opps.find(z=>z.id===a.parentElement.dataset.opp); if (o && o.roleTitle) a.classList.add("mh-sq"); });
-  const sid = (STATE.screen||"").startsWith("mission:") ? STATE.screen.slice(8) : ""; if (sid) mhMissionPage(root, sid);
+  const sid = (STATE.screen||"").startsWith("mission:") ? STATE.screen.slice(8) : ""; if (sid) (STATE.member ? mhMissionPage : mhPendingPage)(root, sid);
+  if (STATE.screen==="readback") mhReadback(root);
   /* the mission menu offers the mark */
   const sh = STATE.sheet; const sb = phone.querySelector("#sheet .sb");
   if (sh && sh.type==="mmenu" && sb && !sb.querySelector(".mh-lookrow")) { const r = sb.querySelector(".xrow"); if (r) r.insertAdjacentHTML("beforebegin", `<div class="xrow mh-lookrow" onclick="STATE.sheet={type:'mhlook',id:'${sh.id}'};render()"><div class="m"><div class="a">Colour and icon</div><div class="b">Make this mission yours</div></div><span class="chev">›</span></div>`); }
