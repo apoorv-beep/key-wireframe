@@ -4147,8 +4147,10 @@ p,
 
 @container (max-width: 300px) { .cm-osjobs .cm-osjob > .cm-osfs:not(:has(.li)) { display:none; } .cm-osjobs .cm-osjob:has(> .cm-osfs:not(:has(.li))) { padding-left:12px; } }
 
-.cm-evstrip { align-items:flex-start; scroll-padding-inline:16px; }
-.cm-evstrip > .evx-card { flex:0 0 calc(100% - 40px); min-width:0; margin-top:0; }
+.cm-evstrip { align-items:stretch; scroll-padding-inline:16px; }
+.cm-evstrip > .evx-card { flex:0 0 calc(100% - 40px); min-width:0; height:auto; margin-top:0; }
+.cm-evstrip > .evx-card .evx-foot { margin-top:0; }
+.cm-evstrip > .evx-card .evx-s { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .cm-evstrip .evx-tag.wait { border-style:solid; }
 
 .kp-rail { display:flex; align-items:stretch; gap:var(--space-absolute-12, 12px); overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-inline:16px; margin:0 -16px; padding:2px 16px 8px; scrollbar-width:none; }
