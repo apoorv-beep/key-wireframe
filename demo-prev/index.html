@@ -3329,9 +3329,6 @@ p,
 
 /* ---- 27 Sep 21:19 round: the hero name opens the family page (switching lives in the header name and the nav's family tab);
    the family page is visual first; tabs land pinned ---- */
-.cm-hero .t[data-cabout] { display:inline-flex; align-items:center; gap:var(--space-absolute-2, 2px); cursor:pointer; }
-.cm-tchev { display:inline-flex; color:var(--icon-tertiary, #606974); }
-.flogo.big[data-cabout] { cursor:pointer; }
 .cm-pubhd { padding-bottom:var(--space-absolute-4, 4px); }
 .cm-known { margin-top:var(--space-absolute-8, 8px); }
 .cm-proof .cm-stats { gap:var(--space-absolute-32, 32px); }
@@ -3349,6 +3346,11 @@ p,
 .cm-steps i { font-style:normal; font-size:13px; color:var(--text-secondary, #525B66); }
 .cm-runsec .cm-runby { margin-top:0; font-size:15px; font-weight:600; color:var(--text-primary, #12161A); }
 .cm-danger-t { color:var(--state-danger-default, #C8322F); }
+.cm-swrow .cm-ic { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; flex:none; background:var(--bg-fill-default, #F1F3F6); color:var(--icon-primary, #111); }
+.cm-swrow .cm-count { margin-left:auto; }
+.cm-guest { flex:1; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:13px; font-weight:600; color:var(--text-secondary, #4A5360); }
+.cm-guest span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cm-shlink .btn { margin-left:auto; }
 .cmhi .cm-pubhd .cm-promise { font-size:17px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
 .cmhi .cm-badges span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
 .cmhi .cm-proof .cm-stats b { font-size:34px; font-weight:700; letter-spacing:-.03em; line-height:1.1; color:var(--text-primary); }
@@ -12480,6 +12482,20 @@ document.addEventListener("pointerup", ()=>{ if (cSwallowUntil) setTimeout(()=>{
 
 /* ---- header: two icons (search, notifications). The title names the tab, Families, like every other tab; the family's name
    takes its place only once the hero has scrolled under it, so the two never show at once (Apoorv 23:27). Either opens the switcher. ---- */
+/* ---- the switcher also carries what the family menu held: the current family's settings, invite, share, manage and leave.
+   Slack's workspace switcher does the same; the family's name is not a link (Apoorv 28 Sep 00:01). ---- */
+const _cSwitcher = switcherSheet;
+switcherSheet = function(){
+  const f = cF(), w = cWaiting();
+  const r = (attr, icon, a, b, extra="") => `<div class="rowitem cm-swrow" ${attr}><div class="cm-ic">${LI(icon,18)}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div>${extra}</div>`;
+  const mine = `<div class="lbl">In ${f.name}</div>
+    ${r('data-cgo="fsettings"', "bell", "Your settings here", `Notifications ${({all:"on",mentions:"for mentions",off:"off"})[STATE.cNotif||"all"]} · what Kai reads · who sees you`)}
+    ${r('data-csheet="cinvite"', "user-plus", "Invite people", "They still apply; an organizer decides")}
+    ${r('data-csheet="cshare"', "share", `Share ${f.name}`, "Copy the link, or see what guests see")}
+    ${cOrg()?r('data-cgo="manage"', "shield", `Manage ${f.name}`, "Members, posts, rituals, settings", w?`<span class="cm-count">${w}</span>`:''):''}
+    ${r(`onclick="openSheet('confirm','leave|${f.name}')"`, "log-out", `<span class="cm-danger-t">Leave ${f.name}</span>`, "")}`;
+  return _cSwitcher() + mine;
+};
 famHdr = function(){
   const f = cF();
   return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family"><span class="cm-fn"><span class="cm-fn-tab">Families</span><span class="cm-fn-fam"><span class="cm-fn-mark">${cMark(f)}</span>${f.name}</span></span>${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
@@ -12497,7 +12513,7 @@ const _cFamTop = famTop;
 famTop = function(){
   const f = cF();
   const acts = `<div class="cm-hacts"><span class="cm-ibtn" data-csheet="cinvite" role="button" aria-label="Invite to ${f.name}">${C_INVITE_SVG}</span>${cOrg()?`<span class="cm-ibtn" data-cgo="manage" role="button" aria-label="Manage ${f.name}">${C_SHIELD_SVG}${cWaiting()?`<b class="cm-count sm">${cWaiting()}</b>`:''}</span>`:''}</div>`;
-  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big" data-cabout="${f.id}">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-cabout="${f.id}" role="button">${f.name}<span class="cm-tchev">${LI("chevron-right",18)}</span></div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
+  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t">${f.name}</div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
 };
 
 /* ---- tabs (move between places) ---- */
@@ -13216,7 +13232,8 @@ const C_PREV = {
 const cFamAny = id => DB.families.find(x=>x.id===id) || DB.recommendedFamilies.find(x=>x.id===id) || (C_PREV[id]&&C_PREV[id].name ? { id, ...C_PREV[id] } : null) || DB.families[0];
 sPublicPage = function(){
   const f = cFamAny(STATE.pubFamily||"xoogler"); const d = C_PREV[f.id] || C_PREV.xoogler;
-  const member = STATE.member && DB.families.some(x=>x.id===f.id);
+  /* a member reaching their own family's page (Share, See as a guest) sees exactly what guests see, and says so */
+  const guest = STATE.member && DB.families.some(x=>x.id===f.id);
   const open = f.kind==="open";
   const known = ["rahul","maya","ana"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
   const why = DB.user.invitedBy && f.id==="xoogler" ? `<b>${DB.user.invitedBy}</b> invited you to apply` : STATE.entry==="event" ? `You're registered for <b>Xoogler dinner, Thursday</b>` : `Kai: ${f.why||"fits your background"}`;
@@ -13225,27 +13242,22 @@ sPublicPage = function(){
   const nCh = (DB.channels[f.id]||[]).length;
   const who = d.run.map(r=>r[1]).join(" and ");
   const step = (n, a, b) => `<div class="cm-row cm-step" style="cursor:default"><div class="cm-num">${n}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div></div>`;
-  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div style="flex:1"></div><span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
+  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div>${guest?`<div class="cm-guest">${LI("eye",16)}<span>Seeing ${f.name} as a guest</span></div>`:'<div style="flex:1"></div>'}<span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
   <div class="body cm-page cm-hi" style="padding-top:0">
-    <div class="cover cm-cover" style="margin-top:${member?0:-10}px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
+    <div class="cover cm-cover" style="margin-top:-10px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
     <div class="famname cm-pubhd"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
       <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div></div>
-    ${!member&&known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
+    ${known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
     ${d.out.length?`<div class="cm-sec cm-proof"><div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta">Last quarter, from what members reported</div></div>`:''}
     ${evs.length?`<div class="cm-sec">${cHead("Open events")}<div class="cm-evstrip">${evs.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
     <div class="cm-sec cm-rhythm">${cHead("Every week and month")}${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="cm-day">${LI("repeat",18)}</div><div class="m"><div class="a">${t}</div><div class="b">${w}</div></div></div>`).join("")}</div>
     ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}<div class="cm-chtiles">${chans.map(([e,n])=>`<span><i>${e}</i>${n}</span>`).join("")}</div></div>`:''}
     <div class="cm-sec cm-runsec">${cHead("Run by")}<div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>${who}</span></div></div>
     <div class="cm-sec">${cHead("House rules")}<div class="cm-rules">${d.rules.split(/\.\s*/).filter(Boolean).map(r=>`<span>${r}</span>`).join("")}</div></div>
-    ${member?'':`<div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>`}
-    ${member?`<div class="cm-sec cm-you">${cHead(`You in ${f.name}`)}
-      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">Notifications</div><div class="b">${({all:"All activity",mentions:"Mentions only",off:"Off"})[STATE.cNotif||"all"]}</div></div><span class="s">›</span></div>
-      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">What Kai reads and who sees you</div></div><span class="s">›</span></div>
-      ${cOrg()?`<div class="cm-row" data-cgo="manage:settings"><div class="m"><div class="a">Edit the family page</div><div class="b">Info, joining, roles, library</div></div><span class="s">›</span></div>`:''}
-      <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a cm-danger-t">Leave ${f.name}</div></div></div></div>`:''}
+    <div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>
     ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
-  <div class="foot">${member?`<button class="btn" data-csheet="cinvite">Invite to ${f.name}</button>`
+  <div class="foot">${guest?`<button class="btn" onclick="toast('Guests ${open?"join":"apply"} here. You\'re already in.')">${open?"Join "+f.name:"Apply · about 8 min"}</button>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
     : (STATE.applied&&f.id==="xoogler") ? `<button class="btn sec" disabled>Applied · ${d.run[0][1].split(" ")[0]} is reviewing</button>`
     : `<button class="btn" onclick="${f.id==="xoogler"?"STATE.appPage=0;go('application')":`toast('Opens the ${f.name} application')`}">${open?"Join "+f.name:"Apply · about 8 min"}</button>`}</div>`;
@@ -13325,26 +13337,14 @@ function cSheet(type, id){
       <div class="cm-list" style="margin-top:6px">${[["Your paths through "+f.name+" close", paths?`${paths} open. The other side sees "Closed", nothing more`:"You have none open"],["You leave every channel","Your messages stay, under your name"],["Events you're going to stay booked","You can cancel them yourself"],["Rejoin until Oct 25","Without applying again. After that you'd reapply"]].map(([a,b])=>`<div class="cm-row" style="cursor:default"><div class="m"><div class="a" style="font-weight:600">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
       <div class="row" style="gap:8px;margin-top:12px"><button class="btn sec" style="flex:1" onclick="closeSheet()">Stay</button><button class="btn" style="flex:1;background:var(--danger);border-color:var(--danger)" data-cleave="${f.id}">Leave now</button></div>`;
   }
-  /* the family menu: tap the family name (Discord, Slack, Telegram, Circle). Settings live here, not as a header gear. */
-  if (type==="cfam") {
-    const w = cWaiting(), pend = cPosts(f).filter(p=>p.st==="pending").length;
-    const r = (attr, a, b, extra) => `<div class="cm-row" ${attr}><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div>${extra||''}<span class="s">›</span></div>`;
-    return `<div class="cm-qv" style="align-items:center"><div class="cm-sq">${cMark(f)}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members · ${f.kind==="open"?"Open":"Vetted"}</div></div></div>
-      <div class="cm-list" style="margin-top:10px">
-        ${r('data-csheet="cinvite"', "Invite people", "They still apply; an organizer decides")}
-        ${r(`data-cabout="${f.id}"`, "Family page", "What people see before they join")}
-        ${r('data-cgo="fsettings"', "Your settings here", `Notifications ${({all:"on",mentions:"for mentions",off:"off"})[STATE.cNotif||"all"]} · what Kai reads · who sees you`)}
-      </div>
-      ${cOrg()?`<div class="cm-lbl" style="margin-top:14px">Organizer</div><div class="cm-list">
-        ${r('data-cgo="manage:members"', "Manage members", "Requests, roles, tags and notes", w?`<span class="cm-count">${w}</span>`:'')}
-        ${r('data-cgo="manage"', "Manage "+f.name, `${pend?`${pend} posts to approve · `:''}greeting, rituals, outcomes`)}
-        ${r('data-cgo="manage:settings"', "Family settings", "Info, joining, roles, library, connectors")}
-      </div>`:''}
-      <div class="cm-list" style="margin-top:14px">
-        ${r('data-cswitch="1"', "Switch family", DB.families.map(x=>x.name).join(", "))}
-        <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a" style="color:var(--danger)">Leave ${f.name}</div></div></div>
-      </div>`;
+  /* Share: the link, and what people outside see (the only way in to the guest view, Apoorv 28 Sep 00:01) */
+  if (type==="cshare") {
+    const link = f.name.toLowerCase().replace(/ /g,"")+".key.ai";
+    return `<h2>Share ${f.name}</h2><div class="cm-lbl">Anyone with the link sees ${f.name}'s page and can ${f.kind==="open"?"join":"apply"}</div>
+      <div class="cm-row cm-shlink" style="cursor:default"><div class="cm-ic">${LI("link",18)}</div><div class="m"><div class="a">${link}</div></div><button class="btn sm sec" onclick="toast('Link copied: ${link}')">Copy</button></div>
+      <div class="cm-list"><div class="cm-row" data-cabout="${f.id}"><div class="cm-ic">${LI("eye",18)}</div><div class="m"><div class="a">See as a guest</div><div class="b">What people outside ${f.name} see before they join</div></div><span class="s">›</span></div></div>`;
   }
+
   if (type==="cinvite") {
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
@@ -13594,7 +13594,6 @@ portWire = function(){
   q("[data-cgo]", el=>{ const t=el.dataset.cgo; STATE.sheet=null; if (t.startsWith("posts:")) { STATE.postType=t.split(":")[1]; go("posts"); return; } if (t==="posts") STATE.postType="All"; if (t==="manage:members") STATE.mmTab="all"; go(t); });
   q("[data-cnewpeople]", ()=>{ STATE.peopleFilter="New"; go("people"); });
   q("[data-cabout]", el=>{ STATE.sheet=null; STATE.pubFamily=el.dataset.cabout; go("pubpage"); });
-  q("[data-cswitch]", ()=>sheetFrom("switcher"));
   q("[data-cchf]", el=>cFilter(()=>{ STATE.chFilter=el.dataset.cchf; }));
   q("[data-pfilter]", el=>cFilter(()=>{ STATE.peopleFilter=el.dataset.pfilter; }));
   q("[data-pview]", el=>cFilter(()=>{ STATE.peopleView=el.dataset.pview; }));

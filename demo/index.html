@@ -4412,6 +4412,33 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .sheet .sb.p2qsb { padding-bottom:16px; }
 .p2f[hidden] { display:none; }
 
+/* ==== READBACK HIGH FIDELITY (hi-fi copy only: #phone.hf-rb). Tokens only; title on display-s (ladder 28 Sep) ==== */
+#phone.hf-rb > .screen, #phone.hf-rb .body, #phone.hf-rb .hdr { background:var(--bg-page); }
+#phone.hf-rb .hdr { border-bottom:0; }
+#phone.hf-rb .hdr.rb-h .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.hf-rb svg.li { stroke-width:1.75; }
+#phone.hf-rb .rb-lede { font:var(--type-body-m); color:var(--text-secondary); margin:0 0 var(--space-absolute-20); }
+#phone.hf-rb .rb-hero { display:flex; align-items:center; gap:var(--space-absolute-16); padding-bottom:var(--space-absolute-20); margin-bottom:var(--space-absolute-8); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-rb .rb-hero .avatar { width:var(--space-absolute-64); height:var(--space-absolute-64); flex:0 0 auto; font:var(--type-title); border:0; }
+#phone.hf-rb .rb-who { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-absolute-2); }
+#phone.hf-rb .rb-n { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); color:var(--text-primary); }
+#phone.hf-rb .rb-t { font:var(--type-body-m); color:var(--text-secondary); }
+#phone.hf-rb .rb-fam { margin-top:var(--space-absolute-6); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--component-tag-gold-ink); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--component-tag-gold-border); border-radius:var(--radius-absolute-6); padding:var(--space-absolute-2) var(--space-absolute-8); }
+#phone.hf-rb .p2sh { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); margin:var(--space-absolute-20) 0 var(--space-absolute-4); }
+#phone.hf-rb .rb-row { display:flex; align-items:flex-start; gap:var(--space-absolute-12); width:100%; text-align:left; background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; color:var(--text-primary); font:var(--type-body-m); cursor:pointer; }
+#phone.hf-rb .rb-row.rb-ro { cursor:default; }
+#phone.hf-rb .rb-ic { width:var(--space-absolute-40); height:var(--space-absolute-40); flex:0 0 auto; display:grid; place-items:center; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-rb .rb-tx { flex:1; min-width:0; align-self:center; }
+#phone.hf-rb .rb-q .rb-tx { font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-rb .rb-pen { width:var(--space-absolute-32); height:var(--space-absolute-40); display:grid; place-items:center; color:var(--icon-tertiary); flex:0 0 auto; }
+#phone.hf-rb .rb-row:active { background:var(--bg-fill-default); }
+#phone.hf-rb .rb-note { font:var(--type-caption); color:var(--text-tertiary); margin:var(--space-absolute-16) 0 0; }
+#phone.hf-rb .foot { background:var(--bg-page); border-top:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-rb .foot .btn { border-radius:var(--radius-absolute-12); }
+#phone.hf-rb .foot .btn:not(.ghost) { background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-button-l); }
+#phone.hf-rb .foot .btn.ghost { color:var(--component-button-ghost-ink); font:var(--type-label); font-weight:700; }
+#phone.hf-prof .p2rbt { border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-input-border-default); font:var(--type-body-m); padding:var(--space-absolute-12); width:100%; box-sizing:border-box; }
+
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
 .ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
@@ -14064,13 +14091,13 @@ portSheet = function(type, id){
       ${tl.length?`<div class="p2tl">${tl.map(([w,t])=>`<div><span>${w}</span><span>${t}</span></div>`).join("")}</div>`:''}
       <div class="p2acts">
         ${x&&x.tone==="you"&&o?`<button class="on" data-act="${o.id}">${LI("message-circle",16)}Reply</button>`:`<button onclick="openSheet('p2remind','${p.id}')">${LI("clock",16)}Remind me</button>`}
-        <button onclick="openSheet('p2mission','${p.id}')">${LI("target",16)}Add to mission</button>
+        <button onclick="openSheet('p2mission','${p.id}')">${LI("flag",16)}Add to mission</button>
         <button class="${k?'on':''}" onclick="p2Keep('${p.id}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>
         <button onclick="STATE.sheet=null;go('dm:d-${p.id}')">${LI("message-square",16)}Messages</button>
       </div>
       <div class="xrow" onclick="openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="s xs faint">Everyone you follow</div></div>${LI("chevron-right",16)}</div>`; }
   if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
-  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("target",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
+  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
   if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2need") { const n=d.needs[+arg]||{t:""};
@@ -14122,13 +14149,13 @@ function p2Own(){
    Nothing changes until you tap Update. Not now drops it and Kai won't ask about it again. */
 const P2_UPD = [
   { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", apply:o=>{ o.work[0][1]="Group PM"; DB.user.title="Group Product Manager"; } },
-  { id:"now", lbl:"Right now", ico:"target", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
+  { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
   { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
   { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
 ];
 const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]); };
 function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
-  return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"target",14)}${u.lbl}</span><small>${u.src}</small></div>
+  return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"flag",14)}${u.lbl}</span><small>${u.src}</small></div>
     ${was?`<div class="p2upw">${was}</div>`:`<div class="p2upw new">New on your profile</div>`}<div class="p2upc">${u.ch}</div>
     <div class="p2acts2"><button class="on" onclick="event.stopPropagation();p2Upd('${u.id}','yes',${full?1:0})">Update</button><button onclick="event.stopPropagation();p2Upd('${u.id}','edit',${full?1:0})">Edit</button><button onclick="event.stopPropagation();p2Upd('${u.id}','no',${full?1:0})">Not now</button></div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
@@ -14251,6 +14278,41 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
     if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 640), "ph-cover");
   }
   return r; };
+
+/* ==== READBACK HIGH FIDELITY (Apoorv 28 Sep 00:10: "Here's what I heard" should match the hi-fi profile). Hi-fi copy only (KEY_HIFI);
+   the wireframe keeps its readback. Same parts as the profile: hero without a card (face, name, role, family tag), overline sections,
+   rows with hairlines and Lucide tiles, every line editable in place (pencil opens a small sheet; nothing is kept without Save).
+   The stat columns go: they repeated the lines below. The content still comes from the base readback, so the intake stays the source. ==== */
+const P2_RB_ICONS = ["briefcase","map-pin","calendar-days","user-check"];
+const _p2Readback = sReadback;
+sReadback = function(){ const h = _p2Readback(); if (!p2HiFi() || (STATE.rbStep||1)!==1) return h;
+  const d = new DOMParser().parseFromString(`<div id="r">${h}</div>`, "text/html"), q = s => [...d.querySelectorAll(s)], txt = e => e ? e.textContent.trim() : "";
+  const E = STATE.rbEdits || (STATE.rbEdits = {}), V = STATE.rbVals = {};
+  const val = (k, v) => (V[k] = E[k] !== undefined ? E[k] : v);
+  const row = (k, v, ic, cls) => `<button class="rb-row ${cls||""}" onclick="openSheet('p2rb','${k}')"><span class="rb-ic">${LI(ic,18)}</span><span class="rb-tx">${val(k,v)}</span><span class="rb-pen" aria-label="Edit">${LI("pencil",16)}</span></button>`;
+  const av = d.querySelector(".pphoto2 .avatar"), fam = txt(d.querySelector(".fchip"));
+  const facts = q(".pfacts .pfact > span:last-child").map(txt), words = txt(d.querySelector(".pw"));
+  const prompts = q(".pprompt").map(e => [txt(e.querySelector(".pq")), txt(e.querySelector(".pa"))]);
+  const leaves = q(".prof > .pfact > span:last-child").map(txt);
+  const foot = h.slice(h.indexOf('<div class="foot">'));
+  return `<div class="hdr rb-h"><div class="t">Here's what I heard</div></div>
+  <div class="body rb">
+    <p class="rb-lede">${txt(d.querySelector(".body > p.muted"))}</p>
+    <div class="rb-hero">${av ? av.outerHTML : ""}<div class="rb-who"><div class="rb-n">${txt(d.querySelector(".pinfo .pn"))}</div><div class="rb-t">${txt(d.querySelector(".pinfo .phl"))}</div>${fam?`<span class="rb-fam">${fam}</span>`:""}</div></div>
+    <div class="p2sh">What Kai heard</div>
+    ${facts.map((f,i) => row("f"+i, f, P2_RB_ICONS[i]||"sparkles")).join("")}
+    ${words?`<div class="p2sh">In your words</div>${row("w", `“${words}”`, "message-square", "rb-q")}`:""}
+    ${prompts.map(([a,b],i) => `<div class="p2sh">${a}</div>${row("p"+i, b, i===0?"flag":"users")}`).join("")}
+    ${leaves.length?`<div class="p2sh">Who sees what</div>${leaves.map((l,i)=>`<div class="rb-row rb-ro"><span class="rb-ic">${LI(["eye","users","lock"][i]||"lock",18)}</span><span class="rb-tx">${l}</span></div>`).join("")}`:""}
+    <p class="rb-note">${txt(d.querySelector(".body > p.xs"))}</p>
+  </div>
+  ${foot}`; };
+const _p2PortSheetRb = portSheet;
+portSheet = function(type, id){
+  if (type==="p2rb") return `<h2>Fix this line</h2><textarea class="input p2rbt" id="p2rbt" rows="4">${(STATE.rbVals||{})[id]||""}</textarea><div class="xs faint" style="margin:8px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai uses your words from now on. Nothing else changes.</span></div><button class="btn" onclick="STATE.rbEdits['${id}']=document.getElementById('p2rbt').value.trim();closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
+  return _p2PortSheetRb(type, id); };
+const _p2RbRender = render;
+render = function(){ const r = _p2RbRender.apply(this, arguments); if (p2HiFi() && typeof phone!=="undefined" && phone) phone.classList.toggle("hf-rb", STATE.screen==="readback" && (STATE.rbStep||1)===1); return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
