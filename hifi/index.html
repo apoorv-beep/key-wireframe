@@ -3544,6 +3544,9 @@ p,
   .evx-ans { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); border-radius:var(--radius-absolute-12); }
   .evx-ans b { font:var(--type-label-strong); } .evx-ans span { font:var(--type-caption); }
   .evx-ro { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  
+  .evt-screen .mtile { background:color-mix(in srgb, currentColor 14%, transparent); border:0; border-radius:var(--radius-absolute-12); padding:0; }
+  .evt-screen .mtile .plus { border-radius:var(--radius-absolute-12); }
 
   
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -5992,11 +5995,11 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .nn { margin-top:12px; border-top:var(--border-width-hairline) solid var(--border-default); }
 #phone.hf-mis .sc .nn > div { padding:8px 0; font:var(--type-body-m); color:var(--text-primary); border-bottom:var(--border-width-hairline) solid var(--border-default); gap:12px; }
 #phone.hf-mis .sc .nn .lab { flex:0 0 48px; font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); }
-#phone.hf-mis .sc .fr { gap:10px; padding:8px 0; align-items:center; border-top:var(--border-width-hairline) solid var(--border-default); font:var(--type-body-m); }
-#phone.hf-mis .sc .fr.mh-fr::before { display:none; }
-#phone.hf-mis .sc .fr .mh-fi { width:28px; height:28px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-style:normal; }
-#phone.hf-mis .sc .fr.gold .mh-fi { background:var(--bg-surface-default); box-shadow:inset 0 0 0 var(--border-width-thin) var(--border-gold); color:var(--text-gold); }
-#phone.hf-mis .sc .fr .who { flex:0 0 64px; font:var(--type-body-m-strong); }
+#phone.hf-mfr .sc .fr { gap:12px; padding:8px 0; align-items:center; border-top:var(--border-width-hairline) solid var(--border-default); font:var(--type-body-m); }
+#phone.hf-mfr .sc .fr.mh-fr::before { display:none; }
+#phone.hf-mfr .sc .fr .mh-fi { width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-style:normal; }
+#phone.hf-mfr .sc .fr.gold .mh-fi { background:var(--bg-surface-default); box-shadow:inset 0 0 0 var(--border-width-thin) var(--border-gold); color:var(--text-gold); }
+#phone.hf-mfr .sc .fr .who { flex:0 0 64px; font:var(--type-body-m-strong); }
 #phone.hf-mis .pact { background:var(--component-header-bg) !important; border-top:var(--border-width-hairline) solid var(--border-default); }
 #phone.hf-mis .pact .sbar { padding:0 16px 8px; gap:4px; }
 
@@ -13461,6 +13464,10 @@ portWire = function(){
     if (typeof KEY_HIFI!=="undefined" && KEY_HIFI && typeof phPaint==="function") {
       if (cb && PH_COVER[cb.dataset.cid] && !cb.classList.contains("ph-cover")) { cb.classList.add("ph-cover"); phPaint(cb, phUrl(PH_COVER[cb.dataset.cid], 860, 560), "ph-cover"); }
       const fc = cpg.querySelector(".evx-cl-face"); if (fc && PH_FACE[fc.dataset.face]) phPaint(fc, phUrl(PH_FACE[fc.dataset.face], 240, 240), "ph-face"); } }
+  /* an event chat's photo tiles get real photos in the hi-fi copy, on a tonal fill until they load (hosting's check 28 Sep 02:47: the striped placeholder read as broken) */
+  if (scr && typeof KEY_HIFI!=="undefined" && KEY_HIFI && typeof phPaint==="function") { const rc = convOf((STATE.screen||"").split(":")[1]||""), re = rc && rc.kind==="event" && evE(rc.ev);
+    if (re) { const pool = EV_ROOM_PH[["dinner","coffee","party","mixer"].includes(evCv(re).kind) ? "meal" : "talk"];
+      phone.querySelectorAll(".mgrid").forEach((g, gi)=>g.querySelectorAll(".mtile").forEach((t, i)=>phPaint(t, phUrl(pool[(gi*3+i)%pool.length], 480, 480), "ph-cover"))); } }
   q("[data-evreact]", el=>{ const [eid,r]=el.dataset.evreact.split("|"); const b=el.getBoundingClientRect(), pr=phone.getBoundingClientRect();
     evRoom(evE(eid)).msgs.push(M(EV_ME, r, { day:"Today", time:nowTime() })); evKeep(); toast(`${r} sent to the event chat`);
     const f=document.createElement("div"); f.className="evt-float"; f.textContent=r; f.style.left=(b.left-pr.left+b.width/2-16)+"px"; f.style.top=(b.top-pr.top-6)+"px"; phone.appendChild(f); setTimeout(()=>f.remove(), 1100); });
@@ -14389,6 +14396,8 @@ const evRoomPost = c => { const e=evE(c.ev), f=(STATE.evRf||{})[c.id]; return f=
 
 /* updates, questions and intros read as messages like the rest of the room, told apart by one label (Apoorv 28 Sep 02:24: the room read crowded) */
 const EV_KIND = { update:["megaphone","Update"], question:["message-circle-question-mark","Question"], intro:["hand","Intro"] };
+/* photos people post in an event chat, in the hi-fi copy: Pexels photographs (Pexels License), meals for dinners, coffees, parties and mixers, talks for the rest */
+const EV_ROOM_PH = { meal:[6954471, 6955659, 6955635, 5638730, 5962043, 9961852], talk:[8761540, 8761524, 6950142, 29708266, 8761324, 8761555] };
 function evRoomBubble(c, e, m, flat){
   const [ic, label] = EV_KIND[m.evType]; const q = m.evType==="question", v = m.votes||[];
   const kind = `<span class="evx-kind">${evIc(ic,14)}${label}${q&&m.answer?" · Answered":""}</span>`;
@@ -18107,6 +18116,13 @@ Object.assign(LUCIDE, {
   sprout:'<path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/><path d="M5 21h14"/>',
   lightbulb:'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
   "graduation-cap":'<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>' });
+/* glyphs the marks and why-rows need, Lucide's own path data; kept only when no module defined them first (Events defines the first three) */
+Object.entries({
+  handshake:'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
+  rocket:'<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/>',
+  "user-check":'<path d="m16 11 2 2 4-4"/><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+  "send-horizontal":'<path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"/><path d="M6 12h16"/>',
+}).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
 const MH_THEMES = ["harbour","dusk","sage","ink"];
 const MH_ICONS = ["briefcase","rocket","users","handshake","compass","sprout","lightbulb","graduation-cap"];
 function mhLook(m){
@@ -18273,7 +18289,7 @@ function mhRoute(o){
   return `<div class="mh-route" data-kc="KeyRouteGraph" data-kv="hops=${edges}, vouched=${!!(c&&vouch)}" role="img" aria-label="${words}">${html}</div>${words?`<div class="mh-rw">${words}</div>`:""}`;
 }
 /* the reasons as KeyFactRow lead=icon: an icon tile, the kind as an overline, Kai's receipt under it */
-const MH_WHY = { Source:"hash", Fit:"compass", Role:"briefcase", Shared:"users", Connected:"calendar", Vouched:"user-check", "Outside Key":"send", What:"gift", How:"list", Left:"hourglass", "Why you":"lightbulb", Presence:"map-pin" };
+const MH_WHY = { Source:"hash", Fit:"compass", Role:"briefcase", Shared:"users", Connected:"calendar", Vouched:"user-check", "Outside Key":"send-horizontal", What:"gift", How:"list", Left:"hourglass", "Why you":"lightbulb", Presence:"map-pin" };
 const _mhPathBody = scPathBody; scPathBody = function(id, asSheet){
   const h = _mhPathBody(id, asSheet), o = DB.opps.find(x=>x.id===id);
   if (!mhOn() || !o) return h;
@@ -18292,6 +18308,10 @@ const _mhPathBody = scPathBody; scPathBody = function(id, asSheet){
   return d.innerHTML;
 };
 const MH_SRC = s => /^#/.test(s) ? "hash" : s==="calendar" ? "calendar" : /slack|whatsapp/i.test(s) ? "message-circle" : s==="contacts" ? "user" : "users";
+/* KeyFactRow lead=icon on every fact row in the hi-fi copy (Requests, Events, Profile too): a 32 tile with a Lucide 16, never the source dot */
+function mhFactRows(root){
+  root.querySelectorAll(".fr:not(.mh-fr)").forEach(r=>{ const s=r.querySelector("[data-src]"); r.classList.add("mh-fr"); r.insertAdjacentHTML("afterbegin", `<i class="mh-fi">${LI(r.classList.contains("gold")?"user-check":s?MH_SRC(s.dataset.src):"info",16)}</i>`); r.setAttribute("data-kc","KeyFactRow"); r.setAttribute("data-kv","lead=icon"); });
+}
 function mhDecorate(){
   const root = phone.querySelector(".view"); if (!root) return;
   root.querySelectorAll(".mh-moves .row[data-opp] > .avatar").forEach(a=>{ const o = DB.opps.find(z=>z.id===a.parentElement.dataset.opp); if (o && o.roleTitle) a.classList.add("mh-sq"); });
@@ -18310,7 +18330,7 @@ function mhDecorate(){
     f.innerHTML = parts.map(p=>`<div><b>${p[1]}</b><span>${p[2]}</span></div>`).join("");
   });
   /* KeyFactRow: a source icon replaces the bullet, so the reason says where it came from at a glance */
-  root.querySelectorAll(".fr:not(.mh-fr)").forEach(r=>{ const s=r.querySelector("[data-src]"); r.classList.add("mh-fr"); r.insertAdjacentHTML("afterbegin", `<i class="mh-fi">${LI(s?MH_SRC(s.dataset.src):"sparkles",16)}</i>`); r.setAttribute("data-kc","KeyFactRow"); r.setAttribute("data-kv","lead=icon"); });
+  mhFactRows(phone);
   root.querySelectorAll(".sl").forEach(l=>{ if (/^Why Kai/.test(l.textContent) && !l.querySelector(".kn")) l.insertAdjacentHTML("afterbegin", kaiMark(18)); });
   /* the log's mic lead is a round KeyMicButton (mic and call controls stay round) */
   root.querySelectorAll(".row > .avatar").forEach(a=>{ if (a.querySelector("svg") && !a.textContent.trim()) { a.classList.add("mh-lead"); if (/Say what moved|Log it|Tell Kai/.test(a.parentElement.textContent)) a.classList.add("mh-mic"); } });
@@ -18364,7 +18384,7 @@ function mhTag(r){
 }
 const _mhRender = render; render = function(){
   const r = _mhRender.apply(this, arguments);
-  if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); if (on) mhDecorate(); }
+  if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); phone.classList.toggle("hf-mfr", mhOn()); if (on) mhDecorate(); else if (mhOn()) mhFactRows(phone); }
   return r;
 };
 
