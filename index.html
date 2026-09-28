@@ -4847,9 +4847,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .sheet.ks.mc-sheet .mc-n { font:var(--type-caption); color:var(--text-tertiary); margin:1px 0 2px; }
 .sheet.ks.mc-sheet .ks-k .tx p { font:var(--type-body-l); color:var(--text-primary); }
 .sheet.ks.mc-sheet .ks-k:not(:has(.mc-n)) .tx p { font:var(--type-body-m); }
-/* KeyChip variant=answer: the tappable answers, big enough to hit, solid (never dashed) */
-.mc-ans { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:12px; }
-.mc-a { min-height:44px; padding:10px 16px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-body-m-strong); text-align:left; cursor:pointer; }
+/* KeyChip variant=answer, the library's round answer chip (36 high, round, per his 22:03 ruling), solid, wrapping in a row */
+.mc-ans { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.mc-a { height:36px; padding:0 14px; border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); white-space:nowrap; cursor:pointer; }
 .mc-a:active { background:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); box-shadow:none; }
 
 /* KeyMissionCard place=proposal, as on "What I'd start for you": white card, the hero plate on top, chips, Approve / Edit / Not this.
@@ -14179,7 +14179,8 @@ Object.assign(LUCIDE, {   /* Lucide icons this module needs that the base set la
   "badge-check":'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
   "message-circle-question":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   "external-link":'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
-  "target":'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  /* "target" (concentric rings) is banned (trypophobia, Apoorv): any module that still asks for it gets Lucide flag */
+  "target":'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
   "ban":'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>'
 });
 STATE.p2keep = STATE.p2keep || { rahul:1 };   // example so the digest has something on first open
