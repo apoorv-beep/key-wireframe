@@ -884,6 +884,8 @@ p,
   .li { flex:0 0 auto; vertical-align:-3px; } .sico .li, .xrow .li { vertical-align:middle; } .back .li { vertical-align:0; } .swa .li { display:block; margin:0 auto 2px; } .nbadge .li, .kbadge .li { vertical-align:-1px; }
   /* Home indicator (journey guide, 26 Sep): the drawn bar sits 8px up and 5px tall, so every foot clears it. */
   #phone:has(.ios-home) .foot { padding-bottom:26px; }
+/* Placeholder faces and the mic square are solid, never dashed rings (trypophobia rule; journey guide 28 Sep). */
+.avatar, .hav, .hfaces span, .bav, .mopt .mi, .navt, .famchip i { border-style:solid; border-color:var(--line); background:var(--fill); }
 
 /* ==== MISSION PAGE (25 Sep, missions thread): brief as a section, one live composer, activity as a timeline, no cards on profiles */
 .mbrief { padding:2px 0 0; }
@@ -16459,10 +16461,14 @@ const _mcRender = render; render = function(){
     const cap = phone.querySelector(".mh-band.big .mh-bs"); if (cap) cap.textContent = "First search running";
     phone.querySelectorAll(".view .body *").forEach(e=>{ if (!e.children.length && /^No paths yet/.test(e.textContent.trim())) e.remove(); });
     /* the kicker's status line says the same as the looking line, with an empty count before its separator: the looking line replaces it */
-    phone.querySelectorAll(".view .body .st").forEach(e=>{ if (/^Looking/i.test(e.textContent.trim())) e.remove(); });
+    phone.querySelectorAll(".view .body .st").forEach(e=>{ if (/^(Looking|Standing)/i.test(e.textContent.trim())) e.remove(); });
     const body = phone.querySelector(".view .body"); const at = body && (body.querySelector(".mh-tabs") || body.firstElementChild);
     if (at && !body.querySelector(".mc-look")) at.insertAdjacentHTML(at.classList.contains("mh-tabs")?"beforebegin":"afterend", `<div class="mc-look" data-kc="KeyKaiLine" data-kv="state=looking">${typeof kaiMark==="function"?kaiMark(20):""}<span>Looking in ${nm.where.join(", ")} for your first New pick. You'll get a push when one lands.</span></div>`);
   }
+  /* the wireframe's mission tile falls back to a sparkle for kinds it doesn't know: a mission made here shows its own Lucide glyph */
+  const mm = sid && DB.missions.find(x=>x.id===sid && x.mhIcon);
+  if (mm) phone.querySelectorAll(".view .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(mm.mhIcon, 14); });
+  phone.querySelectorAll(".view [data-mission]").forEach(r=>{ const x = DB.missions.find(y=>y.id===r.dataset.mission && y.mhIcon); const g = x && r.querySelector(".mg"); if (g && !g.querySelector("svg")) g.innerHTML = LI(x.mhIcon, 14); });
   mcWire(); return r;
 };
 function mcWire(){
