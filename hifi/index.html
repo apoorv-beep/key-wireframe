@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta name="robots" content="noindex, nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Key"><meta name="theme-color" content="#FFFFFF"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html>
 <!--
   KEY AI, low fidelity clickable prototype. Single file, no build, no network.
@@ -20,7 +21,7 @@
   Explore: the pool lives behind the header search only. Empty state shows the shape (counts), a name is plain search, a sentence asks Kai.
 -->
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Key"><meta name="theme-color" content="#FFFFFF"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -4700,7 +4701,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 
 
 .bs-vw .bs-hero { position:relative; height:46%; min-height:300px; overflow:hidden; }
-.bs-vw .bs-hero .bs-shade { background:linear-gradient(180deg,rgba(11,14,17,.92) 0,rgba(11,14,17,.8) 26%,rgba(11,14,17,.4) 42%,rgba(11,14,17,.62) 56%,#0B0E11 100%); }
+.bs-vw .bs-hero .bs-shade { background:linear-gradient(180deg,rgba(11,14,17,.6) 0,rgba(11,14,17,.1) 30%,rgba(11,14,17,.2) 55%,#0B0E11 100%); }
 .bs-vw .bs-cover .cv, .bs-vw .bs-cover .cv img, .bs-vw .bs-cover svg, .bs-vw .bs-cover > * { width:100%; height:100%; display:block; object-fit:cover; }
 .bs-vw .bs-hero .bs-tz { position:absolute; top:100px; bottom:0; z-index:2; cursor:pointer; } .bs-vw .bs-hero .bs-tz.l { left:0; width:32%; } .bs-vw .bs-hero .bs-tz.r { right:0; width:68%; }
 .bs-vw .bs-hh { position:absolute; left:20px; right:20px; bottom:14px; z-index:3; display:grid; gap:8px; pointer-events:none; }
@@ -4742,12 +4743,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bs-acts { display:flex; gap:10px; margin-top:6px; }
 .bs-vw .bs-chap h3 { font-size:32px; letter-spacing:-.03em; }
 .bs-vw [data-kind="end"] .bs-chart .bs-cm { left:50%; top:30%; transform:translate(-50%,-50%); }
-.bs-vw .bs-hhm { display:none; }
-
-@media (max-height:700px), (max-width:360px) { .bs-vw .bs-hero { height:auto; min-height:0; padding-top:calc(env(safe-area-inset-top,0px) + 104px); }
-  .bs-vw .bs-hero .bs-chart .bs-cm { display:none; } .bs-vw .bs-hh { position:relative; left:auto; right:auto; bottom:auto; padding:0 20px 12px; gap:6px; }
-  .bs-vw .bs-hhm { display:block; margin-bottom:6px; } .bs-vw .bs-hhm .bs-mk { border-radius:16px; } .bs-vw .bs-hhm .bs-mk b { font-size:22px; }
-  .bs-vw .bs-hh h3 { font-size:22px; } .bs-vw .bs-hh p { font-size:12px; } .bs-vw .bs-hero .bs-tz { top:80px; } }
+@media (max-height:700px) { .bs-vw .bs-hero { height:40%; min-height:250px; } .bs-vw .bs-hh h3 { font-size:26px; } .bs-vw .bs-chart .bs-cm { width:72px; height:72px; border-radius:20px; } .bs-vw .bs-chart .bs-cm .bs-mk { width:72px; height:72px; } }
 
 
 .sheet .br-sl { margin-top:20px; }
@@ -16802,7 +16798,7 @@ function bsCard(s){
   const art = cover ? `<div class="bs-art bs-cover">${cover}</div>` : `<div class="bs-art bs-chart" style="background:radial-gradient(120% 90% at 30% 20%,${s.wash},#0B0E11 75%)"><div class="bs-cm ${s.fam?"":"bs-endk"}">${s.fam ? brFamMark(s.fam, 96) : (typeof kaiMark==="function" ? kaiMark(96) : "")}</div></div>`;
   return `<div class="bs-card bs-brief" data-kind="community" data-chapter="${s.id}" data-kc="KeyStoryCard" data-kv="kind=community;rows=${n}">
     <div class="bs-hero">${art}<div class="bs-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div>
-      <div class="bs-hh">${s.fam ? `<span class="bs-hhm">${brFamMark(s.fam, 56)}</span>` : ""}<span class="k">Since you were last here</span><h3>${n===1?"One thing":n+" things"} moved${need?`, ${need} need${need===1?"s":""} you`:""}</h3><p>${parts.join(" · ")}</p></div></div>
+      <div class="bs-hh"><span class="k">Since you were last here</span><h3>${n===1?"One thing":n+" things"} moved${need?`, ${need} need${need===1?"s":""} you`:""}</h3><p>${parts.join(" · ")}</p></div></div>
     <div class="bs-secs">${s.secs.map((x,si) => `<section class="bs-sec" data-sec="${x.id}"><h4 role="button" data-secgo="${x.id}"><span class="bs-si">${LI(BS_SEC[x.id][0],16)}</span>${BS_SEC[x.id][1]}<em>${x.sum||x.rows.length}${x.rows.length>BS_SEC[x.id][2]?` · see all`:""}</em></h4>${x.rows.slice(0, BS_SEC[x.id][2]).map((r,ri) => bsRow(r, si, ri)).join("")}</section>`).join("")}</div>
     <div class="bs-foot"><button type="button" class="p" data-bs="act">${s.fam ? `Open ${s.fam.name.split(" ")[0]}` : "Open inbox"}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`;
 }
@@ -20645,3 +20641,5 @@ if (typeof KEY_HIFI !== "undefined" && !!KEY_HIFI) {
 </script>
 </body>
 </html>
+
+</body></html>
