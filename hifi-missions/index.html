@@ -887,21 +887,21 @@
   --shadow-lift-ambient: #0B0E118C;
   --elevation-lift: 0px 2px 4px 0px #0B0E111A, 0px 22px 48px -14px #0B0E118C;
   --type-family: 'Manrope', system-ui, -apple-system, sans-serif;
-  --type-display-xl: 700 28px/30.8px var(--type-family);
-  --type-display-xl-tracking: -0.84px;
-  --type-display-l: 700 24px/27.6px var(--type-family);
-  --type-display-l-tracking: -0.6px;
+  --type-display-xl: 700 32px/35.2px var(--type-family);
+  --type-display-xl-tracking: -0.96px;
+  --type-display-l: 700 26px/29.9px var(--type-family);
+  --type-display-l-tracking: -0.65px;
   --type-display-m: 700 22px/25.3px var(--type-family);
   --type-display-m-tracking: -0.44px;
   --type-display-s: 800 20px/23px var(--type-family);
   --type-display-s-tracking: -0.4px;
-  --type-title: 600 17px/20.4px var(--type-family);
-  --type-title-tracking: -0.26px;
-  --type-body-l: 600 15px/19.5px var(--type-family);
-  --type-body-l-tracking: -0.15px;
-  --type-body-m: 400 13px/19.5px var(--type-family);
+  --type-title: 600 18px/21.6px var(--type-family);
+  --type-title-tracking: -0.27px;
+  --type-body-l: 600 16px/20.8px var(--type-family);
+  --type-body-l-tracking: -0.16px;
+  --type-body-m: 400 14px/21px var(--type-family);
   --type-body-m-tracking: 0px;
-  --type-body-m-strong: 600 13px/19.5px var(--type-family);
+  --type-body-m-strong: 600 14px/21px var(--type-family);
   --type-body-m-strong-tracking: 0px;
   --type-body-s: 400 12px/18px var(--type-family);
   --type-body-s-tracking: 0px;
@@ -911,8 +911,8 @@
   --type-label-strong-tracking: 0.06px;
   --type-caption: 500 11px/14.3px var(--type-family);
   --type-caption-tracking: 0.11px;
-  --type-button-l: 700 15px/18px var(--type-family);
-  --type-button-l-tracking: -0.07px;
+  --type-button-l: 700 16px/19.2px var(--type-family);
+  --type-button-l-tracking: -0.08px;
   --type-overline: 800 11px/13.2px var(--type-family);
   --type-overline-tracking: 1.21px;
 }
@@ -5001,37 +5001,81 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
 #phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
 
-/* Home: KeyMissionCard. One white object per mission: tile, title and state; its people on the track; what Kai did; your move as rows */
-#phone.hf-mis .msec.sc.mh-mc { margin:0 0 12px; padding:14px 16px 4px; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); }
-#phone.hf-mis .msec.sc .msh { gap:10px; align-items:center; }
+/* Home: KeyMissionCard. The mission's hero plate in its own colour, then your picks on a rail with one in focus */
+#phone.hf-mis .msec.sc.mh-mc { margin:0 0 16px; padding:0; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
 #phone.hf-mis .sc .mg, #phone.hf-mis .hdr.sc .mg, #phone.hf-mis #sheet .mg { width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--component-mission-bg); color:var(--icon-primary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:0; }
 #phone.hf-mis .sc .mg svg, #phone.hf-mis #sheet .mg svg { width:16px; height:16px; }
-#phone.hf-mis .msec.sc .msh .mst { flex:1; min-width:0; font:var(--type-body-m-strong); letter-spacing:0; white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-#phone.hf-mis .msec.sc .msh > .k { flex:0 0 auto; }
-/* KeyMissionTrack: five stages, faces sit on the stage they reached, the bar fills up to the furthest one */
-#phone.hf-mis .mh-track { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px; margin-top:14px; }
-#phone.hf-mis .mh-stg { display:flex; flex-direction:column; gap:6px; min-width:0; container-type:inline-size; }
-@container (max-width:58px) { #phone.hf-mis .mh-sf > span + span { display:none; } }
-#phone.hf-mis .mh-sf { height:32px; display:flex; align-items:center; }
-#phone.hf-mis .mh-sf > span { line-height:0; cursor:pointer; }
-#phone.hf-mis .mh-sf > span + span { margin-left:-5px; }
-#phone.hf-mis .sc .mh-sf .avatar { width:32px; height:32px; font:var(--type-label); letter-spacing:0; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
-#phone.hf-mis .sc .avatar.mh-sq { border-radius:var(--radius-absolute-8); }
-#phone.hf-mis .mh-stg > i { display:block; height:6px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
-#phone.hf-mis .mh-stg.past > i { background:var(--component-progress-fill); }
-#phone.hf-mis .mh-ends { margin-top:8px; font:var(--type-caption); color:var(--text-tertiary); }
-#phone.hf-mis .mh-ends b { font-weight:700; color:var(--text-secondary); }
-/* Kai's work, on Kai's dark plate with the foil K */
-#phone.hf-mis .mh-kai { display:flex; align-items:center; gap:8px; margin:12px 0 10px; padding:8px 12px 8px 8px; border-radius:var(--radius-absolute-12); background:var(--component-kai-bg); color:var(--text-on-deep-muted); font:var(--type-body-s); }
-#phone.hf-mis .mh-kai > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-#phone.hf-mis .mh-kai b { color:var(--text-on-deep-default); font-weight:700; }
-#phone.hf-mis .mh-kai .kn-disc, #phone.hf-mis .mh-kai svg { flex:0 0 auto; }
-#phone.hf-mis .msec.sc .sl.mh-msl { margin:4px 0 0; }
-#phone.hf-mis .mh-moves .row { border-top-color:var(--border-subtle); }
-#phone.hf-mis .sc .mh-moves .row > .avatar { width:44px; height:44px; font:var(--type-label); }
-#phone.hf-mis .sc .mh-moves .row > .avatar.mh-sq { border-radius:var(--radius-absolute-12); }
-#phone.hf-mis .mh-moves .row .b { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-#phone.hf-mis .mh-moves .mh-mv-more .a { font:var(--type-body-m); color:var(--text-secondary); }
+/* KeyMissionMark: glyph on a glass plate over the theme */
+#phone.hf-mis .mh-mark { flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); box-shadow:inset 0 0 0 var(--border-width-hairline) var(--border-on-deep); }
+#phone.hf-mis .mh-mark.s32 { width:32px; height:32px; } #phone.hf-mis .mh-mark.s44 { width:44px; height:44px; }
+#phone.hf-mis .mh-band .mh-mark { background:var(--bg-on-deep-fill) !important; background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent) !important; backdrop-filter:blur(var(--blur-backdrop)); box-shadow:none; }
+/* KeyMissionHero */
+#phone.hf-mis .mh-band { position:relative; overflow:hidden; padding:14px 16px 14px; color:var(--text-on-deep-default); cursor:pointer; isolation:isolate; }
+#phone.hf-mis .mh-band.big { margin:4px 0 12px; padding:16px; border-radius:var(--radius-absolute-20); cursor:default; box-shadow:var(--elevation-1); }
+#phone.hf-mis .mh-ghost { position:absolute; right:-18px; bottom:-30px; z-index:-1; color:var(--text-on-deep-default); opacity:.14; line-height:0; transform:rotate(-12deg); }
+#phone.hf-mis .mh-ghost svg { width:120px; height:120px; stroke-width:1.5; }
+#phone.hf-mis .mh-bt { display:flex; align-items:center; gap:12px; }
+#phone.hf-mis .mh-bn { flex:1; min-width:0; font:var(--type-title); letter-spacing:var(--type-title-tracking); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.hf-mis .mh-band.big .mh-bn { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
+#phone.hf-mis .mh-go { flex:0 0 auto; line-height:0; opacity:.8; }
+#phone.hf-mis .mh-bs { margin-top:10px; font:var(--type-caption); color:var(--text-on-deep-default); }
+#phone.hf-mis .mh-bs b { font-weight:700; color:var(--text-on-deep-default); }
+/* the rail: one pick in focus, the next peeking (KeyHScroll with snap) */
+#phone.hf-mis .msec.sc .mh-rail { display:flex; gap:10px; margin:0; padding:14px 16px 16px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+#phone.hf-mis .msec.sc .mh-rail::-webkit-scrollbar { display:none; }
+#phone.hf-mis .vcard.scard.mh-pk { flex:0 0 82%; scroll-snap-align:start; display:flex; flex-direction:column; gap:10px; margin:0; padding:14px; border:var(--border-width-hairline) solid var(--border-subtle); border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); box-shadow:none; }
+#phone.hf-mis .mh-pk .mh-pkh { display:flex; align-items:center; gap:12px; }
+#phone.hf-mis .mh-pk .mh-pkh .m { min-width:0; }
+#phone.hf-mis .sc .mh-pk .avatar.mh-56 { width:56px; height:56px; flex:0 0 56px; font:var(--type-body-m-strong); }
+#phone.hf-mis .sc .avatar.mh-sq { border-radius:var(--radius-absolute-12) !important; }
+#phone.hf-mis .mh-pk .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-mis .mh-pk .b { font:var(--type-body-s); color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone.hf-mis .mh-pk .mh-why { display:flex; gap:8px; align-items:flex-start; font:var(--type-body-s); color:var(--text-primary); min-height:40px; }
+#phone.hf-mis .mh-pk .mh-why > span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.hf-mis .mh-pk .mh-why .kn-disc, #phone.hf-mis .mh-pk .mh-why > svg { flex:0 0 auto; margin-top:2px; }
+#phone.hf-mis .mh-pk .acts { display:flex; align-items:center; gap:16px; margin:auto 0 0; }
+#phone.hf-mis .mh-pk .acts .btn { flex:1; margin:0; }
+#phone.hf-mis .vcard.mh-pmore { flex:0 0 32%; scroll-snap-align:start; display:flex; flex-direction:column; align-items:center; justify-content:center; margin:0; border:0; border-radius:var(--radius-absolute-16); background:var(--bg-fill-default); box-shadow:none; }
+#phone.hf-mis .vcard.mh-pmore .t20 { margin:0; }
+#phone.hf-mis .vcard.mh-pmore .b { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .mh-quiet { display:flex; align-items:center; gap:10px; padding:14px 16px; font:var(--type-body-s); color:var(--text-secondary); cursor:pointer; }
+#phone.hf-mis .mh-quiet .kn-disc, #phone.hf-mis .mh-quiet > svg { flex:0 0 auto; }
+/* Mission page: KeyTabs (Paths, Brief, Log), the pane slides 28px and fades, 260ms */
+#phone.hf-mis .mh-tabs { position:sticky; top:0; z-index:2; display:flex; gap:24px; margin:8px -16px 0; padding:0 16px; background:var(--bg-surface-default); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-mis .mh-tabs button { position:relative; height:44px; padding:0; border:0; background:none; font:var(--type-body-m-strong); color:var(--text-tertiary); display:flex; align-items:center; gap:6px; cursor:pointer; }
+#phone.hf-mis .mh-tabs button span { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-mis .mh-tabs button.on { color:var(--text-primary); }
+#phone.hf-mis .mh-tabs button.on::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; border-radius:var(--radius-absolute-infinite); background:var(--text-primary); }
+#phone.hf-mis .mh-pane { padding-top:8px; min-height:320px; }
+@media (prefers-reduced-motion: no-preference) {
+  #phone.hf-mis .mh-pane.in-r { animation:mhInR 260ms cubic-bezier(.2,.8,.2,1) both; }
+  #phone.hf-mis .mh-pane.in-l { animation:mhInL 260ms cubic-bezier(.2,.8,.2,1) both; }
+}
+@keyframes mhInR { from { opacity:0; transform:translateX(28px); } to { opacity:1; transform:none; } }
+@keyframes mhInL { from { opacity:0; transform:translateX(-28px); } to { opacity:1; transform:none; } }
+/* Paths: the five stages named, with how many are at each, so the track explains itself */
+#phone.hf-mis .mh-legend { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px; margin:8px 0 12px; }
+#phone.hf-mis .mh-legend > div { display:flex; flex-direction:column; gap:4px; min-width:0; }
+#phone.hf-mis .mh-legend i { display:block; height:6px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
+#phone.hf-mis .mh-legend .on i { background:var(--component-progress-fill); }
+#phone.hf-mis .mh-legend b { font:var(--type-title); color:var(--text-tertiary); font-variant-numeric:tabular-nums; }
+#phone.hf-mis .mh-legend .on b { color:var(--text-primary); }
+#phone.hf-mis .mh-legend span { font:var(--type-caption); color:var(--text-secondary); hyphens:auto; -webkit-hyphens:auto; }
+/* Brief: the mission's backbone, a document you shape with Kai */
+#phone.hf-mis .mh-bq { margin:8px 0 12px; font:var(--type-body-l); color:var(--text-primary); }
+#phone.hf-mis .mh-brief .row.mh-bf { align-items:center; }
+#phone.hf-mis .mh-brief .row.mh-bf .b { margin:0 0 2px; font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-mis .mh-brief .row.mh-bf .a { font:var(--type-body-m); }
+#phone.hf-mis .mh-brief .mh-fi { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; font-style:normal; line-height:0; }
+#phone.hf-mis .mh-bacts { margin-top:16px; }
+#phone.hf-mis .mh-bacts .btn { width:100%; display:flex; align-items:center; justify-content:center; gap:8px; background:var(--component-kai-bg); color:var(--text-on-deep-default); }
+#phone.hf-mis .mh-bnote { margin-top:8px; text-align:center; font:var(--type-caption); color:var(--text-tertiary); }
+/* the mark sheet */
+#phone.hf-mis .mh-lookprev { display:flex; align-items:center; gap:12px; margin:14px 0 4px; font:var(--type-body-m-strong); }
+#phone.hf-mis .mh-swatches, #phone.hf-mis .mh-icons { display:flex; flex-wrap:wrap; gap:10px; margin-top:8px; }
+#phone.hf-mis .mh-sw { width:44px; height:44px; border:0; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+#phone.hf-mis .mh-ic { width:44px; height:44px; border:0; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+#phone.hf-mis .mh-ic.on { background:var(--bg-inverse-default); color:var(--icon-inverse); }
 #phone.hf-mis .msec.sc .empty { border:0; border-radius:var(--radius-absolute-16); background:var(--bg-fill-default); color:var(--text-secondary); font:var(--type-body-s); padding:14px 16px; }
 #phone.hf-mis .sc .xrow[style*="dashed"], #phone.hf-mis .sc .xrow[style*="border:1px solid"] { border:0 !important; border-radius:var(--radius-absolute-20) !important; background:var(--bg-surface-default); box-shadow:var(--elevation-1); padding:14px 16px !important; }
 #phone.hf-mis .sc .xrow[style*="dashed"] .a, #phone.hf-mis .sc .xrow[style*="border:1px solid"] .a { font:var(--type-body-m-strong); }
@@ -15857,36 +15901,118 @@ function mhScreen(){ const s = STATE.screen||""; return STATE.member && (s==="ho
 const MH_ST = ["New pick","Next step","Waiting","In conversation","Went well"];
 const mhSt = o => scK(o)[2]==="Met" ? 3 : MH_ST.indexOf(scK(o)[0]);
 const mhAv = o => av(scIni(o), o.roleTitle ? "mh-sq" : "");
-
-/* KeyMissionTrack: the mission's people sit on the stage they have reached, New pick to Went well (the fixed labels), two 32 faces a stage (one where the
-   stage is too narrow); how many are at each stage is said in words under the track, never a +N */
-function mhTrack(ps){
-  const col = MH_ST.map(()=>[]); ps.forEach(o=>{ const i = mhSt(o); if (i>=0) col[i].push(o); });
-  const far = col.reduce((a,c,i)=>c.length?i:a, -1);
-  return `<div class="mh-track" data-kc="KeyMissionTrack" data-kv="stages=5, at=${far+1}">${col.map((c,i)=>`<div class="mh-stg${c.length?" on":""}${i<=far?" past":""}" aria-label="${MH_ST[i]}: ${c.length}">
-    <div class="mh-sf">${c.slice(0,2).map(o=>`<span data-opp="${o.id}">${mhAv(o)}</span>`).join("")}</div><i></i></div>`).join("")}</div>
-    <div class="mh-ends">${col.map((c,i)=>c.length?`<span>${MH_ST[i]} <b>${c.length}</b></span>`:"").filter(Boolean).join(" · ")}</div>`;
+/* KeyMissionMark: each mission has its own colour and glyph (the member can change both from the mission menu), drawn in the
+   events' theme plates so a mission and an event look like the same family of objects */
+Object.assign(LUCIDE, {
+  compass:'<path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/>',
+  sprout:'<path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/><path d="M5 21h14"/>',
+  lightbulb:'<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  "graduation-cap":'<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>' });
+const MH_THEMES = ["harbour","dusk","sage","ink"];
+const MH_ICONS = ["briefcase","rocket","users","handshake","compass","sprout","lightbulb","graduation-cap"];
+function mhLook(m){
+  const d = m.type==="Looking"||m.type==="Hiring" ? ["harbour","briefcase"] : m.type==="Raising" ? ["sage","rocket"] : m.type==="Cofounder" ? ["dusk","handshake"] : ["ink","compass"];
+  return { theme: m.mhTheme||d[0], icon: m.mhIcon||d[1] };
 }
-/* KeyMissionCard: one object per mission. Title and state, the track, what Kai did, then only the people whose move it is, as rows */
+const mhPlate = t => (typeof EV_THEMES!=="undefined" && EV_THEMES[t] ? EV_THEMES[t][1] : "var(--bg-deep)");
+function mhMark(m, size){ const l = mhLook(m); return `<div class="mh-mark s${size}" style="background:${mhPlate(l.theme)}" data-kc="KeyMissionMark" data-kv="size=${size}, theme=${l.theme}">${LI(l.icon, size>=44?22:18)}</div>`; }
+/* where the mission's people are, in words with the fixed labels: "New pick 3 · Waiting 1" */
+function mhCounts(ps){ const col = MH_ST.map(()=>0); ps.forEach(o=>{ const i=mhSt(o); if (i>=0) col[i]++; }); return col.map((n,i)=>n?`${MH_ST[i]} <b>${n}</b>`:"").filter(Boolean).join(" · "); }
+function mhBand(m, ps, big){
+  const l = mhLook(m); const c = mhCounts(ps);
+  return `<div class="mh-band${big?" big":""}" style="background:${mhPlate(l.theme)}" ${big?"":`data-mission="${m.id}"`} data-kc="KeyMissionHero" data-kv="size=${big?"page":"card"}, theme=${l.theme}">
+    ${/^(users|compass)$/.test(l.icon)?"":`<i class="mh-ghost">${LI(l.icon, 120)}</i>`}
+    <div class="mh-bt">${mhMark(m, big?44:32)}<div class="mh-bn">${m.name}</div>${big?"":`<span class="mh-go">${LI("chevron-right",20)}</span>`}</div>
+    <div class="mh-bs">${c || (STATE.intakeDone ? "No paths yet. Kai's next pass is Friday" : "The call makes this specific")}</div></div>`;
+}
+/* KeyMoveCard (avatar layout): the one pick in focus, the next peeking so the rail says there is more */
+function mhPick(o){
+  const t = targetOf(o); const v = scVerb(o), q = scQuiet(o); const why = isNewOf(o) ? scWhy(o) : scStatus(o);
+  return `<div class="vcard sc scard mh-pk" data-opp="${o.id}" data-kc="KeyMoveCard" data-kv="layout=avatar, kind=${o.roleTitle?"role":"person"}">
+    <div class="mh-pkh">${av(scIni(o), "mh-56" + (o.roleTitle?" mh-sq":""))}<div class="m"><div class="a" ${o.roleTitle?"":`data-profile="${o.personId}"`}>${scName(o)}</div><div class="b">${o.roleTitle ? scRole(o) : `${t.title}, ${t.company}`}</div></div></div>
+    ${why?`<div class="mh-why">${isNewOf(o)?kaiMark(16):""}<span>${why}</span></div>`:""}
+    <div class="acts"><button class="btn ${v&&v[2]||""}" ${v?v[1]:""}>${v?v[0]:""}</button>${q?`<span class="quiet" ${q[1]}>${q[0]}</span>`:scMore(o)}</div></div>`;
+}
+/* KeyMissionCard: the mission's hero plate (mark, title, where its people are), then your picks on a rail, one in focus */
 const _mhSection = missionSection; missionSection = function(m){
   if (!mhOn() || !STATE.member || m.evKind || m.series || m.host) return _mhSection(m);
   const ps = DB.opps.filter(o=>o.missionId===m.id&&o.state!=="dropped"&&o.state!=="candidate");
-  const w = o=>{ const own=ownerOf(o); return own==="you"&&!isNewOf(o)?1:own==="you"?2:own==="them"?3:own==="kai"?4:5; }; ps.sort((a,b)=>w(a)-w(b));
-  const g = m.type==="Looking"||m.type==="Hiring"||m.type==="Raising" ? ["briefcase","t1"] : m.type==="Cofounder" ? ["users","t2"] : ["target","t3"];
-  const [k, tone, txt] = scMissionStatus(m, ps); const you = ps.filter(o=>ownerOf(o)==="you");
-  const moves = you.length ? `<div class="sl mh-msl">Your move</div><div class="rows mh-moves">${you.slice(0,3).map(scPathRow).join("")}${you.length>3?`<div class="row mh-mv-more" data-mission="${m.id}"><div class="m"><div class="a">${you.length-3} more for you</div></div><span class="chev">›</span></div>`:""}</div>` : "";
-  const kai = ps.length ? `<b>Found ${ps.length}</b> · ${txt}` : `No paths yet. ${STATE.intakeDone?"Kai's next pass is Friday.":"The call makes this specific."}`;
-  return `<div class="msec sc mh-mc ${g[1]}" data-kc="KeyMissionCard" data-kv="state=${k}">
-    <div class="msh" data-mission="${m.id}"><div class="mg ${g[1]}">${LI(g[0],16)}</div><div class="mst">${m.name}</div><span class="k ${tone}">${k}</span></div>
-    ${ps.length ? mhTrack(ps) : ""}
-    <div class="mh-kai">${kaiMark(20)}<span>${kai}</span></div>
-    ${moves}</div>`;
+  const you = ps.filter(o=>ownerOf(o)==="you").sort((a,b)=>(isNewOf(a)?1:0)-(isNewOf(b)?1:0));
+  const [, , txt] = scMissionStatus(m, ps);
+  const rail = you.length ? `<div class="rail mh-rail" data-kc="KeyHScroll">${you.slice(0,3).map(mhPick).join("")}${you.length>3?`<div class="vcard sc scard mh-pmore" data-mission="${m.id}"><div class="t20">${you.length-3}</div><div class="b">more for you</div></div>`:""}</div>`
+    : ps.length ? `<div class="mh-quiet" data-mission="${m.id}">${kaiMark(20)}<span>Nothing for you right now. ${txt.charAt(0).toUpperCase()+txt.slice(1)}</span></div>` : "";
+  return `<div class="msec sc mh-mc" data-kc="KeyMissionCard">${mhBand(m, ps)}${rail}</div>`;
 };
+/* the mark sheet: colour and glyph, opened from the mission menu */
+const _mhPortSheet = portSheet; portSheet = function(type, id){
+  if (type!=="mhlook") return _mhPortSheet(type, id);
+  const m = DB.missions.find(x=>x.id===id); const l = mhLook(m);
+  const set = (k,v) => `onclick="(function(){ const m=DB.missions.find(x=>x.id==='${id}'); m.${k}='${v}'; })();render()"`;
+  return `<div class="sc"><div class="t20">Colour and icon</div><div class="m12">Only you see this. It marks the mission on Missions and on its page.</div>
+    <div class="mh-lookprev">${mhMark(m,44)}<span>${m.name}</span></div>
+    <div class="sl">Colour</div><div class="mh-swatches">${MH_THEMES.map(t=>`<button class="mh-sw${t===l.theme?" on":""}" style="background:${mhPlate(t)}" aria-label="${EV_THEMES[t][0]}" ${set("mhTheme",t)}>${t===l.theme?LI("check",20):""}</button>`).join("")}</div>
+    <div class="sl">Icon</div><div class="mh-icons">${MH_ICONS.map(i=>`<button class="mh-ic${i===l.icon?" on":""}" aria-label="${i}" ${set("mhIcon",i)}>${LI(i,22)}</button>`).join("")}</div>
+    <div class="acts" style="margin-top:16px"><button class="btn" onclick="closeSheet()">Done</button></div></div>`;
+};
+
+/* Mission page: the hero plate, Kai's questions, then three tabs (Paths, Brief, Log) that swipe, each with the room it needs */
+STATE.mhTab = STATE.mhTab || {};
+let mhLastTab = "";
+function mhTabGo(id, t){ STATE.mhTab[id] = t; render(); }
+function mhBriefPane(m){
+  const facts = [...(m.constraints||[])];
+  const rows = [
+    [LI("target",16), "Looking for", m.brief || "Kai is looking across your families."],
+    ...facts.map(f=>[LI("check",16), "Must have", f]),
+    [LI("flag",16), "Done when", m.standing ? "Standing, no end date" : (m.done || "You close it")],
+    [LI("users",16), "Where Kai looks", (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name).slice(0,3).join(", ") || "Your families"],
+  ];
+  return `<div class="mh-brief" data-kc="KeyBriefDoc">
+    <div class="mh-bq">${m.brief || "Kai is looking across your families."}</div>
+    <div class="rows">${rows.slice(1).map(r=>`<div class="row mh-bf" data-kaibrief="${m.id}"><i class="mh-fi">${r[0]}</i><div class="m"><div class="b">${r[1]}</div><div class="a">${r[2]}</div></div><span class="chev">›</span></div>`).join("")}</div>
+    <div class="acts mh-bacts"><button class="btn" data-kaibrief="${m.id}">${kaiMark(20)}<span>Sharpen it with Kai</span></button></div>
+    <div class="m12 mh-bnote">Every change here changes who Kai looks for next.</div></div>`;
+}
+function mhMissionPage(root, id){
+  const m = DB.missions.find(x=>x.id===id); const body = root.querySelector(".body.sc"); if (!m || !body || body.querySelector(".mh-tabs")) return;
+  const labels = [...body.querySelectorAll(":scope > .sl")]; const at = n => labels.find(l=>l.textContent.trim().startsWith(n));
+  const sP = at("Paths"), sB = at("Brief"), sL = at("Log"); if (!sP || !sB || !sL) return;
+  const ps = DB.opps.filter(o=>o.missionId===id&&o.state!=="dropped"&&o.state!=="candidate");
+  /* hero replaces the title, the status line and the four numbers */
+  body.querySelectorAll(":scope > .t20, :scope > .st, :scope > .funnel-l, :scope > .mh-stats").forEach(e=>e.remove());
+  body.insertAdjacentHTML("afterbegin", mhBand(m, ps, true));
+  /* split the rest into panes */
+  const take = (from, to) => { const out = []; let n = from.nextElementSibling; while (n && n!==to) { const nx = n.nextElementSibling; out.push(n); n = nx; } return out; };
+  const pathsEls = take(sP, sB), briefEls = take(sB, sL), logEls = take(sL, null).filter(e=>!e.matches(".body-gap"));
+  const mic = briefEls.filter(e=>e.querySelector(".mh-mic, .avatar.mh-lead") || /Say what moved/.test(e.textContent)); briefEls.filter(e=>!mic.includes(e)).forEach(e=>e.remove());
+  const nLog = (sL.querySelector(".m12")||{}).textContent || ""; const nPaths = ps.length;
+  [sP, sB, sL].forEach(e=>e.remove());
+  const tab = STATE.mhTab[id] || "paths"; const tabs = [["paths","Paths",nPaths],["brief","Brief",""],["log","Log",nLog]];
+  const anim = mhLastTab && mhLastTab.split("|")[0]===id && mhLastTab.split("|")[1]!==tab ? (tabs.findIndex(t=>t[0]===tab) > tabs.findIndex(t=>t[0]===mhLastTab.split("|")[1]) ? " in-r" : " in-l") : "";
+  mhLastTab = id+"|"+tab;
+  const bar = `<div class="mh-tabs" role="tablist" data-kc="KeyTabs" data-kv="count=3, style=underline">${tabs.map(([k,l,n])=>`<button role="tab" aria-selected="${k===tab}" class="${k===tab?"on":""}" onclick="mhTabGo('${id}','${k}')">${l}${n?`<span>${n}</span>`:""}</button>`).join("")}</div>`;
+  const pane = document.createElement("div"); pane.className = "mh-pane" + anim; pane.setAttribute("data-tab", tab);
+  if (tab==="paths") {
+    pane.insertAdjacentHTML("beforeend", `<div class="mh-legend" lang="en" data-kc="KeyMissionTrack" data-kv="stages=5, labels=on">${MH_ST.map((s,i)=>{ const n = ps.filter(o=>mhSt(o)===i).length; return `<div class="${n?"on":""}"><i></i><b>${n}</b><span>${s}</span></div>`; }).join("")}</div>`);
+    pathsEls.forEach(e=>pane.appendChild(e));
+  } else if (tab==="brief") pane.insertAdjacentHTML("beforeend", mhBriefPane(m));
+  else { mic.forEach(e=>pane.appendChild(e)); logEls.forEach(e=>pane.appendChild(e)); }
+  if (tab!=="paths") pathsEls.forEach(e=>e.remove()); if (tab!=="log") { mic.forEach(e=>e.remove()); logEls.forEach(e=>e.remove()); }
+  body.insertAdjacentHTML("beforeend", bar); body.appendChild(pane); body.insertAdjacentHTML("beforeend", `<div class="body-gap"></div>`);
+  /* top tabs swipe (his 21:32) */
+  let x0 = null; pane.addEventListener("touchstart", e=>{ x0 = e.touches[0].clientX; }, { passive:true });
+  pane.addEventListener("touchend", e=>{ if (x0===null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) < 60) return;
+    const i = tabs.findIndex(t=>t[0]===tab) + (dx<0 ? 1 : -1); if (tabs[i]) mhTabGo(id, tabs[i][0]); });
+}
 
 const MH_SRC = s => /^#/.test(s) ? "hash" : s==="calendar" ? "calendar" : /slack|whatsapp/i.test(s) ? "message-circle" : s==="contacts" ? "user" : "users";
 function mhDecorate(){
   const root = phone.querySelector(".view"); if (!root) return;
   root.querySelectorAll(".mh-moves .row[data-opp] > .avatar").forEach(a=>{ const o = DB.opps.find(z=>z.id===a.parentElement.dataset.opp); if (o && o.roleTitle) a.classList.add("mh-sq"); });
+  const sid = (STATE.screen||"").startsWith("mission:") ? STATE.screen.slice(8) : ""; if (sid) mhMissionPage(root, sid);
+  /* the mission menu offers the mark */
+  const sh = STATE.sheet; const sb = phone.querySelector("#sheet .sb");
+  if (sh && sh.type==="mmenu" && sb && !sb.querySelector(".mh-lookrow")) { const r = sb.querySelector(".xrow"); if (r) r.insertAdjacentHTML("beforebegin", `<div class="xrow mh-lookrow" onclick="STATE.sheet={type:'mhlook',id:'${sh.id}'};render()"><div class="m"><div class="a">Colour and icon</div><div class="b">Make this mission yours</div></div><span class="chev">›</span></div>`); }
   /* KeyStatBlock row: "4 shown · 0 asked · 0 met" becomes three numbers */
   root.querySelectorAll(".funnel-l:not(.mh-stats)").forEach(f=>{
     const parts = f.textContent.split(" · ").map(p=>p.trim().match(/^(\S+)\s+(.+)$/));
