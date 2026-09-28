@@ -1115,7 +1115,8 @@
 .phone .pbar .pbtn { width:44px; height:44px; border-radius:var(--radius-absolute-12); }
 
 #phone.phone .hdr.hdr > .icon.icon, #phone.phone .hdr.hdr > .back.back { width:44px; height:44px; }
-.phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:16px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
+.phone .hdr > .icon { overflow:visible; }
+.phone .hdr > .icon .badge { top:-2px; right:-4px; left:auto; min-width:18px; height:18px; padding:0 5px; box-sizing:border-box; border-radius:999px; font-size:10px; line-height:18px; font-weight:700; text-align:center; box-shadow:0 0 0 2px var(--component-header-bg); }
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
 
@@ -3954,9 +3955,6 @@ p,
 .cmhi .cm-faces .avatar + .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf + .cm-osf { margin-left:calc(-1 * var(--space-absolute-4)); }
 
 
-.cm-hero .t[data-cabout] { display:inline-flex; align-items:center; gap:var(--space-absolute-2, 2px); cursor:pointer; }
-.cm-tchev { display:inline-flex; color:var(--icon-tertiary, #606974); }
-.flogo.big[data-cabout] { cursor:pointer; }
 .cm-pubhd { padding-bottom:var(--space-absolute-4, 4px); }
 .cm-known { margin-top:var(--space-absolute-8, 8px); }
 .cm-proof .cm-stats { gap:var(--space-absolute-32, 32px); }
@@ -3974,6 +3972,11 @@ p,
 .cm-steps i { font-style:normal; font-size:12px; color:var(--text-secondary, #525B66); }
 .cm-runsec .cm-runby { margin-top:0; font-size:14px; font-weight:600; color:var(--text-primary, #12161A); }
 .cm-danger-t { color:var(--state-danger-default, #C8322F); }
+.cm-swrow .cm-ic { width:40px; height:40px; border-radius:12px; display:grid; place-items:center; flex:none; background:var(--bg-fill-default, #F1F3F6); color:var(--icon-primary, #111); }
+.cm-swrow .cm-count { margin-left:auto; }
+.cm-guest { flex:1; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:12px; font-weight:600; color:var(--text-secondary, #4A5360); }
+.cm-guest span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cm-shlink .btn { margin-left:auto; }
 .cmhi .cm-pubhd .cm-promise { font-size:16px; font-weight:600; letter-spacing:-.01em; line-height:1.3; color:var(--text-primary); margin-top:var(--space-absolute-4); }
 .cmhi .cm-badges span { border-radius:var(--radius-absolute-8); background:var(--component-tag-bg); border:var(--border-width-hairline) solid var(--component-tag-border); color:var(--component-tag-ink); font-size:12px; font-weight:500; }
 .cmhi .cm-proof .cm-stats b { font-size:32px; font-weight:700; letter-spacing:-.03em; line-height:1.1; color:var(--text-primary); }
@@ -4782,6 +4785,33 @@ p,
 .p2f[hidden] { display:none; }
 
 
+#phone.hf-rb > .screen, #phone.hf-rb .body, #phone.hf-rb .hdr { background:var(--bg-page); }
+#phone.hf-rb .hdr { border-bottom:0; }
+#phone.hf-rb .hdr.rb-h .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.hf-rb svg.li { stroke-width:1.75; }
+#phone.hf-rb .rb-lede { font:var(--type-body-m); color:var(--text-secondary); margin:0 0 var(--space-absolute-20); }
+#phone.hf-rb .rb-hero { display:flex; align-items:center; gap:var(--space-absolute-16); padding-bottom:var(--space-absolute-20); margin-bottom:var(--space-absolute-8); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-rb .rb-hero .avatar { width:var(--space-absolute-64); height:var(--space-absolute-64); flex:0 0 auto; font:var(--type-title); border:0; }
+#phone.hf-rb .rb-who { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-absolute-2); }
+#phone.hf-rb .rb-n { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); color:var(--text-primary); }
+#phone.hf-rb .rb-t { font:var(--type-body-m); color:var(--text-secondary); }
+#phone.hf-rb .rb-fam { margin-top:var(--space-absolute-6); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--component-tag-gold-ink); background:var(--bg-surface-default); border:var(--border-width-hairline) solid var(--component-tag-gold-border); border-radius:var(--radius-absolute-6); padding:var(--space-absolute-2) var(--space-absolute-8); }
+#phone.hf-rb .p2sh { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); margin:var(--space-absolute-20) 0 var(--space-absolute-4); }
+#phone.hf-rb .rb-row { display:flex; align-items:flex-start; gap:var(--space-absolute-12); width:100%; text-align:left; background:transparent; border:0; border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; color:var(--text-primary); font:var(--type-body-m); cursor:pointer; }
+#phone.hf-rb .rb-row.rb-ro { cursor:default; }
+#phone.hf-rb .rb-ic { width:var(--space-absolute-40); height:var(--space-absolute-40); flex:0 0 auto; display:grid; place-items:center; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-rb .rb-tx { flex:1; min-width:0; align-self:center; }
+#phone.hf-rb .rb-q .rb-tx { font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-rb .rb-pen { width:var(--space-absolute-32); height:var(--space-absolute-40); display:grid; place-items:center; color:var(--icon-tertiary); flex:0 0 auto; }
+#phone.hf-rb .rb-row:active { background:var(--bg-fill-default); }
+#phone.hf-rb .rb-note { font:var(--type-caption); color:var(--text-tertiary); margin:var(--space-absolute-16) 0 0; }
+#phone.hf-rb .foot { background:var(--bg-page); border-top:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-rb .foot .btn { border-radius:var(--radius-absolute-12); }
+#phone.hf-rb .foot .btn:not(.ghost) { background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-button-l); }
+#phone.hf-rb .foot .btn.ghost { color:var(--component-button-ghost-ink); font:var(--type-label); font-weight:700; }
+#phone.hf-prof .p2rbt { border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-input-border-default); font:var(--type-body-m); padding:var(--space-absolute-12); width:100%; box-sizing:border-box; }
+
+
 .call.kc { background:var(--component-call-bg, #0B0E11); color:var(--component-call-ink-default, #F9FAFC); }
 .call.kc > canvas.kai-stars { z-index:0; }
 .call.kc > *:not(canvas) { position:relative; z-index:1; }
@@ -4800,11 +4830,13 @@ p,
 .call.kc .viz canvas { width:240px; height:240px; transition:width .42s cubic-bezier(.2,.8,.2,1), height .42s cubic-bezier(.2,.8,.2,1); }
 .call.kc .vizs { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); letter-spacing:0; color:var(--component-call-ink-muted, #A6AFBB); text-align:center; margin-top:2px; }
 .call.kc .vizt { display:none; }
-.call.kc .tr { flex:1; min-height:0; overflow:auto; scrollbar-width:none; padding:14px 28px 0; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 56px); mask-image:linear-gradient(to bottom, transparent 0, #000 56px); transition:opacity .3s; }
+.call.kc .tr { flex:1; min-height:0; overflow:auto; scrollbar-width:none; padding:14px 28px 0; -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 12px); mask-image:linear-gradient(to bottom, transparent 0, #000 12px); transition:opacity .3s; }
 .call.kc .tr::-webkit-scrollbar { display:none; }
 .call.kc .line { font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); margin:0 0 12px; }
 .call.kc .line.k:not(.now) { color:var(--component-call-ink-muted, #A6AFBB); }
 .call.kc .line.k.now { font:var(--type-body-l, 600 17px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-default, #F9FAFC); }
+
+.call.kc .line .w.off { opacity:.72; }
 .call.kc .line.u { color:var(--component-call-user-ink, #DCB854); border-left:0; padding-left:0; }
 .call.kc.nocap .viz { padding-top:60px; }
 .call.kc.nocap .viz::before { top:60px; width:290px; height:290px; }
@@ -4849,6 +4881,16 @@ p,
 .call.kc:is([data-who="kai"], [data-who="think"]) [data-kcideas] { opacity:.4; pointer-events:none; }
 .call.kc:is([data-who="kai"], [data-who="think"]) .kc-ideas.open { opacity:0; transform:translateY(12px); pointer-events:none; }
 @media (prefers-reduced-motion: reduce) { .kc-ideas, .kc-type, .call.kc .viz, .call.kc .viz canvas { transition:none; } }
+
+
+.call.kc .viz { transition:padding .46s cubic-bezier(.2,.8,.2,1); }
+.call.kc .viz::before { transition:top .46s cubic-bezier(.2,.8,.2,1), width .46s cubic-bezier(.2,.8,.2,1), height .46s cubic-bezier(.2,.8,.2,1); }
+.call.kc .viz canvas { transition:width .46s cubic-bezier(.2,.8,.2,1), height .46s cubic-bezier(.2,.8,.2,1); }
+.call.kc .tr { overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y;
+  transition:opacity .3s cubic-bezier(.2,.8,.2,1) .12s, transform .36s cubic-bezier(.2,.8,.2,1) .12s; }
+.call.kc.nocap .tr { transform:translateY(12px); transition:opacity .18s cubic-bezier(.2,.8,.2,1), transform .24s cubic-bezier(.2,.8,.2,1); }
+.call.kc.kc-still .viz, .call.kc.kc-still .viz::before, .call.kc.kc-still .viz canvas, .call.kc.kc-still .tr { transition:none; }
+@media (prefers-reduced-motion: reduce) { .call.kc .viz, .call.kc .viz::before, .call.kc .viz canvas, .call.kc .tr { transition:none; } }
 
 
 .sheet.ks { height:calc(100% - 56px); max-height:none; border-radius:var(--radius-absolute-24, 24px) var(--radius-absolute-24, 24px) 0 0; background:var(--bg-surface-default, #FFFFFF); }
@@ -13324,6 +13366,20 @@ document.addEventListener("pointerup", ()=>{ if (cSwallowUntil) setTimeout(()=>{
 
 /* ---- header: two icons (search, notifications). The title names the tab, Families, like every other tab; the family's name
    takes its place only once the hero has scrolled under it, so the two never show at once (Apoorv 23:27). Either opens the switcher. ---- */
+/* ---- the switcher also carries what the family menu held: the current family's settings, invite, share, manage and leave.
+   Slack's workspace switcher does the same; the family's name is not a link (Apoorv 28 Sep 00:01). ---- */
+const _cSwitcher = switcherSheet;
+switcherSheet = function(){
+  const f = cF(), w = cWaiting();
+  const r = (attr, icon, a, b, extra="") => `<div class="rowitem cm-swrow" ${attr}><div class="cm-ic">${LI(icon,18)}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div>${extra}</div>`;
+  const mine = `<div class="lbl">In ${f.name}</div>
+    ${r('data-cgo="fsettings"', "bell", "Your settings here", `Notifications ${({all:"on",mentions:"for mentions",off:"off"})[STATE.cNotif||"all"]} · what Kai reads · who sees you`)}
+    ${r('data-csheet="cinvite"', "user-plus", "Invite people", "They still apply; an organizer decides")}
+    ${r('data-csheet="cshare"', "share", `Share ${f.name}`, "Copy the link, or see what guests see")}
+    ${cOrg()?r('data-cgo="manage"', "shield", `Manage ${f.name}`, "Members, posts, rituals, settings", w?`<span class="cm-count">${w}</span>`:''):''}
+    ${r(`onclick="openSheet('confirm','leave|${f.name}')"`, "log-out", `<span class="cm-danger-t">Leave ${f.name}</span>`, "")}`;
+  return _cSwitcher() + mine;
+};
 famHdr = function(){
   const f = cF();
   return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family"><span class="cm-fn"><span class="cm-fn-tab">Families</span><span class="cm-fn-fam"><span class="cm-fn-mark">${cMark(f)}</span>${f.name}</span></span>${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
@@ -13341,7 +13397,7 @@ const _cFamTop = famTop;
 famTop = function(){
   const f = cF();
   const acts = `<div class="cm-hacts"><span class="cm-ibtn" data-csheet="cinvite" role="button" aria-label="Invite to ${f.name}">${C_INVITE_SVG}</span>${cOrg()?`<span class="cm-ibtn" data-cgo="manage" role="button" aria-label="Manage ${f.name}">${C_SHIELD_SVG}${cWaiting()?`<b class="cm-count sm">${cWaiting()}</b>`:''}</span>`:''}</div>`;
-  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big" data-cabout="${f.id}">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t" data-cabout="${f.id}" role="button">${f.name}<span class="cm-tchev">${LI("chevron-right",18)}</span></div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
+  return _cFamTop().replace(/<div class="cover" id="fcover"([^>]*)>/, `<div class="cover cm-cover" id="fcover"$1>${cCoverArt(f)}`).replace(`<div class="flogo big">${f.initial}`, `<div class="flogo big">${cMark(f)}`).replace(/<div class="famname">[\s\S]*$/, `<div class="famname cm-hero"><div class="cm-hrow"><div class="t">${f.name}</div>${acts}</div><div class="m">${f.members} members · ${f.proof}</div></div>`);
 };
 
 /* ---- tabs (move between places) ---- */
@@ -14060,7 +14116,8 @@ const C_PREV = {
 const cFamAny = id => DB.families.find(x=>x.id===id) || DB.recommendedFamilies.find(x=>x.id===id) || (C_PREV[id]&&C_PREV[id].name ? { id, ...C_PREV[id] } : null) || DB.families[0];
 sPublicPage = function(){
   const f = cFamAny(STATE.pubFamily||"xoogler"); const d = C_PREV[f.id] || C_PREV.xoogler;
-  const member = STATE.member && DB.families.some(x=>x.id===f.id);
+  /* a member reaching their own family's page (Share, See as a guest) sees exactly what guests see, and says so */
+  const guest = STATE.member && DB.families.some(x=>x.id===f.id);
   const open = f.kind==="open";
   const known = ["rahul","maya","ana"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
   const why = DB.user.invitedBy && f.id==="xoogler" ? `<b>${DB.user.invitedBy}</b> invited you to apply` : STATE.entry==="event" ? `You're registered for <b>Xoogler dinner, Thursday</b>` : `Kai: ${f.why||"fits your background"}`;
@@ -14069,27 +14126,22 @@ sPublicPage = function(){
   const nCh = (DB.channels[f.id]||[]).length;
   const who = d.run.map(r=>r[1]).join(" and ");
   const step = (n, a, b) => `<div class="cm-row cm-step" style="cursor:default"><div class="cm-num">${n}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div></div>`;
-  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div style="flex:1"></div><span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
+  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div>${guest?`<div class="cm-guest">${LI("eye",16)}<span>Seeing ${f.name} as a guest</span></div>`:'<div style="flex:1"></div>'}<span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
   <div class="body cm-page cm-hi" style="padding-top:0">
-    <div class="cover cm-cover" style="margin-top:${member?0:-10}px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
+    <div class="cover cm-cover" style="margin-top:-10px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
     <div class="famname cm-pubhd"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
       <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div></div>
-    ${!member&&known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
+    ${known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
     ${d.out.length?`<div class="cm-sec cm-proof"><div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta">Last quarter, from what members reported</div></div>`:''}
     ${evs.length?`<div class="cm-sec">${cHead("Open events")}<div class="cm-evstrip">${evs.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
     <div class="cm-sec cm-rhythm">${cHead("Every week and month")}${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="cm-day">${LI("repeat",18)}</div><div class="m"><div class="a">${t}</div><div class="b">${w}</div></div></div>`).join("")}</div>
     ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}<div class="cm-chtiles">${chans.map(([e,n])=>`<span><i>${e}</i>${n}</span>`).join("")}</div></div>`:''}
     <div class="cm-sec cm-runsec">${cHead("Run by")}<div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>${who}</span></div></div>
     <div class="cm-sec">${cHead("House rules")}<div class="cm-rules">${d.rules.split(/\.\s*/).filter(Boolean).map(r=>`<span>${r}</span>`).join("")}</div></div>
-    ${member?'':`<div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>`}
-    ${member?`<div class="cm-sec cm-you">${cHead(`You in ${f.name}`)}
-      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">Notifications</div><div class="b">${({all:"All activity",mentions:"Mentions only",off:"Off"})[STATE.cNotif||"all"]}</div></div><span class="s">›</span></div>
-      <div class="cm-row" data-cgo="fsettings"><div class="m"><div class="a">What Kai reads and who sees you</div></div><span class="s">›</span></div>
-      ${cOrg()?`<div class="cm-row" data-cgo="manage:settings"><div class="m"><div class="a">Edit the family page</div><div class="b">Info, joining, roles, library</div></div><span class="s">›</span></div>`:''}
-      <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a cm-danger-t">Leave ${f.name}</div></div></div></div>`:''}
+    <div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>
     ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
   </div>
-  <div class="foot">${member?`<button class="btn" data-csheet="cinvite">Invite to ${f.name}</button>`
+  <div class="foot">${guest?`<button class="btn" onclick="toast('Guests ${open?"join":"apply"} here. You\'re already in.')">${open?"Join "+f.name:"Apply · about 8 min"}</button>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
     : (STATE.applied&&f.id==="xoogler") ? `<button class="btn sec" disabled>Applied · ${d.run[0][1].split(" ")[0]} is reviewing</button>`
     : `<button class="btn" onclick="${f.id==="xoogler"?"STATE.appPage=0;go('application')":`toast('Opens the ${f.name} application')`}">${open?"Join "+f.name:"Apply · about 8 min"}</button>`}</div>`;
@@ -14169,26 +14221,14 @@ function cSheet(type, id){
       <div class="cm-list" style="margin-top:6px">${[["Your paths through "+f.name+" close", paths?`${paths} open. The other side sees "Closed", nothing more`:"You have none open"],["You leave every channel","Your messages stay, under your name"],["Events you're going to stay booked","You can cancel them yourself"],["Rejoin until Oct 25","Without applying again. After that you'd reapply"]].map(([a,b])=>`<div class="cm-row" style="cursor:default"><div class="m"><div class="a" style="font-weight:600">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
       <div class="row" style="gap:8px;margin-top:12px"><button class="btn sec" style="flex:1" onclick="closeSheet()">Stay</button><button class="btn" style="flex:1;background:var(--danger);border-color:var(--danger)" data-cleave="${f.id}">Leave now</button></div>`;
   }
-  /* the family menu: tap the family name (Discord, Slack, Telegram, Circle). Settings live here, not as a header gear. */
-  if (type==="cfam") {
-    const w = cWaiting(), pend = cPosts(f).filter(p=>p.st==="pending").length;
-    const r = (attr, a, b, extra) => `<div class="cm-row" ${attr}><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div>${extra||''}<span class="s">›</span></div>`;
-    return `<div class="cm-qv" style="align-items:center"><div class="cm-sq">${cMark(f)}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members · ${f.kind==="open"?"Open":"Vetted"}</div></div></div>
-      <div class="cm-list" style="margin-top:10px">
-        ${r('data-csheet="cinvite"', "Invite people", "They still apply; an organizer decides")}
-        ${r(`data-cabout="${f.id}"`, "Family page", "What people see before they join")}
-        ${r('data-cgo="fsettings"', "Your settings here", `Notifications ${({all:"on",mentions:"for mentions",off:"off"})[STATE.cNotif||"all"]} · what Kai reads · who sees you`)}
-      </div>
-      ${cOrg()?`<div class="cm-lbl" style="margin-top:14px">Organizer</div><div class="cm-list">
-        ${r('data-cgo="manage:members"', "Manage members", "Requests, roles, tags and notes", w?`<span class="cm-count">${w}</span>`:'')}
-        ${r('data-cgo="manage"', "Manage "+f.name, `${pend?`${pend} posts to approve · `:''}greeting, rituals, outcomes`)}
-        ${r('data-cgo="manage:settings"', "Family settings", "Info, joining, roles, library, connectors")}
-      </div>`:''}
-      <div class="cm-list" style="margin-top:14px">
-        ${r('data-cswitch="1"', "Switch family", DB.families.map(x=>x.name).join(", "))}
-        <div class="cm-row" onclick="openSheet('confirm','leave|${f.name}')"><div class="m"><div class="a" style="color:var(--danger)">Leave ${f.name}</div></div></div>
-      </div>`;
+  /* Share: the link, and what people outside see (the only way in to the guest view, Apoorv 28 Sep 00:01) */
+  if (type==="cshare") {
+    const link = f.name.toLowerCase().replace(/ /g,"")+".key.ai";
+    return `<h2>Share ${f.name}</h2><div class="cm-lbl">Anyone with the link sees ${f.name}'s page and can ${f.kind==="open"?"join":"apply"}</div>
+      <div class="cm-row cm-shlink" style="cursor:default"><div class="cm-ic">${LI("link",18)}</div><div class="m"><div class="a">${link}</div></div><button class="btn sm sec" onclick="toast('Link copied: ${link}')">Copy</button></div>
+      <div class="cm-list"><div class="cm-row" data-cabout="${f.id}"><div class="cm-ic">${LI("eye",18)}</div><div class="m"><div class="a">See as a guest</div><div class="b">What people outside ${f.name} see before they join</div></div><span class="s">›</span></div></div>`;
   }
+
   if (type==="cinvite") {
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
@@ -14438,7 +14478,6 @@ portWire = function(){
   q("[data-cgo]", el=>{ const t=el.dataset.cgo; STATE.sheet=null; if (t.startsWith("posts:")) { STATE.postType=t.split(":")[1]; go("posts"); return; } if (t==="posts") STATE.postType="All"; if (t==="manage:members") STATE.mmTab="all"; go(t); });
   q("[data-cnewpeople]", ()=>{ STATE.peopleFilter="New"; go("people"); });
   q("[data-cabout]", el=>{ STATE.sheet=null; STATE.pubFamily=el.dataset.cabout; go("pubpage"); });
-  q("[data-cswitch]", ()=>sheetFrom("switcher"));
   q("[data-cchf]", el=>cFilter(()=>{ STATE.chFilter=el.dataset.cchf; }));
   q("[data-pfilter]", el=>cFilter(()=>{ STATE.peopleFilter=el.dataset.pfilter; }));
   q("[data-pview]", el=>cFilter(()=>{ STATE.peopleView=el.dataset.pview; }));
@@ -14909,13 +14948,13 @@ portSheet = function(type, id){
       ${tl.length?`<div class="p2tl">${tl.map(([w,t])=>`<div><span>${w}</span><span>${t}</span></div>`).join("")}</div>`:''}
       <div class="p2acts">
         ${x&&x.tone==="you"&&o?`<button class="on" data-act="${o.id}">${LI("message-circle",16)}Reply</button>`:`<button onclick="openSheet('p2remind','${p.id}')">${LI("clock",16)}Remind me</button>`}
-        <button onclick="openSheet('p2mission','${p.id}')">${LI("target",16)}Add to mission</button>
+        <button onclick="openSheet('p2mission','${p.id}')">${LI("flag",16)}Add to mission</button>
         <button class="${k?'on':''}" onclick="p2Keep('${p.id}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>
         <button onclick="STATE.sheet=null;go('dm:d-${p.id}')">${LI("message-square",16)}Messages</button>
       </div>
       <div class="xrow" onclick="openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="s xs faint">Everyone you follow</div></div>${LI("chevron-right",16)}</div>`; }
   if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
-  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("target",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
+  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
   if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2need") { const n=d.needs[+arg]||{t:""};
@@ -14967,13 +15006,13 @@ function p2Own(){
    Nothing changes until you tap Update. Not now drops it and Kai won't ask about it again. */
 const P2_UPD = [
   { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", apply:o=>{ o.work[0][1]="Group PM"; DB.user.title="Group Product Manager"; } },
-  { id:"now", lbl:"Right now", ico:"target", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
+  { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
   { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
   { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
 ];
 const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]); };
 function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
-  return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"target",14)}${u.lbl}</span><small>${u.src}</small></div>
+  return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"flag",14)}${u.lbl}</span><small>${u.src}</small></div>
     ${was?`<div class="p2upw">${was}</div>`:`<div class="p2upw new">New on your profile</div>`}<div class="p2upc">${u.ch}</div>
     <div class="p2acts2"><button class="on" onclick="event.stopPropagation();p2Upd('${u.id}','yes',${full?1:0})">Update</button><button onclick="event.stopPropagation();p2Upd('${u.id}','edit',${full?1:0})">Edit</button><button onclick="event.stopPropagation();p2Upd('${u.id}','no',${full?1:0})">Not now</button></div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
@@ -15096,6 +15135,41 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
     if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 640), "ph-cover");
   }
   return r; };
+
+/* ==== READBACK HIGH FIDELITY (Apoorv 28 Sep 00:10: "Here's what I heard" should match the hi-fi profile). Hi-fi copy only (KEY_HIFI);
+   the wireframe keeps its readback. Same parts as the profile: hero without a card (face, name, role, family tag), overline sections,
+   rows with hairlines and Lucide tiles, every line editable in place (pencil opens a small sheet; nothing is kept without Save).
+   The stat columns go: they repeated the lines below. The content still comes from the base readback, so the intake stays the source. ==== */
+const P2_RB_ICONS = ["briefcase","map-pin","calendar-days","user-check"];
+const _p2Readback = sReadback;
+sReadback = function(){ const h = _p2Readback(); if (!p2HiFi() || (STATE.rbStep||1)!==1) return h;
+  const d = new DOMParser().parseFromString(`<div id="r">${h}</div>`, "text/html"), q = s => [...d.querySelectorAll(s)], txt = e => e ? e.textContent.trim() : "";
+  const E = STATE.rbEdits || (STATE.rbEdits = {}), V = STATE.rbVals = {};
+  const val = (k, v) => (V[k] = E[k] !== undefined ? E[k] : v);
+  const row = (k, v, ic, cls) => `<button class="rb-row ${cls||""}" onclick="openSheet('p2rb','${k}')"><span class="rb-ic">${LI(ic,18)}</span><span class="rb-tx">${val(k,v)}</span><span class="rb-pen" aria-label="Edit">${LI("pencil",16)}</span></button>`;
+  const av = d.querySelector(".pphoto2 .avatar"), fam = txt(d.querySelector(".fchip"));
+  const facts = q(".pfacts .pfact > span:last-child").map(txt), words = txt(d.querySelector(".pw"));
+  const prompts = q(".pprompt").map(e => [txt(e.querySelector(".pq")), txt(e.querySelector(".pa"))]);
+  const leaves = q(".prof > .pfact > span:last-child").map(txt);
+  const foot = h.slice(h.indexOf('<div class="foot">'));
+  return `<div class="hdr rb-h"><div class="t">Here's what I heard</div></div>
+  <div class="body rb">
+    <p class="rb-lede">${txt(d.querySelector(".body > p.muted"))}</p>
+    <div class="rb-hero">${av ? av.outerHTML : ""}<div class="rb-who"><div class="rb-n">${txt(d.querySelector(".pinfo .pn"))}</div><div class="rb-t">${txt(d.querySelector(".pinfo .phl"))}</div>${fam?`<span class="rb-fam">${fam}</span>`:""}</div></div>
+    <div class="p2sh">What Kai heard</div>
+    ${facts.map((f,i) => row("f"+i, f, P2_RB_ICONS[i]||"sparkles")).join("")}
+    ${words?`<div class="p2sh">In your words</div>${row("w", `“${words}”`, "message-square", "rb-q")}`:""}
+    ${prompts.map(([a,b],i) => `<div class="p2sh">${a}</div>${row("p"+i, b, i===0?"flag":"users")}`).join("")}
+    ${leaves.length?`<div class="p2sh">Who sees what</div>${leaves.map((l,i)=>`<div class="rb-row rb-ro"><span class="rb-ic">${LI(["eye","users","lock"][i]||"lock",18)}</span><span class="rb-tx">${l}</span></div>`).join("")}`:""}
+    <p class="rb-note">${txt(d.querySelector(".body > p.xs"))}</p>
+  </div>
+  ${foot}`; };
+const _p2PortSheetRb = portSheet;
+portSheet = function(type, id){
+  if (type==="p2rb") return `<h2>Fix this line</h2><textarea class="input p2rbt" id="p2rbt" rows="4">${(STATE.rbVals||{})[id]||""}</textarea><div class="xs faint" style="margin:8px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai uses your words from now on. Nothing else changes.</span></div><button class="btn" onclick="STATE.rbEdits['${id}']=document.getElementById('p2rbt').value.trim();closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
+  return _p2PortSheetRb(type, id); };
+const _p2RbRender = render;
+render = function(){ const r = _p2RbRender.apply(this, arguments); if (p2HiFi() && typeof phone!=="undefined" && phone) phone.classList.toggle("hf-rb", STATE.screen==="readback" && (STATE.rbStep||1)===1); return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -15959,7 +16033,8 @@ portWire = function() {
    clumps (Apoorv's no-clusters rule), and they are cool grey-white only (no gold: gold marks people and Kai's K).
    When someone speaks, the camera eases in a little, the turn quickens, and points near the globe brighten, then settle.
    Off under reduced motion and webdriver (unless ?motion): one still frame, no animation loop.
-   Use: const s = kaiStars(el, { cx:.5, cy:.36, clear:120 }); s.level(v) each frame or on voice (0 to 1); s.stop(). ==== */
+   Use: const s = kaiStars(el, { cx:.5, cy:.36, clear:120 }); s.level(v) each frame or on voice (0 to 1); s.stop();
+   s.frame({ cy, clear }, ms) glides the field's centre and clear zone with the globe (28 Sep, captions on and off). ==== */
 function kaiStars(host, o) {
   o = Object.assign({ cx:.5, cy:.4, clear:110, count:520, fadeBottom:.72 }, o || {});
   const moving = (!navigator.webdriver || /[?&]motion/.test(location.search)) && !matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -15967,6 +16042,7 @@ function kaiStars(host, o) {
   c.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0";
   host.insertBefore(c, host.firstChild);
   const g = c.getContext("2d"); let W = 0, H = 0, dpr = 1, lv = 0, tgt = 0, raf = 0, t0 = performance.now(), last = t0, turn = 0;
+  let fr = null; // a framing glide: { from, to, t, ms }
   let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   // the cloud: uniform in the reel's ellipsoid, every point at least MIN apart in 3D (world units; the reel's cloud is 5.2 in radius)
   const MIN = .62, pts = [];
@@ -15987,6 +16063,7 @@ function kaiStars(host, o) {
   function draw(now) {
     const dt = Math.min(.05, Math.max(0, now - last) / 1000), t = (now - t0) / 1000; last = now;
     lv += (tgt - lv) * (1 - Math.exp(-dt * 4)); turn += dt * (.02 + lv * .05);
+    if (fr) { const k = Math.min(1, (now - fr.t) / fr.ms), e = 1 - (1 - k) ** 3; for (const q in fr.to) o[q] = fr.from[q] + (fr.to[q] - fr.from[q]) * e; if (k >= 1) fr = null; }
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); g.globalCompositeOperation = "lighter";
     // the reel's camera: orbit on .11 / .17, resting at z 9, easing in toward 8.4 with the voice; looks at the centre
     const ex = Math.sin(t * .11) * .35, ey = Math.sin(t * .17) * .12, ez = 9 - lv * .6, el = Math.hypot(ex, ey, ez);
@@ -16016,7 +16093,11 @@ function kaiStars(host, o) {
   const onResize = () => { if (size() && !moving) draw(t0 + 2000); };
   addEventListener("resize", onResize);
   if (moving) raf = requestAnimationFrame(loop); else if (size()) draw(t0 + 2000); else requestAnimationFrame(() => size() && draw(t0 + 2000));
-  return { level(v) { tgt = Math.max(0, Math.min(1, v || 0)); }, stop, canvas:c };
+  function frame(p, ms) {
+    if (!moving || !ms) { fr = null; Object.assign(o, p); if (!moving && size()) draw(t0 + 2000); return; }
+    const from = {}; for (const q in p) from[q] = o[q]; fr = { from, to:p, t:performance.now(), ms };
+  }
+  return { level(v) { tgt = Math.max(0, Math.min(1, v || 0)); }, frame, stop, canvas:c };
 }
 
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34, 21:59). Load after motion.js and Motion's kai-stars.js, before data.js.
@@ -16103,6 +16184,30 @@ vizLoop = function() {
   if (KC_ST) KC_ST.level(typeof MO_SIG!=="undefined" ? MO_SIG.level||0 : 0);
 };
 
+/* ==== Kai call captions, on and off in place (Motion design thread, 28 Sep; Apoorv 00:09 "make that transition of showing the
+   transcript versus not showing the transcript a little better... when the Kai ball comes to the center, make that smoother...
+   I should be able to scroll the captions"). Load after kai-call.js and kai-stars.js. The captions button no longer re-renders
+   the call: it flips .nocap on the live screen, so kai-call.css's size and padding transitions run and the globe glides; the star
+   field's centre glides with it (kaiStars frame). Off under reduced motion and webdriver (unless ?motion): the state just changes. ==== */
+const KCC_ON = typeof MO_ON!=="undefined" ? MO_ON : !navigator.webdriver && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const KCC_FRAME = on => on ? { cx:.5, cy:.25, clear:118 } : { cx:.5, cy:.33, clear:148 };
+const _kccPortWire = portWire;
+portWire = function() {
+  _kccPortWire.apply(this, arguments);
+  const call = phone.querySelector(".call.kc"); if (!call) return;
+  call.classList.toggle("kc-still", !KCC_ON);
+  const btn = call.querySelector("[data-kccap]"); if (!btn) return;
+  btn.onclick = e => { e.stopPropagation();
+    STATE.callCap = !STATE.callCap; const on = STATE.callCap;
+    call.classList.toggle("nocap", !on);
+    call.dataset.kv = call.dataset.kv.replace(/captions=\w+/, "captions=" + on);
+    btn.classList.toggle("off", !on); btn.setAttribute("aria-pressed", String(on)); btn.setAttribute("aria-label", (on ? "Hide" : "Show") + " captions");
+    const tr = call.querySelector("#tr"); if (tr) { tr.setAttribute("aria-hidden", String(!on)); if (on) tr.scrollTop = tr.scrollHeight; }
+    if (KC_ST && KC_ST.frame) KC_ST.frame(KCC_FRAME(on), KCC_ON ? 460 : 0);
+  };
+  const tr = call.querySelector("#tr"); if (tr) tr.setAttribute("aria-hidden", String(!STATE.callCap));
+};
+
 /* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:36 and 21:59 "push that out as well"). Load after kai-call.js,
    before data.js. The engineer's Kai sheet frames in the new language: opens hugging its content, grows to the top on the first
    message, K on ink, white ground, rows with hairlines, one dark object (the call invitation) when there is a call to start.
@@ -16150,8 +16255,8 @@ kaiSheet = function() {
       <span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="go">${ksI("phone")}</span></button>` : "";
   const nudgeRow = nudge && !isCall ? `<button class="ks-nudge" data-kai="${ksQ(nudge.ask)}"><span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="ks-chip">${ksQ(nudge.ask)}</span></button>` : "";
   const hello = `<div class="ks-hello"><h4>Hey ${ksQ(first)}.</h4><p>${scope?`What about ${ksQ(scope.label.length>30?scope.label.slice(0,30)+"…":scope.label)}?`:"What are you looking for?"}</p></div>
-    ${scopeChip?`<div class="ks-scopes">${scopeChip}</div>`:""}${callCard}${nudgeRow}
-    <div class="ks-try">${sugg.map(c=>`<button class="ks-row" data-kai="${ksQ(c)}"><span class="lead">${ksI(ksLead(c))}</span><span class="tx">${c}</span>${ksI("right",18)}</button>`).join("")}</div>`;
+    ${scopeChip&&!isCall?`<div class="ks-scopes">${scopeChip}</div>`:""}${callCard}${nudgeRow}
+    ${isCall?"":`<div class="ks-try">${sugg.map(c=>`<button class="ks-row" data-kai="${ksQ(c)}"><span class="lead">${ksI(ksLead(c))}</span><span class="tx">${c}</span>${ksI("right",18)}</button>`).join("")}</div>`}`; // until the intake call is done: the greeting and the call card only (Apoorv, 28 Sep 00:07)
   const msg = m => m.who==="u" ? `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${m.text}</div>`
     : m.who==="sys" ? `<div class="ks-sys">${m.text}</div>`
     : m.talkPending ? `<div class="ks-k" data-kc="KeyKaiThinking">${kaiMark(24)}<div class="ks-think"><i></i>Looking across your communities</div></div>`
