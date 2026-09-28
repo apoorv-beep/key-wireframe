@@ -1135,6 +1135,13 @@
 #phone.phone .chip.sug, #phone.phone .kaiact .chip, #phone.phone .cm-attach span, #phone.phone .evx-tag.wait, #sheet .chip.sug, #sheet .kaiact .chip { border-style:solid; }
 #phone [style*="dashed"], #phone [style*="dotted"], #sheet [style*="dashed"], #sheet [style*="dotted"] { border-style:solid !important; }
 
+#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) { min-height:56px; height:56px; padding:0 16px; gap:8px; align-items:center; box-sizing:border-box; }
+#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back):is(.back,.obk-back) { flex:0 0 44px; width:44px; height:44px; margin:0 0 0 -16px; padding:0 0 0 7px; justify-content:flex-start; border:0; background:transparent; box-shadow:none; border-radius:var(--radius-absolute-12); }
+#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back) svg { width:24px; height:24px; stroke-width:1.9; } #phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back) svg * { stroke-width:1.9; }
+#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) > .icon.icon:last-child { margin-right:-10px; }
+#phone.phone .view .hdr.hdr.sc .who .a.a { font:var(--type-title); letter-spacing:var(--type-title-tracking); }
+#phone.phone .hdr.hdr:has(> .back) > .obk-back ~ .t, #phone.phone .hdr.hdr.obk-hdr > .t.t, #phone.phone .hdr.hdr.chdr:has(> .back) .hm > .hn.hn, #phone.phone .hdr.hdr:has(> .back) > .t.t { font:var(--type-title); letter-spacing:var(--type-title-tracking); }
+
 
 
 
@@ -1555,7 +1562,7 @@ p,
   .evx-tag.go { background:var(--ink); color:#fff; border-color:var(--ink); }
   .evx-tag.host { background:#F1E8CF; border-color:#E2D2A6; color:#6B5317; }
   .evx-tag.inv { border-color:var(--ink); font-weight:800; }
-  .evx-tag.wait { border-style:dashed; color:var(--ink2); }
+  .evx-tag.wait { color:var(--ink2); }
   .evx-tag.lock { background:var(--fill); color:var(--ink2); }
   .evx-locked .a { color:var(--ink2); }
   .evx-cav { width:36px; height:36px; border-radius:10px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:14px; }
@@ -1957,7 +1964,6 @@ p,
   fill: none;
   stroke: rgb(var(--ev-ink-rgb));
   stroke-width: 0.18;
-  stroke-dasharray: 1.6 2.4;
   vector-effect: non-scaling-stroke;
   opacity: calc(var(--ev-fx-alpha) * 1.4);
 }
