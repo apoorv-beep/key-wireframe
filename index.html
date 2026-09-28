@@ -4758,6 +4758,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2vch { text-align:left; align-items:flex-start; }
 .p2vch svg { flex:0 0 auto; margin-top:2px; }
 .p2vs { white-space:nowrap; }
+.p2qv[data-p2qv="priya"] .p2x { display:none; }   /* your own card: members suggest, you do not */
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -6408,7 +6409,7 @@ function profileBody(pid, opts) {
   tiles.push(`<div class="bt help">${pen("what you can help with")}<div class="tl">${self?"I can help with":"Can help with"}</div><div class="chips" style="margin-top:8px">${(p.help||[]).length?(p.help||[]).map(h=>`<span class="tchip">${h.charAt(0).toUpperCase()+h.slice(1)}</span>`).join(""):'<span class="ts faint">Not listed yet</span>'}</div></div>`);
   tiles.push(`<div class="bt look ${mutual?'':'locked'}">${pen("what you're after")}<div class="tl">${self?"I'm after":"Looking for"}${mutual?"":" <span class='faint'>· on a mutual match</span>"}</div><div class="ts" style="margin-top:6px">${mutual?(p.lookingFor||"Not listed yet"):"Shows when you're both a fit"}</div></div>`);
   // families + events
-  tiles.push(`<div class="bt wide" style="background:#fff;border:1px solid var(--line)"><div class="tl">${self?"Families":"Families you share"}</div>${fams.length?`<div class="frail">${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members. ${fm.proof||""}`},false)).join("")}</div>`:'<div class="ts faint" style="margin-top:8px">None yet</div>'}</div>`);
+  tiles.push(`<div class="bt wide" style="background:#fff;border:1px solid var(--line)"><div class="tl">${self?"Families":"Families you share"}</div>${fams.length?`<div class="frail">${fams.map(fm=>famCard({...fm, status:"member", why:""},false)).join("")}</div>`:'<div class="ts faint" style="margin-top:8px">None yet</div>'}</div>`);
   tiles.push(`<div class="bt wide" style="background:#fff;border:1px solid var(--line)"><div class="tl">${self?"Going to":"Events together"}</div>${evs.length?evs.slice(0,2).map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join(""):`<div class="ts faint" style="margin-top:8px">${self?"Nothing yet":"None coming up"}</div>`}</div>`);
   // outcomes
   const outs = self ? DB.opps.filter(x=>x.state==="done"&&x.outcome==="good").map(x=>`${x.roleTitle?x.roleTitle:DB.people[x.personId].name.split(" ")[0]}: went well`) : pid==="maya"?["Two cofounder conversations this year. One became a company."]:pid==="rahul"?["Referred four members. Two were hired."]:[];
@@ -14436,7 +14437,7 @@ const P2 = {
     work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Stripe","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
     school:[["M","#00274C","U of Michigan","MS CS · 2014","Michigan, like you"]],
     note:"Wants a PM who has shipped agents. Ask about her Stripe years.",
-    kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for her first two engineers", digestAct:"Suggest" },
+    kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for her first two engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
   rahul: { now:"Building the eng team for a new product line",
     needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google Cloud", a:"offer"}],
     work:[["A","#C96442","Anthropic","Eng Director · now"],["G","#1A73E8","Google Search","2012 – 2021","Google, like you"]],
@@ -14525,11 +14526,13 @@ function p2FollowBtn(pid){ const k=STATE.p2keep[pid];
   return `<div class="p2fw"><button class="p2follow ${k?'on':''}" aria-pressed="${!!k}" onclick="event.stopPropagation();p2Keep('${pid}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>${k?`<span>In your weekly digest</span>`:''}</div>`; }
 /* the vouch rides under the name as gold words (DS: gold for vouched people as text/gold beside the words, never a ring on the photo).
    Only a "Vouched" receipt from someone else counts, and it opens You and them, where the receipt lives */
-function p2Vouch(pid){ const o=p2Opp(pid), v=o&&viaOf(o), r=o&&(o.receipts||[]).find(x=>x[0]==="Vouched");
+function p2Vouch(pid){ const o=p2Opp(pid), rc=o&&(o.receipts||[]).find(x=>x[0]==="Vouched"), own=(P2[pid]||{}).vouch;   // the member's own record wins; a fresh load has no missions or opps yet
+  const v = own ? DB.people[own[0]] : rc&&viaOf(o), r = own ? ["Vouched","",own[1]] : rc;
   return v&&r&&v.id!==pid ? `<button class="p2vch" onclick="event.stopPropagation();openSheet('p2between','${pid}')">${LI("badge-check",14)}<span>Vouched by ${firstName(v)}${r[2]?` · <span class="p2vs">${r[2]}</span>`:""}</span></button>` : ""; }
 const p2NoHeroLinks = (h, pid) => h.replace(/<div class="plinks">[\s\S]*?<\/div>/, p2Blocked(pid) ? "" : p2Vouch(pid)+p2FollowBtn(pid));
 profileSheet = function(pid){ let h=_p2ProfileSheet(pid);
-  if (pid==="priya") return h.replace(/<button class="btn"[^>]*>Say hi to [^<]*<\/button>/, `<button class="btn" onclick="STATE.sheet=null;STATE.profileId='priya';go('profile')">View your profile</button>`);  // your own card: no hello to yourself h=p2NoHeroLinks(h, pid); if (p2Blocked(pid)) return h;
+  if (pid==="priya") return h.replace(/<button class="btn"[^>]*>Say hi to [^<]*<\/button>/, `<button class="btn" onclick="STATE.sheet=null;STATE.profileId='priya';go('profile')">View your profile</button>`)  // your own card: no hello to yourself
+    .replace(`<div class="sec2" onclick="STATE.sheet=null;STATE.profileId='priya';go('profile')">Full profile</div>`, `<div class="sec2" onclick="openSheet('p2viewas','')">See who sees what</div>`);  // one way to the profile; the second slot previews it as others see it h=p2NoHeroLinks(h, pid); if (p2Blocked(pid)) return h;
   return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
 const _p2SProfile = sProfile;
 sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid);
@@ -14760,18 +14763,18 @@ render = function(){ const r = _p2HfRender.apply(this, arguments);
    that closes when you scroll is not there"). The peek sheet now opens like the full profile in miniature: a photo header with the name on
    its fade, Follow and Full profile side by side, the same body, and the Ask Kai dock pinned at the bottom. Scrolling carries the photo
    away and a compact bar (face, name, Full profile) takes its place at the top of the sheet. ==== */
-function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.families||[]).join(", ");
+function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.families||[]).join(", "), me=pid==="priya";   // your own card: same sheet, your actions, what members see
   const full = `STATE.sheet=null;STATE.profileId='${pid}';go('profile')`;
   return `<div class="p2qv" data-p2qv="${pid}">
     <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
     <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div></div>
     <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}${p2Vouch(pid)}</div>
-    <div class="p2qacts">${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button></div>
-    ${p2Body(pid)}
-    <div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>
+    <div class="p2qacts">${me?`<div class="p2fw"><button class="p2follow" onclick="event.stopPropagation();${full}">View your profile</button></div><button class="p2qopen" onclick="event.stopPropagation();openSheet('p2viewas','')">${LI("eye",16)}See who sees what</button>`:`${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button>`}</div>
+    ${me?p2OwnBody("member"):p2Body(pid)}
+    ${me?"":`<div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>`}
   </div>`; }
 const _p2ProfileSheet3 = profileSheet;
-profileSheet = function(pid){ if (pid==="priya" || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
+profileSheet = function(pid){ if ((pid==="priya" && !STATE.member) || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
 const _p2QvRender = render;
 render = function(){ const r = _p2QvRender.apply(this, arguments);
   const qv = document.querySelector(".sheet .p2qv"), sb = qv && qv.closest(".sb");
