@@ -16873,5 +16873,10 @@ function wire() {
 }
 render();
 </script>
+<script>/* Review build only: every dashed or dotted line draws solid on the same side at its own width (his no-dashes rule; the main hi-fi copy carries its own fix). */
+(function(){ const S=["Top","Right","Bottom","Left"], bad=v=>v==="dashed"||v==="dotted";
+  const fix=()=>document.querySelectorAll("body *").forEach(e=>{ const c=getComputedStyle(e); S.forEach(s=>{ if (bad(c["border"+s+"Style"])) e.style["border"+s+"Style"]="solid"; }); if (bad(c.outlineStyle)) e.style.outlineStyle="solid"; });
+  let q=0; new MutationObserver(()=>{ if (!q) q=requestAnimationFrame(()=>{ q=0; fix(); }); }).observe(document.body,{subtree:true,childList:true}); fix(); })();
+</script>
 <script>try{STATE.authIntent='signup';STATE.signinWith='linkedin';STATE.lookupReady=true;submitApp();STATE.micAsked=true;startCall();for(let i=0;i<6;i++) answer(INTAKE[i].a[0]);approveMe();STATE.push=null;STATE.callActive=false;STATE.welcomeDue=false;STATE.coached={paths:true,inbox:true};go('home');}catch(e){}</script></body>
 </html>
