@@ -5177,6 +5177,8 @@ p,
 .mx-tipsw .mx-tt span { width:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; background:var(--fill); color:var(--ink); }
 .mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
 
+#phone .tipx:is([data-tip="inbox"],[data-tip="swipe"],[data-tip="requests"]) { box-sizing:border-box; max-width:min(340px, calc(100% - 32px)); }
+
 
 #phone.hf-msg svg.li { stroke-width:1.75; }
 #phone.hf-msg > .screen, #phone.hf-msg .body, #phone.hf-msg .chatbody, #phone.hf-msg .hdr { background:var(--bg-page); }
@@ -14244,7 +14246,7 @@ const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"], ph = C
 const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
   [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
   [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn","KeyButton"],[".cm-rit, .cm-row.cm-kairow","KeyRow"],[".cm-lp","KeyPostRow"],
-  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row","KeyActionRow"],
+  [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row, .cm-swrow","KeyActionRow"],
   [".cm-nm, .cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
   [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
 /* Kai's mark is the gold K on its dark disc (his 20:13), from fammarks.js; the sparkle is retired */
@@ -14258,6 +14260,7 @@ const cKv = (el, n) => { const c = el.classList;
     : n==="KeyPersonTile" ? `type=${c.contains("cm-nm")?"greet":"grid"}`
     : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
     : n==="KeyChannelRow" ? `type=${c.contains("cm-talk")?"preview":"channel"}, state=${c.contains("u")?"unread":"read"}`
+    : n==="KeyCover" ? "variant=family"
     : n==="KeyIconButton" ? `container=${el.closest(".hdr") ? "none" : "tile"}` : n==="KeyFaceStack" ? "layout=row, size=24" : ""; };
 const cKc = root => C_KC.forEach(([sel, n]) => root.querySelectorAll(sel).forEach(el => { if (!el.dataset.kc) { el.dataset.kc = n; const v = cKv(el, n); if (v) el.dataset.kv = v; } }));
 const cAv = (i, cls="") => i==="kai" ? `<div class="avatar ${cls} cm-kaiav">${C_SPARK}</div>` : av(i, cls);
