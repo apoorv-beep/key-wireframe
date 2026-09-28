@@ -1121,12 +1121,13 @@
 .phone .hdr.top { gap:4px; } .phone .hdr.top > .avatar { margin-right:6px; } .phone .hdr.top .t { min-width:0; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .phone .icon, .phone .browserow .icon, .phone .btn.sm { border-radius:var(--radius-absolute-12); }
 /* Page titles (his 23:25, Design system's ruling 23:43): top-level pages on --type-display-s; pages with a back button, chat headers included, on --type-title with the line under it on --type-caption. */
-#phone.phone .hdr.hdr.top > .t.t, #phone.phone .hdr.hdr.top > .t.t .tfade { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.phone .hdr.hdr.top > .t.t, #phone.phone .hdr.hdr.top > .t.t .tfade, #phone.phone .hdr.hdr.top .cm-fn.cm-fn > span { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
 #phone.phone .hdr.hdr:has(> .back) > .t.t, #phone.phone .hdr.hdr:has(> .back) > .nscope.nscope, #phone.phone .hdr.hdr:has(> .back) .hm > .hn.hn, #phone.phone .hdr.hdr:has(> .back) > .t.t .cm-fname { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
 #phone.phone .hdr.hdr:has(> .back) .hm > .xs.xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
 #phone.phone .hdr.hdr > .nscope.nscope { min-width:0; } .phone .hdr > .nscope .nst { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 #phone.phone .hdr.hdr > div[style*="flex:1"] > div:first-child[style*="font-size"] { font:var(--type-title) !important; letter-spacing:var(--type-title-tracking); }
 #phone.phone .hdr.hdr > div[style*="flex:1"] > .xs.xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+#phone.phone .hdr.hdr:has(> .back) > .mg + div:not(.icon) { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
 /* Compact phones (SE, 320): the three bare icons narrow to 40 (the 44 height stays the target, the 24 glyph never shrinks), so titles keep their room. */
 @media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; } }
 
@@ -4765,6 +4766,72 @@ p,
 #phone.hf-prof .pact.p2pact { padding:var(--space-absolute-24) var(--space-absolute-12) var(--space-absolute-14); background:linear-gradient(to bottom, transparent, var(--bg-page) 40%); }
 #phone.hf-prof .pact.p2pact .btn { box-shadow:var(--elevation-2); }
 
+/* Quick view: the full profile in miniature. Photo header under the grab, name on its fade, Follow + Full profile, same body, dock pinned */
+.sheet .sb.p2qsb { padding-top:0; }
+.p2qv { position:relative; }
+.p2qbar { position:sticky; top:0; z-index:4; display:flex; align-items:center; gap:10px; margin:0 -16px; padding:10px 16px; background:#fff; border-bottom:1px solid var(--line); opacity:0; pointer-events:none; transform:translateY(-6px); transition:opacity .18s, transform .18s; height:56px; box-sizing:border-box; margin-bottom:-56px; }
+.p2qbar.on { opacity:1; pointer-events:auto; transform:none; }
+.p2qbar b { flex:1; min-width:0; font-size:17px; font-weight:700; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.p2qfull { width:40px; height:40px; border:0; border-radius:12px; background:transparent; color:var(--ink); display:grid; place-items:center; cursor:pointer; }
+.p2qhero { position:relative; height:220px; margin:0 -16px; overflow:hidden; }
+.p2qph { position:absolute; inset:0; background:repeating-linear-gradient(45deg,#dcdcdc 0 10px,#e9e9e9 10px 20px); display:flex; align-items:center; justify-content:center; will-change:transform; }
+.p2qph .pini { font-size:80px; }
+.p2qgrad { position:absolute; left:0; right:0; bottom:0; height:65%; background:linear-gradient(to bottom, rgba(255,255,255,0), #fff 85%); }
+.p2qname { position:absolute; left:16px; right:16px; bottom:10px; }
+.p2qname .pn { font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1.1; padding-left:0; margin:0; }
+.p2qname .pt { font-size:14px; font-weight:400; color:var(--ink2); margin-top:4px; }
+.p2qname .pf { font-size:12px; color:var(--ink3); margin-top:2px; }
+.p2qacts { display:flex; align-items:center; gap:8px; margin:6px 0 16px; }
+.p2qacts .p2fw { margin:0; }
+.p2qacts .p2fw span { display:none; }
+.p2qopen { display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border-radius:18px; border:1px solid var(--line); background:#fff; color:var(--ink); font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+.sbar.p2qdock { flex-wrap:nowrap; }
+@media (prefers-reduced-motion: reduce) { .p2qbar { transition:none; } .p2qph { transform:none !important; } }
+#phone.hf-prof .p2qbar { background:var(--bg-surface-default); border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-prof .p2qbar b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2qph { background:var(--bg-cover-fallback); }
+#phone.hf-prof .p2qph .pini { color:var(--text-disabled); opacity:.5; }
+#phone.hf-prof .p2qph.ph-cover { background-position:center 25%; }
+#phone.hf-prof .p2qph.ph-cover .pini { display:none; }
+#phone.hf-prof .p2qgrad { background:linear-gradient(to bottom, transparent, var(--bg-surface-default) 85%); }
+#phone.hf-prof .p2qname .pn { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2qname .pt { font:var(--type-body-m); color:var(--text-secondary); }
+#phone.hf-prof .p2qname .pf { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-prof .p2qopen { height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); font:var(--type-label); font-weight:700; }
+#phone.hf-prof .p2qfull:active { background:var(--bg-fill-default); }
+
+/* Your profile: Preview (who sees what) at the top, Kai's update queue, edit role */
+.pbar .pbtn.p2prev { width:auto; padding:0 12px; gap:6px; font-size:14px; font-weight:600; }
+.pbar.show .pbtn.p2prev span { display:none; }
+.p2cnt { margin-left:6px; font-size:11px; font-weight:700; padding:2px 6px; border-radius:6px; background:var(--ink); color:#fff; }
+.p2kd2 { font-size:13px; color:var(--ink2); margin:4px 0 8px; }
+.p2up { padding:10px 0; border-bottom:1px solid var(--line); }
+.p2kn .p2up { border-bottom:0; padding-bottom:4px; }
+.p2uph { display:flex; align-items:center; gap:8px; }
+.p2upl { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; color:var(--ink); }
+.p2uph small { margin-left:auto; font-size:11px; color:var(--ink3); text-align:right; }
+.p2upw { font-size:13px; color:var(--ink3); text-decoration:line-through; margin-top:6px; }
+.p2upw.new { text-decoration:none; }
+.p2upc { font-size:16px; font-weight:600; margin:2px 0 10px; }
+.p2f { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; flex:1; min-width:0; }
+.p2f > span { font-size:12px; font-weight:600; color:var(--ink2); }
+.p2f2 { display:flex; gap:10px; }
+.p2danger { color:#C8322F; width:100%; }
+#phone.hf-prof .pbar .pbtn.p2prev { font:var(--type-label); font-weight:700; color:var(--text-primary); }
+#phone.hf-prof .p2kd2 { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2up { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-prof .p2kn .p2up { border-bottom:0; }
+#phone.hf-prof .p2upl { font:var(--type-label-strong); color:var(--text-primary); }
+#phone.hf-prof .p2uph small { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-prof .p2upw { font:var(--type-body-s); color:var(--text-tertiary); }
+#phone.hf-prof .p2upc { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2f > span { font:var(--type-label); color:var(--text-secondary); }
+#phone.hf-prof .p2f .input { border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-input-border-default); background:var(--component-input-bg); font:var(--type-body-m); height:var(--space-absolute-48); padding:0 var(--space-absolute-12); box-sizing:border-box; }
+#phone.hf-prof .p2danger { color:var(--component-button-danger-ink); }
+#phone .p2cnt { background:var(--component-badge-bg, var(--ink)); color:var(--component-badge-ink, #fff); }
+.sheet .sb.p2qsb { padding-bottom:16px; }
+.p2f[hidden] { display:none; }
+
 /* ==== KAI CALL, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:34 and 21:59 "push it to high fidelity"). Loads after motion.css.
    Replaces the pills and the text Mute/End with the phone-call layout: minimise chevron and captions at the top, the globe,
    the status, the captions, an Ideas tray on request, and four round buttons (Mute, Ideas, Type, red End). The reel's star
@@ -4840,9 +4907,11 @@ p,
 /* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep). Loads after kai-call.css. KeyKaiSheet: half on open, top on the first
    message; header, scrolling body and a pinned composer. Token names with the values Design system gave as fallbacks. ==== */
 .sheet.ks { height:calc(100% - 56px); max-height:none; border-radius:var(--radius-absolute-24, 24px) var(--radius-absolute-24, 24px) 0 0; background:var(--bg-surface-default, #FFFFFF); }
-.sheet.ks.half { height:50%; }
+/* before the first message the sheet hugs what it holds (greeting, call card, suggestions, composer): no inner scroll unless it would pass the top */
+.sheet.ks.half { height:auto; max-height:calc(100% - 56px); }
+.sheet.ks.half .sb, .sheet.ks.half .ks-body { flex:0 1 auto; }
 .sheet.ks.grew { animation:ksGrow .44s cubic-bezier(.2,.8,.2,1); }
-@keyframes ksGrow { from { height:50%; } }
+@keyframes ksGrow { from { height:var(--ks-from, 50%); } }
 .sheet.ks .sb { display:flex; flex-direction:column; padding:0; overflow:hidden; }
 .sheet.ks svg { fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 .sheet.ks .kn-disc, .sheet.ks .kn-disc * { stroke:none; }
@@ -4912,6 +4981,10 @@ p,
 .ks-ci { width:36px; height:36px; display:grid; place-items:center; color:var(--icon-secondary, #5B6573); background:none; border:0; border-radius:var(--radius-absolute-12, 12px); cursor:pointer; }
 .ks-ci#kaiMic { border-radius:999px; } /* KeyMicButton, the one round control (Design system 22:06) */
 .ks-go { width:36px; height:36px; display:grid; place-items:center; border:0; border-radius:var(--radius-absolute-12, 12px); background:var(--component-button-primary-bg-default, #0B0E11); color:var(--component-button-primary-ink, #FFFFFF); cursor:pointer; }
+/* short phones (SE): the same content, tighter, so a hugging sheet still needs no scroll */
+@media (max-height:620px) { .ks-hello h4 { font:var(--type-display-s, 700 22px/1.2 Manrope, system-ui, sans-serif); margin-top:4px; } .ks-hello p { font:var(--type-body-l, 600 17px/1.3 Manrope, system-ui, sans-serif); }
+  .ks-scopes { margin-top:10px; } .ks-call { margin-top:12px; padding:12px; gap:12px; } .ks-call .m span { display:none; } .ks-call .kn-disc { width:36px; height:36px; } .ks-call .go { width:40px; height:40px; }
+  .ks-try { margin-top:6px; } .ks-row { padding:8px 0; } .ks-row .lead { width:32px; height:32px; } .ks-comp { padding:6px 12px 12px; } .ks-box textarea { min-height:30px; padding-top:6px; } }
 @media (prefers-reduced-motion: reduce) { .sheet.ks.grew, .ks-k { animation:none; } .ks-think i { animation-duration:2.4s; } }
 
 /* ==== MESSAGES: one avatar per kind (27 Sep, messages thread) ==== */
@@ -4960,6 +5033,11 @@ p,
 #phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin { opacity:1; }
 @media (prefers-reduced-motion: reduce) { #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin { transition:none; } }
 #phone:has(.hdr .mx-hav) .chatbody.mx-scrolling .dsep.mx-pin.mx-under, #phone:has(.hdr .mx-hav) .chatbody .dsep.mx-pin.mx-under { opacity:0; transition:none; }
+
+/* swipe actions (Apoorv 23:45): the tray the tip draws, Pin, Mute, More, three equal tiles in the 45% the swipe opens */
+.swa.right.mx-acts { width:max(45%, 172px); gap:4px; padding:4px 0 4px 4px; box-sizing:border-box; }
+.swa.right.mx-acts span { flex:1; width:auto; max-width:none; min-width:0; margin:0; padding:0 4px; border-radius:12px; color:var(--ink); background:var(--fill); }
+.swa.right.mx-acts span br { display:none; }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -5066,6 +5144,10 @@ p,
 #phone.hf-msg .citabs.later span { color:var(--text-tertiary); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); }
 #phone.hf-msg .citabs.later span.on { color:var(--text-primary); box-shadow:inset 0 calc(-1 * var(--border-width-focus)) 0 var(--text-primary); }
 #phone.hf-msg .xrow.lrow { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-14) 0; }
+/* KeyIconButton container=tile in the swipe tray: fill tile, radius 12, Lucide 24 at 1.75, label caption */
+#phone.hf-msg .swa.right.mx-acts { gap:var(--space-absolute-4); padding:var(--space-absolute-4) 0 var(--space-absolute-4) var(--space-absolute-4); }
+#phone.hf-msg .swa.right.mx-acts span { border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-caption); letter-spacing:var(--type-caption-tracking); }
+#phone.hf-msg .swa.right.mx-acts span svg.li { width:var(--space-absolute-24); height:var(--space-absolute-24); stroke-width:1.75; color:var(--icon-primary); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -5327,7 +5409,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
   background:radial-gradient(260px 160px at var(--mx,50%) var(--my,0%), rgba(255,255,255,.0), rgba(220,228,236,.35) 60%, rgba(255,255,255,0)); mix-blend-mode:multiply; }
 .obw-card.is-tilt .obw-sheen { opacity:1; }
 .obw-go { padding-top:18px; }
-.obw-go button { width:100%; min-height:52px; border:0; border-radius:var(--radius-absolute-16, 16px); background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
+.obw-go button { width:100%; min-height:52px; border:0; border-radius:var(--radius-absolute-12, 12px); background:#F9FAFC; color:#0B0E11; font:inherit; font-size:16px; font-weight:700; cursor:pointer; }
 .obw-go button:active { transform:scale(.98); }
 @media (max-height:640px) { .obw-top { height:112px; } .obw-logo { width:104px; height:56px; } .obw h1 { font-size:28px; margin-bottom:16px; } }
 .obw-card .ob4pc-src .obl-lnk { display:none; }
@@ -5374,7 +5456,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 /* Buttons: primary ink, text buttons without underlines */
 #phone.hf-ob .foot { background:var(--bg-page); border-top-color:var(--border-subtle); }
-#phone.hf-ob .foot .btn { font:var(--type-button-l); letter-spacing:var(--type-button-l-tracking); background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); color:var(--text-inverse); border-radius:var(--radius-absolute-16); }
+#phone.hf-ob .foot .btn { font:var(--type-button-l); letter-spacing:var(--type-button-l-tracking); background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); color:var(--text-inverse); border-radius:var(--radius-absolute-12); }
 #phone.hf-ob .foot .btn:disabled { opacity:1; background:var(--bg-fill-strong); border-color:var(--bg-fill-strong); color:var(--text-disabled); }
 #phone.hf-ob .foot .btn.ghost, #phone.hf-ob .foot .ob4skip { background:transparent; border-color:transparent; font:var(--type-body-m-strong); color:var(--text-secondary); }
 #phone.hf-ob .obh-tb, #phone.hf-ob .obl-lnk { border:0; background:none; padding:0; font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-primary); text-decoration:none; cursor:pointer; }
@@ -5442,7 +5524,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-ob .ob3map::after { bottom:0; height:96px; background:linear-gradient(transparent, var(--bg-page)); }
 #phone.hf-ob .ob3map .top { z-index:2; }
 #phone.hf-ob .ob4blank > svg { opacity:.55; filter:none; }
-#phone.hf-ob .ob4ask { width:56px; height:56px; border:0; border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); box-shadow:var(--elevation-2); color:var(--icon-secondary); z-index:1; }
+#phone.hf-ob .ob4ask { width:56px; height:56px; border:0; border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); box-shadow:var(--elevation-2); color:var(--icon-secondary); z-index:1; }
 #phone.hf-ob .ob4loc { height:52px; border:var(--border-width-hairline) solid var(--border-default); border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); font:var(--type-body-m-strong); color:var(--text-primary); }
 #phone.hf-ob .ob4locpc { margin-top:-56px; }
 
@@ -14748,6 +14830,9 @@ if (typeof LUCIDE!=="undefined" && !LUCIDE["bell-ring"]) LUCIDE["bell-ring"] = '
    Load after port.js, cycle.js and fixes (it wraps profileBody, profileSheet, sProfile, portSheet, kaiAsk). Remove this file to back it out. */
 
 Object.assign(LUCIDE, {   /* Lucide icons this module needs that the base set lacks */
+  "maximize-2":'<path d="M15 3h6v6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/><path d="M9 21H3v-6"/>',
+  "brain":'<path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/>',
+  "briefcase":'<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/>',
   "history":'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
   "badge-check":'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
   "message-circle-question":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
@@ -14923,7 +15008,10 @@ wire = function(){
     ph.querySelectorAll("[data-opp]").forEach(card => { const pid = pidOf(card.dataset.opp); if (!pid) return;
       const p = DB.people[pid];   // only the person's own face and name, never a company logo or role title on the same card
       card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
-    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"]').forEach(b => b.setAttribute("onclick", "openSheet('p2viewas','')"));   // You screen: "Who sees what" opens See your profile as
+    /* You screen (Apoorv 23:44): "Who sees what" lives inside your profile now (Preview at the top), so the outside button goes;
+       "Your profile" carries the count of updates Kai is holding for your yes */
+    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"]').forEach(b => b.remove());
+    if (STATE.member && DB.contextV2) ph.querySelectorAll('button[data-profile="priya"]').forEach(b => { const n=p2Pending().length; if (n && !b.querySelector(".p2cnt")) b.insertAdjacentHTML("beforeend", `<span class="p2cnt">${n} ${n===1?"update":"updates"}</span>`); });
     const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
       if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
   }
@@ -14937,39 +15025,56 @@ wire = function(){
 function p2Own(){
   if (!STATE.p2own) { const C=DB.contextV2;
     STATE.p2own = { bld:(C.who[1]||C.who[0]||[""])[0], needs:C.after.slice(0,2).map((a,i)=>({ t:a[0], m:(DB.missions[i]||{}).name||a[0], on:1 })), recent:[], sug:0,
-      links:{ linkedin:1, github:1, site:0 } }; }
+      links:{ linkedin:1, github:1, site:0 }, done:{},
+      work:[["Google Cloud","Senior PM","2020","now",1],["Google Ads","PM","2018","2020",1]] }; }
   return STATE.p2own; }
-const P2_SUG = [
-  { lbl:"Right now", ch:"Leading the Gemini agents launch", src:"From your Kai call, 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
-  { lbl:"Can help with", ch:"Add AI features at scale", src:"From your journal, twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
+/* Kai asks before anything on your profile changes (Apoorv 23:44): context keeps arriving from calls, the journal, new missions and
+   connectors; when a piece of it touches something your profile shows, Kai queues it here as before -> after with its source.
+   Nothing changes until you tap Update. Not now drops it and Kai won't ask about it again. */
+const P2_UPD = [
+  { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", apply:o=>{ o.work[0][1]="Group PM"; DB.user.title="Group Product Manager"; } },
+  { id:"now", lbl:"Right now", ico:"target", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
+  { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
+  { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
 ];
+const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]); };
+function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
+  return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"target",14)}${u.lbl}</span><small>${u.src}</small></div>
+    ${was?`<div class="p2upw">${was}</div>`:`<div class="p2upw new">New on your profile</div>`}<div class="p2upc">${u.ch}</div>
+    <div class="p2acts2"><button class="on" onclick="event.stopPropagation();p2Upd('${u.id}','yes',${full?1:0})">Update</button><button onclick="event.stopPropagation();p2Upd('${u.id}','edit',${full?1:0})">Edit</button><button onclick="event.stopPropagation();p2Upd('${u.id}','no',${full?1:0})">Not now</button></div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f="Priya";
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
   if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
-  const sug = edit ? P2_SUG[o.sug] : null;
+  const pend = edit ? p2Pending() : [];
   const needs = o.needs.filter(n=>edit||n.on);
   const links = profileLinks("priya").filter(([k])=>edit||o.links[k]);
   const help = C.offer.map(x=>x[0]);
   return `<div class="p2">
     ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
-    ${sug?`<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b>Kai noticed</b><small>${sug.src}</small></div><div class="p2kc"><span>${sug.lbl}</span><b>${sug.ch}</b></div><div class="p2acts2"><button class="on" onclick="p2Sug('yes')">Update</button><button onclick="p2Sug('edit')">Edit</button><button onclick="p2Sug('no')">Not now</button></div></div>`:''}
+    ${pend.length?`<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b>${pend.length===1?"Kai has an update for your profile":`Kai has ${pend.length} updates for your profile`}</b></div><div class="p2kd2">These changed in your context and show on your profile. Nothing changes until you say so.</div>${p2UpdRow(pend[0])}${pend.length>1?`<button class="p2add" onclick="openSheet('p2updates','')">${LI("chevron-right",16)}See all ${pend.length}</button>`:''}</div>`:''}
     <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
       ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
-    <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail"><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Cloud</b><small>Senior PM · 2020 – now</small></div><div class="p2wk">${p2Logo("G","#1A73E8")}<b>Google Ads</b><small>PM · 2018 – 2020</small></div></div></div>
+    <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail">${o.work.filter(w=>edit||w[4]).map(w=>`<div class="p2wk">${p2Logo(w[0][0],"#1A73E8")}<b>${w[0]}</b><small>${w[1]} · ${w[2]} – ${w[3]}</small></div>`).join("")}</div></div>
     ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
     ${edit?`<div class="p2sec"><div class="p2sh">Only you see</div>${[["context","brain","What Kai knows about you",`${C.who.length+C.after.length+C.offer.length+C.work.length} things · ${C.inferred.length} waiting for your yes`],["rules","shield","Rules",`Intros ${String(DB.rules.intros).toLowerCase()} · ${DB.rules.capacity} requests a week`],["people","users","Connectors","Who can vouch for you"],["sources","link","Sources","Contacts, calendar, channels"]].map(([id,i,a,b])=>`<button class="p2lk" onclick="event.stopPropagation();go('you:${id}')">${p2Logo(LI(LUCIDE[i]?i:"lock",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">${a}</b><small>${b}</small></span>${LI("chevron-right",16)}</button>`).join("")}</div>`:''}
     ${edit?p2Privacy():''}
     ${links.length||edit?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
   </div>`;
 }
-function p2Sug(a){ const o=p2Own(), g=P2_SUG[o.sug]; if (!g) return;
-  if (a==="edit") { openSheet(g.lbl==="Right now"?"p2editnow":"p2editask",""); return; }
-  if (a==="yes") { g.apply(o); o.recent.unshift([`${g.lbl}: ${g.ch.replace(/^Add /,"")}`, g.src.replace(/^From/,"from")]); toast("Updated. It's under Recently"); } else toast("Kai won't ask about this again");
-  o.sug++; render(); }
+function p2Upd(id, a, inSheet){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if (!u) return;
+  if (a==="edit") { openSheet(id==="role"?"p2editrole":id==="now"?"p2editnow":id==="help"?"p2editask":"p2missions", id==="role"?"0":""); return; }
+  o.done[id]=1;
+  if (a==="yes") { u.apply(o); o.recent.unshift([`${u.lbl}: ${u.ch}`, u.src.replace(/^From/,"from")]); }
+  if (inSheet && p2Pending().length) openSheet("p2updates",""); else { if (inSheet) closeSheet(); render(); }
+  setTimeout(()=>toast(a==="yes"?"Updated. It's under Recently":"Kai won't ask about this again"), inSheet?0:0); }
 function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
 function p2LinkVis(k){ const o=p2Own(); o.links[k]=!o.links[k]; render(); toast(o.links[k]?"Shown on your profile":"Hidden"); }
+function p2SaveRole(id){ const o=p2Own(), v=x=>document.getElementById(x), now=v("p2rnow").getAttribute("aria-checked")==="true";
+  const w=[v("p2rc").value.trim()||"Company", v("p2rt").value.trim()||"Role", v("p2rs").value, now?"now":v("p2re").value, v("p2rshow").getAttribute("aria-checked")==="true"?1:0];
+  if (id==="new") o.work.unshift(w); else o.work[+id]=w;
+  o.recent.unshift([`Work: ${w[1]} · ${w[0]}`, "you edited · just now"]); closeSheet(); render(); setTimeout(()=>toast("Saved"),200); }
 function p2OwnApply(){ const o=p2Own(), c=[...document.querySelectorAll('.sheet [data-p2prop]')].map(x=>x.getAttribute("aria-checked")==="true");
   if (c[0]) { o.bld="Leading the Gemini agents launch"; o.recent.unshift(["Right now: Leading the Gemini agents launch","from what you told Kai · just now"]); }
   if (c[1]) { o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); o.recent.unshift(["Looking for: Two PMs for Gemini agents","from what you told Kai · just now"]); }
@@ -14984,7 +15089,7 @@ const _p2SOwn = sOwnProfile;
 sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
   h = h.replace(/<div class="plinks">[\s\S]*?<\/div>/, "");
   h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`,
-    `<div class="pbtn" aria-label="See your profile as someone else" onclick="openSheet('p2viewas','')">${LI("eye",18)}</div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
+    `<div class="pbtn p2prev" aria-label="Preview who sees what" onclick="openSheet('p2viewas','')">${LI("eye",18)}<span>Preview</span></div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
   const va = STATE.ownPreview ? ({member:"a member of your families",match:"someone Kai matched with you",outside:"someone outside your families"})[STATE.p2viewAs||"member"] : "";
   h = h.replace(/<span class="xs muted" style="flex:1">This is what a member sees.<\/span>/, `<span class="xs muted" style="flex:1">What ${va} sees.</span>`);
   if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
@@ -14993,12 +15098,23 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
 const _p2PortSheet2 = portSheet;
 portSheet = function(type, id){
   const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
-  if (type==="p2viewas") return `<h2>See your profile as</h2>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2viewas") return `<h2>Who sees what</h2><div class="xs faint" style="margin:-4px 0 8px">Preview your profile as each of them sees it.</div>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
   if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
   if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
   if (type==="p2editask") { const C=DB.contextV2; return `<h2>I can help with</h2><div class="p2chips">${C.offer.map(([c])=>`<button class="p2chip" onclick="DB.contextV2.offer=DB.contextV2.offer.filter(x=>x[0]!=='${c.replace(/'/g,"")}');openSheet('p2editask','')">${c}${LI("x",14)}</button>`).join("")}</div><div class="p2sh" style="margin-top:16px">Kai suggests, from what you've told it</div><div class="p2chips">${["AI features at scale","Michigan MS to Google"].filter(c=>!C.offer.some(x=>x[0]===c)).map(c=>`<button class="p2chip sugg" onclick="DB.contextV2.offer.push(['${c}','Kai suggested','Sep 27','help nudges',true]);openSheet('p2editask','')">${LI("plus",14)}${c}</button>`).join("")}</div><button class="btn" style="margin-top:16px" onclick="closeSheet();render()">Done</button>`; }
-  if (type==="p2editwork") return `<h2>Work</h2>${[["Google Cloud","Senior PM · 2020 – now"],["Google Ads","PM · 2018 – 2020"]].map(([a,b])=>`<div class="xrow" onclick="toast('Edit role')">${p2Logo("G","#1A73E8")}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("pencil",16)}</div>`).join("")}<div class="xrow" onclick="toast('Add a role')"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Add a role</div></div></div><button class="btn sec" style="margin-top:12px" onclick="openSheet('p2feed','')">Or tell Kai and it fills it in</button>`;
+  if (type==="p2editwork") { const ow=p2Own(); return `<h2>Work</h2>${ow.work.map((w,i)=>`<div class="xrow" onclick="openSheet('p2editrole','${i}')">${p2Logo(w[0][0],"#1A73E8")}<div class="m"><div class="a">${w[1]}</div><div class="s xs faint">${w[0]} · ${w[2]} – ${w[3]}${w[4]?"":" · hidden"}</div></div>${LI("pencil",16)}</div>`).join("")}<div class="xrow" onclick="openSheet('p2editrole','new')"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Add a role</div></div></div><button class="btn sec" style="margin-top:12px" onclick="openSheet('p2feed','')">Or tell Kai and it fills it in</button>`; }
+  if (type==="p2editrole") { const ow=p2Own(), isNew=id==="new", w=isNew?["","","2026","now",1]:ow.work[+id], cur=w[3]==="now";
+    const yrs = y => Array.from({length:20},(_,k)=>2026-k).map(v=>`<option ${String(v)===String(y)?"selected":""}>${v}</option>`).join("");
+    return `<div class="p2shd">${w[0]?p2Logo(w[0][0],"#1A73E8"):`<span class="sico">${LI("briefcase",18)}</span>`}<h2>${isNew?"Add a role":"Edit role"}</h2></div>
+      <label class="p2f"><span>Title</span><input class="input" id="p2rt" value="${w[1]}" placeholder="e.g. Senior Product Manager"></label>
+      <label class="p2f"><span>Company</span><input class="input" id="p2rc" value="${w[0]}" placeholder="Company or school"></label>
+      <div class="p2f2"><label class="p2f"><span>Started</span><select class="input" id="p2rs">${yrs(w[2])}</select></label><label class="p2f" ${cur?'hidden':''} id="p2rew"><span>Ended</span><select class="input" id="p2re">${yrs(cur?2026:w[3])}</select></label></div>
+      <div class="p2nd"><span><b>I work here now</b></span><span class="p2sw" role="switch" id="p2rnow" aria-label="I work here now" aria-checked="${cur}" onclick="const on=this.getAttribute('aria-checked')!=='true';this.setAttribute('aria-checked',on);document.getElementById('p2rew').hidden=on"></span></div>
+      <div class="p2nd"><span><b>Show on my profile</b><small>Members of your families see it under Work</small></span><span class="p2sw" role="switch" id="p2rshow" aria-label="Show on my profile" aria-checked="${!!w[4]}" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>
+      <div class="xs faint" style="margin:10px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai keeps this current from your connectors and asks before it changes anything.</span></div>
+      <button class="btn" onclick="p2SaveRole('${id}')">Save</button>${isNew?"":`<button class="btn ghost p2danger" style="margin-top:6px" onclick="p2Own().work.splice(${+id},1);closeSheet();render();setTimeout(()=>toast('Role removed'),200)">Remove this role</button>`}`; }
+  if (type==="p2updates") { const P=p2Pending(); return `<div class="p2shd">${kaiMark(20)}<h2>${P.length===1?"1 update for your profile":`${P.length} updates for your profile`}</h2></div><div class="xs faint" style="margin-bottom:6px">Kai found these in your calls, journal, missions and connectors. Each one shows on your profile, so nothing changes until you say so.</div>${P.map(u=>p2UpdRow(u,true)).join("")}${P.length>1?`<button class="btn" style="margin-top:12px" onclick="p2Pending().forEach(u=>{ const o=p2Own(); o.done[u.id]=1; u.apply(o); o.recent.unshift([u.lbl+': '+u.ch, u.src.replace(/^From/,'from')]); });closeSheet();render();setTimeout(()=>toast('Profile updated. Changes are under Recently'),200)">Update all ${P.length}</button>`:''}`; }
   if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
     return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
   if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
@@ -15016,6 +15132,34 @@ render = function(){ const r = _p2HfRender.apply(this, arguments);
     phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
     const pid = STATE.profileId||"priya", ph = prof && phone.querySelector(".pphoto");
     if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 1000), "ph-cover");
+  }
+  return r; };
+
+/* ==== QUICK VIEW (Apoorv 23:44: "spacing is broken, the message icon is broken, the full profile is not really visible ... the thumbnail
+   that closes when you scroll is not there"). The peek sheet now opens like the full profile in miniature: a photo header with the name on
+   its fade, Follow and Full profile side by side, the same body, and the Ask Kai dock pinned at the bottom. Scrolling carries the photo
+   away and a compact bar (face, name, Full profile) takes its place at the top of the sheet. ==== */
+function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.families||[]).join(", ");
+  const full = `STATE.sheet=null;STATE.profileId='${pid}';go('profile')`;
+  return `<div class="p2qv" data-p2qv="${pid}">
+    <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
+    <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div><div class="p2qgrad"></div>
+      <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}</div></div>
+    <div class="p2qacts">${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button></div>
+    ${p2Body(pid)}
+    <div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>
+  </div>`; }
+const _p2ProfileSheet3 = profileSheet;
+profileSheet = function(pid){ if (pid==="priya" || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
+const _p2QvRender = render;
+render = function(){ const r = _p2QvRender.apply(this, arguments);
+  const qv = document.querySelector(".sheet .p2qv"), sb = qv && qv.closest(".sb");
+  if (sb) { const bar = qv.querySelector(".p2qbar"), ph = qv.querySelector(".p2qph");
+    sb.classList.add("p2qsb");
+    const on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > 150); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
+    sb.onscroll = on; on();
+    const pid = qv.dataset.p2qv;
+    if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 640), "ph-cover");
   }
   return r; };
 
@@ -16026,7 +16170,7 @@ vizLoop = function() {
 };
 
 /* ==== KAI CHAT, hi-fi (Kai hi-fi thread, 27 Sep; Apoorv 21:36 and 21:59 "push that out as well"). Load after kai-call.js,
-   before data.js. The engineer's Kai sheet frames in the new language: opens as a half sheet, grows to the top on the first
+   before data.js. The engineer's Kai sheet frames in the new language: opens hugging its content, grows to the top on the first
    message, K on ink, white ground, rows with hairlines, one dark object (the call invitation) when there is a call to start.
    Overrides kaiSheet and wraps sheetHTML and kaiAsk. Keeps every hook the wiring uses: [data-kai], [data-kaihist],
    [data-kainew], [data-kaiscope], #kaiIn, #kaiSendBtn, #kaiMic, and talkPending messages from the live Kai. ==== */
@@ -16092,7 +16236,7 @@ sheetHTML = function() {
   const h = _ksSheetHTML.apply(this, arguments);
   if (!STATE.sheet || STATE.sheet.type!=="kai") return h;
   const full = STATE.sheetFull, grew = STATE.kaiGrew; STATE.kaiGrew = false;
-  return h.replace('<div class="sheet ', `<div data-kc="KeyKaiSheet" data-kv="height=${full?"full":"half"}" class="sheet ks ${full?"":"half "}${grew?"grew ":""}`);
+  return h.replace('<div class="sheet ', `<div data-kc="KeyKaiSheet" data-kv="height=${full?"full":"hug"}"${grew?` style="--ks-from:${grew}px"`:""} class="sheet ks ${full?"":"half "}${grew?"grew ":""}`);
 };
 const _ksKaiAsk = kaiAsk;
 // A general question gets an answer, never the canned "Noted": a known ask in other words goes to its scripted answer; follow-ups
@@ -16104,7 +16248,7 @@ function ksFollowUps() {
   return { text:`${mine.length===1?"One thing":`${mine.length} things`} waiting on you.`, mini:mine.slice(0,3).map(o => `${targetOf(o).name} · ${kickerOf(o)[0]}`), chips:mine.slice(0,2).map(o => `Review the ask to ${firstName(targetOf(o))}`) };
 }
 kaiAsk = function(t) {
-  if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull && !/start the conversation/i.test(t)) { STATE.sheetFull = true; STATE.kaiGrew = true; }
+  if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull && !/start the conversation/i.test(t)) { const el = phone.querySelector(".sheet.ks"); STATE.sheetFull = true; STATE.kaiGrew = el ? el.offsetHeight : 0; }
   const scope = STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
   const general = !scope && !STATE.logMode && !KAI_COMPOSER.some(x => x.t===t);
   if (general && /\?\s*$|^(who|which|what|how|where|when|can|is|are|do|does|any)\b/i.test(t.trim())) {
@@ -16202,7 +16346,11 @@ chatsListHTML = function() {
   const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
   const unreadN = all.filter(r=>r.unread&&!r.archived).length;
   const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
-  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right"><span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",18)}<br>More</span></div>
+  /* swipe left shows what the tip promises (Apoorv 23:45): Pin, Mute, More, as WhatsApp and iOS Mail show two or three; event chats and intro rows have no mute, so Pin and More */
+  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI("pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
+    + (r.kind==="event" || r.intro ? "" : `<span onclick="${r.muted?`convOf('${r.id}').muted=null;render();toast('Unmuted')`:`openSheet('mute','${r.id}')`}">${LI(r.muted?"bell":"bell-off",24)}<br>${r.muted?'Unmute':'Mute'}</span>`)
+    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",24)}<br>More</span>`;
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
     <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
   const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
@@ -16248,7 +16396,14 @@ document.addEventListener("scroll", e => {
   mxPins(cb); cb.classList.add("mx-scrolling"); clearTimeout(_mxIdle); _mxIdle = setTimeout(() => cb.classList.remove("mx-scrolling"), 1200);
 }, true);
 const _mxRender = render;
-render = function(...a) { const r = _mxRender.apply(this, a); const cb = document.querySelector("#phone .chatbody"); if (cb) requestAnimationFrame(() => mxPins(cb)); return r; };
+render = function(...a) { const r = _mxRender.apply(this, a); const cb = document.querySelector("#phone .chatbody"); if (cb) requestAnimationFrame(() => mxPins(cb)); mxTray(); return r; };
+/* the shared swipe opens 45% of the row, which leaves three tiles under 44px at 320; once it settles open, widen to the tray */
+function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { const t = sw.querySelector(".swa.right.mx-acts"); if (!t) return;
+  const fit = () => setTimeout(() => { if (sw.classList.contains("open") && sw.dataset.side==="right") sw.querySelector(".swc").style.transform = `translateX(${-t.offsetWidth}px)`; });
+  ["pointerup","pointercancel","pointerleave"].forEach(ev => sw.addEventListener(ev, fit, true)); }); }
+
+/* the swipe tip names what the tray holds (Apoorv 23:45): archive and the rest live under More */
+(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (t) t.body = "Pin, mute, or More to archive."; })();
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
@@ -16265,7 +16420,7 @@ function hfMsgOn() {
 const _hfRender = render;
 /* data-kc = the library component each root maps to, for Design system's diff */
 const HF_KC = [[".hdr.top","KeyHeader"],[".hdr.chdr","KeyHeader"],[".hdr .icon","KeyIconButton"],[".toolrow .icon","KeyIconButton"],[".toolrow .search","KeySearchField"],[".reqrow","KeyRequestsRow"],[".pills .pill","KeyChip"],[".unread, .badge, .pc","KeyUnreadBadge"],[".conv","KeyConversationRow"],[".tag","KeyTag"],[".mx-when","KeyStateLabel"],[".schedstrip","KeyScheduledBar"],[".bav, .rfaces .avatar","KeyAvatar"],[".bub","KeyChatBubble"],[".dsep","KeyDateSeparator"],[".rchip","KeyReactionChip"],[".thchip","KeyThreadCount"],[".mgrid, .filecard","KeyAttachment"],[".foot.cbar","KeyComposer"],[".citabs.later","KeyTabs"]];
-function hfTag() { HF_KC.forEach(([sel,kc])=>phone.querySelectorAll(sel).forEach(el=>{ if (!el.dataset.kc) el.setAttribute("data-kc", kc); })); phone.querySelectorAll(".hdr .icon, .hdr .back").forEach(el=>el.setAttribute("data-kv","container=none")); phone.querySelectorAll(".toolrow .icon, .csend").forEach(el=>el.setAttribute("data-kv","container=tile")); if (STATE.screen==="later") { const v=phone.querySelector(".screen > .view")||phone.querySelector(".screen"); if (v) v.setAttribute("data-kc","KeyLaterScreen"); } }
+function hfTag() { HF_KC.forEach(([sel,kc])=>phone.querySelectorAll(sel).forEach(el=>{ if (!el.dataset.kc) el.setAttribute("data-kc", kc); })); phone.querySelectorAll(".swa.right.mx-acts span").forEach(el=>el.setAttribute("data-kc","KeyIconButton")); phone.querySelectorAll(".hdr .icon, .hdr .back").forEach(el=>el.setAttribute("data-kv","container=none")); phone.querySelectorAll(".toolrow .icon, .csend, .swa.right.mx-acts span").forEach(el=>el.setAttribute("data-kv","container=tile")); if (STATE.screen==="later") { const v=phone.querySelector(".screen > .view")||phone.querySelector(".screen"); if (v) v.setAttribute("data-kc","KeyLaterScreen"); } }
 render = function(...a) { const r = _hfRender.apply(this, a); if (typeof phone!=="undefined" && phone) { const on=hfMsgOn(); phone.classList.toggle("hf-msg", on); if (on) hfTag(); } return r; };
 
 /* ==== ONBOARDING REV 4 (27 Sep, Stress test onboarding thread; Apoorv 21:43, 22:10 and 22:34). Rev 3 helpers, then rev 4 screens. Brand link icons: Simple Icons (CC0). */
