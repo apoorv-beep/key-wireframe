@@ -1133,10 +1133,9 @@
 #phone.hf-ob.hf-ob .ob4pc-f.is-now.is-empty span { border-bottom-style:solid; }
 
 #phone.phone .chip.sug, #phone.phone .kaiact .chip, #phone.phone .cm-attach span, #phone.phone .evx-tag.wait, #sheet .chip.sug, #sheet .kaiact .chip { border-style:solid; }
-#phone [style*="dashed"], #phone [style*="dotted"], #sheet [style*="dashed"], #sheet [style*="dotted"] { border-style:solid !important; }
 
-#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) { min-height:56px; height:56px; padding:0 16px; gap:8px; align-items:center; box-sizing:border-box; }
-#phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back):is(.back,.obk-back) { flex:0 0 44px; width:44px; height:44px; margin:0 0 0 -16px; padding:0 0 0 7px; justify-content:flex-start; border:0; background:transparent; box-shadow:none; border-radius:var(--radius-absolute-12); }
+#phone.phone .view.view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) { min-height:56px; height:56px; padding:0 16px; gap:8px; align-items:center; box-sizing:border-box; }
+#phone.phone .view.view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back):is(.back,.obk-back) { flex:0 0 44px; width:44px; height:44px; margin:0 -9px 0 -16px; padding:0 0 0 7px; justify-content:flex-start; border:0; background:transparent; box-shadow:none; border-radius:var(--radius-absolute-12); }
 #phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back) svg { width:24px; height:24px; stroke-width:1.9; } #phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back) svg * { stroke-width:1.9; }
 #phone.phone .view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) > .icon.icon:last-child { margin-right:-10px; }
 #phone.phone .view .hdr.hdr.sc .who .a.a { font:var(--type-title); letter-spacing:var(--type-title-tracking); }
@@ -6123,7 +6122,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .hg-list > :last-child::after, #phone.hf-gap .hg-sheet .hg-list > :last-child::after { display:none; }
 #phone.hf-gap .hg-row:active, #phone.hf-gap .prow:active { background:var(--bg-fill-default); }
 #phone.hf-gap .hg-row .m, #phone.hf-gap .prow .m, #phone.hf-gap .ctxline .m { flex:1; min-width:0; }
-#phone.hf-gap .hg-row .a, #phone.hf-gap .prow .a, #phone.hf-gap .ctxline .a { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
+#phone.hf-gap .hg-row .a, #phone.hf-gap .prow .a, #phone.hf-gap .ctxline .a { white-space:normal; overflow-wrap:break-word; font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
 #phone.hf-gap .hg-row .b, #phone.hf-gap .prow .b, #phone.hf-gap .ctxline .b { margin-top:var(--space-absolute-2); font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 #phone.hf-gap .hg-row.recent { min-height:var(--space-absolute-48); padding:var(--space-absolute-4) 0; }
 #phone.hf-gap .hg-row.recent .a { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); }
@@ -6319,6 +6318,17 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-g .hg-offline { display:flex; align-items:center; gap:var(--space-absolute-10); margin:var(--space-absolute-8) var(--space-absolute-16) 0; padding:var(--space-absolute-10) var(--space-absolute-14); border-radius:var(--radius-absolute-12); background:var(--bg-inverse-default); color:var(--text-inverse); font:var(--type-body-s); }
 #phone.hf-g .hg-offline b { font-weight:600; }
 #phone.hf-g .hg-offline svg { flex:0 0 auto; color:var(--icon-inverse); }
+
+
+#phone.phone.hf-gap .hdr.hdr:has(> .back) { padding-left:var(--space-absolute-16); gap:var(--space-absolute-4); }
+#phone.phone.hf-gap .hdr.hdr > .back.back { margin-left:-16px; margin-right:-8px; position:relative; z-index:1; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+
+#phone.hf-gap .hg-acts { align-items:stretch; }
+#phone.hf-gap .hg-acts > .hg-btn { margin:0; align-self:stretch; height:var(--space-absolute-48); line-height:1; vertical-align:top; }
+
+
+#phone.hf-gap .ctxline:has(> .row > .chip ~ .chip ~ .chip) { flex-wrap:wrap; row-gap:var(--space-absolute-8); }
+#phone.hf-gap .ctxline:has(> .row > .chip ~ .chip ~ .chip) > .row { flex-basis:100%; padding-left:52px; }
 
 
 .walk.obk { padding-top:var(--space-absolute-4); }
@@ -18231,6 +18241,13 @@ sApplication = function() {
 const _hfLastRender = render; render = function(){ const r=_hfLastRender.apply(this, arguments); document.querySelectorAll(".hdr > .icon .badge").forEach(b=>{ if (+b.textContent>9) b.textContent="9+"; }); return r; };
 // The bell's scope title is a bare text node beside its count and chevron; wrap it so it can ellipsize at 320 instead of overflowing.
 const _hfScopeRender = render; render = function(){ const r=_hfScopeRender.apply(this, arguments); document.querySelectorAll(".hdr > .nscope").forEach(n=>{ const t=[...n.childNodes].find(x=>x.nodeType===3&&x.textContent.trim()); if (t) { const s=document.createElement("span"); s.className="nst"; s.textContent=t.textContent; n.replaceChild(s,t); } }); return r; };
+/* His trypophobia rule covers every dashed or dotted line (28 Sep): inline dashed/dotted borders are rewritten to solid on the side
+   that set them, so no side gains a border it never had. */
+(function(){
+  const fix = root => root.querySelectorAll('[style*="dashed"], [style*="dotted"]').forEach(e => { e.setAttribute('style', e.getAttribute('style').replace(/\b(dashed|dotted)\b/g, 'solid')); });
+  const _hlRender = render;
+  render = function(){ const r = _hlRender.apply(this, arguments); const ph = document.getElementById('phone'); if (ph) fix(ph); return r; };
+})();
 
 /* ==== REAL PHOTOS (Apoorv 27 Sep 22:37): "replace those empty avatars with the real people in hifi prototype ... also for the calendar cover photos".
    Hi-fi copy only (KEY_HIFI). Every person avatar that shows a member's initials gets that member's photograph, and every calendar cover
@@ -19463,7 +19480,7 @@ function hgScreen() {
 /* ---- shared parts ---- */
 const hgFirst = id => ((DB.people[id]||{}).name||"").split(" ")[0];
 /* KeyRow: leading KeyIconButton container=tile (Lucide 24 on a 40 radius-12 fill), title body-l, one line body-s, trailing chevron or slot */
-const hgRow = (ic, a, b, on, trail, tone) => `<div class="hg-row ${tone||""}" data-kc="KeyRow" data-kv="lead=icon" ${on||""}><span class="hg-tile" data-kc="KeyIconButton" data-kv="container=tile">${LI(ic,22)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${trail===undefined?`<span class="hg-chev">${LI("chevron-right",20)}</span>`:trail}</div>`;
+const hgRow = (ic, a, b, on, trail, tone) => `<div class="hg-row ${tone||""}" data-kc="KeyRow" data-kv="lead=icon" ${on||""}><span class="hg-tile" data-kc="KeyIconButton" data-kv="container=tile">${LI(ic,24)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${trail===undefined?`<span class="hg-chev">${LI("chevron-right",20)}</span>`:trail}</div>`;
 const hgSw = (on, attr) => `<span class="hg-sw ${on?"on":""}" role="switch" aria-checked="${!!on}" data-kc="KeySwitch" data-kv="state=${on?"on":"off"}" ${attr||""}><i></i></span>`;
 const hgLbl = t => `<div class="hg-lbl" data-kc="KeySectionLabel">${t}</div>`;
 const hgHdr = (t, back) => `<div class="hdr"><div class="back" onclick="${back||"STATE.backNav=true;goBack()"}">${LI("chevron-left",24)}</div><div class="t">${t}</div></div>`;
@@ -19485,10 +19502,10 @@ sExplore = function() {
   const rowFor = r => {
     if (r.kind==="person") { const p=DB.people[r.id]; const {v,verb}=verbOf(p);
       return `<div class="hg-row person" data-kc="KeyMemberRow" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${H(p.name)}</div><div class="b">${p.title}, ${p.company}${v?` · via ${hgFirst(v.id)}`:""}</div></div><span class="hg-btn sec" data-kc="KeyButton" data-kv="variant=secondary, size=s">${verb}</span></div>`; }
-    if (r.kind==="channel") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-channel="${r.id}"><span class="hg-tile">${LI("message-square",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
+    if (r.kind==="channel") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-channel="${r.id}"><span class="hg-tile">${LI("message-square",24)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
     if (r.kind==="event") { const e=DB.fevents.find(x=>x.id===r.id); return evCard(e,"row",{noAction:true}); }
-    if (r.kind==="role") { const it=DB.pool.find(p=>p.id===r.id); return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" onclick="openSheet('pool','${r.id}')"><span class="hg-tile">${LI("briefcase",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div>${poolPath(it)?`<span class="hg-tag" data-kc="KeyTag">Path</span>`:`<span class="hg-chev">${LI("chevron-right",20)}</span>`}</div>`; }
-    if (r.kind==="message") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-dm="${r.id}"><span class="hg-tile">${LI("mail",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${H(r.sub)}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
+    if (r.kind==="role") { const it=DB.pool.find(p=>p.id===r.id); return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" onclick="openSheet('pool','${r.id}')"><span class="hg-tile">${LI("briefcase",24)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div>${poolPath(it)?`<span class="hg-tag" data-kc="KeyTag">Path</span>`:`<span class="hg-chev">${LI("chevron-right",20)}</span>`}</div>`; }
+    if (r.kind==="message") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-dm="${r.id}"><span class="hg-tile">${LI("mail",24)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${H(r.sub)}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
     return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=family" onclick="STATE.family='${r.id}';go('family')"><span class="hg-tile fam"><span class="flg">${r.title[0]}</span></span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
   };
   let body = "";
@@ -19498,11 +19515,11 @@ sExplore = function() {
     const chRow = ch ? searchIndex().find(r=>r.kind==="channel"&&r.id===ch.id) : null;
     const evRow = ev ? searchIndex().find(r=>r.kind==="event"&&r.id===ev.id) : null;
     body = `${recents.length?`${hgLbl(`Recent<span class="hg-link" onclick="STATE.recentSearches=[];render()">Clear</span>`)}<div class="hg-list">${recents.map((x,i)=>`<div class="hg-row recent" data-kc="KeyRow" data-kv="lead=icon, size=compact" data-sq="${x.replace(/"/g,"&quot;")}"><span class="hg-glyph">${LI("history",20)}</span><div class="m"><div class="a">${x}</div></div><span class="hg-x" onclick="event.stopPropagation();hgDropRecent(${i})">${LI("x",18)}</span></div>`).join("")}</div>`:""}
-      ${!STATE.member?`${hgLbl("For your missions")}<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" style="cursor:default"><span class="hg-tile">${LI("hourglass",22)}</span><div class="m"><div class="a">People show up the moment you're in</div><div class="b">Kai already has your missions.${STATE.applied?` ${fam().name} decides soon.`:" Join a family to start."}</div></div></div>`:`${hgLbl(`For your missions`)}
+      ${!STATE.member?`${hgLbl("For your missions")}<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" style="cursor:default"><span class="hg-tile">${LI("hourglass",24)}</span><div class="m"><div class="a">People show up the moment you're in</div><div class="b">Kai already has your missions.${STATE.applied?` ${fam().name} decides soon.`:" Join a family to start."}</div></div></div>`:`${hgLbl(`For your missions`)}
       <div class="hg-rail" data-kc="KeyPeopleRail">${people.map(id=>{ const p=DB.people[id]; const {v,verb}=verbOf(p); return `<div class="hg-face" data-kc="KeyPersonTile" data-profile="${id}">${av(p.initials,"xl")}<div class="n">${hgFirst(id)}</div><div class="r">${p.company}</div><span class="hg-btn ${verb==="Say hi"?"":"sec"}" data-kc="KeyButton" data-kv="variant=${verb==="Say hi"?"primary":"secondary"}, size=s">${verb}</span></div>`; }).join("")}</div>
       ${chRow||evRow?`${hgLbl("Worth a look")}<div class="hg-list">${chRow?rowFor(chRow):""}</div>${evRow?rowFor(evRow):""}`:""}`}
       ${hgLbl("Browse the pool")}
-      <div class="hg-tiles" data-kc="KeyPoolTiles">${POOL_TILES.map(k=>{ const ic={role:"briefcase",person:"users",deal:"flag",ask:"message-circle-question",offer:"gift",resource:"book-open",event:"calendar",post:"file-text"}[k]; const l=k==="event"?"Events":PKIND[k].pl; return `<div class="hg-pool" data-kc="KeyPoolTile" onclick="${k==="event"?"go('events')":`go('pool:${k}')`}"><span class="ic">${LI(ic,22)}</span><div class="n">${DB.poolCounts[k]}</div><div class="l">${l}</div></div>`; }).join("")}</div>`;
+      <div class="hg-tiles" data-kc="KeyPoolTiles">${POOL_TILES.map(k=>{ const ic={role:"briefcase",person:"users",deal:"flag",ask:"message-circle-question",offer:"gift",resource:"book-open",event:"calendar",post:"file-text"}[k]; const l=k==="event"?"Events":PKIND[k].pl; return `<div class="hg-pool" data-kc="KeyPoolTile" onclick="${k==="event"?"go('events')":`go('pool:${k}')`}"><span class="ic">${LI(ic,24)}</span><div class="n">${DB.poolCounts[k]}</div><div class="l">${l}</div></div>`; }).join("")}</div>`;
   } else {
     let idx = searchIndex(scopeFam).filter(r=>kind==="all"||r.kind===kind);
     const stop=new Set(["someone","anyone","who","can","get","me","into","the","a","an","for","to","of","and","with","in","at","on","is","are","find","looking","need","help","what","that","this","my","i"]);
@@ -19542,7 +19559,7 @@ sYou = function() {
   <div class="body">
     <div class="hg-me" data-kc="KeyYouHero" data-profile="${meId()}">${av(u.initials,"xl")}<div class="m"><div class="n">${u.name}</div><div class="r">${u.title}, ${u.company}</div>${STATE.member?`<div class="f">${fams.map(f=>`<span class="flg">${f.initial}</span>`).join("")}<span>${fams.map(f=>f.name.split(" ")[0]).join(", ")}</span></div>`:`<div class="f"><span class="hg-tag" data-kc="KeyTag" data-kv="tone=pending">Pending review</span></div>`}</div></div>
     <div class="hg-acts two"><span class="hg-btn l" data-kc="KeyButton" data-kv="variant=primary, size=l" data-profile="${meId()}">Your profile</span><span class="hg-btn sec l" data-kc="KeyButton" data-kv="variant=secondary, size=l" onclick="openSheet('p2viewas','')">${LI("eye",18)}Who sees what</span></div>
-    ${STATE.member?`<div class="hg-standing" data-kc="KeyStandingRow"><span class="hg-tile ok">${LI("badge-check",22)}</span><div class="m"><div class="a">Reliable</div><div class="b">You replied to 2 of 3 requests and 1 intro landed. Only you see this.</div></div></div>`:""}
+    ${STATE.member?`<div class="hg-standing" data-kc="KeyStandingRow"><span class="hg-tile ok">${LI("badge-check",24)}</span><div class="m"><div class="a">Reliable</div><div class="b">You replied to 2 of 3 requests and 1 intro landed. Only you see this.</div></div></div>`:""}
     ${hgLbl("What Kai knows and does")}
     <div class="hg-list">
       ${hgRow("brain","Context",`${nLines} things true now · ${C.inferred.length} waiting for your yes`,`onclick="go('you:context')"`)}
@@ -19581,16 +19598,16 @@ function hgSettings() {
 function hgSetPage(id) {
   const s = hgSet(); const fams = DB.families.filter(f=>f.joined!==false).slice(0,3);
   const seg = (key, opts, cur) => `<div class="hg-seg" data-kc="KeySegmented">${opts.map(o=>`<span class="${o===cur?"on":""}" onclick="hgSet()${key}=${JSON.stringify(o).replace(/"/g,"&quot;")};render()">${o}</span>`).join("")}</div>`;
-  const tog = (a, b, on, js) => `<div class="hg-row" data-kc="KeySettingRow" data-kv="trail=switch" onclick="${js};render()"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${hgSw(on)}</div>`;
+  const tog = (ic, a, b, on, js) => `<div class="hg-row" data-kc="KeySettingRow" data-kv="lead=tile, trail=switch" onclick="${js};render()"><span class="hg-tile">${LI(ic,24)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${hgSw(on)}</div>`;
   if (id==="notifications") return `${hgHdr("Notifications")}<div class="body">
     <div class="hg-hero" data-kc="KeyNotifyHero"><span class="hg-tile xl">${LI("bell",24)}</span><div class="m"><div class="a">${s.push?"You hear about people, not noise":"Push is off"}</div><div class="b">${s.push?"Requests and replies come through. Everything else waits for the bell.":"Nothing reaches your lock screen. The bell still keeps count."}</div></div></div>
-    <div class="hg-list">${tog("Push notifications","", s.push, "hgSet().push=!hgSet().push")}${tog("Quiet hours","10pm to 8am. Requests from people wait until morning", s.quiet, "hgSet().quiet=!hgSet().quiet")}${tog("Email","A copy of anything you miss for a day", s.email, "hgSet().email=!hgSet().email")}</div>
+    <div class="hg-list">${tog("bell","Push notifications","", s.push, "hgSet().push=!hgSet().push")}${tog("moon","Quiet hours","10pm to 8am. Requests from people wait until morning", s.quiet, "hgSet().quiet=!hgSet().quiet")}${tog("mail","Email","A copy of anything you miss for a day", s.email, "hgSet().email=!hgSet().email")}</div>
     ${hgLbl("What reaches you")}
-    <div class="hg-list">${[["requests","Requests and replies","People asking you, and their answers"],["mentions","Mentions","When someone @s you"],["paths","New paths","When Kai finds someone for a mission"],["events","Events","Invites, changes, the day before"],["threads","Threads you're in","Every reply"],["system","Your families","Approvals, organizer notes"]].map(([k,a,b])=>tog(a,b,s.types[k],`hgSet().types.${k}=!hgSet().types.${k}`)).join("")}</div>
+    <div class="hg-list">${[["requests","hand","Requests and replies","People asking you, and their answers"],["mentions","at-sign","Mentions","When someone @s you"],["paths","sparkle","New paths","When Kai finds someone for a mission"],["events","calendar","Events","Invites, changes, the day before"],["threads","message-square","Threads you're in","Every reply"],["system","users","Your families","Approvals, organizer notes"]].map(([k,ic,a,b])=>tog(ic,a,b,s.types[k],`hgSet().types.${k}=!hgSet().types.${k}`)).join("")}</div>
     ${hgLbl("Per family")}
     <div class="hg-list">${fams.map(f=>`<div class="hg-row fam" data-kc="KeyRow" data-kv="lead=family"><span class="hg-tile fam"><span class="flg">${f.initial}</span></span><div class="m"><div class="a">${f.name}</div>${seg(`.fam['${f.id}']`,["All activity","Mentions only","Off"],s.fam[f.id]||"Mentions only")}</div></div>`).join("")}</div>
     ${hgLbl("Catch-up from Kai")}
-    ${seg(".digest",["Daily","Weekly","Off"],s.digest)}
+    <div class="hg-row fam" data-kc="KeyRow" data-kv="lead=mark"><span class="hg-tile kai">${kaiMark(40)}</span><div class="m"><div class="a">Kai's catch-up</div>${seg(".digest",["Daily","Weekly","Off"],s.digest)}</div></div>
   </div>`;
   if (id==="privacy") return `${hgHdr("Privacy")}<div class="body">
     ${hgLbl("Who sees your profile")}
@@ -19614,7 +19631,7 @@ function hgSetPage(id) {
     <div class="hg-acts"><span class="hg-btn l" onclick="toast('Preparing your export. The link comes by email.')">Export</span></div>
   </div>`;
   if (id==="appearance") return `${hgHdr("Appearance")}<div class="body">
-    <div class="hg-list">${["Match phone","Light","Dark"].map(t=>`<div class="hg-row" data-kc="KeyRow" data-kv="trail=radio" onclick="hgSet().theme='${t}';render()"><span class="hg-tile">${LI(t==="Dark"?"moon":t==="Light"?"sparkle":"smartphone",22)}</span><div class="m"><div class="a">${t}</div></div><span class="hg-radio ${s.theme===t?"on":""}" data-kc="KeyRadio"></span></div>`).join("")}</div>
+    <div class="hg-list">${["Match phone","Light","Dark"].map(t=>`<div class="hg-row" data-kc="KeyRow" data-kv="trail=radio" onclick="hgSet().theme='${t}';render()"><span class="hg-tile">${LI(t==="Dark"?"moon":t==="Light"?"sparkle":"smartphone",24)}</span><div class="m"><div class="a">${t}</div></div><span class="hg-radio ${s.theme===t?"on":""}" data-kc="KeyRadio"></span></div>`).join("")}</div>
   </div>`;
   if (id==="help") return `${hgHdr("Help and legal")}<div class="body">
     <div class="hg-list">${hgRow("message-circle","Talk to the Key team","A person answers, usually within a day",`onclick="toast('Opens a chat with the Key team.')"`)}${hgRow("flag","Report a problem","Shake your phone anywhere to send one",`onclick="toast('Describe what happened. A screenshot is attached.')"`)}</div>
@@ -19648,9 +19665,22 @@ sYouSection = function(id) {
 const _hgRulesHub = sRulesHub;
 sRulesHub = function() {
   if (!hgOn()) return _hgRulesHub();
-  const h = _hgRulesHub(); const ic = { reach:"users", time:"clock", autonomy:"sparkle", visibility:"eye", boundaries:"ban" };
-  return h.replace(/<div class="prow" data-rulesec="([a-z]+)"><div class="m">/g, (m,id)=>`<div class="prow" data-rulesec="${id}"><span class="hg-tile">${LI(ic[id]||"sliders-horizontal",22)}</span><div class="m">`)
+  let h = _hgRulesHub(); const ic = { reach:"users", time:"clock", autonomy:"sparkle", visibility:"eye", boundaries:"ban" };
+  h = h.replace('<div class="ctxline" style="cursor:default"><div class="m"><div class="a">Family floors', `<div class="ctxline" style="cursor:default"><span class="hg-tile">${LI("shield",24)}</span><div class="m"><div class="a">Family floors`)
+       .replace('<div class="ctxline" style="cursor:default"><div class="m"><div class="a">Kai\'s proposals', `<div class="ctxline" style="cursor:default"><span class="hg-tile kai">${kaiMark(40)}</span><div class="m"><div class="a">Kai's proposals`);
+  return h.replace(/<div class="prow" data-rulesec="([a-z]+)"><div class="m">/g, (m,id)=>`<div class="prow" data-rulesec="${id}"><span class="hg-tile">${LI(ic[id]||"sliders-horizontal",24)}</span><div class="m">`)
           .replace(/<div class="s">›<\/div>/g, `<span class="hg-chev">${LI("chevron-right",20)}</span>`);
+};
+
+/* Rules sections: a lead icon on every row that names a kind of request or a setting (his 01:45, icons in every list) */
+const HG_RULE_IC = { "Intros":"user-plus", "Hiring conversations":"briefcase", "Product advice":"message-circle-question", "Cofounder conversations":"users", "Investing":"gift", "Availability window":"calendar", "requests a week":"hand", "Not before 10am, not after 8pm":"moon", "Xoogler":"X", "Michigan":"M", "Desi Founders":"D", "Decline requests over capacity":"ban", "Batch declines over capacity":"ban", "Draft a nudge after a week of silence":"send", "Reschedule a meeting":"calendar-days", "Quiet mode":"moon", "Quiet until":"moon", "None set":"calendar", "Nudge once after a week of silence":"send", "Draft messages for me":"pencil", "Advance a path when it sees the action":"arrow-up-right", "Mark a meeting from my calendar":"calendar-check", "Send anything to a person":"lock" };
+const _hgRulesSection = sRulesSection;
+sRulesSection = function(id) {
+  const h = _hgRulesSection(id); if (!hgOn()) return h;
+  return h.replace(/<div class="ctxline"([^>]*)><div class="m"><div class="a">([^<]*)<\/div>/g, (m, at, t) => {
+    const k = Object.keys(HG_RULE_IC).find(x => t===x || (x==="requests a week" && t.endsWith(x)) || (x==="Quiet until" && t.startsWith(x)) || (x==="None set" && /^(None set|Coffee|Fridays|Mon|Tue|Wed|Thu)/.test(t))); if (!k) return m;
+    const ic = HG_RULE_IC[k]; const lead = ic.length===1 ? `<span class="hg-tile fam"><span class="flg">${ic}</span></span>` : `<span class="hg-tile">${LI(ic,24)}</span>`;
+    return `<div class="ctxline"${at}>${lead}<div class="m"><div class="a">${t}</div>`; });
 };
 
 /* ======== REPORT and MUTE sheets ======== */
@@ -19660,15 +19690,15 @@ portSheet = function(type, id) {
     const [what,...rest] = (id||"conv").split("|"); const c = what==="msg" ? null : (typeof convOf==="function" ? convOf(what) : null);
     const who = c && c.kind==="dm" && c.with ? DB.people[c.with] : null;
     const R = [["hand","Spam or selling"],["triangle-alert","Harassment or hate"],["repeat","Pushy or repeated asks"],["user-x","Pretending to be someone"],["message-circle-question","Something else"]];
-    return `<div class="hg-sheet" data-kc="KeyReportSheet"><div class="hg-sh"><span class="hg-tile">${LI("flag",22)}</span><div class="m"><div class="a">Report ${what==="msg"?"this message":"this conversation"}</div><div class="b">The organizers of ${fam().name} review it. ${who?hgFirst(who.id):"The person"} isn't told who reported.</div></div></div>
+    return `<div class="hg-sheet" data-kc="KeyReportSheet"><div class="hg-sh"><span class="hg-tile">${LI("flag",24)}</span><div class="m"><div class="a">Report ${what==="msg"?"this message":"this conversation"}</div><div class="b">The organizers of ${fam().name} review it. ${who?hgFirst(who.id):"The person"} isn't told who reported.</div></div></div>
       <div class="hg-list">${R.map(([ic,a])=>`<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" onclick="STATE.sheet=null;render();toast('Reported. The organizers will look at it.')"><span class="hg-glyph">${LI(ic,20)}</span><div class="m"><div class="a">${a}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`).join("")}</div>
       ${who?`<div class="hg-list"><div class="hg-row danger" data-kc="KeyRow" data-kv="tone=danger" onclick="hgSet().blocked=[...new Set(hgSet().blocked.concat('${who.id}'))];STATE.sheet=null;render();toast('Blocked ${hgFirst(who.id)}. They aren\\'t told. Undo in Settings, Privacy.')"><span class="hg-glyph">${LI("ban",20)}</span><div class="m"><div class="a">Block ${hgFirst(who.id)}</div><div class="b">They can't message you or see you in lists</div></div></div></div>`:""}</div>`;
   }
   if (hgOn() && type==="mute") {
     const c = typeof convOf==="function" ? convOf(id) : null; const cur = c && c.muted;
-    const O = [["8 hours","For 8 hours"],["1 week","For 1 week"],["Until I unmute","Until you unmute"]];
-    return `<div class="hg-sheet" data-kc="KeyMuteSheet"><div class="hg-sh"><span class="hg-tile">${LI("bell-off",22)}</span><div class="m"><div class="a">Mute ${c&&c.kind==="channel"?"#"+c.title:"notifications"}</div><div class="b">Nobody sees that you muted it. Mentions still reach you.</div></div></div>
-      <div class="hg-list">${O.map(([o,val])=>`<div class="hg-row" data-kc="KeyRow" data-kv="trail=radio" onclick="convOf('${id}').muted='${val}';STATE.sheet=null;render();toast('Muted ${val.toLowerCase()}')"><div class="m"><div class="a">${o}</div></div><span class="hg-radio ${cur===val?"on":""}"></span></div>`).join("")}</div>
+    const O = [["8 hours","For 8 hours","clock"],["1 week","For 1 week","calendar"],["Until I unmute","Until you unmute","bell-off"]];
+    return `<div class="hg-sheet" data-kc="KeyMuteSheet"><div class="hg-sh"><span class="hg-tile">${LI("bell-off",24)}</span><div class="m"><div class="a">Mute ${c&&c.kind==="channel"?"#"+c.title:"notifications"}</div><div class="b">Nobody sees that you muted it. Mentions still reach you.</div></div></div>
+      <div class="hg-list">${O.map(([o,val,ic])=>`<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon, trail=radio" onclick="convOf('${id}').muted='${val}';STATE.sheet=null;render();toast('Muted ${val.toLowerCase()}')"><span class="hg-glyph">${LI(ic,20)}</span><div class="m"><div class="a">${o}</div></div><span class="hg-radio ${cur===val?"on":""}"></span></div>`).join("")}</div>
       ${cur?`<div class="hg-acts"><span class="hg-btn sec l" onclick="convOf('${id}').muted=null;STATE.sheet=null;render();toast('Unmuted')">Unmute</span></div>`:""}</div>`;
   }
   if (hgOn() && type==="nmore") return `<div class="hg-sheet" data-kc="KeyBottomSheet"><div class="hg-list">
