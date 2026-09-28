@@ -4707,7 +4707,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bs-hh .k { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#D8DEE6; }
 .bs-vw .bs-hh h3 { font-size:26px; line-height:1.08; font-weight:700; letter-spacing:-.03em; margin:0; text-wrap:balance; }
 .bs-vw .bs-hh p { font-size:14px; line-height:1.4; margin:0; color:#D8DEE6; }
-.bs-vw .bs-chart .bs-cm { position:absolute; left:20px; top:calc(env(safe-area-inset-top,0px) + 118px); width:96px; height:96px; border-radius:24px; overflow:hidden; box-shadow:0 0 0 1px rgba(249,250,252,.12); display:grid; place-items:center; background:#12161A; }
+.bs-vw .bs-chart .bs-cm { position:absolute; z-index:2; left:20px; top:calc(env(safe-area-inset-top,0px) + 118px); width:96px; height:96px; border-radius:24px; overflow:hidden; box-shadow:0 0 0 1px rgba(249,250,252,.12); display:grid; place-items:center; background:#12161A; }
 .bs-vw .bs-chart .bs-cm .bs-mk { width:96px; height:96px; border-radius:24px; } .bs-vw .bs-chart .bs-cm .bs-mk b { font-size:38px; }
 .bs-vw .bs-chart .bs-cm.bs-endk { background:none; box-shadow:none; }
 
@@ -16920,14 +16920,26 @@ brOpen = function(fromEl){
   const settle = () => { const el = pg(); if (!el) return; const from = el.style.transform || "none", r = el.style.borderRadius || "0px";
     el.style.transform = ""; el.style.borderRadius = ""; vw.style.backgroundColor = ""; chrome().forEach(c => c.style.opacity = "");
     el.animate([{ transform:from, borderRadius:r }, { transform:"none", borderRadius:"0px" }], { duration:360, easing:BSM_E }); };
-  vw.addEventListener("pointerdown", e => { if (e.target.closest("button")) return; s = null; if (vw._bs.atTop && !vw._bs.atTop()) return; s = { x:e.clientX, y:e.clientY, id:e.pointerId, v:false }; dragged = false; }, true);
-  vw.addEventListener("pointermove", e => { if (!s || e.pointerId!==s.id) return; const dx = e.clientX - s.x, dy = e.clientY - s.y;
-    if (!s.v && dy > 8 && dy > Math.abs(dx)) { s.v = true; try { vw.setPointerCapture(e.pointerId); } catch (_) {} }
-    if (s.v) { if (!dragged) free(); dragged = true; set(Math.max(0, dy)); } }, true);
-  const up = e => { if (!s || e.pointerId!==s.id) return; const v = s.v, dy = e.clientY - s.y, dx = e.clientX - s.x; s = null;
-    if (!v) { if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { dir = dx < 0 ? 1 : -1; dragged = true; } return; }
-    e.stopPropagation(); settle(); if (dy > 80 && e.type==="pointerup") vw._bs.close(); };
+  /* one drag, fed by the mouse or pen (pointer events) or by touch (touch events: the story scrolls with touch-action:pan-y, so the
+     browser would take a vertical pointer drag for itself and cancel it; a non-passive touchmove that prevents the default, only
+     while the story is at its top and the finger moves down, keeps the pull ours) */
+  const start = (x, y, t) => { s = null; if (t.closest("button") || (vw._bs.atTop && !vw._bs.atTop())) return; s = { x, y, v:false }; dragged = false; };
+  const move = (x, y) => { if (!s || s.h) return false; const dx = x - s.x, dy = y - s.y;
+    if (!s.v) { if (dy > 8 && dy > Math.abs(dx)) s.v = true; else if (Math.abs(dx) > 8 || dy < -8) { s.h = true; return false; } else return false; }
+    if (!dragged) free(); dragged = true; set(Math.max(0, dy)); return true; };
+  const end = (x, y, ok) => { if (!s) return false; const v = s.v, dy = y - s.y, dx = x - s.x; s = null;
+    if (!v) { if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) { dir = dx < 0 ? 1 : -1; dragged = true; } return false; }
+    settle(); if (dy > 80 && ok) vw._bs.close(); return true; };
+  vw.addEventListener("pointerdown", e => { if (e.pointerType==="touch") return; start(e.clientX, e.clientY, e.target); }, true);
+  vw.addEventListener("pointermove", e => { if (e.pointerType==="touch") return; if (move(e.clientX, e.clientY) && s) try { vw.setPointerCapture(e.pointerId); } catch (_) {} }, true);
+  // a touch pull ends in touchend; its pointerup is kept from Missions' own handler
+  const up = e => { if (e.pointerType==="touch") { if (s && s.v) e.stopPropagation(); return; } if (end(e.clientX, e.clientY, e.type==="pointerup")) e.stopPropagation(); };
   vw.addEventListener("pointerup", up, true); vw.addEventListener("pointercancel", up, true);
+  let last = null;
+  vw.addEventListener("touchstart", e => { if (e.touches.length!==1) { s = null; return; } const t = e.touches[0]; last = t; start(t.clientX, t.clientY, e.target); }, { capture:true, passive:true });
+  vw.addEventListener("touchmove", e => { const t = e.touches[0]; if (!t) return; last = t; if (move(t.clientX, t.clientY) && e.cancelable) e.preventDefault(); }, { capture:true, passive:false });
+  vw.addEventListener("touchend", e => { const t = e.changedTouches[0] || last; if (t && end(t.clientX, t.clientY, true)) e.stopPropagation(); }, { capture:true });
+  vw.addEventListener("touchcancel", () => { if (s && s.v) settle(); s = null; }, { capture:true });
   vw.addEventListener("click", e => { if (dragged) { dragged = false; e.stopPropagation(); e.preventDefault(); } }, true);
 };
 
