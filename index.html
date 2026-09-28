@@ -14777,7 +14777,11 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
   const qv = document.querySelector(".sheet .p2qv"), sb = qv && qv.closest(".sb");
   if (sb) { const bar = qv.querySelector(".p2qbar"), ph = qv.querySelector(".p2qph");
     sb.classList.add("p2qsb");
-    const lim = qv.querySelector(".p2qhero").offsetHeight - 16, on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > lim); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
+    /* the photo gives way on short screens so the name, the vouch line and Follow always sit above the Kai bar (Journey guide, v110) */
+    const hero = qv.querySelector(".p2qhero"), acts = qv.querySelector(".p2qacts"), dock = qv.querySelector(".p2qdock");
+    if (hero && acts && dock) { hero.style.height = ""; hero.style.aspectRatio = ""; const hr = hero.getBoundingClientRect(), room = dock.getBoundingClientRect().top - 12 - hr.top - (acts.getBoundingClientRect().bottom - hr.bottom);
+      if (room < hr.height) { hero.style.aspectRatio = "auto"; hero.style.height = Math.max(160, Math.floor(room)) + "px"; } }
+    const lim = hero.offsetHeight - 16, on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > lim); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
     sb.onscroll = on; on();
     const pid = qv.dataset.p2qv;
     if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, p2PhUrl(PH_FACE[pid]), "ph-cover");
