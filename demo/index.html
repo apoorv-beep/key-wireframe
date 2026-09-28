@@ -14658,7 +14658,7 @@ function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
     ${was?`<div class="p2upw">${was}</div>`:`<div class="p2upw new">New on your profile</div>`}<div class="p2upc">${u.ch}</div>
     <div class="p2acts2"><button class="on" onclick="event.stopPropagation();p2Upd('${u.id}','yes',${full?1:0})">Update</button><button onclick="event.stopPropagation();p2Upd('${u.id}','edit',${full?1:0})">Edit</button><button onclick="event.stopPropagation();p2Upd('${u.id}','no',${full?1:0})">Not now</button></div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
-  const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f="Priya";
+  const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
   if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
   const pend = edit ? p2Pending() : [];
@@ -14827,6 +14827,28 @@ render = function(){ const r = _p2CtxRender.apply(this, arguments);
   if (p2HiFi() && typeof phone!=="undefined" && phone) { const on = /^you:context/.test(STATE.screen||""); phone.classList.toggle("hf-ctx", on);
     if (on) phone.querySelectorAll(".epi").forEach(e => { const g = e.textContent.trim(); if (P2_CTX_GLYPH[g]) e.innerHTML = LI(P2_CTX_GLYPH[g], 16); }); }
   return r; };
+
+/* ==== THE SIGNED-IN MEMBER IS APOORV SINGH (Apoorv 28 Sep 06:14: "keep the name as Apoorv Singh"). The id stays "priya", as Daniel
+   kept "chris", so every module and test that keys on the id still works. The data is renamed in place, and one observer rewrites
+   the name in text other modules still hard-code (drafts, Kai lines, organizer queues), rephrasing the few sentences that used a pronoun for him so they need none.
+   Owners can move these strings to the source at their own pace; the observer is idempotent and only touches text that says Priya. ==== */
+const P2_ME = [["Priya Sharma","Apoorv Singh"],["priya@gmail.com","apoorv@gmail.com"],["priya@company.com","apoorv@company.com"],
+  ["Priya and Rahul (she's looking","Apoorv and Rahul (Apoorv's looking"],["Priya tells Kai she needs","Apoorv asks Kai for"],
+  ["own note in her Requests","own note in their Requests"],["and her thank-you if she sent one","and their thank-you if they sent one"],
+  ["Priya","Apoorv"]];
+const P2_ME_ALSO = [["To Maya Chen. Her note","To Maya Chen. Their note"]];
+function p2MeData(){ const u=DB.user, me=DB.people&&DB.people.priya;
+  if (u && u.name==="Priya Sharma") Object.assign(u, { name:"Apoorv Singh", initials:"AS", email:"apoorv@gmail.com" });
+  if (me && me.name==="Priya Sharma") Object.assign(me, { name:"Apoorv Singh", initials:"AS" }); }
+function p2MeText(t){ if (!/Priya|priya@/.test(t)) return t; for (const [a,b] of P2_ME) t=t.split(a).join(b); for (const [a,b] of P2_ME_ALSO) t=t.split(a).join(b); return t; }
+function p2MeSweep(root){ if (!root) return;
+  const w=document.createTreeWalker(root, NodeFilter.SHOW_TEXT); const fix=[];
+  for (let n=w.nextNode(); n; n=w.nextNode()) { const v=n.nodeValue; if (/Priya|priya@/.test(v)) fix.push(n); else if (v==="PS" && n.parentElement && n.parentElement.closest(".avatar,[class*=av]")) n.nodeValue="AS"; }
+  fix.forEach(n=>{ n.nodeValue=p2MeText(n.nodeValue); if (/Apoorv/.test(n.nodeValue) && n.parentElement) { const c=n.parentElement.closest(".card"); c && c.querySelectorAll(".lbl").forEach(l=>{ if (l.textContent==="Her answers") l.textContent="Their answers"; }); } });
+  if (root.querySelectorAll) root.querySelectorAll("[placeholder*=Priya],[aria-label*=Priya],[title*=Priya],input[value*=Priya]").forEach(e=>["placeholder","aria-label","title","value"].forEach(k=>{ const v=e.getAttribute(k); if (v&&/Priya/.test(v)) { e.setAttribute(k,p2MeText(v)); if (k==="value") e.value=p2MeText(e.value); } }));
+}
+const _p2MeRender = render;
+render = function(){ p2MeData(); const r=_p2MeRender.apply(this, arguments); p2MeSweep(document.body); return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -15088,7 +15110,7 @@ function brBanner(){
   const S = brStories(), n = S.reduce((t,s) => t + (s.seen ? 0 : s.need.length), 0);
   if (!S.length) return "";
   return `<div class="brief bstray" data-kc="KeyBriefTray" data-kv="stories=${S.length}">
-    <div class="bt-hd"><span class="bs-hi">${brGreeting()}</span><span class="bt-n">${n ? `${n===1?"One thing needs":n+" things need"} you` : "You're caught up"}</span></div>
+    <div class="bt-hd"><span class="bs-hi">${brGreeting()}</span><span class="bt-n">${n ? `${n===1?"One thing needs":n+" things need"} you` : (u => u ? `Nothing needs you · ${u} more to catch up on` : "You're caught up")(S.filter(s => !s.seen).length)}</span></div>
     <div class="bt-row">${S.map(s => `<button type="button" class="bt-tile ${s.seen?"seen":""}" data-story="${s.id}" onclick="brOpen(this,'${s.id}')" aria-label="${s.name}${s.need.length&&!s.seen?`, ${s.need.length} need you`:""}">
       <span class="bt-pic">${brTileArt(s)}</span><span class="bt-nm">${s.short}</span></button>`).join("")}</div></div>`;
 }

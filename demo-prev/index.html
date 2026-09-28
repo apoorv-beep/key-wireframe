@@ -4323,6 +4323,37 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .sheet .trow .avs { display:flex; align-items:center; flex:0 0 auto; }
 .sheet .trow .avs .avatar + .avatar { margin-left:-10px; }
 
+/* KeyBriefTray (his 06:13): one tile per community story at the top of Home. Tiles are r16 pictures (the community cover,
+   its mark on it), not circles, and carry no ring: an unseen story is in full colour, a seen one dims and moves to the end */
+.brief.bstray { margin:2px 0 14px; display:grid; gap:10px; padding:0; background:none; border:0; border-radius:0; box-shadow:none; height:auto; }
+.bstray .bt-hd { display:flex; align-items:baseline; gap:10px; }
+.bstray .bs-hi { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--ink3,#6B7480); }
+.bstray .bt-n { font-size:13px; line-height:1.2; font-weight:600; color:var(--ink,#0B0E11); }
+.bstray .bt-row { display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x proximity; scrollbar-width:none; -webkit-overflow-scrolling:touch; padding:0 0 2px; }
+.bstray .bt-row::-webkit-scrollbar { display:none; }
+.bstray .bt-tile { flex:0 0 auto; width:84px; display:grid; gap:6px; padding:0; border:0; background:none; font-family:inherit; cursor:pointer; scroll-snap-align:start; text-align:left; }
+.bstray .bt-pic { position:relative; display:block; width:84px; height:112px; border-radius:16px; overflow:hidden; background:#12161A; }
+.bstray .bt-art { position:absolute; inset:0; display:grid; place-items:center; }
+.bstray .bt-art > *, .bstray .bt-art .cv, .bstray .bt-art img, .bstray .bt-art svg { width:100%; height:100%; object-fit:cover; display:block; }
+.bstray .bt-art.bt-you { background:#1B222A; color:#F9FAFC; } .bstray .bt-art.bt-you svg { width:28px; height:28px; }
+.bstray .bt-mk { position:absolute; left:6px; bottom:6px; } .bstray .bt-mk.mid { left:50%; top:50%; bottom:auto; transform:translate(-50%,-50%); } .bstray .bt-mk.mid .bs-mk { border-radius:12px; } .bstray .bt-mk .bs-mk { border-radius:9px; box-shadow:0 1px 3px rgba(11,14,17,.35); }
+.bstray .bt-nm { font-size:12px; line-height:1.2; font-weight:600; color:var(--ink,#0B0E11); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bstray .bt-tile.seen .bt-pic { filter:grayscale(.85) brightness(1.05); opacity:.5; } .bstray .bt-tile.seen .bt-nm { color:var(--ink3,#6B7480); font-weight:500; }
+.bstray .bt-tile:focus-visible .bt-pic { outline:2px solid var(--ink,#0B0E11); outline-offset:2px; }
+@media (max-height:700px), (max-width:360px) { .bstray .bt-tile, .bstray .bt-pic { width:72px; } .bstray .bt-pic { height:96px; } }
+/* the viewer header names the story: mark 32 and the community */
+.bs-vw .bs-vh { gap:10px; } .bs-vw .bs-vh > .bs-mk { border-radius:9px; background:#12161A; } .bs-vw .bs-vh > .bs-mk .li { width:18px; height:18px; }
+/* a community's closing card: its cover big, then what else moved as fact rows */
+.bs-vw .bf-cover { position:absolute; inset:0; display:grid; place-items:center; }
+.bs-vw .bf-cover .cv, .bs-vw .bf-cover img, .bs-vw .bf-cover > svg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; }
+.bs-vw .bf-covm { position:relative; z-index:1; } .bs-vw .bf-covm .bs-mk { border-radius:20px; box-shadow:0 2px 12px rgba(11,14,17,.4); } .bs-vw .bf-covm .bs-mk b { font-size:30px; }
+.bs-vw .bf-facts { display:grid; gap:0; margin-top:4px; }
+.bs-vw .bf-fact { display:flex; align-items:center; gap:12px; min-height:48px; padding:6px 0; border-top:1px solid rgba(249,250,252,.1); font-size:15px; line-height:1.35; color:#F9FAFC; }
+.bs-vw .bf-fact:first-child { border-top:0; } .bs-vw .bf-fact { cursor:pointer; } .bs-vw .bf-fact > span { flex:1; min-width:0; } .bs-vw .bf-fact > .li { flex:0 0 auto; color:#A6AFBB; }
+.bs-vw .bf-fact > b { flex:0 0 auto; height:32px; padding:0 12px; border-radius:10px; background:#F9FAFC; color:#0B0E11; font-size:13px; font-weight:700; display:inline-flex; align-items:center; } .bs-vw .bf-fact.need i { background:#F9FAFC; color:#0B0E11; }
+.bs-vw .bf-fact i { flex:0 0 auto; width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:rgba(249,250,252,.1); color:#F9FAFC; }
+@media (max-height:700px), (max-width:360px) { .bs-vw .bf-covm { display:none; } .bs-vw .bf-fact { min-height:40px; font-size:14px; } .bs-vw .bf-fact i { width:28px; height:28px; } }
+
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
 .p2btl { display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; color:var(--ink); background:var(--fill); border:0; border-radius:12px; padding:8px 12px; cursor:pointer; }
@@ -14943,7 +14974,6 @@ const _brRender = render; render = function(){ _brPass++; return _brRender.apply
 const BS_E = "cubic-bezier(.2,.8,.2,1)";
 const bsStill = () => (typeof matchMedia==="function" && matchMedia("(prefers-reduced-motion: reduce)").matches) || document.documentElement.classList.contains("mo-still") || !!navigator.webdriver;
 const bsAnim = (el, kf, o) => (bsStill() || !el || !el.animate) ? { finished: Promise.resolve() } : el.animate(kf, Object.assign({ easing:BS_E, fill:"both" }, o));
-const BF_MAX = 5;
 function brFamMark(f, size){ const m = typeof FAM_MARK!=="undefined" && FAM_MARK[f.id]; return `<span class="bs-mk" style="width:${size}px;height:${size}px">${m || `<b>${f.initial}</b>`}</span>`; }
 function brFamOf(p){ const names = (p && p.families) || []; for (const n of names) { const f = DB.families.find(f => f.name===n || f.name.split(" ")[0]===n.split(" ")[0]); if (f) return f.id; } return null; }
 function brPerson(ini){ return Object.values(DB.people||{}).find(p => p.initials===ini); }
@@ -14958,7 +14988,7 @@ function bfPic(c){
   if (c.who) return brPortrait(c.who.initials, c.who.id, 720);
   return brKaiArt();
 }
-/* the deck: what needs you, ranked, capped at five; the rest counted per community */
+/* everything that needs you, ranked; the rest counted per community */
 function brDeck(){
   const items = brItems(), deck = [], used = new Set();
   const asks = typeof myAsks==="function" ? myAsks() : [];
@@ -14995,27 +15025,35 @@ function brDeck(){
       ctx: via.length===1 ? `${t.what.replace(/^wants an intro to /i,"To ")}. You decide; nothing is forwarded without you.` : `${ps.slice(0,3).map(firstName).join(", ")}${ps.length>3?" and "+(ps.length-3)+" more":""}. You decide each one.`,
       act:{ label: via.length===1 ? "Review" : `Review ${via.length}`, go: via.length===1 ? `go('req:${t.id}')` : "go('inbox')" } });
     items.filter(i => i.reqs).forEach(i => used.add(i)); }
-  const top = deck.slice(0, BF_MAX), spill = deck.slice(BF_MAX);
-  /* the rest: counted per community, one line each */
-  const rows = [];
-  const rest = items.filter(i => !used.has(i) && i.kind!=="event");
-  DB.families.forEach(f => {
-    const facts = [];
-    const n = rest.filter(i => i.kind==="fam" && i.fam===f.id); if (n.length) facts.push(n[0].title.replace(/ mentioned everyone in /," asked everyone in ").replace(/ and others replied to a thread/," and others replied in your thread"));
+  /* the rest: counted per community, never listed */
+  const facts = {}, rest = items.filter(i => !used.has(i) && i.kind!=="event");
+  DB.families.forEach(f => { const F = [];
+    const n = rest.filter(i => i.kind==="fam" && i.fam===f.id); if (n.length) F.push(["bell", n[0].title.replace(/ mentioned everyone in /," asked everyone in ").replace(/ and others replied to a thread/," and others replied in your thread"), n[0].go]);
     const ch = ((DB.channels||{})[f.id]||[]).filter(c => c.unread && c.joined!==false), u = ch.reduce((t,c) => t+c.unread, 0);
-    if (u) facts.push(`${u} new in ${ch.slice(0,2).map(c => c.name).join(", ")}${ch.length>2?` and ${ch.length-2} more`:""}`);
-    const posts = (DB.posts||[]).filter(p => p.fam===f.id && p.who!==me().name && /^(Today|\d+[hm])$/.test(p.when||"")).length; if (posts) facts.push(`${posts} new post${posts===1?"":"s"}`);
-    const ev = (DB.fevents||[]).filter(e => e.family===f.id && e.bucket==="week" && (e.rsvp===true || e.reg==="hosting") && !top.some(c => c.ev && c.ev.name===e.name));
-    if (ev.length) facts.push(`${ev[0].name} ${ev[0].day||""}`.trim());
-    if (facts.length) rows.push({ fam:f, a:f.name, b:facts, n: n.length + u + posts, go:`STATE.family='${f.id}';go('family')` });
-  });
+    if (u) F.push(["hash", `${u} new in ${ch.slice(0,2).map(c => c.name).join(", ")}${ch.length>2?` and ${ch.length-2} more`:""}`, `STATE.family='${f.id}';go('fchannels')`]);
+    const posts = (DB.posts||[]).filter(p => p.fam===f.id && p.who!==me().name && /^(Today|\d+[hm])$/.test(p.when||"")).length; if (posts) F.push(["file-text", `${posts} new post${posts===1?"":"s"}`, `STATE.family='${f.id}';go('posts')`]);
+    const ev = (DB.fevents||[]).filter(e => e.family===f.id && e.bucket==="week" && (e.rsvp===true || e.reg==="hosting") && !deck.some(c => c.ev && c.ev.name===e.name));
+    if (ev.length) F.push(["calendar", `${ev[0].name} ${ev[0].day||""}`.trim(), `go('eventd:${ev[0].id}')`]);
+    if (F.length) facts[f.id] = F; });
   const dm = rest.filter(i => i.kind==="msg" || (i.kind==="fam" && !brFam(i.fam)));
-  if (dm.length) rows.push({ a:"Messages", b:[dm[0].title, ...(dm.length>1?[`${dm.length-1} more`]:[])], n:dm.length, go:"go('inbox')" });
-  if (spill.length) rows.unshift({ a:`${spill.length} more need${spill.length===1?"s":""} you`, b:spill.map(c => c.title).slice(0,2), n:spill.length, go:"openSheet('brief')", kai:true });
-  const L = top.map(c => Object.assign(c, { card:"one" }));
-  if (rows.length) L.push({ id:"also", card:"also", rows: rows.slice(0,4), more: rows.length>4 });
-  L.push({ id:"end", card:"end" });
-  return L;
+  if (dm.length) facts.you = [["message-square", dm[0].title, dm[0].go], ...(dm.length>1 ? [["message-square", `${dm.length-1} more message${dm.length===2?"":"s"}`, "go('inbox')"]] : [])];
+  return { deck, facts };
+}
+/* one story per community (his 06:13, "like Instagram stories"): up to three cards that need you, then what else moved there.
+   What belongs to no community (direct messages, requests from outside) is one more story, "Messages". Stories that need you
+   come first, in the order of their most pressing card; ones that only have news follow; the ones you've seen sit last, dimmed. */
+const BF_PER = 3;
+function brStories(){
+  const { deck, facts } = brDeck(), S = [];
+  const add = (id, f) => { let s = S.find(x => x.id===id); if (!s) { s = { id, fam:f, name: f ? f.name : "Messages", short: f ? f.name.split(" ")[0] : "Messages", need:[], rank:1e3 }; S.push(s); } return s; };
+  deck.forEach((c, r) => { const s = add(c.fam ? "fam:"+c.fam.id : "you", c.fam); s.need.push(c); s.rank = Math.min(s.rank, r); });
+  DB.families.forEach(f => { if (facts[f.id]) add("fam:"+f.id, f); }); if (facts.you) add("you", null);
+  S.forEach(s => { const fk = s.fam ? s.fam.id : "you", spill = s.need.slice(BF_PER);
+    s.cards = s.need.slice(0, BF_PER).map(c => Object.assign(c, { card:"one" }));
+    const F = (facts[fk]||[]).slice(0, 3); spill.forEach((c, k) => F.splice(k, 0, ["bell-ring", c.title, null, c]));
+    if (F.length) s.cards.push({ id:"sum:"+s.id, card:"sum", kind:"sum", fam:s.fam, facts:F, need:s.need.length });
+    s.seen = !!STATE.brSeen[s.id]; });
+  return S.filter(s => s.cards.length).sort((a,b) => (a.seen-b.seen) || ((a.need.length?0:1)-(b.need.length?0:1)) || (a.rank-b.rank));
 }
 /* Send is the member's yes: the hello lands in the DM, the reply lands in the thread; nothing goes out before it */
 function bfSendIntro(a){
@@ -15038,19 +15076,33 @@ function bfSendMention(i, ch){
 }
 function brKaiArt(){ return `<div class="bs-pt bs-kai">${typeof kaiMark==="function" ? kaiMark(96) : ""}</div>`; }
 function brAskText(i){ const q = /class="b">([^<]*)</.exec(i.html||""); return q ? q[1] : ""; }
+/* KeyBriefTray: one tile per community story, Instagram-style but squared (logo tiles are r16, circles are for people, and
+   no ring: unseen tiles are in full colour, seen ones dim and move to the end) */
+function brTileArt(s){
+  if (!s.fam) return `<span class="bt-art bt-you">${LI("message-square",28)}</span>`;
+  const cv = typeof cCoverArt==="function" ? cCoverArt(s.fam) : "";
+  return `<span class="bt-art" style="background:${BS_WASH[s.fam.id]||"#1B2530"}">${cv}</span><span class="bt-mk ${cv?"":"mid"}">${brFamMark(s.fam, cv ? 30 : 44)}</span>`;
+}
+const BS_WASH = { xoogler:"#24406A", michigan:"#0F2E52", desi:"#1B4E3F" };
 function brBanner(){
-  const L = brDeck(), top = L.filter(c => c.card==="one"), first = top[0], n = top.length;
-  const head = first ? first.title : "Nothing needs you right now";
-  const line = n ? `${n===1?"One thing":n+" things"} need${n===1?"s":""} you, then you're caught up` : "Kai brings the next things here";
-  return `<div class="brief bstory" data-kc="KeyBriefBanner" data-kv="items=${n}" onclick="brOpen(this)" role="button" aria-label="Catch up: ${n} things">
-    <div class="bs-hart">${first ? bfPic(first) : brKaiArt()}</div>
-    <div class="bs-htx"><span class="bs-hi">${brGreeting()}</span><b>${head}</b><span class="bs-go">${line}<i>${n?"Catch up":"Open"}</i></span></div></div>`;
+  const S = brStories(), n = S.reduce((t,s) => t + (s.seen ? 0 : s.need.length), 0);
+  if (!S.length) return "";
+  return `<div class="brief bstray" data-kc="KeyBriefTray" data-kv="stories=${S.length}">
+    <div class="bt-hd"><span class="bs-hi">${brGreeting()}</span><span class="bt-n">${n ? `${n===1?"One thing needs":n+" things need"} you` : "You're caught up"}</span></div>
+    <div class="bt-row">${S.map(s => `<button type="button" class="bt-tile ${s.seen?"seen":""}" data-story="${s.id}" onclick="brOpen(this,'${s.id}')" aria-label="${s.name}${s.need.length&&!s.seen?`, ${s.need.length} need you`:""}">
+      <span class="bt-pic">${brTileArt(s)}</span><span class="bt-nm">${s.short}</span></button>`).join("")}</div></div>`;
 }
 /* one card: picture on top (the face is never under text), then where it's from, one line, one action */
 function bfCard(c, i, total){
   if (c.card==="end") return `<div class="bs-card bf-end" data-kind="end" data-chapter="end"><div class="bf-endk">${typeof kaiMark==="function" ? kaiMark(88) : ""}</div>
     <h3>You're caught up</h3><p>That's what needed you since you were last here. Kai brings the next things here.</p>
     <div class="bs-acts"><button type="button" class="p" data-bs="done">Done</button><button type="button" class="s" data-bs="list">See everything</button></div></div>`;
+  if (c.card==="sum") { const f = c.fam, nm = f ? f.name.split(" ")[0] : "Messages";
+    return `<div class="bs-card bf-one bf-sum" data-kind="sum" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=sum;facts=${c.facts.length}">
+    <div class="bf-pic">${f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${typeof cCoverArt==="function" ? cCoverArt(f) : ""}<span class="bf-covm">${brFamMark(f, 72)}</span></div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
+    <div class="bf-tx"><span class="bf-k">${f ? `${brFamMark(f, 20)}<b>${f.name}</b><i></i>` : ""}<span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${(k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>
+      <div class="bf-facts">${c.facts.map(([g,t,go,nc],fi) => `<span class="bf-fact ${nc?"need":""}" role="button" data-fact="${fi}"><i>${LI(g,16)}</i><span>${t}</span>${nc ? `<b>${nc.draft ? "Reply" : nc.act.label}</b>` : LI("chevron-right",16)}</span>`).join("")}</div></div>
+    <div class="bs-acts"><button type="button" class="p" data-bs="act">Open ${nm}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`; }
   if (c.card==="also") return `<div class="bs-card bf-also" data-kind="also" data-chapter="also" data-kc="KeyStoryCard" data-kv="kind=also;rows=${c.rows.length}">
     <div class="bf-tx"><span class="bf-k">Also moving</span><h3>Nothing else needs you</h3><p>The rest, by community. Open one when you have a minute.</p></div>
     <div class="bf-rows">${c.rows.map((r,ri) => `<div class="bf-row" role="button" data-also="${ri}">${r.fam ? `<span class="bf-cv">${typeof cCoverArt==="function" ? cCoverArt(r.fam) : ""}<span class="bf-cvm">${brFamMark(r.fam, 28)}</span></span>` : `<span class="bf-cv bf-ico">${r.kai && typeof kaiMark==="function" ? kaiMark(40) : LI("message-square",22)}</span>`}
@@ -15069,16 +15121,23 @@ function bfCard(c, i, total){
     <div class="bs-acts">${acts}</div></div>`;
 }
 STATE.brSeen = STATE.brSeen || {};
-function brOpen(fromEl){
+function brOpen(fromEl, sid){
   if (phone.querySelector(".bs-vw")) return;
-  const L = brDeck();
+  const S = brStories(); let k0 = Math.max(0, S.findIndex(s => s.id===sid));
+  /* from the tapped story onward, then the ones before it that you haven't seen (Instagram order), then Caught up */
+  const order = [...S.slice(k0), ...S.slice(0, k0).filter(s => !s.seen)];
+  const L = []; order.forEach((s, k) => s.cards.forEach((c, j) => L.push(Object.assign(c, { st:s, j, of:s.cards.length }))));
+  L.push({ id:"end", card:"end", st:null });
   const vw = document.createElement("div"); vw.className = "bs-vw"; vw.setAttribute("data-kc","KeyStoryViewer"); phone.appendChild(vw);
   const view = phone.querySelector(".view"); if (view) view.classList.add("bs-back");
   let si = 0, busy = false;
   const srcHTML = () => `<div class="bs-src" data-chapter="${L[si].id}"><div class="bs-slot" data-i="0">${bfCard(L[si], si, L.length)}</div></div>`;
-  const chrome = () => `<div class="bs-bars">${L.map((_,i)=>`<i style="--p:${i<=si?1:0}"></i>`).join("")}</div>
-    <div class="bs-vh"><button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`;
+  const chrome = () => { const c = L[si], st = c.st;
+    return `<div class="bs-bars">${st ? st.cards.map((_,i)=>`<i style="--p:${i<=c.j?1:0}"></i>`).join("") : "<i style=\"--p:1\"></i>"}</div>
+    <div class="bs-vh">${st ? `${st.fam ? brFamMark(st.fam, 32) : `<span class="bs-mk">${LI("message-square",18)}</span>`}<b>${st.name}</b>` : ""}<button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`; };
   const card = () => vw.querySelector(".bs-src:last-child .bs-card");
+  /* a story counts as seen once you reach its last card or move past it */
+  const seenUpTo = () => { const c = L[si]; L.slice(0, si+1).forEach(x => { if (x.st && (x.st!==c.st || c.j===c.of-1)) STATE.brSeen[x.st.id] = true; }); };
   const atTop = () => true;
   const run = go => { if (!go) return; close(false, () => new Function(go)()); };
   const runAsk = it => close(false, () => { openSheet("brief");
@@ -15089,15 +15148,18 @@ function brOpen(fromEl){
     vw.querySelector(".bs-x").onclick = e => { e.stopPropagation(); close(); };
     vw.querySelectorAll(".bs-tz.l").forEach(z => z.onclick = () => prev()); vw.querySelectorAll(".bs-tz.r").forEach(z => z.onclick = () => next());
     /* the same tap rule on every card: left third back, the rest forward, except on buttons, rows and the draft */
-    const cd = card(); if (cd) cd.onclick = e => { if (e.target.closest("button,[data-also],[data-bfdraft],.bs-tz")) return; const r = cd.getBoundingClientRect(); e.clientX - r.left < r.width*.32 ? prev() : next(); };
+    const cd = card(); if (cd) cd.onclick = e => { if (e.target.closest("button,[data-also],[data-fact],[data-bfdraft],.bs-tz")) return; const r = cd.getBoundingClientRect(); e.clientX - r.left < r.width*.32 ? prev() : next(); };
     vw.querySelectorAll("[data-bfdraft]").forEach(d => { d.onpointerdown = e => e.stopPropagation(); d.onclick = e => e.stopPropagation(); });
     vw.querySelectorAll("[data-also]").forEach(el => el.onclick = e => { e.stopPropagation(); run(L[si].rows[+el.dataset.also].go); });
+    /* each fact on a community's closing card opens its place; a spilled "needs you" runs its own action */
+    vw.querySelectorAll("[data-fact]").forEach(el => el.onclick = e => { e.stopPropagation(); const [,,go,nc] = L[si].facts[+el.dataset.fact];
+      if (!nc) return run(go); if (nc.draft) return run(nc.alt.go); return nc.act.item ? runAsk(nc.act.item) : run(nc.act.go); });
     vw.querySelectorAll("[data-bs]").forEach(b => b.onclick = e => { e.stopPropagation(); const what = b.dataset.bs, c = L[si];
       if (what==="later") return next();
       if (what==="done") { (notifs()||[]).forEach(a=>a.unread=false); (DB.activity||[]).forEach(a=>a.unread=false); return close(true); }
       if (what==="list") return close(false, () => openSheet("brief"));
       if (what==="alt") return run(c.alt.go);
-      if (what==="act") return c.act.item ? runAsk(c.act.item) : run(c.act.go);
+      if (what==="act") return c.card==="sum" ? run(c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')") : c.act.item ? runAsk(c.act.item) : run(c.act.go);
       if (what==="send") { const d = vw.querySelector("[data-bfdraft]"), text = (d ? d.innerText : c.draft.text).trim(); if (!text) return;
         const tgt = c.id.startsWith("ask:") ? DB.asks.find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
         if (tgt) { tgt._draft = text; c.draft.send(); }
@@ -15113,7 +15175,7 @@ function brOpen(fromEl){
   const covers = () => vw.querySelectorAll(".bs-cv svg, .bf-cv:not(.bf-ico) > svg, .bf-cv:not(.bf-ico) .cv svg").forEach(g => { g.setAttribute("preserveAspectRatio","xMidYMid slice"); g.removeAttribute("width"); g.removeAttribute("height"); });
   const paint = () => { vw.innerHTML = `<div class="bs-pg">${srcHTML()}</div>${chrome()}`; covers(); wire(); if (typeof phApply==="function") phApply(); };
   async function jump(d){
-    const n = si + d; if (busy || n < 0) return; if (n >= L.length) return close(); busy = true; STATE.brSeen[L[si].id] = true;
+    const n = si + d; if (busy || n < 0) return; if (n >= L.length) return close(); busy = true; seenUpTo();
     const pg = vw.querySelector(".bs-pg"), old = pg.firstElementChild; si = n;
     pg.insertAdjacentHTML("beforeend", srcHTML()); const nu = pg.lastElementChild; covers();
     bsAnim(nu, [{opacity:0,transform:"scale(1.02)"},{opacity:1,transform:"none"}], {duration:280});
@@ -15121,7 +15183,7 @@ function brOpen(fromEl){
     old.remove(); vw.querySelectorAll(".bs-bars,.bs-vh").forEach(x=>x.remove()); vw.insertAdjacentHTML("beforeend", chrome()); wire(); if (typeof phApply==="function") phApply(); busy = false;
   }
   const next = () => jump(1), prev = () => jump(-1);
-  const clipOf = r => { const R = phone.getBoundingClientRect(); return `inset(${r.top-R.top}px ${R.right-r.right}px ${R.bottom-r.bottom}px ${r.left-R.left}px round 20px)`; };
+  const clipOf = r => { const R = phone.getBoundingClientRect(); return `inset(${r.top-R.top}px ${R.right-r.right}px ${R.bottom-r.bottom}px ${r.left-R.left}px round 16px)`; };
   async function open(){
     paint(); vw.classList.add("on");
     if (fromEl && fromEl.getBoundingClientRect) { const r = fromEl.getBoundingClientRect();
@@ -15129,14 +15191,14 @@ function brOpen(fromEl){
       await bsAnim(vw.querySelector(".bs-pg"), [{transform:"scale(.96)"},{transform:"none"}], {duration:420}).finished; }
   }
   async function close(rerender, then){
-    if (busy) return; busy = true; STATE.brSeen[L[si].id] = true;
-    const t = phone.querySelector(".brief.bstory");
+    if (busy) return; busy = true; seenUpTo();
+    const st = L[si].st, t = phone.querySelector(`.bt-tile[data-story="${st ? st.id : order[0].id}"]`);
     if (t && !rerender) { const r = t.getBoundingClientRect(); await bsAnim(vw, [{clipPath:"inset(0px 0px 0px 0px round 0px)"},{clipPath:clipOf(r)}], {duration:360}).finished; }
     else await bsAnim(vw, [{transform:"none"},{transform:"translateY(100%)"}], {duration:360}).finished;
     vw.remove(); if (view) view.classList.remove("bs-back");
     if (rerender) { render(); toast("Caught up."); } else render(); if (then) then();
   }
-  vw._bs = { next, prev, jump, close, atTop, get chapter(){ return L[si].id; }, get card(){ return si; }, get screens(){ return L.length; } };
+  vw._bs = { next, prev, jump, close, atTop, get chapter(){ return L[si].id; }, get story(){ return L[si].st ? L[si].st.id : "end"; }, get card(){ return si; }, get screens(){ return L.length; } };
   open();
 }
 
