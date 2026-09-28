@@ -248,7 +248,7 @@
   .tile .t { font-size:16px; font-weight:700; }
   .tile .d { font-size:12px; color:var(--ink2); margin-top:2px; }
   .tile .c { font-size:11px; color:var(--ink3); text-align:right; white-space:nowrap; }
-  .empty { border:1.5px dashed var(--line); border-radius:14px; padding:14px; color:var(--ink3); font-size:14px; }
+  .empty { border:1.5px solid var(--line); border-radius:14px; padding:14px; color:var(--ink3); font-size:14px; }
   .oos { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:var(--ink3); }
   .oos .box { border:2px dashed var(--line); border-radius:16px; padding:28px 20px; max-width:300px; }
   .oos h2 { color:var(--ink2); }
@@ -356,7 +356,7 @@
   .obseg { flex:1; } .obseg i { display:block; height:4px; border-radius:2px; background:var(--line); } .obseg.done i, .obseg.on i { background:var(--ink); } .obseg.on i { opacity:1; } .obseg.done i { opacity:.5; }
   .obseg span { display:block; font-size:10px; color:var(--ink3); margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .obseg.on span { color:var(--ink); font-weight:600; }
   .hero { padding-top:8px; }
-  .mvis { height:220px; border:1.5px dashed var(--line); border-radius:20px; background:var(--fill); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+  .mvis { height:220px; border:1.5px solid var(--line); border-radius:20px; background:var(--fill); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
   .mvis.full { margin:0 -16px; height:300px; border-radius:0; border-left:0; border-right:0; border-top:0; }
   .mvis .mvl { font-size:14px; font-weight:700; color:var(--ink2); }
   .hsvg { width:100%; height:auto; display:block; }
@@ -1130,6 +1130,8 @@
 
 @media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; } }
 
+#phone.hf-ob.hf-ob .ob4pc-f.is-now.is-empty span { border-bottom-style:solid; }
+
 
 
 
@@ -1385,6 +1387,8 @@ p,
   .li { flex:0 0 auto; vertical-align:-3px; } .sico .li, .xrow .li { vertical-align:middle; } .back .li { vertical-align:0; } .swa .li { display:block; margin:0 auto 2px; } .nbadge .li, .kbadge .li { vertical-align:-1px; }
   
   #phone:has(.ios-home) .foot { padding-bottom:26px; }
+
+.avatar, .hav, .hfaces span, .bav, .mopt .mi, .navt, .famchip i { border-style:solid; border-color:var(--line); background:var(--fill); }
 
 
 .mbrief { padding:2px 0 0; }
@@ -5115,7 +5119,7 @@ p,
 
 
 .mx-av { position:relative; width:var(--mx); height:var(--mx); flex:0 0 auto; cursor:pointer; }
-.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px dashed var(--ink3); box-sizing:border-box; }
+.mx-av .mx-f { position:absolute; margin:0; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; color:var(--ink2); background:#fff; border:1.5px solid var(--line); box-sizing:border-box; }
 .mx-av .mx-f.solo { inset:0; font-size:calc(var(--mx) * .32); }
 .mx-av.grp .mx-f { width:calc(var(--mx) * .63); height:calc(var(--mx) * .63); font-size:calc(var(--mx) * .22); }
 .mx-av.grp .bk { left:0; top:0; background:var(--fill); }
@@ -5348,7 +5352,7 @@ p,
 .ob3hero .nm { position:absolute; left:16px; right:16px; bottom:10px; }
 .ob3hero .nm .n { font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
 .ob3hero .nm .t { font-size:14px; color:var(--ink2); margin-top:4px; }
-.ob3edit { cursor:pointer; border-bottom:1px dashed transparent; } .ob3edit:hover { border-bottom-color:var(--ink3); }
+.ob3edit { cursor:pointer; border-bottom:1px solid transparent; } .ob3edit:hover { border-bottom-color:var(--ink3); }
 .ob3logos { display:flex; align-items:center; gap:6px; } .ob3logos b { width:30px; height:30px; border-radius:8px; background:var(--fill); display:grid; place-items:center; font-size:12px; font-weight:800; }
 .ob3logos span { font-size:12px; color:var(--ink3); margin-left:4px; }
 .ob3src { display:flex; align-items:center; gap:10px; margin-top:12px; }
@@ -5404,7 +5408,7 @@ p,
 .ob4note { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink2); margin-top:10px; } .ob4note b { width:18px; height:18px; border-radius:5px; background:var(--fill); display:grid; place-items:center; font-size:10px; flex:none; }
 .ob4me { display:flex; align-items:center; gap:10px; padding:10px 0 4px; } .ob4me b { font-size:14px; }
 .ob4blank > svg { opacity:.45; filter:grayscale(1); }
-.ob4ask { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; border:2px dashed rgba(20,20,20,.3); display:grid; place-items:center; color:rgba(20,20,20,.45); }
+.ob4ask { position:absolute; left:50%; top:55%; transform:translate(-50%,-50%); width:56px; height:56px; border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; color:rgba(20,20,20,.45); }
 .ob4list { margin-top:16px; border-top:1px solid var(--line); }
 .ob4row { display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--line); cursor:pointer; }
 .ob4row .ic { width:32px; flex:none; display:grid; place-items:center; color:var(--ink); } .ob4row .tx { flex:1; min-width:0; } .ob4row b { font-size:16px; }
@@ -5454,7 +5458,7 @@ p,
 .ob4pc-f svg{flex:none;color:var(--ink3)}
 .ob4pc-name{font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .ob4pc-f.is-empty span{color:var(--ink3);font-weight:500}
-.ob4pc-f.is-now.is-empty span{border-bottom:1.5px dashed var(--line)}
+.ob4pc-f.is-now.is-empty span{border-bottom:1.5px solid var(--line)}
 .ob4step{display:flex;flex-direction:column}
 .ob4locpc{position:relative;z-index:2;margin:-44px 16px 6px}
 .ob4locpc .ob4pc{margin:0}
@@ -18558,10 +18562,14 @@ const _mcRender = render; render = function(){
     const cap = phone.querySelector(".mh-band.big .mh-bs"); if (cap) cap.textContent = "First search running";
     phone.querySelectorAll(".view .body *").forEach(e=>{ if (!e.children.length && /^No paths yet/.test(e.textContent.trim())) e.remove(); });
     /* the kicker's status line says the same as the looking line, with an empty count before its separator: the looking line replaces it */
-    phone.querySelectorAll(".view .body .st").forEach(e=>{ if (/^Looking/i.test(e.textContent.trim())) e.remove(); });
+    phone.querySelectorAll(".view .body .st").forEach(e=>{ if (/^(Looking|Standing)/i.test(e.textContent.trim())) e.remove(); });
     const body = phone.querySelector(".view .body"); const at = body && (body.querySelector(".mh-tabs") || body.firstElementChild);
     if (at && !body.querySelector(".mc-look")) at.insertAdjacentHTML(at.classList.contains("mh-tabs")?"beforebegin":"afterend", `<div class="mc-look" data-kc="KeyKaiLine" data-kv="state=looking">${typeof kaiMark==="function"?kaiMark(20):""}<span>Looking in ${nm.where.join(", ")} for your first New pick. You'll get a push when one lands.</span></div>`);
   }
+  /* the wireframe's mission tile falls back to a sparkle for kinds it doesn't know: a mission made here shows its own Lucide glyph */
+  const mm = sid && DB.missions.find(x=>x.id===sid && x.mhIcon);
+  if (mm) phone.querySelectorAll(".view .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(mm.mhIcon, 14); });
+  phone.querySelectorAll(".view [data-mission]").forEach(r=>{ const x = DB.missions.find(y=>y.id===r.dataset.mission && y.mhIcon); const g = x && r.querySelector(".mg"); if (g && !g.querySelector("svg")) g.innerHTML = LI(x.mhIcon, 14); });
   mcWire(); return r;
 };
 function mcWire(){
