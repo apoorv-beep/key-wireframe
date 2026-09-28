@@ -15043,7 +15043,7 @@ function brOpen(fromEl){
    - open: the bars and the header arrive after the picture has grown (fade 240ms, 180ms in), so nothing reads squashed;
    - chapters move the way you went: the next chapter comes in 24px from the side you swiped or tapped toward, the old one leaves
      24px the other way, on top of Missions' crossfade; the header and bars fade in with it;
-   - pull down follows the finger: the story shrinks and lowers, Home shows through, and letting go past 80px closes it into the
+   - pull down follows the finger (only when the story is scrolled to its top, vw._bs.atTop): the story shrinks and lowers, Home shows through, and letting go past 80px closes it into the
      banner; short of that it eases back (no bounce). A drag never counts as a tap.
    Off under reduced motion, mo-still and webdriver (bsStill), where Missions' own tap and swipe behaviour is unchanged. ==== */
 const BSM_E = "cubic-bezier(.2,.8,.2,1)";
@@ -15079,7 +15079,7 @@ brOpen = function(fromEl){
   const settle = () => { const el = pg(); if (!el) return; const from = el.style.transform || "none", r = el.style.borderRadius || "0px";
     el.style.transform = ""; el.style.borderRadius = ""; vw.style.backgroundColor = ""; chrome().forEach(c => c.style.opacity = "");
     el.animate([{ transform:from, borderRadius:r }, { transform:"none", borderRadius:"0px" }], { duration:360, easing:BSM_E }); };
-  vw.addEventListener("pointerdown", e => { if (e.target.closest("button")) return; s = { x:e.clientX, y:e.clientY, id:e.pointerId, v:false }; dragged = false; }, true);
+  vw.addEventListener("pointerdown", e => { if (e.target.closest("button")) return; s = null; if (vw._bs.atTop && !vw._bs.atTop()) return; s = { x:e.clientX, y:e.clientY, id:e.pointerId, v:false }; dragged = false; }, true);
   vw.addEventListener("pointermove", e => { if (!s || e.pointerId!==s.id) return; const dx = e.clientX - s.x, dy = e.clientY - s.y;
     if (!s.v && dy > 8 && dy > Math.abs(dx)) { s.v = true; try { vw.setPointerCapture(e.pointerId); } catch (_) {} }
     if (s.v) { if (!dragged) free(); dragged = true; set(Math.max(0, dy)); } }, true);
