@@ -3214,6 +3214,7 @@ p,
 
 /* KeyTabs: text tabs on the sticky page ground, ink underline on the one you're on */
 .cmhi .cm-tabs, .cmhi .cm-bar { background:var(--component-pills-sticky-bg); }
+.cmhi .cm-bar { background:var(--bg-page); }   /* the chip row under the tabs has no blur, so rows scrolled under it showed through the 96% ground (hosting, SE, 23:48) */
 .cmhi .cm-tabs { gap:var(--space-absolute-20); border-bottom:var(--border-width-hairline) solid var(--border-default); -webkit-backdrop-filter:blur(var(--blur-backdrop)); backdrop-filter:blur(var(--blur-backdrop)); }
 .cmhi .cm-tab { font-size:15px; font-weight:600; color:var(--text-tertiary); padding:var(--space-absolute-10) 0 var(--space-absolute-12); border-bottom:var(--border-width-focus) solid transparent; margin-bottom:calc(-1 * var(--border-width-hairline)); }
 .cmhi .cm-tab.on { color:var(--text-primary); border-bottom-color:var(--text-primary); }
