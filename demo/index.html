@@ -3863,6 +3863,8 @@ p,
 .mx-tipsw .mx-tt { display:flex; gap:4px; }
 .mx-tipsw .mx-tt span { width:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; background:var(--fill); color:var(--ink); }
 .mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
+/* Messages tips keep an even 16px each side on a narrow phone (hosting, SE 320). */
+#phone .tipx:is([data-tip="inbox"],[data-tip="swipe"],[data-tip="requests"]) { box-sizing:border-box; max-width:min(340px, calc(100% - 32px)); }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
