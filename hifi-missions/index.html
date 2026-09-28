@@ -4996,10 +4996,10 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .avs .avatar { width:24px; height:24px; box-shadow:0 0 0 var(--border-width-thin) var(--bg-page); }
 #phone.hf-mis .sc .avs .avatar + .avatar { margin-left:-8px; }
 /* two faces sit on the diagonal inside the 44 lead, as in Messages (KeyFaceStack layout=diagonal) */
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
 
 /* Home: KeyMissionCard. The mission's hero plate in its own colour, then your picks on a rail with one in focus */
 #phone.hf-mis .msec.sc.mh-mc { margin:0 0 16px; padding:0; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
@@ -5195,9 +5195,9 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .mh-mini i { display:block; height:100%; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-fill); }
 
 /* KeyFaceStack in a sheet row (introductions to approve): layout=row, two 32 faces overlapping by one sixth */
-#phone.hf-mis #sheet .trow .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
-#phone.hf-mis #sheet .trow .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
-#phone.hf-mis #sheet .trow .avs > .avatar + .avatar { margin-left:-5px !important; }
+#phone.hf-mis .trow > .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
+#phone.hf-mis .trow > .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
+#phone.hf-mis .trow > .avs > .avatar + .avatar { margin-left:-5px !important; }
 </style>
 <style>@font-face {
   font-family: 'Manrope';
@@ -16145,7 +16145,7 @@ function mhTag(r){
   t(".sc .stp", "KeyProgressBar", e=>`steps=${e.children.length}, at=${e.querySelectorAll(".on").length}`);
   t(".sc .nn", "KeyFactRow", "lead=label");
   t(".pact .sbar", "KeyFooterBar", "actions=primary+quiet");
-  t("#sheet .trow .avs", "KeyFaceStack", "layout=row, size=32");
+  t(".trow > .avs", "KeyFaceStack", "layout=row, size=32");
   t(".sc .avs", "KeyFaceStack", e=>e.children.length===2 ? "layout=diagonal, size=32" : "layout=row, size=24");
   t(".sc .lift", "KeyCard", "elevation=1");
   t(".sc .sl", "KeySectionLabel");
