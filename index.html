@@ -14996,7 +14996,8 @@ const _brRender = render; render = function(){ _brPass++; return _brRender.apply
 const BS_E = "cubic-bezier(.2,.8,.2,1)";
 const bsStill = () => (typeof matchMedia==="function" && matchMedia("(prefers-reduced-motion: reduce)").matches) || document.documentElement.classList.contains("mo-still") || !!navigator.webdriver;
 const bsAnim = (el, kf, o) => (bsStill() || !el || !el.animate) ? { finished: Promise.resolve() } : el.animate(kf, Object.assign({ easing:BS_E, fill:"both" }, o));
-function brFamMark(f, size){ const m = typeof FAM_MARK!=="undefined" && FAM_MARK[f.id]; return `<span class="bs-mk" style="width:${size}px;height:${size}px">${m || `<b>${f.initial}</b>`}</span>`; }
+const brNoMeta = h => (h || "").replace(/<metadata[\s\S]*?<\/metadata>/g, "");
+function brFamMark(f, size){ const m = typeof FAM_MARK!=="undefined" && FAM_MARK[f.id]; return `<span class="bs-mk" aria-hidden="true" style="width:${size}px;height:${size}px">${brNoMeta(m) || `<b>${f.initial}</b>`}</span>`; }
 function brFamOf(p){ const names = (p && p.families) || []; for (const n of names) { const f = DB.families.find(f => f.name===n || f.name.split(" ")[0]===n.split(" ")[0]); if (f) return f.id; } return null; }
 function brPerson(ini){ return Object.values(DB.people||{}).find(p => p.initials===ini); }
 function brAskFam(i){ const t = (i.html||"").replace(/<[^>]+>/g," "); const f = DB.families.find(f => t.includes(f.name) || t.includes(f.name.split(" ")[0])); if (f) return f.id; const p = brPerson(i.ini); return p ? brFamOf(p) : null; }
@@ -15102,7 +15103,7 @@ function brAskText(i){ const q = /class="b">([^<]*)</.exec(i.html||""); return q
    no ring: unseen tiles are in full colour, seen ones dim and move to the end) */
 function brTileArt(s){
   if (!s.fam) return `<span class="bt-art bt-you">${LI("message-square",28)}</span>`;
-  const cv = typeof cCoverArt==="function" ? cCoverArt(s.fam) : "";
+  const cv = brNoMeta(typeof cCoverArt==="function" ? cCoverArt(s.fam) : "");
   return `<span class="bt-art" style="background:${BS_WASH[s.fam.id]||"#1B2530"}">${cv}</span><span class="bt-mk ${cv?"":"mid"}">${brFamMark(s.fam, cv ? 30 : 44)}</span>`;
 }
 const BS_WASH = { xoogler:"#24406A", michigan:"#0F2E52", desi:"#1B4E3F" };
@@ -15111,8 +15112,8 @@ function brBanner(){
   if (!S.length) return "";
   return `<div class="brief bstray" data-kc="KeyBriefTray" data-kv="stories=${S.length}">
     <div class="bt-hd"><span class="bs-hi">${brGreeting()}</span><span class="bt-n">${n ? `${n===1?"One thing needs":n+" things need"} you` : (u => u ? `Nothing needs you · ${u} more to catch up on` : "You're caught up")(S.filter(s => !s.seen).length)}</span></div>
-    <div class="bt-row">${S.map(s => `<button type="button" class="bt-tile ${s.seen?"seen":""}" data-story="${s.id}" onclick="brOpen(this,'${s.id}')" aria-label="${s.name}${s.need.length&&!s.seen?`, ${s.need.length} need you`:""}">
-      <span class="bt-pic">${brTileArt(s)}</span><span class="bt-nm">${s.short}</span></button>`).join("")}</div></div>`;
+    <div class="bt-row">${S.map(s => `<button type="button" class="bt-tile ${s.seen?"seen":""}" data-story="${s.id}" onclick="brOpen(this,'${s.id}')" aria-label="${s.name}, ${s.seen ? "seen" : s.need.length ? `${s.need.length===1?"one thing needs":s.need.length+" things need"} you` : "new updates"}">
+      <span class="bt-pic" aria-hidden="true">${brTileArt(s)}</span><span class="bt-nm">${s.short}</span></button>`).join("")}</div></div>`;
 }
 /* one card: picture on top (the face is never under text), then where it's from, one line, one action */
 function bfCard(c, i, total){
@@ -15121,17 +15122,17 @@ function bfCard(c, i, total){
     <div class="bs-acts"><button type="button" class="p" data-bs="done">Done</button><button type="button" class="s" data-bs="list">See everything</button></div></div>`;
   if (c.card==="sum") { const f = c.fam, nm = f ? f.name.split(" ")[0] : "Messages";
     return `<div class="bs-card bf-one bf-sum" data-kind="sum" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=sum;facts=${c.facts.length}">
-    <div class="bf-pic">${f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${typeof cCoverArt==="function" ? cCoverArt(f) : ""}<span class="bf-covm">${brFamMark(f, 72)}</span></div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
-    <div class="bf-tx"><span class="bf-k">${f ? `${brFamMark(f, 20)}<b>${f.name}</b><i></i>` : ""}<span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${(k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>
+    <div class="bf-pic">${f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${brNoMeta(typeof cCoverArt==="function" ? cCoverArt(f) : "")}<span class="bf-covm">${brFamMark(f, 72)}</span></div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
+    <div class="bf-tx"><span class="bf-k"><span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${(k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>
       <div class="bf-facts">${c.facts.map(([g,t,go,nc],fi) => `<span class="bf-fact ${nc?"need":""}" role="button" data-fact="${fi}"><i>${LI(g,16)}</i><span>${t}</span>${nc ? `<b>${nc.draft ? "Reply" : nc.act.label}</b>` : LI("chevron-right",16)}</span>`).join("")}</div></div>
     <div class="bs-acts"><button type="button" class="p" data-bs="act">Open ${nm}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`; }
   if (c.card==="also") return `<div class="bs-card bf-also" data-kind="also" data-chapter="also" data-kc="KeyStoryCard" data-kv="kind=also;rows=${c.rows.length}">
     <div class="bf-tx"><span class="bf-k">Also moving</span><h3>Nothing else needs you</h3><p>The rest, by community. Open one when you have a minute.</p></div>
-    <div class="bf-rows">${c.rows.map((r,ri) => `<div class="bf-row" role="button" data-also="${ri}">${r.fam ? `<span class="bf-cv">${typeof cCoverArt==="function" ? cCoverArt(r.fam) : ""}<span class="bf-cvm">${brFamMark(r.fam, 28)}</span></span>` : `<span class="bf-cv bf-ico">${r.kai && typeof kaiMark==="function" ? kaiMark(40) : LI("message-square",22)}</span>`}
+    <div class="bf-rows">${c.rows.map((r,ri) => `<div class="bf-row" role="button" data-also="${ri}">${r.fam ? `<span class="bf-cv">${brNoMeta(typeof cCoverArt==="function" ? cCoverArt(r.fam) : "")}<span class="bf-cvm">${brFamMark(r.fam, 28)}</span></span>` : `<span class="bf-cv bf-ico">${r.kai && typeof kaiMark==="function" ? kaiMark(40) : LI("message-square",22)}</span>`}
       <div class="m"><div class="a">${r.a}</div><div class="b">${r.b.join(" · ")}</div></div><span class="bs-chev">${LI("chevron-right",18)}</span></div>`).join("")}</div>
     <div class="bs-acts"><button type="button" class="p" data-bs="later">Next</button>${c.more?`<button type="button" class="s" data-bs="list">See all</button>`:""}</div></div>`;
   const f = c.fam, sent = c.sent;
-  const where = `<span class="bf-k">${f ? `${brFamMark(f, 20)}<b>${f.name}</b><i></i>` : ""}<span class="${c.label==="Needs you"?"need":""}">${c.label}</span></span>`;
+  const where = `<span class="bf-k"><span class="${c.label==="Needs you"?"need":""}">${c.label}</span></span>`;
   const draft = c.draft && !sent ? `<div class="bf-draft"><span class="bf-dh">${typeof kaiMark==="function" ? kaiMark(20) : ""}Kai's draft to ${c.draft.to}</span><div class="bf-dt" contenteditable="true" spellcheck="false" data-bfdraft="1">${c.draft.text}</div></div>` : "";
   const done = sent ? `<div class="bf-sent">${LI("check",18)}<span>${sent}</span></div>` : "";
   const acts = sent ? `<button type="button" class="p" data-bs="later">Next</button>`
