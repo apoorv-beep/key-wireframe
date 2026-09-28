@@ -3789,7 +3789,8 @@ p,
   .cm-osn { font-size:11px; font-weight:600; color:rgba(255,255,255,.7); font-variant-numeric:tabular-nums; }
   .cm-osbar { height:3px; border-radius:2px; background:rgba(255,255,255,.18); margin:10px 14px 12px; overflow:hidden; }
   .cm-osbar i { display:block; height:100%; background:#fff; border-radius:2px; transition:width .26s cubic-bezier(.2,.8,.2,1); }
-  .cm-osjobs { display:flex; flex-wrap:wrap; gap:8px; padding:0 14px; container-type:inline-size; }   
+  .cm-osjobs { display:flex; gap:8px; overflow-x:auto; padding:0 14px; scrollbar-width:none; }
+  .cm-osjobs::-webkit-scrollbar { display:none; }
   .cm-osjob { flex:0 0 auto; display:flex; align-items:center; gap:7px; min-height:40px; padding:6px 12px 6px 6px; border-radius:999px; border:0; background:rgba(255,255,255,.12); color:#fff; font:inherit; font-size:12px; cursor:pointer; }
   .cm-osjob b { font-weight:700; } .cm-osjob i { font-style:normal; font-variant-numeric:tabular-nums; color:rgba(255,255,255,.7); }
   .cm-osfs { display:flex; } .cm-osf { width:26px; height:26px; border-radius:50%; background:#fff; color:var(--ink); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid var(--ink); }
@@ -3965,7 +3966,6 @@ p,
 .cmhi .cm-faces, .cmhi .cm-osfs { display:flex; }
 .cmhi .cm-runby, .cmhi .cm-row:has(> .cm-faces) { --face-ring:var(--bg-page); }
 .cmhi .cm-brief .cm-osjob { --face-ring:var(--component-chip-deep-bg); }
-.cmhi .cm-brief .cm-osjobs { padding:0; }
 .cmhi .cm-faces .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf { display:flex; align-items:center; justify-content:center; padding:0; width:var(--space-absolute-24); height:var(--space-absolute-24); margin:0; border:0; border-radius:var(--radius-absolute-infinite);
   box-shadow:0 0 0 var(--border-width-thin) var(--face-ring, var(--bg-surface-default)); background:var(--component-avatar-bg); color:var(--component-avatar-ink); font-size:10px; font-weight:600; letter-spacing:0; line-height:1; }
 .cmhi .cm-faces .avatar + .avatar, .cmhi .cm-osfs:not(:has(.li)) .cm-osf + .cm-osf { margin-left:calc(-1 * var(--space-absolute-4)); }
@@ -4100,8 +4100,6 @@ p,
 .cmhi .cm-nm b { grid-column:2; margin:0; align-self:end; font-size:16px; }
 .cmhi .cm-nm span { grid-column:2; align-self:start; font-size:14px; }
 .cmhi .cm-nm em { grid-column:3; grid-row:1 / 3; margin:0; }
-
-@container (max-width: 300px) { .cm-osjobs .cm-osjob > .cm-osfs:not(:has(.li)) { display:none; } .cm-osjobs .cm-osjob:has(> .cm-osfs:not(:has(.li))) { padding-left:12px; } }
 
 
 .edu { display:none !important; }
@@ -5166,18 +5164,6 @@ p,
 .swa.right.mx-acts span br { display:none; }
 
 
-.mx-tipsw { display:flex; gap:4px; align-items:stretch; border-radius:12px; overflow:hidden; background:#fff; padding:4px; }
-.mx-tipsw .mx-tr { flex:1; min-width:0; display:flex; align-items:center; gap:8px; margin-left:-28px; padding:6px 8px; }
-.mx-tipsw .mx-ta { width:24px; height:24px; flex:0 0 auto; border-radius:50%; background:var(--line); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--ink2); }
-.mx-tipsw .mx-tm { flex:1; min-width:0; }
-.mx-tipsw .mx-tm i { display:flex; align-items:center; gap:4px; font-style:normal; font-weight:600; font-size:11px; color:var(--ink); white-space:nowrap; }
-.mx-tipsw .mx-tm i svg { color:var(--ink3); }
-.mx-tipsw .mx-tm u { display:block; height:5px; width:70%; margin-top:5px; border-radius:3px; background:var(--line); }
-.mx-tipsw .mx-tt { display:flex; gap:4px; }
-.mx-tipsw .mx-tt span { width:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; background:var(--fill); color:var(--ink); }
-.mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
-
-
 #phone.hf-msg svg.li { stroke-width:1.75; }
 #phone.hf-msg > .screen, #phone.hf-msg .body, #phone.hf-msg .chatbody, #phone.hf-msg .hdr { background:var(--bg-page); }
 #phone.hf-msg .hdr { border-bottom:0; }
@@ -5312,17 +5298,6 @@ p,
 #phone.hf-msg .hdr > .mx-sf input::placeholder { color:var(--component-input-placeholder); }
 #phone.hf-msg .hdr > .mx-sf + * { flex:0 0 auto; }
 #phone.hf-msg .pills + .xs.faint { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
-
-#phone.hf-msg .conv .a .cgl { color:var(--icon-tertiary); }
-#phone.hf-msg .conv .a .cgl svg.li { width:var(--space-absolute-14); height:var(--space-absolute-14); stroke-width:1.75; }
-#phone.hf-msg .mx-tipsw { border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); padding:var(--space-absolute-4); gap:var(--space-absolute-4); }
-#phone.hf-msg .mx-tipsw .mx-ta { background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-overline); }
-#phone.hf-msg .mx-tipsw .mx-tm i { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); }
-#phone.hf-msg .mx-tipsw .mx-tm i svg { color:var(--icon-tertiary); stroke-width:1.75; }
-#phone.hf-msg .mx-tipsw .mx-tm u { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-infinite); }
-#phone.hf-msg .mx-tipsw .mx-tt span { border-radius:var(--radius-absolute-8); background:var(--bg-fill-default); color:var(--icon-primary); }
-#phone.hf-msg .mx-tipsw .mx-tt span svg { stroke-width:1.75; }
-#phone.hf-msg .mx-tipsw .mx-tt b { font:var(--type-overline); letter-spacing:0; text-transform:none; color:var(--text-primary); }
 
 
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -5645,10 +5620,10 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .avs .avatar { width:24px; height:24px; box-shadow:0 0 0 var(--border-width-thin) var(--bg-page); }
 #phone.hf-mis .sc .avs .avatar + .avatar { margin-left:-8px; }
 
-#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
-#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
-#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
-#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
+#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
+#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
+#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
+#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
 
 
 #phone.hf-mis .msec.sc.mh-mc { margin:0 0 16px; padding:0; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
@@ -5844,9 +5819,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .mh-mini i { display:block; height:100%; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-fill); }
 
 
-#phone.hf-mis .trow > .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
-#phone.hf-mis .trow > .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
-#phone.hf-mis .trow > .avs > .avatar + .avatar { margin-left:-5px !important; }
+#phone.hf-mis #sheet .trow .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
+#phone.hf-mis #sheet .trow .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
+#phone.hf-mis #sheet .trow .avs > .avatar + .avatar { margin-left:-5px !important; }
 
 
 
@@ -5872,8 +5847,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .sheet.ks.mc-sheet .ks-k .tx p { font:var(--type-body-l); color:var(--text-primary); }
 .sheet.ks.mc-sheet .ks-k:not(:has(.mc-n)) .tx p { font:var(--type-body-m); }
 
-.mc-ans { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-.mc-a { height:36px; padding:0 14px; border:0; border-radius:var(--radius-absolute-infinite); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-label); white-space:nowrap; cursor:pointer; }
+.mc-ans { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:12px; }
+.mc-a { min-height:44px; padding:10px 16px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-body-m-strong); text-align:left; cursor:pointer; }
 .mc-a:active { background:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); box-shadow:none; }
 
 
@@ -6102,7 +6077,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .hg-list { margin:0; }
 #phone.hf-gap .hg-list + .hg-list { margin-top:var(--space-absolute-24); }
 #phone.hf-gap .hg-row, #phone.hf-gap .prow, #phone.hf-gap .ctxline { position:relative; display:flex; align-items:center; gap:var(--space-absolute-12); min-height:var(--space-absolute-56); padding:var(--space-absolute-10) 0; border:0 !important; background:transparent; cursor:pointer; }
-#phone.hf-gap .hg-row::after, #phone.hf-gap .prow::after, #phone.hf-gap .ctxline::after { content:""; position:absolute; left:52px; right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-gap .hg-row::after, #phone.hf-gap .prow::after, #phone.hf-gap .ctxline::after { content:""; position:absolute; left:calc(var(--space-absolute-48) + var(--space-absolute-4)); right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-default); }
 #phone.hf-gap .hg-row:not(:has(> .hg-tile, > .avatar, > .hg-glyph))::after, #phone.hf-gap .prow:not(:has(> .hg-tile, > .avatar))::after, #phone.hf-gap .ctxline::after { left:0; }
 #phone.hf-gap .hg-row:has(> .hg-glyph)::after { left:var(--space-absolute-32); }
 #phone.hf-gap .hg-list > :last-child::after, #phone.hf-gap .hg-sheet .hg-list > :last-child::after { display:none; }
@@ -6123,7 +6098,6 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .hg-tile.kai { background:transparent; }
 #phone.hf-gap .hg-tile.ok { background:var(--bg-inverse-default); color:var(--icon-inverse); }
 #phone.hf-gap .hg-tile.xl { width:var(--space-absolute-56); height:var(--space-absolute-56); border-radius:var(--radius-absolute-16); }
-#phone.hf-gap .hg-tile.xl svg, #phone.hf-gap .estate .eico svg.li { width:24px; height:24px; }
 #phone.hf-gap .hg-tile.danger { background:var(--state-danger-fill); color:var(--state-danger-default); }
 #phone.hf-gap .hg-tile.fam { background:transparent; }
 #phone.hf-gap .hg-tile.fam .flg, #phone.hf-gap .hg-me .flg { display:flex; align-items:center; justify-content:center; width:100%; height:100%; border-radius:var(--radius-absolute-12); overflow:hidden; font:var(--type-label-strong); background:var(--bg-fill-default); }
@@ -6206,8 +6180,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .hg-hero + .hg-list, #phone.hf-gap .hg-hero + .hg-acts { margin-top:var(--space-absolute-16); }
 
 
-#phone.hf-gap .hg-sw { flex:0 0 auto; position:relative; width:51px; height:31px; border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-strong); transition:background var(--duration-fast); }
-#phone.hf-gap .hg-sw i { position:absolute; top:var(--space-absolute-2); left:var(--space-absolute-2); width:27px; height:27px; border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); box-shadow:var(--elevation-1); transition:transform var(--duration-fast); }
+#phone.hf-gap .hg-sw { flex:0 0 auto; position:relative; width:var(--space-absolute-48); height:var(--space-absolute-28); border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-strong); transition:background var(--duration-fast); }
+#phone.hf-gap .hg-sw i { position:absolute; top:var(--space-absolute-2); left:var(--space-absolute-2); width:var(--space-absolute-24); height:var(--space-absolute-24); border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); box-shadow:var(--elevation-1); transition:transform var(--duration-fast); }
 #phone.hf-gap .hg-sw.on { background:var(--bg-inverse-default); }
 #phone.hf-gap .hg-sw.on i { transform:translateX(var(--space-absolute-20)); }
 #phone.hf-gap .hg-radio { flex:0 0 auto; width:var(--space-absolute-22); height:var(--space-absolute-22); box-sizing:border-box; border-radius:var(--radius-absolute-infinite); border:var(--border-width-thin) solid var(--border-control); }
@@ -6241,7 +6215,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .nrow::after { content:""; position:absolute; left:calc(var(--space-absolute-16) + var(--space-absolute-56)); right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-default); }
 #phone.hf-gap .nrow.un { background:var(--bg-surface-default); }
 #phone.hf-gap .nava { position:relative; flex:0 0 auto; }
-#phone.hf-gap .navt { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; border-radius:var(--radius-absolute-infinite); background-color:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); background-size:cover; background-position:center; }
+#phone.hf-gap .navt { width:calc(var(--space-absolute-40) + var(--space-absolute-4)); height:calc(var(--space-absolute-40) + var(--space-absolute-4)); display:flex; align-items:center; justify-content:center; border:0; border-radius:var(--radius-absolute-infinite); background-color:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-label-strong); background-size:cover; background-position:center; }
 #phone.hf-gap .navt:not(.p) { border-radius:var(--radius-absolute-12); }
 #phone.hf-gap .navt.kai, #phone.hf-gap .navt.sys { background:var(--bg-inverse-default); border-radius:var(--radius-absolute-infinite); }
 #phone.hf-gap .nbadge { position:absolute; right:calc(-1 * var(--space-absolute-4)); bottom:calc(-1 * var(--space-absolute-4)); width:var(--space-absolute-20); height:var(--space-absolute-20); display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-infinite); background:var(--bg-inverse-default); color:var(--icon-inverse); border:0; box-shadow:0 0 0 var(--space-absolute-2) var(--bg-page); }
@@ -6270,7 +6244,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gap .hg-sheet .hg-sh { display:flex; align-items:flex-start; gap:var(--space-absolute-12); margin-bottom:var(--space-absolute-8); }
 #phone.hf-gap .hg-sheet .hg-sh .a { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
 #phone.hf-gap .hg-sheet .hg-sh .b { margin-top:var(--space-absolute-4); font:var(--type-body-s); color:var(--text-secondary); }
-#phone.hf-g .hg-sheet .hg-row { position:relative; display:flex; align-items:center; gap:var(--space-absolute-12); min-height:52px; cursor:pointer; }
+#phone.hf-g .hg-sheet .hg-row { position:relative; display:flex; align-items:center; gap:var(--space-absolute-12); min-height:calc(var(--space-absolute-48) + var(--space-absolute-4)); cursor:pointer; }
 #phone.hf-g .hg-sheet .hg-row::after { content:""; position:absolute; left:var(--space-absolute-32); right:0; bottom:0; border-bottom:var(--border-width-hairline) solid var(--border-subtle); }
 #phone.hf-g .hg-sheet .hg-row:not(:has(.hg-glyph))::after { left:0; }
 #phone.hf-g .hg-sheet .hg-list > :last-child::after { display:none; }
@@ -6292,7 +6266,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 
 #phone.hf-g .push { left:var(--space-absolute-8); right:var(--space-absolute-8); display:flex; align-items:center; gap:var(--space-absolute-12); padding:var(--space-absolute-12) var(--space-absolute-14); border-radius:var(--radius-absolute-24); background:color-mix(in srgb, var(--bg-surface-default) 88%, transparent); backdrop-filter:blur(var(--blur-backdrop)); -webkit-backdrop-filter:blur(var(--blur-backdrop)); border:var(--border-width-hairline) solid var(--component-push-border); box-shadow:var(--elevation-lift); }
-#phone.hf-g .push .pi { flex:0 0 auto; width:36px; height:36px; background:transparent; border:0; border-radius:var(--radius-absolute-infinite); overflow:hidden; }
+#phone.hf-g .push .pi { flex:0 0 auto; width:calc(var(--space-absolute-32) + var(--space-absolute-4)); height:calc(var(--space-absolute-32) + var(--space-absolute-4)); background:transparent; border:0; border-radius:var(--radius-absolute-infinite); overflow:hidden; }
 #phone.hf-g .push .pm { flex:1; min-width:0; font:var(--type-body-s); color:var(--text-secondary); }
 #phone.hf-g .push .pm b { display:block; font:var(--type-body-m-strong); color:var(--text-primary); }
 #phone.hf-g .push .pa { display:flex; gap:var(--space-absolute-6); }
@@ -6380,8 +6354,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .obk .obk-tg .a { font:var(--type-body-m-strong); color:var(--text-primary); }
 .obk .obk-tg .b { font:var(--type-body-s); color:var(--text-secondary); margin-top:0; }
 .obk-ic { width:var(--space-absolute-40); height:var(--space-absolute-40); flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); display:grid; place-items:center; }
-.obk .obk-sw { border:0; position:relative; width:51px; height:31px; flex:0 0 auto; border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-strong); transition:background 200ms ease; }
-.obk .obk-sw::after { content:""; position:absolute; top:var(--space-absolute-2); left:var(--space-absolute-2); width:27px; height:27px; border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); box-shadow:var(--elevation-1); transition:transform 200ms cubic-bezier(.2,.8,.2,1); }
+.obk .obk-sw { border:0; position:relative; width:var(--space-absolute-48); height:var(--space-absolute-28); flex:0 0 auto; border-radius:var(--radius-absolute-infinite); background:var(--bg-fill-strong); transition:background 200ms ease; }
+.obk .obk-sw::after { content:""; position:absolute; top:var(--space-absolute-2); left:var(--space-absolute-2); width:var(--space-absolute-24); height:var(--space-absolute-24); border-radius:var(--radius-absolute-infinite); background:var(--bg-surface-default); box-shadow:var(--elevation-1); transition:transform 200ms cubic-bezier(.2,.8,.2,1); }
 .obk .obk-tg.on .obk-sw { background:var(--bg-inverse-default); }
 .obk .obk-tg.on .obk-sw::after { left:var(--space-absolute-2); background:var(--bg-surface-default); transform:translateX(var(--space-absolute-20)); }
 
@@ -15733,8 +15707,7 @@ Object.assign(LUCIDE, {   /* Lucide icons this module needs that the base set la
   "badge-check":'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
   "message-circle-question":'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
   "external-link":'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
-  /* "target" (concentric rings) is banned (trypophobia, Apoorv): any module that still asks for it gets Lucide flag */
-  "target":'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  "target":'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
   "ban":'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>'
 });
 STATE.p2keep = STATE.p2keep || { rahul:1 };   // example so the digest has something on first open
@@ -17397,12 +17370,11 @@ chatsListHTML = function() {
   const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
   const unreadN = all.filter(r=>r.unread&&!r.archived).length;
   const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
-  /* one tray, one side (Apoorv 00:49): the swipe-right Pin duplicated the tray's Pin, so it goes; pinned rows keep the small pin after the name */
   /* swipe left shows what the tip promises (Apoorv 23:45): Pin, Mute, More, as WhatsApp and iOS Mail show two or three; event chats and intro rows have no mute, so Pin and More */
-  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI(r.pinned?"pin-off":"pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
+  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI("pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
     + (r.kind==="event" || r.intro ? "" : `<span onclick="${r.muted?`convOf('${r.id}').muted=null;render();toast('Unmuted')`:`openSheet('mute','${r.id}')`}">${LI(r.muted?"bell":"bell-off",24)}<br>${r.muted?'Unmute':'Mute'}</span>`)
-    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis",24)}<br>More</span>`;
-  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
+    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",24)}<br>More</span>`;
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
     <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
   const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
@@ -17455,11 +17427,7 @@ function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { con
   ["pointerup","pointercancel","pointerleave"].forEach(ev => sw.addEventListener(ev, fit, true)); }); }
 
 /* the swipe tip names what the tray holds (Apoorv 23:45): archive and the rest live under More */
-if (typeof LUCIDE!=="undefined" && !LUCIDE["pin-off"]) LUCIDE["pin-off"] = '<path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>';
-/* the tip draws the real tray (Apoorv 00:49): it points at Daniel's pinned row, so it shows that row slid left with its pin mark, then Unpin, Mute, More as the same labelled tiles */
-(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
-  t.body = "Pin, mute, or More to archive.";
-  t.art = ()=>`<div class="mx-tipsw"><div class="mx-tr"><span class="mx-ta">DR</span><span class="mx-tm"><i>Daniel Reyes ${LI("pin",11)}</i><u></u></span></div><div class="mx-tt">${[["pin-off","Unpin"],["bell-off","Mute"],["ellipsis","More"]].map(([i,l])=>`<span>${LI(i,16)}<b>${l}</b></span>`).join("")}</div></div>`; })();
+(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (t) t.body = "Pin, mute, or More to archive."; })();
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
@@ -17601,7 +17569,7 @@ function mhTabGo(id, t){ STATE.mhTab[id] = t; render(); }
 function mhBriefPane(m){
   const facts = [...(m.constraints||[])];
   const rows = [
-    [LI("search",16), "Looking for", m.brief || "Kai is looking across your families."],
+    [LI("target",16), "Looking for", m.brief || "Kai is looking across your families."],
     ...facts.map(f=>[LI("check",16), "Must have", f]),
     [LI("flag",16), "Done when", m.standing ? "Standing, no end date" : (m.done || "You close it")],
     [LI("users",16), "Where Kai looks", (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name).slice(0,3).join(", ") || "Your families"],
@@ -17678,7 +17646,7 @@ function mhDecorate(){
   const t20 = cur && !root.querySelector(".mh-cover") && root.querySelector(".body.sc > .t20, .body > .sc > .t20");
   if (t20) t20.insertAdjacentHTML("beforebegin", `<div class="cv-th mh-cover" data-kc="KeyEventThumb" data-kv="size=banner" onclick="go('eventd:${cur.id}')">${evCvArt(cur)}</div>`);
   /* the mission glyph in a sheet head is the same Lucide tile as on the page, never a text symbol */
-  phone.querySelectorAll("#sheet .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(g.classList.contains("t2")?"users":g.classList.contains("t1")?"briefcase":"compass", 20); });
+  phone.querySelectorAll("#sheet .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(g.classList.contains("t2")?"users":g.classList.contains("t1")?"briefcase":"target", 20); });
   /* header inside a mission or a path: back and more as bare 24 glyphs in 44 targets; the mission tile moves beside the title */
   const hdr = root.querySelector(".hdr.sc");
   if (hdr) {
@@ -17701,7 +17669,7 @@ function mhTag(r){
   t(".sc .stp", "KeyProgressBar", e=>`steps=${e.children.length}, at=${e.querySelectorAll(".on").length}`);
   t(".sc .nn", "KeyFactRow", "lead=label");
   t(".pact .sbar", "KeyFooterBar", "actions=primary+quiet");
-  t(".trow > .avs", "KeyFaceStack", "layout=row, size=32");
+  t("#sheet .trow .avs", "KeyFaceStack", "layout=row, size=32");
   t(".sc .avs", "KeyFaceStack", e=>e.children.length===2 ? "layout=diagonal, size=32" : "layout=row, size=24");
   t(".sc .lift", "KeyCard", "elevation=1");
   t(".sc .sl", "KeySectionLabel");
@@ -19442,8 +19410,8 @@ function hgScreen() {
 
 /* ---- shared parts ---- */
 const hgFirst = id => ((DB.people[id]||{}).name||"").split(" ")[0];
-/* KeyRow: leading KeyIconButton container=tile (Lucide 24 on a 40 radius-12 fill), title body-l, one line body-s, trailing chevron or slot */
-const hgRow = (ic, a, b, on, trail, tone) => `<div class="hg-row ${tone||""}" data-kc="KeyRow" data-kv="lead=icon" ${on||""}><span class="hg-tile" data-kc="KeyIconButton" data-kv="container=tile">${LI(ic,22)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${trail===undefined?`<span class="hg-chev">${LI("chevron-right",20)}</span>`:trail}</div>`;
+/* KeyListRow: leading KeyIconTile (Lucide 24 on a 40 radius-12 fill), title body-l, one line body-s, trailing chevron or slot */
+const hgRow = (ic, a, b, on, trail, tone) => `<div class="hg-row ${tone||""}" data-kc="KeyListRow" data-kv="lead=icon" ${on||""}><span class="hg-tile" data-kc="KeyIconTile">${LI(ic,22)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${trail===undefined?`<span class="hg-chev">${LI("chevron-right",20)}</span>`:trail}</div>`;
 const hgSw = (on, attr) => `<span class="hg-sw ${on?"on":""}" role="switch" aria-checked="${!!on}" data-kc="KeySwitch" data-kv="state=${on?"on":"off"}" ${attr||""}><i></i></span>`;
 const hgLbl = t => `<div class="hg-lbl" data-kc="KeySectionLabel">${t}</div>`;
 const hgHdr = (t, back) => `<div class="hdr"><div class="back" onclick="${back||"STATE.backNav=true;goBack()"}">${LI("chevron-left",24)}</div><div class="t">${t}</div></div>`;
@@ -19465,11 +19433,11 @@ sExplore = function() {
   const rowFor = r => {
     if (r.kind==="person") { const p=DB.people[r.id]; const {v,verb}=verbOf(p);
       return `<div class="hg-row person" data-kc="KeyMemberRow" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${H(p.name)}</div><div class="b">${p.title}, ${p.company}${v?` · via ${hgFirst(v.id)}`:""}</div></div><span class="hg-btn sec" data-kc="KeyButton" data-kv="variant=secondary, size=s">${verb}</span></div>`; }
-    if (r.kind==="channel") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-channel="${r.id}"><span class="hg-tile">${LI("message-square",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
+    if (r.kind==="channel") return `<div class="hg-row" data-kc="KeyListRow" data-kv="lead=icon" data-channel="${r.id}"><span class="hg-tile">${LI("message-square",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
     if (r.kind==="event") { const e=DB.fevents.find(x=>x.id===r.id); return evCard(e,"row",{noAction:true}); }
-    if (r.kind==="role") { const it=DB.pool.find(p=>p.id===r.id); return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" onclick="openSheet('pool','${r.id}')"><span class="hg-tile">${LI("briefcase",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div>${poolPath(it)?`<span class="hg-tag" data-kc="KeyTag">Path</span>`:`<span class="hg-chev">${LI("chevron-right",20)}</span>`}</div>`; }
-    if (r.kind==="message") return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" data-dm="${r.id}"><span class="hg-tile">${LI("mail",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${H(r.sub)}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
-    return `<div class="hg-row" data-kc="KeyRow" data-kv="lead=family" onclick="STATE.family='${r.id}';go('family')"><span class="hg-tile fam"><span class="flg">${r.title[0]}</span></span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
+    if (r.kind==="role") { const it=DB.pool.find(p=>p.id===r.id); return `<div class="hg-row" data-kc="KeyListRow" data-kv="lead=icon" onclick="openSheet('pool','${r.id}')"><span class="hg-tile">${LI("briefcase",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div>${poolPath(it)?`<span class="hg-tag" data-kc="KeyTag">Path</span>`:`<span class="hg-chev">${LI("chevron-right",20)}</span>`}</div>`; }
+    if (r.kind==="message") return `<div class="hg-row" data-kc="KeyListRow" data-kv="lead=icon" data-dm="${r.id}"><span class="hg-tile">${LI("mail",22)}</span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${H(r.sub)}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
+    return `<div class="hg-row" data-kc="KeyListRow" data-kv="lead=family" onclick="STATE.family='${r.id}';go('family')"><span class="hg-tile fam"><span class="flg">${r.title[0]}</span></span><div class="m"><div class="a">${H(r.title)}</div><div class="b">${r.sub}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`;
   };
   let body = "";
   if (!q) {
@@ -19477,12 +19445,12 @@ sExplore = function() {
     const ch = (DB.channels.xoogler||[]).find(c=>!c.joined); const ev = DB.fevents.find(e=>!e.past);
     const chRow = ch ? searchIndex().find(r=>r.kind==="channel"&&r.id===ch.id) : null;
     const evRow = ev ? searchIndex().find(r=>r.kind==="event"&&r.id===ev.id) : null;
-    body = `${recents.length?`${hgLbl(`Recent<span class="hg-link" onclick="STATE.recentSearches=[];render()">Clear</span>`)}<div class="hg-list">${recents.map((x,i)=>`<div class="hg-row recent" data-kc="KeyRow" data-kv="lead=icon, size=compact" data-sq="${x.replace(/"/g,"&quot;")}"><span class="hg-glyph">${LI("history",20)}</span><div class="m"><div class="a">${x}</div></div><span class="hg-x" onclick="event.stopPropagation();hgDropRecent(${i})">${LI("x",18)}</span></div>`).join("")}</div>`:""}
-      ${!STATE.member?`${hgLbl("For your missions")}<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" style="cursor:default"><span class="hg-tile">${LI("hourglass",22)}</span><div class="m"><div class="a">People show up the moment you're in</div><div class="b">Kai already has your missions.${STATE.applied?` ${fam().name} decides soon.`:" Join a family to start."}</div></div></div>`:`${hgLbl(`For your missions`)}
+    body = `${recents.length?`${hgLbl(`Recent<span class="hg-link" onclick="STATE.recentSearches=[];render()">Clear</span>`)}<div class="hg-list">${recents.map((x,i)=>`<div class="hg-row recent" data-kc="KeyListRow" data-kv="lead=icon, size=compact" data-sq="${x.replace(/"/g,"&quot;")}"><span class="hg-glyph">${LI("history",20)}</span><div class="m"><div class="a">${x}</div></div><span class="hg-x" onclick="event.stopPropagation();hgDropRecent(${i})">${LI("x",18)}</span></div>`).join("")}</div>`:""}
+      ${!STATE.member?`${hgLbl("For your missions")}<div class="hg-row" data-kc="KeyListRow" data-kv="lead=icon" style="cursor:default"><span class="hg-tile">${LI("hourglass",22)}</span><div class="m"><div class="a">People show up the moment you're in</div><div class="b">Kai already has your missions.${STATE.applied?` ${fam().name} decides soon.`:" Join a family to start."}</div></div></div>`:`${hgLbl(`For your missions`)}
       <div class="hg-rail" data-kc="KeyPeopleRail">${people.map(id=>{ const p=DB.people[id]; const {v,verb}=verbOf(p); return `<div class="hg-face" data-kc="KeyPersonTile" data-profile="${id}">${av(p.initials,"xl")}<div class="n">${hgFirst(id)}</div><div class="r">${p.company}</div><span class="hg-btn ${verb==="Say hi"?"":"sec"}" data-kc="KeyButton" data-kv="variant=${verb==="Say hi"?"primary":"secondary"}, size=s">${verb}</span></div>`; }).join("")}</div>
       ${chRow||evRow?`${hgLbl("Worth a look")}<div class="hg-list">${chRow?rowFor(chRow):""}</div>${evRow?rowFor(evRow):""}`:""}`}
       ${hgLbl("Browse the pool")}
-      <div class="hg-tiles" data-kc="KeyPoolTiles">${POOL_TILES.map(k=>{ const ic={role:"briefcase",person:"users",deal:"flag",ask:"message-circle-question",offer:"gift",resource:"book-open",event:"calendar",post:"file-text"}[k]; const l=k==="event"?"Events":PKIND[k].pl; return `<div class="hg-pool" data-kc="KeyPoolTile" onclick="${k==="event"?"go('events')":`go('pool:${k}')`}"><span class="ic">${LI(ic,22)}</span><div class="n">${DB.poolCounts[k]}</div><div class="l">${l}</div></div>`; }).join("")}</div>`;
+      <div class="hg-tiles" data-kc="KeyPoolTiles">${POOL_TILES.map(k=>{ const ic={role:"briefcase",person:"users",deal:"target",ask:"message-circle-question",offer:"gift",resource:"book-open",event:"calendar",post:"file-text"}[k]; const l=k==="event"?"Events":PKIND[k].pl; return `<div class="hg-pool" data-kc="KeyPoolTile" onclick="${k==="event"?"go('events')":`go('pool:${k}')`}"><span class="ic">${LI(ic,22)}</span><div class="n">${DB.poolCounts[k]}</div><div class="l">${l}</div></div>`; }).join("")}</div>`;
   } else {
     let idx = searchIndex(scopeFam).filter(r=>kind==="all"||r.kind===kind);
     const stop=new Set(["someone","anyone","who","can","get","me","into","the","a","an","for","to","of","and","with","in","at","on","is","are","find","looking","need","help","what","that","this","my","i"]);
@@ -19492,7 +19460,7 @@ sExplore = function() {
     const askRow = ask ? `<div class="hg-ask" data-kc="KeyAskKaiRow" onclick="(function(){ STATE.kaiScope=null; STATE.kaiMsgs=[{who:'u',text:${JSON.stringify(q).replace(/"/g,"&quot;")}},{who:'k',text:'Two paths I would try, both through people you know.',chips:['Show me','Make this a mission']}]; openSheet('kai'); })()">${kaiMark(40)}<div class="m"><div class="a">Ask Kai</div><div class="b">“${q}”</div></div><span class="hg-chev">${LI("arrow-up-right",20)}</span></div>` : "";
     const grouped = groups.map(([k,l])=>{ const arr=hits.filter(r=>r.kind===k); if(!arr.length) return ""; const open=(STATE.searchOpen||{})[k]; const shown=open?arr:arr.slice(0,3);
       return `${hgLbl(`${l}<span class="hg-count">${arr.length}</span>`)}${k==="event"?shown.map(rowFor).join(""):`<div class="hg-list">${shown.map(rowFor).join("")}</div>`}${arr.length>3&&!open?`<div class="hg-more" onclick="STATE.searchOpen=STATE.searchOpen||{};STATE.searchOpen['${k}']=true;render()">See all ${arr.length} ${l.toLowerCase()}</div>`:""}`; }).join("");
-    body = `${askRow}${grouped || (ask ? `<div class="hg-note">Nothing by that name. Kai can still look.</div>` : `<div class="hg-empty" data-kc="KeyEmptyState" data-kv="lead=tile"><span class="hg-tile xl">${LI("search-x",24)}</span><div class="et">No match for “${q}”${scopeFam?` in ${DB.families.find(f=>f.id===scopeFam).name}`:""}</div><div class="es">Check the spelling${scopeFam?", search every family,":""} or ask Kai to look.</div><div class="hg-acts">${scopeFam?`<span class="hg-btn sec l" onclick="STATE.searchFam=null;render()">All families</span>`:""}<span class="hg-btn l" onclick="(function(){ STATE.kaiScope=null; STATE.kaiMsgs=[{who:'u',text:${JSON.stringify(q).replace(/"/g,"&quot;")}}]; openSheet('kai'); })()">Ask Kai</span></div></div>`)}`;
+    body = `${askRow}${grouped || (ask ? `<div class="hg-note">Nothing by that name. Kai can still look.</div>` : `<div class="hg-empty" data-kc="KeyEmptyState"><span class="hg-tile xl">${LI("search-x",28)}</span><div class="et">No match for “${q}”${scopeFam?` in ${DB.families.find(f=>f.id===scopeFam).name}`:""}</div><div class="es">Check the spelling${scopeFam?", search every family,":""} or ask Kai to look.</div><div class="hg-acts">${scopeFam?`<span class="hg-btn sec l" onclick="STATE.searchFam=null;render()">All families</span>`:""}<span class="hg-btn l" onclick="(function(){ STATE.kaiScope=null; STATE.kaiMsgs=[{who:'u',text:${JSON.stringify(q).replace(/"/g,"&quot;")}}]; openSheet('kai'); })()">Ask Kai</span></div></div>`)}`;
   }
   return `<div class="hdr hg-shdr"><div class="back" onclick="STATE.searchQ='';STATE.searchKind='all';STATE.searchOpen={};STATE.backNav=true;go(STATE.back||'home')">${LI("chevron-left",24)}</div>
     <label class="hg-search" data-kc="KeySearchField">${LI("search",20)}<input id="sq" placeholder="A name, a channel, or what you're after" value="${q.replace(/"/g,"&quot;")}" autocomplete="off">${q?`<span class="hg-clear" onclick="event.preventDefault();STATE.searchQ='';render()">${LI("x",14)}</span>`:""}</label></div>
@@ -19549,7 +19517,7 @@ const HG_SET = [
 function hgSettings() {
   const s = hgSet();
   const row = ([id,ic,a,b]) => id==="kai"
-    ? `<div class="hg-row" data-kc="KeyRow" data-kv="lead=kai" onclick="go('consent')"><span class="hg-tile kai">${kaiMark(40)}</span><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`
+    ? `<div class="hg-row" data-kc="KeyListRow" data-kv="lead=kai" onclick="go('consent')"><span class="hg-tile kai">${kaiMark(40)}</span><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`
     : hgRow(ic,a,id==="appearance"?s.theme:b,`onclick="go('you:set-${id}')"`);
   return `${hgHdr("Settings")}<div class="body">
     <div class="hg-list">${HG_SET.slice(0,4).map(row).join("")}</div>
@@ -19561,20 +19529,20 @@ function hgSettings() {
 function hgSetPage(id) {
   const s = hgSet(); const fams = DB.families.filter(f=>f.joined!==false).slice(0,3);
   const seg = (key, opts, cur) => `<div class="hg-seg" data-kc="KeySegmented">${opts.map(o=>`<span class="${o===cur?"on":""}" onclick="hgSet()${key}=${JSON.stringify(o).replace(/"/g,"&quot;")};render()">${o}</span>`).join("")}</div>`;
-  const tog = (a, b, on, js) => `<div class="hg-row" data-kc="KeySettingRow" data-kv="trail=switch" onclick="${js};render()"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${hgSw(on)}</div>`;
+  const tog = (a, b, on, js) => `<div class="hg-row" data-kc="KeyListRow" data-kv="trail=switch" onclick="${js};render()"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${hgSw(on)}</div>`;
   if (id==="notifications") return `${hgHdr("Notifications")}<div class="body">
-    <div class="hg-hero" data-kc="KeyNotifyHero"><span class="hg-tile xl">${LI("bell",24)}</span><div class="m"><div class="a">${s.push?"You hear about people, not noise":"Push is off"}</div><div class="b">${s.push?"Requests and replies come through. Everything else waits for the bell.":"Nothing reaches your lock screen. The bell still keeps count."}</div></div></div>
+    <div class="hg-hero" data-kc="KeyNotifyHero"><span class="hg-tile xl">${LI("bell",28)}</span><div class="m"><div class="a">${s.push?"You hear about people, not noise":"Push is off"}</div><div class="b">${s.push?"Requests and replies come through. Everything else waits for the bell.":"Nothing reaches your lock screen. The bell still keeps count."}</div></div></div>
     <div class="hg-list">${tog("Push notifications","", s.push, "hgSet().push=!hgSet().push")}${tog("Quiet hours","10pm to 8am. Requests from people wait until morning", s.quiet, "hgSet().quiet=!hgSet().quiet")}${tog("Email","A copy of anything you miss for a day", s.email, "hgSet().email=!hgSet().email")}</div>
     ${hgLbl("What reaches you")}
     <div class="hg-list">${[["requests","Requests and replies","People asking you, and their answers"],["mentions","Mentions","When someone @s you"],["paths","New paths","When Kai finds someone for a mission"],["events","Events","Invites, changes, the day before"],["threads","Threads you're in","Every reply"],["system","Your families","Approvals, organizer notes"]].map(([k,a,b])=>tog(a,b,s.types[k],`hgSet().types.${k}=!hgSet().types.${k}`)).join("")}</div>
     ${hgLbl("Per family")}
-    <div class="hg-list">${fams.map(f=>`<div class="hg-row fam" data-kc="KeyRow" data-kv="lead=family"><span class="hg-tile fam"><span class="flg">${f.initial}</span></span><div class="m"><div class="a">${f.name}</div>${seg(`.fam['${f.id}']`,["All activity","Mentions only","Off"],s.fam[f.id]||"Mentions only")}</div></div>`).join("")}</div>
+    <div class="hg-list">${fams.map(f=>`<div class="hg-row fam" data-kc="KeyListRow" data-kv="lead=family"><span class="hg-tile fam"><span class="flg">${f.initial}</span></span><div class="m"><div class="a">${f.name}</div>${seg(`.fam['${f.id}']`,["All activity","Mentions only","Off"],s.fam[f.id]||"Mentions only")}</div></div>`).join("")}</div>
     ${hgLbl("Catch-up from Kai")}
     ${seg(".digest",["Daily","Weekly","Off"],s.digest)}
   </div>`;
   if (id==="privacy") return `${hgHdr("Privacy")}<div class="body">
     ${hgLbl("Who sees your profile")}
-    <div class="hg-list">${fams.map(f=>`<div class="hg-row fam" data-kc="KeyRow" data-kv="lead=family"><span class="hg-tile fam"><span class="flg">${f.initial}</span></span><div class="m"><div class="a">${f.name}</div>${seg(`.vis['${f.id}']`,["Full profile","Profile and open-to"],s.vis[f.id]||"Full profile")}</div></div>`).join("")}</div>
+    <div class="hg-list">${fams.map(f=>`<div class="hg-row fam" data-kc="KeyListRow" data-kv="lead=family"><span class="hg-tile fam"><span class="flg">${f.initial}</span></span><div class="m"><div class="a">${f.name}</div>${seg(`.vis['${f.id}']`,["Full profile","Profile and open-to"],s.vis[f.id]||"Full profile")}</div></div>`).join("")}</div>
     <div class="hg-note">Nobody outside your families sees you. Context and Rules are never shown to anyone.</div>
     ${hgLbl("What other members' Kai can read")}
     <div class="hg-list">${hgRow("brain","Shared lines","Only what you ticked, per family",`onclick="go('you:context:shared')"`)}${hgRow("eye","See your profile as someone else","A member, a match, or someone outside",`onclick="openSheet('p2viewas','')"`)}</div>
@@ -19589,19 +19557,19 @@ function hgSetPage(id) {
     <div class="hg-list">${hgRow("briefcase","Add a work email","Shows a verified badge on your employer",`onclick="toast('We send a code to your work address. Only the badge shows, never the address.')"`)}</div>
   </div>`; }
   if (id==="export") return `${hgHdr("Export your data")}<div class="body">
-    <div class="hg-hero"><span class="hg-tile xl">${LI("download",24)}</span><div class="m"><div class="a">Everything is yours</div><div class="b">Profile, Context, missions, messages and your calendar, as files. We email a link when it's ready.</div></div></div>
-    <div class="hg-list">${[["user","Profile and Context"],["flag","Missions and paths"],["message-square","Messages you sent"],["calendar","Events and calendars"]].map(([ic,a])=>hgRow(ic,a,"",`onclick="toast('Included.')"`,`<span class="hg-ok">${LI("check",18)}</span>`)).join("")}</div>
+    <div class="hg-hero"><span class="hg-tile xl">${LI("download",28)}</span><div class="m"><div class="a">Everything is yours</div><div class="b">Profile, Context, missions, messages and your calendar, as files. We email a link when it's ready.</div></div></div>
+    <div class="hg-list">${[["user","Profile and Context"],["target","Missions and paths"],["message-square","Messages you sent"],["calendar","Events and calendars"]].map(([ic,a])=>hgRow(ic,a,"",`onclick="toast('Included.')"`,`<span class="hg-ok">${LI("check",18)}</span>`)).join("")}</div>
     <div class="hg-acts"><span class="hg-btn l" onclick="toast('Preparing your export. The link comes by email.')">Export</span></div>
   </div>`;
   if (id==="appearance") return `${hgHdr("Appearance")}<div class="body">
-    <div class="hg-list">${["Match phone","Light","Dark"].map(t=>`<div class="hg-row" data-kc="KeyRow" data-kv="trail=radio" onclick="hgSet().theme='${t}';render()"><span class="hg-tile">${LI(t==="Dark"?"moon":t==="Light"?"sparkle":"smartphone",22)}</span><div class="m"><div class="a">${t}</div></div><span class="hg-radio ${s.theme===t?"on":""}" data-kc="KeyRadio"></span></div>`).join("")}</div>
+    <div class="hg-list">${["Match phone","Light","Dark"].map(t=>`<div class="hg-row" data-kc="KeyListRow" data-kv="trail=radio" onclick="hgSet().theme='${t}';render()"><span class="hg-tile">${LI(t==="Dark"?"moon":t==="Light"?"sparkle":"smartphone",22)}</span><div class="m"><div class="a">${t}</div></div><span class="hg-radio ${s.theme===t?"on":""}" data-kc="KeyRadio"></span></div>`).join("")}</div>
   </div>`;
   if (id==="help") return `${hgHdr("Help and legal")}<div class="body">
     <div class="hg-list">${hgRow("message-circle","Talk to the Key team","A person answers, usually within a day",`onclick="toast('Opens a chat with the Key team.')"`)}${hgRow("flag","Report a problem","Shake your phone anywhere to send one",`onclick="toast('Describe what happened. A screenshot is attached.')"`)}</div>
     <div class="hg-list">${hgRow("scale","Terms","",`onclick="toast('Terms of service.')"`)}${hgRow("shield","Privacy policy","",`onclick="toast('Privacy policy.')"`)}${hgRow("file-text","Community guidelines","",`onclick="toast('Community guidelines.')"`)}</div>
   </div>`;
   if (id==="delete") { const step=s.del||0; const own=DB.families.filter(f=>f.role==="owner"); return `${hgHdr("Delete account","hgSet().del=0;STATE.backNav=true;goBack()")}<div class="body">
-    <div class="hg-hero danger"><span class="hg-tile xl danger">${LI("triangle-alert",24)}</span><div class="m"><div class="a">${step?"Your account closes in 30 days":"Before you go"}</div><div class="b">${step?"Sign in any time before then and nothing is lost. After that, your profile, Context and messages are erased.":"You have 30 days to change your mind. Members you talked to keep the messages they received."}</div></div></div>
+    <div class="hg-hero danger"><span class="hg-tile xl danger">${LI("triangle-alert",28)}</span><div class="m"><div class="a">${step?"Your account closes in 30 days":"Before you go"}</div><div class="b">${step?"Sign in any time before then and nothing is lost. After that, your profile, Context and messages are erased.":"You have 30 days to change your mind. Members you talked to keep the messages they received."}</div></div></div>
     ${step?"":`<div class="hg-list">${hgRow("download","Export your data first","",`onclick="go('you:set-export')"`)}${own.length?hgRow("users",`Hand over ${own[0].name}`,"A family needs an owner",`onclick="toast('Pick the member who takes it over.')"`):""}</div>
     <div class="hg-acts"><span class="hg-btn danger l" data-kc="KeyButton" data-kv="variant=danger, size=l" onclick="hgSet().del=1;render()">Delete my account</span></div>`}
     ${step?`<div class="hg-acts"><span class="hg-btn sec l" onclick="hgSet().del=0;render();toast('Your account stays.')">Keep my account</span></div>`:""}
@@ -19641,17 +19609,17 @@ portSheet = function(type, id) {
     const who = c && c.kind==="dm" && c.with ? DB.people[c.with] : null;
     const R = [["hand","Spam or selling"],["triangle-alert","Harassment or hate"],["repeat","Pushy or repeated asks"],["user-x","Pretending to be someone"],["message-circle-question","Something else"]];
     return `<div class="hg-sheet" data-kc="KeyReportSheet"><div class="hg-sh"><span class="hg-tile">${LI("flag",22)}</span><div class="m"><div class="a">Report ${what==="msg"?"this message":"this conversation"}</div><div class="b">The organizers of ${fam().name} review it. ${who?hgFirst(who.id):"The person"} isn't told who reported.</div></div></div>
-      <div class="hg-list">${R.map(([ic,a])=>`<div class="hg-row" data-kc="KeyRow" data-kv="lead=icon" onclick="STATE.sheet=null;render();toast('Reported. The organizers will look at it.')"><span class="hg-glyph">${LI(ic,20)}</span><div class="m"><div class="a">${a}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`).join("")}</div>
-      ${who?`<div class="hg-list"><div class="hg-row danger" data-kc="KeyRow" data-kv="tone=danger" onclick="hgSet().blocked=[...new Set(hgSet().blocked.concat('${who.id}'))];STATE.sheet=null;render();toast('Blocked ${hgFirst(who.id)}. They aren\\'t told. Undo in Settings, Privacy.')"><span class="hg-glyph">${LI("ban",20)}</span><div class="m"><div class="a">Block ${hgFirst(who.id)}</div><div class="b">They can't message you or see you in lists</div></div></div></div>`:""}</div>`;
+      <div class="hg-list">${R.map(([ic,a])=>`<div class="hg-row" data-kc="KeyListRow" data-kv="lead=icon" onclick="STATE.sheet=null;render();toast('Reported. The organizers will look at it.')"><span class="hg-glyph">${LI(ic,20)}</span><div class="m"><div class="a">${a}</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div>`).join("")}</div>
+      ${who?`<div class="hg-list"><div class="hg-row danger" data-kc="KeyListRow" data-kv="tone=danger" onclick="hgSet().blocked=[...new Set(hgSet().blocked.concat('${who.id}'))];STATE.sheet=null;render();toast('Blocked ${hgFirst(who.id)}. They aren\\'t told. Undo in Settings, Privacy.')"><span class="hg-glyph">${LI("ban",20)}</span><div class="m"><div class="a">Block ${hgFirst(who.id)}</div><div class="b">They can't message you or see you in lists</div></div></div></div>`:""}</div>`;
   }
   if (hgOn() && type==="mute") {
     const c = typeof convOf==="function" ? convOf(id) : null; const cur = c && c.muted;
     const O = [["8 hours","For 8 hours"],["1 week","For 1 week"],["Until I unmute","Until you unmute"]];
     return `<div class="hg-sheet" data-kc="KeyMuteSheet"><div class="hg-sh"><span class="hg-tile">${LI("bell-off",22)}</span><div class="m"><div class="a">Mute ${c&&c.kind==="channel"?"#"+c.title:"notifications"}</div><div class="b">Nobody sees that you muted it. Mentions still reach you.</div></div></div>
-      <div class="hg-list">${O.map(([o,val])=>`<div class="hg-row" data-kc="KeyRow" data-kv="trail=radio" onclick="convOf('${id}').muted='${val}';STATE.sheet=null;render();toast('Muted ${val.toLowerCase()}')"><div class="m"><div class="a">${o}</div></div><span class="hg-radio ${cur===val?"on":""}"></span></div>`).join("")}</div>
+      <div class="hg-list">${O.map(([o,val])=>`<div class="hg-row" data-kc="KeyListRow" data-kv="trail=radio" onclick="convOf('${id}').muted='${val}';STATE.sheet=null;render();toast('Muted ${val.toLowerCase()}')"><div class="m"><div class="a">${o}</div></div><span class="hg-radio ${cur===val?"on":""}"></span></div>`).join("")}</div>
       ${cur?`<div class="hg-acts"><span class="hg-btn sec l" onclick="convOf('${id}').muted=null;STATE.sheet=null;render();toast('Unmuted')">Unmute</span></div>`:""}</div>`;
   }
-  if (hgOn() && type==="nmore") return `<div class="hg-sheet" data-kc="KeyBottomSheet"><div class="hg-list">
+  if (hgOn() && type==="nmore") return `<div class="hg-sheet" data-kc="KeyActionSheet"><div class="hg-list">
       <div class="hg-row" onclick="notifs().filter(inScope).forEach(n=>n.unread=false);STATE.nFilter='all';STATE.sheet=null;render();toast('All marked as read')"><span class="hg-glyph">${LI("circle-check",20)}</span><div class="m"><div class="a">Mark all as read</div></div></div>
       <div class="hg-row" onclick="STATE.sheet=null;go('you:set-notifications')"><span class="hg-glyph">${LI("settings",20)}</span><div class="m"><div class="a">Notification settings</div></div><span class="hg-chev">${LI("chevron-right",20)}</span></div></div></div>`;
   return _hgPortSheet(type, id);
@@ -19664,9 +19632,9 @@ render = function(...a) {
   if (typeof phone==="undefined" || !phone || !hgOn()) return r;
   phone.classList.add("hf-g");
   phone.classList.toggle("hf-gap", hgScreen());
-  const push = phone.querySelector(".push .pi"); if (push && !push.dataset.hg) { push.dataset.hg="1"; push.innerHTML = kaiMark(36); push.parentElement.setAttribute("data-kc","KeyPushBanner"); push.parentElement.setAttribute("data-kv","context=notification"); }
+  const push = phone.querySelector(".push .pi"); if (push && !push.dataset.hg) { push.dataset.hg="1"; push.innerHTML = kaiMark(36); }
   const off = [...phone.querySelectorAll(".screen > div")].find(d=>d.textContent.startsWith("Offline. Kai can't run a pass"));
-  if (off && !off.classList.contains("hg-offline")) { off.className = "hg-offline"; off.removeAttribute("style"); off.setAttribute("data-kc","KeyOfflineBanner"); off.innerHTML = `${LI("wifi-off",18)}<span><b>Offline.</b> Everything you do is saved. Kai catches up when you're back.</span>`; }
+  if (off && !off.classList.contains("hg-offline")) { off.className = "hg-offline"; off.removeAttribute("style"); off.setAttribute("data-kc","KeyOfflineBar"); off.innerHTML = `${LI("wifi-off",18)}<span><b>Offline.</b> Everything you do is saved. Kai catches up when you're back.</span>`; }
   const t = phone.querySelector(".toast"); if (t) t.setAttribute("data-kc","KeyToast");
   return r;
 };
@@ -19702,7 +19670,7 @@ if (typeof KEY_HIFI !== "undefined" && !!KEY_HIFI) {
   }
   function obkConnect() {
     const req = STATE.connectReq||{};
-    return `${[["contacts","users","Contacts","Who can vouch for you"],["calendar","calendar","Calendar","Briefs before, the journal after"]].map(([k,ic,t,b])=>`<div class="obk-tg toggle ${STATE.connect[k]?"on":""}" data-connect="${k}" data-kc="KeySettingRow" data-kv="lead=tile, state=${STATE.connect[k]?"on":"off"}"><span class="obk-ic">${LI(ic,20)}</span><div class="m"><div class="a">${t}</div><div class="b">${STATE.connect[k]?b:req[k]?"Requested. Your phone will ask":b}</div></div><span class="obk-sw sw" data-kc="KeySwitch"></span></div>`).join("")}
+    return `${[["contacts","users","Contacts","Who can vouch for you"],["calendar","calendar","Calendar","Briefs before, the journal after"]].map(([k,ic,t,b])=>`<div class="obk-tg toggle ${STATE.connect[k]?"on":""}" data-connect="${k}" data-kc="KeySwitchRow" data-kv="state=${STATE.connect[k]?"on":"off"}"><span class="obk-ic">${LI(ic,20)}</span><div class="m"><div class="a">${t}</div><div class="b">${STATE.connect[k]?b:req[k]?"Requested. Your phone will ask":b}</div></div><span class="obk-sw sw" data-kc="KeySwitch"></span></div>`).join("")}
       <div class="obk-note">${LI("lock",14)}<span>Nothing here is shown to other members.</span></div>`;
   }
   function obkBody(x) {
@@ -19733,7 +19701,7 @@ if (typeof KEY_HIFI !== "undefined" && !!KEY_HIFI) {
       : `<div class="wstep obk-row obk-up" data-kc="KeyChecklistStep" data-kv="state=upcoming">${obkMk(x,i,"upcoming")}<div class="m"><div class="a">${x.title}</div></div></div>`).join("");
     return `<div class="walk obk" data-kc="KeyChecklist" data-kv="state=setup">
       <div class="obk-hd"><div class="obk-t">${title}</div><div class="obk-s">${sub}</div>
-        <div class="obk-pg" data-kc="KeyProgressBar" role="img" aria-label="${done} of ${n} done">${steps.map((x,i)=>`<i class="${i<done?"on":""}"></i>`).join("")}<span>${done} of ${n}</span></div></div>
+        <div class="obk-pg" data-kc="KeyProgress" data-kv="kind=segmented" role="img" aria-label="${done} of ${n} done">${steps.map((x,i)=>`<i class="${i<done?"on":""}"></i>`).join("")}<span>${done} of ${n}</span></div></div>
       ${rows}</div>`;
   };
   function obkDone(x, i) {
@@ -19808,12 +19776,12 @@ if (typeof KEY_HIFI !== "undefined" && !!KEY_HIFI) {
     const v = ph.querySelector(".screen > .view") || ph;
     v.querySelectorAll(".hdr > .back").forEach(b => { if (!b.querySelector("svg")) { b.innerHTML = LI("chevron-left",24); b.setAttribute("aria-label","Back"); } });
     v.querySelectorAll(".field").forEach(f => {
-      const k = f.querySelector(".k"), v2 = f.querySelector(".v"); f.dataset.kc = v2 ? "KeyActionRow" : "KeyField";
+      f.dataset.kc = "KeyField"; const k = f.querySelector(".k"), v2 = f.querySelector(".v");
       if (k && / · from your profile$/.test(k.textContent) && !k.querySelector(".obk-src")) { k.innerHTML = k.textContent.replace(/ · from your profile$/, "") + `<span class="obk-src">From your profile</span>`; }
-      f.dataset.kv = v2 ? "tag=from-profile" : "state=empty";
+      f.dataset.kv = v2 ? "state=prefilled" : "state=empty";
       const e = v2 && [...v2.querySelectorAll("span")].find(x=>x.textContent.trim()==="edit"); if (e) { e.className = "obk-edit"; e.removeAttribute("style"); e.setAttribute("aria-label","Edit"); e.innerHTML = LI("pencil",16); }
     });
-    v.querySelectorAll(".apbar").forEach(a => { a.dataset.kc = "KeyProgressBar"; });
+    v.querySelectorAll(".apbar").forEach(a => { a.dataset.kc = "KeyProgress"; a.dataset.kv = "kind=segmented"; });
     v.querySelectorAll(".hdr .tag").forEach(t => { if (t.textContent.trim()==="saved" && !t.querySelector("svg")) { t.className = "obk-tag obk-saved"; t.removeAttribute("style"); t.innerHTML = LI("check",12)+"Saved"; } });
   }
   /* Links step "Which one is you?" (Apoorv 00:43 "Add some avatars here as well"): each LinkedIn candidate gets its own face so the pick is visual.
