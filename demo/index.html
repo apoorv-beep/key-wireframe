@@ -4245,7 +4245,6 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 
 /* the deck card (KeyStoryCard kind=intro|mention|ask|event|reqs): the picture takes what the words leave; the face sits in the
    picture, never under text; a short top shade for the chrome, a short bottom fade into the ink */
-.bs-vw .bs-vh .bs-n { font-size:13px; font-weight:600; color:#F9FAFC; text-shadow:0 1px 2px rgba(11,14,17,.6); }
 .bs-vw .bf-one { display:flex; flex-direction:column; }
 .bs-vw .bf-pic { position:relative; flex:1 1 auto; min-height:160px; overflow:hidden; background:#12161A; }
 .bs-vw .bf-pic .bs-pt i { background-position:center 22%; }
@@ -4264,7 +4263,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-why { display:flex; align-items:flex-start; gap:6px; font-size:13px; line-height:1.4; color:#A6AFBB; } .bs-vw .bf-why .kn { flex:0 0 auto; margin-top:2px; }
 .bs-vw .bf-draft { margin-top:4px; padding:12px 14px; border-radius:12px; background:rgba(249,250,252,.08); display:grid; gap:6px; }
 .bs-vw .bf-dh { display:flex; align-items:center; gap:8px; font-size:12px; line-height:1; font-weight:700; color:#A6AFBB; }
-.bs-vw .bf-dt { font-size:15px; line-height:1.45; color:#F9FAFC; outline:none; user-select:text; -webkit-user-select:text; max-height:88px; overflow:auto; scrollbar-width:none; }
+.bs-vw .bf-dt { font-size:15px; line-height:1.45; color:#F9FAFC; outline:none; user-select:text; -webkit-user-select:text; }
 .bs-vw .bf-dt:focus { box-shadow:0 0 0 2px rgba(249,250,252,.5); border-radius:6px; }
 .bs-vw .bf-sent { display:flex; align-items:center; gap:10px; margin-top:4px; padding:12px 14px; border-radius:12px; background:rgba(21,128,69,.22); color:#F9FAFC; font-size:15px; font-weight:600; line-height:1.35; }
 .bs-vw .bf-sent .li { flex:0 0 auto; color:#5FD08E; }
@@ -4290,7 +4289,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-end p { font-size:15px; line-height:1.45; margin:0; color:#D8DEE6; padding:0 20px; }
 /* short or narrow phones (SE 320x568): smaller headline, the draft keeps two lines */
 @media (max-height:700px), (max-width:360px) { .bs-vw .bf-tx h3 { font-size:22px; -webkit-line-clamp:2; } .bs-vw .bf-tx p { font-size:14px; -webkit-line-clamp:1; } .bs-vw .bf-why { display:none; }
-  .bs-vw .bf-dt { max-height:44px; font-size:14px; } .bs-vw .bf-tx { gap:6px; padding-top:10px; } .bs-vw .bf-one .bs-acts { padding-top:12px; padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px); }
+  .bs-vw .bf-dt { font-size:14px; line-height:1.4; } .bs-vw .bf-pic { min-height:120px; } .bs-vw .bf-draft { padding:10px 12px; } .bs-vw .bf-tx { gap:6px; padding-top:10px; } .bs-vw .bf-one .bs-acts { padding-top:12px; padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px); }
   .bs-vw .bf-also { padding-top:calc(env(safe-area-inset-top,0px) + 84px); } .bs-vw .bf-also .bf-tx h3 { font-size:24px; } .bs-vw .bf-row { min-height:64px; padding:8px 0; } .bs-vw .bf-cv { width:48px; height:48px; }
   .bs-vw .bf-endk { padding-top:22vh; } }
 
@@ -4723,6 +4722,8 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2nn { display:flex; align-items:center; gap:8px; padding:10px 0 0; font-size:13px; color:var(--ink3); }
 #phone.hf-prof .p2nn { font:var(--type-body-s); color:var(--text-tertiary); padding-top:var(--space-absolute-12); }
 #phone.hf-prof .p2nn svg { color:var(--icon-tertiary, var(--text-tertiary)); flex:0 0 auto; }
+.p2vch { display:inline-flex; align-items:center; gap:6px; margin-top:6px; padding:0; border:0; background:transparent; font:inherit; font-size:13px; font-weight:600; color:#7A5C10; cursor:pointer; }
+#phone.hf-prof .p2vch { font:var(--type-label); letter-spacing:var(--type-label-tracking); font-weight:700; color:var(--text-gold); margin-top:var(--space-absolute-8); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -14488,7 +14489,11 @@ profileBody = function(pid, opts){
 const _p2ProfileSheet = profileSheet;
 function p2FollowBtn(pid){ const k=STATE.p2keep[pid];
   return `<div class="p2fw"><button class="p2follow ${k?'on':''}" aria-pressed="${!!k}" onclick="event.stopPropagation();p2Keep('${pid}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>${k?`<span>In your weekly digest</span>`:''}</div>`; }
-const p2NoHeroLinks = (h, pid) => h.replace(/<div class="plinks">[\s\S]*?<\/div>/, p2Blocked(pid) ? "" : p2FollowBtn(pid));
+/* the vouch rides under the name as gold words (DS: gold for vouched people as text/gold beside the words, never a ring on the photo).
+   Only a "Vouched" receipt from someone else counts, and it opens You and them, where the receipt lives */
+function p2Vouch(pid){ const o=p2Opp(pid), v=o&&viaOf(o), r=o&&(o.receipts||[]).find(x=>x[0]==="Vouched");
+  return v&&r&&v.id!==pid ? `<button class="p2vch" onclick="event.stopPropagation();openSheet('p2between','${pid}')">${LI("badge-check",14)}<span>Vouched by ${firstName(v)}${r[2]?" · "+r[2]:""}</span></button>` : ""; }
+const p2NoHeroLinks = (h, pid) => h.replace(/<div class="plinks">[\s\S]*?<\/div>/, p2Blocked(pid) ? "" : p2Vouch(pid)+p2FollowBtn(pid));
 profileSheet = function(pid){ let h=_p2ProfileSheet(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid); if (p2Blocked(pid)) return h;
   return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
 const _p2SProfile = sProfile;
@@ -14725,7 +14730,7 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
   return `<div class="p2qv" data-p2qv="${pid}">
     <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
     <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div></div>
-    <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}</div>
+    <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}${p2Vouch(pid)}</div>
     <div class="p2qacts">${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button></div>
     ${p2Body(pid)}
     <div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>
@@ -15069,7 +15074,7 @@ function brOpen(fromEl){
   let si = 0, busy = false;
   const srcHTML = () => `<div class="bs-src" data-chapter="${L[si].id}"><div class="bs-slot" data-i="0">${bfCard(L[si], si, L.length)}</div></div>`;
   const chrome = () => `<div class="bs-bars">${L.map((_,i)=>`<i style="--p:${i<=si?1:0}"></i>`).join("")}</div>
-    <div class="bs-vh"><span class="bs-n">${L[si].card==="one" ? `${si+1} of ${L.filter(c => c.card==="one").length}` : ""}</span><button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`;
+    <div class="bs-vh"><button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`;
   const card = () => vw.querySelector(".bs-src:last-child .bs-card");
   const atTop = () => true;
   const run = go => { if (!go) return; close(false, () => new Function(go)()); };
