@@ -5164,6 +5164,18 @@ p,
 .swa.right.mx-acts span br { display:none; }
 
 
+.mx-tipsw { display:flex; gap:4px; align-items:stretch; border-radius:12px; overflow:hidden; background:#fff; padding:4px; }
+.mx-tipsw .mx-tr { flex:1; min-width:0; display:flex; align-items:center; gap:8px; margin-left:-28px; padding:6px 8px; }
+.mx-tipsw .mx-ta { width:24px; height:24px; flex:0 0 auto; border-radius:50%; background:var(--line); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:var(--ink2); }
+.mx-tipsw .mx-tm { flex:1; min-width:0; }
+.mx-tipsw .mx-tm i { display:flex; align-items:center; gap:4px; font-style:normal; font-weight:600; font-size:11px; color:var(--ink); white-space:nowrap; }
+.mx-tipsw .mx-tm i svg { color:var(--ink3); }
+.mx-tipsw .mx-tm u { display:block; height:5px; width:70%; margin-top:5px; border-radius:3px; background:var(--line); }
+.mx-tipsw .mx-tt { display:flex; gap:4px; }
+.mx-tipsw .mx-tt span { width:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; background:var(--fill); color:var(--ink); }
+.mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
+
+
 #phone.hf-msg svg.li { stroke-width:1.75; }
 #phone.hf-msg > .screen, #phone.hf-msg .body, #phone.hf-msg .chatbody, #phone.hf-msg .hdr { background:var(--bg-page); }
 #phone.hf-msg .hdr { border-bottom:0; }
@@ -5298,6 +5310,17 @@ p,
 #phone.hf-msg .hdr > .mx-sf input::placeholder { color:var(--component-input-placeholder); }
 #phone.hf-msg .hdr > .mx-sf + * { flex:0 0 auto; }
 #phone.hf-msg .pills + .xs.faint { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
+
+#phone.hf-msg .conv .a .cgl { color:var(--icon-tertiary); }
+#phone.hf-msg .conv .a .cgl svg.li { width:var(--space-absolute-14); height:var(--space-absolute-14); stroke-width:1.75; }
+#phone.hf-msg .mx-tipsw { border-radius:var(--radius-absolute-12); background:var(--bg-surface-default); padding:var(--space-absolute-4); gap:var(--space-absolute-4); }
+#phone.hf-msg .mx-tipsw .mx-ta { background:var(--component-avatar-bg); color:var(--component-avatar-ink); font:var(--type-overline); }
+#phone.hf-msg .mx-tipsw .mx-tm i { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); }
+#phone.hf-msg .mx-tipsw .mx-tm i svg { color:var(--icon-tertiary); stroke-width:1.75; }
+#phone.hf-msg .mx-tipsw .mx-tm u { background:var(--bg-fill-strong); border-radius:var(--radius-absolute-infinite); }
+#phone.hf-msg .mx-tipsw .mx-tt span { border-radius:var(--radius-absolute-8); background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-msg .mx-tipsw .mx-tt span svg { stroke-width:1.75; }
+#phone.hf-msg .mx-tipsw .mx-tt b { font:var(--type-overline); letter-spacing:0; text-transform:none; color:var(--text-primary); }
 
 
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -5620,10 +5643,10 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .avs .avatar { width:24px; height:24px; box-shadow:0 0 0 var(--border-width-thin) var(--bg-page); }
 #phone.hf-mis .sc .avs .avatar + .avatar { margin-left:-8px; }
 
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
-#phone.hf-mis .sc .avs:has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) { position:relative; width:32px; height:32px; flex:0 0 32px; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar { position:absolute; width:24px; height:24px; margin:0; font:var(--type-overline); letter-spacing:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:first-child { left:0; top:0; }
+#phone.hf-mis .sc .avs:not(.trow > .avs):has(> .avatar:nth-child(2):last-child) > .avatar:last-child { right:0; bottom:0; }
 
 
 #phone.hf-mis .msec.sc.mh-mc { margin:0 0 16px; padding:0; border:0; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
@@ -5819,9 +5842,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .mh-mini i { display:block; height:100%; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-fill); }
 
 
-#phone.hf-mis #sheet .trow .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
-#phone.hf-mis #sheet .trow .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
-#phone.hf-mis #sheet .trow .avs > .avatar + .avatar { margin-left:-5px !important; }
+#phone.hf-mis .trow > .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
+#phone.hf-mis .trow > .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
+#phone.hf-mis .trow > .avs > .avatar + .avatar { margin-left:-5px !important; }
 
 
 
@@ -17370,11 +17393,12 @@ chatsListHTML = function() {
   const list = vis.filter(r=> f==="All"||f==="Archived" || (f==="Unread"&&r.unread) || (f==="Groups"&&r.kind==="group") || (f==="Events"&&r.kind==="event")).sort((a,b)=>(b.pinned?1:0)-(a.pinned?1:0));
   const unreadN = all.filter(r=>r.unread&&!r.archived).length;
   const avOf = r => r.intro ? mxAv({ kind:"dm", with:r.with }) : mxAv(r.c && r.c.kind ? r.c : { kind:r.kind==="dm"?"dm":r.kind, with:(DB.dms.find(d=>d.id===r.id)||{}).with, title:r.name, ini:r.ini });
+  /* one tray, one side (Apoorv 00:49): the swipe-right Pin duplicated the tray's Pin, so it goes; pinned rows keep the small pin after the name */
   /* swipe left shows what the tip promises (Apoorv 23:45): Pin, Mute, More, as WhatsApp and iOS Mail show two or three; event chats and intro rows have no mute, so Pin and More */
-  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI("pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
+  const mxSwipeActs = r => `<span onclick="togglePin('${r.id}')">${LI(r.pinned?"pin-off":"pin",24)}<br>${r.pinned?'Unpin':'Pin'}</span>`
     + (r.kind==="event" || r.intro ? "" : `<span onclick="${r.muted?`convOf('${r.id}').muted=null;render();toast('Unmuted')`:`openSheet('mute','${r.id}')`}">${LI(r.muted?"bell":"bell-off",24)}<br>${r.muted?'Unmute':'Mute'}</span>`)
-    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis-vertical",24)}<br>More</span>`;
-  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa left"><span onclick="togglePin('${r.id}')">${LI("pin",18)}<br>${r.pinned?'Unpin':'Pin'}</span></div><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
+    + `<span onclick="openSheet('conv','${r.id}')">${LI("ellipsis",24)}<br>More</span>`;
+  const row = r => { const pv=mxPreview(r); return `<div class="swr" data-sw="conv|${r.id}"><div class="swa right two mx-acts">${mxSwipeActs(r)}</div>
     <div class="conv swc mx-row" data-kind="${r.intro?'dm':r.kind}" data-conv="${r.intro?r.id:'dm:'+r.id}" data-lpconv="${r.intro?'':r.id}">${avOf(r)}<div class="m"><div class="a">${r.name}${mxTag(r)}${r.pinned?` <span class="cgl">${LI("pin",11)}</span>`:''}${r.muted?` <span class="cgl">${LI("bell-off",11)}</span>`:''}</div><div class="b ${r.unread&&!pv.mark?'u':''}">${pv.h}</div></div><div class="s"><div style="${r.unread?'font-weight:700;color:var(--ink)':''}">${r.when}</div>${r.unread?`<div class="unread">${r.unread}</div>`:''}</div></div></div>`; };
   const open = queueAsks().filter(a=>a.state==="open"||a.state==="pending");
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
@@ -17427,7 +17451,11 @@ function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { con
   ["pointerup","pointercancel","pointerleave"].forEach(ev => sw.addEventListener(ev, fit, true)); }); }
 
 /* the swipe tip names what the tray holds (Apoorv 23:45): archive and the rest live under More */
-(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (t) t.body = "Pin, mute, or More to archive."; })();
+if (typeof LUCIDE!=="undefined" && !LUCIDE["pin-off"]) LUCIDE["pin-off"] = '<path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>';
+/* the tip draws the real tray (Apoorv 00:49): it points at Daniel's pinned row, so it shows that row slid left with its pin mark, then Unpin, Mute, More as the same labelled tiles */
+(()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
+  t.body = "Pin, mute, or More to archive.";
+  t.art = ()=>`<div class="mx-tipsw"><div class="mx-tr"><span class="mx-ta">DR</span><span class="mx-tm"><i>Daniel Reyes ${LI("pin",11)}</i><u></u></span></div><div class="mx-tt">${[["pin-off","Unpin"],["bell-off","Mute"],["ellipsis","More"]].map(([i,l])=>`<span>${LI(i,16)}<b>${l}</b></span>`).join("")}</div></div>`; })();
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread; Apoorv 20:28 "start porting into high fidelity")
    Scoped: #phone gets .hf-msg only on Messages screens, so every other module keeps its look until its own hi-fi lands.
@@ -17669,7 +17697,7 @@ function mhTag(r){
   t(".sc .stp", "KeyProgressBar", e=>`steps=${e.children.length}, at=${e.querySelectorAll(".on").length}`);
   t(".sc .nn", "KeyFactRow", "lead=label");
   t(".pact .sbar", "KeyFooterBar", "actions=primary+quiet");
-  t("#sheet .trow .avs", "KeyFaceStack", "layout=row, size=32");
+  t(".trow > .avs", "KeyFaceStack", "layout=row, size=32");
   t(".sc .avs", "KeyFaceStack", e=>e.children.length===2 ? "layout=diagonal, size=32" : "layout=row, size=24");
   t(".sc .lift", "KeyCard", "elevation=1");
   t(".sc .sl", "KeySectionLabel");
