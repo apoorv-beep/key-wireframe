@@ -3408,6 +3408,30 @@ p,
 .cm-talk .cm-tr { display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex:0 0 auto; }
 .cmhi .cm-talk .cm-che { background:var(--bg-fill-default); border-radius:var(--radius-absolute-12); }
 .cmhi .cm-talk { --face-ring:var(--bg-page); }
+/* Families tab before you're in (pending, declined, removed): the wireframe's screen in hi-fi. One card for the application; recommendations are rows. */
+.cmhi .cm-pendtab .vcard { cursor:default; margin-top:var(--space-absolute-8, 8px); padding:var(--space-absolute-16, 16px); background:var(--bg-surface-default); border:1px solid var(--border-default); border-radius:var(--radius-absolute-20); box-shadow:var(--elevation-1); gap:var(--space-absolute-12, 12px); }
+.cmhi .cm-pendtab .vcard .kicker { align-self:flex-start; display:inline-flex; align-items:center; padding:4px 10px; border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-fill-default); color:var(--text-primary); font-size:13px; font-weight:600; letter-spacing:0; text-transform:none; }
+.cmhi .cm-pendtab .vcard .kicker .d { display:none; }
+.cmhi .cm-pendtab .vcard .id { gap:var(--space-absolute-12, 12px); }
+.cmhi .cm-pendtab .vcard .id .avatar.lg { width:56px; height:56px; border-radius:var(--radius-absolute-12); flex:none; outline:1px solid var(--border-default); outline-offset:-1px; }
+.cmhi .cm-pendtab .vcard .n { font-size:20px; font-weight:600; letter-spacing:-.01em; color:var(--text-primary); }
+.cmhi .cm-pendtab .vcard .s { font-size:15px; line-height:1.4; color:var(--text-secondary); white-space:normal; }
+.cmhi .cm-pendtab .vcard .r4 { display:flex; flex-direction:column; gap:2px; padding-top:var(--space-absolute-12, 12px); border-top:1px solid var(--border-subtle, var(--border-default)); font-size:14px; color:var(--text-secondary); }
+.cmhi .cm-pendtab .vcard .r4 .ty { padding:0; border:0; background:none; font-size:13px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-pendtab .msec { border-top:0; }
+.cmhi .cm-pendtab .msec .mg { padding:0; background:none; }
+.cmhi .cm-pendtab .msec .mst { font-size:20px; font-weight:600; }
+.cmhi .cm-pendtab .msec .kline { color:var(--text-secondary); }
+.cmhi .cm-pendtab .msec .kline .stdot { display:none; }
+.cmhi .cm-pendtab .fcard.compact { margin:0; padding:var(--space-absolute-12, 12px) 0; border:0; border-bottom:1px solid var(--border-default); border-radius:0; background:transparent; box-shadow:none; }
+.cmhi .cm-pendtab .fcard.compact .fcov { width:48px; height:48px; border-radius:var(--radius-absolute-12); overflow:hidden; }
+.cmhi .cm-pendtab .fcard.compact .flg { width:100%; height:100%; border:0; border-radius:inherit; }
+.cmhi .cm-pendtab .fcard.compact .fn { font-size:16px; font-weight:600; color:var(--text-primary); }
+.cmhi .cm-pendtab .fcard.compact .fw { font-size:14px; color:var(--text-secondary); }
+.cmhi .cm-pendtab .fcard.compact .tag { height:var(--space-absolute-32, 32px); padding:0 var(--space-absolute-14, 14px); display:inline-flex; align-items:center; border-radius:var(--radius-absolute-12); border:1px solid var(--component-button-secondary-border); background:transparent; color:var(--component-button-secondary-ink); font-size:13px; font-weight:600; }
+.cmhi .cm-pendtab .xrow { padding:var(--space-absolute-14, 14px) 0; }
+.cmhi .cm-pendtab .xrow .a { font-size:16px; font-weight:600; }
+.cmhi .cm-pendtab .xrow .b { font-size:14px; color:var(--text-secondary); }
 
 /* ==== EDU: first-run tips (education thread, 26 Sep). Replaces the inline .edu banners, the "This is Kai" overlay and the Kai callout.
    One tip at a time, floating above the screen (never in the layout), pointing at the thing it explains, with a small picture of it.
@@ -4439,6 +4463,53 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-rb .foot .btn.ghost { color:var(--component-button-ghost-ink); font:var(--type-label); font-weight:700; }
 #phone.hf-prof .p2rbt { border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-input-border-default); font:var(--type-body-m); padding:var(--space-absolute-12); width:100%; box-sizing:border-box; }
 
+/* ==== CONTEXT HIGH FIDELITY (hi-fi copy only: #phone.hf-ctx). Rows, not boxes; no dashed or dotted edges; tokens only ==== */
+#phone.hf-ctx > .screen, #phone.hf-ctx .body, #phone.hf-ctx .hdr { background:var(--bg-page); }
+#phone.hf-ctx .hdr { border-bottom:0; }
+#phone.hf-ctx .hdr .t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-primary); }
+#phone.hf-ctx svg.li { stroke-width:1.75; }
+/* boxes become sections: In Kai's words, Kai noticed, Still true? */
+#phone.hf-ctx .body > .card { background:transparent !important; border:0 !important; border-radius:0; box-shadow:none; padding:0 0 var(--space-absolute-12); margin:var(--space-absolute-16) 0 0 !important; border-bottom:var(--border-width-hairline) solid var(--border-default) !important; }
+#phone.hf-ctx .body > .card > .xs.faint, #phone.hf-ctx .lbl, #phone.hf-ctx .doc h3 { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-tertiary); margin:var(--space-absolute-20) 0 var(--space-absolute-4); }
+#phone.hf-ctx .body > .card:first-child > .xs.faint { margin-top:0; }
+#phone.hf-ctx .body > .card > p.sm { font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-ctx .body > .card > .row { padding:var(--space-absolute-10) 0; margin-top:0 !important; align-items:center; }
+#phone.hf-ctx .body > .card > .row + .row { border-top:var(--border-width-hairline) solid var(--border-default); }
+#phone.hf-ctx .body > .card .row .sm { font:var(--type-body-m); color:var(--text-primary); }
+/* KeyButton size=s at radius 12 in place of the small chips */
+#phone.hf-ctx .body > .card .chip, #phone.hf-ctx .ctxline .chip { font:var(--type-label) !important; font-weight:700 !important; height:var(--space-absolute-32); padding:0 var(--space-absolute-12) !important; display:inline-flex; align-items:center; border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--border-default); background:var(--bg-surface-default); color:var(--text-primary); }
+#phone.hf-ctx .body > .card:first-child .chip:first-child { background:var(--component-button-primary-bg-default); border-color:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); }
+#phone.hf-ctx .ctxline .chip { width:var(--space-absolute-32); padding:0 !important; justify-content:center; }
+#phone.hf-ctx .ctxline .chip.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+/* Now / Timeline / Shared: KeySegmented */
+#phone.hf-ctx .seg { border:0; background:var(--bg-fill-default); border-radius:var(--radius-absolute-12); padding:var(--space-absolute-4); gap:var(--space-absolute-4); }
+#phone.hf-ctx .seg div { font:var(--type-label); font-weight:700; border-radius:var(--radius-absolute-8); padding:var(--space-absolute-8); color:var(--text-secondary); }
+#phone.hf-ctx .seg div.on { background:var(--component-segmented-active-bg); color:var(--component-segmented-active-ink); }
+/* Tell Kai row */
+#phone.hf-ctx .prow { border-top:0 !important; border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-ctx .prow .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ctx .prow .b { font:var(--type-body-s); color:var(--text-secondary); }
+/* the document: each sentence its own row, tap to see where it came from */
+#phone.hf-ctx .doc p { display:flex; flex-direction:column; font:var(--type-body-m); }
+#phone.hf-ctx .doc .sent { display:block; border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; color:var(--text-primary); text-decoration:none; }
+#phone.hf-ctx .doc .sent:active { background:var(--bg-fill-default); }
+#phone.hf-ctx .doc p > .xs.faint { font:var(--type-caption); color:var(--text-tertiary); padding-top:var(--space-absolute-8); text-decoration:none !important; }
+#phone.hf-ctx .body > .xs.faint { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-ctx .body > .row .btn { border-radius:var(--radius-absolute-12); font:var(--type-label); font-weight:700; }
+/* Timeline: KeyChip filters, Lucide tiles */
+#phone.hf-ctx .pill { font:var(--type-label) !important; height:var(--space-absolute-32); display:inline-flex; align-items:center; padding:0 var(--space-absolute-12) !important; border-radius:var(--radius-absolute-infinite); border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); }
+#phone.hf-ctx .pill.on { background:var(--component-chip-selected-bg); border-color:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); }
+#phone.hf-ctx .ep { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-ctx .epi { width:var(--space-absolute-40); height:var(--space-absolute-40); border:0; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-ctx .epd .xs { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-ctx .epa { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-ctx .epl { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-ctx .epl.inf { color:var(--text-gold); }
+/* Shared */
+#phone.hf-ctx .ctxline { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
+#phone.hf-ctx .ctxline .a { font:var(--type-body-m) !important; color:var(--text-primary); }
+#phone.hf-ctx .ctxline .b { font:var(--type-caption); color:var(--text-tertiary); }
+
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
 .ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
@@ -4707,6 +4778,91 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 .obw-card .ob4pc-li { min-width:0; grid-template-columns:minmax(0,1fr); }
 @media (max-width:360px) { .obw { padding-inline:16px; } .obw h1 { font-size:28px; }
   .obw-card .ob4pc { padding:16px 14px 14px; gap:12px; } .obw-card .ob4pc-av { width:56px; height:56px; font-size:20px; } .obw-foot { margin-inline:14px; } }
+
+/* ==== MISSION CREATE (Mission creation thread, 28 Sep). Load after kai-chat.css and missions-hifi.css. The .hf rules only meet
+   markup that mcreate.js writes when KEY_HIFI is on; the wireframe gets the plain rules at the top. Tokens from key-tokens.css
+   (4fa6160d), type from the 14 styles, radius and shadow tokens only. ==== */
+
+/* wireframe */
+.mc-prog { display:flex; gap:4px; margin:0 0 12px; }
+.mc-prog i { flex:1; height:4px; border-radius:999px; background:var(--component-progress-track, #E3E8EE); }
+.mc-prog i.on { background:var(--component-progress-fill, #0B0E11); }
+.mc-card { cursor:pointer; margin-top:10px; }
+.mc-card.old { opacity:.55; cursor:default; }
+.mc-card .mc-ct { font-size:17px; font-weight:700; margin:4px 0; }
+.mc-card .mc-cgo { margin-top:8px; font-weight:600; }
+.mc-page.lo { position:absolute; inset:0; z-index:60; display:flex; flex-direction:column; background:#fff; padding-top:44px; }
+.mc-page.lo .body { flex:1; overflow-y:auto; }
+.mc-page.lo .foot { padding:10px 16px 28px; }
+.mc-look { display:flex; align-items:center; gap:10px; margin:8px 0 12px; font-size:13px; }
+.mc-look .kn-disc { flex:0 0 auto; }
+
+/* hi-fi: the Kai sheet in create mode (KeyKaiSheet content=mission-create), same frame as every Kai chat */
+.sheet.ks.mc-sheet .mc-prog { flex:0 0 auto; margin:0 20px 4px; gap:4px; }
+.sheet.ks.mc-sheet .mc-prog i { height:4px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
+.sheet.ks.mc-sheet .mc-prog i.on { background:var(--component-progress-fill); }
+.sheet.ks.mc-sheet .mc-n { font:var(--type-caption); color:var(--text-tertiary); margin:1px 0 2px; }
+.sheet.ks.mc-sheet .ks-k .tx p { font:var(--type-body-l); color:var(--text-primary); }
+.sheet.ks.mc-sheet .ks-k:not(:has(.mc-n)) .tx p { font:var(--type-body-m); }
+/* KeyChip variant=answer: the tappable answers, big enough to hit, solid (never dashed) */
+.mc-ans { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:12px; }
+.mc-a { min-height:44px; padding:10px 16px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-chip-bg); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-chip-border); color:var(--component-chip-ink); font:var(--type-body-m-strong); text-align:left; cursor:pointer; }
+.mc-a:active { background:var(--component-chip-selected-bg); color:var(--component-chip-selected-ink); box-shadow:none; }
+
+/* KeyMissionCard place=proposal, as on "What I'd start for you": white card, the hero plate on top, chips, Approve / Edit / Not this.
+   Same values as missions-hifi.css, scoped here so the card looks the same wherever the Kai sheet opens */
+.mc-prop { margin-top:12px; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
+.mc-prop.old { opacity:.5; box-shadow:none; }
+.mc-prop .mh-band { position:relative; overflow:hidden; isolation:isolate; padding:14px 16px; color:var(--text-on-deep-default); cursor:pointer; }
+.mc-prop.old .mh-band { cursor:default; padding:10px 16px 12px; }
+.mc-prop .mh-ghost { position:absolute; right:-18px; bottom:-30px; z-index:-1; color:var(--text-on-deep-default); opacity:.14; line-height:0; transform:rotate(-12deg); }
+.mc-prop .mh-ghost svg { width:120px; height:120px; stroke-width:1.5; }
+.mc-prop .mh-bt { display:flex; align-items:center; gap:12px; margin-top:6px; }
+.mc-prop .mh-mark { flex:0 0 auto; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); background:var(--bg-on-deep-fill); background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent); backdrop-filter:blur(var(--blur-backdrop)); }
+.mc-prop .mh-bn { flex:1; min-width:0; font:var(--type-title); letter-spacing:var(--type-title-tracking); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.mc-prop .mh-go { flex:0 0 auto; line-height:0; opacity:.8; }
+.mc-prop .mh-bs { margin-top:10px; font:var(--type-caption); color:var(--text-on-deep-default); }
+.mc-ov { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-on-deep-muted); }
+.mc-chips { display:flex; flex-wrap:wrap; gap:6px; padding:12px 16px 0; }
+.mc-chip { height:32px; padding:0 12px; display:inline-flex; align-items:center; border-radius:var(--radius-absolute-infinite); border:var(--border-width-hairline) solid var(--component-chip-border); background:var(--component-chip-bg); color:var(--component-chip-ink); font:var(--type-label); }
+.mc-acts { display:flex; align-items:center; gap:8px; padding:12px 16px 16px; }
+.mc-pb { flex:1; height:40px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-body-m-strong); cursor:pointer; }
+.mc-pb.mc-b2 { flex:0 0 auto; padding:0 16px; background:var(--bg-surface-default); color:var(--component-button-secondary-ink); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-button-secondary-border); }
+.mc-q { flex:0 0 auto; height:40px; padding:0 4px; border:0; background:none; font:var(--type-body-m-strong); color:var(--component-button-ghost-ink); cursor:pointer; }
+.mc-ghost { position:absolute; right:-18px; bottom:-30px; z-index:-1; color:var(--text-on-deep-default); opacity:.14; line-height:0; transform:rotate(-12deg); }
+.mc-ghost svg { width:120px; height:120px; stroke-width:1.5; }
+.mc-cth { display:flex; align-items:center; gap:12px; margin-top:8px; }
+.mc-mark { flex:0 0 auto; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); color:var(--text-on-deep-default); background:var(--bg-on-deep-fill); background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent); backdrop-filter:blur(var(--blur-backdrop)); }
+.mc-cs { margin-top:10px; font:var(--type-caption); color:var(--text-on-deep-default); }
+
+/* the full brief, pushed over the chat (KeyPage kind=pushed) */
+.mc-page.hf { position:absolute; inset:0; z-index:60; display:flex; flex-direction:column; background:var(--bg-surface-default); animation:mcPush 280ms cubic-bezier(.2,.8,.2,1) both; }
+.mc-page.hf svg { fill:none; stroke:currentColor; stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.mc-page.hf .kn-disc, .mc-page.hf .kn-disc * { stroke:none; }
+.mc-phd { display:flex; align-items:center; height:56px; padding:44px 4px 0; box-sizing:content-box; flex:0 0 auto; }
+.mc-phd .ks-ib { width:44px; height:44px; display:grid; place-items:center; border:0; background:none; color:var(--icon-primary); cursor:pointer; }
+.mc-pt { flex:1; text-align:center; font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); }
+.mc-pbody { flex:1; min-height:0; overflow-y:auto; padding:4px 16px 24px; scrollbar-width:none; }
+.mc-hero { position:relative; overflow:hidden; isolation:isolate; padding:16px; border-radius:var(--radius-absolute-20); color:var(--text-on-deep-default); box-shadow:var(--elevation-1); }
+.mc-ht { flex:1; min-width:0; font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-on-deep-default); }
+.mc-bq { margin:16px 0 8px; font:var(--type-body-l); color:var(--text-primary); }
+.mc-bf { display:flex; align-items:center; gap:12px; width:100%; min-height:56px; padding:10px 0; border:0; border-top:var(--border-width-hairline) solid var(--border-default); background:none; text-align:left; color:var(--text-primary); cursor:pointer; }
+.mc-bf:first-child { border-top:0; }
+.mc-bf > svg { flex:0 0 auto; color:var(--icon-tertiary); }
+.mc-fi { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; font-style:normal; line-height:0; }
+.mc-bf .m { flex:1; min-width:0; display:flex; flex-direction:column; }
+.mc-bf .b { font:var(--type-caption); color:var(--text-tertiary); margin-bottom:2px; }
+.mc-bf .a { font:var(--type-body-m); color:var(--text-primary); }
+.mc-note { margin-top:12px; font:var(--type-caption); color:var(--text-tertiary); }
+.mc-foot { flex:0 0 auto; display:flex; gap:10px; padding:12px 16px 30px; border-top:var(--border-width-hairline) solid var(--border-subtle); background:var(--bg-surface-default); }
+.mc-b { flex:2; height:48px; border:0; border-radius:var(--radius-absolute-12); background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-button-l); cursor:pointer; }
+.mc-b:active { background:var(--component-button-primary-bg-pressed); }
+.mc-b.mc-b2 { flex:1.3; background:var(--bg-surface-default); color:var(--component-button-secondary-ink); box-shadow:inset 0 0 0 var(--border-width-thin) var(--component-button-secondary-border); }
+@keyframes mcPush { from { transform:translateX(28px); opacity:0; } }
+
+/* the new mission's page: its first search running (KeyKaiLine state=looking) */
+#phone.hf-mis .mc-look, .hf-mis .mc-look { margin:4px 0 12px; font:var(--type-body-s); color:var(--text-secondary); }
+@media (prefers-reduced-motion: reduce) { .mc-page.hf { animation:none; } }
 </style>
 </head>
 <body>
@@ -13300,8 +13456,13 @@ famCard = function(f, compact){
 
 /* ---- declined: told once, kindly, with a reapply date ---- */
 const _cPending = sPendingFamily;
+/* Families tab before you're in: same screens as the wireframe; in hi-fi the family wears its mark, "Also for you" wears Kai's K,
+   and the rows take the page styling (Apoorv 28 Sep 00:12: keep the architecture, make it high fidelity) */
+const cPendHi = h => !cHiFi() ? h : h.replace('<div class="body">', '<div class="body cm-hi cm-pendtab">')
+  .replace(/(<div class="id">)<div class="avatar lg"[^>]*>X<\/div>/, `$1<div class="avatar lg cm-markav">${cMark(cFamAny("xoogler"))}</div>`)
+  .replace('<div class="mg t2">✦</div>', `<div class="mg t2">${typeof kaiMark==="function" ? kaiMark(32) : "✦"}</div>`);
 sPendingFamily = function(){
-  const d = STATE.cDeclined; const h = _cPending();
+  const d = STATE.cDeclined; const h = cPendHi(_cPending());
   if (STATE.cRemovedMe) {
     const rm = STATE.cRemovedMe;
     const block = `<div class="cm-sec" style="margin-top:4px"><div class="cm-row" style="cursor:default">${av("X","lg")}<div class="m"><div class="a">You're no longer in ${rm.name}</div><div class="b">${rm.reason}</div></div></div>
@@ -13941,6 +14102,9 @@ const _fxCloseSheet = closeSheet; closeSheet = function(){
   if (ev && ev.type==="click" && ev.target && ev.target.classList && ev.target.classList.contains("scrim") && Date.now()-(STATE._sheetAt||0) < 400) return;
   return _fxCloseSheet.apply(this, arguments);
 };
+/* Low-fi sweep (coordinator 00:31): a pending member saw member-only notifications. Until approval only system notices,
+   events open to guests and the notices raised during the application itself reach the bell. */
+const _fxNotifs = notifs; notifs = function(){ const all = _fxNotifs.apply(this, arguments); return STATE.member ? all : all.filter(n => /^r/.test(n.id) || n.type==="system" || n.type==="event" || n.type==="calendar"); };
 
 /* ==== PROFILE v2 (profiles thread, 27 Sep 2026; Apoorv's yes 21:24 on the plan https://claude.ai/artifact/5VbBEXosR5xCAP4PZhtWfG)
    Prototype it follows: https://claude.ai/artifact/QcL7jJaDepUPC5Qa78zA8G
@@ -14028,7 +14192,7 @@ function p2Body(pid){
 
 /* ---- option C dock: Ask Kai with its first answer, then Message ---- */
 function p2Dock(pid){ const p=DB.people[pid], d=p2d(pid), sent=STATE.p2done["msg"+pid];
-  return `<button class="btn p2kai" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
+  return `<button class="btn p2kai" data-kc="KeyKaiBar" data-kv="size=full, opener=true" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
 function p2Blocked(pid){ return typeof fxBlocked==="function" && fxBlocked(pid); }
 
 function p2Privacy(){ return `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
@@ -14217,7 +14381,7 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
     `<div class="pbtn p2prev" aria-label="Preview who sees what" onclick="openSheet('p2viewas','')">${LI("eye",18)}<span>Preview</span></div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
   const va = STATE.ownPreview ? ({member:"a member of your families",match:"someone Kai matched with you",outside:"someone outside your families"})[STATE.p2viewAs||"member"] : "";
   h = h.replace(/<span class="xs muted" style="flex:1">This is what a member sees.<\/span>/, `<span class="xs muted" style="flex:1">What ${va} sees.</span>`);
-  if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
+  if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" data-kc="KeyKaiBar" data-kv="size=full, opener=false" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
   return h; };
 
 const _p2PortSheet2 = portSheet;
@@ -14322,6 +14486,16 @@ portSheet = function(type, id){
   return _p2PortSheetRb(type, id); };
 const _p2RbRender = render;
 render = function(){ const r = _p2RbRender.apply(this, arguments); if (p2HiFi() && typeof phone!=="undefined" && phone) phone.classList.toggle("hf-rb", STATE.screen==="readback" && (STATE.rbStep||1)===1); return r; };
+
+/* ==== CONTEXT HIGH FIDELITY (low-fi gaps sweep, 28 Sep). Hi-fi copy only: #phone.hf-ctx on you:context, all three tabs.
+   Same architecture (In Kai's words, Now / Timeline / Shared, Kai noticed, Still true?, the document, Export / Import); boxes become
+   sections of rows with hairlines, dotted and dashed edges go, and the Timeline's glyphs become Lucide tiles. ==== */
+const P2_CTX_GLYPH = { "◆":"calendar-days", "◎":"flag", "☎":"mic", "↧":"link", "“":"message-square", "✦":"sparkles", "⌘":"user-check" };
+const _p2CtxRender = render;
+render = function(){ const r = _p2CtxRender.apply(this, arguments);
+  if (p2HiFi() && typeof phone!=="undefined" && phone) { const on = /^you:context/.test(STATE.screen||""); phone.classList.toggle("hf-ctx", on);
+    if (on) phone.querySelectorAll(".epi").forEach(e => { const g = e.textContent.trim(); if (P2_CTX_GLYPH[g]) e.innerHTML = LI(P2_CTX_GLYPH[g], 16); }); }
+  return r; };
 
 /* ==== FAMILY MARKS (missions thread, 27 Sep, v63; assets from the bottom nav thread, wireframes/nav/logos) ====
    Every surface that draws a family by its initial (.flogo, .flg, the family tab's .ic.logo, Community's .cm-sq, switcher and
@@ -15942,6 +16116,305 @@ window.addEventListener("pagehide", dataSave);
 
 if (dataLoad()) setTimeout(()=>toast("Picked up where you left off. Restart clears it."), 400);
 else if (STATE.dataStale) { delete STATE.dataStale; setTimeout(()=>toast("The prototype was updated, so this is a fresh start."), 400); }
+
+/* ==== MISSION CREATE (Mission creation thread, 28 Sep; Apoorv 00:14: "I should have a conversation with it ... it should create
+   something similar to post-onboarding ... a card you can click into and see the brief ... I need to approve that, and then it
+   becomes a mission"). Every way in (the + on Missions, the pills, Kai's "Start a mission", "make a mission" from search) now opens
+   Kai. Kai asks one thing at a time, tappable answers plus free text, drafts the brief as a card in the chat, the card opens the
+   full brief (KeyBriefDoc, the same rows as the mission page's Brief tab), and only Approve makes it a mission, with the first
+   New pick search starting. Kai never starts a mission without that tap. Works in the wireframe; the hi-fi look is gated on
+   KEY_HIFI (the Kai sheet's own ks-* markup, the mission theme plates). Load last, after missions-hifi.js if present. ==== */
+const mcHF = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+const mcLc = t => /^[A-Z][a-z]/.test(t) ? t.charAt(0).toLowerCase()+t.slice(1) : t;
+const mcQ = s => String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+Object.entries({
+  compass:'<path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/>',
+  "eye-off":'<path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>',
+  "trash-2":'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/>',
+  "chevron-left":'<path d="m15 18-6-6 6-6"/>', "arrow-up":'<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>', x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  mic:'<path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/>',
+  "map-pin":'<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>'
+}).forEach(([k,v]) => { if (typeof LUCIDE!=="undefined" && !LUCIDE[k]) LUCIDE[k] = v; });
+
+/* What Kai asks, per kind. One question at a time; each answer is a chip or the member's own words. `p` is how a chip reads
+   inside the brief sentence. Five questions at most; "Where Kai looks" is filled from the member's own communities and editable. */
+const MC_KINDS = {
+  role: { type:"Looking", icon:"briefcase", theme:"harbour", open:"A new role. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","What role are you after?",["Senior PM","Group PM","Head of product"]],
+         ["shape","What kind of company?",[["AI company, under 200 people","an AI company under 200 people"],["Big tech","big tech"],["Any stage is fine","any stage"]]],
+         ["where","Where would you work?",["Bay Area","Remote","New York"]],
+         ["keep","Anyone I should not approach?",["Nobody at my current company",["No one, keep it open",""]]],
+         ["done","When is this done?",["A conversation with a hiring manager","An offer I accept","Three referrals"]] ],
+    name:a=>`${a.what} role${a.co?` at ${a.co}`:/AI/.test(a.shape)?" at an AI company":""}`,
+    say:a=>`A ${a.what} role at ${a.co||a.shapeP}${a.where?`, ${a.whereP}`:""}.` },
+  cofounder: { type:"Cofounder", icon:"handshake", theme:"dusk", open:"A cofounder. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","What kind of cofounder?",[["Technical, has shipped","technical, has shipped"],["Go-to-market","go-to-market"],["Design-led","design-led"]]],
+         ["shape","What are you building?",[["Agents infrastructure","agents infrastructure"],["Something in AI, still shaping","something in AI, still shaping"],["Not decided yet","an idea not decided yet"]]],
+         ["where","Where?",["Bay Area",["Remote is fine","remote"],"Anywhere"]],
+         ["keep","Anyone I should not approach?",["Nobody at my current company",["No one, keep it open",""]]],
+         ["done","When is this done?",["We agree to start","A first working week together",["Standing, no end date","standing"]]] ],
+    name:a=>`${a.what.split(",")[0]} cofounder`,
+    say:a=>`A ${a.whatP} cofounder for ${a.shapeP}${a.where?`, ${a.whereP}`:""}.` },
+  hire: { type:"Hiring", icon:"users", theme:"harbour", open:"A hire. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","Who are you hiring?",["Senior PM","Product designer","Founding engineer"]],
+         ["shape","How soon?",[["This quarter","this quarter"],["Within a month","within a month"],["No rush","no rush"]]],
+         ["where","Where?",["Bay Area",["Remote is fine","remote"],"New York"]],
+         ["keep","Anyone I should not approach?",["People at my company",["No one, keep it open",""]]],
+         ["done","When is this done?",["Someone accepts","Three strong candidates",["Standing, no end date","standing"]]] ],
+    name:a=>`Hire a ${mcLc(a.what)}`,
+    say:a=>`A ${mcLc(a.what)} for my team, ${a.shapeP}${a.where?`, ${a.whereP}`:""}.` },
+  raise: { type:"Raising", icon:"rocket", theme:"sage", open:"A raise. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","What round?",["Pre-seed","Seed","Series A"]],
+         ["shape","Who do you want on the cap table?",[["Operators who've built in AI","operators who've built in AI"],["Seed funds","seed funds"],["Angels from my communities","angels from my communities"]]],
+         ["where","How much?",["Under $2M","$2M to $5M",["I'll say later",""]]],
+         ["keep","Anyone I should not approach?",["My current investors",["No one, keep it open",""]]],
+         ["done","When is this done?",["A lead commits","The round closes","Ten investor conversations"]] ],
+    name:a=>`Raise a ${a.what.toLowerCase()} round`,
+    say:a=>`A ${a.what.toLowerCase()} round${a.whereP?` of ${a.whereP}`:""}, from ${a.shapeP}.` },
+  people: { type:"The people", icon:"users", theme:"ink", standing:true, open:"People worth knowing. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","Who do you want to meet?",[["Founders building in AI","founders building in AI"],["PMs a step ahead","PMs a step ahead of me"],["People new to the Bay","people new to the Bay"]]],
+         ["shape","How do you like to meet?",[["One coffee a month","one coffee a month"],["At events","at events"],["Either","over coffee or at events"]]],
+         ["where","Where?",["Bay Area",["Remote is fine","remote"],"Anywhere"]],
+         ["keep","Anyone I should not approach?",["Nobody at my current company",["No one, keep it open",""]]] ],
+    name:a=>`Meet ${a.whatP}`,
+    say:a=>`Meet ${a.whatP}, ${a.shapeP}${a.where?`, ${a.whereP}`:""}.` },
+  advisor: { type:"Learning", icon:"compass", theme:"ink", open:"An advisor. {n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["what","What should they have done?",[["Raised a seed","raised a seed"],["Sold to enterprise","sold to enterprise"],["Hired a first team","hired a first team"]]],
+         ["shape","How much of their time?",[["One call","one call"],["An hour a month","an hour a month"],["Ongoing, formal","an ongoing, formal role"]]],
+         ["where","Where?",["Bay Area",["Remote is fine","remote"],"Anywhere"]],
+         ["keep","Anyone I should not approach?",["Nobody at my current company",["No one, keep it open",""]]],
+         ["done","When is this done?",["One advisor agrees","Three good calls"]] ],
+    name:a=>`An advisor who's ${a.whatP}`,
+    say:a=>`An advisor who's ${a.whatP}, for ${a.shapeP}${a.where?`, ${a.whereP}`:""}.` },
+  other: { type:"Learning", icon:"compass", theme:"ink", open:"{n} quick questions, then I'll draft the brief for you to check.",
+    qs:[ ["shape","Who would move this forward?",[["Someone who works there","someone who works there"],["Someone who's done it","someone who's done it"],["Someone who hires for it","someone who hires for it"]]],
+         ["what","What would a first win be?",["An introduction","A first conversation","Advice on how to start"]],
+         ["where","Where?",["Bay Area",["Remote is fine","remote"],"Anywhere"]],
+         ["keep","Anyone I should not approach?",["Nobody at my current company",["No one, keep it open",""]]],
+         ["done","When is this done?",["A first conversation",["You say so","when you say so"]]] ],
+    name:a=>a.seed,
+    say:a=>`${a.seed}, through ${a.shapeP}${a.where?`, ${a.whereP}`:""}.` }
+};
+const MC_LBL = { hire:{ shape:["clock","How soon"] }, raise:{ shape:["users","Who you want"], where:["check","How much"] }, people:{ shape:["check","How you meet"] }, advisor:{ shape:["clock","Their time"] } };
+const mcLbl = (kind, f) => (MC_LBL[kind]||{})[f] || (f==="where" ? ["map-pin","Where"] : ["check","Must have"]);
+const mcOpen = m => { const n = mcQs().length; return MC_KINDS[m.kind].open.replace("{n}", ["No","One","Two","Three","Four","Five"][n]||n); };
+const MC_VERB = ["role","cofounder","hire","raise","people"];
+function mcKindOf(t){ return /hir(e|ing)/i.test(t) ? "hire" : /cofounder|co-founder/i.test(t) ? "cofounder" : /rais|investor|fund|round/i.test(t) ? "raise" : /advis|mentor/i.test(t) ? "advisor" : /meet|people/i.test(t) ? "people" : /role|job|\bpm\b|get into|work at/i.test(t) ? "role" : "other"; }
+function mcFams(){ return (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name); }
+
+/* what the member already said in the opening line is not asked again */
+function mcSeed(m, text){
+  const a = m.a, pre = m.pre;
+  const co = /(?:[Gg]et into|[Ww]ork at|[Jj]oin)\s+([A-Z][\w.&-]*(?:\s[A-Z][\w.&-]*)?)/.exec(text); if (co && m.kind==="role") { a.co = co[1]; pre.push("shape"); }
+  if (/designer/i.test(text) && m.kind==="hire") { a.what = "Product designer"; pre.push("what"); }
+  if (/seed/i.test(text) && m.kind==="advisor") { a.what = "Raised a seed"; a.whatP = "raised a seed"; pre.push("what"); }
+  if (m.kind==="other") a.seed = text ? text.charAt(0).toUpperCase()+text.slice(1) : "A new mission";
+}
+/* STATE.mc: the one draft in progress. open = the Kai sheet is showing it. */
+function mcStart(seed){
+  seed = seed || {};
+  const resume = STATE.mc && !seed.kind && !seed.text;
+  if (!resume) {
+    const text = seed.text ? seed.text.charAt(0).toUpperCase()+seed.text.slice(1) : "";
+    const kind = seed.kind || (text ? mcKindOf(text) : null);
+    STATE.mc = { kind, a:{}, pre:[], step:0, msgs:[], card:0, open:true, edit:null }; if (kind) mcSeed(STATE.mc, text);
+    const k = kind && MC_KINDS[kind];
+    if (text) STATE.mc.msgs.push({ who:"u", text:mcQ(text) });
+    if (!k) STATE.mc.msgs.push({ who:"k", text:"What do you want to go after? Pick one or say it your way.", chips:[...START_VERBS.map(v=>v[0]), "Find an advisor"] });
+    else { STATE.mc.msgs.push({ who:"k", text:mcOpen(STATE.mc) }); mcAskNext(); }
+  } else { STATE.mc.open = true; STATE.mc.msgs.push({ who:"sys", text:"Picking up your draft" }); }
+  STATE.kaiScope = null; STATE.logMode = null; STATE.sheet = { type:"kai", id:null }; STATE.sheetFull = !!(STATE.mc.msgs.some(m=>m.who==="u")); STATE.mcDoc = false;
+  render();
+}
+function mcQs(){ const m = STATE.mc; return MC_KINDS[m.kind].qs.filter(q=>!m.pre.includes(q[0])); }
+function mcChip(c){ return Array.isArray(c) ? c : [c, null]; }
+function mcAskNext(){
+  const m = STATE.mc, qs = mcQs();
+  if (m.step >= qs.length) { mcDraft(); return; }
+  const q = qs[m.step];
+  m.msgs.push({ who:"k", text:q[1], chips:q[2].map(c=>mcChip(c)[0]), q:q[0], n:[m.step+1, qs.length] });
+}
+function mcSet(field, t){
+  const m = STATE.mc, k = MC_KINDS[m.kind]; const q = k.qs.find(x=>x[0]===field);
+  const hit = q && q[2].map(mcChip).find(c=>c[0]===t);
+  if (field==="shape") delete m.a.co;
+  m.a[field] = t; m.a[field+"P"] = hit ? (hit[1]===null ? t : hit[1]) : t;
+  if (field==="keep" && hit && hit[1]==="") m.a.keep = "";
+  if (field==="where" && hit && hit[1]==="") m.a.where = "";
+  if (field==="done" && /standing/i.test(m.a.doneP)) m.a.standing = true; else if (field==="done") m.a.standing = false;
+}
+/* an answer: a chip tap or the member's own words */
+function mcAnswer(t){
+  const m = STATE.mc; if (!m) return; t = String(t).trim(); if (!t) return;
+  if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull) { const el = phone.querySelector("#sheet"); STATE.sheetFull = true; STATE.kaiGrew = el ? el.offsetHeight : 0; }
+  m.msgs.push({ who:"u", text:mcQ(t) });
+  if (!m.kind) { const i = START_VERBS.findIndex(v=>v[0]===t); m.kind = i>=0 ? MC_VERB[i] : mcKindOf(t); if (i<0) mcSeed(m, t);
+    m.msgs.push({ who:"k", text:mcOpen(m) }); mcAskNext(); render(); return; }
+  if (m.edit==="menu") { const f = Object.entries(MC_EDIT).find(([,l])=>l===t); m.edit = null; if (f) { m.msgs.pop(); mcEdit(f[0]); return; } }
+  if (m.edit) { const f = m.edit; m.edit = null;
+    if (f==="look") m.a.look = t==="All my communities" ? null : t.replace(/ only$/,"");
+    else mcSet(f, t);
+    mcDraft(true); render(); return; }
+  if (m.card) { /* after the draft: their words become a Must have line, the draft updates */
+    m.a.extra = (m.a.extra||[]).concat(t.charAt(0).toUpperCase()+t.slice(1)); mcDraft(true, `Added "${mcQ(t)}" as a must have.`); render(); return; }
+  const q = mcQs()[m.step]; mcSet(q[0], t); m.step++; mcAskNext(); render();
+}
+/* the brief, composed only from what the member said (never from data they haven't given) */
+function mcBrief(){
+  const m = STATE.mc, k = MC_KINDS[m.kind], a = Object.assign({}, m.a);
+  ["what","shape","where"].forEach(f=>{ if (a[f] && a[f+"P"]==null) a[f+"P"] = a[f]; });
+  const mustF = [[a.co ? `At ${a.co}` : a.shape, "shape"], [a.where, "where"], ...(a.extra||[]).map(x=>[x,"menu"])].filter(x=>x[0] && !/^any|^anywhere$|^either$/i.test(x[0]));
+  const must = mustF.map(x=>x[0]);
+  const fams = mcFams(), look = a.look ? [a.look] : fams;
+  return { kind:m.kind, type:k.type, icon:k.icon, theme:k.theme, name:k.name(a), say:k.say(a).replace(/\s+,/g,","), must, mustF, keep:a.keep||"", done: k.standing||a.standing ? "Standing, no end date" : (a.done||"You say so"), standing:!!(k.standing||a.standing), look };
+}
+function mcDraft(again, lead){
+  const m = STATE.mc; m.msgs.forEach(x=>{ if (x.card && !x.old) { x.old = true; x.b = m.brief; } });
+  m.card++; m.brief = mcBrief();
+  m.msgs.push({ who:"k", text: lead ? `${lead} Here's the new draft.` : again ? "Updated. Here's the new draft." : "Here's what I'd start for you. Nothing starts until you approve it.", card:m.card });
+}
+const MC_EDIT = { what:"The ask", shape:"Must have", where:"Where", keep:"Who I won't approach", done:"Done when", look:"Where Kai looks" };
+function mcEdit(field){
+  const m = STATE.mc; if (!m) return; m.edit = field; STATE.mcDoc = false; STATE.sheet = { type:"kai", id:null }; STATE.sheetFull = true;
+  if (field==="menu") m.msgs.push({ who:"k", text:"What should change?", chips:Object.keys(MC_EDIT).filter(f=>f==="look"||mcQs().some(q=>q[0]===f)).map(f=>MC_EDIT[f]) });
+  else if (field==="look") m.msgs.push({ who:"k", text:"Where should I look?", chips:["All my communities", ...mcFams().map(f=>`${f} only`)] });
+  else { const q = MC_KINDS[m.kind].qs.find(x=>x[0]===field); m.msgs.push({ who:"k", text:q[1], chips:q[2].map(c=>mcChip(c)[0]), q:field }); }
+  render();
+}
+/* Approve: the member's yes. Only now does it become a mission, and the first search for a New pick starts */
+function mcApprove(){
+  const m = STATE.mc; if (!m || !m.brief) return; const b = m.brief;
+  let n = DB.missions.length+1; while (DB.missions.some(x=>x.id==="m"+n)) n++; const id = "m"+n;
+  DB.missions.push({ id, type:b.type, name:b.name, brief:b.say, done:b.done, standing:b.standing, status:"active", started:true, constraints:b.must.slice(), keep:b.keep, where:b.look.slice(), mhTheme:b.theme, mhIcon:b.icon, mcNew:true,
+    mlog:[["You","approved the brief Kai drafted with you","now"],["Kai",`started looking in ${b.look.join(", ")} for your first New pick`,"now"]] });
+  if (typeof STATE.intent!=="undefined" && Array.isArray(STATE.intent) && !STATE.intent.includes(b.type)) STATE.intent.push(b.type);
+  STATE.mc = null; STATE.mcDoc = false; STATE.sheet = null; STATE.sheetFull = false;
+  if (!STATE.member) { render(); toast("Saved. Kai starts looking the day you're in."); return; }
+  go("mission:"+id); toast("Mission started. Kai is looking for your first New pick.");
+}
+function mcDiscard(){
+  const keep = STATE.mc; STATE.mc = null; STATE.mcDoc = false; STATE.sheet = null; STATE.sheetFull = false; render();
+  toast("Draft discarded.", ()=>{ STATE.mc = keep; render(); });
+}
+
+/* ---- views ---- */
+function mcPlate(b){ return typeof EV_THEMES!=="undefined" && EV_THEMES[b.theme] ? EV_THEMES[b.theme][1] : "var(--bg-deep, #0B0E11)"; }
+/* KeyBriefCard (draft): the chat's card. The mission's own plate, its mark and title, what it holds, one way in */
+/* KeyMissionCard place=proposal (the card "What I'd start for you" uses after the call): the hero plate with the mark, the title and
+   the done condition, the must-haves as chips, then Approve in Start's place, Edit, and Not this. The hero opens the full brief */
+function mcCard(b, n, old){
+  const cap = b.standing ? "Standing, no end date" : `Done when: ${b.done}`;
+  const ver = old ? "Earlier draft" : `Draft${n>1?`, version ${n}`:""}`;
+  if (!mcHF()) return `<div class="card mc-card${old?" old":""}"><div ${old?"":`data-mcdoc="1" role="button"`}><div class="xs faint">${ver}</div><div class="mc-ct">${b.name}</div><div class="sm muted">${cap}</div></div>
+    ${old?"":`${b.must.length?`<div class="row" style="gap:6px;flex-wrap:wrap;margin-top:8px">${b.must.map(c=>`<span class="tag">${c}</span>`).join("")}</div>`:""}
+    <div class="row" style="gap:8px;margin-top:12px;align-items:center"><button class="btn sm" style="margin:0;flex:1;height:40px" data-mcapprove="1">Approve</button><button class="btn sm sec" style="margin:0;height:40px" data-mcedit="menu">Edit</button><span class="sm muted" style="cursor:pointer;padding:0 6px" data-mcdiscard="1">Not this</span></div>`}</div>`;
+  const hero = `<div class="mh-band mc-band" ${old?"":`data-mcdoc="1" role="button"`} style="background:${mcPlate(b)}" data-kc="KeyMissionHero" data-kv="size=card, theme=${b.theme}, state=${old?"replaced":"draft"}">
+    ${old||/^(users|compass)$/.test(b.icon)?"":`<i class="mh-ghost">${LI(b.icon, 120)}</i>`}
+    <div class="mc-ov">${ver}</div>
+    <div class="mh-bt"><div class="mh-mark s32" data-kc="KeyMissionMark" data-kv="size=32, theme=${b.theme}">${LI(b.icon, 18)}</div><div class="mh-bn">${b.name}</div>${old?"":`<span class="mh-go">${LI("chevron-right",20)}</span>`}</div>
+    ${old?"":`<div class="mh-bs">${cap}</div>`}</div>`;
+  if (old) return `<div class="mc-prop old" data-kc="KeyMissionCard" data-kv="place=proposal, state=replaced">${hero}</div>`;
+  return `<div class="mc-prop" data-kc="KeyMissionCard" data-kv="place=proposal, state=draft">${hero}
+    ${b.must.length?`<div class="mc-chips">${b.must.map(c=>`<span class="mc-chip" data-kc="KeyChip">${c}</span>`).join("")}</div>`:""}
+    <div class="mc-acts"><button class="mc-pb" data-mcapprove="1" data-kc="KeyButton" data-kv="variant=primary, size=m">Approve</button><button class="mc-pb mc-b2" data-mcedit="menu" data-kc="KeyButton" data-kv="variant=secondary, size=m">Edit</button><button class="mc-q" data-mcdiscard="1" data-kc="KeyButton" data-kv="variant=quiet">Not this</button></div></div>`;
+}
+function mcMsg(x){
+  const m = STATE.mc, live = x.chips && m.msgs[m.msgs.length-1]===x;
+  if (!mcHF()) {
+    if (x.who==="sys") return `<div class="xs faint" style="text-align:center">${x.text}</div>`;
+    return `<div class="msg ${x.who}">${x.n?`<div class="xs faint">${x.n[0]} of ${x.n[1]}</div>`:""}${x.text}${x.card?mcCard(x.old ? x.b : m.brief, x.card, x.old):""}${live?`<div class="chips" style="margin-top:8px">${x.chips.map(c=>`<div class="chip" data-mca="${mcQ(c)}">${c}</div>`).join("")}</div>`:""}</div>`;
+  }
+  if (x.who==="u") return `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${x.text}</div>`;
+  if (x.who==="sys") return `<div class="ks-sys">${x.text}</div>`;
+  return `<div class="ks-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx">${x.n?`<div class="mc-n">${x.n[0]} of ${x.n[1]}</div>`:""}<p>${x.text}</p>${x.card?mcCard(x.old ? x.b : m.brief, x.card, x.old):""}${live?`<div class="mc-ans" data-kc="KeyAnswerChips">${x.chips.map(c=>`<button class="mc-a" data-mca="${mcQ(c)}" data-kc="KeyChip" data-kv="variant=answer">${c}</button>`).join("")}</div>`:""}</div></div>`;
+}
+function mcProgress(){
+  const m = STATE.mc; if (!m.kind) return ""; const n = mcQs().length + 1; const at = m.card ? n : m.step;
+  return `<div class="mc-prog" data-kc="KeyProgressBar" data-kv="steps=${n}, at=${at}" aria-label="${at} of ${n}">${Array.from({length:n},(_,i)=>`<i class="${i<at?"on":""}"></i>`).join("")}</div>`;
+}
+function mcSheet(){
+  const m = STATE.mc;
+  const ph = m.edit ? "Or say it your way" : m.card ? "Change anything, in your words" : m.kind || m.msgs.length>1 ? "Or say it your way" : "Say what you're after";
+  if (!mcHF()) return `<div class="row" style="align-items:center;margin:0 0 8px"><div style="flex:1;font-size:15px;font-weight:700">New mission</div><div class="icon" data-mcclose="1">×</div></div>${mcProgress()}
+    <div class="thread">${m.msgs.map(mcMsg).join("")}</div>
+    <div class="kcomp"><textarea class="kin" id="mcIn" rows="1" placeholder="${ph}"></textarea><div class="krow"><div style="flex:1"></div><div class="kico" data-mcmic="1">${LI("mic",18)}</div><div class="ksend" data-mcsend="1">${LI("arrow-up",18)}</div></div></div>
+    <div class="xs faint" style="text-align:center;margin-top:8px">Nothing starts until you approve the brief.</div>`;
+  return `<div class="ks-hd mc-hd"><span class="ks-t">${kaiMark(28)}<b>New mission</b></span><button class="ks-ib" data-mcclose="1" aria-label="Close">${LI("x",20)}</button></div>${mcProgress()}
+    <div class="ks-body"><div class="ks-thread">${m.msgs.map(mcMsg).join("")}</div></div>
+    <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="ks-box"><textarea class="kin" id="mcIn" rows="1" placeholder="${ph}"></textarea>
+      <div class="ks-crow"><span class="grow"></span><button class="ks-ci" id="kaiMic" data-mcmic="1" aria-label="Hold to talk">${LI("mic",20)}</button><button class="ks-go" data-mcsend="1" aria-label="Send">${LI("arrow-up",18)}</button></div></div></div>`;
+}
+/* the full brief: a page pushed over the chat. KeyBriefDoc, the rows the mission page's Brief tab uses, each one editable with Kai */
+function mcDocHTML(){
+  const m = STATE.mc, b = m.brief; const hf = mcHF();
+  const rows = [
+    ...b.mustF.map(x=>{ const l = x[1]==="menu" ? ["check","Must have"] : mcLbl(m.kind, x[1]); return [l[0], l[1], x[0], x[1]]; }),
+    ["flag","Done when",b.done,"done"],
+    ["users","Where Kai looks",b.look.join(", "),"look"],
+    ...(b.keep?[["eye-off","Kai won't approach",b.keep,"keep"]]:[])
+  ];
+  if (!hf) return `<div class="mc-page lo"><div class="hdr"><div class="back" data-mcback="1">‹</div><div class="t">Draft brief</div><div class="icon" data-mcdiscard="1" title="Discard draft">${LI("trash-2",18)}</div></div>
+    <div class="body"><div class="lbl">The ask</div><h2 style="margin:4px 0 6px">${b.name}</h2><p>${b.say}</p>
+      ${rows.map(r=>`<div class="xrow" data-mcedit="${r[3]}"><div class="m"><div class="xs faint">${r[1]}</div><div class="a">${r[2]}</div></div><span class="chev">›</span></div>`).join("")}
+      <p class="xs faint" style="margin-top:12px">Only you see this brief. Kai uses it to pick who to show you; nobody is contacted until you send.</p></div>
+    <div class="foot" style="display:flex;gap:10px;align-items:center"><button class="btn sec" data-mcedit="menu" style="flex:1">Edit with Kai</button><button class="btn" data-mcapprove="1" style="flex:2">Approve and start</button></div></div>`;
+  return `<div class="mc-page hf" data-kc="KeyPage" data-kv="kind=pushed">
+    <div class="mc-phd"><button class="ks-ib" data-mcback="1" aria-label="Back to Kai">${LI("chevron-left",24)}</button><span class="mc-pt">Draft brief</span><button class="ks-ib" data-mcdiscard="1" aria-label="Discard draft">${LI("trash-2",22)}</button></div>
+    <div class="mc-pbody">
+      <div class="mc-hero" style="background:${mcPlate(b)}" data-kc="KeyMissionHero" data-kv="size=page, theme=${b.theme}, state=draft">${/^(users|compass)$/.test(b.icon)?"":`<i class="mc-ghost">${LI(b.icon, 120)}</i>`}
+        <div class="mc-cth"><span class="mc-mark" data-kc="KeyMissionMark" data-kv="size=44, theme=${b.theme}">${LI(b.icon, 22)}</span><span class="mc-ht">${b.name}</span></div>
+        <div class="mc-cs">Draft. Kai starts looking when you approve</div></div>
+      <div class="mc-doc" data-kc="KeyBriefDoc" data-kv="state=draft">
+        <div class="mc-bq">${b.say}</div>
+        <div class="mc-rows">${rows.map(r=>`<button class="mc-bf" data-mcedit="${r[3]}" data-kc="KeyRow" data-kv="lead=icon, action=chevron"><i class="mc-fi">${LI(r[0],16)}</i><span class="m"><span class="b">${r[1]}</span><span class="a">${r[2]}</span></span>${LI("chevron-right",18)}</button>`).join("")}</div>
+        <div class="mc-note">Only you see this. Kai uses it to choose who to show you, and nobody hears from you until you send.</div>
+      </div></div>
+    <div class="mc-foot" data-kc="KeyFooterBar" data-kv="actions=primary+secondary"><button class="mc-b mc-b2" data-mcedit="menu" data-kc="KeyButton" data-kv="variant=secondary, size=l">Edit with Kai</button><button class="mc-b" data-mcapprove="1" data-kc="KeyButton" data-kv="variant=primary, size=l">Approve and start</button></div></div>`;
+}
+
+/* ---- hooks: every way in now opens the conversation ---- */
+startVerb = function(i){ const [, type, name] = START_VERBS[i]; if (DB.missions.some(m=>m.type===type)) { toast(`Already running: ${name}`); return; } mcStart({ kind:MC_VERB[i] }); };
+const _mcOpenSheet = openSheet; openSheet = function(type, id){ if (type==="newmission") { mcStart(); return; } if (STATE.mc) STATE.mc.open = false; return _mcOpenSheet.apply(this, arguments); };
+const _mcKaiSheet = kaiSheet; kaiSheet = function(){ return STATE.mc && STATE.mc.open ? mcSheet() : _mcKaiSheet.apply(this, arguments); };
+const _mcClose = closeSheet; closeSheet = function(){ if (STATE.mc) STATE.mc.open = false; return _mcClose.apply(this, arguments); };
+const _mcNudge = kaiNudgeFor; kaiNudgeFor = function(){ if (STATE.mc && STATE.mc.kind && !STATE.mc.open) return { title:"Your draft mission", body: STATE.mc.brief ? `${STATE.mc.brief.name}. Not started until you approve it.` : "Not finished yet. Pick up where you left off.", ask:"Continue the draft" }; return _mcNudge.apply(this, arguments); };
+/* outermost kaiAsk: the other modules install theirs on load or in a zero timeout, so this one waits a tick longer */
+setTimeout(()=>setTimeout(()=>{ const _mcKaiAsk = kaiAsk; kaiAsk = function(t){ if (/^start a mission$/i.test(t) || /^continue the draft$/i.test(t)) { mcStart(); return; } return _mcKaiAsk.apply(this, arguments); }; }, 0), 0);
+const _mcRender = render; render = function(){
+  if (STATE.sheet && STATE.sheet.type==="newmission") { STATE.sheet = null; setTimeout(()=>mcStart(), 0); }
+  const r = _mcRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  if (STATE.mc && STATE.mc.open && STATE.sheet && STATE.sheet.type==="kai") {
+    const s = phone.querySelector("#sheet"); if (s) { s.classList.add("mc-sheet"); if (mcHF()) s.setAttribute("data-kv", `height=${STATE.sheetFull?"full":"hug"}, content=mission-create`); }
+    const b = phone.querySelector("#sheet .ks-body") || phone.querySelector("#sheet .sb"); if (b) requestAnimationFrame(()=>{ b.scrollTop = b.scrollHeight; });
+  }
+  if (STATE.mc && STATE.mcDoc && STATE.mc.brief) phone.insertAdjacentHTML("beforeend", mcDocHTML());
+  /* a mission Kai just started: its first search is running, said on the page instead of "next pass Friday" */
+  const sid = (STATE.screen||"").startsWith("mission:") ? STATE.screen.slice(8) : ""; const nm = sid && DB.missions.find(x=>x.id===sid && x.mcNew);
+  if (nm && !DB.opps.some(o=>o.missionId===sid)) {
+    const cap = phone.querySelector(".mh-band.big .mh-bs"); if (cap) cap.textContent = "First search running";
+    phone.querySelectorAll(".view .body *").forEach(e=>{ if (!e.children.length && /^No paths yet/.test(e.textContent.trim())) e.remove(); });
+    const body = phone.querySelector(".view .body"); const at = body && (body.querySelector(".mh-tabs") || body.firstElementChild);
+    if (at && !body.querySelector(".mc-look")) at.insertAdjacentHTML(at.classList.contains("mh-tabs")?"beforebegin":"afterend", `<div class="mc-look" data-kc="KeyKaiLine" data-kv="state=looking">${typeof kaiMark==="function"?kaiMark(20):""}<span>Looking in ${nm.where.join(", ")} for your first New pick. You'll get a push when one lands.</span></div>`);
+  }
+  mcWire(); return r;
+};
+function mcWire(){
+  const on = (sel, fn) => phone.querySelectorAll(sel).forEach(el => el.onclick = e => { e.stopPropagation(); fn(el, e); });
+  on("[data-mca]", el => mcAnswer(el.dataset.mca));
+  const send = () => { const i = phone.querySelector("#mcIn"); const v = i && i.value.trim(); if (!v) { toast("Type an answer, or tap one"); return; } mcAnswer(v); };
+  on("[data-mcsend]", send);
+  const i = phone.querySelector("#mcIn"); if (i) i.onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } };
+  on("[data-mcmic]", () => toast("Hold to talk. Kai writes down what you say."));
+  on("[data-mcclose]", () => closeSheet());
+  on("[data-mcdoc]", () => { const m = STATE.mc; m.msgs.forEach(x=>{ if (x.card && !x.old) x.b = m.brief; }); STATE.mcDoc = true; render(); });
+  on("[data-mcback]", () => { STATE.mcDoc = false; render(); });
+  on("[data-mcedit]", el => mcEdit(el.dataset.mcedit));
+  on("[data-mcapprove]", () => mcApprove());
+  on("[data-mcdiscard]", () => mcDiscard());
+  /* "make this a mission" from search asks first too */
+  phone.querySelectorAll("[data-mkmission]").forEach(el => el.onclick = () => { const q = (STATE.searchQ||"").trim(); STATE.sheet = null; mcStart({ text:q }); });
+}
 
 /* ---- Out of scope ---- */
 function sOOS(s) {
