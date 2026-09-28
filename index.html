@@ -1055,7 +1055,7 @@ p,
   .evx-tag.go { background:var(--ink); color:#fff; border-color:var(--ink); }
   .evx-tag.host { background:#F1E8CF; border-color:#E2D2A6; color:#6B5317; }
   .evx-tag.inv { border-color:var(--ink); font-weight:800; }
-  .evx-tag.wait { border-style:dashed; color:var(--ink2); }
+  .evx-tag.wait { color:var(--ink2); }
   .evx-tag.lock { background:var(--fill); color:var(--ink2); }
   .evx-locked .a { color:var(--ink2); }
   .evx-cav { width:36px; height:36px; border-radius:10px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:14px; }
@@ -1457,7 +1457,6 @@ p,
   fill: none;
   stroke: rgb(var(--ev-ink-rgb));
   stroke-width: 0.18;
-  stroke-dasharray: 1.6 2.4;
   vector-effect: non-scaling-stroke;
   opacity: calc(var(--ev-fx-alpha) * 1.4);
 }
@@ -2653,6 +2652,20 @@ p,
   .evx-clogo i { font-style:normal; min-width:24px; height:24px; padding:0 5px; border-radius:7px; background:#fff; color:var(--ink); font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,.2); }
   .evx-clogo i.evx-fm { width:30px; height:30px; padding:0; border-radius:8px; overflow:hidden; }
   .evx-cname { font-size:26px; font-weight:800; letter-spacing:-.015em; line-height:1.15; margin:10px 0 2px; text-wrap:balance; }
+  /* Calendar page (Apoorv 28 Sep 01:45): the cover runs to the top of the screen like the profile photo, with a scrim under the status bar;
+     back and share float on glass over it and the bar turns solid once the cover scrolls away. The logo is the family's mark or the host's face, filling the tile. */
+  .evx-over { position:absolute; top:calc(-1 * var(--evx-sb, 0px)); left:0; right:0; z-index:3; padding-top:calc(var(--evx-sb, 0px) + 14px); background:transparent; border-bottom:1px solid transparent; transition:background-color .2s, border-color .2s; }
+  .evx-over .back, .evx-over .icon { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.72); border:1px solid rgba(255,255,255,.5); color:var(--ink); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
+  .evx-over.show { background:var(--paper); border-bottom-color:var(--line); }
+  .evx-over.show .back, .evx-over.show .icon { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evx-overt { flex:1; min-width:0; opacity:0; transition:opacity .2s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .evx-over.show .evx-overt { opacity:1; }
+  .evx-calpg .evx-cban { position:relative; height:calc(var(--evx-sb, 0px) + 180px); }
+  .evx-calpg .evx-cban::before { content:""; position:absolute; left:0; right:0; top:0; height:calc(var(--evx-sb, 0px) + 72px); background:linear-gradient(to bottom, rgba(11,14,17,.45), rgba(11,14,17,0)); pointer-events:none; }
+  .evx-clogo.evx-cl-mark, .evx-clogo.evx-cl-face, .evx-clogo.evx-cl-ini { padding:0; align-items:center; justify-content:center; overflow:hidden; }
+  .evx-cl-mark svg { display:block; width:100%; height:100%; }
+  .evx-cl-face { background:var(--fill); color:var(--ink2); font-size:22px; font-weight:800; }
+  .evx-cl-ini { color:#fff; font-size:28px; font-weight:800; }
   .evx-cmeta { font-size:13.5px; color:var(--ink2); }
   .evx-cabout { font-size:14px; line-height:1.45; margin:8px 0 0; }
   .evx-cfolk { display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; color:var(--ink2); cursor:pointer; }
@@ -3871,6 +3884,16 @@ p,
 .mx-tipsw .mx-tt b { font-size:9px; font-weight:600; }
 /* Messages tips keep an even 16px each side on a narrow phone (hosting, SE 320). */
 #phone .tipx:is([data-tip="inbox"],[data-tip="swipe"],[data-tip="requests"]) { box-sizing:border-box; max-width:min(340px, calc(100% - 32px)); }
+/* Catch me up (Apoorv 01:45): a solid button on the channel's Kai line; Kai's answer lists each post as a member row with one action. */
+.kairead .mx-cu-open { margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; padding:5px 10px 5px 6px; border:1px solid var(--line); border-radius:99px; background:#fff; color:var(--ink); font:inherit; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
+.mini:has(.mx-cu), .ks-mini:has(.mx-cu) { padding:0; margin:0; border:0; background:none; }
+.mx-cu { display:grid; grid-template-columns:40px minmax(0,1fr) auto; grid-template-areas:"av m when" "av m go"; column-gap:10px; row-gap:4px; align-items:center; padding:10px 0; border-top:1px solid var(--line); text-align:left; }
+.mx-cu-av { grid-area:av; width:40px; height:40px; border-radius:50%; background:var(--fill); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:var(--ink2); cursor:pointer; }
+.mx-cu-m { grid-area:m; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.mx-cu-m b { font-size:14px; font-weight:600; color:var(--ink); }
+.mx-cu-m span { font-size:13px; line-height:1.35; color:var(--ink2); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.mx-cu-when { grid-area:when; justify-self:end; font-size:11px; color:var(--ink3); }
+.mx-cu-go { grid-area:go; justify-self:end; padding:5px 10px; border:1px solid var(--line); border-radius:99px; background:#fff; color:var(--ink); font:inherit; font-size:12px; font-weight:600; white-space:nowrap; cursor:pointer; }
 
 /* ==== MESSAGES HIGH FIDELITY (27 Sep, messages thread). Scoped to #phone.hf-msg. Needs design-system/key-tokens.css loaded
    (with Design system's pending overrides). Tokens only: no hex, sizes from --space-absolute-*, radii from --radius-absolute-*,
@@ -4041,9 +4064,9 @@ p,
 .nav.knav .kai { color:var(--kn-ink); }
 .nav.knav .kai { gap:9px; justify-content:flex-end; padding-bottom:6px; box-sizing:border-box; }
 .nav.knav .kai .ic { width:56px; height:56px; margin:-40px auto 0; background:var(--kn-ink); color:#fff; font-size:0;
-  box-shadow:0 0 0 4px rgba(255,255,255,.9), 0 10px 22px -8px rgba(11,14,17,.55); transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
+  box-shadow:0 2px 4px rgba(11,14,17,.12), 0 10px 22px -8px rgba(11,14,17,.55) /* plain disc, lift shadow only: no band around it (trypophobia rule, 28 Sep) */; transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
 .nav.knav .kai .ic svg { width:22px; height:22px; fill:currentColor; stroke:none; }
-.nav.knav .kai .ic svg.kk { width:30px; height:26px; margin-left:2px; } .nav.knav .kai .ic svg.kk.gold { fill:url(#knFoil); }
+.nav.knav .kai .ic svg.kk { width:30px; height:26px; margin:-2.5px 0 0 -1px; /* optical centre (28 Sep): glyph box centred across, lifted 1.25px because the lower arms carry more weight */ } .nav.knav .kai .ic svg.kk.gold { fill:url(#knFoil); }
 /* a family with a real mark shows it in full colour; active adds an ink ring */
 .nav.knav .tab.fam .ic.logo.mk { position:relative; border:0; background:none; overflow:hidden; border-radius:7px; transition:transform .22s cubic-bezier(.3,1.5,.5,1); }
 .nav.knav .tab.fam .ic.logo.mk::after { content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 1px rgba(11,14,17,.12); pointer-events:none; }
@@ -4098,6 +4121,29 @@ p,
   .nav.knav .tab, .nav.knav .tab * { transition-duration:.12s !important; transition-delay:0s !important; transition-property:color, fill, stroke, opacity, font-weight, background-color, border-color !important; }
   .nav.knav .tab.kn-press .ic, .nav.knav .kai.kn-press .ic { transform:none; }
   .nav.knav .unread.kn-bout { display:none; } }
+
+/* Bar material (28 Sep: "stand out a little more" on white pages, stay translucent). No new border: the bar reads as its own
+   layer through tint, a deeper lift shadow (elevation/lift) and a glass rim highlight; the Kai disc is a plain disc with a lift shadow (no ring).
+   Muted labels move to text/tertiary #606974 (AA on the bar; key/450 was 2.9:1 on white). */
+.nav.knav.look-glass, .nav.knav.look-lift { --kn-mute:#606974 /* text/tertiary */;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75), 0 2px 4px rgba(11,14,17,.10), 0 22px 48px -14px rgba(11,14,17,.55) /* elevation/lift */; }
+/* glass: a cool key/150 tint at 74%, a touch more see-through than before, with a raised white active capsule (iOS 26) */
+.nav.knav.look-glass { --kn-bg:rgba(232,236,241,.74) /* key/150 at 74% */; --kn-lens:#FFFFFF; }
+.nav.knav.look-glass .kn-lens { box-shadow:0 1px 2px rgba(11,14,17,.10), 0 6px 14px -6px rgba(11,14,17,.22); }
+/* lift: stays white, only the lift shadow and rim; the grey lens deepens a step */
+.nav.knav.look-lift { --kn-bg:rgba(255,255,255,.84); --kn-lens:#DFE4EA; }
+/* ink: the bar goes dark like Kai and the tips; labels text/secondary (dark) */
+.nav.knav.look-ink { --kn-bg:rgba(11,14,17,.80); --kn-lens:rgba(255,255,255,.14); --kn-mute:#A6AFBB /* text/secondary, dark */;
+  border-color:rgba(255,255,255,.08); box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 2px 4px rgba(11,14,17,.10), 0 22px 48px -14px rgba(11,14,17,.55); }
+.nav.knav.look-ink .kn-lens { box-shadow:none; }
+.nav.knav.look-ink .tab.on, .nav.knav.look-ink .tab.kn-over, .nav.knav.look-ink .tab.kn-was { color:#fff; }
+.nav.knav.look-ink .tab.on .kn-i .f, .nav.knav.look-ink .tab.kn-was .kn-i .f { fill:#fff; }
+.nav.knav.look-ink .tab.on .kn-i .w, .nav.knav.look-ink .tab.kn-was .kn-i .w { stroke:var(--kn-ink); }
+.nav.knav.look-ink .tab.on .kn-i .n, .nav.knav.look-ink .tab.kn-was .kn-i .n { fill:var(--kn-ink); stroke:var(--kn-ink); }
+.nav.knav.look-ink .tab.fam.on .ic.logo, .nav.knav.look-ink .tab.fam.kn-was .ic.logo { background:#fff; border-color:#fff; color:var(--kn-ink); }
+.nav.knav.look-ink .kai { color:#fff; }
+.nav.knav.look-ink .tab .ic .unread { box-shadow:0 0 0 2px #1B1F24; }
+.nav.knav[class*="look-"] .kai .ic { box-shadow:0 2px 4px rgba(11,14,17,.14), 0 12px 24px -8px rgba(11,14,17,.6); }
 
 /* Narrow phones (SE 1st gen, 320): tighter bar so labels keep a gap and Messages clears the Kai disc */
 @media (max-width:360px) {
@@ -4585,6 +4631,23 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-ctx .ctxline .a { font:var(--type-body-m) !important; color:var(--text-primary); }
 #phone.hf-ctx .ctxline .b { font:var(--type-caption); color:var(--text-tertiary); }
 
+/* 01:45 fixes. Item 4: You > Your profile and Who sees what share one baseline (base .sec adds an 18px top margin) */
+.hg-acts .hg-btn.sec { margin-top:0; }
+#phone.hf-gap .hg-acts.two .hg-btn.l { flex:1 1 0; min-width:0; padding:0 var(--space-absolute-12); font:var(--type-body-m-strong); letter-spacing:0; }
+/* Item 9: square photos in a square-ish frame, face kept near the top (photos.css centres with !important) */
+.p2qhero { height:340px; }
+#phone.hf-prof .pphoto.ph-cover, #phone.hf-prof .p2qph.ph-cover { background-position:center 20% !important; }
+/* Item 3: Kai's pending update is a deep Kai plate (same plate as the dock), not a row that blends in */
+#phone.hf-prof .p2kn { background:var(--bg-deep); color:var(--text-on-deep-default); border:0; border-radius:var(--radius-absolute-16); padding:var(--space-absolute-16); margin-bottom:var(--space-absolute-24); box-shadow:var(--elevation-2); }
+#phone.hf-prof .p2kn .p2kh b, #phone.hf-prof .p2kn .p2upl, #phone.hf-prof .p2kn .p2upc { color:var(--text-on-deep-default); }
+#phone.hf-prof .p2kn .p2kd2, #phone.hf-prof .p2kn .p2uph small, #phone.hf-prof .p2kn .p2upw { color:var(--text-on-deep-muted); }
+#phone.hf-prof .p2kn .p2upl svg { color:var(--icon-on-deep); }
+#phone.hf-prof .p2kn .p2up { margin-top:var(--space-absolute-12); padding:0; border:0; }
+#phone.hf-prof .p2kn .p2upc { margin-bottom:var(--space-absolute-16); }
+#phone.hf-prof .p2kn .p2acts2 button { flex:0 0 auto; background:var(--bg-on-deep-fill); border-color:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
+#phone.hf-prof .p2kn .p2acts2 button.on { flex:1; background:var(--text-on-deep-default); border-color:var(--text-on-deep-default); color:var(--bg-deep); }
+#phone.hf-prof .p2kn .p2add { color:var(--text-on-deep-default); padding-bottom:0; }
+
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
 .ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
@@ -4713,7 +4776,9 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ob4pc-f svg{flex:none;color:var(--ink3)}
 .ob4pc-name{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .ob4pc-f.is-empty span{color:var(--ink3);font-weight:500}
-.ob4pc-f.is-now.is-empty span{border-bottom:1.5px solid var(--line)}
+.ob4pc-f.is-now.is-empty span{position:relative;border-bottom:0;color:transparent}
+.ob4pc-f.is-now.is-empty span::before{content:"";position:absolute;left:0;right:0;top:50%;height:10px;margin-top:-5px;border-radius:999px;background:var(--fill)}
+.ob4pc-name.is-now.is-empty span::before{height:14px;margin-top:-7px}
 .ob4step{display:flex;flex-direction:column}
 .ob4locpc{position:relative;z-index:2;margin:-44px 16px 6px}
 .ob4locpc .ob4pc{margin:0}
@@ -4886,8 +4951,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 /* KeyMissionCard place=proposal, as on "What I'd start for you": white card, the hero plate on top, chips, Approve / Edit / Not this.
    Same values as missions-hifi.css, scoped here so the card looks the same wherever the Kai sheet opens */
-.mc-prop { margin-top:12px; border-radius:var(--radius-absolute-20); background:var(--bg-surface-default); box-shadow:var(--elevation-1); overflow:hidden; }
-.mc-prop.old { opacity:.5; box-shadow:none; }
+/* Kai speaking in its own conversation: fill ground, radius 12, no elevation, like KeyDraftBox (Design system ruling) */
+.mc-prop { margin-top:12px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); box-shadow:none; overflow:hidden; }
+.mc-prop.old { opacity:.5; }
 .mc-prop .mh-band { position:relative; overflow:hidden; isolation:isolate; padding:14px 16px; color:var(--text-on-deep-default); cursor:pointer; }
 .mc-prop.old .mh-band { cursor:default; padding:10px 16px 12px; }
 .mc-prop .mh-ghost { position:absolute; right:-18px; bottom:-30px; z-index:-1; color:var(--text-on-deep-default); opacity:.14; line-height:0; transform:rotate(-12deg); }
@@ -10709,6 +10775,12 @@ function evCalMark(c){ return c.kind==="personal"&&evIsAdmin(c) ? DB.user.initia
 /* a family calendar wears the family's own mark (FAM_MARK from the nav thread's marks.js, v63), as Community's cMark does; others keep the initial */
 const evFamMark = c => c && c.family && typeof FAM_MARK!=="undefined" && FAM_MARK[c.family] ? FAM_MARK[c.family] : "";
 const evMarkI = (c, txt, style) => { const m=evFamMark(c); return m ? `<i class="evx-fm">${m}</i>` : `<i${style?` style="${style}"`:""}>${txt}</i>`; };
+/* KeyCalendarLogo on a calendar page (Apoorv 28 Sep 01:45: "Put the person's photo here or the community's photo here"): the family's mark
+   fills the tile; a person's or group's calendar shows its host's face (their photo in the hi-fi copy); otherwise the calendar's initial. No corner badge. */
+function evCalLogo(c){ const m=evFamMark(c), p=c.kind!=="family" && DB.people[c.host];
+  if (m) return `<div class="evx-clogo evx-cl-mark" data-kc="KeyCalendarLogo" data-kv="kind=family">${m}</div>`;
+  if (p) { const ini = c.kind==="personal"&&evIsAdmin(c) ? DB.user.initials : p.initials; return `<div class="evx-clogo evx-cl-face" data-kc="KeyCalendarLogo" data-kv="kind=person" data-face="${c.host}"><span data-phi="${ini}">${ini}</span></div>`; }
+  return `<div class="evx-clogo evx-cl-ini" style="background:${evBg(c.theme)}" data-kc="KeyCalendarLogo" data-kv="kind=initial"><span>${c.name[0]}</span></div>`; }
 function evCalThumb(c, cls){ return `<div class="evx-cct ${cls||""}" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>`; }
 
 /* ---- one card, used everywhere: Events, family, calendar pages, profile and search ---- */
@@ -11226,10 +11298,10 @@ sCalendar = function(id){
   else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh">[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
       : view==="day" ? evCalDay(c, evs, plans) : view==="week" ? evCalWeek(c, evs, plans) : evCalMonth(c, evs, plans);
     pane = `<div class="seg evx-vseg">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
-  <div class="body">
-    <div class="evx-cban" style="background:${evBg(c.theme)}"></div>
-    <div class="evx-clogo" style="background:${evBg(c.theme)}">${evMarkI(c, evCalMark(c))}</div>
+  return `<div class="hdr evx-hdr evx-over"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t evx-overt">${c.kind==="personal"&&admin?"Your calendar":c.name}</div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
+  <div class="body evx-calpg">
+    <div class="evx-cban" data-cid="${c.id}" style="background:${evBg(c.theme)}"></div>
+    ${evCalLogo(c)}
     <h1 class="evx-cname">${c.kind==="personal"&&admin?"Your calendar":c.name}</h1>
     <div class="evx-cmeta">${evKind(c)}${up.length?` · ${up.length} coming up`:""}</div>
     ${!on&&!admin&&c.about?`<p class="evx-cabout">${c.about}</p>`:""}
@@ -11650,6 +11722,12 @@ portWire = function(){
     if (fx==="emoji" && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const l=document.createElement("div"); l.className="fx evt-emofx";
       l.innerHTML = Array.from({length:12},(_,i)=>`<i style="left:${(i*8.3+Math.random()*6).toFixed(1)}%;--s:${18+(i*7)%22}px;--d:${16+(i*5)%14}s;--dl:-${(i*2.7).toFixed(1)}s;--dx:${(i%2?1:-1)*(10+i*3)}px;--r:${(i%2?1:-1)*40}deg">${scr.dataset.evtEmoji}</i>`).join("");
       scr.prepend(l); } }
+  /* the calendar page's cover runs under the status bar like the profile photo (Apoorv 28 Sep 01:45); the header turns solid once it scrolls away */
+  const cpg = phone.querySelector(".evx-calpg"), cscr = phone.querySelector(".screen");
+  if (cpg && cscr) { const pad = parseFloat(getComputedStyle(cscr).paddingTop)||0, hd = phone.querySelector(".evx-over"), cb = cpg.querySelector(".evx-cban");
+    cpg.style.marginTop = -pad+"px"; [cpg, hd].forEach(x=>x && x.style.setProperty("--evx-sb", pad+"px"));
+    const past = () => { const y = cpg.scrollTop > (cb ? cb.offsetHeight : 0) - (hd ? hd.offsetHeight : 0); if (hd) hd.classList.toggle("show", y); cscr.classList.toggle("dark-status", !y); };
+    cpg.addEventListener("scroll", past, { passive:true }); past(); }
   q("[data-evreact]", el=>{ const [eid,r]=el.dataset.evreact.split("|"); const b=el.getBoundingClientRect(), pr=phone.getBoundingClientRect();
     evRoom(evE(eid)).msgs.push(M(EV_ME, r, { day:"Today", time:nowTime() })); evKeep(); toast(`${r} sent to the event chat`);
     const f=document.createElement("div"); f.className="evt-float"; f.textContent=r; f.style.left=(b.left-pr.left+b.width/2-16)+"px"; f.style.top=(b.top-pr.top-6)+"px"; phone.appendChild(f); setTimeout(()=>f.remove(), 1100); });
@@ -14413,6 +14491,8 @@ const P2_UPD = [
   { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
   { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
 ];
+/* hero photos come uncropped (member photos are square or portrait); CSS keeps the face in frame */
+const p2PhUrl = id => phUrl(id, 900, 0).replace(/&fit=crop|&h=0/g, "");
 const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]); };
 function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
   return `<div class="p2up"><div class="p2uph"><span class="p2upl">${LI(LUCIDE[u.ico]?u.ico:"flag",14)}${u.lbl}</span><small>${u.src}</small></div>
@@ -14507,7 +14587,7 @@ render = function(){ const r = _p2HfRender.apply(this, arguments);
     const prof = STATE.screen==="profile", sh = (STATE.sheet&&STATE.sheet.type)||"";
     phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
     const pid = STATE.profileId||"priya", ph = prof && phone.querySelector(".pphoto");
-    if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 1000), "ph-cover");
+    if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, p2PhUrl(PH_FACE[pid]), "ph-cover");
   }
   return r; };
 
@@ -14535,7 +14615,7 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
     const on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > 150); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
     sb.onscroll = on; on();
     const pid = qv.dataset.p2qv;
-    if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, phUrl(PH_FACE[pid], 860, 640), "ph-cover");
+    if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, p2PhUrl(PH_FACE[pid]), "ph-cover");
   }
   return r; };
 
@@ -14543,7 +14623,7 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
    the wireframe keeps its readback. Same parts as the profile: hero without a card (face, name, role, family tag), overline sections,
    rows with hairlines and Lucide tiles, every line editable in place (pencil opens a small sheet; nothing is kept without Save).
    The stat columns go: they repeated the lines below. The content still comes from the base readback, so the intake stays the source. ==== */
-const P2_RB_ICONS = ["briefcase","map-pin","calendar-days","user-check"];
+const P2_RB_ICONS = ["briefcase","map-pin","calendar","user-check"];
 const _p2Readback = sReadback;
 sReadback = function(){ const h = _p2Readback(); if (!p2HiFi() || (STATE.rbStep||1)!==1) return h;
   const d = new DOMParser().parseFromString(`<div id="r">${h}</div>`, "text/html"), q = s => [...d.querySelectorAll(s)], txt = e => e ? e.textContent.trim() : "";
@@ -14577,7 +14657,7 @@ render = function(){ const r = _p2RbRender.apply(this, arguments); if (p2HiFi() 
 /* ==== CONTEXT HIGH FIDELITY (low-fi gaps sweep, 28 Sep). Hi-fi copy only: #phone.hf-ctx on you:context, all three tabs.
    Same architecture (In Kai's words, Now / Timeline / Shared, Kai noticed, Still true?, the document, Export / Import); boxes become
    sections of rows with hairlines, dotted and dashed edges go, and the Timeline's glyphs become Lucide tiles. ==== */
-const P2_CTX_GLYPH = { "◆":"calendar-days", "◎":"flag", "☎":"mic", "↧":"link", "“":"message-square", "✦":"sparkles", "⌘":"user-check" };
+const P2_CTX_GLYPH = { "◆":"calendar", "◎":"flag", "☎":"mic", "↧":"link", "“":"message-square", "✦":"sparkles", "⌘":"user-check" };
 const _p2CtxRender = render;
 render = function(){ const r = _p2CtxRender.apply(this, arguments);
   if (p2HiFi() && typeof phone!=="undefined" && phone) { const on = /^you:context/.test(STATE.screen||""); phone.classList.toggle("hf-ctx", on);
@@ -14841,7 +14921,7 @@ function brOpen(fromEl){
    the icon plays one small move; a drag along the bar scrubs the lens and lands on release (iOS 26 tab bar).
    Timings follow the Motion thread review (motion-research/bottom-nav-motion-spec.md). Off under webdriver (unless ?motion);
    under prefers-reduced-motion nothing moves and the ink and lens cross-fade in 120ms. ==== */
-let KN_ON = true, KN_KAI = "gold";  /* Kai's K: gold foil on the inverse fill (his pick, 27 Sep 20:09); "ink" keeps it white */
+let KN_ON = true, KN_KAI = "gold", KN_LOOK = "glass";  /* Kai's K: gold foil on the inverse fill (his pick, 27 Sep 20:09); "ink" keeps it white */
 const KN_LIVE = !navigator.webdriver || /[?&]motion/.test(location.search);  /* tests and captures get the still bar */
 const KN_MOTION = KN_LIVE && !(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);  /* reduced motion: ink cross-fades only */
 const KN_EASE = "cubic-bezier(.2,.8,.2,1)";
@@ -14906,6 +14986,7 @@ function knBadges(nav){
 function knMount(){
   const nav = phone.querySelector(".screen > .nav"); if (!nav || !nav.querySelector(".kn-lens")) return;
   nav.classList.add("knav"); /* added here, not in navHTML: render() splits the bar out by its exact opening tag. Not "kn": the base styles .kn (Kai-mark svgs) as display:block */
+  nav.classList.add("look-"+KN_LOOK); /* bar material: glass (his 28 Sep ask: stand out on white, stay translucent), lift, ink */
   if (!KN_LIVE) nav.classList.add("still");
   const lens = nav.querySelector(".kn-lens"), on = nav.querySelector(".tab.on");
   if (on) {
@@ -15085,6 +15166,42 @@ function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { con
 
 /* the swipe tip names what the tray holds (Apoorv 23:45): archive and the rest live under More */
 if (typeof LUCIDE!=="undefined" && !LUCIDE["pin-off"]) LUCIDE["pin-off"] = '<path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>';
+/* Catch me up (Apoorv 28 Sep 01:45): the channel's Kai line opens Kai with a catch-up of the latest posts, each as the member who
+   posted, one line on what it says, and one action (open the post or its thread). Read-only; channels Kai doesn't read get no button. */
+const MX_CU_GIST = { m29:"Hiring senior PMs. Shipped AI is the bar.", m30:"Hiring a senior PM for Perplexity's agents team.", m31:"Needs an O-1 immigration lawyer.", m32:"Sierra opens a platform PM role in October. She named you." };
+const mxCuWord = n => ["No","One","Two","Three","Four","Five"][n] || String(n);
+function mxCatchUp(cid) {
+  const c = convOf(cid); if (!c) return;
+  const posts = c.msgs.filter(m => m.from && m.text && !m.sys).slice(-3).reverse();
+  const first = id => P(id).name.split(" ")[0], names = a => a.length>1 ? a.slice(0,-1).join(", ")+" and "+a[a.length-1] : a[0];
+  const paths = [...new Set(posts.filter(m => DB.opps.some(o => o.personId===m.from && o.state!=="dropped")).map(m => first(m.from)))];
+  const named = posts.find(m => m.text.includes("@"+DB.user.name));
+  const text = `${mxCuWord(posts.length)} posts since you last looked in #${c.title}.`
+    + (paths.length ? ` ${names(paths)} ${paths.length>1?"are":"is"} already in your paths.` : "")
+    + (named ? ` ${first(named.from)} named you.` : "");
+  const rows = posts.map(m => { const p = P(m.from), n = m.threadCount || (m.thread||[]).length;
+    return `<div class="mx-cu" data-kc="KeyMemberRow" data-kv="lines=2, trail=button"><span class="mx-cu-when">${m.day==="Today"?m.time:String(m.day).replace(/, \d{4}$/,"")}</span>`
+      + `<span class="mx-cu-av" data-profile="${p.id}" data-phi="${p.initials}" data-kc="KeyAvatar" data-kv="size=40">${p.initials}</span>`
+      + `<span class="mx-cu-m"><b>${p.name}</b><span>${MX_CU_GIST[m.id] || m.text.split(/(?<=[.?!])\s/)[0]}</span></span>`
+      + `<button class="mx-cu-go" data-mxcu="${n?"thread":"post"}|${cid}|${m.id}" data-kc="KeyButton" data-kv="variant=secondary, size=s">${n?`${n} ${n>1?"replies":"reply"}`:"Open"}</button></div>`; });
+  if (c.ch) c.ch.unread = 0;
+  openSheet("kai"); STATE.kaiScope = typeof kaiScopeFor==="function" ? kaiScopeFor() : null;
+  STATE.kaiMsgs = [{ who:"u", text:`Catch me up on #${c.title}` }, { who:"k", text, mini:rows }]; STATE.sheetFull = true; render();
+}
+const _mxChannelTop = channelTop;
+channelTop = function(c) {
+  return _mxChannelTop.apply(this, arguments).replace(/<span class="chip sug"[^>]*>Catch me up<\/span>/, c.id==="sf" ? ""
+    : `<button class="mx-cu-open" onclick="mxCatchUp('${c.id}')" data-kc="KeyButton" data-kv="variant=secondary, size=s">${typeof kaiMark==="function"?kaiMark(18):""}Catch me up</button>`);
+};
+phone.addEventListener("click", e => {
+  const b = e.target.closest("[data-mxcu]");
+  if (b) { e.stopPropagation(); const [a, cid, mid] = b.dataset.mxcu.split("|"); STATE.sheet = null; STATE.sheetFull = false;
+    if (a==="thread") go(`thread:${cid}:${mid}`); else { STATE.hl = mid; go("channel:"+cid); setTimeout(() => { const h = phone.querySelector(".chatbody .hl"); if (h) h.scrollIntoView({ block:"center" }); }, 60); }
+    return; }
+  const k = e.target.closest("[data-kai]"), m = k && /^catch me up on #(.+)$/i.exec(k.dataset.kai);
+  if (m && convOf(m[1])) { e.stopPropagation(); mxCatchUp(m[1]); }
+}, true);
+(()=>{ const k = typeof KAI_COMPOSER!=="undefined" && KAI_COMPOSER.find(x=>x.t==="Catch me up on #jobs"); if (k) k.r = "Three posts since you last looked in #jobs. Sana and Ana are hiring for roles that fit your mission, and Dev needs an O-1 lawyer. Tap Catch me up in #jobs to open each one."; })();
 /* the tip draws the real tray (Apoorv 00:49): it points at Daniel's pinned row, so it shows that row slid left with its pin mark, then Unpin, Mute, More as the same labelled tiles */
 (()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
   t.body = "Pin, mute, or More to archive.";
@@ -16006,6 +16123,10 @@ quickLogin = function() { const w = STATE.signinWith; _ob4Quick.apply(this, argu
 LUCIDE["graduation-cap"] = LUCIDE["graduation-cap"] || '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>';
 const OB4_PC = { name:["user","Your name"], work:["briefcase","Your role and company"], city:["map-pin","Your city"], links:["link","Your links"] };
 function ob4PcVal(f) { return f==="name" ? ob4Name() : f==="work" ? ob4Work() : f==="city" ? ob3City() : obLNames(); }
+/* The card previews what they type; it is not a field. A tap on it goes to the real input, and the step's input is focused on arrival (name, work). */
+const OB4_PC_IN = { name:"ob3name", work:"ob3role", city:"ob4city" };
+function ob4PcTap(f) { const i = document.getElementById(f==="work" && ob3Role() ? "ob3co" : OB4_PC_IN[f]); if (i) i.focus(); }
+function ob4AF(id, key) { if (STATE.ob4AF === key) return ""; STATE.ob4AF = key; setTimeout(()=>{ const i = document.getElementById(id); if (i && !i.value && document.activeElement !== i) i.focus({ preventScroll:true }); }, 0); return ""; }
 function ob4Pc(now) {
   const order = ["name","work","city","links"], upto = order.indexOf(now), n = ob4Name();
   const slot = f => { const v = ob4PcVal(f), st = f===now ? "is-now" : "is-done";
@@ -16017,8 +16138,8 @@ function ob4Pc(now) {
       ${p.schools.map(r=>`<div class="ob4pc-r">${LI("graduation-cap",14)}<span>${ob4Esc(r[0])}</span><small>${r[1]}</small></div>`).join("")}
       <div class="ob4pc-src">${obLIcon("linkedin",14)}<span>From ${ob4Esc(p.url)}</span><button class="obl-lnk" onclick="obLSearch()">Change</button></div>
     </div>` : "";
-  return `<div class="ob4pc" data-step="${now}">
-    <div class="ob4pc-av" ${now==="name"?`onclick="toast('Choose a photo.')"`:""}><span id="ob4ini">${ob4Ini(n) || LI("user",26)}</span>${now==="name"?`<i>${LI("camera",13)}</i>`:""}</div>
+  return `<div class="ob4pc" data-step="${now}"${OB4_PC_IN[now]?` onclick="ob4PcTap('${now}')"`:""}>
+    <div class="ob4pc-av" ${now==="name"?`onclick="event.stopPropagation();toast('Choose a photo.')"`:""}><span id="ob4ini">${ob4Ini(n) || LI("user",26)}</span>${now==="name"?`<i>${LI("camera",13)}</i>`:""}</div>
     <div class="ob4pc-tx">${order.slice(0, upto+1).map(slot).join("")}</div>${li}
   </div>`;
 }
@@ -16034,7 +16155,7 @@ sWelcome = function() {
   return `${ob3Hdr(1, STATE.signinWith==="email"?'code':'signin')}
   <div class="body ob4q">
     ${ob4Pc("name")}
-    <div class="ob4step" data-step="name">
+    <div class="ob4step" data-step="name">${ob4AF("ob3name","name")}
     <div class="ob3t">What's your name?</div>
     <div class="ob3sub">This is how members will see you.</div>
     <div class="ob3fld"><label>Name</label><input id="ob3name" autocomplete="name" placeholder="First and last name" value="${ob4Esc(n)}" oninput="STATE.ob3Name=this.value;ob4PcSet('name')"></div>
@@ -16052,7 +16173,7 @@ sConsent = function() {
   return `${ob3Hdr(2,'welcome')}
   <div class="body ob4q">
     ${ob4Pc("work")}
-    <div class="ob4step" data-step="work">
+    <div class="ob4step" data-step="work">${ob4AF("ob3role","work")}
     <div class="ob3t">Where do you work?</div>
     <div class="ob3sub">Members find you by this. You can change it any time.</div>
     <div class="ob3fld"><label>Role</label><input id="ob3role" placeholder="Your role" value="${ob4Esc(ob3Role())}" oninput="STATE.ob3Role=this.value;ob4PcSet('work')"></div>
