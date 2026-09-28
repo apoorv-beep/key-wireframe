@@ -1131,7 +1131,7 @@
 @media (max-width:360px) { .phone .hdr.top { gap:0; } #phone.phone .hdr.hdr.top > .icon.icon { width:40px; } .phone .hdr.top > .avatar { margin-right:4px; } .phone .hdr.top > .t { margin-right:8px; } }
 
 
-#phone.phone .chip.sug, #phone.phone .kaiact .chip, #phone.phone .cm-attach span, #phone.phone .evx-tag.wait, #sheet .chip.sug, #sheet .kaiact .chip { border-style:solid; }
+#phone.phone .chip.sug, #phone.phone .empty, #phone.phone .kaiact .chip, #phone.phone .cm-attach span, #phone.phone .evx-tag.wait, #sheet .chip.sug, #sheet .kaiact .chip { border-style:solid; }
 
 #phone.phone .view.view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr):has(> :is(.back,.obk-back)) { min-height:56px; height:56px; padding:0 16px; gap:8px; align-items:center; box-sizing:border-box; }
 #phone.phone .view.view :is(.hdr,.ob3hdr):is(.hdr,.ob3hdr) > :is(.back,.obk-back):is(.back,.obk-back) { flex:0 0 44px; width:44px; height:44px; margin:0 -9px 0 -16px; padding:0 0 0 7px; justify-content:flex-start; border:0; background:transparent; box-shadow:none; border-radius:var(--radius-absolute-12); }
@@ -6068,6 +6068,27 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .trow > .avs { display:flex !important; align-items:center; position:static; width:auto !important; height:auto; flex:0 0 auto !important; margin:0 !important; gap:0 !important; }
 #phone.hf-mis .trow > .avs > .avatar { position:static; width:32px !important; height:32px !important; margin:0 !important; font:var(--type-label); letter-spacing:0; border:0 !important; box-shadow:0 0 0 var(--border-width-thin) var(--bg-surface-default); }
 #phone.hf-mis .trow > .avs > .avatar + .avatar { margin-left:-5px !important; }
+
+
+#phone.hf-mis .mh-route { display:flex; align-items:flex-start; margin:16px 0 4px; }
+#phone.hf-mis .mh-rn { flex:0 0 auto; width:72px; display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center; }
+#phone.hf-mis .mh-rn .avatar { width:44px !important; height:44px !important; margin:0; font:var(--type-body-m-strong); border:0; box-shadow:none; }
+#phone.hf-mis .mh-rn.you .avatar { background:var(--bg-inverse-default); color:var(--text-inverse); }
+#phone.hf-mis .mh-rn.gold .avatar { box-shadow:inset 0 0 0 var(--border-width-focus) var(--border-gold); }
+#phone.hf-mis .mh-rn b { font:var(--type-label); color:var(--text-primary); max-width:72px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone.hf-mis .mh-rn small { font:var(--type-caption); color:var(--text-secondary); margin-top:-2px; }
+#phone.hf-mis .mh-rn.gold small { color:var(--text-gold); }
+#phone.hf-mis .mh-re { flex:1 1 0; min-width:16px; height:var(--border-width-focus); margin:21px -14px 0; background:var(--border-default); border-radius:var(--radius-absolute-infinite); }
+#phone.hf-mis .mh-re.on { background:var(--bg-inverse-default); }
+#phone.hf-mis .mh-rw { font:var(--type-body-s); color:var(--text-secondary); margin:4px 0 8px; }
+#phone.hf-mis .sc .fr.mh-wr { align-items:flex-start; padding:10px 0; gap:12px; }
+#phone.hf-mis .sc .fr.mh-wr::before { display:none; }
+#phone.hf-mis .sc .fr.mh-wr .mh-fi { width:32px; height:32px; }
+#phone.hf-mis .sc .fr.mh-wr .m { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone.hf-mis .sc .fr.mh-wr .k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking, .06em); text-transform:uppercase; color:var(--text-secondary); }
+#phone.hf-mis .sc .fr.mh-wr.gold .k { color:var(--text-gold); }
+#phone.hf-mis .sc .fr.mh-wr .b { font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-mis .sc .fr.mh-wr .chev { align-self:center; color:var(--icon-tertiary, var(--icon-secondary)); line-height:0; }
 
 
 
@@ -18218,6 +18239,42 @@ function mhMissionPage(root, id){
     const i = tabs.findIndex(t=>t[0]===tab) + (dx<0 ? 1 : -1); if (tabs[i]) mhTabGo(id, tabs[i][0]); });
 }
 
+/* KeyRouteGraph: who stands between you and the pick, as faces on one solid line. You, the connector (gold only when they vouch), then the person or the company.
+   A hop turns ink once it has happened. Direct picks are two faces; a cold route says so under the line. */
+function mhRoute(o){
+  const me = DB.people[STATE.persona] || { initials:"You", name:"You" }, c = viaOf(o), t = targetOf(o);
+  const tl = o.timeline || [], lit = tl.filter(x=>x[2]).length, vouch = (o.receipts||[]).some(r=>r[0]==="Vouched");
+  const node = (face, name, note, cls) => `<div class="mh-rn${cls?" "+cls:""}">${face}<b>${name}</b>${note?`<small>${note}</small>`:""}</div>`;
+  const ns = [node(av(me.initials), "You", "", "you")];
+  const mid = c || (!!o.roleTitle && t ? t : null);
+  if (mid) ns.push(node(av(mid.initials), f1(mid), c ? (isNewOf(o) ? (vouch?"vouches":"can introduce") : o.viaAgreed ? (!!o.roleTitle?"referred you":"agreed") : "has your ask") : "posted it", c && vouch ? "gold" : ""));
+  if (!!o.roleTitle) ns.push(node(av((o.roleCompany||"?")[0], "mh-sq"), o.roleCompany||"", "hiring"));
+  else if (!mid || t!==mid) ns.push(node(av(t.initials, o.kind==="person"?"":"mh-sq"), f1(t), o.kind==="person" ? "" : o.kind==="offer" ? "offers it" : "shares it"));
+  const edges = ns.length - 1;
+  const html = ns.map((n,i)=> i ? `<i class="mh-re${lit>i?" on":""}" aria-hidden="true"></i>${n}` : n).join("");
+  const met = (o.receipts||[]).some(r=>r[0]==="Connected");
+  const words = c && typeof routeWords==="function" ? routeWords(o) : o.route==="cold" ? "Cold. No one you know in between" : !!o.roleTitle ? `Straight to ${f1(t)}, who posted it` : o.kind==="person" ? (met ? "Direct. You've met before" : "Direct. No one in between") : `Straight from ${f1(t)}`;
+  return `<div class="mh-route" data-kc="KeyRouteGraph" data-kv="hops=${edges}, vouched=${!!(c&&vouch)}" role="img" aria-label="${words}">${html}</div>${words?`<div class="mh-rw">${words}</div>`:""}`;
+}
+/* the reasons as KeyFactRow lead=icon: an icon tile, the kind as an overline, Kai's receipt under it */
+const MH_WHY = { Source:"hash", Fit:"compass", Role:"briefcase", Shared:"users", Connected:"calendar", Vouched:"user-check", "Outside Key":"send", What:"gift", How:"list", Left:"hourglass", "Why you":"lightbulb", Presence:"map-pin" };
+const _mhPathBody = scPathBody; scPathBody = function(id, asSheet){
+  const h = _mhPathBody(id, asSheet), o = DB.opps.find(x=>x.id===id);
+  if (!mhOn() || !o) return h;
+  const d = document.createElement("template"); d.innerHTML = h; const r = d.content;
+  const st = r.querySelector(".sc > .st"); if (st) st.insertAdjacentHTML("afterend", mhRoute(o));
+  /* the head says what it is; the route under it says how you get there, once */
+  const sub = r.querySelector(".who.big .m12"); if (sub) sub.textContent = scRole(o);
+  const hav = r.querySelector(".who.big > .avatar"); if (hav && o.kind!=="person") hav.classList.add("mh-sq");
+  /* a new pick's Now was its first reason again, and Next only restated the button: the reasons say it once */
+  const nn = r.querySelector(".nn"); if (nn && isNewOf(o) && ownerOf(o)==="you") nn.remove();
+  const rows = r.querySelector(".sl + .rows"), recs = (o.receipts||[]).filter(x=>x[0]!=="Open");
+  if (rows && rows.previousElementSibling.textContent==="Why Kai picked this" && recs.length) {
+    const now = nn && nn.isConnected ? nn.textContent : "";
+    rows.outerHTML = `<div class="rows mh-why-rows">${recs.filter(x=>!now.includes(x[1])).map(x=>`<div class="fr mh-fr mh-wr${x[0]==="Vouched"?" gold":""}" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI(MH_WHY[x[0]]||"info",16)}</span><span class="m"><span class="k">${x[0]}</span><span class="b">${x[1]}</span></span>${x[2]?`<span class="chev" data-src="${x[2]}">${LI("chevron-right",16)}</span>`:""}</div>`).join("")}</div>`;
+  }
+  return d.innerHTML;
+};
 const MH_SRC = s => /^#/.test(s) ? "hash" : s==="calendar" ? "calendar" : /slack|whatsapp/i.test(s) ? "message-circle" : s==="contacts" ? "user" : "users";
 function mhDecorate(){
   const root = phone.querySelector(".view"); if (!root) return;
