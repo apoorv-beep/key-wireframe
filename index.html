@@ -4566,7 +4566,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2qph { position:absolute; inset:0; background:repeating-linear-gradient(45deg,#dcdcdc 0 10px,#e9e9e9 10px 20px); display:flex; align-items:center; justify-content:center; will-change:transform; }
 .p2qph .pini { font-size:80px; }
 .p2qgrad { position:absolute; left:0; right:0; bottom:0; height:65%; background:linear-gradient(to bottom, rgba(255,255,255,0), #fff 85%); }
-.p2qname { position:absolute; left:16px; right:16px; bottom:10px; }
+.p2qname { margin:14px 0 0; }
 .p2qname .pn { font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1.1; padding-left:0; margin:0; }
 .p2qname .pt { font-size:14px; font-weight:400; color:var(--ink2); margin-top:4px; }
 .p2qname .pf { font-size:12px; color:var(--ink3); margin-top:2px; }
@@ -4699,7 +4699,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .hg-acts .hg-btn.sec { margin-top:0; }
 #phone.hf-gap .hg-acts.two .hg-btn.l { flex:1 1 0; min-width:0; padding:0 var(--space-absolute-12); font:var(--type-body-m-strong); letter-spacing:0; }
 /* Item 9: square photos in a square-ish frame, face kept near the top (photos.css centres with !important) */
-.p2qhero { height:340px; }
+.p2qhero { height:auto; aspect-ratio:1 / 1; }
 #phone.hf-prof .pphoto.ph-cover, #phone.hf-prof .p2qph.ph-cover { background-position:center 20% !important; }
 /* Item 3: Kai's pending update is a deep Kai plate (same plate as the dock), not a row that blends in */
 #phone.hf-prof .p2kn { background:var(--bg-deep); color:var(--text-on-deep-default); border:0; border-radius:var(--radius-absolute-16); padding:var(--space-absolute-16); margin-bottom:var(--space-absolute-24); box-shadow:var(--elevation-2); }
@@ -4711,6 +4711,20 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-prof .p2kn .p2acts2 button { flex:0 0 auto; background:var(--bg-on-deep-fill); border-color:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
 #phone.hf-prof .p2kn .p2acts2 button.on { flex:1; background:var(--text-on-deep-default); border-color:var(--text-on-deep-default); color:var(--bg-deep); }
 #phone.hf-prof .p2kn .p2add { color:var(--text-on-deep-default); padding-bottom:0; }
+
+/* 05:04 fixes. Hero: the photo stands alone (square, like members' photos) and the name sits under it on the page, never on the face */
+#phone.hf-prof .phero { height:var(--p2w, 375px); }
+#phone.hf-prof .pgrad, #phone.hf-prof .p2qgrad { display:none; }
+#phone.hf-prof .pbody { padding-top:calc(var(--p2w, 375px) - 54px + var(--space-absolute-20)); }
+#phone.hf-prof .pbody > #pname { position:static; transform:none !important; opacity:1 !important; pointer-events:auto; margin-bottom:var(--space-absolute-12); }
+#phone.hf-prof #pname .p2fw.ph0 { display:none; }
+#phone.hf-prof .p2 > .p2fw.pg { margin-top:0; }
+/* Open to: each thing a member is open to is a row with the action it invites; Not now is a quiet line under it */
+.p2op > span.p2ico:first-child { flex:0 0 auto; }
+.p2op > span:nth-child(2) { flex:1; min-width:0; }
+.p2nn { display:flex; align-items:center; gap:8px; padding:10px 0 0; font-size:13px; color:var(--ink3); }
+#phone.hf-prof .p2nn { font:var(--type-body-s); color:var(--text-tertiary); padding-top:var(--space-absolute-12); }
+#phone.hf-prof .p2nn svg { color:var(--icon-tertiary, var(--text-tertiary)); flex:0 0 auto; }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -14399,9 +14413,33 @@ const P2 = {
 };
 function p2d(pid){ const p=DB.people[pid]||{}; const d=P2[pid]||{};
   return { now:d.now||p.line||"", needs:d.needs||(p.lookingFor?[{t:p.lookingFor, s:"", a:"suggest"}]:[]),
-    work:d.work||(p.company?[[p.company[0],"#121316",p.company,(p.title||"")+" · now"]]:[]), school:d.school||[],
-    note:STATE.p2notes[pid]!==undefined?STATE.p2notes[pid]:(d.note||""), kaiPre:d.kaiPre||"How to reach "+firstName(p),
+    work:d.work||p2Work(p), school:d.school||p2School(p),
+    note:STATE.p2notes[pid]!==undefined?STATE.p2notes[pid]:(d.note||""), kaiPre:d.kaiPre||p2KaiPre(pid, p),
     digest:d.digest||(p.lookingFor?`${firstName(p)} is looking for ${p.lookingFor.charAt(0).toLowerCase()+p.lookingFor.slice(1)}`:`${firstName(p)} updated their profile`), digestAct:d.digestAct||"Open" }; }
+/* Apoorv 28 Sep 05:04: "a lot of profiles looking very bare-bones". Personas without hand-written P2 data get their past roles
+   and school from what they already say (their line, their company, the families they're in), and what they're open to becomes
+   rows you can act on. Nothing here is invented: every row traces to a field on the member. */
+const P2_GOOGLE = "#1A73E8";
+function p2Work(p){ const cur=p.company&&!/^Ex-/.test(p.company)?[[p.company[0],"#121316",p.company,(p.title||"")+" · now"]]:[];
+  const past=[...new Set([p.company||"", p.line||""].flatMap(t=>[...t.matchAll(/Ex-([A-Z][A-Za-z]+(?: [A-Z][A-Za-z]+)?)/g)].map(m=>m[1])))];
+  if (!past.some(n=>/^Google/.test(n)) && (p.families||[]).includes("Xoogler")) past.push("Google");
+  return [...cur, ...past.map(n=>{ const g=/^Google/.test(n); return [n[0], g?P2_GOOGLE:"#121316", n, /^Ex-/.test(p.company||"")?(p.title||"")+" · before":"Before", g?"Google, like you":""]; })]; }
+function p2School(p){ return (p.families||[]).some(n=>/^Michigan/.test(n))||/Michigan alum/i.test(p.line||"") ? [["M","#00274C","U of Michigan","Alum","Michigan, like you"]] : []; }
+const P2_OPEN = {
+  "Hiring conversations":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google Cloud who has shipped two AI features. Is ${p.company} hiring for product? I'd love 20 minutes.`],
+  "PM hiring":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google Cloud who has shipped two AI features. Is ${p.company} hiring PMs? I'd love 20 minutes.`],
+  "Product advice":["lightbulb","Ask for advice",f=>`Hi ${f}, could I get 20 minutes of product advice? I'm working out how to launch AI features at scale.`],
+  "Advice":["lightbulb","Ask for advice",f=>`Hi ${f}, could I get 20 minutes of your advice on what to do next after Google?`],
+  "Cofounder conversations":["handshake","Say hi",f=>`Hi ${f}, I'm starting to think about what's next and you're open to cofounder conversations. Coffee this week?`],
+  "Intros":["users","Ask for an intro",f=>`Hi ${f}, could you introduce me to someone hiring AI PMs? Happy to send a short blurb.`],
+  "Intros via connector":["users","Ask for an intro",f=>`Hi ${f}, could you introduce me to someone hiring AI PMs? Happy to send a short blurb.`],
+  "Referrals":["user-check","Ask for a referral",(f,p)=>`Hi ${f}, would you be open to referring me for a product role at ${p.company}? I can send my résumé and the role.`],
+  "Office hours":["clock","Book a slot",f=>`Hi ${f}, could I take one of your office hours slots this week? I'd like your read on AI PM roles.`],
+  "Investing":["sprout","Ask what they back",f=>`Hi ${f}, I'm not raising, but I'd love to know what you look for at seed in AI products.`]
+};
+function p2KaiPre(pid, p){ const o=p2Opp(pid), via=o&&viaOf(o), sh=(p.shared||[]).find(x=>/^(Both|Met)/.test(x));
+  return via ? `${firstName(via)} is your warmest way in` : sh ? `${sh}. Direct is fine` : `How to reach ${firstName(p)}`; }
+const p2OpenList = p => (p.openTo||[]).filter(k=>P2_OPEN[k]);
 function p2Opp(pid){ return DB.opps.find(x=>x.personId===pid && x.state!=="dropped"); }
 function p2Logo(l,c){ return `<span class="p2lg" style="background:${c}">${l}</span>`; }
 
@@ -14427,6 +14465,8 @@ function p2Body(pid){
   return `<div class="p2">
     ${p2BetweenLine(pid)}
     ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
+    ${p2OpenList(p).length?`<div class="p2sec"><div class="p2sh">${f} is open to</div>${p2OpenList(p).map(k=>{ const [ic,act]=P2_OPEN[k], done=STATE.p2done["open"+pid+k];
+      return `<div class="p2nd p2op"><span class="p2ico">${LI(ic,18)}</span><span><b>${k}</b>${k==="Office hours"&&p.slots?`<small>${p.slots}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2open','${pid}|${k}')">${done?"Asked":act}</button></div>`; }).join("")}${(p.notNow||[]).length?`<div class="p2nn">${LI("hand",14)}<span>Not now: ${p.notNow.join(", ").toLowerCase()}. Kai won't suggest these</span></div>`:''}</div>`:''}
     ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">${f} can help with</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
     ${d.work.length?`<div class="p2sec"><div class="p2sh">Work</div><div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${d.school.length?`<div class="p2sec"><div class="p2sh">School</div><div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
@@ -14518,6 +14558,7 @@ portSheet = function(type, id){
   if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
   if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
   if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
+  if (type==="p2open") { const [ic,act,draft]=P2_OPEN[arg]||P2_OPEN.Advice; return `${head(`${act} · ${f}`)}${arg==="Office hours"&&p.slots?`<div class="xs faint" style="margin-bottom:8px">${LI("clock",12)} ${p.slots}</div>`:''}${p2Composer(draft(f,p), `p2Send('open${p.id}${arg}','${p.id}','Sent. ${f} is open to this')`, sendTo==="Send"?`Message ${f}`:sendTo)}`; }
   if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2need") { const n=d.needs[+arg]||{t:""};
     if (!n.fit && n.a!=="share") return `<h2>Who fits “${n.t.charAt(0).toLowerCase()+n.t.slice(1)}”?</h2><div class="xs faint" style="margin-bottom:6px">People you know. Kai drafts a note to both, you send it.</div>${["sana","arjun","ana"].filter(x=>DB.people[x]&&x!==p.id).map(x=>`<div class="xrow" onclick="p2Send('need${p.id}${arg}','${p.id}','Drafted a note to both. Sent when you tap send in Messages')">${av(DB.people[x].initials)}<div class="m"><div class="a">${DB.people[x].name}</div><div class="s xs faint">${DB.people[x].title}, ${DB.people[x].company}</div></div>${LI("chevron-right",16)}</div>`).join("")}<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Share their name and email'),200)"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Someone not on Key</div></div></div>`;
@@ -14668,6 +14709,11 @@ render = function(){ const r = _p2HfRender.apply(this, arguments);
     const prof = STATE.screen==="profile", sh = (STATE.sheet&&STATE.sheet.type)||"";
     phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
     const pid = STATE.profileId||"priya", ph = prof && phone.querySelector(".pphoto");
+    /* Apoorv 28 Sep 05:04: the name and its white fade covered half the face. The photo now stands alone, square like the member's
+       own photo, and the name sits under it on the page (Hinge's pattern: nothing is drawn on a face). Scroll still carries the photo away */
+    phone.style.setProperty("--p2w", phone.clientWidth+"px");
+    const nm = prof && phone.querySelector("#pname"), pb = prof && phone.querySelector("#pbody"), bar = prof && phone.querySelector("#pbar");
+    if (nm && pb) { if (nm.parentElement!==pb) pb.prepend(nm); pb.addEventListener("scroll", () => bar && bar.classList.toggle("show", pb.scrollTop > nm.offsetTop - 40), {passive:true}); }
     if (ph && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, p2PhUrl(PH_FACE[pid]), "ph-cover");
   }
   return r; };
@@ -14680,8 +14726,8 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
   const full = `STATE.sheet=null;STATE.profileId='${pid}';go('profile')`;
   return `<div class="p2qv" data-p2qv="${pid}">
     <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
-    <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div><div class="p2qgrad"></div>
-      <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}</div></div>
+    <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div></div>
+    <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}</div>
     <div class="p2qacts">${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button></div>
     ${p2Body(pid)}
     <div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>
@@ -14693,7 +14739,7 @@ render = function(){ const r = _p2QvRender.apply(this, arguments);
   const qv = document.querySelector(".sheet .p2qv"), sb = qv && qv.closest(".sb");
   if (sb) { const bar = qv.querySelector(".p2qbar"), ph = qv.querySelector(".p2qph");
     sb.classList.add("p2qsb");
-    const on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > 150); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
+    const lim = qv.querySelector(".p2qhero").offsetHeight - 16, on = () => { const y = sb.scrollTop; bar.classList.toggle("on", y > lim); ph.style.transform = `translateY(${Math.min(y,200)*0.35}px)`; };
     sb.onscroll = on; on();
     const pid = qv.dataset.p2qv;
     if (p2HiFi() && typeof phPaint==="function" && typeof PH_FACE!=="undefined" && PH_FACE[pid]) phPaint(ph, p2PhUrl(PH_FACE[pid]), "ph-cover");
