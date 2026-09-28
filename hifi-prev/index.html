@@ -1142,6 +1142,9 @@
 #phone.phone .hdr.hdr:has(> .back) > .obk-back ~ .t, #phone.phone .hdr.hdr.obk-hdr > .t.t, #phone.phone .hdr.hdr.chdr:has(> .back) .hm > .hn.hn, #phone.phone .hdr.hdr:has(> .back) > .t.t { font:var(--type-title); letter-spacing:var(--type-title-tracking); }
 
 
+#phone.phone .tipx { max-width:min(340px, calc(100% - 32px)); }
+
+
 
 
 body, .phone, .stage { font-family:'Manrope', -apple-system, 'Segoe UI', Roboto, sans-serif; }
@@ -18247,6 +18250,30 @@ const _hfScopeRender = render; render = function(){ const r=_hfScopeRender.apply
   const fix = root => root.querySelectorAll('[style*="dashed"], [style*="dotted"]').forEach(e => { e.setAttribute('style', e.getAttribute('style').replace(/\b(dashed|dotted)\b/g, 'solid')); });
   const _hlRender = render;
   render = function(){ const r = _hlRender.apply(this, arguments); const ph = document.getElementById('phone'); if (ph) fix(ph); return r; };
+})();
+
+/* Pop-ups (28 Sep, his 01:59 "the pop-up is breaking"): popReveal ran inside edu's render wrapper, before the later render wrappers
+   had finished the home list, so it measured the first pick 109px lower than it lands and scrolled the card under the header,
+   with the cut-out over the status bar and title. Reveal on the next frame, once render is done, and keep the cut-out inside
+   the visible part of the list. */
+(function(){
+  const vis = t => { const body = t.closest(".body"), nav = phone.querySelector(".nav"); if (!body) return null;
+    const br = body.getBoundingClientRect(); return { top:br.top, bottom:Math.min(br.bottom, nav && !nav.contains(t) ? nav.getBoundingClientRect().top : br.bottom) }; };
+  const _reveal = popReveal;
+  popReveal = function(){
+    const t = phone.querySelector(".tip-on"); if (!t) return;
+    requestAnimationFrame(()=>{ if (phone.querySelector(".tip-on")!==t) return;
+      const body = t.closest(".body"), v = vis(t), r = t.getBoundingClientRect();
+      if (body && v && r.top < v.top + 8) body.scrollTop += r.top - v.top - 8;
+      _reveal(); eduPlace(); });
+  };
+  const _dim = popDim;
+  popDim = function(){ _dim();
+    const d = phone.querySelector(".tipdim"), t = phone.querySelector(".tip-on"); if (!d || !t) return;
+    const v = vis(t); if (!v) return; const pr = phone.getBoundingClientRect();
+    const top = Math.max(parseFloat(d.style.top), v.top - pr.top), bottom = Math.min(parseFloat(d.style.top) + parseFloat(d.style.height), v.bottom - pr.top);
+    d.style.top = top + "px"; d.style.height = Math.max(0, bottom - top) + "px";
+  };
 })();
 
 /* ==== REAL PHOTOS (Apoorv 27 Sep 22:37): "replace those empty avatars with the real people in hifi prototype ... also for the calendar cover photos".
