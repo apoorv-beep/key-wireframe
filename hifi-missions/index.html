@@ -5084,7 +5084,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .wnum { border:0 !important; background:var(--bg-fill-default); color:var(--text-primary) !important; font:var(--type-label) !important; width:32px !important; height:32px !important; }
 
 #phone.hf-mis .sc .avatar.mh-count { border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-title); }
-#phone.hf-mis .mh-evt { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); overflow:hidden; }
+#phone.hf-mis .mh-evt, #phone.hf-mis .mh-mark.s40 { width:40px; height:40px; flex:0 0 auto; border-radius:var(--radius-absolute-12); overflow:hidden; }
 #phone.hf-mis .mh-evt > *, #phone.hf-mis .mh-evt .cv { width:100%; height:100%; }
 #phone.hf-mis .mh-evt .evx-dd { display:none; }
 #phone.hf-mis .mh-cover { height:112px; margin:4px 0 12px; border-radius:var(--radius-absolute-20); overflow:hidden; cursor:pointer; }
@@ -15955,6 +15955,13 @@ function mhLook(m){
 }
 const mhPlate = t => (typeof EV_THEMES!=="undefined" && EV_THEMES[t] ? EV_THEMES[t][1] : "var(--bg-deep)");
 function mhMark(m, size){ const l = mhLook(m); return `<div class="mh-mark s${size}" style="background:${mhPlate(l.theme)}" data-kc="KeyMissionMark" data-kv="size=${size}, theme=${l.theme}">${LI(l.icon, size>=44?22:18)}</div>`; }
+/* the event a mission serves: its own event, the event in its id (ev-c.e4), or a series' first date (ev-f.s-coffee) */
+function mhEvent(m){
+  if (!m || typeof evCvArt!=="function" || !DB.fevents) return null;
+  const id = m.ev || (m.id.split(".")[1] || "");
+  return id ? DB.fevents.find(e=>e.id===id) || DB.fevents.filter(e=>e.seriesId===id).sort((a,b)=>!!a.past-!!b.past || (a.sort||0)-(b.sort||0))[0] || null : null;
+}
+function mhThumb(m){ const e = mhEvent(m); return e ? `<div class="cv-th mh-evt" data-kc="KeyEventThumb" data-kv="size=40">${evCvArt(e)}</div>` : mhMark(m, 40); }
 /* where the mission's people are, in words with the fixed labels: "New pick 3 · Waiting 1" */
 function mhCounts(ps){ const col = MH_ST.map(()=>0); ps.forEach(o=>{ const i=mhSt(o); if (i>=0) col[i]++; }); return col.map((n,i)=>n?`${MH_ST[i]} <b>${n}</b>`:"").filter(Boolean).join(" · "); }
 function mhBand(m, ps, big, cap){
@@ -16114,10 +16121,13 @@ function mhDecorate(){
   /* counts as leads (the organizer's week) are number tiles, not faces */
   root.querySelectorAll(".sc .row > .avatar, .trow.sc > .avatar").forEach(a=>{ if (/^\d+$/.test(a.textContent.trim())) a.classList.add("mh-count"); });
   /* KeyEventThumb: a host's mission shows its event's cover wherever the mission or the event is named */
-  const ev = id => typeof evCvArt==="function" && DB.fevents ? DB.fevents.find(e=>e.id===id) : null;
-  const evOfM = mid => { const m = DB.missions.find(x=>x.id===mid); return m && m.ev ? ev(m.ev) : null; };
-  const thumb = e => `<div class="cv-th mh-evt" data-kc="KeyEventThumb" data-kv="size=32">${evCvArt(e)}</div>`;
-  root.querySelectorAll(".sc .row[data-mission]").forEach(r=>{ const e = evOfM(r.dataset.mission); if (e && !r.querySelector(".mh-evt")) r.insertAdjacentHTML("afterbegin", thumb(e)); });
+  const evOfM = mid => mhEvent(DB.missions.find(x=>x.id===mid));
+  /* every mission row leads with the same 40 picture tile, whatever the kind */
+  const rowMid = r => r.dataset.mission || ((r.getAttribute("onclick")||"").match(/^go\('mission:([^']+)'\)$/)||[])[1];
+  root.querySelectorAll(".row[data-mission], .row[onclick^=\"go('mission:\"]").forEach(r=>{
+    const id = rowMid(r), m = DB.missions.find(x=>x.id===id) || (id==="h1" && typeof D_HIRE!=="undefined" ? { id, type:"Hiring" } : null); if (!m || r.querySelector(":scope > .mh-evt, :scope > .mh-mark")) return;
+    const lead = r.firstElementChild; if (lead && (lead.matches(".mg") || lead.matches(".avatar") && lead.querySelector("svg"))) lead.remove();
+    r.insertAdjacentHTML("afterbegin", mhThumb(m)); });
   const cur = (STATE.screen||"").startsWith("mission:") ? evOfM(STATE.screen.slice(8)) : null;
   const t20 = cur && !root.querySelector(".mh-cover") && root.querySelector(".body.sc > .t20, .body > .sc > .t20");
   if (t20) t20.insertAdjacentHTML("beforebegin", `<div class="cv-th mh-cover" data-kc="KeyEventThumb" data-kv="size=banner" onclick="go('eventd:${cur.id}')">${evCvArt(cur)}</div>`);
@@ -16131,7 +16141,7 @@ function mhDecorate(){
     if (mg && t20 && !root.querySelector(".mh-cover")) { t20.classList.add("mh-tt"); t20.insertAdjacentElement("afterbegin", mg); } else if (mg) mg.remove();
   }
   /* host and series missions on home: the same card, with their event cover or a tile as the lead */
-  root.querySelectorAll(".body.sc > .row[data-mission]").forEach(r=>{ r.classList.add("mh-mrow"); if (!r.querySelector(".mh-evt, .avatar, .mg")) r.insertAdjacentHTML("afterbegin", `<div class="mg t3">${LI("repeat",16)}</div>`); });
+  root.querySelectorAll(".body.sc > .row[data-mission]").forEach(r=>r.classList.add("mh-mrow"));
   mhTag(phone);
 }
 function mhTag(r){
