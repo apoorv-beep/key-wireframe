@@ -16045,7 +16045,7 @@ function mhTabGo(id, t){ STATE.mhTab[id] = t; render(); }
 function mhBriefPane(m){
   const facts = [...(m.constraints||[])];
   const rows = [
-    [LI("target",16), "Looking for", m.brief || "Kai is looking across your families."],
+    [LI("search",16), "Looking for", m.brief || "Kai is looking across your families."],
     ...facts.map(f=>[LI("check",16), "Must have", f]),
     [LI("flag",16), "Done when", m.standing ? "Standing, no end date" : (m.done || "You close it")],
     [LI("users",16), "Where Kai looks", (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name).slice(0,3).join(", ") || "Your families"],
@@ -16122,7 +16122,7 @@ function mhDecorate(){
   const t20 = cur && !root.querySelector(".mh-cover") && root.querySelector(".body.sc > .t20, .body > .sc > .t20");
   if (t20) t20.insertAdjacentHTML("beforebegin", `<div class="cv-th mh-cover" data-kc="KeyEventThumb" data-kv="size=banner" onclick="go('eventd:${cur.id}')">${evCvArt(cur)}</div>`);
   /* the mission glyph in a sheet head is the same Lucide tile as on the page, never a text symbol */
-  phone.querySelectorAll("#sheet .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(g.classList.contains("t2")?"users":g.classList.contains("t1")?"briefcase":"target", 20); });
+  phone.querySelectorAll("#sheet .mg").forEach(g=>{ if (!g.querySelector("svg")) g.innerHTML = LI(g.classList.contains("t2")?"users":g.classList.contains("t1")?"briefcase":"compass", 20); });
   /* header inside a mission or a path: back and more as bare 24 glyphs in 44 targets; the mission tile moves beside the title */
   const hdr = root.querySelector(".hdr.sc");
   if (hdr) {
