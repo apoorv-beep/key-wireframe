@@ -5018,7 +5018,14 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .mh-bn { flex:1; min-width:0; font:var(--type-title); letter-spacing:var(--type-title-tracking); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 #phone.hf-mis .mh-band.big .mh-bn { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); }
 #phone.hf-mis .mh-go { flex:0 0 auto; line-height:0; opacity:.8; }
+#phone.hf-mis .mh-bf { display:flex; align-items:flex-end; gap:12px; margin-top:10px; }
+#phone.hf-mis .mh-bf > .mh-bs { flex:1 1 auto; min-width:0; margin:0; }
 #phone.hf-mis .mh-bs { margin-top:10px; font:var(--type-caption); color:var(--text-on-deep-default); }
+#phone.hf-mis .mh-ctl { position:relative; flex:0 0 auto; display:flex; gap:8px; }
+#phone.hf-mis .mh-ct { width:44px; height:44px; padding:0; border:0; border-radius:var(--radius-absolute-12); display:flex; align-items:center; justify-content:center; line-height:0; cursor:pointer;
+  color:var(--text-on-deep-default); background:var(--bg-on-deep-fill); background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent); backdrop-filter:blur(var(--blur-backdrop)); }
+#phone.hf-mis .mh-ct:active { background:color-mix(in srgb, var(--text-on-deep-default) 26%, transparent); }
+#phone.hf-mis .mh-ct:focus-visible { outline:var(--border-width-focus) solid var(--text-on-deep-default); outline-offset:2px; }
 #phone.hf-mis .mh-bs b { font-weight:700; color:var(--text-on-deep-default); }
 /* the rail: one pick in focus, the next peeking (KeyHScroll with snap) */
 #phone.hf-mis .msec.sc .mh-rail { display:flex; gap:10px; margin:0; padding:14px 16px 16px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
@@ -15974,6 +15981,7 @@ Object.entries({
   handshake:'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
   rocket:'<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/>',
   "user-check":'<path d="m16 11 2 2 4-4"/><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+  square:'<rect width="18" height="18" x="3" y="3" rx="2"/>',
   "send-horizontal":'<path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"/><path d="M6 12h16"/>',
 }).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
 const MH_THEMES = ["harbour","dusk","sage","ink"];
@@ -15993,12 +16001,19 @@ function mhEvent(m){
 function mhThumb(m){ const e = mhEvent(m); return e ? `<div class="cv-th mh-evt" data-kc="KeyEventThumb" data-kv="size=40">${evCvArt(e)}</div>` : mhMark(m, 40); }
 /* where the mission's people are, in words with the fixed labels: "New pick 3 · Waiting 1" */
 function mhCounts(ps){ const col = MH_ST.map(()=>0); ps.forEach(o=>{ const i=mhSt(o); if (i>=0) col[i]++; }); return col.map((n,i)=>n?`${MH_ST[i]} <b>${n}</b>`:"").filter(Boolean).join(" · "); }
-function mhBand(m, ps, big, cap){
-  const l = mhLook(m); const c = cap || mhCounts(ps);
+/* KeyMissionControls: pause or resume, and end, inside the hero as 44 tiles at radius 12 (his 02:24). Pause and resume use the brief's bPause; end opens the close sheet */
+function mhCtl(m){
+  const p = m.status==="paused";
+  return `<div class="mh-ctl" data-kc="KeyMissionControls" data-kv="state=${p?"paused":"active"}">
+    <button class="mh-ct" aria-label="${p?"Resume":"Pause"} ${m.name}" onclick="event.stopPropagation();bPause('${m.id}');render()">${LI(p?"play":"pause",20)}</button>
+    <button class="mh-ct" aria-label="End ${m.name}" data-close="${m.id}">${LI("square",18)}</button></div>`;
+}
+function mhBand(m, ps, big, cap, ctl){
+  const l = mhLook(m); const c = m.status==="paused" && ctl ? "Paused. Kai stops looking" : cap || mhCounts(ps);
   return `<div class="mh-band${big?" big":""}" style="background:${mhPlate(l.theme)}" ${big?"":`data-mission="${m.id}"`} data-kc="KeyMissionHero" data-kv="size=${big?"page":"card"}, theme=${l.theme}">
     ${/^(users|compass)$/.test(l.icon)?"":`<i class="mh-ghost">${LI(l.icon, 120)}</i>`}
     <div class="mh-bt">${mhMark(m, big?44:32)}<div class="mh-bn">${m.name}</div>${big?"":`<span class="mh-go">${LI("chevron-right",20)}</span>`}</div>
-    <div class="mh-bs">${c || (STATE.intakeDone ? "No paths yet. Kai's next pass is Friday" : "The call makes this specific")}</div></div>`;
+    <div class="mh-bf"><div class="mh-bs">${c || (STATE.intakeDone ? "No paths yet. Kai's next pass is Friday" : "The call makes this specific")}</div>${ctl && typeof bPause==="function" ? mhCtl(m) : ""}</div></div>`;
 }
 /* KeyMoveCard (avatar layout): the one pick in focus, the next peeking so the rail says there is more */
 function mhPick(o){
@@ -16016,7 +16031,7 @@ const _mhSection = missionSection; missionSection = function(m){
   const [, , txt] = scMissionStatus(m, ps);
   const rail = you.length ? `<div class="rail mh-rail" data-kc="KeyHScroll">${you.slice(0,3).map(mhPick).join("")}${you.length>3?`<div class="vcard sc scard mh-pmore" data-mission="${m.id}"><div class="t20">${you.length-3}</div><div class="b">more for you</div></div>`:""}</div>`
     : ps.length ? `<div class="mh-quiet" data-mission="${m.id}">${kaiMark(20)}<span>Nothing for you right now. ${txt.charAt(0).toUpperCase()+txt.slice(1)}</span></div>` : "";
-  return `<div class="msec sc mh-mc" data-kc="KeyMissionCard">${mhBand(m, ps)}${rail}</div>`;
+  return `<div class="msec sc mh-mc" data-kc="KeyMissionCard">${mhBand(m, ps, false, "", true)}${rail}</div>`;
 };
 /* the mark sheet: colour and glyph, opened from the mission menu */
 const _mhPortSheet = portSheet; portSheet = function(type, id){
@@ -16099,7 +16114,7 @@ function mhMissionPage(root, id){
   const ps = DB.opps.filter(o=>o.missionId===id&&o.state!=="dropped"&&o.state!=="candidate");
   /* hero replaces the title, the status line and the four numbers */
   body.querySelectorAll(":scope > .t20, :scope > .st, :scope > .funnel-l, :scope > .mh-stats").forEach(e=>e.remove());
-  body.insertAdjacentHTML("afterbegin", mhBand(m, ps, true));
+  body.insertAdjacentHTML("afterbegin", mhBand(m, ps, true, "", true));
   /* split the rest into panes */
   const take = (from, to) => { const out = []; let n = from.nextElementSibling; while (n && n!==to) { const nx = n.nextElementSibling; out.push(n); n = nx; } return out; };
   const pathsEls = take(sP, sB), briefEls = take(sB, sL), logEls = take(sL, null).filter(e=>!e.matches(".body-gap"));
