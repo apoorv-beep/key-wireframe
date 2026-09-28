@@ -13932,6 +13932,15 @@ const _fxKaiAsk = kaiAsk; kaiAsk = function(t){
 };
 /* Events' "Following" bell sheet calls LI("bell-ring"), which LUCIDE lacked (hosting's v64 check): Lucide's bell-ring. */
 if (typeof LUCIDE!=="undefined" && !LUCIDE["bell-ring"]) LUCIDE["bell-ring"] = '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M22 8c0-2.3-.8-4.3-2-6"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/>';
+/* Journey guide, v81 SE: a tap meant for "Forward and vouch" landed while the sheet was still rising and hit the scrim,
+   which closed the sheet without sending. The scrim ignores taps for the sheet's opening animation (260ms + a margin);
+   buttons and the grab handle still work at once. */
+const _fxOpenSheet = openSheet; openSheet = function(){ STATE._sheetAt = Date.now(); return _fxOpenSheet.apply(this, arguments); };
+const _fxCloseSheet = closeSheet; closeSheet = function(){
+  const ev = typeof window!=="undefined" ? window.event : null;
+  if (ev && ev.type==="click" && ev.target && ev.target.classList && ev.target.classList.contains("scrim") && Date.now()-(STATE._sheetAt||0) < 400) return;
+  return _fxCloseSheet.apply(this, arguments);
+};
 
 /* ==== PROFILE v2 (profiles thread, 27 Sep 2026; Apoorv's yes 21:24 on the plan https://claude.ai/artifact/5VbBEXosR5xCAP4PZhtWfG)
    Prototype it follows: https://claude.ai/artifact/QcL7jJaDepUPC5Qa78zA8G
