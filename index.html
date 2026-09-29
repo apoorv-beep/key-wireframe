@@ -4249,7 +4249,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-pic { position:relative; flex:1 1 auto; min-height:160px; overflow:hidden; background:#12161A; }
 .bs-vw .bf-pic .bs-pt i { background-position:center 22%; }
 .bs-vw .bf-pic .bs-pt.bs-kai .kn { top:52%; }
-.bs-vw .bf-shade { position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(11,14,17,.62) 0,rgba(11,14,17,0) calc(env(safe-area-inset-top,0px) + 120px)),linear-gradient(0deg,#0B0E11 0,rgba(11,14,17,0) 56px); }
+.bs-vw .bf-shade { position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg,rgba(11,14,17,.72) 0,rgba(11,14,17,0) calc(env(safe-area-inset-top,0px) + 136px)),linear-gradient(0deg,#0B0E11 0,rgba(11,14,17,0) 56px); }
 .bs-vw .bf-pic .bs-tz { position:absolute; top:calc(env(safe-area-inset-top,0px) + 104px); bottom:0; z-index:2; cursor:pointer; } .bs-vw .bf-pic .bs-tz.l { left:0; width:32%; } .bs-vw .bf-pic .bs-tz.r { right:0; width:68%; }
 .bs-vw .bf-split { position:absolute; inset:0; display:grid; gap:2px; grid-template-columns:1fr 1fr; }
 .bs-vw .bf-split.n4 { grid-template-rows:1fr 1fr; } .bs-vw .bf-split.n3 span:first-child { grid-row:span 2; }
@@ -4353,6 +4353,11 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-fact > b { flex:0 0 auto; height:32px; padding:0 12px; border-radius:10px; background:#F9FAFC; color:#0B0E11; font-size:13px; font-weight:700; display:inline-flex; align-items:center; } .bs-vw .bf-fact.need i { background:#F9FAFC; color:#0B0E11; }
 .bs-vw .bf-fact i { flex:0 0 auto; width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:rgba(249,250,252,.1); color:#F9FAFC; }
 @media (max-height:700px), (max-width:360px) { .bs-vw .bf-covm { display:none; } .bs-vw .bf-fact { min-height:40px; font-size:14px; } .bs-vw .bf-fact i { width:28px; height:28px; } }
+/* KeyFaceStack size=56 on an event cover: the people you'd meet there, overlapping by 4 with a ring in the ink ground */
+.bs-vw .bf-meet { position:absolute; left:20px; bottom:12px; z-index:1; display:flex; pointer-events:none; }
+.bs-vw .bf-meet > span { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; margin-left:-4px; box-shadow:0 0 0 1.5px #0B0E11; }
+.bs-vw .bf-meet > span:first-child { margin-left:0; } .bs-vw .bf-meet .bs-pt em { font-size:22px; transform:none; color:rgba(255,255,255,.72); }
+@media (max-height:700px), (max-width:360px) { .bs-vw .bf-meet > span { width:44px; height:44px; } }
 
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
@@ -6173,7 +6178,7 @@ function sHome() {
     ${firstRun}
 
     ${shown.length?(STATE.missionsOrderedAt==="sign-up"&&!STATE.intakeDone?`<div class="xs faint" style="margin:4px 0 6px">You started these at sign-up. The call makes them specific.</div>`:''):`<div class="empty" style="margin-top:8px">No missions yet. Tap what you're here for and Kai starts looking.</div><div class="chips" style="margin-top:8px">${verbs}</div>`}
-    ${STATE.welcomeDue?`<div class="card" style="border-color:var(--ink);margin-bottom:12px"><div class="row" style="gap:10px;align-items:center"><span class="stdot"></span><div style="flex:1"><div class="name" style="font-size:17px">You're in. Welcome to Key.</div><div class="xs muted">Kai ran its first pass. ${DB.opps.length} paths, each with why.</div></div><span class="chip" onclick="STATE.welcomeDue=false;render()">Thanks</span></div></div>`:''}
+    ${STATE.welcomeDue?`<div class="card" style="border-color:var(--ink);margin-bottom:12px"><div class="row" style="gap:10px;align-items:center"><span class="stdot"></span><div style="flex:1"><div class="name" style="font-size:17px">You're in. Welcome to Key.</div><div class="xs muted">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Kai hasn't started yet. Talk with Kai and it starts looking."}</div></div>${STATE.intakeDone?`<span class="chip" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="chip" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
     ${shown.length?coach("paths","These are paths: people and roles Kai found for each mission, with why. One tap opens everything about one. Nothing is sent without your yes."):''}
     ${shown.map(missionSection).join("")}
     ${tailRow}
@@ -8597,7 +8602,7 @@ sHome = function(){
   <div class="body sc">
     ${firstRun}
     ${active.length?(STATE.missionsOrderedAt==="sign-up"&&!STATE.intakeDone?`<div class="m12" style="margin:4px 0 6px">You started these at sign-up. The call makes them specific.</div>`:''):`<div class="empty" style="margin-top:8px">No missions yet. Tap what you're here for and Kai starts looking.</div><div class="chips" style="margin-top:8px">${verbs}</div>`}
-    ${STATE.welcomeDue?`<div class="lift" style="margin-bottom:12px"><div class="row first" style="padding:0"><span class="stdot"></span><div class="m"><div class="a">You're in. Welcome to Key.</div><div class="b">Kai ran its first pass. ${DB.opps.length} paths, each with why.</div></div><span class="mini sec" onclick="STATE.welcomeDue=false;render()">Thanks</span></div></div>`:''}
+    ${STATE.welcomeDue?`<div class="lift" style="margin-bottom:12px"><div class="row first" style="padding:0"><span class="stdot"></span><div class="m"><div class="a">You're in. Welcome to Key.</div><div class="b">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Kai hasn't started yet. Talk with Kai and it starts looking."}</div></div>${STATE.intakeDone?`<span class="mini sec" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="mini sec" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
     ${active.length?coach("paths","These are paths: people and roles Kai found for each mission, with why. One tap opens everything about one. Nothing is sent without your yes."):''}
     ${now.length?`<div class="sl">Now<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${now.length}</span></div><div class="rows">${now.join("")}</div>`:''}
     ${active.map(missionSection).join("")}
@@ -15013,7 +15018,7 @@ const brFirst = s => (s||"").split(" ")[0];
 function brSentences(t){ return (t||"").match(/[^.!?]+[.!?]+/g) || [t||""]; }
 /* the picture: one big portrait, an event cover, a split of up to four faces, or Kai on ink */
 function bfPic(c){
-  if (c.ev && typeof evCvArt==="function") return `<div class="bs-cv">${evCvArt(c.ev, true)}</div>`;
+  if (c.ev && typeof evCvArt==="function") return `<div class="bs-cv">${evCvArt(c.ev, true)}</div>${(c.ev.meet||[]).length ? `<span class="bf-meet" data-kc="KeyFaceStack" data-kv="size=56">${c.ev.meet.slice(0,3).map(id => DB.people[id] ? `<span>${brPortrait(DB.people[id].initials, id, 160)}</span>` : "").join("")}</span>` : ""}`;
   if (c.faces && c.faces.length > 1) return `<div class="bf-split n${Math.min(4, c.faces.length)}">${c.faces.slice(0,4).map(p => `<span>${brPortrait(p.initials, p.id, 360)}</span>`).join("")}</div>`;
   if (c.who) return brPortrait(c.who.initials, c.who.id, 720);
   return brKaiArt();
@@ -15058,15 +15063,18 @@ function brDeck(){
   /* the rest: counted per community, never listed */
   const facts = {}, rest = items.filter(i => !used.has(i) && i.kind!=="event");
   DB.families.forEach(f => { const F = [];
-    const n = rest.filter(i => i.kind==="fam" && i.fam===f.id); if (n.length) F.push(["bell", n[0].title.replace(/ mentioned everyone in /," asked everyone in ").replace(/ and others replied to a thread/," and others replied in your thread"), n[0].go]);
+    const n = rest.filter(i => i.kind==="fam" && i.fam===f.id); if (n.length) F.push(Object.assign(["bell", n[0].title.replace(/ mentioned everyone in /," asked everyone in ").replace(/ and others replied to a thread/," and others replied in your thread"), n[0].go], { who: brPerson(n[0].ini), quote: n[0].sub, open:"Open thread" }));
     const ch = ((DB.channels||{})[f.id]||[]).filter(c => c.unread && c.joined!==false), u = ch.reduce((t,c) => t+c.unread, 0);
-    if (u) F.push(["hash", `${u} new in ${ch.slice(0,2).map(c => c.name).join(", ")}${ch.length>2?` and ${ch.length-2} more`:""}`, `STATE.family='${f.id}';go('fchannels')`]);
+    const lm = ch.map(c => { const k = convOf(c.id), m = k && lastMsg(k); return m && m.from!==meId() && P(m.from) ? { c, m } : null; }).find(Boolean);
+    if (u) F.push(Object.assign(["hash", `${u} new in ${ch.slice(0,2).map(c => c.name).join(", ")}${ch.length>2?` and ${ch.length-2} more`:""}`, `STATE.family='${f.id}';go('fchannels')`],
+      lm ? { who: P(lm.m.from), head: `${P(lm.m.from).name} posted in ${lm.c.name}`, quote: lm.m.text, keep:true, open:`Open ${lm.c.name}`, go:`STATE.family='${f.id}';go('channel:${lm.c.id}')` } : {}));
     const posts = (DB.posts||[]).filter(p => p.fam===f.id && p.who!==me().name && /^(Today|\d+[hm])$/.test(p.when||"")).length; if (posts) F.push(["file-text", `${posts} new post${posts===1?"":"s"}`, `STATE.family='${f.id}';go('posts')`]);
     const ev = (DB.fevents||[]).filter(e => e.family===f.id && e.bucket==="week" && (e.rsvp===true || e.reg==="hosting") && !deck.some(c => c.ev && c.ev.name===e.name));
     if (ev.length) F.push(["calendar", `${ev[0].name} ${ev[0].day||""}`.trim(), `go('eventd:${ev[0].id}')`]);
     if (F.length) facts[f.id] = F; });
   const dm = rest.filter(i => i.kind==="msg" || (i.kind==="fam" && !brFam(i.fam)));
-  if (dm.length) facts.you = [["message-square", dm[0].title, dm[0].go], ...(dm.length>1 ? [["message-square", `${dm.length-1} more message${dm.length===2?"":"s"}`, "go('inbox')"]] : [])];
+  const dk = dm.length && convOf((/dm:([\w-]+)/.exec(dm[0].go)||[])[1]), dl = dk && lastMsg(dk);
+  if (dm.length) facts.you = [Object.assign(["message-square", dm[0].title, dm[0].go], { who: dl && dl.from!==meId() ? P(dl.from) : null, quote: dl && dl.text, open:"Open chat" }), ...(dm.length>1 ? [["message-square", `${dm.length-1} more message${dm.length===2?"":"s"}`, "go('inbox')"]] : [])];
   return { deck, facts };
 }
 /* one story per community (his 06:13, "like Instagram stories"): up to three cards that need you, then what else moved there.
@@ -15081,7 +15089,8 @@ function brStories(){
   S.forEach(s => { const fk = s.fam ? s.fam.id : "you", spill = s.need.slice(BF_PER);
     s.cards = s.need.slice(0, BF_PER).map(c => Object.assign(c, { card:"one" }));
     const F = (facts[fk]||[]).slice(0, 3); spill.forEach((c, k) => F.splice(k, 0, ["bell-ring", c.title, null, c]));
-    if (F.length) s.cards.push({ id:"sum:"+s.id, card:"sum", kind:"sum", fam:s.fam, facts:F, need:s.need.length });
+    const lead = !spill.length && F.find(x => x.who);
+    if (F.length) s.cards.push({ id:"sum:"+s.id, card:"sum", kind:"sum", fam:s.fam, facts: lead && !lead.keep ? F.filter(x => x!==lead) : F, lead, need:s.need.length });
     s.seen = !!STATE.brSeen[s.id]; });
   return S.filter(s => s.cards.length).sort((a,b) => (a.seen-b.seen) || ((a.need.length?0:1)-(b.need.length?0:1)) || (a.rank-b.rank));
 }
@@ -15109,7 +15118,8 @@ function brAskText(i){ const q = /class="b">([^<]*)</.exec(i.html||""); return q
 /* KeyBriefTray: one tile per community story, Instagram-style but squared (logo tiles are r16, circles are for people, and
    no ring: unseen tiles are in full colour, seen ones dim and move to the end) */
 function brTileArt(s){
-  if (!s.fam) return `<span class="bt-art bt-you">${LI("message-square",28)}</span>`;
+  if (!s.fam) { const w = (s.need[0]||{}).who || (s.cards.find(c => c.lead)||{lead:{}}).lead.who;
+    return w ? `<span class="bt-art">${brPortrait(w.initials, w.id, 240)}</span>` : `<span class="bt-art bt-you">${LI("message-square",28)}</span>`; }
   const cv = typeof cCoverArt==="function" ? cCoverArt(s.fam) : "";
   return `<span class="bt-art" style="background:${BS_WASH[s.fam.id]||"#1B2530"}">${cv}</span><span class="bt-mk ${cv?"":"mid"}">${brFamMark(s.fam, cv ? 30 : 44)}</span>`;
 }
@@ -15129,10 +15139,10 @@ function bfCard(c, i, total){
     <div class="bs-acts"><button type="button" class="p" data-bs="done">Done</button><button type="button" class="s" data-bs="list">See everything</button></div></div>`;
   if (c.card==="sum") { const f = c.fam, nm = f ? f.name.split(" ")[0] : "Messages";
     return `<div class="bs-card bf-one bf-sum" data-kind="sum" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=sum;facts=${c.facts.length}">
-    <div class="bf-pic">${f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${typeof cCoverArt==="function" ? cCoverArt(f) : ""}<span class="bf-covm">${brFamMark(f, 72)}</span></div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
-    <div class="bf-tx"><span class="bf-k"><span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${(k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>
+    <div class="bf-pic">${c.lead ? brPortrait(c.lead.who.initials, c.lead.who.id, 720) : f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${typeof cCoverArt==="function" ? cCoverArt(f) : ""}</div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
+    <div class="bf-tx"><span class="bf-k"><span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${c.lead ? (c.lead.head || c.lead[1]) : (k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>${c.lead && c.lead.quote ? `<p>"${c.lead.quote.replace(/^"|"$/g,"")}"</p>` : ""}
       <div class="bf-facts">${c.facts.map(([g,t,go,nc],fi) => `<span class="bf-fact ${nc?"need":""}" role="button" data-fact="${fi}"><i>${LI(g,16)}</i><span>${t}</span>${nc ? `<b>${nc.draft ? "Reply" : nc.act.label}</b>` : LI("chevron-right",16)}</span>`).join("")}</div></div>
-    <div class="bs-acts"><button type="button" class="p" data-bs="act">Open ${nm}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`; }
+    <div class="bs-acts"><button type="button" class="p" data-bs="act">${c.lead ? c.lead.open : `Open ${nm}`}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`; }
   if (c.card==="also") return `<div class="bs-card bf-also" data-kind="also" data-chapter="also" data-kc="KeyStoryCard" data-kv="kind=also;rows=${c.rows.length}">
     <div class="bf-tx"><span class="bf-k">Also moving</span><h3>Nothing else needs you</h3><p>The rest, by community. Open one when you have a minute.</p></div>
     <div class="bf-rows">${c.rows.map((r,ri) => `<div class="bf-row" role="button" data-also="${ri}">${r.fam ? `<span class="bf-cv">${typeof cCoverArt==="function" ? cCoverArt(r.fam) : ""}<span class="bf-cvm">${brFamMark(r.fam, 28)}</span></span>` : `<span class="bf-cv bf-ico">${r.kai && typeof kaiMark==="function" ? kaiMark(40) : LI("message-square",22)}</span>`}
@@ -15189,7 +15199,7 @@ function brOpen(fromEl, sid){
       if (what==="done") { (notifs()||[]).forEach(a=>a.unread=false); (DB.activity||[]).forEach(a=>a.unread=false); return close(true); }
       if (what==="list") return close(false, () => openSheet("brief"));
       if (what==="alt") return run(c.alt.go);
-      if (what==="act") return c.card==="sum" ? run(c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')") : c.act.item ? runAsk(c.act.item) : run(c.act.go);
+      if (what==="act") return c.card==="sum" ? run(c.lead ? c.lead.go || c.lead[2] : c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')") : c.act.item ? runAsk(c.act.item) : run(c.act.go);
       if (what==="send") { const d = vw.querySelector("[data-bfdraft]"), text = (d ? d.innerText : c.draft.text).trim(); if (!text) return;
         const tgt = c.id.startsWith("ask:") ? DB.asks.find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
         if (tgt) { tgt._draft = text; c.draft.send(); }
@@ -16791,6 +16801,15 @@ sApplication = function() {
     const loc = APP_PAGES[2].qs.find(y=>y[0]==="Location"); loc[1] = ob3City(); loc[2] = !!ob3City();
   }
   return _ob4App.apply(this, arguments);
+};
+
+/* Approved before the Kai call: land on Home, not the rev 2 intent step. Onboarding already asked for connect and notifications, and missions start
+   in a Kai conversation (Apoorv 28 Sep 00:14); the Home checklist's next step is Talk with Kai. Leaves intent, suggest and auth unreachable. */
+const _ob4Approve = approveMe;
+approveMe = function() {
+  const r = _ob4Approve.apply(this, arguments);
+  if (STATE.screen === "intent") { STATE.intent = []; STATE.suggest = []; pushNote("You're in Xoogler", "Talk with Kai and it starts looking.", [["Open", ()=>go("home")]]); go("home"); }
+  return r;
 };
 
 /* ==== SAVED STATE (25 Sep, "Mock database" thread). The page's DB and STATE are the mock database; this keeps them.
