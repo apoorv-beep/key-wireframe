@@ -13475,7 +13475,7 @@ sManage = function(){
     .replace(/<div class="rowitem" data-manage="outcomes">[\s\S]*?<div class="s">›<\/div><\/div>/, `<div class="rowitem" data-cgo="manage:insights"><div class="m"><div class="a">Insights</div><div class="b">${C_WAU[C_WAU.length-1]} active this week · joining, channels, events, outcomes</div></div><div class="s">›</div></div>`)
     .replace(/<div class="rowitem" data-manage="health">[\s\S]*?<div class="s">›<\/div><\/div>/, "")
     .replace(/<div class="rowitem" data-manage="posts">[\s\S]*?<div class="s">›<\/div><\/div>/, `<div class="rowitem" data-cgo="posts:requests"><div class="m"><div class="a">Posts</div><div class="b">${pend?`${pend} waiting for approval · `:''}library settings in Settings</div></div>${pend?`<span class="cm-count">${pend}</span>`:''}<div class="s">›</div></div>`)
-    .replace(/(<div class="rowitem" data-manage="settings"><div class="m"><div class="a">)Settings(<\/div><div class="b">)[^<]*/, `$1Family settings$2Info, joining, roles, library, connectors, digest`);
+    .replace(/(<div class="rowitem" data-manage="settings"><div class="m"><div class="a">)Settings(<\/div><div class="b">)[^<]*/, `$1Community settings$2Info, joining, roles, library, connectors, digest`);
   return `${famHeader("Manage "+cF().name, "family")}${cUncard(body).replace('<div class="body" style="padding-top:0">','<div class="body" style="padding-top:4px">'+cOrgRow())}`;
 };
 
