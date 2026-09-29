@@ -4758,6 +4758,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2vch { text-align:left; align-items:flex-start; }
 .p2vch svg { flex:0 0 auto; margin-top:2px; }
 .p2vs { white-space:nowrap; }
+.p2qacts button { white-space:nowrap; }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -14768,7 +14769,7 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
     <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
     <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div></div>
     <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}${p2Vouch(pid)}</div>
-    <div class="p2qacts">${me?`<div class="p2fw"><button class="p2follow" onclick="event.stopPropagation();${full}">View your profile</button></div><button class="p2qopen" onclick="event.stopPropagation();openSheet('p2viewas','')">${LI("eye",16)}See who sees what</button>`:`${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button>`}</div>
+    <div class="p2qacts">${me?`<div class="p2fw"><button class="p2follow" onclick="event.stopPropagation();${full}">Your profile</button></div><button class="p2qopen" onclick="event.stopPropagation();openSheet('p2viewas','')">${LI("eye",16)}Who sees what</button>`:`${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button>`}</div>
     ${me?p2OwnBody("member").replace(/<button class="p2x">Suggest<\/button>/g, ""):p2Body(pid)}
     ${me?"":`<div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>`}
   </div>`; }
