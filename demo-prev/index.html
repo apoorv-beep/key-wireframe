@@ -1166,7 +1166,8 @@ p,
   /* a bubble's actions (Apoorv 29 Sep 18:43: Wave read as a label, and the upvote's place wasn't clear): Wave and Answer are filled buttons,
      Reply a tonal one, a done state is a label, and the upvote is a tile on the question's right, where Slido and Product Hunt put it */
   .evx-btn { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 12px; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:13px; font-weight:700; color:inherit; cursor:pointer; }
-  .evx-done { display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:600; }
+  /* a done label keeps the height of the button it replaces, so the bubble doesn't jump under the tap (Design system 29 Sep: KeyButton state=done) */
+  .evx-done { display:inline-flex; align-items:center; gap:4px; min-height:36px; font-size:13px; font-weight:600; }
   .evx-vote { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; width:44px; height:52px; padding:0; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:13px; font-weight:700; line-height:16px; color:inherit; cursor:pointer; }
   .evx-vote.on, .evx-btn.pri { background:var(--ink); color:#fff; }
   #phone .evx-k-question .bub, #phone .tparent.evx-tq { position:relative; padding-right:64px; min-height:68px; }
@@ -14426,7 +14427,7 @@ const EDU_STILL = (()=>{ try { return !!navigator.webdriver; } catch(e){ return 
 const EDU_TIPS = [
   { key:"kai", at:()=>STATE.screen==="home" && STATE.applied && !STATE.intakeDone && !STATE.overlaySeen, target:"#kaiBtn",
     title:"This is Kai", body:"Tap to type. Hold to talk.",
-    art:()=>`<div class="ea-kai"><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg></b>Tap · type</div><div class="k">Kai</div><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></b>Hold · talk</div></div>` },
+    art:()=>`<div class="ea-kai"><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></svg></b>Tap · type</div><div class="k">Kai</div><div class="g"><b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3"/></svg></b>Hold · talk</div></div>` },
   { key:"paths", at:()=>STATE.screen==="home" && STATE.member && DB.missions.some(m=>m.status!=="closed"), target:".body [data-opp]",
     title:"Picks for your missions", body:"Each one says why. Nothing is sent without your yes.",
     art:()=>`<div class="ea-card"><span class="ea-k">New pick</span><div class="ea-row"><div class="av r">RM</div><div class="m"><i>A person or a role</i><div class="ea-why">Why Kai picked them</div></div><span class="ea-btn">Say hi</span></div></div>` },
@@ -17625,7 +17626,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.137";
+window.KEY_BUILD = "2.138";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
