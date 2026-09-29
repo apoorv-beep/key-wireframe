@@ -15631,7 +15631,15 @@ function brBackBar(){
   phone.querySelector(".br-backbar").onclick = () => { const c = R.L[k], o = c && c.kind==="pick" && DB.opps.find(x => "opp:"+x.id===c.id);
     R.done[R.out.id] = o && o.state!=="new" ? `Said hi to ${firstName(c.who)}` : R.out.line; R.at = k + 1; R.out = null; STATE.sheet = null; if (STATE.screen!=="home") go("home"); brOpen(null); };
 }
-const _brbRender = render; render = function(){ const r = _brbRender.apply(this, arguments); brBackBar(); return r; };
+/* one thing at a time: a push that lands while you're in the brief (the viewer, or an action's screen with the Back to brief bar)
+   waits, and shows once you've left the brief; both would otherwise take the top slot */
+const brHeld = [], brInBrief = () => !!phone.querySelector(".bs-vw") || !!(STATE.brRun && STATE.brRun.out);
+const _brPush = pushNote; pushNote = function(title, body, actions){ if (brInBrief()) { brHeld.push([title, body, actions]); return; } return _brPush.apply(this, arguments); };
+const _brbRender = render; render = function(){
+  if (STATE.push && brInBrief()) { brHeld.push([STATE.push.title, STATE.push.body, STATE.push.actions]); STATE.push = null; }
+  const r = _brbRender.apply(this, arguments); brBackBar();
+  if (brHeld.length && !brInBrief() && !STATE.push) { const a = brHeld.shift(); setTimeout(() => { if (brInBrief() || STATE.push) brHeld.unshift(a); else _brPush.apply(null, a); }, 400); }
+  return r; };
 /* the finish: what you did, in your words, and what's left */
 function brFin(R){
   const did = R.L.filter(c => R.done[c.id]), left = R.L.filter(c => !R.done[c.id] && c.card==="one" && c.label==="Needs you");
@@ -17660,7 +17668,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.141";
+window.KEY_BUILD = "2.142";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
