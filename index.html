@@ -7043,7 +7043,7 @@ function sYou() {
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="t">You</div></div>
   <div class="body">
     <div class="row" style="align-items:center;gap:12px;margin-top:6px">${av(u.initials,"lg")}<div style="flex:1;min-width:0"><div style="font-size:20px;font-weight:700">${u.name}</div><div class="sm muted">${u.title}, ${u.company}</div><div class="xs faint">Xoogler · Michigan · Desi Founders</div></div></div>
-    <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec sm" style="flex:1;height:40px;padding:0" data-profile="priya">Your profile</button><button class="btn sec sm" style="flex:1;height:40px;padding:0" onclick="toast('Per family: Xoogler sees everything, Michigan and Desi see profile and open-to, nobody sees Context.')">Who sees what</button></div>
+    <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec sm" style="flex:1;height:40px;padding:0" data-profile="priya">Your profile</button><button class="btn sec sm" style="flex:1;height:40px;padding:0" onclick="toast('Per community: Xoogler sees everything, Michigan and Desi see profile and open-to, nobody sees Context.')">Who sees what</button></div>
     ${rows.map(([id,a,b])=>`<div class="prow" data-you="${id}"${id==="context"?' style="margin-top:14px;border-top:1px solid var(--line)"':""}><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><div class="s">›</div></div>`).join("")}
   </div>`;
 }
@@ -14705,7 +14705,7 @@ wire = function(){
       card.querySelectorAll(".avatar, .m > .a").forEach(el => { const t = el.textContent.trim(); if ((t===p.initials || t===p.name) && !el.dataset.profile && !el.closest("[data-profile]")) el.dataset.profile = pid; }); });
     /* You screen (Apoorv 23:44): "Who sees what" lives inside your profile now (Preview at the top), so the outside button goes;
        "Your profile" carries the count of updates Kai is holding for your yes */
-    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"]').forEach(b => b.remove());
+    ph.querySelectorAll('button[onclick*="Per family: Xoogler sees everything"], button[onclick*="Per community: Xoogler sees everything"]').forEach(b => b.remove());
     if (STATE.member && DB.contextV2) ph.querySelectorAll('button[data-profile="priya"]').forEach(b => { const n=p2Pending().length; if (n && !b.querySelector(".p2cnt")) b.insertAdjacentHTML("beforeend", `<span class="p2cnt">${n} ${n===1?"update":"updates"}</span>`); });
     const S = STATE.screen||""; if (S.startsWith("path:")) { const pid = pidOf(S.split(":")[1]);
       if (pid) ph.querySelectorAll(".who .avatar").forEach(el => { if (el.textContent.trim()===DB.people[pid].initials && !el.dataset.profile) el.dataset.profile = pid; }); }
