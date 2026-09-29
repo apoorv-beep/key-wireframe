@@ -4766,6 +4766,55 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2vs { white-space:nowrap; }
 .p2qacts button { white-space:nowrap; }
 
+/* ==== Context lines and the Source sheet (low-fi gaps sweep, 28 Sep night). Lead tiles for where each line came from; tokens only ==== */
+.p2ct { flex:0 0 auto; width:40px; height:40px; border-radius:12px; background:#F2F3F5; display:grid; place-items:center; color:var(--ink); }
+#phone.hf-ctx .doc .sent.p2c { display:flex; align-items:center; gap:var(--space-absolute-12); }
+.p2cm { display:flex; flex-direction:column; min-width:0; }
+#phone.hf-ctx .p2cm b { font:var(--type-body-m); color:var(--text-primary); font-weight:400; }
+#phone.hf-ctx .p2cm small { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-ctx .sent.inf .p2cm small { color:var(--text-gold); }
+#phone.hf-ctx .ctxline.p2c { display:flex; align-items:center; gap:var(--space-absolute-12); }
+#phone.hf-ctx .ctxline.p2c > .m { flex:1; min-width:0; }
+#phone.hf-ctx .p2ct, .p2src .p2ct { background:var(--bg-fill-default); color:var(--icon-primary); border-radius:var(--radius-absolute-12); width:var(--space-absolute-40); height:var(--space-absolute-40); }
+#phone.hf-ctx .p2cav .avatar { width:var(--space-absolute-40); height:var(--space-absolute-40); margin:0; }
+#phone.hf-ctx .ctxline .chip.p2cb { width:auto; padding:0 var(--space-absolute-12) !important; }
+#phone.hf-ctx .p2cadd { display:flex; align-items:center; gap:var(--space-absolute-8); font:var(--type-body-m-strong) !important; color:var(--text-primary) !important; text-decoration:none !important; padding:var(--space-absolute-14) 0; cursor:pointer; }
+.p2src { display:flex; flex-direction:column; }
+.p2srch { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+.p2srch h2 { margin:0; }
+.p2srch small { display:block; font:var(--type-caption, 12px/1.3 inherit); color:var(--text-tertiary, var(--ink3)); }
+.p2srcq { display:flex; gap:12px; align-items:flex-start; background:var(--bg-fill-default, #F2F3F5); border-radius:var(--radius-absolute-16, 16px); padding:var(--space-absolute-16, 16px); }
+.p2srcq b { display:block; font:var(--type-body-m-strong, 600 14px/1.4 inherit); color:var(--text-primary, var(--ink)); }
+.p2srcq small { display:block; font:var(--type-caption, 12px/1.3 inherit); color:var(--text-tertiary, var(--ink3)); }
+.p2srcp { display:block; margin-top:6px; font:var(--type-body-m, 14px/1.5 inherit); color:var(--text-primary, var(--ink)); }
+.p2srcd { font:var(--type-body-m, 14px/1.5 inherit); color:var(--text-primary, var(--ink)); margin:0; }
+.p2src .p2add { margin-top:8px; }
+.p2src .p2srcx { border-radius:var(--radius-absolute-12, 12px); height:var(--space-absolute-48, 48px); font:var(--type-button-l, 700 16px/1.2 inherit); margin-top:4px; }
+
+/* ==== rev 14 (Apoorv 29 Sep 00:19): sections read as titled parts, shared communities under the name, Links with real logos,
+   Get updates says what it does, the quick view is a preview, and the page is opaque below the photo so scrolling never shows it through ==== */
+.p2hd { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:700; text-transform:none; letter-spacing:0; color:var(--ink); margin-bottom:4px; }
+.p2hd svg { flex:0 0 auto; }
+.p2 > .p2sec { border-top:1px solid var(--line); padding-top:14px; }
+.p2sec > :last-child { border-bottom:0; }
+.p2brand { background:#F2F3F5; color:var(--ink); }
+.p2mut { display:flex; align-items:center; gap:8px; margin-top:6px; padding:0; border:0; background:transparent; font:inherit; font-size:13px; color:var(--ink2); text-align:left; cursor:pointer; }
+.p2mut b { color:var(--ink); font-weight:600; }
+.p2mts { display:flex; gap:4px; flex:0 0 auto; }
+.p2mt .flg { width:20px; height:20px; border-radius:6px; display:grid; place-items:center; font-size:10px; font-weight:700; background:#F2F3F5; overflow:hidden; }
+.p2qcap { font-size:12px; color:var(--ink2); margin-top:8px; }
+.p2pv .p2more { margin-top:4px; }
+#phone.hf-prof .p2 > .p2sec { border-top:var(--border-width-hairline) solid var(--border-default); padding-top:var(--space-absolute-20); }
+#phone.hf-prof .p2hd { font:var(--type-title); letter-spacing:var(--type-title-tracking); text-transform:none; color:var(--text-primary); gap:var(--space-absolute-8); margin-bottom:var(--space-absolute-4); }
+#phone.hf-prof .p2hd svg { color:var(--icon-primary); }
+#phone.hf-prof .p2brand { background:var(--bg-fill-default); color:var(--icon-primary); }
+#phone.hf-prof .p2mut { font:var(--type-body-s); color:var(--text-secondary); margin-top:var(--space-absolute-8); }
+#phone.hf-prof .p2mut b { font-weight:600; color:var(--text-primary); }
+#phone.hf-prof .p2sec > :last-child { border-bottom:0; }
+#phone.hf-prof .p2mt .flg { border-radius:var(--radius-absolute-6); }
+#phone.hf-prof .p2qcap { font:var(--type-body-s); color:var(--text-secondary); margin-top:var(--space-absolute-8); }
+#phone.hf-prof .pbody { background:linear-gradient(to bottom, transparent calc(var(--p2w, 375px) - 54px), var(--bg-page) calc(var(--p2w, 375px) - 54px)) local; }
+
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
 .ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
@@ -14485,6 +14534,25 @@ function p2KaiPre(pid, p){ const o=p2Opp(pid), via=o&&viaOf(o), sh=(p.shared||[]
 const p2OpenList = p => (p.openTo||[]).filter(k=>P2_OPEN[k]);
 function p2Opp(pid){ return DB.opps.find(x=>x.personId===pid && x.state!=="dropped"); }
 function p2Logo(l,c){ return `<span class="p2lg" style="background:${c}">${l}</span>`; }
+/* Apoorv 29 Sep 00:19: links show the service's own logo, not a letter tile. Marks drawn from the services' published logos; a site gets a globe */
+[["globe",'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>'],
+ ["door-open",'<path d="M11 20H2"/><path d="M11 4.56v16.16a1 1 0 0 0 1.24.97L19 20V5.56a2 2 0 0 0-1.52-1.94l-4-1A2 2 0 0 0 11 4.56z"/><path d="M11 4H8a2 2 0 0 0-2 2v14"/><path d="M14 12h.01"/><path d="M22 20h-3"/>'],
+ ["user-round",'<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>'],
+ ["graduation-cap",'<path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>']
+].forEach(([k,v]) => { if (!LUCIDE[k]) LUCIDE[k]=v; });   /* only where the shared set lacks them */
+const P2_BRAND = {
+  linkedin:["#0A66C2","M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"],
+  github:["#181717","M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57l-.02-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.02 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"],
+  x:["#000000","M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.4l-5.8-7.59-6.64 7.59H.47l8.6-9.83L0 1.15h7.6l5.24 6.93zM17.61 20.64h2.04L6.49 3.24H4.3z"] };
+function p2Brand(k){ const b=P2_BRAND[k];
+  return b ? `<span class="p2lg p2brand" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="${b[1]}" fill="${b[0]}"/></svg></span>` : `<span class="p2lg p2brand" aria-hidden="true">${LI("globe",20)}</span>`; }
+/* communities you share, said under the name the way LinkedIn says "You both worked at ..." (Apoorv 29 Sep 00:19) */
+function p2Shared(pid){ const p=DB.people[pid]; return DB.families.filter(fm=>fm.role==="member" && (p.families||[]).some(n=>fm.name===n||fm.name.startsWith(n))); }
+function p2MutualLine(pid){ const fs=p2Shared(pid); if (!fs.length || pid==="priya") return "";
+  const nm=fs.map(fm=>fm.name.split(" ")[0]), said=nm.length>1?nm.slice(0,-1).join(", ")+" and "+nm[nm.length-1]:nm[0];
+  return `<button class="p2mut" onclick="event.stopPropagation();document.querySelector('.p2both')&&document.querySelector('.p2both').scrollIntoView({behavior:'smooth',block:'center'})"><span class="p2mts">${fs.slice(0,3).map(fm=>`<span class="p2mt"><span class="flg">${fm.initial}</span></span>`).join("")}</span><span>You're both in <b>${said}</b></span></button>`; }
+/* section headers read as titles with their own icon, so a scroll finds each part (Apoorv 29 Sep 00:19: "kinda hard to scan") */
+const p2H = (ic, t) => `<div class="p2sh p2hd">${LI(ic,20)}<span>${t}</span></div>`;
 
 /* ---- 1. Between you ---- */
 function p2Between(pid){
@@ -14507,15 +14575,15 @@ function p2Body(pid){
   const links=(typeof profileLinks==="function"?profileLinks(pid):[]);
   return `<div class="p2">
     ${p2BetweenLine(pid)}
+    ${fams.length?`<div class="p2sec p2both">${p2H("users","You're both in")}${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members`},true)).join("")}</div>`:''}
     ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
-    ${p2OpenList(p).length?`<div class="p2sec"><div class="p2sh">${f} is open to</div>${p2OpenList(p).map(k=>{ const [ic,act]=P2_OPEN[k], done=STATE.p2done["open"+pid+k];
+    ${p2OpenList(p).length?`<div class="p2sec">${p2H("door-open",`${f} is open to`)}${p2OpenList(p).map(k=>{ const [ic,act]=P2_OPEN[k], done=STATE.p2done["open"+pid+k];
       return `<div class="p2nd p2op"><span class="p2ico">${LI(ic,18)}</span><span><b>${k}</b>${k==="Office hours"&&p.slots?`<small>${p.slots}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2open','${pid}|${k}')">${done?"Asked":act}</button></div>`; }).join("")}${(p.notNow||[]).length?`<div class="p2nn">${LI("hand",14)}<span>Not now: ${p.notNow.join(", ").toLowerCase()}. Kai won't suggest these</span></div>`:''}</div>`:''}
-    ${(p.help||[]).length?`<div class="p2sec"><div class="p2sh">${f} can help with</div><div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
-    ${d.work.length?`<div class="p2sec"><div class="p2sh">Work</div><div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
-    ${d.school.length?`<div class="p2sec"><div class="p2sh">School</div><div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
-    ${evs.length?`<div class="p2sec"><div class="p2sh">You're both going</div>${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
-    ${fams.length?`<div class="p2sec"><div class="p2sh">You're both in</div>${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members`},true)).join("")}</div>`:''}
-    ${links.length?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<button class="p2lk" onclick="event.stopPropagation();toast('Opens ${l} in your browser')">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${LI("external-link",16)}</button>`).join("")}</div>`:''}
+    ${(p.help||[]).length?`<div class="p2sec">${p2H("handshake",`${f} can help with`)}<div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
+    ${d.work.length?`<div class="p2sec">${p2H("briefcase","Work")}<div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
+    ${d.school.length?`<div class="p2sec">${p2H("graduation-cap","School")}<div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
+    ${evs.length?`<div class="p2sec">${p2H("calendar","You're both going")}${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
+    ${links.length?`<div class="p2sec">${p2H("link","Links")}${links.map(([k,l])=>`<button class="p2lk" onclick="event.stopPropagation();toast('Opens ${l} in your browser')">${p2Brand(k)}<b>${l}</b>${LI("external-link",16)}</button>`).join("")}</div>`:''}
   </div>`;
 }
 
@@ -14524,7 +14592,7 @@ function p2Dock(pid){ const p=DB.people[pid], d=p2d(pid), sent=STATE.p2done["msg
   return `<button class="btn p2kai" data-kc="KeyKaiBar" data-kv="size=full, opener=true" onclick="event.stopPropagation();p2AskKai('${pid}')">${kaiK(18)}<span><b>Ask Kai about ${firstName(p)}</b><small>${d.kaiPre}</small></span></button><button class="btn sec p2round ${sent?'done':''}" aria-label="Message ${firstName(p)}" onclick="event.stopPropagation();openSheet('p2msg','${pid}')">${LI(sent?"check":"message-circle",18)}</button>`; }
 function p2Blocked(pid){ return typeof fxBlocked==="function" && fxBlocked(pid); }
 
-function p2Privacy(){ return `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members follow you</b><small style="display:block">${STATE.p2letKeep?"They see your updates in their weekly digest. You aren't told who":"Off. No Follow button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can follow you':'Off. Existing follows stop quietly')"></span></div></div>`; }
+function p2Privacy(){ return `<div class="p2sec" style="margin-top:14px"><div class="p2sh">Privacy</div><div class="p2lk" style="cursor:default">${p2Logo(LI("user-plus",16),"#F2F3F5")}<span style="flex:1"><b>Let members get your updates</b><small style="display:block">${STATE.p2letKeep?"Your news goes in their weekly digest. You aren't told who":"Off. No Get updates button on your profile"}</small></span><span class="p2sw" role="switch" aria-checked="${STATE.p2letKeep}" onclick="STATE.p2letKeep=!STATE.p2letKeep;render();toast(STATE.p2letKeep?'Members can get your updates':'Off. Existing updates stop quietly')"></span></div></div>`; }
 const _p2ProfileBody = profileBody;
 profileBody = function(pid, opts){
   if (pid==="priya") { const h=_p2ProfileBody(pid, opts); return opts&&opts.edit ? h+p2Privacy() : h; }
@@ -14532,7 +14600,7 @@ profileBody = function(pid, opts){
 };
 const _p2ProfileSheet = profileSheet;
 function p2FollowBtn(pid){ const k=STATE.p2keep[pid];
-  return `<div class="p2fw"><button class="p2follow ${k?'on':''}" aria-pressed="${!!k}" onclick="event.stopPropagation();p2Keep('${pid}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>${k?`<span>In your weekly digest</span>`:''}</div>`; }
+  return `<div class="p2fw"><button class="p2follow ${k?'on':''}" aria-pressed="${!!k}" onclick="event.stopPropagation();p2Keep('${pid}')">${LI(k?"check":"bell",16)}${k?"Getting updates":"Get updates"}</button><span>${k?"In your weekly digest":"In your weekly digest. They aren't told"}</span></div>`; }
 /* the vouch rides under the name as gold words (DS: gold for vouched people as text/gold beside the words, never a ring on the photo).
    Only a "Vouched" receipt from someone else counts, and it opens You and them, where the receipt lives */
 function p2Vouch(pid){ const o=p2Opp(pid), rc=o&&(o.receipts||[]).find(x=>x[0]==="Vouched"), own=(P2[pid]||{}).vouch;   // the member's own record wins; a fresh load has no missions or opps yet
@@ -14545,6 +14613,7 @@ profileSheet = function(pid){ let h=_p2ProfileSheet(pid);
   return h.replace(/<div class="sbar"><button class="btn"[^>]*>[^<]*<\/button>/, `<div class="sbar p2sbar">${p2Dock(pid)}`); };
 const _p2SProfile = sProfile;
 sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h=p2NoHeroLinks(h, pid);
+  if (p2MutualLine(pid)) h = h.replace(/(<div class="pname" id="pname">[\s\S]*?)<div class="pf">[^<]*<\/div>/, `$1${p2MutualLine(pid)}`);
   if (!p2Blocked(pid)) h = h.replace(`<div class="p2fw">`, `<div class="p2fw ph0" aria-hidden="true">`).replace(`<div class="p2">`, `<div class="p2">${p2FollowBtn(pid).replace('class="p2fw"','class="p2fw pg"')}`);
   h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="toast('Share, report, block (out of scope)')">···</div>`,
     `<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('p2more','${pid}')">···</div>`);
@@ -14553,14 +14622,14 @@ sProfile = function(pid){ let h=_p2SProfile(pid); if (pid==="priya") return h; h
 
 function p2Keep(pid){ const f=firstName(DB.people[pid]); STATE.p2keep[pid]=!STATE.p2keep[pid]; const muted=STATE.p2keep[pid]&&STATE.p2mute[pid]; if (muted) STATE.p2mute[pid]=0;
   const inSheet = STATE.sheet&&STATE.sheet.type==="p2between"; render();
-  toast(STATE.p2keep[pid]?`Following. ${f}'s updates show in your weekly digest. ${f} isn't told`+(muted?". Unmuted":""):`Unfollowed. ${f} was never told`); if (inSheet) openSheet("p2between", pid); }
+  toast(STATE.p2keep[pid]?`${f}'s news will be in your weekly digest. ${f} isn't told`+(muted?". Unmuted":""):`Updates off. ${f} was never told`); if (inSheet) openSheet("p2between", pid); }
 function p2Send(kind, pid, msg){ STATE.p2done[kind]=1; if (kind.startsWith("need")||kind.startsWith("msg")) STATE.p2done["msg"+pid]=1; closeSheet(); setTimeout(()=>toast(msg||"Sent"), 200); }
 function p2Composer(draft, send, ph){ return `<div class="p2kd">${kaiMark(14)}Kai drafted · edit anything</div>${keyComposer({ id:"p2ci", wrap:false, draft, placeholder:ph||"Message", attach:false, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="${send}"` })}`; }
 
 /* ---- Ask Kai: the app's own Kai sheet, scoped to the person; answers end in action pills ---- */
 function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2Opp(pid), via=o&&viaOf(o), fit=d.needs.filter(n=>n.fit), fams=(p.families||[]).join(" and "), ev=sharedEventsFor(pid)[0];
     const A = {
-      common:["What do we have in common?", `You're both in ${fams||"Xoogler"}${ev?`, and you're both going to the ${ev.name}`:""}${(d.work.find(w=>w[4]))?". "+d.work.find(w=>w[4])[4].replace(", like you"," for both of you"):""}.`, [["Families"],["Events"],["Work"]], ev?[["See the event",`STATE.sheet=null;go('eventd:${ev.id}')`]]:[]],
+      common:["What do we have in common?", `You're both in ${fams||"Xoogler"}${ev?`, and you're both going to the ${ev.name}`:""}${(d.work.find(w=>w[4]))?". "+d.work.find(w=>w[4])[4].replace(", like you"," for both of you"):""}.`, [["Communities"],["Events"],["Work"]], ev?[["See the event",`STATE.sheet=null;go('eventd:${ev.id}')`]]:[]],
       how:[`How should I reach ${f}?`, via?`${firstName(via)} knows you both and can vouch for you. ${f} prefers intros through people they trust.`:`Direct is fine. ${(p.shared||[])[0]?"You have history: "+p.shared[0]+".":""}`, [["Routes"]], [[via?`Message via ${firstName(via)}`:`Message ${f}`,`openSheet('p2msg','${pid}')`]]],
       give:[`What could I offer ${f}?`, fit.length?`${fit.map(n=>`${f} is looking for ${n.t.charAt(0).toLowerCase()+n.t.slice(1)}, and ${n.fit.charAt(0).toLowerCase()+n.fit.slice(1)}`).join(". ")}. Only you see this.`:`Nothing you've shared matches what ${f} has asked for. You could suggest someone who does.`, [["What they're looking for"],["Your profile"]], fit.length?[["Offer yourself",`openSheet('p2need','${pid}|${d.needs.indexOf(fit[0])}')`]]:(d.needs.length?[["Suggest someone",`openSheet('p2need','${pid}|0')`]]:[])],
       now:[`What is ${f} working on?`, `${d.now||p.line}.${d.needs.length?" Looking for "+d.needs.map(n=>n.t.charAt(0).toLowerCase()+n.t.slice(1)).join(", ")+".":""}`, [["Their profile"]], (p.help||[])[0]?[[`Ask about ${p.help[0]}`,`openSheet('p2ask','${pid}|${p.help[0]}')`]]:[]]
@@ -14600,13 +14669,13 @@ portSheet = function(type, id){
       ${tl.length?`<div class="p2tl">${tl.map(([w,t])=>`<div><span>${w}</span><span>${t}</span></div>`).join("")}</div>`:''}
       <div class="p2acts">
         ${x&&x.tone==="you"&&o?`<button class="on" data-act="${o.id}">${LI("message-circle",16)}Reply</button>`:`<button onclick="openSheet('p2remind','${p.id}')">${LI("clock",16)}Remind me</button>`}
-        <button onclick="openSheet('p2mission','${p.id}')">${LI("flag",16)}Add to mission</button>
-        <button class="${k?'on':''}" onclick="p2Keep('${p.id}')">${LI(k?"check":"plus",16)}${k?"Following":"Follow"}</button>
+        <button onclick="openSheet('p2mission','${p.id}')">${LI("flag",16)}Add to goal</button>
+        <button class="${k?'on':''}" onclick="p2Keep('${p.id}')">${LI(k?"check":"bell",16)}${k?"Getting updates":"Get updates"}</button>
         <button onclick="STATE.sheet=null;go('dm:d-${p.id}')">${LI("message-square",16)}Messages</button>
       </div>
       <div class="xrow" onclick="openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="s xs faint">Everyone you follow</div></div>${LI("chevron-right",16)}</div>`; }
   if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
-  if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
+  if (type==="p2mission") return `<h2>Add ${f} to a goal</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your goal"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
   if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2open") { const [ic,act,draft]=P2_OPEN[arg]||P2_OPEN.Advice; return `${head(`${act} · ${f}`)}${arg==="Office hours"&&p.slots?`<div class="xs faint" style="margin-bottom:8px">${LI("clock",12)} ${p.slots}</div>`:''}${p2Composer(draft(f,p), `p2Send('open${p.id}${arg}','${p.id}','Sent. ${f} is open to this')`, sendTo==="Send"?`Message ${f}`:sendTo)}`; }
   if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
@@ -14617,8 +14686,8 @@ portSheet = function(type, id){
     return `${[["share","Share profile",`closeSheet();setTimeout(()=>toast('Link copied. Only members can open it'),200)`],["bell-off",m?"Unmute":"Mute",`p2MuteT('${p.id}')`],["ban","Block",`p2Block('${p.id}')`,1],["flag","Report",`closeSheet();setTimeout(()=>toast('Reported. Key's team reviews it. ${f} isn\\'t told'),200)`,1]].map(([i,t,js,dz])=>`<div class="xrow" onclick="${js}"><span class="sico" style="${dz?'color:var(--danger)':''}">${LI(i,18)}</span><div class="m"><div class="a" style="${dz?'color:var(--danger)':''}">${t}</div></div></div>`).join("")}`; }
   if (type==="p2digest") { const kept=Object.keys(STATE.p2keep).filter(x=>STATE.p2keep[x]&&DB.people[x]);
     return `<div class="xs faint" style="text-transform:uppercase;letter-spacing:.05em;font-weight:800">Weekly digest · in the app, no push</div><h2>Your people this week</h2>
-      ${kept.length?kept.map(x=>{ const dd=p2d(x); return `<div class="xrow" onclick="STATE.sheet=null;STATE.profileId='${x}';go('profile')">${av(DB.people[x].initials)}<div class="m"><div class="a">${dd.digest}</div><div class="s xs faint">${DB.people[x].families[0]||""} · this week</div></div><button class="btn sm" onclick="event.stopPropagation();closeSheet();setTimeout(()=>toast('Kai drafted it. You send it'),200)">${dd.digestAct}</button></div>`; }).join(""):`<div class="xs faint">Tap Follow on someone's profile to see their updates here.</div>`}
-      <div class="xs faint" style="margin-top:10px">${LI("lock",12)} Nobody is told you follow them, and nobody sees counts. Updates never include messages, who someone met, private missions or anything they hid.</div>`; }
+      ${kept.length?kept.map(x=>{ const dd=p2d(x); return `<div class="xrow" onclick="STATE.sheet=null;STATE.profileId='${x}';go('profile')">${av(DB.people[x].initials)}<div class="m"><div class="a">${dd.digest}</div><div class="s xs faint">${DB.people[x].families[0]||""} · this week</div></div><button class="btn sm" onclick="event.stopPropagation();closeSheet();setTimeout(()=>toast('Kai drafted it. You send it'),200)">${dd.digestAct}</button></div>`; }).join(""):`<div class="xs faint">Tap Get updates on someone's profile to see their news here.</div>`}
+      <div class="xs faint" style="margin-top:10px">${LI("lock",12)} Nobody is told you follow them, and nobody sees counts. Updates never include messages, who someone met, private goals or anything they hid.</div>`; }
   return _p2PortSheet(type, id);
 };
 function p2MuteT(pid){ const f=firstName(DB.people[pid]); STATE.p2mute[pid]=!STATE.p2mute[pid]; const had=STATE.p2keep[pid]; if (STATE.p2mute[pid]) STATE.p2keep[pid]=0; closeSheet(); setTimeout(()=>toast(STATE.p2mute[pid]?(had?`Muted. You also unfollowed ${f}`:`Muted ${f}`):`Unmuted ${f}`),200); }
@@ -14660,7 +14729,7 @@ function p2Own(){
 const P2_UPD = [
   { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", apply:o=>{ o.work[0][1]="Group PM"; DB.user.title="Group Product Manager"; } },
   { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
-  { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
+  { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new goal · Hire two PMs", apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
   { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
 ];
 /* hero photos come uncropped (member photos are square or portrait); CSS keeps the face in frame */
@@ -14673,7 +14742,7 @@ function p2UpdRow(u, full){ const o=p2Own(), was=u.was(o);
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
-  if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
+  if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your communities sees only this</b><small>Photo, name and role. Everything else needs a shared community</small></span>`}</div></div>`;
   const pend = edit ? p2Pending() : [];
   const needs = o.needs.filter(n=>edit||n.on);
   const links = profileLinks("priya").filter(([k])=>edit||o.links[k]);
@@ -14682,13 +14751,13 @@ function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
     ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
     ${pend.length?`<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b>${pend.length===1?"Kai has an update for your profile":`Kai has ${pend.length} updates for your profile`}</b></div><div class="p2kd2">These changed in your context and show on your profile. Nothing changes until you say so.</div>${p2UpdRow(pend[0])}${pend.length>1?`<button class="p2add" onclick="openSheet('p2updates','')">${LI("chevron-right",16)}See all ${pend.length}</button>`:''}</div>`:''}
     <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
-      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
+      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your communities":"Hidden. Still your goal"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another goal</button>`:''}`:''}</div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail">${o.work.filter(w=>edit||w[4]).map(w=>`<div class="p2wk">${p2Logo(w[0][0],"#1A73E8")}<b>${w[0]}</b><small>${w[1]} · ${w[2]} – ${w[3]}</small></div>`).join("")}</div></div>
     ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
     ${edit?`<div class="p2sec"><div class="p2sh">Only you see</div>${[["context","brain","What Kai knows about you",`${C.who.length+C.after.length+C.offer.length+C.work.length} things · ${C.inferred.length} waiting for your yes`],["rules","shield","Rules",`Intros ${String(DB.rules.intros).toLowerCase()} · ${DB.rules.capacity} requests a week`],["people","users","Connectors","Who can vouch for you"],["sources","link","Sources","Contacts, calendar, channels"]].map(([id,i,a,b])=>`<button class="p2lk" onclick="event.stopPropagation();go('you:${id}')">${p2Logo(LI(LUCIDE[i]?i:"lock",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">${a}</b><small>${b}</small></span>${LI("chevron-right",16)}</button>`).join("")}</div>`:''}
     ${edit?p2Privacy():''}
-    ${links.length||edit?`<div class="p2sec"><div class="p2sh">Elsewhere</div>${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Logo(({linkedin:"in",github:"GH",x:"X",site:"W"})[k]||"↗",({linkedin:"#0A66C2",github:"#24292F"})[k]||"#121316")}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
+    ${links.length||edit?`<div class="p2sec">${p2H("link","Links")}${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Brand(k)}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
   </div>`;
 }
 function p2Upd(id, a, inSheet){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if (!u) return;
@@ -14697,7 +14766,7 @@ function p2Upd(id, a, inSheet){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if
   if (a==="yes") { u.apply(o); o.recent.unshift([`${u.lbl}: ${u.ch}`, u.src.replace(/^From/,"from")]); }
   if (inSheet && p2Pending().length) openSheet("p2updates",""); else { if (inSheet) closeSheet(); render(); }
   setTimeout(()=>toast(a==="yes"?"Updated. It's under Recently":"Kai won't ask about this again"), inSheet?0:0); }
-function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
+function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your communities":"Hidden. Still your goal"); }
 function p2LinkVis(k){ const o=p2Own(); o.links[k]=!o.links[k]; render(); toast(o.links[k]?"Shown on your profile":"Hidden"); }
 function p2SaveRole(id){ const o=p2Own(), v=x=>document.getElementById(x), now=v("p2rnow").getAttribute("aria-checked")==="true";
   const w=[v("p2rc").value.trim()||"Company", v("p2rt").value.trim()||"Role", v("p2rs").value, now?"now":v("p2re").value, v("p2rshow").getAttribute("aria-checked")==="true"?1:0];
@@ -14718,7 +14787,7 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
   h = h.replace(/<div class="plinks">[\s\S]*?<\/div>/, "");
   h = h.replace(`<div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`,
     `<div class="pbtn p2prev" aria-label="Preview who sees what" onclick="openSheet('p2viewas','')">${LI("eye",18)}<span>Preview</span></div><div class="pbtn" style="font-size:18px;letter-spacing:1px" onclick="openSheet('ownmenu')">···</div>`);
-  const va = STATE.ownPreview ? ({member:"a member of your families",match:"someone Kai matched with you",outside:"someone outside your families"})[STATE.p2viewAs||"member"] : "";
+  const va = STATE.ownPreview ? ({member:"a member of your communities",match:"someone Kai matched with you",outside:"someone outside your communities"})[STATE.p2viewAs||"member"] : "";
   h = h.replace(/<span class="xs muted" style="flex:1">This is what a member sees.<\/span>/, `<span class="xs muted" style="flex:1">What ${va} sees.</span>`);
   if (!STATE.ownPreview) h = h.replace(/<div style="height:90px"><\/div>\s*<\/div>\s*<\/div>\s*$/, `<div style="height:90px"></div></div><div class="pact p2pact"><button class="btn p2kai" data-kc="KeyKaiBar" data-kv="size=full, opener=false" onclick="event.stopPropagation();openSheet('p2feed','')">${kaiK(18)}<span><b>Tell Kai what's new</b><small>Say it or type it. Kai proposes the changes</small></span></button></div></div>`);
   return h; };
@@ -14726,7 +14795,7 @@ sOwnProfile = function(){ let h=_p2SOwn(); if (!STATE.member) return h;
 const _p2PortSheet2 = portSheet;
 portSheet = function(type, id){
   const o = STATE.p2own && p2Own(), me = `<div class="p2shd">${av(DB.user.initials)}<h2>`;
-  if (type==="p2viewas") return `<h2>Who sees what</h2><div class="xs faint" style="margin:-4px 0 8px">Preview your profile as each of them sees it.</div>${[["member","users","A member of your families","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your families","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+  if (type==="p2viewas") return `<h2>Who sees what</h2><div class="xs faint" style="margin:-4px 0 8px">Preview your profile as each of them sees it.</div>${[["member","users","A member of your communities","Right now, Looking for, Can help with, Work, links"],["match","badge-check","Someone Kai matched with you","Also sees why you match and the need they fit"],["outside","lock","Someone outside your communities","Photo, name and role only"]].map(([v,i,a,b])=>`<div class="xrow" onclick="STATE.p2viewAs='${v}';STATE.ownPreview=true;closeSheet();if(STATE.screen==='profile')render();else{STATE.profileId='priya';go('profile');}"><span class="sico">${LI(LUCIDE[i]?i:"eye",18)}</span><div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   if (type==="p2feed") return `${me}Tell Kai what's new</h2></div>${keyComposer({ id:"p2feedin", wrap:false, draft:"I'm now leading the Gemini agents launch, and I'm hiring two PMs for it.", placeholder:"What's new? A role, a project, what you need", attach:true, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="openSheet('p2proposed','')"` })}<div class="xs faint" style="margin-top:8px">${LI("lock",12)} Kai proposes changes. Nothing on your profile changes until you say yes.</div>`;
   if (type==="p2proposed") return `${me}Kai suggests 3 changes</h2></div>${[["Right now","Leading the Gemini agents launch","Was: "+(o?o.bld:"")],["Looking for","Two PMs for Gemini agents","New. Members can suggest people"],["I can help with","Agents launches","New topic"]].map(([l,t,s],i)=>`<div class="p2nd"><span><small>${l}</small><b>${t}</b><small>${s}</small></span><span class="p2sw" role="switch" data-p2prop="${i}" aria-checked="true" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>`).join("")}<button class="btn" style="margin-top:12px" onclick="p2OwnApply()">Update my profile</button>`;
   if (type==="p2editnow") return `<h2>What you're doing now</h2><textarea class="input" rows="3" oninput="p2Own().bld=this.value">${p2Own().bld}</textarea><div class="xs faint" style="margin:8px 0 12px">${kaiMark(14)} Kai suggests updates from your log and calls. Nothing changes without your tap.</div><button class="btn" onclick="closeSheet();render();setTimeout(()=>toast('Saved'),200)">Save</button>`;
@@ -14739,13 +14808,13 @@ portSheet = function(type, id){
       <label class="p2f"><span>Company</span><input class="input" id="p2rc" value="${w[0]}" placeholder="Company or school"></label>
       <div class="p2f2"><label class="p2f"><span>Started</span><select class="input" id="p2rs">${yrs(w[2])}</select></label><label class="p2f" ${cur?'hidden':''} id="p2rew"><span>Ended</span><select class="input" id="p2re">${yrs(cur?2026:w[3])}</select></label></div>
       <div class="p2nd"><span><b>I work here now</b></span><span class="p2sw" role="switch" id="p2rnow" aria-label="I work here now" aria-checked="${cur}" onclick="const on=this.getAttribute('aria-checked')!=='true';this.setAttribute('aria-checked',on);document.getElementById('p2rew').hidden=on"></span></div>
-      <div class="p2nd"><span><b>Show on my profile</b><small>Members of your families see it under Work</small></span><span class="p2sw" role="switch" id="p2rshow" aria-label="Show on my profile" aria-checked="${!!w[4]}" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>
+      <div class="p2nd"><span><b>Show on my profile</b><small>Members of your communities see it under Work</small></span><span class="p2sw" role="switch" id="p2rshow" aria-label="Show on my profile" aria-checked="${!!w[4]}" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>
       <div class="xs faint" style="margin:10px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai keeps this current from your connectors and asks before it changes anything.</span></div>
       <button class="btn" onclick="p2SaveRole('${id}')">Save</button>${isNew?"":`<button class="btn ghost p2danger" style="margin-top:6px" onclick="p2Own().work.splice(${+id},1);closeSheet();render();setTimeout(()=>toast('Role removed'),200)">Remove this role</button>`}`; }
-  if (type==="p2updates") { const P=p2Pending(); return `<div class="p2shd">${kaiMark(20)}<h2>${P.length===1?"1 update for your profile":`${P.length} updates for your profile`}</h2></div><div class="xs faint" style="margin-bottom:6px">Kai found these in your calls, journal, missions and connectors. Each one shows on your profile, so nothing changes until you say so.</div>${P.map(u=>p2UpdRow(u,true)).join("")}${P.length>1?`<button class="btn" style="margin-top:12px" onclick="p2Pending().forEach(u=>{ const o=p2Own(); o.done[u.id]=1; u.apply(o); o.recent.unshift([u.lbl+': '+u.ch, u.src.replace(/^From/,'from')]); });closeSheet();render();setTimeout(()=>toast('Profile updated. Changes are under Recently'),200)">Update all ${P.length}</button>`:''}`; }
+  if (type==="p2updates") { const P=p2Pending(); return `<div class="p2shd">${kaiMark(20)}<h2>${P.length===1?"1 update for your profile":`${P.length} updates for your profile`}</h2></div><div class="xs faint" style="margin-bottom:6px">Kai found these in your calls, journal, goals and connectors. Each one shows on your profile, so nothing changes until you say so.</div>${P.map(u=>p2UpdRow(u,true)).join("")}${P.length>1?`<button class="btn" style="margin-top:12px" onclick="p2Pending().forEach(u=>{ const o=p2Own(); o.done[u.id]=1; u.apply(o); o.recent.unshift([u.lbl+': '+u.ch, u.src.replace(/^From/,'from')]); });closeSheet();render();setTimeout(()=>toast('Profile updated. Changes are under Recently'),200)">Update all ${P.length}</button>`:''}`; }
   if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
-    return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
-  if (type==="p2addlink") return `<h2>Add a link</h2>${[["GH","GitHub","Sign in with GitHub. Reads your username only","#24292F"],["in","LinkedIn","Paste your profile link","#0A66C2"],["W","Website","Portfolio, blog, anything","#121316"],["X","X","Your handle","#121316"]].map(([l,a,b,c])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Logo(l,c)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
+    return `<h2>Show a goal on your profile</h2><div class="xs faint" style="margin-bottom:8px">Goals are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
+  if (type==="p2addlink") return `<h2>Add a link</h2>${[["github","GitHub","Sign in with GitHub. Reads your username only"],["linkedin","LinkedIn","Paste your profile link"],["site","Website","Portfolio, blog, anything"],["x","X","Your handle"]].map(([k,a,b])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Brand(k)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
   return _p2PortSheet2(type, id);
 };
 
@@ -14755,6 +14824,9 @@ portSheet = function(type, id){
 const p2HiFi = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
 const _p2HfRender = render;
 render = function(){ const r = _p2HfRender.apply(this, arguments);
+  /* Apoorv 29 Sep 00:22 asked what the "Reliable" standing row on You is for. It was a private reply-rate score that set how fast your
+     requests route: a computed tier (D045 says none) with nothing to do. Gone from both copies until its owners delete the source */
+  if (typeof phone!=="undefined" && phone && STATE.screen==="you") phone.querySelectorAll('.hg-standing, .prow').forEach(e => { const a=e.querySelector(".a"); if (e.classList.contains("hg-standing") || (a && /^Standing ·/.test(a.textContent))) e.remove(); });
   if (p2HiFi() && typeof phone!=="undefined" && phone) {
     const prof = STATE.screen==="profile", sh = (STATE.sheet&&STATE.sheet.type)||"";
     phone.classList.toggle("hf-prof", prof || /^(profile|p2)/.test(sh));
@@ -14777,11 +14849,21 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
   return `<div class="p2qv" data-p2qv="${pid}">
     <div class="p2qbar" aria-hidden="true">${av(p.initials,"sm")}<b>${p.name}</b><button class="p2qfull" aria-label="Open ${f}'s full profile" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}</button></div>
     <div class="p2qhero"><div class="p2qph" data-p2face="${pid}"><span class="pini">${p.initials}</span></div></div>
-    <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${fams?`<div class="pf">${fams}</div>`:""}${p2Vouch(pid)}</div>
+    <div class="p2qname"><div class="pn">${p.name}</div><div class="pt">${p.title}${p.company?", "+p.company:""}</div>${me?(fams?`<div class="pf">${fams}</div>`:""):(p2MutualLine(pid)||(fams?`<div class="pf">${fams}</div>`:""))}${p2Vouch(pid)}</div>
     <div class="p2qacts">${me?`<div class="p2fw"><button class="p2follow" onclick="event.stopPropagation();${full}">Your profile</button></div><button class="p2qopen" onclick="event.stopPropagation();openSheet('p2viewas','')">${LI("eye",16)}Who sees what</button>`:`${p2FollowBtn(pid)}<button class="p2qopen" onclick="event.stopPropagation();${full}">${LI("maximize-2",16)}Full profile</button>`}</div>
-    ${me?p2OwnBody("member").replace(/<button class="p2x">Suggest<\/button>/g, ""):p2Body(pid)}
+    ${me||STATE.p2keep[pid]?"":`<div class="p2qcap">Their news in your weekly digest. ${f} isn't told.</div>`}
+    ${me?p2OwnBody("member").replace(/<button class="p2x">Suggest<\/button>/g, ""):p2Preview(pid)}
     ${me?"":`<div class="sbar p2sbar p2qdock">${p2Dock(pid)}</div>`}
   </div>`; }
+/* Apoorv 29 Sep 00:19: "quick view already shows everything, so what's the point of full profile". Hinge and LinkedIn open the whole
+   profile on a tap; Instagram's long-press peek shows only enough to decide. The peek now answers "who is this and why now":
+   how you're connected, then the one thing you could act on, then the way into everything else */
+function p2Preview(pid){ const p=DB.people[pid], d=p2d(pid), f=firstName(p), open=p2OpenList(p)[0], n=d.needs[0];
+  const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"communities", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
+  const top = n ? `<div class="p2sec">${p2H("search",`${f} is looking for`)}<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}</span><button class="p2x" onclick="event.stopPropagation();openSheet('p2need','${pid}|0')">${n.fit?"Offer yourself":"Suggest"}</button></div></div>`
+    : open ? `<div class="p2sec">${p2H("door-open",`${f} is open to`)}<div class="p2nd p2op"><span class="p2ico">${LI(P2_OPEN[open][0],18)}</span><span><b>${open}</b></span><button class="p2x" onclick="event.stopPropagation();openSheet('p2open','${pid}|${open}')">${P2_OPEN[open][1]}</button></div></div>` : "";
+  return `<div class="p2 p2pv">${p2BetweenLine(pid)}${d.now?`<div class="p2bld">${d.now}</div>`:''}${top}
+    <button class="p2lk p2more" onclick="event.stopPropagation();STATE.sheet=null;STATE.profileId='${pid}';go('profile')">${p2Logo(LI("user-round",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">See full profile</b>${parts.length?`<small>${parts.join(", ").replace(/^./,c=>c.toUpperCase())} and more</small>`:''}</span>${LI("chevron-right",16)}</button></div>`; }
 const _p2ProfileSheet3 = profileSheet;
 profileSheet = function(pid){ if ((pid==="priya" && !STATE.member) || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
 const _p2QvRender = render;
@@ -14842,8 +14924,35 @@ const P2_CTX_GLYPH = { "◆":"calendar", "◎":"flag", "☎":"mic", "↧":"link"
 const _p2CtxRender = render;
 render = function(){ const r = _p2CtxRender.apply(this, arguments);
   if (p2HiFi() && typeof phone!=="undefined" && phone) { const on = /^you:context/.test(STATE.screen||""); phone.classList.toggle("hf-ctx", on);
-    if (on) phone.querySelectorAll(".epi").forEach(e => { const g = e.textContent.trim(); if (P2_CTX_GLYPH[g]) e.innerHTML = LI(P2_CTX_GLYPH[g], 16); }); }
+    if (on) { phone.querySelectorAll(".epi").forEach(e => { const g = e.textContent.trim(); if (P2_CTX_GLYPH[g]) e.innerHTML = LI(P2_CTX_GLYPH[g], 16); }); p2CtxRows(phone); } }
   return r; };
+/* Low-fi gaps sweep, 28 Sep night: every line of Context leads with a tile for where it came from (the call, LinkedIn, a mission,
+   something you told Kai), with the source and date under it; what Kai told another member's Kai leads with that member's face;
+   Edit and Add become buttons and add rows. Same lines, same taps, nothing new is stored. */
+const p2CtxIcon = src => /call/.test(src)?"mic":/LinkedIn/.test(src)?"link":/mission|goal/i.test(src)?"flag":/told Kai/.test(src)?"message-square":/added/.test(src)?"pencil":/draft/.test(src)?"file-text":/calendar/.test(src)?"calendar":/#/.test(src)?"hash":"sparkles";
+const p2Tile = ico => `<span class="p2ct">${LI(ico,18)}</span>`;
+function p2CtxRows(root){ const C=DB.contextV2;
+  root.querySelectorAll(".doc .sent[data-sent]:not(.p2c)").forEach(el => { const [k,i]=el.dataset.sent.split("|"), l=(C[k]||[])[+i]; if (!l) return;
+    el.classList.add("p2c"); el.innerHTML = `${p2Tile(p2CtxIcon(l[1]))}<span class="p2cm"><b>${l[0]}</b><small>${l[1].charAt(0).toUpperCase()+l[1].slice(1)} · ${l[2]}</small></span>`; });
+  root.querySelectorAll(".ctxline:not(.p2c)").forEach(el => { const m=el.querySelector(".m"), a=m&&m.querySelector(".a"), b=m&&m.querySelector(".b"); if (!a) return; el.classList.add("p2c");
+    const who = a.querySelector("b") && a.querySelector("b").textContent.match(/^(\w+)'s Kai$/), p = who && Object.values(DB.people).find(x=>firstName(x)===who[1]);
+    const ico = /intro/i.test(a.textContent)?"users":/help/i.test(a.textContent)?"message-circle-question":/Looking/.test(a.textContent)?"eye-off":/Location/.test(a.textContent)?"map-pin":b?p2CtxIcon(b.textContent):"sparkles";
+    m.insertAdjacentHTML("beforebegin", p ? `<span class="p2cav">${av(p.initials)}</span>` : p2Tile(ico));
+    el.querySelectorAll(":scope > .chip, :scope > .row > .chip").forEach(c => { if (!/^[XMD]$/.test(c.textContent.trim())) c.classList.add("p2cb"); }); });
+  root.querySelectorAll(".body .xs.faint").forEach(el => { const t=el.textContent.trim(); if (/^(Add|Add a boundary)$/.test(t) && !el.classList.contains("p2cadd")) { el.classList.add("p2cadd"); el.innerHTML = `${LI("plus",16)}${t==="Add"&&el.closest(".doc")?"Add a boundary":t==="Add"?"Add a line":t}`; } });
+}
+
+/* the Source sheet (a receipt's "where Kai read it"): a tile for the kind of source, the post itself with the author's face when it is a
+   message, and a real way to fix the Context line it fed. Hi-fi copy only */
+const P2_SRC_ICON = { calendar:"calendar", xoogler:"users", LinkedIn:"link", events:"ticket", rules:"shield", mission:"flag", people:"briefcase" };
+const _p2SourceSheet = sourceSheet;
+sourceSheet = function(src){ const h=_p2SourceSheet(src); if (!p2HiFi()) return h;
+  const t=(h.match(/<h2>([\s\S]*?)<\/h2>/)||[])[1]||"Source", d=(h.match(/<\/h2><p>([\s\S]*?)<\/p>/)||[])[1]||"";
+  const q=d.match(/^(.+?), (\w+ \d+): “([\s\S]*)”$/), p=q&&Object.values(DB.people).find(x=>x.name===q[1]);
+  return `<div class="p2src"><div class="p2srch">${p2Tile(P2_SRC_ICON[src]||(/^#/.test(src)?"hash":"file-text"))}<span><h2>${t}</h2><small>Where Kai read it</small></span></div>
+    ${q?`<div class="p2srcq">${p?av(p.initials):""}<span><b>${q[1]}</b><small>${q[2]}</small><span class="p2srcp">${q[3]}</span></span></div>`:`<p class="p2srcd">${d}</p>`}
+    <button class="p2add" onclick="closeSheet();go('you:context')">${LI("pencil",16)}Not right? Fix the line in Context</button>
+    <button class="btn sec p2srcx" onclick="closeSheet()">Close</button></div>`; };
 
 /* ==== THE SIGNED-IN MEMBER IS APOORV SINGH (Apoorv 28 Sep 06:14: "keep the name as Apoorv Singh"). The id stays "priya", as Daniel
    kept "chris", so every module and test that keys on the id still works. The data is renamed in place, and one observer rewrites
