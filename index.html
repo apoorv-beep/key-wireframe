@@ -5126,6 +5126,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .mc-look, .hf-mis .mc-look { margin:4px 0 12px; font:var(--type-body-s); color:var(--text-secondary); }
 /* a message swapped in place on an answer (the question that lost its chips, a replaced draft) does not replay its entrance */
 .mc-sheet .mc-seen { animation:none; }
+/* send is off while Kai thinks */
+.mc-sheet [data-mcsend][disabled] { opacity:.4; cursor:default; }
 @media (prefers-reduced-motion: reduce) { .mc-page.hf { animation:none; } }
 </style>
 </head>
@@ -17069,7 +17071,9 @@ function mcRefresh(){
       const was = oc[j]; at = j+1; keep.add(was); if (was.classList.contains("mc-seen")) c.classList.add("mc-seen");
       if (was.outerHTML===c.outerHTML || was.matches(".ks-mk.live")) return;
       if (deep(c)) { morph(was, c); return; }
-      c.classList.add("mc-seen"); was.replaceWith(c); keep.add(c); });
+      const ti = was.querySelector("#mcIn"), tf = ti && document.activeElement===ti;
+      c.classList.add("mc-seen"); was.replaceWith(c); keep.add(c);
+      const tn = ti && c.querySelector("#mcIn"); if (tn) { tn.value = ti.value; if (tf) { tn.focus(); tn.setSelectionRange(tn.value.length, tn.value.length); } } });
     oc.forEach(e => { if (!keep.has(e)) e.remove(); }); };
   const osb = old.querySelector(".sb"), nsb = nu.querySelector(".sb"); if (osb && nsb) morph(osb, nsb); else { render(); return; }
   old.classList.add("mc-sheet"); if (mcHF()) old.setAttribute("data-kv", `height=${STATE.sheetFull?"full":"hug"}, content=mission-create`);
@@ -17139,7 +17143,7 @@ function mcSheet(){
   return `<div class="ks-hd mc-hd"><span class="ks-t">${kaiMark(28)}<b>New goal</b></span><button class="ks-ib" data-mcclose="1" aria-label="Close">${LI("x",20)}</button></div>${mcProgress()}
     <div class="ks-body"><div class="ks-thread">${m.msgs.map(mcMsg).join("")}</div></div>
     <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="ks-box"><textarea class="kin" id="mcIn" rows="1" placeholder="${ph}"></textarea>
-      <div class="ks-crow"><span class="grow"></span><button class="ks-ci" id="kaiMic" data-mcmic="1" aria-label="Hold to talk">${LI("mic",20)}</button><button class="ks-go" data-mcsend="1" aria-label="Send">${LI("arrow-up",18)}</button></div></div></div>`;
+      <div class="ks-crow"><span class="grow"></span><button class="ks-ci" id="kaiMic" data-mcmic="1" aria-label="Hold to talk">${LI("mic",20)}</button><button class="ks-go" data-mcsend="1" aria-label="Send"${m.think?" disabled":""}>${LI("arrow-up",18)}</button></div></div></div>`;
 }
 /* the full brief: a page pushed over the chat. KeyBriefDoc, the rows the mission page's Brief tab uses, each one editable with Kai */
 function mcDocHTML(){
@@ -17206,7 +17210,8 @@ function mcWire(){
   const on = (sel, fn) => phone.querySelectorAll(sel).forEach(el => el.onclick = e => { e.stopPropagation(); fn(el, e); });
   on("[data-mca]", el => mcAnswer(el.dataset.mca));
   on("[data-mcfold]", el => { const x = STATE.mc.msgs[+el.dataset.mcfold]; x.traceOpen = !x.traceOpen; mcRefresh(); });
-  const send = () => { const i = phone.querySelector("#mcIn"); const v = i && i.value.trim(); if (!v) { toast("Type an answer, or tap one"); return; } mcAnswer(v); };
+  /* while Kai thinks, what they typed waits in the box (send is off) and goes once the question lands; a sent answer clears the box */
+  const send = () => { if (STATE.mc && STATE.mc.think) return; const i = phone.querySelector("#mcIn"); const v = i && i.value.trim(); if (!v) { toast("Type an answer, or tap one"); return; } mcAnswer(v); const n = phone.querySelector("#mcIn"); if (n) n.value = ""; };
   on("[data-mcsend]", send);
   const i = phone.querySelector("#mcIn"); if (i) i.onkeydown = e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); send(); } };
   on("[data-mcmic]", () => toast("Hold to talk. Kai writes down what you say."));
