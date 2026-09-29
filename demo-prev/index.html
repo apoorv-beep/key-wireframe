@@ -6991,7 +6991,6 @@ function sYou() {
   <div class="body">
     <div class="row" style="align-items:center;gap:12px;margin-top:6px">${av(u.initials,"lg")}<div style="flex:1;min-width:0"><div style="font-size:20px;font-weight:700">${u.name}</div><div class="sm muted">${u.title}, ${u.company}</div><div class="xs faint">Xoogler · Michigan · Desi Founders</div></div></div>
     <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec sm" style="flex:1;height:40px;padding:0" data-profile="priya">Your profile</button><button class="btn sec sm" style="flex:1;height:40px;padding:0" onclick="toast('Per family: Xoogler sees everything, Michigan and Desi see profile and open-to, nobody sees Context.')">Who sees what</button></div>
-    <div class="prow" style="margin-top:14px;border-top:1px solid var(--line);cursor:default"><div class="avatar" style="border-radius:8px;border-style:solid;border-color:var(--ink);font-size:11px">RL</div><div class="m"><div class="a">Standing · Reliable</div><div class="b">Replied to 2 of 3 requests, 1 intro landed. Standing sets how much Kai asks of you and how fast your requests route. Only you see this.</div></div></div>
     ${rows.map(([id,a,b])=>`<div class="prow" data-you="${id}"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><div class="s">›</div></div>`).join("")}
   </div>`;
 }
