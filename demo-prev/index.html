@@ -10847,12 +10847,12 @@ const EV_ME = "priya";
   C("cal-xd", { kind:"family", main:true, auto:true, theme:"gold", admins:["chris"], accepts:"members", events:["e1a","e1","e1b","e1c","e0","e7"] });
   C("cal-xt", { kind:"family", auto:false, theme:"ink", admins:["rahul"], accepts:"members", events:["e2"] });
   C("cal-mp", { kind:"family", main:true, auto:true, theme:"sage", admins:["kate"], accepts:"members" });
-  C("cal-ai", { kind:"user", family:null, theme:"harbour", admins:["ana"], accepts:"anyone", about:"Ana's calendar for AI PMs across families. Anyone can submit; Ana approves.", events:["e5"] });
+  C("cal-ai", { kind:"user", family:null, theme:"harbour", admins:["ana"], accepts:"anyone", about:"Ana's calendar for AI PMs across communities. Anyone can submit; Ana approves.", events:["e5"] });
   const addc = c => { if (!DB.calendars.some(x=>x.id===c.id)) DB.calendars.push(Object.assign({ subscribed:false, sync:false, events:[], requests:[], admins:[], accepts:"admins" }, c)); };
   addc({ id:"cal-me", name:"Priya Sharma", family:null, host:EV_ME, subs:31, kind:"personal", theme:"photo", admins:[EV_ME], accepts:"admins", about:"Priya's own events.", events:["e10j","e10k","e10m","e10a","e10p","e10","e10c","e10d"] });
   addc({ id:"cal-pt", name:"PM Teardowns", family:null, host:EV_ME, subs:74, kind:"user", theme:"dusk", admins:[EV_ME,"rahul"], accepts:"anyone", about:"One product, twenty PMs, an hour. Started by Priya; Rahul co-runs it.", events:["e4"], requests:[{ id:"rq1", from:"dev", name:"Agents in prod: a teardown", when:"Tue, Oct 20" }] });
   addc({ id:"cal-dn", name:"Desi Founders", family:"desi", host:"neha", subs:150, kind:"family", main:true, auto:true, theme:"sage", admins:["neha"], accepts:"members", about:"Breakfasts and investor office hours, SF and NYC.", events:["e6"] });
-  addc({ id:"cal-pa", name:"Palo Alto Events", family:null, host:null, subs:1840, kind:"city", theme:"harbour", accepts:"anyone", about:"Public Key events near Palo Alto from every family. Hosts submit; Key's team approves.", events:["e5","e1","e9","e4"] });
+  addc({ id:"cal-pa", name:"Palo Alto Events", family:null, host:null, subs:1840, kind:"city", theme:"harbour", accepts:"anyone", about:"Public Key events near Palo Alto from every community. Hosts submit; Key's team approves.", events:["e5","e1","e9","e4"] });
   addc({ id:"cal-spc", name:"Founders Table", family:null, famExt:"Stanford GSB Founders", host:"chris", subs:410, members:640, kind:"family", main:true, theme:"dusk", subscribed:true, admins:["chris"], accepts:"members", about:"Stanford GSB Founders' calendar. Firesides are open; board nights are for members.", events:["e8","e9"] });
   addc({ id:"cal-cf", name:"Daniel Reyes", family:null, host:"chris", subs:212, kind:"personal", theme:"gold", admins:["chris"], accepts:"admins", about:"Daniel's own events.", events:["e11"] });
   DB.fevents.forEach(e=>{ if (e.reg===undefined) e.reg = e.rsvp ? "going" : "none"; if (!e.listed) e.listed=[]; if (!e.pending) e.pending=[]; });
@@ -10884,7 +10884,7 @@ function evIsAdmin(c){ return !!c && (c.admins||[]).includes(EV_ME); }
 function evFollows(c){ return !!c && (evIsAdmin(c) || c.subscribed || (c.auto && c.family && evMyFams().includes(c.family) && c.unfollowed!==true)); }
 function evMemberOf(c){ return !!c && !!c.family && evMyFams().includes(c.family); }
 function evLocked(e){ const c=evC(e.cal); return e.vis==="members" && !!c && !evMemberOf(c); }
-function evKind(c){ if(!c) return ""; if (c.kind==="personal") return evIsAdmin(c)?"Your calendar":`${evFirst(c.host)}'s calendar`; if (c.kind==="city") return "City calendar"; if (c.kind==="user") return evIsAdmin(c)?"You run it":`Run by ${(DB.people[c.admins[0]]||{}).name||"a member"}`; return `${c.famExt || (DB.families.find(f=>f.id===c.family)||{}).name} family`; }
+function evKind(c){ if(!c) return ""; if (c.kind==="personal") return evIsAdmin(c)?"Your calendar":`${evFirst(c.host)}'s calendar`; if (c.kind==="city") return "City calendar"; if (c.kind==="user") return evIsAdmin(c)?"You run it":`Run by ${(DB.people[c.admins[0]]||{}).name||"a member"}`; return `${c.famExt || (DB.families.find(f=>f.id===c.family)||{}).name} community`; }
 function evWhen(e){ return `${e.when}${e.end?`–${e.end}`:""}`; }
 /* who approves an event placed on calendar c by me */
 function evApprover(c){ if (!c || evIsAdmin(c)) return null; if (c.kind==="family") return `${c.famExt||(DB.families.find(f=>f.id===c.family)||{}).name} organizers`; if (c.kind==="city") return "Key's team"; return `${evFirst(c.admins[0])}, who runs it`; }
@@ -10980,7 +10980,7 @@ sEvents = function(){
     const pa = evC("cal-pa");
     body = `${rows.length?`<div class="lbl" style="margin-top:4px">Your time</div><div class="today">${rows.join("")}</div>`:""}
       ${evByDate(feed, "Nothing from the calendars you follow. Tap All to find some.")}
-      ${pa&&!evFollows(pa)?`<div class="evx-sugg" data-cal="cal-pa"><div class="row" style="gap:10px">${evCalThumb(pa)}<div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every family.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
+      ${pa&&!evFollows(pa)?`<div class="evx-sugg" data-cal="cal-pa"><div class="row" style="gap:10px">${evCalThumb(pa)}<div style="flex:1;min-width:0"><div class="name">${pa.name}</div><div class="sub">${pa.subs.toLocaleString()} follow it. Public events near you from every community.</div></div><span class="chip" data-evfollow="cal-pa">Follow</span></div></div>`:""}`;
   } else {
     const m = STATE.evMine;
     const drafts = DB.fevents.filter(e=>e.draft);
@@ -11006,9 +11006,9 @@ sCalendars = function(){
     <div class="lbl" style="margin-top:4px">Yours</div>${mine.map(crow).join("")}
     <div class="xs faint" style="margin-top:6px">Events you put on these publish at once.</div>
     <div class="lbl">Following</div>${fol.map(crow).join("")||'<div class="empty">Nothing yet.</div>'}
-    ${fam.length?`<div class="lbl">In your families</div>${fam.map(crow).join("")}`:""}
+    ${fam.length?`<div class="lbl">In your communities</div>${fam.map(crow).join("")}`:""}
     ${more.length?`<div class="lbl">Discover</div>${more.map(crow).join("")}`:""}
-    <div class="xs faint" style="margin-top:12px">Members follow their family's main calendar automatically and can unfollow. Anyone can follow a public calendar without joining the family.</div>
+    <div class="xs faint" style="margin-top:12px">Members follow their community's main calendar automatically and can unfollow. Anyone can follow a public calendar without joining the community.</div>
     <button class="btn sec" style="margin-top:14px" data-evsheet="evnewcal|x">New calendar</button>
   </div>`;
 };
@@ -11054,7 +11054,7 @@ function evChatCard(e, live, locked){
     <div class="evt-react">${EV_REACT.map(r=>`<button data-evreact="${e.id}|${r}" aria-label="Send ${r}">${r}</button>`).join("")}<div class="evt-say" data-evroom="${e.id}|focus">Say hi…</div></div></div>`;
 }
 function evStateRow(e, live, locked){
-  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"family"} members</div>`;
+  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"community"} members</div>`;
   if (e.reg==="pending") return `<div class="evt-note">${evIc("hourglass",15)} ${evFirst(e.host)} is reviewing your request <span data-evunrsvp="${e.id}">Withdraw</span></div>`;
   if (e.reg==="waitlist") return `<div class="evt-note">${evIc("hourglass",15)} #${e.wait||1} on the waitlist <span data-evunrsvp="${e.id}">Leave</span></div>`;
   if (e.reg==="hosting") return `<div class="evt-duo"><button class="btn sec" data-evpost="${e.id}">${evIc("megaphone")} Post update</button><button class="btn sec" data-evsheet="evshare|${e.id}">${evIc("share")} Share</button></div>${(e.requests||[]).length?`<div class="evt-note" data-evgo="eventd:manage.${e.id}">${evIc("hand",16)} ${e.requests.length} waiting for your yes <span>Review</span></div>`:""}`;
@@ -11409,7 +11409,7 @@ sCalendar = function(id){
   const actions = admin
     ? `<button class="btn" style="flex:1" data-evnewon="${c.id}">Add event</button><button class="btn sec" style="flex:1" data-evgo="cal:${c.id}.manage">Manage${(c.requests||[]).length?` · ${c.requests.length}`:""}</button>`
     : on ? `<button class="btn sec evx-fbtn" style="flex:1" data-evsheet="evbell|${c.id}">${evIc(EV_BELL[evBellOf(c)][0],17)}Following${evIc("chevron-down",16)}</button><button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`
-    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the family"} opens.')">Apply to join</button>`:`<button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`}`;
+    : `<button class="btn" style="flex:1" data-evfollow="${c.id}">Follow</button>${nonMember?`<button class="btn sec" style="flex:1" onclick="toast('Application to ${c.famExt||"the community"} opens.')">Apply to join</button>`:`<button class="btn sec evx-sync" style="flex:1" data-evsheet="evsync|${c.id}" aria-label="Add to calendar">${evIc("calendar-plus",18)}<span>Add<span class="evx-sync-x"> to calendar</span></span></button>`}`;
   const up = evs.filter(e=>!e.past);
   let pane = "";
   if (tab==="past") pane = evCalPast(c, evs);
@@ -11652,7 +11652,7 @@ function evSheet(type, id){
     <div class="xs faint" style="margin-top:10px">Calendar apps check for changes every few hours. Your ticket in the app is always current.</div>`; }
   if (type==="evshare") { const e=evE(id); const host = e.reg==="hosting"; return `<h2>${e.name}</h2>${[["Copy link",`key.ai/e/${evSlug(e)}`,`toast('Copied key.ai/e/${evSlug(e)}')`],["Share to a chat","Pick a DM, group or channel","toast('Pick where to share. Nothing sends until you tap Send.')"],["Add to calendar","","STATE.sheet=null;openSheet('evaddcal','"+id+"')"],...(host&&e.vis==="public"?[["List on another calendar","Their admins approve it","STATE.sheet=null;openSheet('evsubmit','"+id+"')"]]:[]),...(host?[]:[["Report","Tell Key, not the host","toast('Report sent to Key. The host isn\\'t told.')"]])].map(([a,b,f])=>`<div class="rowitem" onclick="${f}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div></div>`).join("")}`; }
   if (type==="evsubmit") { const e=evE(id); const opts = DB.calendars.filter(c=>c.id!==e.cal && (c.accepts==="anyone" || (c.accepts==="members"&&evMemberOf(c)) || evIsAdmin(c))); return `<h2>List on another calendar</h2><p class="sm muted">${e.name} stays on ${evC(e.cal).name}. Guests and payments stay with you. Each calendar's admins approve the listing, unless you run it.</p>
-    <div class="evx-kai"><span class="ty">Kai</span> Palo Alto Events has 1,840 followers near the venue. Nine of them are in your missions.</div>
+    <div class="evx-kai"><span class="ty">Kai</span> Palo Alto Events has 1,840 followers near the venue. Nine of them are in your goals.</div>
     ${opts.map(c=>{ const st=(e.listed||[]).includes(c.id)?"Listed":(e.pending||[]).includes(c.id)?"Waiting":""; return `<div class="rowitem">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${c.subs.toLocaleString()} followers · ${evApprover(c)?`${evApprover(c)} approve`:"publishes now"}</div></div>${st?`<span class="xs muted">${st}</span>`:`<button class="btn sm" data-evsubmitok="${id}|${c.id}">${evApprover(c)?"Submit":"Add"}</button>`}</div>`; }).join("")}`; }
   if (type==="evdecline") { return `<h2>Decline ${evFirst(id.split("|")[1])}?</h2><p class="sm muted">${evFirst(id.split("|")[1])} sees "Not approved for this one." Your reason stays with you and your cohosts.</p>
     ${["Full for this one","Not the right fit","Missing information"].map(r=>`<div class="rowitem" data-evdeclineok="${id}"><div class="m"><div class="a">${r}</div></div></div>`).join("")}<button class="btn ghost" onclick="closeSheet()">Keep for now</button>`; }
@@ -11673,7 +11673,7 @@ function evSheet(type, id){
   if (type==="evinvite") { const e=evE(id); evHostData(e); const tab=STATE.evInvTab||"past"; const taken=evGuests(e).map(g=>g.pid).concat([e.host]); const pick=STATE.evPick||[];
     const pool=EV_INVITE_POOL[tab].filter(x=>DB.people[x]&&!taken.includes(x));
     return `<h2>Invite guests</h2><div class="evt-copyrow" data-evcopy="${evSlug(e)}"><span>${evIc("link",15)} key.ai/e/${evSlug(e)}</span><b>Copy link</b></div>
-    <div class="evt-fxrow" style="margin:12px 0 4px;padding:0">${[["past","Past guests"],["family",(DB.families.find(f=>f.id===e.family)||{name:"Your family"}).name],["suggested",`${evIc("sparkles",14)} Kai's picks`]].map(([k,l])=>`<span class="chip ${tab===k?'on':''}" data-evinvtab="${k}">${l}</span>`).join("")}</div>
+    <div class="evt-fxrow" style="margin:12px 0 4px;padding:0">${[["past","Past guests"],["family",(DB.families.find(f=>f.id===e.family)||{name:"Your community"}).name],["suggested",`${evIc("sparkles",14)} Kai's picks`]].map(([k,l])=>`<span class="chip ${tab===k?'on':''}" data-evinvtab="${k}">${l}</span>`).join("")}</div>
     ${pool.map(pid=>{ const p=DB.people[pid]; const on=pick.includes(pid); return `<div class="rowitem" data-evpick="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${p.title}${p.company?`, ${p.company}`:""}</div></div><span class="evx-radio ${on?'on':''}"></span></div>`; }).join("")||'<div class="empty">Everyone here is already on the list.</div>'}
     <button class="btn" style="margin-top:14px" data-evsendinv="${id}" ${pick.length?"":"disabled"}>${pick.length?`Send ${pick.length} invite${pick.length>1?"s":""}`:"Pick people to invite"}</button>`; }
   if (type==="evtkt") { const [eid,i]=id.split("|"); const e=evE(eid); evHostData(e); const k = i==="new" ? (STATE.evTk=STATE.evTk||{ name:"", price:0, cap:0, sold:0, on:true, refund:true, fees:"guest", isNew:true }) : (STATE.evTk=STATE.evTk||{ ...e.tickets[+i], idx:+i });
@@ -11749,7 +11749,7 @@ function evSheet(type, id){
   if (type==="evnewcal") return `<h2>New calendar</h2><p class="sm muted">For a series you run, like a dinner club or a talk series. You already have your own calendar; this is another.</p>
     <div class="lbl">Name</div><input class="input" id="evcalname" placeholder="AI Founders Breakfast">
     <div class="lbl">Who can add events</div>${[["admins","Only admins"],["anyone","Anyone; you approve each one"]].map(([k,l])=>`<div class="rowitem" data-evcalacc="${k}"><div class="m"><div class="a">${l}</div></div><span class="evx-radio ${(STATE.evCalAcc||"admins")===k?'on':''}"></span></div>`).join("")}
-    <div class="xs faint" style="margin:10px 0">Public: anyone with the link can follow it. Family calendars are made by organizers in Manage.</div>
+    <div class="xs faint" style="margin:10px 0">Public: anyone with the link can follow it. Community calendars are made by organizers in Manage.</div>
     <button class="btn" data-evcalcreate="1">Create</button>`;
   { const h=evMsSheet(type, id); if (h!==null) return h; }
   if (type==="evcover") return evCvSheet(id);
@@ -12877,7 +12877,7 @@ function evCta(e, live, locked){
   STATE.chFilter = STATE.chFilter || "All"; STATE.postType = STATE.postType || "All";
 })();
 
-const C_DECLINE = [["fit","Not the right fit for this family right now"],["full","The family is full for this round"],["info","We couldn't confirm your background"],["timing","Try again when you've been in the field longer"],["none","No reason given"]];
+const C_DECLINE = [["fit","Not the right fit for this community right now"],["full","The community is full for this round"],["info","We couldn't confirm your background"],["timing","Try again when you've been in the field longer"],["none","No reason given"]];
 const cF = () => fam();
 const cOrg = () => !!STATE.asOrganizer;
 const cIni = n => n.split(" ").map(x=>x[0]).join("").slice(0,2);
@@ -12968,7 +12968,7 @@ switcherSheet = function(){
 };
 famHdr = function(){
   const f = cF();
-  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch family"><span class="cm-fn"><span class="cm-fn-tab">Families</span><span class="cm-fn-fam"><span class="cm-fn-mark">${cMark(f)}</span>${f.name}</span></span>${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
+  return topHdr(`<span class="cm-fname" onclick="openSheet('switcher')" role="button" aria-label="Switch community"><span class="cm-fn"><span class="cm-fn-tab">Communities</span><span class="cm-fn-fam"><span class="cm-fn-mark">${cMark(f)}</span>${f.name}</span></span>${C_CHEV_SVG}</span>`).replace("STATE.searchFam=null", `STATE.searchFam='${f.id}'`);
 };
 function cHdrName(){
   const body = phone.querySelector(".view .body"), hdr = phone.querySelector(".hdr.top"), t = body && body.querySelector(".cm-hero .t");
@@ -13114,7 +13114,7 @@ function cWeek(){
     ${talk.length?`<div class="cm-sec cm-talks">${cHead("Talking now","Channels",'data-ctab="chat"')}${talk.map(talkRow).join("")}</div>`:''}
     ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>People for you here`,"People",'data-ctab="people"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
     ${later.length?`<div class="cm-sec">${cHead("Coming up","Events",'data-ctab="fevents"')}<div class="cm-evstrip">${later.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
-    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("From the family","Posts",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
+    ${pinNote||posts.length?`<div class="cm-sec cm-feed">${cHead("From the community","Posts",'data-ctab="posts"')}${pinNote}${posts.map(p=>cPostRow(p,"")).join("")}</div>`:''}
   </div>
   ${navHTML("families")}`;
 }
@@ -13156,7 +13156,7 @@ sPeople = function(){
       ${cChips(C_OPEN, pf, "pfilter")}</div>
     ${cOrg()?`<div class="cm-row cm-mgr" data-cgo="manage:members"><div class="cm-sq">${C_SHIELD_SVG}</div><div class="m"><div class="a">Manage members</div><div class="b">Requests, roles, tags and notes</div></div>${cWaiting()?`<span class="cm-count">${cWaiting()}</span>`:''}<span class="s">›</span></div>`:''}
     ${!q && pf==="All" ? cNewStrip(f) : ""}
-    ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>Kai picked for your missions`,"Missions",'data-cgo="home"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
+    ${picks.length?`<div class="cm-sec cm-picks">${cHead(`<span class="cm-kai">${C_SPARK}</span>Kai picked for your goals`,"Goals",'data-cgo="home"')}${picks.map(p=>`<div class="cm-row" data-profile="${p.id}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${C_PICK_WHY[p.id][0]}</div></div><span class="cm-done">New pick</span></div>`).join("")}</div>`:''}
     <div class="cm-cnt"><span class="cm-sort" data-csheet="cpsort">${(C_PSORT.find(x=>x[0]===sort)||C_PSORT[0])[1]}${C_CHEV_SVG}</span><span class="cm-view" data-pview="${grid?'list':'grid'}" aria-label="${grid?'List':'Grid'} view">${grid?C_LIST_SVG:C_GRID_SVG}</span></div>
     ${body || '<div class="empty">Nobody matches. Try fewer filters.</div>'}
   </div>
@@ -13188,7 +13188,7 @@ sFamilyEvents = function(){
 
 /* ---- Channels: search first, then your channels by category. Kai's suggestions are one row that opens Browse channels,
    so they stand out without pushing the list down (Discord puts discovery in one row above the list; research-round4.md 6). ---- */
-const C_CH_WHY = { jobs:"Three roles a week match your mission", cofounders:"Where Daniel found Maya for you", fundraising:"Two members you know post here", "hiring-managers":"Roles like the ones you're after are posted here first", "ai-agents":"Rahul and Sana are active here", "d-raising":"Two members you know are in it" };
+const C_CH_WHY = { jobs:"Three roles a week match your goal", cofounders:"Where Daniel found Maya for you", fundraising:"Two members you know post here", "hiring-managers":"Roles like the ones you're after are posted here first", "ai-agents":"Rahul and Sana are active here", "d-raising":"Two members you know are in it" };
 const cChans = f => DB.channels[f.id]||[];
 const C_CH_DESC = { general:"Anything Xoogler", introductions:"Say who you are and what you're after", announcements:"From the organizers", jobs:"Roles, with a referrer where you can", cofounders:"Looking for a cofounder, or to be one", sf:"Who's in SF this week" };
 const cSuggested = f => cChans(f).filter(c=>!c.joined && C_CH_WHY[c.id] && !(STATE.chDismissed||{})[c.id]);
@@ -13430,7 +13430,7 @@ function cPostDetail(){
    join dates, messages and thread replies, reactions, who invited whom, event creators and check-ins. Who should meet is Kai's
    suggestion, not a stored fact, and "went well" is new (Kai's follow-ups). ---- */
 const C_ORGJOBS = [["welcome",2,"to welcome","joined this week, nobody has greeted them yet"],["quiet",3,"going quiet","posted most weeks, nothing in three weeks"],["unanswered",2,"asks unanswered","no reply after two days"],["thank",2,"to thank","answered, introduced or hosted this month"],["meet",2,"pairs to introduce","Kai's suggestion, from what they asked and offer"],["host",1,"to ask to host","came to three or more events, never hosted"]];
-const cOrgGo = () => DB.missions.find(m=>m.id==="morg") ? `go('mission:morg')` : `toast('Opens your Kai mission for running ${cF().name}')`;
+const cOrgGo = () => DB.missions.find(m=>m.id==="morg") ? `go('mission:morg')` : `toast('Opens your Kai goal for running ${cF().name}')`;
 const cOrgRow = () => `<div class="cm-row cm-kairow cm-orgm" onclick="${cOrgGo()}"><div class="cm-kt">${C_SPARK}</div><div class="m"><div class="a">How Kai helps you run ${cF().name}</div><div class="b">${C_ORGJOBS.slice(0,3).map(([,n,l])=>`${n} ${l}`).join(" · ")}</div></div><span class="cm-count">${C_ORGJOBS.reduce((t,j)=>t+j[1],0)}</span><span class="s">›</span></div>`;
 /* The organizer brief (Apoorv 27 Sep 19:34: Kai's week, To do and Insights were three versions of one thing). One block at the top of
    Overview, organizers only: how the numbers move (a tap opens Insights), then everything waiting on them as one row of taps, people
@@ -13504,7 +13504,7 @@ function cInsights(){
   const evs = [["Summer picnic","Jun",60,41],["Product teardown","Jul",28,19],["AI PM roundtable","Jul",20,15],["Xoogler dinner","Aug",42,34]];
   const people = [["DR","Daniel Reyes","41 messages · brought in 6"],["RM","Rahul Mehta","33 messages · brought in 3"],["SI","Sana Iqbal","28 messages · brought in 4"],["MC","Maya Chen","19 messages · 11 replies to new members"]];
   const leave = [["Don't have time to participate",4],["Not finding the right connections",2],["Got what I needed",1],["Not relevant to my goals anymore",1],["Other reason",1]];
-  const gaps = [["Did the intro go anywhere","Intro outcomes aren't recorded. Needs an outcome on each intro (recommendation service)."],["What members ask Kai here","Kai chats carry no family. Needs a family id on each Kai session."],["Who read an announcement","Reads exist, but the sender's own read has no family. Needs the family on every read."],["Profile views in this family","Only the phone app sends it, to analytics. Needs one event from web and phone."],["Push and email opens","Opens aren't tied to the family that sent them."],["Last seen","The field exists; nothing writes it. Active members is counted from messages until it does."]];
+  const gaps = [["Did the intro go anywhere","Intro outcomes aren't recorded. Needs an outcome on each intro (recommendation service)."],["What members ask Kai here","Kai chats carry no community. Needs a community id on each Kai session."],["Who read an announcement","Reads exist, but the sender's own read has no community. Needs the community on every read."],["Profile views in this community","Only the phone app sends it, to analytics. Needs one event from web and phone."],["Push and email opens","Opens aren't tied to the community that sent them."],["Last seen","The field exists; nothing writes it. Active members is counted from messages until it does."]];
   return `${famHeader("Insights","manage")}<div class="body" style="padding-top:0">
     <div class="cm-bar">${cChips([["7","7 days"],["30","30 days"],["90","90 days"]], r, "cinsr")}</div>
     <div class="cm-sec cm-ins cm-hero">
@@ -13513,14 +13513,14 @@ function cInsights(){
       <div class="cm-chart">${cSpark(C_WAU, 360, 72, C_WAU_WK)}</div><div class="cm-axis"><span>${C_WAU_WK[0]}</span><span>This week</span></div>
       ${cSrc("Posted, replied or reacted this week · from messages")}</div>
     ${cOrgMonth()}
-    ${card(`From invite to first message <i>last ${r} days</i>`, fun.map(([l,n],i)=>cHBar(l,n,fun[0][1], i?`${Math.round(n/fun[i-1][1]*100)}% of the step before`:'', `${l}: ${n}`)).join("") + `<div class="cm-meta" style="margin-top:8px">Came through: a member's invite 19 · an event 6 · browsing families 3</div>`, "Invites, applications and first messages · stored")}
+    ${card(`From invite to first message <i>last ${r} days</i>`, fun.map(([l,n],i)=>cHBar(l,n,fun[0][1], i?`${Math.round(n/fun[i-1][1]*100)}% of the step before`:'', `${l}: ${n}`)).join("") + `<div class="cm-meta" style="margin-top:8px">Came through: a member's invite 19 · an event 6 · browsing communities 3</div>`, "Invites, applications and first messages · stored")}
     ${card("Waiting to join", `<div class="cm-row" data-cgo="manage:applications"><div class="cm-stat"><b>${cWaiting()}</b><span>waiting</span></div><div class="cm-stat"><b>50 h</b><span>median to decide</span></div><div class="cm-stat"><b>6 d</b><span>oldest</span></div><span class="s">›</span></div>`, "Median time comes from analytics today. Needs an approval time on each member.")}
     ${card("New members who got going", `<div class="cm-meta" style="margin:-4px 0 8px">Posted, reacted or registered for an event in their first 30 days</div>${coh.map(([m,n,so])=>cHBar(m,n,100,so||"",`Joined in ${m}: ${n}% got going${so?" (month not over)":""}`,n+"%")).join("")}`, "Join dates, messages, reactions, registrations · computed")}
     ${card(`Busiest channels <i>this week</i>`, chans.map(([c,n,d])=>cHBar(c,n,chans[0][1],`${d} from last week`,`#${c}: ${n} messages, ${d} from last week`)).join(""), "Messages per channel · computed")}
     ${card("Events: registered and came", `<div class="cm-leg"><span><i class="k"></i>Came</span><span><i class="g"></i>Registered</span></div>${evs.map(([n,m,reg,came])=>`<div class="cm-hb two" data-ctip="${n}: ${came} of ${reg} came"><div class="l"><span>${n}</span><i>${m}</i></div><div class="t"><div class="g" style="width:${Math.round(reg/60*100)}%"></div><div class="f" style="width:${Math.round(came/60*100)}%"></div></div><b>${came}<em>/${reg}</em></b></div>`).join("")}<div class="cm-meta" style="margin-top:8px">Average rating 4.6 of 5 from 71 responses</div>`, "Registrations, check-ins, ratings · stored per event")}
     ${card("Who keeps it going", people.map(([i,n,b])=>`<div class="cm-row" style="cursor:default">${av(i,"sm")}<div class="m"><div class="a">${n}</div><div class="b">${b}</div></div></div>`).join(""), "Messages and who invited whom · computed")}
     ${card(`Why people left <i>9 in 90 days</i>`, leave.map(([l,n])=>cHBar(l,n,leave[0][1])).join(""), "The reason members pick when they leave · stored, not shown anywhere today")}
-    ${card("What members reported", `<div class="cm-stats"><div><b>38</b><span>intros</span></div><div><b>6</b><span>hires</span></div><div><b>4</b><span>cofounders</span></div></div><div class="cm-meta" style="margin-top:6px">Shown on your family page. Kai asks after each intro.</div>`, "Kai's follow-ups · new, see below")}
+    ${card("What members reported", `<div class="cm-stats"><div><b>38</b><span>intros</span></div><div><b>6</b><span>hires</span></div><div><b>4</b><span>cofounders</span></div></div><div class="cm-meta" style="margin-top:6px">Shown on your community page. Kai asks after each intro.</div>`, "Kai's follow-ups · new, see below")}
     <div class="cm-sec">${cHead("Not tracked yet")}${gaps.map(([a,b])=>`<div class="cm-row" style="cursor:default"><div class="m"><div class="a" style="font-weight:500">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
   </div>${navHTML("families")}`;
 }
@@ -13533,7 +13533,7 @@ function cInsights(){
 const C_MM = [
   { id:"priya", n:"Priya Sharma", e:"priya.sharma@gmail.com", st:"pending", sub:"Waiting 6 days · invited by you", city:"San Francisco", wa:true, notes:[], tags:[], atm:"Senior PM at Google Cloud. Looking for an AI PM role and a technical cofounder." },
   { id:"jordan", n:"Jordan Tan", e:"jordan.tan@gmail.com", st:"pending", sub:"Waiting 3 days · nominated by Rahul Mehta", city:"Mountain View", notes:[["Rahul Mehta","Sep 22","Worked with him on Maps ranking. Strong."]], tags:[], atm:"Six years on Google Maps, two on ML ranking. Moving into AI PM." },
-  { id:"mira", n:"Mira Joshi", e:"mira.j@outlook.com", st:"pending", sub:"Waiting 2 days · applied from the family page", city:"Bengaluru", notes:[], tags:[], atm:"Staff engineer, Search infra. Starting something in agents." },
+  { id:"mira", n:"Mira Joshi", e:"mira.j@outlook.com", st:"pending", sub:"Waiting 2 days · applied from the community page", city:"Bengaluru", notes:[], tags:[], atm:"Staff engineer, Search infra. Starting something in agents." },
   { id:"leo", n:"Leo Park", e:"leo@parklabs.io", st:"pending", sub:"Waiting 1 day · invited by Sana Iqbal", city:"New York", wa:true, notes:[], tags:[], atm:"Ex-YouTube growth. Angel investing in consumer AI." },
   { id:"chris", n:"Daniel Reyes", e:"chris@xoogler.org", st:"active", role:"creator", joined:"Mar 2023", city:"Palo Alto", wa:true, notes:[], tags:["Founding member"], atm:"Runs Xoogler. Monthly dinners in Palo Alto." },
   { id:"rahul", n:"Rahul Mehta", e:"rahul@anthropic.com", st:"active", role:"admin", joined:"Apr 2023", city:"San Francisco", wa:true, notes:[["Daniel Reyes","Aug 30","Hosts the AI roundtable. Ask before adding him to panels."],["Daniel Reyes","Jul 12","Hiring senior PMs through Q4."],["Sana Iqbal","Jun 2","Great first call with Dev.",true]], tags:["Investor","Speaker","Mentor"], atm:"Engineering Director, Anthropic. Hiring senior PMs." },
@@ -13626,18 +13626,18 @@ function cReports(){
 /* Family settings: every prod settings tile, plus v2's floors, nominations and public page */
 /* each Family settings tile, with the fields prod has on it; "on the web" where prod only has it there (Manage moves to web) */
 const C_SETTILE = {
-  info:["Family info",[["t","Logo","X"],["t","Name","Xoogler"],["t","Link","xoogler.key.ai"],["c","Access",["Private","Public"],"Private"],["s","Require approval to join",1],["t","Share preview","Image, title and description when the link is shared. Kai can draw the image."],["t","About, banner, rules and links","On the web"]]],
+  info:["Community info",[["t","Logo","X"],["t","Name","Xoogler"],["t","Link","xoogler.key.ai"],["c","Access",["Private","Public"],"Private"],["s","Require approval to join",1],["t","Share preview","Image, title and description when the link is shared. Kai can draw the image."],["t","About, banner, rules and links","On the web"]]],
   join:["Joining",[["s","Require approval",1],["t","Onboarding questions","22 questions, 9 prefilled by Kai from LinkedIn"],["t","Welcome and Start screens","What people see after they apply"],["t","Invite links","One per member, single use, 14 days"]]],
   nom:["Nominations",[["s","Trusted members' nominees skip the queue",1],["t","Trusted members","Daniel Reyes, Rahul Mehta, Sana Iqbal"]]],
   roles:["Roles and permissions",[["t","Community Member","9 permissions"],["t","Community Admin","16 permissions"],["t","Community Creator","22 permissions"],["t","Custom roles","Create a role, pick its permissions, assign members. On the web"]]],
   conn:["Connectors",[["t","Slack","Connected · 6 channels sync both ways"],["t","WhatsApp","Not connected · Connect"],["t","Import history","Bring past messages into the library"]]],
   digest:["Digest email",[["c","Organizer digest",["Daily","Weekly","Monthly","Off"],"Weekly"],["t","Emails to members","Welcome, approved, declined, removed and invite emails. Edit the wording on the web"]]],
-  floors:["Family floors",[["s","No cold asks",1],["s","Intros go through someone who knows both people",1]]],
-  pub:["Public page",[["s","Public family page",1],["s","Show last quarter's outcomes",1],["t","Link","xoogler.key.ai"]]],
+  floors:["Community floors",[["s","No cold asks",1],["s","Intros go through someone who knows both people",1]]],
+  pub:["Public page",[["s","Public community page",1],["s","Show last quarter's outcomes",1],["t","Link","xoogler.key.ai"]]],
   dev:["Developer",[["t","Webhooks","member.joined, member.left, post.created → hooks.xoogler.org"],["t","Deliveries, last 7 days","412 sent · 2 failed, retried"],["t","Add a webhook","On the web"]]]
 };
-const C_FSET = [["Family info","Logo, name, link, public or private, share preview"],["Joining","Approval required · 22 onboarding questions, 9 prefilled by Kai"],["Nominations","Trusted members' nominees skip the queue"],["Roles and permissions","Member, Admin, Creator"],["Library","Who posts, approval, categories, weekly recap","libset"],["Connectors","Slack connected · WhatsApp not"],["Digest email","Weekly, to admins"],["Family floors","No cold asks"],["Public page","On · xoogler.key.ai"],["Developer","Webhooks"]];
-const C_FSET_TO = { "Family info":"info", "Joining":"join", "Nominations":"nom", "Roles and permissions":"roles", "Connectors":"conn", "Digest email":"digest", "Family floors":"floors", "Public page":"pub", "Developer":"dev" };
+const C_FSET = [["Community info","Logo, name, link, public or private, share preview"],["Joining","Approval required · 22 onboarding questions, 9 prefilled by Kai"],["Nominations","Trusted members' nominees skip the queue"],["Roles and permissions","Member, Admin, Creator"],["Library","Who posts, approval, categories, weekly recap","libset"],["Connectors","Slack connected · WhatsApp not"],["Digest email","Weekly, to admins"],["Community floors","No cold asks"],["Public page","On · xoogler.key.ai"],["Developer","Webhooks"]];
+const C_FSET_TO = { "Community info":"info", "Joining":"join", "Nominations":"nom", "Roles and permissions":"roles", "Connectors":"conn", "Digest email":"digest", "Community floors":"floors", "Public page":"pub", "Developer":"dev" };
 function cSetTile(){
   const [title, rows] = C_SETTILE[STATE.cSetTile] || C_SETTILE.info; const S = STATE.cSetVal || (STATE.cSetVal = {});
   const r = ([k, a, b, d], i) => { const key = STATE.cSetTile+i;
@@ -13647,14 +13647,14 @@ function cSetTile(){
   return `${famHeader(title,"manage")}<div class="body" style="padding-top:8px"><div class="cm-form">${rows.map(r).join("")}</div></div>${navHTML("families")}`;
 }
 function cFamSettingsOrg(){
-  return `${famHeader("Family settings","manage")}<div class="body" style="padding-top:4px"><div class="cm-list">${C_FSET.map(([a,b,to])=>`<div class="cm-row" ${to?`data-cgo="manage:${to}"`:`data-csettile="${C_FSET_TO[a]}"`}><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="s">›</span></div>`).join("")}</div></div>${navHTML("families")}`;
+  return `${famHeader("Community settings","manage")}<div class="body" style="padding-top:4px"><div class="cm-list">${C_FSET.map(([a,b,to])=>`<div class="cm-row" ${to?`data-cgo="manage:${to}"`:`data-csettile="${C_FSET_TO[a]}"`}><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="s">›</span></div>`).join("")}</div></div>${navHTML("families")}`;
 }
 /* Library settings (prod product_library settings) */
 function cLibSettings(){
   const s = STATE.libset || (STATE.libset = { on:true, approval:true, notify:true, recap:true, suggest:true, revive:false });
   const tg = (k, a, b) => `<div class="toggle ${s[k]?'on':''}" data-clibset="${k}"><div><div style="font-size:15px;font-weight:600">${a}</div>${b?`<div class="sm muted">${b}</div>`:''}</div><div class="sw"></div></div>`;
   return `${famHeader("Library","manage")}<div class="body" style="padding-top:4px"><div class="cm-form">
-    ${tg("on","Library is on","Shows as Posts in the family")}
+    ${tg("on","Library is on","Shows as Posts in the community")}
     <div class="field"><div class="k">Who can post</div><div class="v">Every member</div></div>
     ${tg("approval","Organizers approve posts first","Announcements are organizers only")}
     <div class="field"><div class="k">Default visibility</div><div class="v">Members of ${cF().name}</div></div>
@@ -13691,9 +13691,9 @@ sFamilySettings = function(){
   return `${famHeader("Your settings in "+f.name,'family')}
   <div class="body"><div class="cm-form" style="margin-top:8px">
     <div><div class="cm-lbl">Notifications</div>${cChips([["all","All activity"],["mentions","Mentions only"],["off","Off"]], n, "cnotif")}</div>
-    ${t("kaiReads","Kai reads this family","Channels: #jobs, #introductions, #cofounders, #general. Not #sf-this-week (you muted it). Tap to change per channel.")}
+    ${t("kaiReads","Kai reads this community","Channels: #jobs, #introductions, #cofounders, #general. Not #sf-this-week (you muted it). Tap to change per channel.")}
     <div class="field"><div class="k">Who can see your profile here</div><div class="v">All ${f.name} members</div></div>
-    <div class="field"><div class="k">Family floor set by the organizer</div><div class="v">No cold asks in ${f.name}</div><div class="xs faint" style="margin-top:4px">Sits under your own rules. Strictest wins.</div></div>
+    <div class="field"><div class="k">Community floor set by the organizer</div><div class="v">No cold asks in ${f.name}</div><div class="xs faint" style="margin-top:4px">Sits under your own rules. Strictest wins.</div></div>
   </div>
   <div style="margin-top:20px"><button class="btn ghost" style="color:var(--danger)" onclick="openSheet('confirm','leave|${f.name}')">Leave ${f.name}</button></div></div>`;
 };
@@ -13771,7 +13771,7 @@ sPendingFamily = function(){
   }
   if (!d) return h;
   const f = DB.families.find(x=>x.id===d.fam) || { id:"xoogler", name:"Xoogler", initial:"X" };
-  const block = `<div class="cm-sec" style="margin-top:4px"><div class="cm-row" style="cursor:default"><div class="avatar lg cm-markav">${cMark(f)}</div><div class="m"><div class="a">${f.name} said not this time</div><div class="b">${d.reason!=="none"?(C_DECLINE.find(x=>x[0]===d.reason)||["",""])[1]+". ":""}${d.again==="never"?"This family isn't taking another application from you.":`You can apply again ${d.again}.`}</div></div></div>
+  const block = `<div class="cm-sec" style="margin-top:4px"><div class="cm-row" style="cursor:default"><div class="avatar lg cm-markav">${cMark(f)}</div><div class="m"><div class="a">${f.name} said not this time</div><div class="b">${d.reason!=="none"?(C_DECLINE.find(x=>x[0]===d.reason)||["",""])[1]+". ":""}${d.again==="never"?"This community isn't taking another application from you.":`You can apply again ${d.again}.`}</div></div></div>
     <div class="cm-text xs faint" style="margin-top:6px">You're told this once. Your application stays private to the organizers.</div></div>`;
   const inv = DB.recommendedFamilies && DB.families.find(x=>x.id==="xoogler");
   return h.replace(/<div class="body">\s*/, `<div class="body">${block}`).replace(/<div class="empty" style="margin-top:4px">[\s\S]*?<\/div>/, "").replace(`<div style="margin-top:10px">${famRecRow({...inv, why:"Ex-Google, from your LinkedIn", kind:"vetted"})}</div>`, "");
@@ -13837,7 +13837,7 @@ function cSheet(type, id){
     return `<h2>Invite someone to ${f.name}</h2><p class="sm muted">Any member can invite. They still apply, and ${f.id==="desi"?"Neha":"Daniel"} decides. Your line is the first thing the organizers read.</p>
       <div class="field"><div class="k">Who</div><div class="v">Name, email or LinkedIn</div></div>
       <div class="field"><div class="k">Why they belong</div><div class="v" style="color:var(--ink2)">Worked with her on Cloud AI for two years. She'd help anyone hiring PMs.</div><div class="xs faint" style="margin-top:4px">Kai drafted this from what you told it. Edit it.</div></div>
-      <p class="xs faint">They see "Invited by ${DB.user.name}" on the family page. The link works once and expires in 14 days.</p>
+      <p class="xs faint">They see "Invited by ${DB.user.name}" on the community page. The link works once and expires in 14 days.</p>
       <button class="btn" onclick="closeSheet();toast('Invite sent in your name. You will see when they apply.')">Send invite</button>
       <button class="btn ghost" onclick="toast('Invite link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai/i/ps7')">Copy invite link</button>${cOrg()?`<button class="btn ghost" onclick="toast('Upload a spreadsheet of names and emails, on the web. Each person gets an invite.')">Invite many at once (on the web)</button>`:''}`;
   }
@@ -15476,7 +15476,7 @@ const _mxLater = sLater;
 sLater = function() {
   if (!["saved","scheduled","drafts"].includes(STATE.laterTab||"saved")) STATE.laterTab = "saved";
   return _mxLater().replace(/<span class="[^"]*" onclick="STATE\.laterTab='(mentions|threads)';render\(\)">[\s\S]*?<\/span>/g, "")
-    .replace('>For later</div><div class="xs faint">Across all your families</div>', '>Later</div><div class="xs faint">Saved, scheduled and drafts, across your families</div>');
+    .replace(/>For later<\/div><div class="xs faint">Across all your (?:families|communities)<\/div>/, '>Later</div><div class="xs faint">Saved, scheduled and drafts, across your communities</div>');
 };
 
 /* ---- the list ---- */
@@ -15600,7 +15600,7 @@ phone.addEventListener("click", e => {
   const k = e.target.closest("[data-kai]"), m = k && /^catch me up on #(.+)$/i.exec(k.dataset.kai);
   if (m && convOf(m[1])) { e.stopPropagation(); mxCatchUp(m[1]); }
 }, true);
-(()=>{ const k = typeof KAI_COMPOSER!=="undefined" && KAI_COMPOSER.find(x=>x.t==="Catch me up on #jobs"); if (k) k.r = "Three posts since you last looked in #jobs. Sana and Ana are hiring for roles that fit your mission, and Dev needs an O-1 lawyer. Tap Catch me up in #jobs to open each one."; })();
+(()=>{ const k = typeof KAI_COMPOSER!=="undefined" && KAI_COMPOSER.find(x=>x.t==="Catch me up on #jobs"); if (k) k.r = "Three posts since you last looked in #jobs. Sana and Ana are hiring for roles that fit your goal, and Dev needs an O-1 lawyer. Tap Catch me up in #jobs to open each one."; })();
 /* the tip draws the real tray (Apoorv 00:49): it points at Daniel's pinned row, so it shows that row slid left with its pin mark, then Unpin, Mute, More as the same labelled tiles */
 (()=>{ const t = typeof EDU_TIPS!=="undefined" && EDU_TIPS.find(x=>x.key==="swipe"); if (!t) return;
   t.body = "Pin, mute, or More to archive.";
@@ -15781,20 +15781,20 @@ function talkSay(text, chips, mini){ const m=STATE.kaiMsgs[STATE.kaiMsgs.length-
 /* No model: search the same data and answer plainly. */
 function talkFallback(t){
   const d=/^(?:draft|write|send|ask|message|say hi to|intro(?:duce)? me to|connect me (?:with|to))\s+(?:an ask to |a note to |a message to )?(.+?)[?.!]*$/i.exec(t); const who=d&&talkByName(d[1].replace(/^(to|with)\s+/i,"").split(/\s+(?:about|for|re)\s+/)[0]);
-  if (who) { const o=talkDraft(who.id); return o ? talkSay(`Drafted a note to ${talkEsc(firstName(who))}. It's in your ${talkEsc(DB.missions.find(m=>m.id===o.missionId).name)} mission. Nothing goes until you tap Send.`, [`Review the ask to ${firstName(who)}`]) : talkSay("Start a mission first, then I can draft it.", ["Start a mission"]); }
+  if (who) { const o=talkDraft(who.id); return o ? talkSay(`Drafted a note to ${talkEsc(firstName(who))}. It's in your ${talkEsc(DB.missions.find(m=>m.id===o.missionId).name)} goal. Nothing goes until you tap Send.`, [`Review the ask to ${firstName(who)}`]) : talkSay("Set a goal first, then I can draft it.", ["Set a goal"]); }
   const people=talkPeople(t), pool=talkPool(t);
-  if (!people.length && !pool.length) return talkSay("I couldn't find anyone in your families for that. Try a company, a role, or what you need help with.", ["Who's hiring PMs?","Who's looking for a cofounder?"]);
+  if (!people.length && !pool.length) return talkSay("I couldn't find anyone in your communities for that. Try a company, a role, or what you need help with.", ["Who's hiring PMs?","Who's looking for a cofounder?"]);
   const mini=[...pool.slice(0,2).map(x=>`${talkEsc(x.title)} · ${talkEsc(x.org)} · ${talkEsc(x.family)}`), ...people.slice(0,3).map(p=>`${talkEsc(p.name)} · ${talkEsc(p.title)}, ${talkEsc(p.company)}${p.lookingFor?` · wants ${talkEsc(p.lookingFor.replace(/^A /,"a "))}`:""}`)];
-  talkSay(`Here's what I found across your families.`, people.slice(0,2).map(p=>`Draft an ask to ${firstName(p)}`), mini);
+  talkSay(`Here's what I found across your communities.`, people.slice(0,2).map(p=>`Draft an ask to ${firstName(p)}`), mini);
 }
 
 /* With a model: the same data as tools; draft_ask is the only write and it only drafts. */
 const TALK_TOOLS = [
-  { name:"search_people", description:"Search members of the viewer's families by role, company, skill or need. Returns profiles with their rules (openTo, notNow, slots).", inputSchema:{ type:"object", properties:{ query:{type:"string"}, family:{type:"string"} }, required:["query"] }, execute:({query,family})=>talkPeople(query,family).map(talkPersonCard) },
+  { name:"search_people", description:"Search members of the viewer's communities by role, company, skill or need. Returns profiles with their rules (openTo, notNow, slots).", inputSchema:{ type:"object", properties:{ query:{type:"string"}, family:{type:"string"} }, required:["query"] }, execute:({query,family})=>talkPeople(query,family).map(talkPersonCard) },
   { name:"get_person", description:"Full profile of one member by id or name.", inputSchema:{ type:"object", properties:{ id:{type:"string"} }, required:["id"] }, execute:({id})=>{ const p=DB.people[id]||talkByName(id); if(!p) throw new Error("No member by that name"); return talkPersonCard(p); } },
   { name:"search_pool", description:"Search roles, asks, offers, deals, resources and posts members shared.", inputSchema:{ type:"object", properties:{ query:{type:"string"}, kind:{type:"string", enum:["role","person","deal","ask","offer","resource","post"]} }, required:["query"] }, execute:({query,kind})=>talkPool(query,kind) },
-  { name:"my_missions", description:"The viewer's missions and the paths in each.", inputSchema:{ type:"object", properties:{} }, execute:()=>DB.missions.map(m=>({ id:m.id, name:m.name, type:m.type, status:m.status, done:m.done, paths:DB.opps.filter(o=>o.missionId===m.id).map(o=>({ with:targetOf(o).name, via:viaOf(o)?viaOf(o).name:null, state:o.state, phase:o.phase||null })) })) },
-  { name:"events", description:"Upcoming events in the viewer's families.", inputSchema:{ type:"object", properties:{} }, execute:()=>(DB.fevents||[]).filter(e=>!e.past).slice(0,10).map(e=>({ name:e.name||e.title, when:e.when||e.date||"", where:e.where||e.city||"", family:e.fam||e.family||"" })) },
+  { name:"my_missions", description:"The viewer's goals and the paths in each.", inputSchema:{ type:"object", properties:{} }, execute:()=>DB.missions.map(m=>({ id:m.id, name:m.name, type:m.type, status:m.status, done:m.done, paths:DB.opps.filter(o=>o.missionId===m.id).map(o=>({ with:targetOf(o).name, via:viaOf(o)?viaOf(o).name:null, state:o.state, phase:o.phase||null })) })) },
+  { name:"events", description:"Upcoming events in the viewer's communities.", inputSchema:{ type:"object", properties:{} }, execute:()=>(DB.fevents||[]).filter(e=>!e.past).slice(0,10).map(e=>({ name:e.name||e.title, when:e.when||e.date||"", where:e.where||e.city||"", family:e.fam||e.family||"" })) },
   { name:"draft_ask", description:"Draft (not send) a short first note from the viewer to one member. Opens for the viewer to edit and send. Use only when they ask for a note, intro or message.", inputSchema:{ type:"object", properties:{ person_id:{type:"string"}, note:{type:"string"} }, required:["person_id","note"] }, execute:({person_id,note})=>{ const p=DB.people[person_id]||talkByName(person_id); const o=p&&talkDraft(p.id, note); if(!o) throw new Error("Could not draft"); STATE.talkChip=`Review the ask to ${firstName(p)}`; return { drafted:true, to:p.name, sent:false }; } }
 ];
 function talkSystem(){ const u=me(); return `You are Kai, the assistant inside Key, an invite-only professional community of "families" (Xoogler, Michigan Product Alumni, Desi Founders). You are talking to ${u.name}${u.title?`, ${u.title} at ${u.company}`:""}.
