@@ -4828,6 +4828,38 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bstray .bt-art .bs-pt { display:grid; } .bstray .bt-art .bs-pt em { font-size:38px; transform:none; color:rgba(255,255,255,.72); }
 
 
+.brief.bentry { all:unset; box-sizing:border-box; display:grid; gap:14px; width:100%; margin:2px 0 18px; padding:16px; border-radius:16px; background:#0B0E11; color:#F9FAFC; cursor:pointer; }
+.bentry:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:3px; }
+.bentry .be-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.bentry .be-k { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#D8DEE6; }
+.bentry .be-t { flex:1 1 auto; font-size:12px; font-weight:600; color:#A6AFBB; font-variant-numeric:tabular-nums; }
+.bentry .be-bar + .be-t { flex:0 0 auto; }
+.bentry .be-mid { display:flex; align-items:center; gap:12px; }
+.bentry .be-m { flex:1 1 auto; min-width:0; display:grid; gap:4px; }
+.bentry .be-m b { font-size:18px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
+.bentry .be-m span { font-size:14px; line-height:1.35; color:#C6CDD5; }
+.bentry .be-faces { flex:0 0 auto; display:flex; }
+.bentry .be-faces > span { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; margin-left:-14px; box-shadow:0 0 0 2px #0B0E11; }
+.bentry .be-faces > span:first-child { margin-left:0; } .bentry .be-faces .bs-pt em { font-size:18px; transform:none; color:rgba(255,255,255,.8); }
+.bentry .be-foot { display:flex; align-items:center; gap:12px; }
+.bentry .be-bar { flex:1 1 auto; height:4px; border-radius:2px; background:rgba(249,250,252,.18); overflow:hidden; }
+.bentry .be-bar i { display:block; height:100%; background:#F9FAFC; border-radius:2px; }
+.bentry .be-go { flex:0 0 auto; height:44px; padding:0 20px; border-radius:12px; background:#F9FAFC; color:#0B0E11; font-size:14px; font-weight:700; display:inline-flex; align-items:center; }
+.brief.bentry.fin { display:flex; align-items:center; gap:12px; padding:10px 0; border-radius:0; background:none; color:var(--text-primary,#0B0E11); }
+.bentry.fin .be-tick { flex:0 0 auto; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--bg-fill-default,#F1F3F6); }
+.bentry.fin .be-m b { font-size:14px; font-weight:700; letter-spacing:0; } .bentry.fin .be-m span { font-size:12px; color:var(--text-secondary,#4A535E); }
+.bentry.fin > .li { color:var(--text-tertiary,#6B7480); }
+@media (max-width:360px) { .bentry .be-faces > span { width:44px; height:44px; } .bentry .be-m b { font-size:18px; } }
+.br-backbar.callbar { font:inherit; border:0; text-align:left; min-height:52px; padding:8px 14px 8px 10px; background:#0B0E11; color:#F9FAFC; flex:0 0 auto; }
+.br-backbar:focus-visible { outline:2px solid #0B0E11; outline-offset:2px; }
+.br-backbar .bb-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; } .br-backbar .bb-m b { font-size:14px; font-weight:700; } .br-backbar .bb-m span { font-size:11px; color:#A6AFBB; }
+.bs-vw.bbrief .bs-vh .bs-mk.bk { background:none; } .bs-vw.bbrief .bs-bars i.did::after { background:#F9FAFC; }
+.bs-vw .bf-fin .bf-did { display:grid; gap:0; width:100%; max-width:320px; margin:4px auto 0; text-align:left; }
+.bs-vw .bf-fin .bf-did > div { display:flex; align-items:center; gap:10px; min-height:40px; border-top:1px solid rgba(249,250,252,.1); font-size:14px; color:#D8DEE6; }
+.bs-vw .bf-fin .bf-did > div:first-child { border-top:0; } .bs-vw .bf-fin .bf-did .li { color:#F9FAFC; flex:0 0 auto; }
+.bs-vw .bf-open { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:4px; min-height:44px; margin:-4px 0 -10px; font-size:14px; font-weight:600; color:#D8DEE6; cursor:pointer; } .bs-vw .bf-open:focus-visible { outline:2px solid #F9FAFC; outline-offset:2px; border-radius:6px; }
+
+
 .p2 { display:flex; flex-direction:column; gap:14px; }
 .p2btl { display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; color:var(--ink); background:var(--fill); border:0; border-radius:12px; padding:8px 12px; cursor:pointer; }
 .p2btl > span:nth-child(2) { flex:1; min-width:0; }
@@ -6412,7 +6444,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 #phone.hf-gp .gp-tile { flex:0 0 auto; width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); display:inline-flex; align-items:center; justify-content:center; font-style:normal; border:0 !important; }
 #phone.hf-gp .gp-tile.ink { background:var(--bg-inverse-default); color:var(--icon-inverse); }
-#phone.hf-gp .gp-tile.gold { background:var(--fill-gold); color:var(--text-gold); }
+#phone.hf-gp .gp-tile.pos { background:color-mix(in srgb, var(--actions-going) 12%, var(--bg-surface-default)); color:var(--actions-going); }
 #phone.hf-gp .gp-tile.empty { color:var(--icon-tertiary); }
 #phone.hf-gp .avatar.gp-44 { width:44px !important; height:44px !important; font:var(--type-body-m-strong) !important; }
 #phone.hf-gp .avatar.gp-56 { width:56px !important; height:56px !important; font:var(--type-title) !important; }
@@ -6426,7 +6458,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gp .gp-age s { display:block; height:100%; background:var(--component-progress-fill); border-radius:inherit; text-decoration:none; }
 #phone.hf-gp .gp-age.due b { color:var(--text-primary); }
 #phone.hf-gp .gp-age.quiet b { color:var(--text-tertiary); } #phone.hf-gp .gp-age.quiet s { background:var(--icon-tertiary); }
-#phone.hf-gp .gp-age.gold b { color:var(--text-gold); }
+#phone.hf-gp .gp-age.pos b { color:var(--actions-going); }
 #phone.hf-gp .gp-age.talk b { color:var(--actions-going, var(--text-secondary)); }
 #phone.hf-gp .row > .r { display:flex; align-items:center; gap:8px; }
 
@@ -6496,7 +6528,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gp .gp-pair .avatar + .avatar { margin-left:-14px; }
 #phone.hf-gp .sc .row.gp-opt { cursor:pointer; min-height:64px; align-items:center; }
 #phone.hf-gp .sc .row.gp-opt:active { background:var(--bg-fill-default); }
-#phone.hf-gp .sc .row.gp-opt.gold .a { color:var(--text-gold); }
+#phone.hf-gp .sc .row.gp-opt.pos .a { color:var(--actions-going); }
 #phone.hf-gp .gp-guess { display:flex; align-items:center; gap:10px; padding:12px; margin:0 0 6px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
 #phone.hf-gp .gp-guess .m { flex:1; min-width:0; } #phone.hf-gp .gp-guess .a { font:var(--type-body-m-strong); } #phone.hf-gp .gp-guess .b { font:var(--type-body-s); color:var(--text-secondary); }
 
@@ -6505,9 +6537,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gp .gp-hs { display:flex; flex-direction:column; align-items:center; text-align:center; max-width:300px; }
 #phone.hf-gp .gp-hs-f { display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
 #phone.hf-gp .gp-hs-f .avatar { width:56px !important; height:56px !important; font:var(--type-title) !important; border:0 !important; background:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
-#phone.hf-gp .gp-hs-f > i { display:block; width:36px; height:2px; border-radius:1px; background:var(--mark-gold); transform-origin:left center; animation:gpDraw .5s ease-out both; }
+#phone.hf-gp .gp-hs-f > i { display:block; width:36px; height:2px; border-radius:1px; background:var(--text-on-deep-default); transform-origin:left center; animation:gpDraw .5s ease-out both; }
 #phone.hf-gp .gp-hs-f > i:nth-of-type(2) { animation-delay:.35s; }
-#phone.hf-gp .gp-hs-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--mark-gold); }
+#phone.hf-gp .gp-hs-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-on-deep-muted); }
 #phone.hf-gp .gp-hs-t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-on-deep-default); margin:6px 0 8px; }
 #phone.hf-gp .gp-hs p { font:var(--type-body-m); color:var(--text-on-deep-muted); margin:0 0 22px; }
 #phone.hf-gp .gp-hs-b { min-width:200px; background:var(--bg-surface-default) !important; color:var(--text-primary) !important; border:0 !important; border-radius:var(--radius-absolute-12); height:48px; padding:0 20px; font:var(--type-body-m-strong); }
@@ -6518,7 +6550,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gp .gp-mo .gp-hs-f { margin-bottom:12px; }
 #phone.hf-gp .gp-mo .gp-hs-f .avatar { width:44px !important; height:44px !important; font:var(--type-body-m-strong) !important; background:var(--component-avatar-bg); color:var(--component-avatar-ink); }
 #phone.hf-gp .gp-mo .gp-hs-f > i { width:28px; }
-#phone.hf-gp .gp-mo-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-gold); }
+#phone.hf-gp .gp-mo-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--actions-going); }
 #phone.hf-gp .gp-mo-t { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); margin:2px 0 4px; }
 
 
@@ -6537,7 +6569,7 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-gp .gp-gf { appearance:none; border:0; background:none; padding:0; font:inherit; display:flex; flex-direction:column; align-items:center; gap:4px; min-height:44px; cursor:pointer; }
 #phone.hf-gp .gp-gf b { font:var(--type-label); color:var(--text-primary); max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 #phone.hf-gp .gp-gf small { font:var(--type-caption); color:var(--text-tertiary); }
-#phone.hf-gp .gp-gf.good small { color:var(--text-gold); font-weight:600; }
+#phone.hf-gp .gp-gf.good small { color:var(--actions-going); font-weight:600; }
 #phone.hf-gp .gp-kept { margin:18px 0 0; }
 #phone.hf-gp .gp-recap .acts .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
 #phone.hf-gp .gp-recap[data-kv="fresh=true"] .mh-band { animation:gpRise var(--duration-slow, .4s) cubic-bezier(.2,.8,.2,1); }
@@ -9512,9 +9544,9 @@ const LUCIDE = {
   "paperclip":'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>', "mic":'<path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/>', "at-sign":'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>'
 };
 /* ==== key-icons.js : the shared Lucide set, brought up to the KeyIcon library ====
-   Design system thread, 28 Sep; 3 more on 29 Sep. KeyIcon carries 149 glyphs; this build's
+   Design system thread, 28 Sep; 6 more on 29 Sep. KeyIcon carries 152 glyphs; this build's
    shared LUCIDE map carries 73, which is why nine modules each kept a private copy and why
-   deleting one of those copies blanks the icons. This adds all 80 the shared map lacks, so a
+   deleting one of those copies blanks the icons. This adds all 83 the shared map lacks, so a
    module can delete its own map instead of extending it, and the two sets hold the same names.
    Load ONCE, early: after the shared LUCIDE map is defined and BEFORE any module that defines
    glyphs, so each module's `if (!LUCIDE[k])` guard finds them already here.
@@ -9557,6 +9589,7 @@ const LUCIDE = {
     'external-link': '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
     'eye': '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
     'eye-off': '<path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>',
+    'file-check': '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
     'graduation-cap': '<path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>',
     'hand': '<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
     'handshake': '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
@@ -9565,12 +9598,14 @@ const LUCIDE = {
     'history': '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
     'hourglass': '<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>',
     'image-plus': '<path d="M16 5h6"/><path d="M19 2v6"/><path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/><circle cx="9" cy="9" r="2"/>',
+    'inbox': '<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
     'infinity': '<path d="M12 12c-2-2.7-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.3 6-4Zm0 0c2 2.7 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.3-6 4Z"/>',
     'key-round': '<path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/>',
     'landmark': '<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4Z"/>',
     'layers': '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',
     'lightbulb': '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
     'lock-open': '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+    'log-in': '<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>',
     'map-pin': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
     'map-pin-check': '<path d="M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728"/><circle cx="12" cy="10" r="3"/><path d="m16 18 2 2 4-4"/>',
     'maximize-2': '<path d="M15 3h6v6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/><path d="M9 21H3v-6"/>',
@@ -17575,11 +17610,11 @@ function bfCard(c, i, total){
   const draft = c.draft && !sent ? `<div class="bf-draft"><span class="bf-dh">${typeof kaiMark==="function" ? kaiMark(20) : ""}Kai's draft to ${c.draft.to}</span><div class="bf-dt" contenteditable="true" spellcheck="false" data-bfdraft="1">${c.draft.text}</div></div>` : "";
   const done = sent ? `<div class="bf-sent">${LI("check",18)}<span>${sent}</span></div>` : "";
   const acts = sent ? `<button type="button" class="p" data-bs="later">Next</button>`
-    : c.draft ? `<button type="button" class="p" data-bs="send">Send to ${c.draft.to}</button><button type="button" class="s" data-bs="alt">${c.alt.label}</button>`
+    : c.draft ? `<button type="button" class="p" data-bs="send">Send to ${c.draft.to}</button><button type="button" class="s" data-bs="later">Next</button>`
     : `<button type="button" class="p" data-bs="act">${c.act.label}</button><button type="button" class="s" data-bs="later">Next</button>`;
   return `<div class="bs-card bf-one" data-kind="${c.kind}" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=${c.kind}">
     <div class="bf-pic ${c.ev?"ev":""}">${bfPic(c)}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
-    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${done}</div>
+    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${c.draft && !sent ? `<button type="button" class="bf-open" data-bs="alt">${c.kind==="intro" ? `Open ${c.draft.to}'s intro` : "Open the conversation"}${LI("chevron-right",16)}</button>` : ""}${done}</div>
     <div class="bs-acts">${acts}</div></div>`;
 }
 STATE.brSeen = STATE.brSeen || {};
@@ -17663,6 +17698,148 @@ function brOpen(fromEl, sid){
   vw._bs = { next, prev, jump, close, atTop, get chapter(){ return L[si].id; }, get story(){ return L[si].st ? L[si].st.id : "end"; }, get card(){ return si; }, get screens(){ return L.length; } };
   open();
 }
+
+/* ==== KeyBrief (29 Sep 18:30, Apoorv: "a quick view outside, encouraging me to open and go through my brief... when i open it, it
+   shows me content, one by one... an option to navigate to the action, then back to the brief, so that i can feel a sense of
+   completion"). One brief, not a story per community. Home shows one entry: who is in it, how many, about how long, how far you got.
+   Inside, one card at a time, same cards as the deck. An action that lives on another screen opens it with a Back to brief bar;
+   coming back ticks the card off and moves on. The last card is the finish: what you did, what you skipped. ==== */
+STATE.brRun = STATE.brRun || null;
+function brPicks(){
+  return (DB.opps||[]).filter(o => o.personId && typeof ownerOf==="function" && ownerOf(o)==="you" && isNewOf(o)).slice(0, 2).map(o => {
+    const p = targetOf(o), m = (DB.missions||[]).find(x => x.id===o.missionId);
+    return { id:"opp:"+o.id, kind:"pick", label:"New pick", fam:null, where: m ? m.name : "", who:p, title:`${p.name}, ${p.title} at ${p.company}`,
+      why: o.receipts && o.receipts[0] ? o.receipts[0][1] : "", act:{ label:`Say hi to ${firstName(p)}`, go:`openSheet('ask','${o.id}')` }, did:`Opened your hello to ${firstName(p)}` }; });
+}
+function brBackCard(){
+  const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"); if (!r) return null;
+  const ps = Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).sort((x, y) => r.title.indexOf(x.name) - r.title.indexOf(y.name)).slice(0, 4);
+  return { id:"back:"+r.id, kind:"back", label:"Came back", fam: brFam(brFamOf(ps[0])), who:ps[0], faces:ps, title:r.title, act:{ label:"See it", go:`go('${r.to}')` }, did:"Seen" };
+}
+/* the running order: what needs you, your mission picks, what came back to you, then what moved in each community */
+function brCards(){
+  const { deck, facts } = brDeck(), L = deck.map(c => Object.assign(c, { card:"one" }));
+  brPicks().forEach(c => L.push(Object.assign(c, { card:"one" }))); const b = brBackCard(); if (b) L.push(Object.assign(b, { card:"one" }));
+  /* what moved: two at most, the ones where a person said something first */
+  const S = []; [["you", null], ...DB.families.map(f => [f.id, f])].forEach(([k, f]) => { const F = (facts[k]||[]).slice(0, 3); if (!F.length) return;
+    const lead = F.find(x => x.who); S.push({ id:"sum:"+k, card:"sum", kind:"sum", fam:f, facts: lead && !lead.keep ? F.filter(x => x!==lead) : F, lead, need:0 }); });
+  return L.concat(S.sort((x, y) => !!y.lead - !!x.lead).slice(0, 2));
+}
+function brRunNow(){
+  const R = STATE.brRun; if (R && R.L) return R;
+  return STATE.brRun = { L: brCards(), at:0, done:{}, skip:{}, out:null };
+}
+const brMins2 = n => Math.max(1, Math.round(n * 15 / 60));
+const brPart = () => { const h = new Date().getHours(); return h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"; };
+function brWho(L){ const s = []; L.forEach(c => { const w = c.who || (c.lead && c.lead.who); if (w && w.id && !s.some(p => p.id===w.id)) s.push(w); }); return s; }
+brBanner = function(){
+  if (!STATE.member) return "";
+  const R = STATE.brRun, L = R ? R.L : brCards(); if (!L.length) return "";
+  const n = L.length, handled = R ? Object.keys(R.done).length : 0, seen = R ? Math.min(R.at, n) : 0, fin = R && R.at >= n;
+  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean), W = brWho(L).slice(0, 3);
+  if (fin) return `<button type="button" class="brief bentry fin" data-kc="KeyBriefEntry" data-kv="state=done" onclick="brOpen(this)">
+    <span class="be-tick" aria-hidden="true">${LI("check",20)}</span><span class="be-m"><b>You're through your ${brPart()} brief</b><span>${handled ? `You handled ${handled} of ${n}` : `${n} seen`}. Kai brings the next ones here.</span></span>${LI("chevron-right",18)}</button>`;
+  const line = need.length ? `${need.slice(0, 2).map(firstName).join(need.length===2 ? " and " : ", ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you` : "Nothing needs you, just what moved";
+  return `<button type="button" class="brief bentry" data-kc="KeyBriefEntry" data-kv="state=${seen ? "part" : "new"};cards=${n}" onclick="brOpen(this)" aria-label="${seen ? `Continue your brief, ${seen} of ${n}` : `Open your brief, ${n} things`}">
+    <span class="be-top"><span class="be-k">${typeof kaiMark==="function" ? kaiMark(20) : ""}Your ${brPart()} brief</span></span>
+    <span class="be-mid"><span class="be-m"><b>${seen ? `${n-seen} left to go` : `${n} things since you were here`}</b><span>${line}</span></span>
+      <span class="be-faces" aria-hidden="true">${W.map(p => `<span>${brPortrait(p.initials, p.id, 160)}</span>`).join("")}</span></span>
+    <span class="be-foot">${seen ? `<span class="be-bar" aria-hidden="true"><i style="width:${Math.round(seen/n*100)}%"></i></span><span class="be-t">${seen} of ${n}</span>` : `<span class="be-t">About ${brMins2(n)} min · one at a time</span>`}<span class="be-go">${seen ? "Continue" : "Start"}</span></span></button>`;
+};
+/* Back to brief: while you're on an action's own screen, a bar at the top (the minimised-call bar, so it never covers a composer or
+   the nav) takes you back to the next card */
+function brBackBar(){
+  const R = STATE.brRun; if (!R || !R.out || phone.querySelector(".bs-vw") || !STATE.member) return;
+  const k = R.L.findIndex(c => c.id===R.out.id);
+  phone.querySelector(".screen").insertAdjacentHTML("afterbegin", `<button type="button" class="callbar br-backbar" data-kc="KeyBriefReturn"><span class="bb-k">${typeof kaiMark==="function" ? kaiMark(24) : ""}</span><span class="bb-m"><b>Back to your brief</b><span>${k+2 <= R.L.length ? `Next: ${k+2} of ${R.L.length}` : "Last one done"}</span></span>${LI("arrow-right",20)}</button>`);
+  phone.querySelector(".br-backbar").onclick = () => { const c = R.L[k], o = c && c.kind==="pick" && DB.opps.find(x => "opp:"+x.id===c.id);
+    R.done[R.out.id] = o && o.state!=="new" ? `Said hi to ${firstName(c.who)}` : R.out.line; R.at = k + 1; R.out = null; STATE.sheet = null; if (STATE.screen!=="home") go("home"); brOpen(null); };
+}
+const _brbRender = render; render = function(){ const r = _brbRender.apply(this, arguments); brBackBar(); return r; };
+/* the finish: what you did, in your words, and what's left */
+function brFin(R){
+  const did = R.L.filter(c => R.done[c.id]), left = R.L.filter(c => !R.done[c.id] && c.card==="one" && c.label==="Needs you");
+  return `<div class="bs-card bf-end bf-fin" data-kind="end" data-chapter="end" data-kc="KeyBriefFinish"><div class="bf-endk">${typeof kaiMark==="function" ? kaiMark(72) : ""}</div>
+    <h3>${did.length ? "That's your brief" : "You're caught up"}</h3><p>${did.length ? `You handled ${did.length} of ${R.L.length}.` : `You saw all ${R.L.length}.`} ${left.length ? `${left.length===1 ? "One is" : left.length+" are"} still waiting in Messages.` : "Nobody's waiting on you."}</p>
+    ${did.length ? `<div class="bf-did">${did.slice(0, 5).map(c => `<div>${LI("check",16)}<span>${R.done[c.id]}</span></div>`).join("")}</div>` : ""}
+    <div class="bs-acts"><button type="button" class="p" data-bs="done">Done</button>${left.length ? `<button type="button" class="s" data-bs="left">Go back to ${left.length===1 ? firstName(left[0].who) : "those"}</button>` : ""}</div></div>`;
+}
+brOpen = function(fromEl){
+  if (phone.querySelector(".bs-vw")) return;
+  const R = brRunNow(), L = R.L; if (R.at >= L.length) R.at = L.length; let si = R.at;
+  const vw = document.createElement("div"); vw.className = "bs-vw bbrief"; vw.setAttribute("data-kc","KeyStoryViewer"); phone.appendChild(vw);
+  const view = phone.querySelector(".view"); if (view) view.classList.add("bs-back");
+  let busy = false;
+  const cardOf = i => { if (i >= L.length) return brFin(R); const c = L[i]; if (R.done[c.id] && !c.sent) c.sent = R.done[c.id];
+    const lab = c.label, where = c.where || (c.fam ? c.fam.name.split(" ")[0] : ""); if (c.card==="one" && where) c.label = `${lab} · ${where}`;
+    const h = bfCard(c, i, L.length); c.label = lab; return h; };
+  const srcHTML = () => `<div class="bs-src" data-chapter="${si < L.length ? L[si].id : "end"}"><div class="bs-slot" data-i="0">${cardOf(si)}</div></div>`;
+  const chrome = () => `<div class="bs-bars">${L.map((c, i) => `<i class="${R.done[c.id] ? "did" : ""}" style="--p:${i < si || R.done[c.id] || si >= L.length ? 1 : 0}"></i>`).join("")}</div>
+    <div class="bs-vh"><span class="bs-mk bk">${typeof kaiMark==="function" ? kaiMark(32) : ""}</span><b>Your ${brPart()} brief</b><span>${si < L.length ? `${si+1} of ${L.length}` : "Done"}</span><button type="button" class="bs-x" aria-label="Close">${LI("x",22)}</button></div>`;
+  const card = () => vw.querySelector(".bs-src:last-child .bs-card");
+  const atTop = () => true;
+  const covers = () => vw.querySelectorAll(".bs-cv svg").forEach(g => { g.setAttribute("preserveAspectRatio","xMidYMid slice"); g.removeAttribute("width"); g.removeAttribute("height"); });
+  const repaint = () => { const s = vw.querySelector(".bs-src:last-child .bs-slot"); if (s) s.innerHTML = cardOf(si); vw.querySelectorAll(".bs-bars,.bs-vh").forEach(x => x.remove()); vw.insertAdjacentHTML("beforeend", chrome()); covers(); wire(); if (typeof phApply==="function") phApply(); };
+  /* leave for the action's own screen; the Back to brief bar brings you to the next card */
+  const out = (go, c, line) => { if (!go) return; R.at = si; R.out = { id:c.id, line }; close(false, () => new Function(go)()); };
+  const runAsk = (it, c, line) => { R.at = si; R.out = { id:c.id, line }; close(false, () => { openSheet("brief");
+    const row = [...phone.querySelectorAll("#sheet .trow")].find(x => { const a = x.querySelector(".a"); return a && a.textContent.trim()===it.title; });
+    if (!row) return; const btn = row.querySelector("button"); (btn || row).click(); }); };
+  const didOf = c => c.did || (c.card==="sum" ? `Caught up on ${c.fam ? c.fam.name.split(" ")[0] : "your messages"}` : c.kind==="reqs" ? "Reviewed the intro requests" : c.kind==="event" ? `Checked ${c.ev ? c.ev.name : "the event"}` : c.draft ? `Opened ${c.draft.to}'s thread` : "Opened it");
+  function wire(){
+    vw.querySelector(".bs-x").onclick = e => { e.stopPropagation(); close(); };
+    vw.querySelectorAll(".bs-tz.l").forEach(z => z.onclick = () => prev()); vw.querySelectorAll(".bs-tz.r").forEach(z => z.onclick = () => next());
+    const cd = card(); if (cd) cd.onclick = e => { if (e.target.closest("button,[data-fact],[data-bfdraft],.bs-tz")) return; const r = cd.getBoundingClientRect(); e.clientX - r.left < r.width*.32 ? prev() : next(); };
+    vw.querySelectorAll("[data-bfdraft]").forEach(d => { d.onpointerdown = e => e.stopPropagation(); d.onclick = e => e.stopPropagation(); });
+    vw.querySelectorAll("[data-fact]").forEach(el => el.onclick = e => { e.stopPropagation(); const c = L[si], [, t, go, nc] = c.facts[+el.dataset.fact];
+      if (!nc) return out(go, c, didOf(c)); if (nc.draft) return out(nc.alt.go, c, didOf(nc)); return nc.act.item ? runAsk(nc.act.item, c, didOf(nc)) : out(nc.act.go, c, didOf(nc)); });
+    vw.querySelectorAll("[data-bs]").forEach(b => b.onclick = e => { e.stopPropagation(); const what = b.dataset.bs, c = L[si];
+      if (what==="later") { if (c && !R.done[c.id]) R.skip[c.id] = true; return next(); }
+      if (what==="done") { R.at = L.length; (notifs()||[]).forEach(a => a.unread = false); (DB.activity||[]).forEach(a => a.unread = false); return close(true); }
+      if (what==="left") { const k = L.findIndex(x => !R.done[x.id] && x.card==="one" && x.label==="Needs you"); return go2(k); }
+      if (what==="alt") return out(c.alt.go, c, didOf(c));
+      if (what==="act") return c.card==="sum" ? out(c.lead ? c.lead.go || c.lead[2] : c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')", c, didOf(c)) : c.act.item ? runAsk(c.act.item, c, didOf(c)) : out(c.act.go, c, didOf(c));
+      if (what==="send") { const d = vw.querySelector("[data-bfdraft]"), text = (d ? d.innerText : c.draft.text).trim(); if (!text) return;
+        const tgt = c.id.startsWith("ask:") ? DB.asks.find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
+        if (tgt) { tgt._draft = text; c.draft.send(); }
+        R.done[c.id] = `Sent to ${c.draft.to}`; delete R.skip[c.id];
+        c.sent = `Sent to ${c.draft.to}. ${c.kind==="intro" ? "It's in your messages." : "It's in the thread."}`; return repaint(); }
+    });
+    let x0 = null, y0 = null;
+    vw.onpointerdown = e => { if (e.target.closest("button,[data-bfdraft]")) return; x0 = e.clientX; y0 = e.clientY; };
+    vw.onpointerup = e => { if (x0===null) return; const dx = e.clientX-x0, dy = e.clientY-y0; x0 = null;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) return dx < 0 ? jump(1) : jump(-1); };
+    vw.onpointercancel = () => { x0 = null; };
+  }
+  const paint = () => { vw.innerHTML = `<div class="bs-pg">${srcHTML()}</div>${chrome()}`; covers(); wire(); if (typeof phApply==="function") phApply(); };
+  async function go2(n){
+    if (busy || n < 0 || n > L.length) return; busy = true;
+    const pg = vw.querySelector(".bs-pg"), old = pg.firstElementChild; si = n; R.at = n;
+    pg.insertAdjacentHTML("beforeend", srcHTML()); const nu = pg.lastElementChild; covers();
+    bsAnim(nu, [{opacity:0,transform:"scale(1.02)"},{opacity:1,transform:"none"}], {duration:280});
+    await bsAnim(old, [{opacity:1,transform:"none"},{opacity:0,transform:"scale(.98)"}], {duration:280}).finished;
+    old.remove(); vw.querySelectorAll(".bs-bars,.bs-vh").forEach(x => x.remove()); vw.insertAdjacentHTML("beforeend", chrome()); wire(); if (typeof phApply==="function") phApply(); busy = false;
+  }
+  const jump = d => si + d > L.length ? close() : go2(si + d), next = () => jump(1), prev = () => jump(-1);
+  const clipOf = r => { const P = phone.getBoundingClientRect(); return `inset(${r.top-P.top}px ${P.right-r.right}px ${P.bottom-r.bottom}px ${r.left-P.left}px round 16px)`; };
+  async function open(){
+    paint(); vw.classList.add("on");
+    if (fromEl && fromEl.getBoundingClientRect) { const r = fromEl.getBoundingClientRect();
+      bsAnim(vw, [{clipPath:clipOf(r)},{clipPath:"inset(0px 0px 0px 0px round 0px)"}], {duration:420});
+      await bsAnim(vw.querySelector(".bs-pg"), [{transform:"scale(.96)"},{transform:"none"}], {duration:420}).finished; }
+    else await bsAnim(vw, [{transform:"translateY(100%)"},{transform:"none"}], {duration:360}).finished;
+  }
+  async function close(rerender, then){
+    if (busy) return; busy = true; if (!R.out) R.at = si;
+    const t = phone.querySelector(".bentry");
+    if (t && !R.out && !rerender) { const r = t.getBoundingClientRect(); await bsAnim(vw, [{clipPath:"inset(0px 0px 0px 0px round 0px)"},{clipPath:clipOf(r)}], {duration:360}).finished; }
+    else await bsAnim(vw, [{transform:"none"},{transform:"translateY(100%)"}], {duration:360}).finished;
+    vw.remove(); if (view) view.classList.remove("bs-back");
+    if (rerender) { if (STATE.screen!=="home") go("home"); else render(); } else render(); if (then) then();
+  }
+  vw._bs = { next, prev, jump, close, atTop, get chapter(){ return si < L.length ? L[si].id : "end"; }, get story(){ return "brief"; }, get card(){ return si; }, get screens(){ return L.length + 1; } };
+  open();
+};
 
 /* ==== Brief stories motion (Motion design thread, 28 Sep; the brief-as-stories plan Apoorv asked for at 23:47). Load after
    brief.js. Missions' brOpen already runs the agreed numbers (open 420 clip-grow, card 280, chapter 360 with a wash, close 360);
@@ -19584,7 +19761,7 @@ Object.entries({
   "calendar-check":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
   "file-check":'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
   "log-in":'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>',
-  "circle-slash":'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  "ban":'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
 }).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
 
 /* ---- the clock: the prototype's own time moves (Simulate is about two days, Advance a week is seven), and each path remembers when it
@@ -19620,7 +19797,7 @@ function gpMeter(o){
   return `<span class="gp-age${tone?" "+tone:""}" data-kc="KeyAgeMeter" data-kv="state=${tone||"counting"}"><b>${label}</b>${pct?`<i><s style="width:${pct}%"></s></i>`:""}</span>`;
 }
 function gpTalk(o){
-  if (o.state==="done") return `<span class="gp-age ${o.outcome==="good"?"gold":""}" data-kc="KeyAgeMeter" data-kv="state=done"><b>${o.outcome==="good"?"Went well":o.outcome==="nofit"?"Not a fit":"Closed"}</b></span>`;
+  if (o.state==="done") return `<span class="gp-age ${o.outcome==="good"?"pos":""}" data-kc="KeyAgeMeter" data-kv="state=done"><b>${o.outcome==="good"?"Went well":o.outcome==="nofit"?"Not a fit":"Closed"}</b></span>`;
   const d = gpAge(o);
   return `<span class="gp-age talk" data-kc="KeyAgeMeter" data-kv="state=talking"><b>${o.met ? "Met" : d ? `Talking · ${gpDays(d)}` : "Talking"}</b></span>`;
 }
@@ -19646,7 +19823,7 @@ function gpPaths(root, mid){
   order.forEach(i=>{
     const rs = rows.filter(r=>{ const o = DB.opps.find(x=>x.id===r.dataset.opp); return o && gpStage(o)===i; }); if (!rs.length) return;
     const fold = i===5 && !STATE.gpFold[mid];
-    frag.insertAdjacentHTML("beforeend", `<div class="sl gp-sl" id="gp-s${i}" data-kc="KeySectionLabel"${i===5?` onclick="STATE.gpFold['${mid}']=!STATE.gpFold['${mid}'];render()"`:""}>${gpTile(GP_ST[i][1], i===1?"ink":i===4?"gold":"")}<span>${GP_ST[i][0]}</span><span class="gp-n">${rs.length}</span>${i===5?`<span class="chev">${LI(fold?"chevron-right":"chevron-down",16)}</span>`:""}</div>`);
+    frag.insertAdjacentHTML("beforeend", `<div class="sl gp-sl" id="gp-s${i}" data-kc="KeySectionLabel"${i===5?` onclick="STATE.gpFold['${mid}']=!STATE.gpFold['${mid}'];render()"`:""}>${gpTile(GP_ST[i][1], i===1?"ink":i===4?"pos":"")}<span>${GP_ST[i][0]}</span><span class="gp-n">${rs.length}</span>${i===5?`<span class="chev">${LI(fold?"chevron-right":"chevron-down",16)}</span>`:""}</div>`);
     const box = document.createElement("div"); box.className = "rows gp-rows"; if (fold) box.hidden = true;
     rs.forEach(r=>{ const o = DB.opps.find(x=>x.id===r.dataset.opp); gpRow(r, o); box.appendChild(r); });
     frag.appendChild(box);
@@ -19704,16 +19881,16 @@ function gpUpdSheet(id){
   const o = DB.opps.find(x=>x.id===id); if (!o) return "";
   const t = targetOf(o), c = viaOf(o), lit = l => (o.timeline||[]).some(s=>s[0]===l && s[2]);
   const who = c && o.viaAgreed ? `${f1(c)} sees the outcome, never your words` : "Only Kai records it";
-  const opt = (k, ic, a, b, cls) => `<div class="row gp-opt${cls?" "+cls:""}" onclick="gpUpd('${id}','${k}')" data-kc="KeyChoiceRow">${gpTile(ic, cls==="gold"?"gold":"")}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`;
+  const opt = (k, ic, a, b, cls) => `<div class="row gp-opt${cls?" "+cls:""}" onclick="gpUpd('${id}','${k}')" data-kc="KeyChoiceRow">${gpTile(ic, cls==="pos"?"pos":"")}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`;
   const opts = o.roleTitle ? [
     !lit("Screen") && ["screen","calendar-check","Screen booked","Kai briefs you the night before"],
     lit("Screen") && !lit("Interview") && ["interview","users","Moving to interviews","Kai finds Xooglers who've done this loop"],
-    ["offer","file-check",`Offer from ${o.roleCompany}`,"Kai asks if this closes the mission","gold"],
-    ["nofit","circle-slash","They didn't move forward",`Logged. ${c?f1(c)+" sees Closed. ":""}Kai looks for more like the good ones`],
+    ["offer","file-check",`Offer from ${o.roleCompany}`,"Kai asks if this closes the mission","pos"],
+    ["nofit","ban","They didn't move forward",`Logged. ${c?f1(c)+" sees Closed. ":""}Kai looks for more like the good ones`],
   ] : [
     !o.met && ["met","calendar-check",`We met`,"Kai asks how it went in a few days"],
-    ["good","check","It went well",c?`${f1(c)} sees Landed. Kai drafts a thank-you`:"Kept on your record","gold"],
-    ["nofit","circle-slash","Not a fit","Kai shows fewer like this. Nobody is told why"],
+    ["good","check","It went well",c?`${f1(c)} sees Landed. Kai drafts a thank-you`:"Kept on your record","pos"],
+    ["nofit","ban","Not a fit","Kai shows fewer like this. Nobody is told why"],
   ];
   const guess = o.roleTitle && !lit("Screen") && STATE.connect && STATE.connect.calendar ? `<div class="gp-guess" data-kc="KeyKaiGuess">${kaiMark(20)}<div class="m"><div class="a">${o.roleCompany} recruiter, Monday 10am</div><div class="b">On your calendar. Is that the screen?</div></div><button class="mini" onclick="gpUpd('${id}','screen')">Yes</button></div>` : "";
   return `<div class="sc gp-upds" data-kc="KeyUpdateSheet"><div class="gp-uhd">${gpFace(o,"gp-44")}<div class="m"><div class="t20">What moved with ${o.roleTitle ? o.roleCompany : f1(t)}?</div><div class="m12">${who}</div></div></div>
@@ -19752,8 +19929,8 @@ const _gpJ = journalSheet; journalSheet = function(id){
   const note = (h.match(/<div class="row" data-sctog="jnote:[\s\S]*$/)||[""])[0].replace(/<\/div>\s*$/, "");
   const opt = (v, ic, a, b, cls) => `<div class="row gp-opt${cls?" "+cls:""}" data-outcome="${id}|${v}" data-kc="KeyChoiceRow">${gpTile(ic, cls||"")}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`;
   return `<div class="sc gp-upds" data-kc="KeyOutcomeSheet"><div class="gp-uhd"><span class="gp-pair">${av((DB.people[STATE.persona]||DB.user).initials)}${gpFace(o)}</span><div class="m"><div class="t20">How did it go with ${f1(t)}?</div><div class="m12">${c?`${f1(c)} is told the outcome, never your words`:"One tap. Only Kai records it"}</div></div></div>
-    <div class="rows">${opt("good","check","It went well", c ? `${f1(c)} sees Landed. Kai drafts a thank-you for you to send` : "Kept on your record. Kai looks for more like this", "gold")}
-    ${opt("nofit","circle-slash","Not a fit","Kai shows fewer like this. Nobody is told why")}
+    <div class="rows">${opt("good","check","It went well", c ? `${f1(c)} sees Landed. Kai drafts a thank-you for you to send` : "Kept on your record. Kai looks for more like this", "pos")}
+    ${opt("nofit","ban","Not a fit","Kai shows fewer like this. Nobody is told why")}
     ${opt("no","clock","Not yet","Kai asks once more in your weekly review, then stops")}</div>${note}</div>`;
 };
 function gpMoment(){
@@ -19774,7 +19951,7 @@ function gpOutRow(o){
 }
 function gpThanks(mid){
   return gpAll(mid).filter(o=>viaOf(o) && o.viaAgreed && o.outcome==="good").map(o=>{ const c = viaOf(o);
-    return `<div class="row gp-thx" data-kc="KeyRow" data-kv="lead=avatar, action=${o.thanked?"none":"button"}">${av(c.initials,"gp-44")}<div class="m"><div class="a">${c.name}</div><div class="b">${o.roleTitle ? `Referred you to ${o.roleCompany}` : `Introduced you to ${f1(targetOf(o))}`}</div></div><div class="r">${o.thanked ? `<span class="gp-age gold"><b>Thanked</b></span>` : `<button class="mini" onclick="event.stopPropagation();openSheet('thank','${o.id}')">Thank ${f1(c)}</button>`}</div></div>`; }).join("");
+    return `<div class="row gp-thx" data-kc="KeyRow" data-kv="lead=avatar, action=${o.thanked?"none":"button"}">${av(c.initials,"gp-44")}<div class="m"><div class="a">${c.name}</div><div class="b">${o.roleTitle ? `Referred you to ${o.roleCompany}` : `Introduced you to ${f1(targetOf(o))}`}</div></div><div class="r">${o.thanked ? `<span class="gp-age pos"><b>Thanked</b></span>` : `<button class="mini" onclick="event.stopPropagation();openSheet('thank','${o.id}')">Thank ${f1(c)}</button>`}</div></div>`; }).join("");
 }
 const _gpClose = closeMissionSheet; closeMissionSheet = function(mid){
   const m = DB.missions.find(x=>x.id===mid); if (!gpOn() || !m) return _gpClose(mid);
@@ -22656,7 +22833,57 @@ render = function(){ const r=_kyRender.apply(this, arguments); kyCtl(); kyCtlSyn
 kyCtl(); kyCtlSync();
 
 </script>
-<script>/* Review build only: every dashed or dotted line draws solid on the same side at its own width (his no-dashes rule; the main hi-fi copy carries its own fix). */
+<style>/* ==== MISSIONS AS ACCORDIONS ON HOME (Home simplify thread, 29 Sep 18:30): the hero plate stays as Missions hi-fi draws it ==== */
+.hs-acc .mh-band[data-hsacc] { cursor:pointer; }
+.hs-acc .mh-band[data-hsacc]:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; }
+.hs-acc .mh-go svg { transition:transform .22s cubic-bezier(.2,.8,.2,1); }
+.hs-acc.hs-open .mh-go svg { transform:rotate(180deg); }
+.hs-acc .mh-bs.hs-new { flex:0 0 auto !important; width:auto !important; max-width:max-content; gap:4px; display:inline-flex; align-items:center; height:28px; padding:0 12px; border-radius:var(--radius-absolute-infinite,999px); background:var(--bg-surface-default,#FFFFFF); color:var(--text-primary,#0B0E11) !important; font-size:13px; line-height:1; font-weight:600; white-space:nowrap; }
+.hs-acc.hs-closed { padding-bottom:0 !important; }
+.hs-acc.hs-closed .mh-band { border-radius:inherit; }
+.hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:hsIn .26s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes hsIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { .hs-acc .mh-go svg { transition:none; } .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:none; } }
+.hs-acc .hs-openm { all:unset; box-sizing:border-box; width:100%; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 16px; border-top:1px solid var(--border-subtle,#E6E9EE); font-size:14px; font-weight:700; color:var(--text-primary,#0B0E11); cursor:pointer; }
+.hs-acc .hs-openm svg { color:var(--text-tertiary,#6B7480); }
+.hs-acc .hs-openm:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:-2px; }
+.hs-acc .mh-bs.hs-new b { color:inherit !important; font-weight:800; }
+.hs-acc .mh-bf > .mh-ctl { margin-left:auto; }
+</style><script>/* ==== MISSIONS AS ACCORDIONS ON HOME (Home simplify thread; Apoorv 29 Sep 18:30: "with missions, it should be an accordian which
+   in closed state has an indicator that there are updates on opportunities, and opening it i can see the opportunity cards the way
+   it is right now, inside"). Only the member's own mission cards on Home change: each KeyMissionCard keeps its hero plate exactly as
+   Missions hi-fi draws it and starts closed. Closed, the plate's status line ("New pick 4") turns into a white pill when picks wait on you; tapping the plate
+   opens the same rail of opportunity cards underneath, plus a row into the mission page. Pause and end on the plate still work
+   as before. Everything else on Home is untouched. ==== */
+const hsOn = () => STATE.member && STATE.intakeDone && STATE.screen==="home";
+STATE.hsOpen = STATE.hsOpen || {};
+const hsMine = m => DB.opps.filter(o => o.missionId===m.id && o.state!=="dropped" && o.state!=="candidate" && ownerOf(o)==="you");
+const _hsSection = missionSection; missionSection = function(m){
+  const h = _hsSection.apply(this, arguments);
+  if (!hsOn() || !/data-kc="KeyMissionCard"/.test(h)) return h;
+  const t = document.createElement("template"); t.innerHTML = h;
+  const card = t.content.querySelector(".mh-mc"), band = card && card.querySelector(".mh-band"); if (!band) return h;
+  const open = !!STATE.hsOpen[m.id], n = hsMine(m).length;
+  card.classList.add("hs-acc", open ? "hs-open" : "hs-closed"); card.setAttribute("data-kv", `state=${open ? "open" : "closed"}, updates=${n}`);
+  band.removeAttribute("data-mission"); band.setAttribute("data-hsacc", m.id); band.setAttribute("role", "button"); band.setAttribute("tabindex", "0");
+  band.setAttribute("aria-expanded", open); band.setAttribute("aria-label", `${m.name}${n ? `, ${n} new for you` : ""}. ${open ? "Hide" : "Show"} the picks`);
+  const go = band.querySelector(".mh-go"); if (go) go.innerHTML = LI("chevron-down", 20);
+  /* the indicator: the plate's own status line ("New pick 4") becomes a white pill, so the title keeps its full width */
+  const bs = band.querySelector(".mh-bs"); if (n && bs && m.status!=="paused") { bs.classList.add("hs-new"); bs.setAttribute("data-kc", "KeyStateLabel"); bs.setAttribute("data-kv", "tone=onPlate"); }
+  if (open) card.insertAdjacentHTML("beforeend", `<button type="button" class="hs-openm" data-mission="${m.id}"><span>See the whole mission</span>${LI("chevron-right",20)}</button>`);
+  else card.querySelectorAll(":scope > .mh-rail, :scope > .mh-quiet").forEach(e => e.remove());
+  return t.innerHTML;
+};
+function hsToggle(id){ STATE.hsOpen[id] = !STATE.hsOpen[id]; render(); }
+const _hsRender = render; render = function(){
+  const r = _hsRender.apply(this, arguments);
+  if (typeof phone!=="undefined" && phone) phone.querySelectorAll("[data-hsacc]").forEach(el => {
+    el.onclick = e => { if (e.target.closest(".mh-ctl, button:not([data-hsacc])")) return; hsToggle(el.dataset.hsacc); };
+    el.onkeydown = e => { if ((e.key==="Enter" || e.key===" ") && e.target===el) { e.preventDefault(); hsToggle(el.dataset.hsacc); } };
+  });
+  return r;
+};
+</script><script>/* Review build only: every dashed or dotted line draws solid on the same side at its own width (his no-dashes rule; the main hi-fi copy carries its own fix). */
 (function(){ const S=["Top","Right","Bottom","Left"], bad=v=>v==="dashed"||v==="dotted";
   const fix=()=>document.querySelectorAll("body *").forEach(e=>{ const c=getComputedStyle(e); S.forEach(s=>{ if (bad(c["border"+s+"Style"])) e.style["border"+s+"Style"]="solid"; }); if (bad(c.outlineStyle)) e.style.outlineStyle="solid"; });
   let q=0; new MutationObserver(()=>{ if (!q) q=requestAnimationFrame(()=>{ q=0; fix(); }); }).observe(document.body,{subtree:true,childList:true}); fix(); })();

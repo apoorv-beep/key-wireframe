@@ -1643,8 +1643,7 @@ p,
   @keyframes evxInL { from { transform:translateX(-28px); opacity:0; } to { transform:none; opacity:1; } }
   @keyframes evxFade { from { opacity:0; } to { opacity:1; } }
   .evx-pane.in-r { animation:evxInR 260ms cubic-bezier(.2,.8,.2,1); } .evx-pane.in-l { animation:evxInL 260ms cubic-bezier(.2,.8,.2,1); }
-  .evx-list.in-f { animation:evxFade 180ms ease-out; }
-  @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l, .evx-list.in-f { animation:none; } }
+  @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l { animation:none; } }
   .body:has(.evx-pane) { overflow-x:hidden; }
   
   .evx-lh { display:flex; align-items:center; justify-content:space-between; } .evx-lh .xs { cursor:pointer; font-weight:600; }
@@ -1660,19 +1659,32 @@ p,
   @media (prefers-reduced-motion: reduce) { .evx-cta { transition:none; } }
   
   .evx-rthumb { width:34px; height:34px; border-radius:9px; flex:0 0 auto; cursor:pointer; }
-  .evx-rchips { padding:10px 0 2px; } .evx-rchips .pill { font-size:12px; padding:6px 12px; }
-  .evx-pin { position:sticky; top:0; z-index:2; height:0; }
-  .evx-pin .pinbar { position:absolute; left:0; right:0; top:0; gap:8px; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
-  .evx-pin.show .pinbar { opacity:1; transform:none; pointer-events:auto; }
-  @media (prefers-reduced-motion: reduce) { .evx-pin .pinbar { transition:none; } }
+  .evx-pinwrap, #phone .ev-canvas > .evx-pinwrap { flex:0 0 auto; position:relative; height:0; z-index:3; }
+  .evx-pinwrap .evx-pinbar { position:absolute; left:12px; right:12px; top:4px; margin:0; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
+  .evx-pinwrap.show .evx-pinbar { opacity:1; transform:none; pointer-events:auto; }
+  @media (prefers-reduced-motion: reduce) { .evx-pinwrap .evx-pinbar { transition:none; } }
+  .evx-pinl { flex:0 0 auto; width:40px; height:40px; margin:-8px -8px -8px 0; display:flex; align-items:center; justify-content:center; border-radius:12px; cursor:pointer; }
   .evx-bn { display:flex; align-items:center; flex-wrap:wrap; column-gap:8px; }
   .evx-kind { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; line-height:14.5px; }
   .bub .bf.evx-bact { display:flex; align-items:center; gap:8px; margin-top:6px; } .evx-bact .evx-tm { margin-left:auto; }
-  .evx-vote, .evx-act { display:inline-flex; align-items:center; gap:4px; min-height:32px; padding:0 10px; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:12px; font-weight:700; color:inherit; cursor:pointer; }
-  .evx-act.on { background:transparent; padding:0 2px; font-weight:600; }
-  .evx-ans { margin-top:8px; padding:8px 10px; border-radius:12px; background:color-mix(in srgb, currentColor 8%, transparent); font-size:14px; line-height:1.4; } .evx-ans span { font-size:11px; opacity:.7; }
-  .evx-first { display:flex; justify-content:center; margin:14px 0 4px; } .evx-first .chip { font-size:12px; }
-  .evx-ro { display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; color:var(--ink2); }
+  
+  .evx-btn { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 12px; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:12px; font-weight:700; color:inherit; cursor:pointer; }
+  
+  .evx-done { display:inline-flex; align-items:center; gap:4px; min-height:36px; font-size:12px; font-weight:600; }
+  .evx-vote { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; width:44px; height:52px; padding:0; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:12px; font-weight:700; line-height:15px; color:inherit; cursor:pointer; }
+  .evx-vote.on, .evx-btn.pri { background:var(--ink); color:#fff; }
+  #phone .evx-k-question .bub, #phone .tparent.evx-tq { position:relative; padding-right:64px; min-height:68px; }
+  .evx-k-question .bub > .evx-vote, .tparent.evx-tq > .evx-vote { position:absolute; top:8px; right:8px; }
+  
+  .evx-det .evx-dcard { padding:4px 0 16px; }
+  .evx-lt { width:40px; height:40px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:12px; background:var(--fill); color:var(--ink); }
+  .evx-cchips { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; margin:0 0 8px; } .evx-cchips::-webkit-scrollbar { display:none; }
+  .evx-cchips .chip { flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; margin:0; }
+  .rq.evx-mode > svg { flex:0 0 auto; }
+  .evx-jump, #phone .ev-canvas > .evx-jump { flex:0 0 auto; position:relative; height:0; z-index:3; }
+  .evx-jl { position:absolute; right:16px; bottom:8px; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:var(--ink); color:#fff; box-shadow:0 8px 20px -8px rgba(0,0,0,.5); opacity:0; transform:translateY(8px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
+  .evx-jl.show { opacity:1; transform:none; pointer-events:auto; }
+  @media (prefers-reduced-motion: reduce) { .evx-jl { transition:none; } }
   
 
 .ev-canvas {
@@ -2862,8 +2874,8 @@ p,
   .evt-screen .bub .bf.evx-bact { opacity:1; } .evt-screen .bub .evx-bact .evx-tm { opacity:.7; }
   .evt-screen .evx-tag { background:rgb(var(--ev-ink-rgb) / .1); border-color:transparent; color:var(--ev-ink); }
   .evt-screen .evx-tag.host { background:var(--ev-accent-fill); color:var(--ev-ink-inverse); }
-  .evt-screen .evx-tag.go, .evt-screen .evx-vote.on { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
-  .evt-screen .bub.me .evx-vote.on { background:var(--ev-ink-inverse); color:var(--ev-ink); }
+  .evt-screen .evx-tag.go, .evt-screen .evx-vote.on, .evt-screen .evx-btn.pri { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen .bub.me .evx-vote.on, .evt-screen .bub.me .evx-btn.pri { background:var(--ev-ink-inverse); color:var(--ev-ink); }
   
   .evt-hdr { padding:8px 16px 6px; }
   .evt-body { padding:4px 20px 190px; }
@@ -3540,18 +3552,18 @@ p,
   
   #phone.phone .evt-screen .hdr.hdr:has(> .back) > .t.t, #phone.phone .evt-screen .hdr.hdr.chdr:has(> .back) .hm > .hn.hn { color:var(--ev-ink); }
   .evx-kind { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
-  .evx-vote, .evx-act { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); border-radius:var(--radius-absolute-12); }
-  .evx-ans { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); border-radius:var(--radius-absolute-12); }
-  .evx-ans b { font:var(--type-label-strong); } .evx-ans span { font:var(--type-caption); }
-  .evx-ro { font:var(--type-label); letter-spacing:var(--type-label-tracking); }
+  .evx-vote, .evx-btn, .evx-done { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); border-radius:var(--radius-absolute-12); }
+  .evx-vote.on, .evx-btn.pri { background:var(--bg-inverse-default); color:var(--text-inverse); }
+  .evx-lt { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); background:var(--bg-fill-strong); color:var(--icon-primary); }
+  .evx-det .evx-dcard { padding:var(--space-absolute-4) 0 var(--space-absolute-16); }
   
   .evt-screen .mtile { background:color-mix(in srgb, currentColor 14%, transparent); border:0; border-radius:var(--radius-absolute-12); padding:0; }
   .evt-screen .mtile .plus { border-radius:var(--radius-absolute-12); }
   
   .evt-screen.evx-room .hdr .back, .evt-screen.evx-room .hdr .icon { background:transparent; border:0; -webkit-backdrop-filter:none; backdrop-filter:none; }
   .evt-screen.evx-room .hdr .back:active, .evt-screen.evx-room .hdr .icon:active { background:rgb(var(--ev-ink-rgb) / .12); }
-  .evt-screen.evx-room .bub, .evt-screen.evx-room .tparent, .evt-screen.evx-room .dsep span, .evt-screen.evx-room .syspill span, .evt-screen.evx-room .evx-rchips .pill:not(.on),
-  .evt-screen.evx-room .chip.sug, .evt-screen.evx-room .hdr .chip, .evt-screen.evx-room .crow, .evt-screen.evx-room .evx-pin .pinbar { background:var(--evx-bub, var(--component-card-bg)); color:var(--ev-ink); border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evt-screen.evx-room .bub, .evt-screen.evx-room .tparent, .evt-screen.evx-room .dsep span, .evt-screen.evx-room .syspill span, .evt-screen.evx-room .evx-cchips .chip,
+  .evt-screen.evx-room .chip.sug, .evt-screen.evx-room .hdr .chip, .evt-screen.evx-room .crow, .evt-screen.evx-room .evx-pinbar, .evt-screen.evx-room .bav { background:var(--evx-bub, var(--component-card-bg)); color:var(--ev-ink); border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
   .evt-screen.evx-room .bub { border:0; }
   .evt-screen.evx-room .bub.me { background:var(--ev-ink); color:var(--ev-ink-inverse); }
   .evt-screen.evx-room .bub.oth.first { border-top-left-radius:var(--radius-absolute-4); }
@@ -3559,10 +3571,51 @@ p,
   .evt-screen.evx-room .dsep::before, .evt-screen.evx-room .dsep::after { display:none; }
   .evt-screen.evx-room .foot { background:transparent; border-top:0; -webkit-backdrop-filter:none; backdrop-filter:none; }
   .evt-screen.evx-room .rchip { background:var(--component-card-bg); color:var(--text-primary); }
-  .evt-screen.evx-room .evx-pin .pinbar { left:var(--space-absolute-12); right:var(--space-absolute-12); top:var(--space-absolute-8); margin:0; border:0; border-radius:var(--radius-absolute-12); box-shadow:0 8px 24px -12px rgb(0 0 0 / .45); }
+  .evt-screen.evx-room .evx-pinwrap .evx-pinbar { left:var(--space-absolute-12); right:var(--space-absolute-12); top:var(--space-absolute-4); gap:var(--space-absolute-12); padding:var(--space-absolute-8) var(--space-absolute-12) var(--space-absolute-8) var(--space-absolute-8); border:0; border-radius:var(--radius-absolute-12); background:rgb(var(--ev-ink-inverse-rgb) / .72); -webkit-backdrop-filter:blur(20px) saturate(1.3); backdrop-filter:blur(20px) saturate(1.3); box-shadow:0 8px 24px -12px rgb(0 0 0 / .45); }
+  .evt-screen.evx-room .evx-pinbar > span:first-child { width:var(--space-absolute-32); height:var(--space-absolute-32); flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12); background:rgb(var(--ev-ink-rgb) / .12); color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .evx-pinbar .xs { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); font-weight:700; color:rgb(var(--ev-ink-rgb) / .78); }
+  .evt-screen.evx-room .evx-pinbar .sm { font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--ev-ink); }
+  .evt-screen.evx-room .evx-pinl { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); color:var(--ev-ink); }
+  .evt-screen.evx-room .evx-pinl:active, .evt-screen.evx-room .evx-pinbar:active { background:rgb(var(--ev-ink-rgb) / .16); }
+  .evt-screen.evx-room .evx-cchips { gap:var(--space-absolute-8); margin:0 calc(var(--space-absolute-16) * -1) var(--space-absolute-8); padding:0 var(--space-absolute-16); }
+  .evt-screen.evx-room .evx-cchips .chip { gap:var(--space-absolute-6); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); }
+  .evt-screen.evx-room .evx-cchips .chip svg { color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .rq { gap:var(--space-absolute-8); color:rgb(var(--ev-ink-rgb) / .78); font:var(--type-caption); }
+  .evt-screen.evx-room .rq b { color:var(--ev-ink); font:var(--type-label-strong); }
+  .evt-screen.evx-room .rq i { background:var(--ev-accent-fill); }
+  .evt-screen.evx-room .rq > svg { color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .rq .x { width:var(--space-absolute-40); height:var(--space-absolute-40); display:flex; align-items:center; justify-content:center; padding:0; color:var(--ev-ink); }
+  .evt-screen.evx-room .brow.hl { background:rgb(var(--ev-ink-rgb) / .14); border-radius:var(--radius-absolute-12); }
+  .evt-screen.evx-room .evx-jl { right:var(--space-absolute-16); bottom:var(--space-absolute-8); width:calc(var(--space-absolute-40) + var(--space-absolute-4)); height:calc(var(--space-absolute-40) + var(--space-absolute-4)); border-radius:var(--radius-absolute-12); background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen.evx-room .evx-btn { gap:var(--space-absolute-6); min-height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding:0 var(--space-absolute-12); }
+  .evt-screen.evx-room .evx-done { min-height:calc(var(--space-absolute-32) + var(--space-absolute-4)); }
+  .evt-screen.evx-room .evx-vote { width:calc(var(--space-absolute-40) + var(--space-absolute-4)); height:calc(var(--space-absolute-40) + var(--space-absolute-12)); gap:var(--space-absolute-2); }
+  #phone .evt-screen.evx-room .evx-k-question .bub, #phone .evt-screen.evx-room .tparent.evx-tq { padding-right:calc(var(--space-absolute-32) * 2); min-height:calc(var(--space-absolute-40) + var(--space-absolute-12) + var(--space-absolute-16)); }
+  .evt-screen.evx-room .evx-k-question .bub > .evx-vote, .evt-screen.evx-room .tparent.evx-tq > .evx-vote { top:var(--space-absolute-8); right:var(--space-absolute-8); }
   .evt-screen.evx-room .tcount { background:rgb(var(--ev-ink-rgb) / .12); }
   .evt-screen.evx-room .hdr.chdr .icon + .icon { margin-left:calc(var(--space-absolute-8) * -1); }
   .evt-screen .thchip .tf { color:inherit; background:color-mix(in srgb, currentColor 14%, transparent); }
+  
+  #phone.phone .view.view .hdr.hdr.evx-over.evx-over { height:auto; min-height:calc(var(--evx-sb, 0px) + var(--space-absolute-56)); padding:var(--evx-sb, 0px) var(--space-absolute-16) 0; box-sizing:border-box; }
+  #phone.phone .view.view .hdr.hdr.evx-over.evx-over > .back, #phone.phone .view.view .hdr.hdr.evx-over.evx-over > .icon { flex:0 0 auto; width:var(--space-absolute-40); height:var(--space-absolute-40); margin:0; padding:0; justify-content:center; color:var(--icon-primary); background:color-mix(in srgb, var(--bg-surface-default) 72%, transparent); border:var(--border-width-hairline) solid color-mix(in srgb, var(--bg-surface-default) 50%, transparent); border-radius:var(--radius-absolute-12); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4); }
+  #phone.phone .view.view .hdr.hdr.evx-over.evx-over.show > .back, #phone.phone .view.view .hdr.hdr.evx-over.evx-over.show > .icon { background:transparent; border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  
+  .evt-chan { display:flex; align-items:center; gap:var(--space-absolute-12); margin:var(--space-absolute-4) 0 0; }
+  .evt-chl { flex:0 0 auto; cursor:pointer; }
+  .evt-screen .evt-chl .evx-clogo { width:var(--space-absolute-40); height:var(--space-absolute-40); margin:0; border:0; border-radius:var(--radius-absolute-12); }
+  .evt-cht { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:var(--space-absolute-2); }
+  .evt-chn { display:flex; align-items:center; min-width:0; }
+  .evt-chn b { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--ev-ink); }
+  .evt-chf { flex:0 0 auto; display:inline-flex; align-items:center; min-height:calc(var(--space-absolute-40) + var(--space-absolute-4)); margin:calc(var(--space-absolute-12) * -1) 0; padding:0 var(--space-absolute-8) 0 0; font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--ev-accent-text); cursor:pointer; white-space:nowrap; }
+  .evt-chf::before { content:"·"; padding:0 var(--space-absolute-6); color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-chf.on { color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-cht > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-chh { cursor:pointer; }
+  
+  .evt-poster > .fx.evt-emofx-p { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; }
+  .evt-poster > .fx.evt-emofx-p i { position:absolute; animation-name:evtRiseP; opacity:.85; }
+  .evt-poster .evt-stamp { z-index:2; }
+  @keyframes evtRiseP { to { transform:translate(var(--dx), -480px) rotate(var(--r)); } }
 
   
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -4828,29 +4881,46 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bstray .bt-art .bs-pt { display:grid; } .bstray .bt-art .bs-pt em { font-size:38px; transform:none; color:rgba(255,255,255,.72); }
 
 
-.brief.bentry { all:unset; box-sizing:border-box; display:grid; gap:14px; width:100%; margin:2px 0 18px; padding:16px; border-radius:16px; background:#0B0E11; color:#F9FAFC; cursor:pointer; }
+.brief.bentry { all:unset; box-sizing:border-box; position:relative; isolation:isolate; overflow:hidden; display:grid; gap:10px; width:100%; margin:2px 0 18px; padding:16px 16px 14px; border-radius:20px; color:#FFFFFF; cursor:pointer; background:var(--be-a); }
+.bentry.pal-morning { --be-a:#C2410C; --be-b:#BE185D; --be-c:#7C3AED; }
+.bentry.pal-afternoon { --be-a:#0F766E; --be-b:#2563EB; --be-c:#7C3AED; }
+.bentry.pal-evening { --be-a:#4338CA; --be-b:#A21CAF; --be-c:#E11D48; }
+.bentry .be-glow { position:absolute; inset:0; z-index:-1; background:linear-gradient(135deg, var(--be-a) 0%, var(--be-b) 55%, var(--be-c) 100%); }
+.bentry .be-glow i { position:absolute; width:70%; aspect-ratio:1; border-radius:50%; filter:blur(36px); opacity:.55; will-change:transform; }
+.bentry .be-glow i:nth-child(1) { left:-20%; top:-40%; background:var(--be-c); animation:beDrift1 18s ease-in-out infinite alternate; }
+.bentry .be-glow i:nth-child(2) { right:-25%; top:-10%; background:var(--be-a); animation:beDrift2 22s ease-in-out infinite alternate; }
+.bentry .be-glow i:nth-child(3) { left:20%; bottom:-55%; background:var(--be-b); animation:beDrift3 16s ease-in-out infinite alternate; }
+@keyframes beDrift1 { to { transform:translate(30%, 25%) scale(1.15); } }
+@keyframes beDrift2 { to { transform:translate(-30%, 20%) scale(.9); } }
+@keyframes beDrift3 { to { transform:translate(-20%, -30%) scale(1.2); } }
 .bentry:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:3px; }
 .bentry .be-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.bentry .be-k { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#D8DEE6; }
-.bentry .be-t { flex:1 1 auto; font-size:12px; font-weight:600; color:#A6AFBB; font-variant-numeric:tabular-nums; }
-.bentry .be-bar + .be-t { flex:0 0 auto; }
-.bentry .be-mid { display:flex; align-items:center; gap:12px; }
-.bentry .be-m { flex:1 1 auto; min-width:0; display:grid; gap:4px; }
-.bentry .be-m b { font-size:18px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
-.bentry .be-m span { font-size:14px; line-height:1.35; color:#C6CDD5; }
-.bentry .be-faces { flex:0 0 auto; display:flex; }
-.bentry .be-faces > span { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; margin-left:-14px; box-shadow:0 0 0 2px #0B0E11; }
-.bentry .be-faces > span:first-child { margin-left:0; } .bentry .be-faces .bs-pt em { font-size:18px; transform:none; color:rgba(255,255,255,.8); }
-.bentry .be-foot { display:flex; align-items:center; gap:12px; }
-.bentry .be-bar { flex:1 1 auto; height:4px; border-radius:2px; background:rgba(249,250,252,.18); overflow:hidden; }
-.bentry .be-bar i { display:block; height:100%; background:#F9FAFC; border-radius:2px; }
-.bentry .be-go { flex:0 0 auto; height:44px; padding:0 20px; border-radius:12px; background:#F9FAFC; color:#0B0E11; font-size:14px; font-weight:700; display:inline-flex; align-items:center; }
-.brief.bentry.fin { display:flex; align-items:center; gap:12px; padding:10px 0; border-radius:0; background:none; color:var(--text-primary,#0B0E11); }
-.bentry.fin .be-tick { flex:0 0 auto; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--bg-fill-default,#F1F3F6); }
-.bentry.fin .be-m b { font-size:14px; font-weight:700; letter-spacing:0; } .bentry.fin .be-m span { font-size:12px; color:var(--text-secondary,#4A535E); }
+.bentry .be-k { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; }
+.bentry .be-t { font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; color:#FFFFFF; }
+.bentry .be-hi { margin-top:6px; font-size:26px; line-height:1.1; font-weight:800; letter-spacing:-.025em; }
+.bentry .be-sub { font-size:14px; line-height:1.4; font-weight:500; color:#FFFFFF; text-wrap:pretty; }
+.bentry .be-bar { height:4px; border-radius:2px; background:rgba(255,255,255,.28); overflow:hidden; }
+.bentry .be-bar i { display:block; height:100%; background:#FFFFFF; border-radius:2px; }
+.bentry .be-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:6px; }
+.bentry .be-who { display:flex; align-items:center; }
+.bentry .be-fm, .bentry .be-fc { position:relative; flex:0 0 auto; width:44px; height:44px; overflow:hidden; box-shadow:0 4px 12px rgba(11,14,17,.28); }
+.bentry .be-fm { border-radius:12px; } .bentry .be-fm .bs-mk { display:block; width:44px; height:44px; } .bentry .be-fm svg { display:block; width:100%; height:100%; }
+.bentry .be-fc { border-radius:50%; margin-left:-8px; } .bentry .be-fm + .be-fc { margin-left:6px; }
+.bentry .be-fc .bs-pt em { font-size:16px; transform:none; color:rgba(255,255,255,.85); }
+.bentry .be-go { flex:0 0 auto; height:44px; padding:0 16px 0 20px; border-radius:12px; background:#FFFFFF; color:#0B0E11; font-size:14px; font-weight:800; display:inline-flex; align-items:center; gap:8px; }
+.bentry.enter .be-glow { animation:beFade .6s ease-out both; }
+.bentry.enter .be-who > * { animation:beRise .44s cubic-bezier(.2,.8,.2,1) both; }
+.bentry.enter .be-who > :nth-child(2) { animation-delay:.08s; } .bentry.enter .be-who > :nth-child(3) { animation-delay:.16s; }
+@keyframes beFade { from { opacity:0; } } @keyframes beRise { from { opacity:0; transform:translateY(10px) scale(.92); } }
+@media (prefers-reduced-motion: reduce) { .bentry .be-glow i:nth-child(n), .bentry.enter .be-glow, .bentry.enter .be-who > * { animation:none; } }
+.bentry.still .be-glow i:nth-child(n), .bentry.still.enter .be-glow, .bentry.still.enter .be-who > * { animation:none; }
+.brief.bentry.fin { display:flex; align-items:center; gap:12px; padding:10px 0; border-radius:0; background:none; color:var(--text-primary,#0B0E11); overflow:visible; }
+.bentry.fin .be-tick { flex:0 0 auto; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#FFFFFF; background:linear-gradient(135deg, var(--be-a), var(--be-b) 55%, var(--be-c)); }
+.bentry.fin .be-tick.pal-morning { --be-a:#C2410C; --be-b:#BE185D; --be-c:#7C3AED; } .bentry.fin .be-tick.pal-afternoon { --be-a:#0F766E; --be-b:#2563EB; --be-c:#7C3AED; } .bentry.fin .be-tick.pal-evening { --be-a:#4338CA; --be-b:#A21CAF; --be-c:#E11D48; }
+.bentry.fin .be-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; } .bentry.fin .be-m b { font-size:14px; font-weight:700; } .bentry.fin .be-m span { font-size:12px; color:var(--text-secondary,#4A535E); }
 .bentry.fin > .li { color:var(--text-tertiary,#6B7480); }
-@media (max-width:360px) { .bentry .be-faces > span { width:44px; height:44px; } .bentry .be-m b { font-size:18px; } }
-.br-backbar.callbar { font:inherit; border:0; text-align:left; min-height:52px; padding:8px 14px 8px 10px; background:#0B0E11; color:#F9FAFC; flex:0 0 auto; }
+@media (max-width:360px) { .bentry .be-hi { font-size:22px; } .bentry .be-sub { font-size:14px; } }
+.br-backbar.callbar { position:relative; z-index:60; font:inherit; border:0; text-align:left; min-height:52px; padding:8px 14px 8px 10px; background:#0B0E11; color:#F9FAFC; flex:0 0 auto; }
 .br-backbar:focus-visible { outline:2px solid #0B0E11; outline-offset:2px; }
 .br-backbar .bb-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; } .br-backbar .bb-m b { font-size:14px; font-weight:700; } .br-backbar .bb-m span { font-size:11px; color:#A6AFBB; }
 .bs-vw.bbrief .bs-vh .bs-mk.bk { background:none; } .bs-vw.bbrief .bs-bars i.did::after { background:#F9FAFC; }
@@ -6438,6 +6508,24 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .mh-do { display:flex; gap:8px; align-items:flex-start; font:var(--type-body-m); color:var(--text-primary); }
 #phone.hf-mis .sc .mh-do svg { color:var(--icon-secondary); flex:0 0 auto; margin-top:2px; }
 #phone.hf-mis .sc .mh-jc:last-child:nth-child(odd) { grid-column:1 / -1; }
+
+#phone.hf-mfr .sc .rows > .mh-fx:first-child > .fr { border-top:0; }
+#phone.hf-mis .sc .fr.mh-rf { cursor:pointer; min-height:44px; }
+#phone.hf-mis .sc .fr.mh-rf:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-12); }
+#phone.hf-mis .sc .fr.mh-rf .chev svg { display:block; }
+#phone.hf-mis .sc .fr.mh-rf[aria-expanded="true"] .chev svg { transform:rotate(180deg); }
+@media (prefers-reduced-motion: no-preference) { #phone.hf-mis .sc .fr.mh-rf .chev svg { transition:transform 220ms cubic-bezier(.2,.8,.2,1); } }
+#phone.hf-mis .sc .mh-rx { padding:0 0 4px 44px; display:flex; flex-direction:column; gap:0; }
+#phone.hf-mis .sc .mh-rx[hidden] { display:none; }
+#phone.hf-mis .sc .mh-rx .mh-words, #phone.hf-mis .sc .mh-rx .mh-does { margin:0 0 4px; }
+#phone.hf-mis .sc .mh-rx .mh-rd { margin:0 0 4px; font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .sc .mh-rx .fr.mh-link { border-top:0; padding:0; min-height:44px; align-items:center; }
+#phone.hf-mis .sc .mh-rx .fr.mh-link .m { justify-content:center; }
+#phone.hf-mis .sc .mh-rx .fr.mh-link .k { font:var(--type-body-m-strong); letter-spacing:0; text-transform:none; color:var(--text-primary); }
+#phone.hf-mis .sc .mh-qf { padding:0; border:0; background:none; border-radius:var(--radius-absolute-infinite); cursor:pointer; line-height:0; min-width:44px; min-height:44px; display:flex; align-items:center; justify-content:center; margin:-6px; }
+#phone.hf-mis .sc .mh-qf:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:-4px; }
+#phone.hf-mis .sc .mh-tell { align-self:flex-start; min-height:44px; padding:0; border:0; background:none; font:var(--type-body-s-strong, var(--type-body-s)); color:var(--text-secondary); cursor:pointer; }
+#phone.hf-mis .sc .mh-tell:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-8); }
 
 
 
@@ -13103,7 +13191,7 @@ const evE = id => DB.fevents.find(x=>x.id===id);
 /* Icons the shared LUCIDE map (port.js) lacks; merged into it so LI() draws them too. */
 const EV_IC = {"chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","calendar-check":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
 Object.keys(EV_IC).forEach(k=>{ LUCIDE[k] = LUCIDE[k] || EV_IC[k]; });
-Object.assign(LUCIDE, Object.fromEntries(Object.entries({ "repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>", "handshake":"<path d=\"m11 17 2 2a1 1 0 1 0 3-3\"/><path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\"/><path d=\"m21 3 1 11h-2\"/><path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\"/><path d=\"M3 4h8\"/>", "calendar-plus":"<path d=\"M16 18h6\"/><path d=\"M16 2v3\"/><path d=\"M19 15v6\"/><path d=\"M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3\"/><path d=\"M3 9h18\"/><path d=\"M8 2v3\"/>" }).filter(([k])=>!LUCIDE[k])));
+Object.assign(LUCIDE, Object.fromEntries(Object.entries({ "contrast":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 18a6 6 0 0 0 0-12v12z\"/>", "sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>", "repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>", "handshake":"<path d=\"m11 17 2 2a1 1 0 1 0 3-3\"/><path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\"/><path d=\"m21 3 1 11h-2\"/><path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\"/><path d=\"M3 4h8\"/>", "calendar-plus":"<path d=\"M16 18h6\"/><path d=\"M16 2v3\"/><path d=\"M19 15v6\"/><path d=\"M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3\"/><path d=\"M3 9h18\"/><path d=\"M8 2v3\"/>" }).filter(([k])=>!LUCIDE[k])));
 const evIc = (n, sz) => LUCIDE[n] ? LI(n, sz||18) : (n||"");
 const evC = id => DB.calendars.find(x=>x.id===id);
 const evFirst = id => (DB.people[id]||{name:"Someone"}).name.split(" ")[0];
@@ -13246,7 +13334,7 @@ sCalendars = function(){
   const fam = DB.calendars.filter(c=>!evFollows(c) && evMemberOf(c));
   const more = DB.calendars.filter(c=>!evFollows(c) && !evMemberOf(c) && !evIsAdmin(c));
   const crow = c => `<div class="rowitem" data-cal="${c.id}" data-kc="KeyCalendarRow">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${evKind(c)} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed&&!evIsAdmin(c)?" · as a member":""}${evIsAdmin(c)&&(c.requests||[]).length?` · ${c.requests.length} to review`:""}</div></div>${evIsAdmin(c)?`<span class="xs muted">${c.kind==="personal"?"Owner":"Admin"}</span>`:`<span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span>`}</div>`;
-  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
+  return `<div class="hdr"><div class="back" onclick="evGoBack('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
   <div class="body evx-hi">
     <input class="input evx-search" data-kc="KeySearchField" placeholder="Search calendars" oninput="evCalFilter(this.value)">
     <div class="lbl" style="margin-top:4px">Yours</div>${mine.map(crow).join("")}
@@ -13321,6 +13409,10 @@ function evFacts(e, live, locked){ const d=evDate(e); const inn=["going","hostin
     <div class="evt-fact" onclick="toast('${inn&&!online?"Opens Maps with directions.":whereSub}')"><i class="evt-ico">${evIc(online?"video":"map-pin",20)}</i><div><b>${online?"Online":e.where}</b><span>${whereSub}</span></div>${inn&&!online&&!e.past?`<em>Directions</em>`:""}</div>
     ${e.past?"":tk}
   </div>`; }
+/* back is the screen you came from (Apoorv 29 Sep 19:19: "it should go back to the previous screen"); a screen's own destination only when
+   nothing is behind it. The create or edit form and the "You're live" screen leave the back stack once you move on from them */
+const EV_PASS = /^eventd:(new|live\.)/;
+function evGoBack(fallback){ const h = STATE.history||[]; while (h.length && (EV_PASS.test(h[h.length-1]) || h[h.length-1]===STATE.screen)) h.pop(); if (h.length) goBack(); else { STATE.backNav = true; go(fallback); } }
 const _evBaseDetail = sEventDetail;
 sEventDetail = function(id){
   if (id==="new") return evCreate();
@@ -13339,11 +13431,11 @@ sEventDetail = function(id){
   const cta = evCta(e, live, locked); const inRoom = ["going","hosting"].includes(e.reg) || live || e.past;
   const people = !peopleIds.length ? "" : `<div class="evt-sec">${e.past?"You met":"Who to meet"}</div><div class="evt-people">${peopleIds.map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
       return `<div class="evt-person" data-profile="${pid}"><i class="evt-pav">${p.initials}${here?'<em>Here</em>':''}</i><b>${p.name.split(" ")[0]}</b><span>${intros.includes(pid)?`${evIc("handshake",12)} ${evFirst(e.host)}'s intro`:EV_WHY_SHORT[pid]||p.title}</span>${e.past?"":live?`<button class="btn sm sec" data-opener="${e.id}|${pid}">${evIc("hand",15)} Find</button>`:(e.booped||{})[pid]?`<em class="evt-sent">${evIc("check",15)} Sent</em>`:`<button class="btn sm sec" data-evboop="${e.id}|${pid}">${evIc("coffee",15)} Meet?</button>`}</div>`; }).join("")}</div>`;
-  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("palette")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("contrast")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
   <div class="body evt-body">
     ${e.past ? evRoll(e, stamp) : evPoster(e, stamp)}
     <h1 class="evt-title">${e.name}</h1>
-    <div class="evt-host">${home?`<span ${home.kind==="personal"?`data-cal="${home.id}"`:`data-profile="${e.host}"`} class="evt-by"><i class="evt-bav">${host.initials}</i>${e.host===EV_ME?"You":host.name.split(" ")[0]}</span>${home.kind==="personal"?"":`<span data-cal="${home.id}" class="evt-by">${evCalThumb(home,"evt-ct")}${home.name}</span>`}${evIsAdmin(home)?"":`<span class="evt-follow ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?"Following":"+ Follow"}</span>`}`:""}</div>
+    ${home?evChanRow(e, home, host):""}
     ${evFacts(e, live, locked)}
     ${locked?"":evSeriesStrip(e)}
     ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=44">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(3,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} and ${e.going-names.length} other${e.going-names.length===1?"":"s"}</span>`:""}</div></div>`}
@@ -13369,13 +13461,20 @@ function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"dusk",
 const EV_DAYS = [[15,"Thu"],[16,"Fri"],[17,"Sat"],[18,"Sun"],[19,"Mon"],[20,"Tue"],[21,"Wed"]];
 const EV_PLACES = [["Blue Bottle, Palo Alto","315 Homer Ave"],["Hacker Dojo, Mountain View","855 Maude Ave"],["Stanford GSB, Stanford","655 Knight Way"]];
 const evHr = h => h===12 ? "12pm" : h>12 ? `${h-12}pm` : `${h}am`;
+/* The calendar an event sits on reads as its channel (Apoorv 29 Sep 17:55: "there's no YouTube video without a YouTube channel"): under the
+   title, the calendar's logo and name with Follow attached to the name (YouTube's channel row, Instagram's "name · Follow"), and who hosts it
+   on the line below. Follow stays off the right-hand column the date, place and ticket actions use, so the eye goes title, calendar, facts */
+function evChanRow(e, c, host){ const own=evIsAdmin(c), per=c.kind==="personal";
+  const f = own ? "" : `<span class="evt-chf ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?"Following":"Follow"}</span>`;
+  const sub = per ? `${own?"You host":`${evFirst(c.host)} hosts`} · ${(c.subs||0).toLocaleString()} follower${c.subs===1?"":"s"}` : `Hosted by <span class="evt-chh" data-profile="${e.host}">${e.host===EV_ME?"you":host.name}</span>`;
+  return `<div class="evt-chan" data-kc="KeyCalendarByline"><div class="evt-chl" data-cal="${c.id}">${evCalLogo(c)}</div><div class="evt-cht"><div class="evt-chn"><b data-cal="${c.id}">${per&&!own?(DB.people[c.host]||{name:c.name}).name:evCalName(c)}</b>${f}</div><span>${sub}</span></div></div>`; }
 const evCalName = c => c.kind==="personal"&&evIsAdmin(c) ? "Your calendar" : c.name;
 function evDraftWhen(d){ const dw=(EV_DAYS.find(x=>x[0]===d.dayN)||EV_DAYS[1]); return { dow:dw[1], n:dw[0], label:`${dw[1]}, Oct ${dw[0]}`, time:`${evHr(d.hour)} – ${evHr(d.hour+d.len)}` }; }
 function evCreate(){
   const d = evDraft(); const cal = evC(d.cal); const appr = evApprover(cal); const w = evDraftWhen(d);
   const where = d.fmt==="online" ? ["video","Online","Meet link made when you publish"] : d.fmt==="tbd" ? ["map-pin","Place to be decided","Kai reminds you a week before"] : d.where ? ["map-pin",d.where,(EV_PLACES.find(x=>x[0]===d.where)||["",""])[1]] : ["map-pin","Add a place",""];
   const vis = cal.kind==="personal" ? ["Invite only","Anyone with the link"] : evMemberOf(cal) ? ["Members only","Anyone on Key"] : ["Only people I approve","Anyone on Key"];
-  return evScreen({ theme:d.theme, fx:d.fx, going:1, cap:d.cap||40, emoji:d.emoji }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;${d.edit?`STATE.evDraft=null;go('eventd:manage.${d.from}')`:`go(STATE.evBack||'events')`}">‹</div>${d.edit?`<div class="t">Edit event</div>`:""}<div style="flex:1"></div>${d.edit?"":`<div class="evt-hdr-act" data-evsavedraft="1">Save draft</div>`}</div>
+  return evScreen({ theme:d.theme, fx:d.fx, going:1, cap:d.cap||40, emoji:d.emoji }, `<div class="hdr evt-hdr"><div class="back" onclick="${d.edit?`STATE.evDraft=null;evGoBack('eventd:manage.${d.from}')`:`evGoBack(STATE.evBack||'events')`}">‹</div>${d.edit?`<div class="t">Edit event</div>`:""}<div style="flex:1"></div>${d.edit?"":`<div class="evt-hdr-act" data-evsavedraft="1">Save draft</div>`}</div>
   <div class="body evt-body">
     <div class="evt-calpick" data-evsheet="evcal|x">${evCalThumb(cal,"evt-ct")}<span>${evCalName(cal)}</span><i>${evIc("chevron-down",14)}</i></div>
     <input class="input evt-title evt-name" id="evname" value="${d.name}" placeholder="Name your event" oninput="evDraft().name=this.value;evCvLive()">
@@ -13503,7 +13602,7 @@ function evManage(id){
       <div class="evt-frow" onclick="toast('On web: Manage › Details › Embed gives you the code.')"><i>${evIc("code-xml",20)}</i><div><b>Embed on a website</b><span>On web</span></div><em>›</em></div>
       <div class="evt-frow" data-evsheet="evcancel|${id}"><i>${evIc("trash-2",20)}</i><div><b style="color:var(--danger)">Cancel event</b></div><em>›</em></div></div>`; }
   const tabs = [["guests","Guests"],["reg","Registration"],["broadcast","Updates"],["insights","Insights"],["details","Details"]];
-  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><div class="icon" data-evgo="eventd:${id}" aria-label="View as guest">${evIc("eye")}</div><div class="icon" data-evsheet="evshare|${id}" aria-label="Share">${evIc("share")}</div></div>
+  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><div class="icon" data-evgo="eventd:${id}" aria-label="View as guest">${evIc("eye")}</div><div class="icon" data-evsheet="evshare|${id}" aria-label="Share">${evIc("share")}</div></div>
   <div class="body evt-body evt-mbody">
     <div class="evt-mtop"><div class="evt-mthumb cv-th">${evCvArt(e)}</div><div><b>${e.name}</b><span>${e.past?"Ended":e.awaiting?`Waiting for ${e.awaiting.replace(", who runs it","")}`:`<i class="evt-dot"></i>Live`}, ${e.when}</span></div></div>
     ${evSeriesStrip(e, true)}
@@ -13517,7 +13616,7 @@ function evManage(id){
 function evGuestSearch(v){ v=v.trim().toLowerCase(); phone.querySelectorAll(".evt-glist .evt-grow").forEach(r=>{ r.style.display = !v || r.textContent.toLowerCase().includes(v) ? "" : "none"; }); }
 /* the door: scan, walk-in, and the list with one tap per guest */
 function evDoor(id){ const e=evE(id); evHostData(e); const gl=(e.goingList||[]).filter(p=>DB.people[p]); const n=gl.filter(p=>(e.checked||{})[p]).length;
-  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:manage.${id}')">‹</div><div class="t">Check in</div></div>
+  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:manage.${id}')">‹</div><div class="t">Check in</div></div>
   <div class="body evt-body evt-mbody">
     <div class="evt-door"><b>${n}<small> / ${e.going}</small></b><span>checked in</span><div class="evt-doorbar"><i style="width:${Math.round(n/Math.max(1,e.going)*100)}%"></i></div></div>
     <div class="evt-rsvp" style="margin:14px 0"><button class="btn" onclick="toast('Camera opens. It reads app tickets and Wallet passes.')">${evIc("scan-line")} Scan tickets</button><button class="btn sec" data-evsheet="evwalkin|${id}">${evIc("user-plus")} Walk-in</button></div>
@@ -13533,7 +13632,7 @@ function evGuestList(id){ const e=evE(id); evHostData(e); const live = STATE.eve
   const rest = gl.filter(x=>!know.includes(x)).concat(fill);
   const row = pid => { const p=DB.people[pid]; const sent=(e.booped||{})[pid]; return `<div class="evt-grow" data-profile="${pid}">${av(p.initials)}<div class="m"><b>${p.name}</b><span>${p.title}${p.company?`, ${p.company}`:""}</span></div>${e.past?"":sent?`<em>${evIc("check",15)} Sent</em>`:`<button class="btn sm sec" data-evboop="${e.id}|${pid}" onclick="event.stopPropagation()">${evIc("coffee",15)} Meet?</button>`}</div>`; };
   const hosts = [e.host].concat(e.cohosts);
-  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">${e.going} ${e.past?"went":"going"}</div></div>
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t">${e.going} ${e.past?"went":"going"}</div></div>
   <div class="body evt-body">
     ${open ? `<div class="evt-search"><span>${evIc("search",17)}</span><input placeholder="Search guests" oninput="evGuestSearch(this.value)"></div>
     <div class="evt-glist">
@@ -13556,7 +13655,7 @@ function evLive(id){ const e=evE(id); const c=evC(e.cal); const who=e.awaiting&&
     ${e.awaiting||!c||!c.subs?"":`<div class="evt-rows"><div class="evt-frow" data-evtellnow="${id}"><i>${evIc("megaphone",20)}</i><div><b>Tell ${c.subs} followers now</b><span>${e.told===false?"You'll tell them later from Manage":"They get one notification"}</span></div><span class="evt-tog ${e.told===false?"":"on"}"></span></div></div>`}
     ${evMsStarters(e)}
   </div>
-  <div class="evx-cta evt-rsvp"><button class="btn sec" data-evgo="eventd:manage.${id}">${evIc("settings")} Manage</button><button class="btn" data-evsheet="evinvite|${id}">${evIc("mail")} Invite guests</button></div>`); }
+  <div class="evx-cta evt-rsvp"><button class="btn sec" data-evgo="eventd:manage.${id}">${evIc("sliders-horizontal")} Manage</button><button class="btn" data-evsheet="evinvite|${id}">${evIc("mail")} Invite guests</button></div>`); }
 
 /* ---- calendar page, and calendar admin for the ones you run ---- */
 /* ==== CALENDAR PAGE (27 Sep, events thread; Apoorv 20:02). A calendar reads like a channel page: anyone can look at all of it,
@@ -13662,7 +13761,7 @@ sCalendar = function(id){
   else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh"[^>]*>[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
       : view==="day" ? evCalDay(c, evs, plans) : view==="week" ? evCalWeek(c, evs, plans) : evCalMonth(c, evs, plans);
     pane = `<div class="seg evx-vseg" data-kc="KeySegmented">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
-  return `<div class="hdr evx-hdr evx-over"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t evx-overt">${c.kind==="personal"&&admin?"Your calendar":c.name}</div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
+  return `<div class="hdr evx-hdr evx-over"><div class="back" onclick="evGoBack(STATE.evBack||'events')">‹</div><div class="t evx-overt">${c.kind==="personal"&&admin?"Your calendar":c.name}</div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
   <div class="body evx-hi evx-calpg">
     <div class="evx-cban" data-cid="${c.id}" style="background:${evBg(c.theme)}" data-kc="KeyCover"></div>
     ${evCalLogo(c)}
@@ -13683,7 +13782,7 @@ function evCalManage(id){
   else if (t==="people") body = `<div class="lbl" style="margin-top:4px">Admins</div>${c.admins.map(a=>`<div class="rowitem">${av(DB.people[a].initials)}<div class="m"><div class="a">${a===EV_ME?"You":DB.people[a].name}</div><div class="b">${a===c.host?"Created it":"Co-admin"}</div></div></div>`).join("")}<button class="btn sec" style="margin-top:8px" onclick="toast('Add an admin by name. They can approve events and edit the calendar.')">Add admin</button>
     <div class="lbl">Followers · ${c.subs}</div>${["rahul","maya","sana","jordan"].map(p=>`<div class="rowitem">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div><div class="b">${DB.people[p].title}</div></div><span class="xs muted" onclick="toast('Removed. They aren\\'t told.')">Remove</span></div>`).join("")}`;
   else body = [["Name and cover",c.name],["Theme",evPreset(c.theme).name],["Who can add events",c.accepts==="anyone"?"Anyone; you approve":c.accepts==="members"?"Members; you approve":"Only admins"],["Visibility","Public · key.ai link"],["Delete calendar",c.kind==="personal"?"Your personal calendar can't be deleted":"Only the creator"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}.')"><div class="m"><div class="a" ${a==="Delete calendar"?'style="color:var(--danger)"':''}>${a}</div><div class="b">${b}</div></div><span class="xs muted">›</span></div>`).join("");
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
+  return `<div class="hdr evx-hdr"><div class="back" onclick="evGoBack('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
   <div class="body evx-hi"><div class="evx-tabs" data-kc="KeyTabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>`;
 }
 
@@ -13705,9 +13804,10 @@ function evCadLabel(s){ const evs=evSeriesEvents(s); const f=evs.find(x=>!x.move
   const dow = EV_DOWL[d.getDay()]; const on = { w:`Every ${dow}`, "2w":`Every other ${dow}`, month:`${["1st","2nd","3rd","4th","5th"][Math.ceil(d.getDate()/7)-1]} ${dow} of the month` }[s.cadence] || EV_CAD.dates;
   return `${on}${t?`, ${t}`:""}`; }
 /* came N of M: the past dates each guest was going to, and how many they checked in at. The host isn't counted. */
+/* last is the date they last came, as Missions' series page shows it ("4 of 5 · last Sep 17") */
 function evSeriesAttendance(sid){ const s=(DB.series||[]).find(x=>x.id===sid); if (!s) return []; const m={};
   evSeriesEvents(s).filter(x=>x.past).forEach(x=>(x.goingList||[]).forEach(pid=>{ if (pid===s.host || !DB.people[pid]) return;
-    const r = m[pid] = m[pid] || { pid, came:0, of:0, last:null }; r.of++; if ((x.checked||{})[pid]) { r.came++; r.last=x.id; } }));
+    const r = m[pid] = m[pid] || { pid, came:0, of:0, last:null }; r.of++; if ((x.checked||{})[pid]) { r.came++; r.last=x.day; } }));
   return Object.values(m).sort((a,b)=>b.came-a.came || b.of-a.of); }
 /* came before and not on this date's list: the series' own invite list */
 const evLapsed = e => { const s=evSeries(e); return s && !e.past && e.reg==="hosting" ? evSeriesAttendance(s.id).filter(r=>r.came && !evGuestState(e, r.pid)).map(r=>r.pid) : []; };
@@ -13988,9 +14088,8 @@ function evSheet(type, id){
   if (type==="evroomnotif") { const c=convOf(id); const cur=c.evNotif||"key"; return `<h2>Notifications for this event</h2><p class="sm muted">The chat stays quiet unless something is for you.</p>
     ${[["key","Updates and replies to you","Host updates, answers to your questions, replies to you"],["all","Every message",""],["off","Off","You still see everything when you open it"]].map(([k,a,b])=>`<div class="rowitem" data-evnotif="${id}|${k}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="evx-radio ${cur===k?'on':''}"></span></div>`).join("")}
     <div class="xs faint" style="margin-top:10px">Everything else arrives as one digest the morning of the event.</div>`; }
-  if (type==="evanswer") { const [cid,mid]=id.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); return `<h2>Answer ${P(m.from).name.split(" ")[0]}</h2><p class="sm muted">${m.text}</p>
-    ${keyComposer({ id:"evans", wrap:false, placeholder:"Your answer", sendAttr:`data-evansok="${id}"` })}
-    <div class="xs faint" style="margin-top:8px">Shows under the question. ${P(m.from).name.split(" ")[0]} and everyone who upvoted get a push.</div>`; }
+  if (type==="evups") { const c=convOf(id); return `<h2>Updates</h2><p class="sm muted">What ${evFirst(evE(c.ev||"e1").host)} has posted and answered, newest first.</p>
+    <div class="evt-rows">${evNews(c).reverse().map(({m,q})=>`<div class="evt-frow" ${q?`data-evthr="${id}|${q.id}"`:`data-evupj="${id}|${m.id}"`}><i>${evIc(q?"check":"megaphone",20)}</i><div><b style="white-space:normal">${m.text}</b><span>${q?`Answer to ${evFirst(q.from)} · `:""}${evDay(m)} · ${m.time}</span></div></div>`).join("")}</div>`; }
   if (type==="evnewcal") return `<h2>New calendar</h2><p class="sm muted">For a series you run, like a dinner club or a talk series. You already have your own calendar; this is another.</p>
     <div class="lbl">Name</div><input class="input" id="evcalname" placeholder="AI Founders Breakfast">
     <div class="lbl">Who can add events</div>${[["admins","Only admins"],["anyone","Anyone; you approve each one"]].map(([k,l])=>`<div class="rowitem" data-evcalacc="${k}"><div class="m"><div class="a">${l}</div></div><span class="evx-radio ${(STATE.evCalAcc||"admins")===k?'on':''}"></span></div>`).join("")}
@@ -14069,17 +14168,27 @@ portWire = function(){
   q("[data-evcalcreate]", ()=>{ const nm=(document.getElementById("evcalname")||{}).value||"AI Founders Breakfast"; const id="cal-n"+DB.calendars.length; DB.calendars.push({ id, name:nm, family:null, host:EV_ME, subs:0, kind:"user", theme:"sage", admins:[EV_ME], accepts:STATE.evCalAcc||"admins", about:"New calendar. Add a line about what happens here.", events:[], requests:[], subscribed:false, sync:false }); STATE.sheet=null; go("cal:"+id); toast(`${nm} is ready. Add your first event.`); });
   q("[data-evroom]", el=>{ const [id,f]=el.dataset.evroom.split("|"); evOpenRoom(id, f==="focus"); });
   q("[data-evroomq]", el=>evOpenRoom(el.dataset.evroomq, false, "q"));
-  q("[data-evrf]", el=>{ const cid=STATE.screen.split(":")[1]; STATE.evRf=STATE.evRf||{}; const f=el.dataset.evrf; STATE.evRf[cid]=f; render(); const b=phone.querySelector(".chatbody"); if (b) b.scrollTop = f==="all"?b.scrollHeight:0; const l=phone.querySelector(".evx-list"); if (l) l.classList.add("in-f"); });
-  const pin = phone.querySelector(".evx-pin");
-  if (pin) { const b=pin.parentElement, up=b.querySelector(`[data-lp$="|${pin.dataset.m}|"]`), ch=b.querySelector(".evx-rchips");
-    const set = () => { const top=b.getBoundingClientRect().top, r=up&&up.getBoundingClientRect(); pin.classList.toggle("show", ch.getBoundingClientRect().bottom<=top && !(r && r.bottom>top+48 && r.top<b.getBoundingClientRect().bottom-48)); };
-    b.addEventListener("scroll", set, { passive:true }); set(); }
+  q("[data-evmode]", el=>{ const [cid,k]=el.dataset.evmode.split("|"); STATE.evMode=STATE.evMode||{}; STATE.evMode[cid]=k||null; render(); scrollChat(); const t=phone.querySelector("#ci"); if (t&&k) t.focus(); });
+  q("[data-evpin]", el=>{ const [cid,mid]=el.dataset.evpin.split("|"); evTo(cid, mid); });
+  /* the pinned bar shows the latest update scrolled away above you, so it never repeats one on screen; tapping it jumps there and it moves on to
+     the one before (Telegram's pinned messages) */
+  const pb = phone.querySelector(".evx-pinbar"), pbody = pb && phone.querySelector(".chatbody");
+  if (pbody) { const cid=pb.dataset.evpin.split("|")[0], ups=evUps(convOf(cid));
+    const set = () => { const top=pbody.getBoundingClientRect().top; let i=-1; ups.forEach((m,j)=>{ const el=pbody.querySelector(`[data-lp^="${cid}|${m.id}|"]`); if (el && el.getBoundingClientRect().bottom < top+8) i=j; });
+      pb.parentElement.classList.toggle("show", i>=0); if (i<0) return; pb.dataset.evpin=`${cid}|${ups[i].id}`;
+      pb.querySelector(".xs").textContent = ups.length>1 ? `Update ${i+1} of ${ups.length}` : "Pinned update"; pb.querySelector(".sm").textContent = ups[i].text.replace(/[*_~`>]/g,""); };
+    pbody.addEventListener("scroll", set, { passive:true }); set(); }
+  q("[data-evjq]", el=>{ const cid=el.dataset.evjq, open=evQs(convOf(cid)).filter(m=>!m.answer); STATE.evJq=STATE.evJq||{}; const i=(STATE.evJq[cid]||0)%open.length; STATE.evJq[cid]=i+1; evTo(cid, open[i].id); });
+  q("[data-evupj]", el=>{ const [cid,mid]=el.dataset.evupj.split("|"); STATE.sheet=null; render(); evTo(cid, mid); });
+  const jl = phone.querySelector(".evx-jl"), jb = jl && phone.querySelector(".chatbody");
+  if (jb) { const set = () => jl.classList.toggle("show", jb.scrollHeight-jb.scrollTop-jb.clientHeight > jb.clientHeight*.5); jb.addEventListener("scroll", set, { passive:true }); set();
+    jl.onclick = () => jb.scrollTo({ top:jb.scrollHeight, behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth" }); }
   q("[data-evvote]", el=>{ const [cid,mid]=el.dataset.evvote.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); m.votes=m.votes||[]; const i=m.votes.indexOf(EV_ME); if (i<0) m.votes.push(EV_ME); else m.votes.splice(i,1); evKeep(); });
   q("[data-evwave]", el=>{ const [cid,mid]=el.dataset.evwave.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); if (m.waved) return; m.waved=true; evKeep(); toast(`Waved. ${P(m.from).name.split(" ")[0]} sees it once.`); });
-  q("[data-evanswer]", el=>openSheet("evanswer", el.dataset.evanswer));
-  q("[data-evansok]", el=>{ const [cid,mid]=el.dataset.evansok.split("|"); const v=((document.getElementById("evans")||{}).value||"").trim(); if (!v) { toast("Write an answer first."); return; } convOf(cid).msgs.find(x=>x.id===mid).answer={ from:EV_ME, text:v }; STATE.sheet=null; evKeep(); toast("Answered. They get a push."); });
+  q("[data-evanswer]", el=>{ const [cid,mid]=el.dataset.evanswer.split("|"); evThread(cid, mid); const t=phone.querySelector("#ci"); if (t) t.focus(); });
+  q("[data-evthr]", el=>{ const [cid,mid]=el.dataset.evthr.split("|"); STATE.sheet=null; evThread(cid, mid); });
   q("[data-evnotif]", el=>{ const [cid,k]=el.dataset.evnotif.split("|"); convOf(cid).evNotif=k; STATE.sheet=null; render(); toast({ key:"Updates and replies to you.", all:"Every message.", off:"Off for this event." }[k]); });
-  q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]="Hi all, Priya here. PM on Google Cloud, hoping to meet people building AI products."; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
+  q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]=`Hi all, ${P(EV_ME).name.split(" ")[0]} here. PM on Google Cloud, hoping to meet people building AI products.`; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
   q("[data-evphotos]", el=>{ const e=evE(el.dataset.evphotos); const c=evRoom(e); c.msgs.push(M(EV_ME, "", { day:"Today", time:nowTime(), att:[{t:"img",n:4}] })); go("dm:"+c.id); toast("Four photos added. Everyone who went sees them."); });
   if (evtMount) { evtMount.destroy(); evtMount = null; }
   const scr = phone.querySelector(".evt-screen"), screenEl = phone.querySelector(".screen");
@@ -14089,7 +14198,7 @@ portWire = function(){
     const fx = room ? "none" : scr.dataset.evtFx; evtMount = EVT.mountEffects(scr, fx==="emoji"?"none":fx, { signal:{ going:+scr.dataset.evtGoing, capacity:+scr.dataset.evtCap } });
     if (fx==="emoji" && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const l=document.createElement("div"); l.className="fx evt-emofx";
       l.innerHTML = Array.from({length:12},(_,i)=>`<i style="left:${(i*8.3+Math.random()*6).toFixed(1)}%;--s:${18+(i*7)%22}px;--d:${16+(i*5)%14}s;--dl:-${(i*2.7).toFixed(1)}s;--dx:${(i%2?1:-1)*(10+i*3)}px;--r:${(i%2?1:-1)*40}deg">${scr.dataset.evtEmoji}</i>`).join("");
-      scr.prepend(l); } }
+      const pz = scr.querySelector(".evt-poster"); if (pz) { l.classList.add("evt-emofx-p"); pz.appendChild(l); } else scr.prepend(l); } }
   /* the calendar page's cover runs under the status bar like the profile photo (Apoorv 28 Sep 01:45); the header turns solid once it scrolls away */
   const cpg = phone.querySelector(".evx-calpg"), cscr = phone.querySelector(".screen");
   if (cpg && cscr) { const pad = parseFloat(getComputedStyle(cscr).paddingTop)||0, hd = phone.querySelector(".evx-over"), cb = cpg.querySelector(".evx-cban");
@@ -14103,6 +14212,12 @@ portWire = function(){
   if (scr && typeof KEY_HIFI!=="undefined" && KEY_HIFI && typeof phPaint==="function") { const rc = convOf((STATE.screen||"").split(":")[1]||""), re = rc && rc.kind==="event" && evE(rc.ev);
     if (re) { const pool = EV_ROOM_PH[["dinner","coffee","party","mixer"].includes(evCv(re).kind) ? "meal" : "talk"];
       phone.querySelectorAll(".mgrid").forEach((g, gi)=>g.querySelectorAll(".mtile").forEach((t, i)=>phPaint(t, phUrl(pool[(gi*3+i)%pool.length], 480, 480), "ph-cover"))); } }
+  /* and the same photos on the chat's details page, its media page and the viewer (Community's tiles, counted the way the chat counts them) */
+  const dc = typeof KEY_HIFI!=="undefined" && KEY_HIFI && typeof phPaint==="function" && /^chatinfo:/.test(STATE.screen||"") && convOf(STATE.screen.slice(9)), de = dc && dc.kind==="event" && evE(dc.ev);
+  if (de) { const pool = EV_ROOM_PH[["dinner","coffee","party","mixer"].includes(evCv(de).kind) ? "meal" : "talk"], top = dc.msgs.filter(m=>(m.att||[]).some(a=>a.t==="img")), L = cShared(dc).filter(x=>x.k==="media");
+    const url = x => { const same = L.filter(y=>y.m===x.m); return phUrl(pool[(Math.max(0, top.indexOf(x.m))*3 + same.length-1-same.indexOf(x)) % pool.length], 480, 480); };
+    phone.querySelectorAll(".cm-mt[data-cview]").forEach(t=>{ const x = L[+t.dataset.cview.split(":")[1]]; if (x && !x.vid) phPaint(t, url(x), "ph-cover"); });
+    const v = phone.querySelector(".cm-vimg"), x = v && L[Math.max(0, Math.min(STATE.ciIdx||0, L.length-1))]; if (x && !x.vid) phPaint(v, url(x), "ph-cover"); }
   q("[data-evreact]", el=>{ const [eid,r]=el.dataset.evreact.split("|"); const b=el.getBoundingClientRect(), pr=phone.getBoundingClientRect();
     evRoom(evE(eid)).msgs.push(M(EV_ME, r, { day:"Today", time:nowTime() })); evKeep(); toast(`${r} sent to the event chat`);
     const f=document.createElement("div"); f.className="evt-float"; f.textContent=r; f.style.left=(b.left-pr.left+b.width/2-16)+"px"; f.style.top=(b.top-pr.top-6)+"px"; phone.appendChild(f); setTimeout(()=>f.remove(), 1100); });
@@ -14999,8 +15114,12 @@ portWire = function(){
 };
 
 
-/* ---- event chat: one room per event. Chat, host updates and questions live together; chips filter them.
-   Research: Meetup folded event comments into one chat (2024); Slido/Zoom rank questions by votes; Apple Invites posts the RSVP note. ---- */
+/* ---- event chat: one room per event, one log in the order things happened (Apoorv 29 Sep 17:52: tabs split it, "its not like a log of
+   everything that has happened in order"). The host's updates, questions and answers are messages told apart by one label, as announcements are
+   in WhatsApp Communities and Discord's announcement channels. The host answers inside the question's thread (Apoorv 29 Sep 18:43: "the answer
+   should be inside the thread"), as Slack answers in threads and Slido marks a question answered, and the answer also lists with the updates.
+   Navigation replaces the tabs: the pinned bar steps back through the updates (Telegram's pinned messages), a chip steps through open questions
+   (Telegram's mention jumper), a tile returns to the latest. ---- */
 const EV_ROOM = { e1:"g-dinner" };
 const evRoomId = e => EV_ROOM[e.id] || "ev-"+e.id;
 function evRoom(e){
@@ -15012,60 +15131,89 @@ function evRoom(e){
   if (e.id==="e1" && !c.evSeeded) { c.evSeeded = true;
     const up = M("chris","Table cards go by interest: AI, climate, hiring. Reply with yours and I'll seat you.",{ day:"Sep 21, 2026", time:"10:02 AM", evType:"update" });
     up.thread = [M("rahul","AI please.",{ day:"Sep 21, 2026", time:"10:20 AM" }), M("maya","AI, next to anyone hiring engineers.",{ day:"Sep 21, 2026", time:"11:05 AM" })]; up.threadCount = 9;
+    const kq = Object.assign(M("kate","Is there parking near the venue?",{ day:"Sep 23, 2026", time:"9:02 AM", evType:"question" }), { votes:["rahul","sana"] });
+    const ka = Object.assign(M("chris","The garage on Hamilton is free after 6.",{ day:"Sep 23, 2026", time:"9:40 AM" }), { evAnswer:true });
+    kq.thread = [ka, M("kate","Perfect, thank you.",{ day:"Sep 23, 2026", time:"9:52 AM" })]; kq.threadCount = 2; kq.answer = { from:"chris", text:ka.text, mid:ka.id };
     c.msgs.unshift(up,
       M("maya","Looking for a technical cofounder for a health-data company. Happy to swap notes on hiring.",{ day:"Sep 22, 2026", time:"9:14 AM", evType:"intro" }),
       M("rahul","Anyone driving down from SF? Two seats in my car.",{ day:"Sep 22, 2026", time:"6:30 PM", react:{"🙌":["sana"]} }),
-      Object.assign(M("kate","Is there parking near the venue?",{ day:"Sep 23, 2026", time:"9:02 AM", evType:"question" }), { votes:["rahul","sana"], answer:{ from:"chris", text:"The garage on Hamilton is free after 6." } }),
+      kq,
       Object.assign(M("sana","Can we bring a plus-one who isn't on Key?",{ day:"Sep 23, 2026", time:"4:40 PM", evType:"question" }), { votes:["rahul","maya","ana","jordan","kate"] }));
     const doors = c.msgs.find(m=>/^Doors at 7/.test(m.text)); if (doors) doors.evType = "update";
   }
   return c;
 }
-function evOpenRoom(id, focus, f){ const e=evE(id); const c=evRoom(e); STATE.evRf=STATE.evRf||{}; STATE.evRf[c.id]=f||"all"; go("dm:"+c.id); if (focus) { const t=phone.querySelector("#ci"); if (t) t.focus(); } }
+function evOpenRoom(id, focus, f){ const e=evE(id); const c=evRoom(e); STATE.evMode=STATE.evMode||{}; STATE.evMode[c.id] = f==="q"&&!e.qaOff ? "question" : f==="up"&&e.host===EV_ME ? "update" : null;
+  go("dm:"+c.id); if (focus || STATE.evMode[c.id]) { const t=phone.querySelector("#ci"); if (t) t.focus(); } }
 function evThread(cid, mid){ const m=(convOf(cid)||{msgs:[]}).msgs.find(x=>x.id===mid); if (m && !m.thread) m.thread=[]; go(`thread:${cid}:${mid}`); }
 function evKeep(){ const b=phone.querySelector(".body"); const y=b?b.scrollTop:0; render(); const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=y; }
 const evUps = c => c.msgs.filter(m=>m.evType==="update"&&!m.deleted);
 const evQs = c => c.msgs.filter(m=>m.evType==="question"&&!m.deleted);
-/* what the composer posts follows the chip you are on: Questions asks, Updates (the host) updates, anything else is a message (Slido, Zoom Q&A) */
-const evRoomPost = c => { const e=evE(c.ev), f=(STATE.evRf||{})[c.id]; return f==="q"&&!e.qaOff ? "question" : f==="up"&&e.host===EV_ME ? "update" : "message"; };
-
+/* open questions first, most upvoted first */
+const evQsRanked = c => evQs(c).sort((a,b)=>!!a.answer-!!b.answer || (b.votes||[]).length-(a.votes||[]).length);
+const evAns = c => evQs(c).map(q=>({ q, m:q.answer && (q.thread||[]).find(r=>r.id===q.answer.mid) })).filter(x=>x.m);
+const evAt = m => Date.parse(`${m.day==="Today"?"Dec 31, 2099":m.day} ${m.time}`) || 0;
+/* what the host has said to everyone: updates, and answers (Apoorv 29 Sep 18:43: "these should also be in the updates"), oldest first */
+const evNews = c => evUps(c).map(m=>({ m })).concat(evAns(c)).sort((a,b)=>evAt(a.m)-evAt(b.m));
+const evDay = m => m.day==="Today" ? "Today" : m.day.replace(/, \d{4}$/,"");
+/* what the composer posts follows its mode, picked from the chips above it: a question, or (the host) an update; anything else is a message */
+const evRoomPost = c => { const e=evE(c.ev), f=(STATE.evMode||{})[c.id]; return f==="question"&&!e.qaOff ? "question" : f==="update"&&e.host===EV_ME ? "update" : "message"; };
+/* scrolls the log to one message and flashes its row (Messages' highlight) */
+function evTo(cid, mid){ const b=phone.querySelector(".chatbody"), el=b&&b.querySelector(`[data-lp^="${cid}|${mid}|"]`); if (!el) return; const r=el.closest(".brow")||el;
+  const y = b.scrollTop + r.getBoundingClientRect().top - b.getBoundingClientRect().top - Math.max(0, (b.clientHeight - r.offsetHeight)/2);
+  b.scrollTo({ top:y, behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth" }); r.classList.add("hl"); setTimeout(()=>r.classList.remove("hl"), 1400); }
 /* updates, questions and intros read as messages like the rest of the room, told apart by one label (Apoorv 28 Sep 02:24: the room read crowded) */
-const EV_KIND = { update:["megaphone","Update"], question:["message-circle-question-mark","Question"], intro:["hand","Intro"] };
+const EV_KIND = { update:["megaphone","Update"], question:["message-circle-question-mark","Question"], answer:["check","Answer"], intro:["hand","Intro"] };
 /* photos people post in an event chat, in the hi-fi copy: Pexels photographs (Pexels License), meals for dinners, coffees, parties and mixers, talks for the rest */
-/* The event chat is Messages' chat in the event's colours (Apoorv 28 Sep 23:40): no effects behind the messages; on a dark theme the ground dims
-   (WhatsApp's wallpaper dimming) and others' bubbles take the theme's middle colour, moved until they stand off every part of the ground and
-   their times (white at 70%) still pass AA; a light theme keeps Messages' white bubbles */
+/* The event chat is Messages' chat in the event's colours (Apoorv 28 Sep 23:40): no effects behind the messages. On a dark theme the ground dims
+   (WhatsApp's wallpaper dimming) and others' bubbles are a veil of white over it, the way iMessage, WhatsApp and Telegram lift received bubbles
+   off a dark ground (Apoorv 29 Sep 17:52: the bubbles looked weird in the theme's middle colour): the thinnest veil that stands off every part
+   of the ground while its times (white at 70%) still pass AA. A light theme keeps Messages' white bubbles */
 const evRgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const evLum = c => c.map(v=>{ v/=255; return v<=.04045 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4); }).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i], 0);
 const evCon = (a,b) => { const x=evLum(a), y=evLum(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05); };
 const evMix = (a,b,k) => a.map((v,i)=>Math.round(v+(b[i]-v)*k));
 function evRoomTone(scr, p, t){ if (!t.inkIsLight) return;
-  const dim = 1-(1-(t.scrim?t.scrim.alpha:0))*.55, st = p.stops.map(evRgb), W=[255,255,255], K=[0,0,0], mid = st[Math.floor(st.length/2)];
+  const dim = 1-(1-(t.scrim?t.scrim.alpha:0))*.55, st = p.stops.map(evRgb), W=[255,255,255], K=[0,0,0];
   const ground = Array.from({length:9}, (_,i)=>{ const x=i/8*(st.length-1), j=Math.min(st.length-2, Math.floor(x)); return evMix(evMix(st[j], st[j+1], x-j), K, dim); });
-  const ok = c => evCon(evMix(c, W, .7), c)>=4.5 && Math.min(...ground.map(g=>evCon(c, g)))>=1.3;
-  const tone = Array.from({length:31}, (_,i)=>evMix(mid, W, i*.02)).concat(Array.from({length:31}, (_,i)=>evMix(mid, K, i*.02))).find(ok) || K;
-  scr.style.setProperty("--ev-scrim", `rgb(0 0 0 / ${dim.toFixed(2)})`); scr.style.setProperty("--evx-bub", `rgb(${tone.join(" ")})`); }
+  const ok = a => ground.every(g=>{ const b=evMix(g, W, a); return evCon(b, g)>=1.25 && evCon(evMix(b, W, .7), b)>=4.5; });
+  const a = Array.from({length:15}, (_,i)=>.08+i*.01).find(ok) || .08;
+  scr.style.setProperty("--ev-scrim", `rgb(0 0 0 / ${dim.toFixed(2)})`); scr.style.setProperty("--evx-bub", `rgb(255 255 255 / ${a.toFixed(2)})`); }
 const _evThreadScreen = sThread;
-sThread = function(cid, pid){ const c=convOf(cid), e=c && c.kind==="event" && evE(c.ev || (cid==="g-dinner"?"e1":"")); const h=_evThreadScreen(cid, pid); return e ? evScreen(e, h) : h; };
+sThread = function(cid, pid){ const c=convOf(cid), e=c && c.kind==="event" && evE(c.ev || (cid==="g-dinner"?"e1":"")); const h=_evThreadScreen(cid, pid); return e ? evScreen(e, evThreadIn(c, e, pid, h)) : h; };
 const EV_ROOM_PH = { meal:[6954471, 6955659, 6955635, 5638730, 5962043, 9961852], talk:[8761540, 8761524, 6950142, 29708266, 8761324, 8761555] };
-function evRoomBubble(c, e, m, flat){
-  const [ic, label] = EV_KIND[m.evType]; const q = m.evType==="question", v = m.votes||[];
-  const kind = `<span class="evx-kind">${evIc(ic,14)}${label}${q&&m.answer?" · Answered":""}</span>`;
-  const acts = q ? `<button class="evx-vote ${v.includes(EV_ME)?'on':''}" data-evvote="${c.id}|${m.id}" aria-label="Upvote">${evIc("chevron-up",14)}<b>${v.length}</b></button>${!m.answer&&e.host===EV_ME?`<button class="evx-act" data-evanswer="${c.id}|${m.id}">Answer</button>`:""}`
-    : m.evType==="update" ? (m.thread&&m.thread.length ? "" : `<button class="evx-act" onclick="event.stopPropagation();evThread('${c.id}','${m.id}')">Reply</button>`)
-    : m.from===EV_ME ? "" : `<button class="evx-act ${m.waved?'on':''}" data-evwave="${c.id}|${m.id}">${evIc(m.waved?"check":"hand",14)}${m.waved?"Waved":"Wave"}</button>`;
-  const ans = q && m.answer ? `<div class="evx-ans"><b>${P(m.answer.from).name}</b> <span>host</span><div>${fmtText(m.answer.text)}</div></div>` : "";
-  const day = flat && m.day!=="Today" ? `${m.day.replace(", 2026","")} · ` : "";
-  let h = bubbleHTML(c, m, true).replace('class="brow ', `class="brow evx-k-${m.evType} `);
-  h = h.includes('<div class="bn"') ? h.replace(/(<div class="bn"[^>]*>[^<]*<\/div>)/, `<div class="evx-bn">$1${kind}</div>`) : h.replace(/(<div class="bub [^>]*>)/, `$1<div class="evx-bn">${kind}</div>`);
-  return h.replace(/<div class="bf">((?:(?!<\/div>).)*)<\/div>/, (_, t)=>`${ans}<div class="bf evx-bact">${acts}<span class="evx-tm">${day}${t}</span></div>`);
+const evKindTag = k => { const [ic, label] = EV_KIND[k]; return `<span class="evx-kind">${evIc(ic,14)}${label}</span>`; };
+const evKindIn = (h, kind) => h.includes('<div class="bn"') ? h.replace(/(<div class="bn"[^>]*>[^<]*<\/div>)/, `<div class="evx-bn">$1${kind}</div>`) : h.replace(/(<div class="bub [^>]*>)/, `$1<div class="evx-bn">${kind}</div>`);
+const evVote = (c, m) => { const v=m.votes||[], on=v.includes(EV_ME); return `<button class="evx-vote ${on?"on":""}" data-evvote="${c.id}|${m.id}" aria-pressed="${on}" aria-label="Upvote, ${v.length}">${evIc("arrow-up",18)}<b>${v.length}</b></button>`; };
+const evDone = t => `<span class="evx-done">${evIc("check",14)}${t}</span>`;
+function evRoomBubble(c, e, m){
+  const acts = m.evType==="question" ? (m.answer ? evDone("Answered") : e.host===EV_ME ? `<button class="evx-btn pri" data-evanswer="${c.id}|${m.id}">${evIc("reply",16)}Answer</button>` : "")
+    : m.evType==="update" ? (m.thread&&m.thread.length || m.from===EV_ME ? "" : `<button class="evx-btn" onclick="event.stopPropagation();evThread('${c.id}','${m.id}')">${evIc("reply",16)}Reply</button>`)
+    : m.evType==="intro" && m.from!==EV_ME ? (m.waved ? evDone("You waved") : `<button class="evx-btn pri" data-evwave="${c.id}|${m.id}">${evIc("hand",16)}Wave at ${evFirst(m.from)}</button>`) : "";
+  let h = evKindIn(bubbleHTML(c, m, true).replace('class="brow ', `class="brow evx-k-${m.evType} `), evKindTag(m.evType));
+  if (m.evType==="question") h = h.replace(/(<div class="bub [^>]*>)/, `$1${evVote(c, m)}`);
+  return acts ? h.replace(/<div class="bf">((?:(?!<\/div>).)*)<\/div>/, (_, t)=>`<div class="bf evx-bact">${acts}<span class="evx-tm">${t}</span></div>`) : h;
 }
-function evRoomMsgs(c, e, list, flat){
+/* the host's answer carries its label inside the thread */
+const _evBubbleHTML = bubbleHTML;
+bubbleHTML = function(c, m, firstOfRun, opts){ const h = _evBubbleHTML(c, m, firstOfRun, opts); return m.evAnswer ? evKindIn(h.replace('class="brow ', 'class="brow evx-k-answer '), evKindTag("answer")) : h; };
+/* a question's thread: the question keeps its label and upvote on top, and until the host has answered, the host's composer says it answers */
+function evThreadIn(c, e, pid, h){
+  const pm = c.msgs.find(m=>m.id===pid); if (!pm || !EV_KIND[pm.evType]) return h;
+  h = h.replace(/(<div class="tparent"[\s\S]*?<b class="sm">[^<]*<\/b>)/, `$1${evKindTag(pm.evType)}`);
+  if (pm.evType!=="question") return h;
+  h = h.replace(/<div class="tparent"([^>]*)>/, `<div class="tparent evx-tq"$1>${evVote(c, pm)}`);
+  if (pm.answer || e.host!==EV_ME) return h;
+  const n = (pm.votes||[]).length;
+  return h.replace('placeholder="Start typing..."', `placeholder="Answer ${evFirst(pm.from)}"`)
+    .replace('<div class="crow', `<div class="rq evx-mode"><i></i>${evIc("check",16)}<div class="m"><b>Your answer</b><span>Pushed to ${evFirst(pm.from)}${n?` and ${n} who upvoted`:""}. Shows in Updates.</span></div></div><div class="crow`);
+}
+function evRoomMsgs(c, e, list){
   let out="", prevDay=null, prev=null;
   list.forEach(m=>{
-    if (!flat && m.day!==prevDay) { out += `<div class="dsep"><span>${m.day}</span></div>`; prevDay=m.day; prev=null; }
+    if (m.day!==prevDay) { out += `<div class="dsep"><span>${m.day}</span></div>`; prevDay=m.day; prev=null; }
     if (m.sys) { out += `<div class="syspill"><span>${m.sys}</span></div>`; return; }
-    if (m.evType) { out += evRoomBubble(c, e, m, flat); prev=null; return; }
+    if (m.evType) { out += evRoomBubble(c, e, m); prev=null; return; }
     out += bubbleHTML(c, m, !prev || prev.from!==m.from); prev=m;
   });
   return out;
@@ -15075,38 +15223,81 @@ chatScreen = function(id){
   seedChats(); if (!DB.chat[id] && /^ev-/.test(id) && evE(id.slice(3))) evRoom(evE(id.slice(3)));
   const c = convOf(id); const e = c && c.kind==="event" && evE(c.ev || (id==="g-dinner"?"e1":""));
   if (!e || STATE.editMsg) return _evBaseChat(id);
-  evRoom(e); const host = e.host===EV_ME; const f0 = (STATE.evRf||{})[id]||"all", f = f0==="q"&&e.qaOff ? "all" : f0;
-  const ups = evUps(c), qs = evQs(c), open = qs.filter(m=>!m.answer).length;
-  const closed = e.past && e.id!=="e1";
-  const list = f==="q" ? qs.slice().sort((a,b)=>(!!a.answer-!!b.answer)||((b.votes||[]).length-(a.votes||[]).length)) : f==="up" ? ups.slice().reverse() : c.msgs;
-  const latest = ups[ups.length-1];
-  const pin = latest && f==="all" ? `<div class="evx-pin" data-m="${latest.id}"><div class="pinbar" data-evrf="up">${evIc("megaphone",16)}<div class="m"><div class="sm ell">${latest.text}</div></div>${ups.length>1?`<span class="xs faint">${ups.length-1} more</span>`:""}</div></div>` : "";
-  const chips = `<div class="pills evx-rchips">${[["all","All"]].concat(e.qaOff?[]:[["q",`Questions${qs.length?` · ${open?open+" open":qs.length}`:""}`]], [["up",`Updates${ups.length?` · ${ups.length}`:""}`]]).map(([k,l])=>`<div class="pill ${f===k?'on':''}" data-evrf="${k}">${l}</div>`).join("")}</div>`;
-  const mine = c.msgs.some(m=>m.from===EV_ME);
-  const first = !mine && !closed && f==="all" && !((STATE.drafts||{})[id]) ? `<div class="evx-first"><span class="chip sug" data-evhi="${id}">Say what you're hoping to get out of it</span></div>` : "";
-  const empty = !list.length ? `<div class="estate"><div class="et">${f==="q"?"No questions yet":"No updates yet"}</div><div class="es">${f==="q"?"Ask the host anything. Others can upvote it.":"The host's updates pin here and reach everyone going."}</div></div>` : "";
-  const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb cv-th" onclick="go('eventd:${e.id}')">${evCvArt(e)}</div><div class="hm" onclick="go('eventd:${e.id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${evIc("bell")}</div><div class="icon" onclick="openSheet('conv','${id}')" aria-label="More">${evIc("ellipsis")}</div></div>`;
-  const ph = { message:"Message everyone going", question:"Ask the host a question", update:"Update everyone going" }[evRoomPost(c)];
-  const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>`
-    : f==="up" && !host ? `<div class="foot cbar evx-ro">${evIc("megaphone",16)}<span>Only ${evFirst(e.host)} posts updates</span></div>`
-    : composerBar(c).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
-  return evScreen(e, `${hdr}<div class="body chatbody">${pin}${chips}<div class="evx-list">${empty}${evRoomMsgs(c, e, list, f!=="all")}</div>${first}</div>${bar}`);
+  evRoom(e); const host = e.host===EV_ME, closed = e.past && e.id!=="e1", mode = evRoomPost(c);
+  const ups = evUps(c), open = e.qaOff ? [] : evQs(c).filter(m=>!m.answer);
+  const pm = ups[ups.length-1];
+  const pin = pm ? `<div class="evx-pinwrap"><div class="pinbar evx-pinbar" data-evpin="${id}|${pm.id}"><span>${evIc("megaphone",16)}</span><div class="m"><div class="xs faint">${ups.length>1?`Update ${ups.length} of ${ups.length}`:"Pinned update"}</div><div class="sm ell">${pm.text.replace(/[*_~`>]/g,"")}</div></div>${evNews(c).length>1?`<span class="evx-pinl" data-evsheet="evups|${id}" aria-label="All updates">${evIc("list",18)}</span>`:""}</div></div>` : "";
+  const rt = (STATE.replyTo||{})[id];
+  const mine = c.msgs.some(m=>m.from===EV_ME), draft = ((STATE.drafts||{})[id]||"").trim();
+  const chips = closed || rt || mode!=="message" ? "" : [
+    host ? `<span class="chip" data-evmode="${id}|update">${evIc("megaphone",16)}Post an update</span>` : e.qaOff ? "" : `<span class="chip" data-evmode="${id}|question">${evIc("message-circle-question-mark",16)}Ask ${evFirst(e.host)}</span>`,
+    open.length ? `<span class="chip" data-evjq="${id}">${evIc("arrow-up",16)}${open.length} open question${open.length>1?"s":""}</span>` : "",
+    !mine && !draft ? `<span class="chip" data-evhi="${id}">${evIc("hand",16)}Introduce yourself</span>` : ""].join("");
+  const modeBar = mode==="message" ? "" : `<div class="rq evx-mode"><i></i>${evIc(mode==="question"?"message-circle-question-mark":"megaphone",16)}<div class="m"><b>${mode==="question"?`Question for ${evFirst(e.host)}`:"Update"}</b><span>${mode==="question"?"Everyone going sees it and can upvote it":`Pins at the top and reaches all ${e.going} going`}</span></div><span class="x" data-evmode="${id}|" aria-label="Back to a message">×</span></div>`;
+  const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb cv-th" onclick="STATE.ciTab='about';go('chatinfo:${id}')">${evCvArt(e)}</div><div class="hm" onclick="STATE.ciTab='about';go('chatinfo:${id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${evIc("bell")}</div><div class="icon" onclick="openSheet('conv','${id}')" aria-label="More">${evIc("ellipsis")}</div></div>`;
+  const ph = { message:"Message everyone going", question:`Ask ${evFirst(e.host)} a question`, update:"Update everyone going" }[mode];
+  let comp = composerBar(c).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
+  comp = comp.replace('<div class="crow', `${chips?`<div class="evx-cchips">${chips}</div>`:""}${modeBar}<div class="crow`);
+  const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>` : comp;
+  return evScreen(e, `${hdr}${pin}<div class="body chatbody"><div class="evx-list">${evRoomMsgs(c, e, c.msgs)}</div></div><div class="evx-jump"><span class="evx-jl" aria-label="Jump to the latest">${evIc("arrow-down",20)}</span></div>${bar}`);
 };
 const _evSend = sendMsg;
 sendMsg = function(cid, k, confirmed){
-  const c = convOf(cid); const n = c ? c.msgs.length : 0; _evSend(cid, k, confirmed);
-  const t = c && c.kind==="event" ? evRoomPost(c) : "message";
-  if (String(k||"").includes("::") || t==="message" || c.msgs.length===n) return;
-  const m = c.msgs[c.msgs.length-1]; m.evType = t; if (t==="question") m.votes = [];
+  const c = convOf(cid), room = c && c.kind==="event", pid = String(k||"").split("::")[1], ev = room && !pid; const n = c ? c.msgs.length : 0;
+  const e = room && evE(c.ev || (cid==="g-dinner"?"e1":"")), t = ev ? evRoomPost(c) : "message";
+  const pq = room && pid && c.msgs.find(x=>x.id===pid), answering = pq && pq.evType==="question" && !pq.answer && e.host===EV_ME, r0 = pq ? (pq.thread||[]).length : 0;
+  _evSend(cid, k, confirmed);
+  if (answering && (pq.thread||[]).length>r0) { const r = pq.thread[pq.thread.length-1]; r.evAnswer = true; pq.answer = { from:EV_ME, text:r.text, mid:r.id }; render();
+    toast(`Answered. ${evFirst(pq.from)}${(pq.votes||[]).length?" and everyone who upvoted":""} get${(pq.votes||[]).length?"":"s"} a push.`); return; }
+  if (!ev || c.msgs.length===n) return;
+  const m = c.msgs[c.msgs.length-1];
+  if (t==="message") return;
+  m.evType = t; if (t==="question") m.votes = []; STATE.evMode[cid] = null;
   render(); scrollChat();
-  toast(t==="update" ? `Pinned and pushed to ${c.members} going.` : "Asked. The host sees it; others can upvote it.");
+  toast(t==="update" ? `Pinned and pushed to ${e.going} going.` : "Asked. The host sees it; others can upvote it.");
+};
+
+/* ---- event chat details (Apoorv 29 Sep 18:43: "event chat needs a chat details page too, from where i can also access all questions, updates
+   and media"; it replaces "no details page", 26 Sep). The event is the page's identity, as the KeyEventCard every event list uses, and opens the
+   event. The rest is Community's details page (cm-*): the room's actions, the host's updates with their answers, questions by upvotes, and what
+   people shared, each opening its full list; shared media opens Community's media page and viewer. ---- */
+const _evChatInfo = sChatInfo;
+sChatInfo = function(cid){
+  seedChats(); if (!DB.chat[cid] && /^ev-/.test(cid) && evE(cid.slice(3))) evRoom(evE(cid.slice(3)));
+  const c = convOf(cid), e = c && c.kind==="event" && evE(c.ev || (cid==="g-dinner"?"e1":""));
+  if (!e) return _evChatInfo(cid);
+  evRoom(e); const sub = ["evups","evqs","evmedia"].includes(STATE.ciTab) ? STATE.ciTab : null, host = e.host===EV_ME;
+  if (sub==="evmedia") { STATE.ciTab = "media"; const h = cDetails(cid); STATE.ciTab = sub; return h.replace("STATE.ciTab='about';STATE.backNav=true;goBack()", "STATE.ciTab='about';render()"); }
+  const hdr = t => `<div class="hdr"><div class="back" onclick="STATE.ciTab='about';${sub?"render()":"STATE.backNav=true;goBack()"}">‹</div><div style="flex:1;font-size:18px;font-weight:700">${t}</div></div>`;
+  const news = evNews(c).reverse(), qs = e.qaOff ? [] : evQsRanked(c), sh = cShared(c), media = sh.filter(x=>x.k==="media");
+  const newsRow = ({m, q}) => `<div class="cm-row evx-drow" onclick="${q?`evThread('${cid}','${q.id}')`:`openAt('${cid}','${m.id}')`}"><span class="evx-lt">${evIc(q?"check":"megaphone",24)}</span><div class="m"><div class="b">${q?`Answer to ${evFirst(q.from)}`:"Update"} · ${evDay(m)}</div><div class="cm-text cm-clamp">${m.text}</div></div></div>`;
+  const qRow = m => { const r = m.thread ? (m.threadCount||m.thread.length) : 0;
+    return `<div class="cm-row evx-drow" onclick="evThread('${cid}','${m.id}')">${av(P(m.from).initials)}<div class="m"><div class="b">${m.from===EV_ME?"You":evFirst(m.from)} · ${m.answer?"Answered":"Open"}${r?` · ${r} ${r===1?"reply":"replies"}`:""}</div><div class="cm-text cm-clamp">${m.text}</div></div>${evVote(c, m)}</div>`; };
+  if (sub==="evups") return `${hdr(`Updates <span class="cm-cnt0">${news.length}</span>`)}<div class="body cm-det">${news.map(newsRow).join("")||`<div class="cm-meta0">Nothing from ${evFirst(e.host)} yet.</div>`}</div>`;
+  if (sub==="evqs") { const open = qs.filter(m=>!m.answer), done = qs.filter(m=>m.answer);
+    return `${hdr(`Questions <span class="cm-cnt0">${qs.length}</span>`)}<div class="body cm-det">${open.length?`<div class="cm-mo">Open</div>${open.map(qRow).join("")}`:""}${done.length?`<div class="cm-mo">Answered</div>${done.map(qRow).join("")}`:""}${qs.length?"":`<div class="cm-meta0">No questions yet.</div>`}</div>`; }
+  const off = c.evNotif==="off";
+  const acts = [[off?"bell-off":"bell", off?"Muted":"Mute", `data-evsheet="evroomnotif|${cid}"`], ["search", "Search", `onclick="toast('Search in the chat')"`],
+    ["users", "Guests", `onclick="go('eventd:guests.${e.id}')"`], host ? ["sliders-horizontal", "Manage", `onclick="go('eventd:manage.${e.id}')"`] : null].filter(Boolean);
+  const strip = media.length ? `<div class="cm-mstrip">${media.slice(0,4).map((x,i)=>cMT(cid, x, i, "", i===3&&media.length>4?`<b>+${media.length-3}</b>`:"")).join("")}</div>` : "";
+  const kinds = { media:"media", links:"links", docs:"docs", voice:"voice" };
+  return `${hdr("Event chat")}<div class="body cm-det evx-det">
+    <div class="evx-dcard">${evCard(e, "row", {})}</div>
+    <div class="cm-acts">${acts.map(([i,l,on])=>`<div class="cm-act ${l==="Muted"?"on":""}" ${on}>${evIc(i,20)}<span>${l}</span></div>`).join("")}</div>
+    <div class="cm-sec">${cHead(`Updates <i>${news.length}</i>`, news.length>2?"See all":"", `onclick="STATE.ciTab='evups';render()"`)}${news.slice(0,2).map(newsRow).join("")||`<div class="cm-meta0">Nothing from ${evFirst(e.host)} yet.</div>`}</div>
+    ${e.qaOff?"":`<div class="cm-sec">${cHead(`Questions <i>${qs.length}</i>`, qs.length>3?"See all":"", `onclick="STATE.ciTab='evqs';render()"`)}${qs.slice(0,3).map(qRow).join("")||`<div class="cm-meta0">No questions yet. Ask ${evFirst(e.host)} from the chat.</div>`}</div>`}
+    <div class="cm-sec">${cHead(`Media, links and docs <i>${sh.length}</i>`, sh.length?"See all":"", `onclick="STATE.ciTab='evmedia';render()"`)}${strip}<div class="cm-meta0">${sh.length ? Object.keys(kinds).map(k=>`${sh.filter(x=>x.k===k).length} ${kinds[k]}`).join(" · ") : "Nothing shared yet."}</div></div>
+    <div class="cm-sec cm-list cm-end">
+      <div class="cm-row" onclick="openSheet('report','conv|${cid}')"><div class="cm-ic">${evIc("flag",18)}</div><div class="m"><div class="a">Report</div><div class="b">Key's team reviews it</div></div></div>
+      ${host||e.past?"":`<div class="cm-row cm-danger" data-evsheet="evleave|${e.id}"><div class="cm-ic">${evIc("log-out",18)}</div><div class="m"><div class="a">Can't go anymore</div><div class="b">You come off the guest list and leave the chat</div></div></div>`}
+    </div></div>`;
 };
 
 /* one sticky action per state; hides while you scroll down (Luma, Partiful). Invited and waiting states act inside their section. */
 function evCta(e, live, locked){
   if (locked) return [`${evIc("lock")} Apply to join`, `toast('Application opens. Tabs stay open while it\\'s pending.')`, ""];
   if (e.past) return [`${evIc("image-plus")} Add photos`, "", `data-evphotos="${e.id}"`];
-  if (e.reg==="hosting") return [`${evIc("settings")} Manage`, "", `data-evgo="eventd:manage.${e.id}"`];
+  if (e.reg==="hosting") return [`${evIc("sliders-horizontal")} Manage`, "", `data-evgo="eventd:manage.${e.id}"`];
   if (live && !e.checkedIn) return [`${evIc("map-pin-check")} Check in`, "", `data-checkin="${e.id}"`];
   if (e.reg==="going" || live) return [`${evIc("message-circle")} Open event chat`, "", `data-evroom="${e.id}"`];
   if (e.reg==="none") return [`${evIc(e.approval?"hand":"ticket")} ${e.approval?"Request to join":"Register"}, ${e.price?`$${e.price}`:"free"}`, "", `data-evrsvp="${e.id}"`, e.approval?`${evFirst(e.host)} approves each guest`:""];
@@ -17614,7 +17805,7 @@ function bfCard(c, i, total){
     : `<button type="button" class="p" data-bs="act">${c.act.label}</button><button type="button" class="s" data-bs="later">Next</button>`;
   return `<div class="bs-card bf-one" data-kind="${c.kind}" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=${c.kind}">
     <div class="bf-pic ${c.ev?"ev":""}">${bfPic(c)}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
-    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${c.draft && !sent ? `<button type="button" class="bf-open" data-bs="alt">${c.kind==="intro" ? `Open ${c.draft.to}'s intro` : "Open the conversation"}${LI("chevron-right",16)}</button>` : ""}${done}</div>
+    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${c.origin && !sent ? `<button type="button" class="bf-open" data-bs="origin">${c.origin.label}${LI("chevron-right",16)}</button>` : ""}${done}</div>
     <div class="bs-acts">${acts}</div></div>`;
 }
 STATE.brSeen = STATE.brSeen || {};
@@ -17709,7 +17900,8 @@ function brPicks(){
   return (DB.opps||[]).filter(o => o.personId && typeof ownerOf==="function" && ownerOf(o)==="you" && isNewOf(o)).slice(0, 2).map(o => {
     const p = targetOf(o), m = (DB.missions||[]).find(x => x.id===o.missionId);
     return { id:"opp:"+o.id, kind:"pick", label:"New pick", fam:null, where: m ? m.name : "", who:p, title:`${p.name}, ${p.title} at ${p.company}`,
-      why: o.receipts && o.receipts[0] ? o.receipts[0][1] : "", act:{ label:`Say hi to ${firstName(p)}`, go:`openSheet('ask','${o.id}')` }, did:`Opened your hello to ${firstName(p)}` }; });
+      why: o.receipts && o.receipts[0] ? o.receipts[0][1] : "", act:{ label:`Say hi to ${firstName(p)}`, go:`openSheet('ask','${o.id}')` }, did:`Opened your hello to ${firstName(p)}`,
+      origin: m ? { label:`Open ${m.name}`, go:`go('mission:${m.id}')` } : null }; });
 }
 function brBackCard(){
   const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"); if (!r) return null;
@@ -17719,6 +17911,10 @@ function brBackCard(){
 /* the running order: what needs you, your mission picks, what came back to you, then what moved in each community */
 function brCards(){
   const { deck, facts } = brDeck(), L = deck.map(c => Object.assign(c, { card:"one" }));
+  /* every card can open the place it came from (Apoorv 20:04), not only its quick action */
+  L.forEach(c => { const ch = c.alt && (/channel:([\w-]+)/.exec(c.alt.go)||[])[1];
+    c.origin = c.draft ? { label: c.kind==="intro" ? `Open ${c.draft.to}'s intro` : ch ? `Open in #${ch}` : "Open the conversation", go:c.alt.go }
+      : c.ev ? { label:`Open ${c.ev.name}`, go:`go('eventd:${c.ev.id}')` } : null; });
   brPicks().forEach(c => L.push(Object.assign(c, { card:"one" }))); const b = brBackCard(); if (b) L.push(Object.assign(b, { card:"one" }));
   /* what moved: two at most, the ones where a person said something first */
   const S = []; [["you", null], ...DB.families.map(f => [f.id, f])].forEach(([k, f]) => { const F = (facts[k]||[]).slice(0, 3); if (!F.length) return;
@@ -17732,19 +17928,28 @@ function brRunNow(){
 const brMins2 = n => Math.max(1, Math.round(n * 15 / 60));
 const brPart = () => { const h = new Date().getHours(); return h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"; };
 function brWho(L){ const s = []; L.forEach(c => { const w = c.who || (c.lead && c.lead.who); if (w && w.id && !s.some(p => p.id===w.id)) s.push(w); }); return s; }
+/* KeyBriefEntry (Apoorv 20:04: "show the welcome message, with some good colorful card inviting me which can be dynamic with motion
+   design... community logo then a couple of user avatars... look damn fun"). A welcome, a colour field that follows the time of day
+   and drifts slowly, the community with most in the brief then the people who need you, and one button. Every colour carries white
+   text at 4.5:1 or better. Still under reduced motion. Done collapses to one quiet row. */
+function brLeadFam(L){ const n = {}; L.forEach(c => { if (c.fam) n[c.fam.id] = (n[c.fam.id]||0) + 1; }); return brFam(Object.keys(n).sort((a, b) => n[b] - n[a])[0]); }
 brBanner = function(){
   if (!STATE.member) return "";
   const R = STATE.brRun, L = R ? R.L : brCards(); if (!L.length) return "";
   const n = L.length, handled = R ? Object.keys(R.done).length : 0, seen = R ? Math.min(R.at, n) : 0, fin = R && R.at >= n;
-  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean), W = brWho(L).slice(0, 3);
   if (fin) return `<button type="button" class="brief bentry fin" data-kc="KeyBriefEntry" data-kv="state=done" onclick="brOpen(this)">
-    <span class="be-tick" aria-hidden="true">${LI("check",20)}</span><span class="be-m"><b>You're through your ${brPart()} brief</b><span>${handled ? `You handled ${handled} of ${n}` : `${n} seen`}. Kai brings the next ones here.</span></span>${LI("chevron-right",18)}</button>`;
-  const line = need.length ? `${need.slice(0, 2).map(firstName).join(need.length===2 ? " and " : ", ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you` : "Nothing needs you, just what moved";
-  return `<button type="button" class="brief bentry" data-kc="KeyBriefEntry" data-kv="state=${seen ? "part" : "new"};cards=${n}" onclick="brOpen(this)" aria-label="${seen ? `Continue your brief, ${seen} of ${n}` : `Open your brief, ${n} things`}">
-    <span class="be-top"><span class="be-k">${typeof kaiMark==="function" ? kaiMark(20) : ""}Your ${brPart()} brief</span></span>
-    <span class="be-mid"><span class="be-m"><b>${seen ? `${n-seen} left to go` : `${n} things since you were here`}</b><span>${line}</span></span>
-      <span class="be-faces" aria-hidden="true">${W.map(p => `<span>${brPortrait(p.initials, p.id, 160)}</span>`).join("")}</span></span>
-    <span class="be-foot">${seen ? `<span class="be-bar" aria-hidden="true"><i style="width:${Math.round(seen/n*100)}%"></i></span><span class="be-t">${seen} of ${n}</span>` : `<span class="be-t">About ${brMins2(n)} min · one at a time</span>`}<span class="be-go">${seen ? "Continue" : "Start"}</span></span></button>`;
+    <span class="be-tick pal-${brPart()}" aria-hidden="true">${LI("check",20)}</span><span class="be-m"><b>You're through your ${brPart()} brief</b><span>${handled ? `You handled ${handled} of ${n}` : `${n} seen`}. Kai brings the next ones here.</span></span>${LI("chevron-right",18)}</button>`;
+  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean);
+  const W = [...need, ...brWho(L)].filter((p, k, a) => a.findIndex(x => x.id===p.id)===k).slice(0, 2), f = brLeadFam(L), enter = !STATE.brEntered; STATE.brEntered = true;
+  const line = need.length ? `${need.slice(0, 2).map(firstName).join(" and ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you.` : "Nobody's waiting, just what moved.";
+  return `<button type="button" class="brief bentry pal-${brPart()} ${enter ? "enter" : ""} ${bsStill() ? "still" : ""}" data-kc="KeyBriefEntry" data-kv="state=${seen ? "part" : "new"};cards=${n};tone=${brPart()}" onclick="brOpen(this)" aria-label="${seen ? `Continue your brief, ${seen} of ${n}` : `Open your brief, ${n} things`}">
+    <span class="be-glow" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="be-top"><span class="be-k">${typeof kaiMark==="function" ? kaiMark(20) : ""}Your ${brPart()} brief</span><span class="be-t">${seen ? `${seen} of ${n}` : `About ${brMins2(n)} min`}</span></span>
+    <span class="be-hi">${brGreeting()}</span>
+    <span class="be-sub">${seen ? `${n-seen} left in your brief.` : `${n} things since you were here.`} ${line}</span>
+    ${seen ? `<span class="be-bar" aria-hidden="true"><i style="width:${Math.round(seen/n*100)}%"></i></span>` : ""}
+    <span class="be-foot"><span class="be-who" aria-hidden="true">${f ? `<span class="be-fm">${brFamMark(f, 44)}</span>` : ""}${W.map(p => `<span class="be-fc">${brPortrait(p.initials, p.id, 160)}</span>`).join("")}</span>
+      <span class="be-go">${seen ? "Continue" : "Start"}${LI("arrow-right",18)}</span></span></button>`;
 };
 /* Back to brief: while you're on an action's own screen, a bar at the top (the minimised-call bar, so it never covers a composer or
    the nav) takes you back to the next card */
@@ -17798,6 +18003,7 @@ brOpen = function(fromEl){
       if (what==="done") { R.at = L.length; (notifs()||[]).forEach(a => a.unread = false); (DB.activity||[]).forEach(a => a.unread = false); return close(true); }
       if (what==="left") { const k = L.findIndex(x => !R.done[x.id] && x.card==="one" && x.label==="Needs you"); return go2(k); }
       if (what==="alt") return out(c.alt.go, c, didOf(c));
+      if (what==="origin") return out(c.origin.go, c, c.kind==="pick" ? `Looked at ${c.where}` : didOf(c));
       if (what==="act") return c.card==="sum" ? out(c.lead ? c.lead.go || c.lead[2] : c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')", c, didOf(c)) : c.act.item ? runAsk(c.act.item, c, didOf(c)) : out(c.act.go, c, didOf(c));
       if (what==="send") { const d = vw.querySelector("[data-bfdraft]"), text = (d ? d.innerText : c.draft.text).trim(); if (!text) return;
         const tgt = c.id.startsWith("ask:") ? DB.asks.find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
@@ -19574,10 +19780,43 @@ const _mhPathBody = scPathBody; scPathBody = function(id, asSheet){
   const rows = r.querySelector(".sl + .rows"), recs = (o.receipts||[]).filter(x=>x[0]!=="Open");
   if (rows && rows.previousElementSibling.textContent==="Why Kai picked this" && recs.length) {
     const now = nn && nn.isConnected ? nn.textContent : "";
-    rows.outerHTML = `<div class="rows mh-why-rows">${recs.filter(x=>!now.includes(x[1])).map(x=>`<div class="fr mh-fr mh-wr${x[0]==="Vouched"?" gold":""}" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI(MH_WHY[x[0]]||"info",16)}</span><span class="m"><span class="k">${x[0]}</span><span class="b">${x[1]}</span></span>${x[2]?`<span class="chev" data-src="${x[2]}">${LI("chevron-right",16)}</span>`:""}</div>`).join("")}</div>`;
+    rows.outerHTML = `<div class="rows mh-why-rows">${recs.filter(x=>!now.includes(x[1])).map(x=>{ const row = `<span class="mh-fi">${LI(MH_WHY[x[0]]||"info",16)}</span><span class="m"><span class="k">${x[0]}</span><span class="b">${x[1]}</span></span>`, g = x[0]==="Vouched"?" gold":"";
+      return x[2] ? mhFoldRow(`${id}|${x[0]}`, row, mhReceipt(x), g) : `<div class="fr mh-fr mh-wr${g}" data-kc="KeyFactRow" data-kv="lead=icon">${row}</div>`; }).join("")}</div>`;
   }
   return d.innerHTML;
 };
+/* KeyFactRow fold=true: a receipt opens in place under its own row, before the next row's hairline, so the route and the footer action stay on screen.
+   Several can be open; the open set clears when you leave the page. The chevron turns without a re-render, so it can animate */
+function mhFoldRow(key, row, panel, cls){
+  const open = !!(STATE.mhOpen||{})[key];
+  return `<div class="mh-fx" data-kc="KeyFactRow" data-kv="lead=icon, fold=true"><div class="fr mh-fr mh-wr mh-rf${cls||""}" role="button" tabindex="0" aria-expanded="${open}" data-fold="${key}" onclick="mhFold(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();mhFold(this)}">${row}<span class="chev">${LI("chevron-down",16)}</span></div><div class="mh-rx"${open?"":" hidden"}>${panel}</div></div>`;
+}
+function mhFold(el){
+  const k = el.dataset.fold, o = STATE.mhOpen = STATE.mhOpen||{}; o[k] = !o[k];
+  el.setAttribute("aria-expanded", String(o[k])); el.nextElementSibling.hidden = !o[k];
+}
+const _mhGo = go; go = function(s){ if (s!==STATE.screen) STATE.mhOpen = {}; return _mhGo.apply(this, arguments); };
+const mhAttr = s => String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+/* what an open receipt shows: the evidence itself, at most one way to where it came from, and a quiet way to correct Kai */
+const MH_FROM = { slack:"Read from the Xoogler Slack", whatsapp:"Read from the Desi Founders WhatsApp group", program:"Read from the programme page in #resources", people:"Read from Xoogler member profiles. Names stay private unless they share where they work with you." };
+function mhQuote(p, name, where, words){
+  const face = p ? `<button class="mh-qf" data-profile="${Object.keys(DB.people).find(k=>DB.people[k]===p)}" aria-label="Open ${name}'s profile">${av(p.initials)}</button>` : "";
+  return `<div class="mh-words" data-kc="KeyQuote"><div class="mh-wh">${face}<span class="m"><span class="a">${name}</span><span class="b">${where}</span></span><i aria-hidden="true">${LI("quote",16)}</i></div><p>${words}</p></div>`;
+}
+function mhOpenIn(chan){ const c = (String(chan).match(/^#[\w-]+/)||[])[0]; return c ? `<div class="fr mh-fr mh-wr mh-link" role="link" tabindex="0" onclick="toast('Opens ${c} in the Xoogler Slack')" onkeydown="if(event.key==='Enter'){this.click()}" data-kc="KeyLinkRow" data-kv="lead=icon"><span class="mh-fi">${LI("hash",16)}</span><span class="m"><span class="k">Open in ${c}</span></span><span class="chev">${LI("chevron-right",16)}</span></div>` : ""; }
+const mhTellRow = line => `<button class="mh-tell" data-line="${mhAttr(line)}" onclick="mhTellKai(this.dataset.line)">Not right? Tell Kai</button>`;
+function mhTellKai(line){
+  STATE.kaiMsgs = []; openSheet("kai");
+  const i = document.getElementById("kaiIn"); if (i) { i.value = `Not right: "${line}". `; i.focus(); }
+}
+function mhReceipt(x){
+  const base = typeof _p2SourceSheet==="function" ? _p2SourceSheet : sourceSheet, h = base(x[2]);
+  const t = (h.match(/<h2>([\s\S]*?)<\/h2>/)||[])[1]||"", d = (h.match(/<\/h2><p>([\s\S]*?)<\/p>/)||[])[1]||"";
+  const q = d.match(/^(.+?), (\w+ \d+): “([\s\S]*)”$/), p = q && Object.values(DB.people).find(z=>z.name===q[1]);
+  let body = q ? mhQuote(p, q[1], `${t}, ${q[2]}`, q[3]) : MH_FROM[x[2]] ? `<p class="mh-rd">${MH_FROM[x[2]]}</p>` : /would open here/.test(d) ? "" : `<p class="mh-rd">${d}</p>`;
+  if (x[0]!=="Shared") body += mhOpenIn(t);
+  return body + mhTellRow(x[1]);
+}
 const MH_SRC = s => /^#/.test(s) ? "hash" : s==="calendar" ? "calendar" : /slack|whatsapp/i.test(s) ? "message-circle" : s==="contacts" ? "user" : "users";
 /* KeyFactRow lead=icon on every fact row in the hi-fi copy (Requests, Events, Profile too): a 32 tile with a Lucide 16, never the source dot */
 function mhFactRows(root){
@@ -19712,21 +19951,19 @@ const _mhPathBody2 = scPathBody; scPathBody = function(id, asSheet){
   /* Source: the row opens the poster's own words in place */
   let rows = r.querySelector(".mh-why-rows");
   if (rows && j.words) {
-    let src = [...rows.children].find(x=>x.querySelector(".k") && x.querySelector(".k").textContent==="Source");
-    if (!src) { rows.insertAdjacentHTML("afterbegin", `<div class="fr mh-fr mh-wr" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI("hash",16)}</span><span class="m"><span class="k">Source</span><span class="b">${f1(targetOf(o))} posted it in ${j.chan}, ${j.posted}</span></span></div>`); src = rows.firstElementChild; }
-    const open = STATE.mhWords===id; const p = targetOf(o);
-    src.classList.add("mh-src"); src.setAttribute("role","button"); src.setAttribute("tabindex","0"); src.setAttribute("aria-expanded", String(open));
-    src.setAttribute("onclick", `STATE.mhWords=STATE.mhWords==='${id}'?null:'${id}';render()`);
-    const ch = src.querySelector(".chev"); const glyph = `<span class="chev">${LI(open?"chevron-up":"chevron-down",16)}</span>`;
-    if (ch) ch.outerHTML = glyph; else src.insertAdjacentHTML("beforeend", glyph);
-    if (open) src.insertAdjacentHTML("afterend", `<div class="mh-words" data-kc="KeyQuote"><div class="mh-wh">${av(p.initials)}<span class="m"><span class="a">${p.name}</span><span class="b">${j.chan}, ${j.posted}</span></span><i aria-hidden="true">${LI("quote",16)}</i></div><p>${j.words}</p></div>`);
+    const p = targetOf(o), src = [...rows.children].find(x=>x.querySelector(".k") && x.querySelector(".k").textContent==="Source");
+    const line = src ? src.querySelector(".b").textContent : `${f1(p)} posted it in ${j.chan}, ${j.posted}`;
+    const row = `<span class="mh-fi">${LI("hash",16)}</span><span class="m"><span class="k">Source</span><span class="b">${line}</span></span>`;
+    const fold = mhFoldRow(`${id}|Source`, row, mhQuote(p, p.name, `${j.chan}, ${j.posted}`, j.words) + mhOpenIn(j.chan) + mhTellRow(line));
+    if (src) src.outerHTML = fold; else rows.insertAdjacentHTML("afterbegin", fold);
+    /* a vouch read from the same post carries the post's date */
+    rows.querySelectorAll('.mh-rf[data-fold$="|Vouched"] + .mh-rx .mh-wh .b').forEach(b=>{ b.textContent = `${j.chan}, ${j.posted}`; });
   }
   /* the description as a fold, then the way to apply; a closed role keeps neither */
   let tail = "";
-  if (j.about) { const open = STATE.mhAbout===id;
-    tail += `<div class="fr mh-fr mh-wr mh-fold" role="button" tabindex="0" aria-expanded="${open}" onclick="STATE.mhAbout=STATE.mhAbout==='${id}'?null:'${id}';render()" data-kc="KeyFactRow" data-kv="lead=icon, fold=true"><span class="mh-fi">${LI("file-text",16)}</span><span class="m"><span class="k">About the role</span><span class="b">${j.about}</span></span><span class="chev">${LI(open?"chevron-up":"chevron-down",16)}</span></div>`;
-    if (open && j.does) tail += `<div class="mh-does"><div class="k">What you'll do</div>${j.does.map(x=>`<div class="mh-do">${LI("check",16)}<span>${x}</span></div>`).join("")}</div>`; }
-  if (j.link && !j.closed) tail += `<div class="fr mh-fr mh-wr mh-link" role="link" tabindex="0" onclick="toast('Opens ${j.open || j.link} in your browser')" data-kc="KeyLinkRow" data-kv="lead=icon"><span class="mh-fi">${LI("external-link",16)}</span><span class="m"><span class="k">${j.linkLabel || "Apply"}</span><span class="b">${j.link}</span></span><span class="chev">${LI("chevron-right",16)}</span></div>`;
+  if (j.about) tail += mhFoldRow(`${id}|about`, `<span class="mh-fi">${LI("file-text",16)}</span><span class="m"><span class="k">About the role</span><span class="b">${j.about}</span></span>`,
+    j.does ? `<div class="mh-does"><div class="k">What you'll do</div>${j.does.map(x=>`<div class="mh-do">${LI("check",16)}<span>${x}</span></div>`).join("")}</div>` : "", " mh-fold");
+  if (j.link && !j.closed) tail += `<div class="fr mh-fr mh-wr mh-link" role="link" tabindex="0" onclick="toast('Opens ${j.open || j.link} in your browser')" onkeydown="if(event.key==='Enter'){this.click()}" data-kc="KeyLinkRow" data-kv="lead=icon"><span class="mh-fi">${LI("external-link",16)}</span><span class="m"><span class="k">${j.linkLabel || "Apply"}</span><span class="b">${j.link}</span></span><span class="chev">${LI("chevron-right",16)}</span></div>`;
   if (tail) { if (rows) rows.insertAdjacentHTML("beforeend", tail); else if (anchor) anchor.insertAdjacentHTML("afterend", `<div class="rows mh-why-rows">${tail}</div>`); }
   if (j.closed) { r.querySelectorAll(".sc > .st, .sc > .stp").forEach(e=>e.remove()); const b = r.querySelector(".sbar .btn"); if (b) { [...b.attributes].filter(a=>a.name!=="class").forEach(a=>b.removeAttribute(a.name)); b.className = "btn sec"; b.setAttribute("data-exit", `${id}|close`); b.textContent = "Close this path"; }
     const q = r.querySelector(".sbar .quiet"); if (q) q.remove(); }
@@ -22833,54 +23070,151 @@ render = function(){ const r=_kyRender.apply(this, arguments); kyCtl(); kyCtlSyn
 kyCtl(); kyCtlSync();
 
 </script>
-<style>/* ==== MISSIONS AS ACCORDIONS ON HOME (Home simplify thread, 29 Sep 18:30): the hero plate stays as Missions hi-fi draws it ==== */
-.hs-acc .mh-band[data-hsacc] { cursor:pointer; }
-.hs-acc .mh-band[data-hsacc]:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; }
-.hs-acc .mh-go svg { transition:transform .22s cubic-bezier(.2,.8,.2,1); }
-.hs-acc.hs-open .mh-go svg { transform:rotate(180deg); }
-.hs-acc .mh-bs.hs-new { flex:0 0 auto !important; width:auto !important; max-width:max-content; gap:4px; display:inline-flex; align-items:center; height:28px; padding:0 12px; border-radius:var(--radius-absolute-infinite,999px); background:var(--bg-surface-default,#FFFFFF); color:var(--text-primary,#0B0E11) !important; font-size:13px; line-height:1; font-weight:600; white-space:nowrap; }
-.hs-acc.hs-closed { padding-bottom:0 !important; }
-.hs-acc.hs-closed .mh-band { border-radius:inherit; }
+<style>/* ==== MISSIONS ON HOME AND ONE MISSION FRAME (Home simplify thread, 29 Sep 19:31): the plate opens the mission, the pill opens the picks ==== */
+.hs-acc.hs-closed:not(.hs-x) { padding-bottom:0 !important; }
+.hs-acc.hs-closed:not(.hs-x) .mh-band { border-radius:inherit; }
+/* KeyStateSummary on the card edge: the expand row under the plate, 48 high, where the picks open */
+.hs-acc.hs-x { padding-bottom:0 !important; }
+.hs-acc .hs-more { all:unset; box-sizing:border-box; width:100%; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 16px; font-size:14px; line-height:20px; font-weight:600; color:var(--text-primary,#0B0E11); cursor:pointer; }
+.hs-acc .hs-more b { font-weight:800; }
+.hs-acc .hs-more svg { flex:0 0 auto; color:var(--text-tertiary,#6B7480); transition:transform .22s cubic-bezier(.2,.8,.2,1); }
+.hs-acc.hs-open .hs-more svg { transform:rotate(180deg); }
+.hs-acc .hs-more:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:-2px; }
+.hs-acc.hs-open .hs-more + .mh-rail { margin-top:0; }
 .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:hsIn .26s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes hsIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
-@media (prefers-reduced-motion: reduce) { .hs-acc .mh-go svg { transition:none; } .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:none; } }
-.hs-acc .hs-openm { all:unset; box-sizing:border-box; width:100%; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 16px; border-top:1px solid var(--border-subtle,#E6E9EE); font-size:14px; font-weight:700; color:var(--text-primary,#0B0E11); cursor:pointer; }
-.hs-acc .hs-openm svg { color:var(--text-tertiary,#6B7480); }
-.hs-acc .hs-openm:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:-2px; }
-.hs-acc .mh-bs.hs-new b { color:inherit !important; font-weight:800; }
-.hs-acc .mh-bf > .mh-ctl { margin-left:auto; }
-</style><script>/* ==== MISSIONS AS ACCORDIONS ON HOME (Home simplify thread; Apoorv 29 Sep 18:30: "with missions, it should be an accordian which
-   in closed state has an indicator that there are updates on opportunities, and opening it i can see the opportunity cards the way
-   it is right now, inside"). Only the member's own mission cards on Home change: each KeyMissionCard keeps its hero plate exactly as
-   Missions hi-fi draws it and starts closed. Closed, the plate's status line ("New pick 4") turns into a white pill when picks wait on you; tapping the plate
-   opens the same rail of opportunity cards underneath, plus a row into the mission page. Pause and end on the plate still work
-   as before. Everything else on Home is untouched. ==== */
+@media (prefers-reduced-motion: reduce) { .hs-acc .hs-more svg { transition:none; } .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:none; } }
+/* KeyLayerTag: which event, series, channel or family a mission belongs to, under its title on the plate, led by its 18 picture */
+.mh-band .hs-bnw { flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
+.mh-band .hs-bnw > .mh-bn { flex:none; width:100%; }
+.mh-band .hs-layer { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:6px; max-width:100%; height:24px; padding:0 10px 0 3px; border-radius:var(--radius-absolute-infinite,999px); background:color-mix(in srgb, var(--text-on-deep-default,#FFFFFF) 16%, transparent); color:var(--text-on-deep-default,#FFFFFF); font-size:12px; line-height:1; font-weight:600; white-space:nowrap; }
+.mh-band .hs-layer > span { overflow:hidden; text-overflow:ellipsis; }
+.mh-band .hs-layer > .hs-lt { flex:0 0 auto; position:relative; display:grid; place-items:center; width:18px; height:18px; border-radius:var(--radius-absolute-6,6px); overflow:hidden; }
+.mh-band .hs-layer > .hs-lt > svg, .mh-band .hs-layer > .cv-th > * { width:100%; height:100%; }
+.mh-band .hs-layer > .hs-fm { background:#FFFFFF; }
+.mh-band .hs-layer > .hs-ic { background:color-mix(in srgb, var(--text-on-deep-default,#FFFFFF) 16%, transparent); }
+.mh-band .hs-layer > .hs-ic > svg { width:12px; height:12px; }
+.hs-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.mh-band button.hs-layer { position:relative; gap:2px; padding-right:6px; cursor:pointer; }
+.mh-band button.hs-layer svg { flex:0 0 auto; }
+.mh-band button.hs-layer::after { content:""; position:absolute; inset:-10px -4px; }
+.mh-band button.hs-layer:focus-visible { outline:2px solid var(--text-on-deep-default,#FFFFFF); outline-offset:2px; }
+.mh-pane > .hs-empty { padding:24px 0; text-align:center; font-size:14px; color:var(--text-tertiary,#6B7480); }
+</style><script>/* ==== MISSIONS ON HOME AND ONE MISSION FRAME (Home simplify thread). Apoorv 29 Sep 18:30: each mission is an accordion, closed with an
+   indicator of updates, open with today's opportunity cards. 19:31: opening in place hid the way into the mission, pause and end on
+   Home are error taps, event missions must use the same banner with a layer indicator, every mission page shares one layout, and
+   "New pick 3" is not English.
+   Home: the plate opens the mission (chevron right, as before). The white pill ("4 new picks", chevron down) is the only thing that
+   opens the picks in place, so the two taps never share a target. Pause and end live on the mission page only. Event and series
+   missions get the same plate, with a KeyLayerTag naming the event, series, channel or family they belong to.
+   Mission page, every kind: the hero plate (mark, title, layer tag, where things stand, pause and end), Kai's question if there is
+   one, then the same three tabs. The first tab is the mission's own work (Paths, or People on a host's mission), Brief is the same
+   KeyBriefDoc everywhere with the kind's extras under it, Log is the log. ==== */
 const hsOn = () => STATE.member && STATE.intakeDone && STATE.screen==="home";
 STATE.hsOpen = STATE.hsOpen || {};
 const hsMine = m => DB.opps.filter(o => o.missionId===m.id && o.state!=="dropped" && o.state!=="candidate" && ownerOf(o)==="you");
+/* counts in plain English with the fixed labels: "4 new picks · 1 waiting" */
+const HS_WORDS = [["new pick","new picks"],["next step","next steps"],["waiting","waiting"],["in conversation","in conversation"],["went well","went well"]];
+mhCounts = function(ps){ const col = MH_ST.map(()=>0); ps.forEach(o=>{ const i = mhSt(o); if (i>=0) col[i]++; }); return col.map((n,i)=>n ? `<b>${n}</b> ${HS_WORDS[i][n===1?0:1]}` : "").filter(Boolean).join(" · "); };
+/* the layer a mission belongs to, if any */
+function hsLayer(m){
+  if (!m) return null;
+  const e = (m.host || m.evKind || m.series) && typeof mhEvent==="function" ? mhEvent(m) : null;
+  const mg = e ? { manage:`eventd:manage.${e.id}`, what:"the event", sub:e.name, lead:`<i class="cv-th hs-lt">${evCvArt(e)}</i>` } : {};
+  if (m.series) return { kind:"Series", icon:"repeat", name: typeof evmSeries==="function" ? evmSeries(m.ev).name : e ? e.name : "", to: e ? `eventd:${e.id}` : "", ...mg };
+  if (m.host || m.evKind) return { kind:"Event", icon:"calendar", name: e ? e.name : "", to: e ? `eventd:${e.id}` : "", ...mg };
+  if (m.org) { const f = (DB.families||[]).find(x=>m.name.includes(x.name)) || (DB.families||[])[0]; return { kind:"Family", icon:"users", name: f ? f.name : "", to:"family", manage:"manage", what:"the family", sub: f ? f.name : "", lead: f && typeof FAM_MARK!=="undefined" && FAM_MARK[f.id] ? `<i class="hs-lt hs-fm">${FAM_MARK[f.id]}</i>` : "" }; }
+  if (m.channel) return { kind:"Channel", icon:"hash", name: m.channel, to: "", lead:`<i class="hs-lt hs-ic">${LI("hash",12)}</i>` };
+  if (m.family) return { kind:"Family", icon:"users", name: m.family, to: "" };
+  return null;
+}
+/* layer missions take their event's colour when it is one of the mission plates, and the layer's glyph */
+const _hsLook = mhLook; mhLook = function(m){
+  const l = _hsLook.apply(this, arguments), y = hsLayer(m); if (!y) return l;
+  const e = mhEvent(m), t = e && MH_THEMES.includes(e.theme) ? e.theme : "ink";
+  return { theme: m.mhTheme || t, icon: m.mhIcon || y.icon };
+};
+/* KeyLayerTag: a pill under the title on the plate, led by the layer's own picture (event cover, family mark) rather than a word. On the page it opens the layer */
+function hsTag(band, m, page){
+  const y = hsLayer(m), bn = band.querySelector(".mh-bn"); if (!y || !bn) return;
+  const w = document.createElement("div"); w.className = "hs-bnw"; bn.replaceWith(w); w.appendChild(bn);
+  w.insertAdjacentHTML("beforeend", `<${page && y.to ? `button type="button" onclick="go('${y.to}')" aria-label="Open ${y.name}"` : "span"} class="hs-layer" data-kc="KeyLayerTag" data-kv="layer=${y.kind.toLowerCase()}">${y.lead || `<i class="hs-lt hs-ic">${LI(y.icon,12)}</i>`}<span><span class="hs-sr">${y.kind}: </span>${y.name}</span>${page && y.to ? LI("chevron-right",14) : ""}</${page && y.to ? "button" : "span"}>`);
+  band.setAttribute("data-kv", band.getAttribute("data-kv") + `, layer=${y.kind.toLowerCase()}`);
+}
+const hsDom = h => { const t = document.createElement("template"); t.innerHTML = h; return t; };
 const _hsSection = missionSection; missionSection = function(m){
   const h = _hsSection.apply(this, arguments);
-  if (!hsOn() || !/data-kc="KeyMissionCard"/.test(h)) return h;
-  const t = document.createElement("template"); t.innerHTML = h;
-  const card = t.content.querySelector(".mh-mc"), band = card && card.querySelector(".mh-band"); if (!band) return h;
-  const open = !!STATE.hsOpen[m.id], n = hsMine(m).length;
-  card.classList.add("hs-acc", open ? "hs-open" : "hs-closed"); card.setAttribute("data-kv", `state=${open ? "open" : "closed"}, updates=${n}`);
-  band.removeAttribute("data-mission"); band.setAttribute("data-hsacc", m.id); band.setAttribute("role", "button"); band.setAttribute("tabindex", "0");
-  band.setAttribute("aria-expanded", open); band.setAttribute("aria-label", `${m.name}${n ? `, ${n} new for you` : ""}. ${open ? "Hide" : "Show"} the picks`);
-  const go = band.querySelector(".mh-go"); if (go) go.innerHTML = LI("chevron-down", 20);
-  /* the indicator: the plate's own status line ("New pick 4") becomes a white pill, so the title keeps its full width */
-  const bs = band.querySelector(".mh-bs"); if (n && bs && m.status!=="paused") { bs.classList.add("hs-new"); bs.setAttribute("data-kc", "KeyStateLabel"); bs.setAttribute("data-kv", "tone=onPlate"); }
-  if (open) card.insertAdjacentHTML("beforeend", `<button type="button" class="hs-openm" data-mission="${m.id}"><span>See the whole mission</span>${LI("chevron-right",20)}</button>`);
-  else card.querySelectorAll(":scope > .mh-rail, :scope > .mh-quiet").forEach(e => e.remove());
+  if (!hsOn() || !h) return h;
+  /* host and series missions: the same card, plate only, the base row's words as its status */
+  if (hsLayer(m) && !/data-kc="KeyMissionCard"/.test(h)) {
+    const t = hsDom(h), row = t.content.querySelector(`.row[data-mission="${m.id}"]`); if (!row) return h;
+    const b = row.querySelector(".b"), cap = b ? [...b.childNodes].filter(n=>!(n.classList && n.classList.contains("k"))).map(n=>n.textContent).join("").replace(/^\s*·\s*/,"").trim() : "";
+    const c = hsDom(`<div class="msec sc mh-mc hs-acc hs-closed" data-kc="KeyMissionCard" data-kv="state=plate">${mhBand(m, [], false, cap, false)}</div>`).content.firstElementChild;
+    hsTag(c.querySelector(".mh-band"), m, false); row.replaceWith(c); return t.innerHTML;
+  }
+  if (!/data-kc="KeyMissionCard"/.test(h)) return h;
+  const t = hsDom(h), card = t.content.querySelector(".mh-mc"), band = card && card.querySelector(".mh-band"); if (!band) return h;
+  const mine = hsMine(m), open = !!STATE.hsOpen[m.id] && mine.length > 0;
+  card.classList.add("hs-acc", open ? "hs-open" : "hs-closed"); card.setAttribute("data-kv", `state=${mine.length ? (open ? "open" : "closed") : "plate"}`);
+  band.querySelectorAll(".mh-ctl").forEach(e => e.remove());
+  hsTag(band, m, false);
+  /* the indicator and the only way to open in place: a row on the card's edge, right where the picks appear, so the plate stays one
+     target (open the mission) and the row is the other (show the picks here) */
+  if (mine.length && m.status!=="paused") {
+    band.querySelectorAll(".mh-bf").forEach(e => e.remove());
+    band.insertAdjacentHTML("afterend", `<button type="button" class="hs-more" data-kc="KeyStateSummary" data-kv="place=cardEdge" aria-expanded="${open}" aria-controls="hs-r-${m.id}" onclick="event.stopPropagation();hsToggle('${m.id}')"><span>${mhCounts(mine)}</span>${LI("chevron-down",20)}</button>`);
+    card.classList.add("hs-x");
+  }
+  else if (m.org && typeof oStatus==="function") { const bs = band.querySelector(".mh-bs"); if (bs) bs.textContent = oStatus()[2]; }
+  const rail = card.querySelector(":scope > .mh-rail"); if (rail) rail.id = `hs-r-${m.id}`;
+  if (!open) card.querySelectorAll(":scope > .mh-rail, :scope > .mh-quiet").forEach(e => e.remove());
   return t.innerHTML;
 };
 function hsToggle(id){ STATE.hsOpen[id] = !STATE.hsOpen[id]; render(); }
+
+/* one frame for every mission page: host and series missions are rebuilt into the member mission's layout */
+let hsLastTab = "";
+function hsFrame(id){
+  const m = DB.missions.find(x=>x.id===id), y = hsLayer(m); const root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
+  if (!y || !body || body.querySelector(":scope > .mh-band, .gp-recap")) return;
+  const st = body.querySelector(":scope > .st");
+  const cap = st ? [...st.children].filter(e=>!e.matches(".k")).map(e=>e.textContent.replace(/^\s*·\s*/,"").trim()).filter(Boolean).join(" · ") : "";
+  body.querySelectorAll(":scope > .mh-cover, :scope > .t20, :scope > .st, :scope > .body-gap").forEach(e=>e.remove());
+  /* sections by label: Brief, Event and Rules go under Brief, Log under Log, the rest is the mission's own work */
+  const kq = [], work = [], brief = [], log = []; let into = work;
+  [...body.children].forEach(e=>{
+    if (e.matches(".sl")) { const l = e.textContent.trim(); into = /^(Brief|Event|Rules)/.test(l) ? brief : /^Log/.test(l) ? log : work; if (/^Brief/.test(l)) { into = []; return; } }
+    else if (into===work && !work.length && e.matches(".kq")) { kq.push(e); return; }
+    else if (into!==work && into!==brief && into!==log) return;
+    into.push(e);
+  });
+  body.querySelectorAll(":scope > *").forEach(e=>e.remove());
+  const band = hsDom(mhBand(m, [], true, cap, true)).content.firstElementChild; hsTag(band, m, true);
+  body.appendChild(band); kq.forEach(e=>body.appendChild(e));
+  const tab = STATE.mhTab[id] || "paths", nLog = log.filter(e=>!e.matches(".sl")).reduce((n,e)=>n + e.querySelectorAll(".lrow").length, 0) || ((log.find(e=>e.matches(".sl"))||{ textContent:"" }).textContent.match(/\d+$/)||[""])[0];
+  const tabs = [["paths","People",""],["brief","Brief",""],["log","Log",nLog||""]];
+  const [lid, ltab] = hsLastTab.split("|"); hsLastTab = id+"|"+tab;
+  const anim = lid===id && ltab!==tab ? (tabs.findIndex(t=>t[0]===tab) > tabs.findIndex(t=>t[0]===ltab) ? " in-r" : " in-l") : "";
+  body.insertAdjacentHTML("beforeend", `<div class="mh-tabs" role="tablist" data-kc="KeyTabs" data-kv="count=3, style=underline">${tabs.map(([k,l,n])=>`<button role="tab" aria-selected="${k===tab}" class="${k===tab?"on":""}" onclick="mhTabGo('${id}','${k}')">${l}${n?`<span>${n}</span>`:""}</button>`).join("")}</div>`);
+  const pane = document.createElement("div"); pane.className = "mh-pane" + anim; pane.setAttribute("data-tab", tab);
+  if (tab==="paths") work.forEach(e=>pane.appendChild(e));
+  else if (tab==="brief") { pane.insertAdjacentHTML("beforeend", mhBriefPane(m)); brief.forEach(e=>pane.appendChild(e)); }
+  else if (log.length) log.filter(e=>!e.matches(".sl")).forEach(e=>pane.appendChild(e));
+  else pane.insertAdjacentHTML("beforeend", `<div class="hs-empty">Nothing logged yet. What you and Kai do on this mission lands here.</div>`);
+  body.appendChild(pane); body.insertAdjacentHTML("beforeend", `<div class="body-gap"></div>`);
+  let x0 = null; pane.addEventListener("touchstart", e=>{ x0 = e.touches[0].clientX; }, { passive:true });
+  pane.addEventListener("touchend", e=>{ if (x0===null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) < 60) return;
+    const i = tabs.findIndex(t=>t[0]===tab) + (dx<0 ? 1 : -1); if (tabs[i]) mhTabGo(id, tabs[i][0]); });
+  /* the same header as every mission: back, and more. Managing the event or the family moves into the more menu */
+  const hdr = root.querySelector(".hdr.sc"); if (hdr && !hdr.querySelector(":scope > .icon")) hdr.insertAdjacentHTML("beforeend", `<div class="icon"></div>`);
+  root.querySelectorAll(".hdr.sc > .icon").forEach(i=>{ i.setAttribute("onclick", `openSheet('mmenu','${id}')`); i.setAttribute("aria-label", "More"); i.innerHTML = LI("ellipsis",24); });
+}
 const _hsRender = render; render = function(){
   const r = _hsRender.apply(this, arguments);
-  if (typeof phone!=="undefined" && phone) phone.querySelectorAll("[data-hsacc]").forEach(el => {
-    el.onclick = e => { if (e.target.closest(".mh-ctl, button:not([data-hsacc])")) return; hsToggle(el.dataset.hsacc); };
-    el.onkeydown = e => { if ((e.key==="Enter" || e.key===" ") && e.target===el) { e.preventDefault(); hsToggle(el.dataset.hsacc); } };
-  });
+  if (typeof phone==="undefined" || !phone || typeof KEY_HIFI==="undefined" || !KEY_HIFI || !STATE.member) return r;
+  const s = STATE.screen || ""; if (s.startsWith("mission:")) hsFrame(s.slice(8));
+  const sh = STATE.sheet, sb = phone.querySelector("#sheet .sb"), m = sh && sh.type==="mmenu" && DB.missions.find(x=>x.id===sh.id), y = m && hsLayer(m);
+  if (y && y.manage && sb && !sb.querySelector(".hs-manage")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow hs-manage" onclick="closeSheet();go('${y.manage}')"><div class="m"><div class="a">Manage ${y.what}</div><div class="b">${y.sub}</div></div><span class="chev">›</span></div>`); }
   return r;
 };
 </script><script>/* Review build only: every dashed or dotted line draws solid on the same side at its own width (his no-dashes rule; the main hi-fi copy carries its own fix). */
