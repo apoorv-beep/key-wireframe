@@ -11125,7 +11125,7 @@ sCalendars = function(){
   const fam = DB.calendars.filter(c=>!evFollows(c) && evMemberOf(c));
   const more = DB.calendars.filter(c=>!evFollows(c) && !evMemberOf(c) && !evIsAdmin(c));
   const crow = c => `<div class="rowitem" data-cal="${c.id}">${evCalThumb(c)}<div class="m"><div class="a">${c.name}</div><div class="b">${evKind(c)} · ${c.subs.toLocaleString()} followers${c.auto&&evFollows(c)&&!c.subscribed&&!evIsAdmin(c)?" · as a member":""}${evIsAdmin(c)&&(c.requests||[]).length?` · ${c.requests.length} to review`:""}</div></div>${evIsAdmin(c)?`<span class="xs muted">${c.kind==="personal"?"Owner":"Admin"}</span>`:`<span class="chip ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?'Following':'Follow'}</span>`}</div>`;
-  return `<div class="hdr"><div class="back" onclick="STATE.backNav=true;go('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
+  return `<div class="hdr"><div class="back" onclick="evGoBack('events')">‹</div><div class="t">Calendars</div><div style="flex:1"></div><div class="icon" data-evsheet="evnewcal|x" title="New calendar">${EV_PLUS}</div></div>
   <div class="body">
     <input class="input evx-search" placeholder="Search calendars" oninput="evCalFilter(this.value)">
     <div class="lbl" style="margin-top:4px">Yours</div>${mine.map(crow).join("")}
@@ -11201,6 +11201,10 @@ function evFacts(e, live, locked){ const d=evDate(e); const inn=["going","hostin
     <div class="evt-fact" onclick="toast('${inn&&!online?"Opens Maps with directions.":whereSub}')"><i class="evt-ico">${evIc(online?"video":"map-pin",20)}</i><div><b>${online?"Online":e.where}</b><span>${whereSub}</span></div>${inn&&!online&&!e.past?`<em>Directions</em>`:""}</div>
     ${e.past?"":tk}
   </div>`; }
+/* back is the screen you came from (Apoorv 29 Sep 19:19: "it should go back to the previous screen"); a screen's own destination only when
+   nothing is behind it. The create or edit form and the "You're live" screen leave the back stack once you move on from them */
+const EV_PASS = /^eventd:(new|live\.)/;
+function evGoBack(fallback){ const h = STATE.history||[]; while (h.length && (EV_PASS.test(h[h.length-1]) || h[h.length-1]===STATE.screen)) h.pop(); if (h.length) goBack(); else { STATE.backNav = true; go(fallback); } }
 const _evBaseDetail = sEventDetail;
 sEventDetail = function(id){
   if (id==="new") return evCreate();
@@ -11219,7 +11223,7 @@ sEventDetail = function(id){
   const cta = evCta(e, live, locked); const inRoom = ["going","hosting"].includes(e.reg) || live || e.past;
   const people = !peopleIds.length ? "" : `<div class="evt-sec">${e.past?"You met":"Who to meet"}</div><div class="evt-people">${peopleIds.map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
       return `<div class="evt-person" data-profile="${pid}"><i class="evt-pav">${p.initials}${here?'<em>Here</em>':''}</i><b>${p.name.split(" ")[0]}</b><span>${intros.includes(pid)?`${evIc("handshake",12)} ${evFirst(e.host)}'s intro`:EV_WHY_SHORT[pid]||p.title}</span>${e.past?"":live?`<button class="btn sm sec" data-opener="${e.id}|${pid}">${evIc("hand",15)} Find</button>`:(e.booped||{})[pid]?`<em class="evt-sent">${evIc("check",15)} Sent</em>`:`<button class="btn sm sec" data-evboop="${e.id}|${pid}">${evIc("coffee",15)} Meet?</button>`}</div>`; }).join("")}</div>`;
-  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("contrast")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("contrast")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
   <div class="body evt-body">
     ${e.past ? evRoll(e, stamp) : evPoster(e, stamp)}
     <h1 class="evt-title">${e.name}</h1>
@@ -11262,7 +11266,7 @@ function evCreate(){
   const d = evDraft(); const cal = evC(d.cal); const appr = evApprover(cal); const w = evDraftWhen(d);
   const where = d.fmt==="online" ? ["video","Online","Meet link made when you publish"] : d.fmt==="tbd" ? ["map-pin","Place to be decided","Kai reminds you a week before"] : d.where ? ["map-pin",d.where,(EV_PLACES.find(x=>x[0]===d.where)||["",""])[1]] : ["map-pin","Add a place",""];
   const vis = cal.kind==="personal" ? ["Invite only","Anyone with the link"] : evMemberOf(cal) ? ["Members only","Anyone on Key"] : ["Only people I approve","Anyone on Key"];
-  return evScreen({ theme:d.theme, fx:d.fx, going:1, cap:d.cap||40, emoji:d.emoji }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;${d.edit?`STATE.evDraft=null;go('eventd:manage.${d.from}')`:`go(STATE.evBack||'events')`}">‹</div>${d.edit?`<div class="t">Edit event</div>`:""}<div style="flex:1"></div>${d.edit?"":`<div class="evt-hdr-act" data-evsavedraft="1">Save draft</div>`}</div>
+  return evScreen({ theme:d.theme, fx:d.fx, going:1, cap:d.cap||40, emoji:d.emoji }, `<div class="hdr evt-hdr"><div class="back" onclick="${d.edit?`STATE.evDraft=null;evGoBack('eventd:manage.${d.from}')`:`evGoBack(STATE.evBack||'events')`}">‹</div>${d.edit?`<div class="t">Edit event</div>`:""}<div style="flex:1"></div>${d.edit?"":`<div class="evt-hdr-act" data-evsavedraft="1">Save draft</div>`}</div>
   <div class="body evt-body">
     <div class="evt-calpick" data-evsheet="evcal|x">${evCalThumb(cal,"evt-ct")}<span>${evCalName(cal)}</span><i>${evIc("chevron-down",14)}</i></div>
     <input class="input evt-title evt-name" id="evname" value="${d.name}" placeholder="Name your event" oninput="evDraft().name=this.value;evCvLive()">
@@ -11390,7 +11394,7 @@ function evManage(id){
       <div class="evt-frow" onclick="toast('On web: Manage › Details › Embed gives you the code.')"><i>${evIc("code-xml",20)}</i><div><b>Embed on a website</b><span>On web</span></div><em>›</em></div>
       <div class="evt-frow" data-evsheet="evcancel|${id}"><i>${evIc("trash-2",20)}</i><div><b style="color:var(--danger)">Cancel event</b></div><em>›</em></div></div>`; }
   const tabs = [["guests","Guests"],["reg","Registration"],["broadcast","Updates"],["insights","Insights"],["details","Details"]];
-  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><div class="icon" data-evgo="eventd:${id}" aria-label="View as guest">${evIc("eye")}</div><div class="icon" data-evsheet="evshare|${id}" aria-label="Share">${evIc("share")}</div></div>
+  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t">Manage</div><div style="flex:1"></div><div class="icon" data-evgo="eventd:${id}" aria-label="View as guest">${evIc("eye")}</div><div class="icon" data-evsheet="evshare|${id}" aria-label="Share">${evIc("share")}</div></div>
   <div class="body evt-body evt-mbody">
     <div class="evt-mtop"><div class="evt-mthumb cv-th">${evCvArt(e)}</div><div><b>${e.name}</b><span>${e.past?"Ended":e.awaiting?`Waiting for ${e.awaiting.replace(", who runs it","")}`:`<i class="evt-dot"></i>Live`}, ${e.when}</span></div></div>
     ${evSeriesStrip(e, true)}
@@ -11404,7 +11408,7 @@ function evManage(id){
 function evGuestSearch(v){ v=v.trim().toLowerCase(); phone.querySelectorAll(".evt-glist .evt-grow").forEach(r=>{ r.style.display = !v || r.textContent.toLowerCase().includes(v) ? "" : "none"; }); }
 /* the door: scan, walk-in, and the list with one tap per guest */
 function evDoor(id){ const e=evE(id); evHostData(e); const gl=(e.goingList||[]).filter(p=>DB.people[p]); const n=gl.filter(p=>(e.checked||{})[p]).length;
-  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:manage.${id}')">‹</div><div class="t">Check in</div></div>
+  return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:manage.${id}')">‹</div><div class="t">Check in</div></div>
   <div class="body evt-body evt-mbody">
     <div class="evt-door"><b>${n}<small> / ${e.going}</small></b><span>checked in</span><div class="evt-doorbar"><i style="width:${Math.round(n/Math.max(1,e.going)*100)}%"></i></div></div>
     <div class="evt-rsvp" style="margin:14px 0"><button class="btn" onclick="toast('Camera opens. It reads app tickets and Wallet passes.')">${evIc("scan-line")} Scan tickets</button><button class="btn sec" data-evsheet="evwalkin|${id}">${evIc("user-plus")} Walk-in</button></div>
@@ -11420,7 +11424,7 @@ function evGuestList(id){ const e=evE(id); evHostData(e); const live = STATE.eve
   const rest = gl.filter(x=>!know.includes(x)).concat(fill);
   const row = pid => { const p=DB.people[pid]; const sent=(e.booped||{})[pid]; return `<div class="evt-grow" data-profile="${pid}">${av(p.initials)}<div class="m"><b>${p.name}</b><span>${p.title}${p.company?`, ${p.company}`:""}</span></div>${e.past?"":sent?`<em>${evIc("check",15)} Sent</em>`:`<button class="btn sm sec" data-evboop="${e.id}|${pid}" onclick="event.stopPropagation()">${evIc("coffee",15)} Meet?</button>`}</div>`; };
   const hosts = [e.host].concat(e.cohosts);
-  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go('eventd:${id}')">‹</div><div class="t">${e.going} ${e.past?"went":"going"}</div></div>
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t">${e.going} ${e.past?"went":"going"}</div></div>
   <div class="body evt-body">
     ${open ? `<div class="evt-search"><span>${evIc("search",17)}</span><input placeholder="Search guests" oninput="evGuestSearch(this.value)"></div>
     <div class="evt-glist">
@@ -11549,7 +11553,7 @@ sCalendar = function(id){
   else { const body = view==="list" ? (up.length ? evByDate(up, "", c.id).replace(/(<div class="evx-dh">[^<]*)<\/div>/, (m0, h)=>`${h}${evSoon(up[0])?` <em class="evx-soon">${evSoon(up[0])}</em>`:""}</div>`) : `<div class="empty">Nothing scheduled.</div>`)
       : view==="day" ? evCalDay(c, evs, plans) : view==="week" ? evCalWeek(c, evs, plans) : evCalMonth(c, evs, plans);
     pane = `<div class="seg evx-vseg">${[["list","List"],["day","Day"],["week","Week"],["month","Month"]].map(([k,l])=>`<div class="${view===k?"on":""}" data-evcalview="${k}">${l}</div>`).join("")}</div><div class="evx-list">${body}</div>`; }
-  return `<div class="hdr evx-hdr evx-over"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div class="t evx-overt">${c.kind==="personal"&&admin?"Your calendar":c.name}</div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
+  return `<div class="hdr evx-hdr evx-over"><div class="back" onclick="evGoBack(STATE.evBack||'events')">‹</div><div class="t evx-overt">${c.kind==="personal"&&admin?"Your calendar":c.name}</div><div class="icon" data-evshare="${c.id}" aria-label="Share">${evIc("share")}</div></div>
   <div class="body evx-calpg">
     <div class="evx-cban" data-cid="${c.id}" style="background:${evBg(c.theme)}"></div>
     ${evCalLogo(c)}
@@ -11570,7 +11574,7 @@ function evCalManage(id){
   else if (t==="people") body = `<div class="lbl" style="margin-top:4px">Admins</div>${c.admins.map(a=>`<div class="rowitem">${av(DB.people[a].initials)}<div class="m"><div class="a">${a===EV_ME?"You":DB.people[a].name}</div><div class="b">${a===c.host?"Created it":"Co-admin"}</div></div></div>`).join("")}<button class="btn sec" style="margin-top:8px" onclick="toast('Add an admin by name. They can approve events and edit the calendar.')">Add admin</button>
     <div class="lbl">Followers · ${c.subs}</div>${["rahul","maya","sana","jordan"].map(p=>`<div class="rowitem">${av(DB.people[p].initials)}<div class="m"><div class="a">${DB.people[p].name}</div><div class="b">${DB.people[p].title}</div></div><span class="xs muted" onclick="toast('Removed. They aren\\'t told.')">Remove</span></div>`).join("")}`;
   else body = [["Name and cover",c.name],["Theme",evPreset(c.theme).name],["Who can add events",c.accepts==="anyone"?"Anyone; you approve":c.accepts==="members"?"Members; you approve":"Only admins"],["Visibility","Public · key.ai link"],["Delete calendar",c.kind==="personal"?"Your personal calendar can't be deleted":"Only the creator"]].map(([a,b])=>`<div class="rowitem" onclick="toast('${a}.')"><div class="m"><div class="a" ${a==="Delete calendar"?'style="color:var(--danger)"':''}>${a}</div><div class="b">${b}</div></div><span class="xs muted">›</span></div>`).join("");
-  return `<div class="hdr evx-hdr"><div class="back" onclick="STATE.backNav=true;go('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
+  return `<div class="hdr evx-hdr"><div class="back" onclick="evGoBack('cal:${id}')">‹</div><div class="t">${c.name}</div></div>
   <div class="body"><div class="evx-tabs">${[["requests",`Requests${req.length?` · ${req.length}`:""}`],["events","Events"],["people","People"],["settings","Settings"]].map(([k,l])=>`<div class="${t===k?'on':''}" data-evctab="${k}">${l}</div>`).join("")}</div><div class="evx-pane">${body}</div></div>`;
 }
 
@@ -13042,7 +13046,7 @@ sChatInfo = function(cid){
   if (sub==="evmedia") { STATE.ciTab = "media"; const h = cDetails(cid); STATE.ciTab = sub; return h.replace("STATE.ciTab='about';STATE.backNav=true;goBack()", "STATE.ciTab='about';render()"); }
   const hdr = t => `<div class="hdr"><div class="back" onclick="STATE.ciTab='about';${sub?"render()":"STATE.backNav=true;goBack()"}">‹</div><div style="flex:1;font-size:18px;font-weight:700">${t}</div></div>`;
   const news = evNews(c).reverse(), qs = e.qaOff ? [] : evQsRanked(c), sh = cShared(c), media = sh.filter(x=>x.k==="media");
-  const newsRow = ({m, q}) => `<div class="cm-row evx-drow" onclick="${q?`evThread('${cid}','${q.id}')`:`STATE.ciTab='about';openAt('${cid}','${m.id}')`}"><span class="evx-lt">${evIc(q?"check":"megaphone",24)}</span><div class="m"><div class="b">${q?`Answer to ${evFirst(q.from)}`:"Update"} · ${evDay(m)}</div><div class="cm-text cm-clamp">${m.text}</div></div></div>`;
+  const newsRow = ({m, q}) => `<div class="cm-row evx-drow" onclick="${q?`evThread('${cid}','${q.id}')`:`openAt('${cid}','${m.id}')`}"><span class="evx-lt">${evIc(q?"check":"megaphone",24)}</span><div class="m"><div class="b">${q?`Answer to ${evFirst(q.from)}`:"Update"} · ${evDay(m)}</div><div class="cm-text cm-clamp">${m.text}</div></div></div>`;
   const qRow = m => { const r = m.thread ? (m.threadCount||m.thread.length) : 0;
     return `<div class="cm-row evx-drow" onclick="evThread('${cid}','${m.id}')">${av(P(m.from).initials)}<div class="m"><div class="b">${m.from===EV_ME?"You":evFirst(m.from)} · ${m.answer?"Answered":"Open"}${r?` · ${r} ${r===1?"reply":"replies"}`:""}</div><div class="cm-text cm-clamp">${m.text}</div></div>${evVote(c, m)}</div>`; };
   if (sub==="evups") return `${hdr(`Updates <span class="cm-cnt0">${news.length}</span>`)}<div class="body cm-det">${news.map(newsRow).join("")||`<div class="cm-meta0">Nothing from ${evFirst(e.host)} yet.</div>`}</div>`;
@@ -17621,7 +17625,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.136";
+window.KEY_BUILD = "2.137";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
