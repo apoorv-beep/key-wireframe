@@ -4360,6 +4360,70 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 @media (max-height:700px), (max-width:360px) { .bs-vw .bf-meet > span { width:44px; height:44px; } }
 .bstray .bt-art .bs-pt { display:grid; } .bstray .bt-art .bs-pt em { font-size:40px; transform:none; color:rgba(255,255,255,.72); }
 
+/* ==== KeyWaitingBlock: who is waiting on you. Rows with hairlines (no card), people as 44 circles, the open row carries Kai's draft on
+   the flat fill (Kai's ground inside a surface), KeyButton r12. Quiet state is two lines. ==== */
+.brief.bwait { margin:2px 0 18px; display:grid; gap:4px; padding:0; background:none; border:0; border-radius:0; box-shadow:none; height:auto; color:var(--text-primary,#0B0E11); }
+:is(.bwait,.kreport) .bw-hd { display:grid; gap:6px; padding-bottom:6px; }
+.bwait .bs-hi { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-tertiary,#6B7480); }
+.bwait h2 { margin:0; font-size:20px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
+:is(.bwait,.kreport) .bw-list { display:grid; }
+:is(.bwait,.kreport) .bw-row { border-top:1px solid var(--border-subtle,#E6E9EE); }
+:is(.bwait,.kreport) .bw-row:last-child { border-bottom:1px solid var(--border-subtle,#E6E9EE); }
+:is(.bwait,.kreport) .bw-top { all:unset; box-sizing:border-box; width:100%; min-height:64px; display:flex; align-items:center; gap:12px; padding:10px 0; cursor:pointer; }
+:is(.bwait,.kreport) .bw-top:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:8px; }
+:is(.bwait,.kreport) .bw-face { position:relative; flex:0 0 auto; width:44px; height:44px; border-radius:50%; overflow:hidden; }
+:is(.bwait,.kreport) .bw-face .bs-pt em { font-size:16px; transform:none; color:rgba(255,255,255,.85); }
+:is(.bwait,.kreport) .bw-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
+:is(.bwait,.kreport) .bw-m b { font-size:15px; line-height:1.25; font-weight:700; }
+:is(.bwait,.kreport) .bw-m span { font-size:13px; line-height:1.35; color:var(--text-secondary,#4A535E); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+:is(.bwait,.kreport) .bw-row.open .bw-m span { white-space:normal; }
+:is(.bwait,.kreport) .bw-t { flex:0 0 auto; align-self:flex-start; padding-top:4px; font-size:12px; font-weight:600; color:var(--text-tertiary,#6B7480); font-variant-numeric:tabular-nums; }
+:is(.bwait,.kreport) .bw-body { display:grid; gap:12px; padding:0 0 14px 56px; }
+:is(.bwait,.kreport) .bw-ctx { margin:0; font-size:14px; line-height:1.45; color:var(--text-secondary,#4A535E); }
+:is(.bwait,.kreport) .bw-draft { display:grid; gap:6px; padding:12px 14px; border-radius:12px; background:var(--bg-fill-default,#F1F3F6); }
+:is(.bwait,.kreport) .bw-dh { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--text-secondary,#4A535E); }
+:is(.bwait,.kreport) .bw-dt { font-size:14px; line-height:1.45; outline:none; }
+:is(.bwait,.kreport) .bw-acts { display:flex; gap:8px; }
+:is(.bwait,.kreport) .bw-acts button { height:44px; padding:0 18px; border-radius:12px; font:inherit; font-size:14px; font-weight:700; cursor:pointer; border:0; }
+:is(.bwait,.kreport) .bw-acts .p { flex:1 1 auto; background:var(--component-button-primary-bg-default,#0B0E11); color:var(--component-button-primary-ink,#FFFFFF); }
+:is(.bwait,.kreport) .bw-acts .s { background:none; color:var(--text-secondary,#4A535E); }
+:is(.bwait,.kreport) .bw-more, :is(.bwait,.kreport) .bw-back { all:unset; box-sizing:border-box; width:100%; min-height:44px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px; font-weight:600; color:var(--text-secondary,#4A535E); }
+:is(.bwait,.kreport) .bw-more span, :is(.bwait,.kreport) .bw-back > span:not(.bw-faces) { flex:1 1 auto; min-width:0; }
+:is(.bwait,.kreport) .bw-faces { display:flex; flex:0 0 auto; } :is(.bwait,.kreport) .bw-faces .bw-face { width:32px; height:32px; margin-left:-4px; box-shadow:0 0 0 1.5px var(--bg-page,#FFFFFF); } :is(.bwait,.kreport) .bw-faces .bw-face:first-child { margin-left:0; }
+:is(.bwait,.kreport) .bw-faces .bs-pt em { font-size:12px; }
+:is(.bwait,.kreport) .bw-q { margin:0; font-size:14px; color:var(--text-secondary,#4A535E); }
+.bwait.quiet h2 { font-size:18px; }
+.brief.bwait > * { min-width:0; } :is(.bwait,.kreport) .bw-back > span:not(.bw-faces) { white-space:normal; line-height:1.35; }
+:is(.bwait,.kreport) .bw-acts button { white-space:nowrap; }
+@media (max-width:360px) { :is(.bwait,.kreport) .bw-body { padding-left:0; } :is(.bwait,.kreport) .bw-acts button { padding:0 14px; } }
+
+/* ==== KeyKaiReport: Kai's voice on the page ground, no card. Kai mark 24 + title, two sentences at 17 with names as links to their row,
+   Next up rows (the waiting rows) with an n of m done count, then Done rows with a 40 r12 lead tile, a face or the Kai mark. ==== */
+.brief.kreport { margin:2px 0 18px; display:grid; gap:4px; padding:0; background:none; border:0; border-radius:0; box-shadow:none; height:auto; color:var(--text-primary,#0B0E11); }
+.brief.kreport > * { min-width:0; }
+.kreport .kr-hd { display:flex; align-items:center; gap:8px; min-height:44px; }
+.kreport .kr-ttl { flex:1 1 auto; font-size:13px; font-weight:800; letter-spacing:-.005em; }
+.kreport .kr-ask { all:unset; box-sizing:border-box; height:44px; padding:0 4px 0 12px; display:inline-flex; align-items:center; font-size:14px; font-weight:700; color:var(--text-secondary,#4A535E); cursor:pointer; }
+.kreport .kr-sum { margin:0 0 12px; font-size:17px; line-height:1.45; font-weight:500; letter-spacing:-.01em; text-wrap:pretty; }
+.kreport .kr-sum b, .kreport .kr-n { font-weight:750; }
+.kreport .kr-n { all:unset; cursor:pointer; font-weight:750; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; text-decoration-color:var(--text-tertiary,#6B7480); }
+.kreport .kr-n:focus-visible, .kreport .kr-ask:focus-visible, .kreport .kr-dm:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:6px; }
+.kreport .kr-sh { display:flex; align-items:baseline; justify-content:space-between; padding:8px 0 10px; font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-tertiary,#6B7480); }
+.kreport .kr-c { letter-spacing:0; text-transform:none; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
+.kreport .kr-done { display:grid; }
+.kreport .kr-d { display:flex; align-items:center; gap:8px; border-top:1px solid var(--border-subtle,#E6E9EE); }
+.kreport .kr-d:last-child { border-bottom:1px solid var(--border-subtle,#E6E9EE); }
+.kreport .kr-dm { all:unset; box-sizing:border-box; flex:1 1 auto; min-width:0; min-height:56px; display:flex; align-items:center; gap:12px; padding:8px 0; cursor:pointer; }
+.kreport .kr-lead { flex:0 0 auto; width:44px; height:40px; display:flex; align-items:center; }
+.kreport .kr-lead.t { width:40px; justify-content:center; border-radius:12px; background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); margin-right:4px; }
+.kreport .kr-lead.k { justify-content:center; width:40px; margin-right:4px; }
+.kreport .kr-lead.f .bw-face { width:32px; height:32px; margin-left:-12px; box-shadow:0 0 0 1.5px var(--bg-page,#FFFFFF); } .kreport .kr-lead.f .bw-face:first-child { margin-left:0; }
+.kreport .kr-lead.f .bs-pt em { font-size:12px; }
+.kreport .kr-dl { flex:1 1 auto; min-width:0; font-size:14px; line-height:1.35; color:var(--text-secondary,#4A535E); }
+.kreport .kr-undo { all:unset; box-sizing:border-box; height:44px; padding:0 4px 0 8px; display:inline-flex; align-items:center; font-size:14px; font-weight:700; cursor:pointer; }
+.kreport .bw-more span { flex:1 1 auto; min-width:0; }
+@media (max-width:360px) { .kreport .kr-sum { font-size:16px; } }
+
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
 .p2btl { display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; color:var(--ink); background:var(--fill); border:0; border-radius:12px; padding:8px 12px; cursor:pointer; }
@@ -11105,7 +11169,7 @@ function evChatCard(e, live, locked){
     <div class="evt-react">${EV_REACT.map(r=>`<button data-evreact="${e.id}|${r}" aria-label="Send ${r}">${r}</button>`).join("")}<div class="evt-say" data-evroom="${e.id}|focus">Say hi…</div></div></div>`;
 }
 function evStateRow(e, live, locked){
-  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"community"} members</div>`;
+  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"family"} members</div>`;
   if (e.reg==="pending") return `<div class="evt-note">${evIc("hourglass",15)} ${evFirst(e.host)} is reviewing your request <span data-evunrsvp="${e.id}">Withdraw</span></div>`;
   if (e.reg==="waitlist") return `<div class="evt-note">${evIc("hourglass",15)} #${e.wait||1} on the waitlist <span data-evunrsvp="${e.id}">Leave</span></div>`;
   if (e.reg==="hosting") return `<div class="evt-duo"><button class="btn sec" data-evpost="${e.id}">${evIc("megaphone")} Post update</button><button class="btn sec" data-evsheet="evshare|${e.id}">${evIc("share")} Share</button></div>${(e.requests||[]).length?`<div class="evt-note" data-evgo="eventd:manage.${e.id}">${evIc("hand",16)} ${e.requests.length} waiting for your yes <span>Review</span></div>`:""}`;
@@ -14859,7 +14923,7 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
    profile on a tap; Instagram's long-press peek shows only enough to decide. The peek now answers "who is this and why now":
    how you're connected, then the one thing you could act on, then the way into everything else */
 function p2Preview(pid){ const p=DB.people[pid], d=p2d(pid), f=firstName(p), open=p2OpenList(p)[0], n=d.needs[0];
-  const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"communities", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
+  const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"families", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
   const top = n ? `<div class="p2sec">${p2H("search",`${f} is looking for`)}<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}</span><button class="p2x" onclick="event.stopPropagation();openSheet('p2need','${pid}|0')">${n.fit?"Offer yourself":"Suggest"}</button></div></div>`
     : open ? `<div class="p2sec">${p2H("door-open",`${f} is open to`)}<div class="p2nd p2op"><span class="p2ico">${LI(P2_OPEN[open][0],18)}</span><span><b>${open}</b></span><button class="p2x" onclick="event.stopPropagation();openSheet('p2open','${pid}|${open}')">${P2_OPEN[open][1]}</button></div></div>` : "";
   return `<div class="p2 p2pv">${p2BetweenLine(pid)}${d.now?`<div class="p2bld">${d.now}</div>`:''}${top}
@@ -15354,6 +15418,151 @@ function brOpen(fromEl, sid){
   vw._bs = { next, prev, jump, close, atTop, get chapter(){ return L[si].id; }, get story(){ return L[si].st ? L[si].st.id : "end"; }, get card(){ return si; }, get screens(){ return L.length; } };
   open();
 }
+
+/* ==== KeyWaitingBlock (29 Sep, value research https://claude.ai/artifact/UYSwhaeKRcRy4VLcQ27XYC). The brief answers one question:
+   is a real person waiting on you? One row per person, longest wait first, three at most; the top one opens with Kai's draft and
+   Send is the member's yes. Nobody waiting: what came back from people, else one quiet line. Community news stays on each
+   community's page. The story tray above is no longer drawn on Home. ==== */
+const brMins = w => { const m = /^(\d+)\s*([mhd])/.exec(w||""); return m ? +m[1] * ({ m:1, h:60, d:1440 })[m[2]] : 0; };
+const brCap = t => t ? t[0].toUpperCase() + t.slice(1) : "";
+STATE.brSnooze = STATE.brSnooze || {};
+function brWaiting(){
+  const asks = typeof myAsks==="function" ? myAsks() : [], ns = notifs() || [], W = {};
+  const add = (p, e) => { if (!p || !p.id || STATE.brSnooze[p.id]) return; const w = W[p.id];
+    if (!w) W[p.id] = Object.assign({ p, more:0 }, e); else if (brMins(e.since) > brMins(w.since)) W[p.id] = Object.assign({ p, more:w.more+1 }, e); else w.more++; };
+  brDeck().deck.filter(c => c.draft && c.who).forEach(c => {
+    const a = c.id.startsWith("ask:") && asks.find(x => "ask:"+x.id===c.id), n = !a && ns.find(x => x.title===c.title);
+    const why = c.kind==="intro" ? c.title.replace(/ to .*$/,"") : brCap(c.title.replace(c.who.name+" ","").replace(firstName(c.who)+" ",""));
+    add(c.who, { since: (a && a.when) || (n && n.when) || "1h", why, ctx:c.ctx, card:c }); });
+  asks.filter(a => a.kind==="direct" && a.state==="open").forEach(a => { const p = P(a.from);
+    add(p, { since:a.when, why: brCap(a.what), card:{ id:"ask:"+a.id, kind:"intro", draft:{ to:firstName(p), text:`Hi ${firstName(p)}, happy to. Does Thursday afternoon work for 20 minutes?`, send:() => { bfSendIntro(a); a.outcomeLine = "You replied"; } } } }); });
+  asks.filter(a => a.kind==="connector" && a.state==="open").forEach(a => add(P(a.from), { since:a.when, why: brCap(a.what), act:{ label:"Review", go:`go('req:${a.id}')` } }));
+  ns.filter(n => (n.kind||n.type)==="message" && n.unread && /^dm:/.test(n.to||"")).forEach(n => { const p = Object.values(DB.people||{}).find(x => n.title.startsWith(x.name));
+    add(p, { since:n.when, why: brCap(n.title.replace(p ? p.name+" " : "", "")), act:{ label:"Reply", go:`go('${n.to}')` } }); });
+  return Object.values(W).sort((x, y) => brMins(y.since) - brMins(x.since));
+}
+function bwAgo(w){ const m = brMins(w); return m >= 1440 ? `${Math.round(m/1440)}d` : m >= 60 ? `${Math.round(m/60)}h` : `${m||1}m`; }
+function bwRow(w, open){
+  const f = firstName(w.p), draft = w.card && w.card.draft, k = w.key || w.p.id;
+  return `<div class="bw-row ${open?"open":""}" data-bw="${k}">
+    <button type="button" class="bw-top" data-bwopen="${k}" aria-expanded="${open}"><span class="bw-face" aria-hidden="true">${brPortrait(w.p.initials, w.p.id, 120)}</span>
+      <span class="bw-m"><b>${w.p.name}</b><span>${w.why}${w.more ? ` · ${w.more} more` : ""}</span></span><span class="bw-t">${bwAgo(w.since)}</span></button>
+    ${open ? `<div class="bw-body">${draft ? `<div class="bw-draft"><span class="bw-dh">${typeof kaiMark==="function" ? kaiMark(16) : ""}Kai's draft to ${f}</span><div class="bw-dt" contenteditable="true" spellcheck="false" data-bwdraft="1">${draft.text}</div></div>` : w.ctx ? `<p class="bw-ctx">${w.ctx}</p>` : ""}
+      <div class="bw-acts">${draft ? `<button type="button" class="p" data-bwsend="${k}">Send to ${f}</button>` : `<button type="button" class="p" onclick="${w.act.go}">${w.act.label}</button>`}<button type="button" class="s" data-bwlater="${k}">Not now</button></div></div>` : ""}
+  </div>`;
+}
+/* what came back: other people's answers to you, never Kai's own activity */
+function brBack(){
+  const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"), sent = (DB.asks||[]).filter(a => a.outcomeLine && a.when==="now").map(a => P(a.from));
+  if (!r && !sent.length) return null;
+  const who = r ? Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).slice(0,3) : sent.slice(0,3);
+  return { who, line: r ? r.title : `You answered ${sent.map(firstName).join(", ")}`, go: r ? `go('${r.to}')` : "go('inbox')" };
+}
+brBanner = function(){
+  if (!STATE.member) return "";
+  const W = brWaiting(), top = W.slice(0, 3), open = (top.find(w => w.p.id===STATE.brOpen) || top[0] || {}).p;
+  if (W.length) return `<div class="brief bwait" data-kc="KeyWaitingBlock" data-kv="state=waiting;people=${W.length}">
+    <div class="bw-hd"><span class="bs-hi">${brGreeting()}</span><h2>${W.length===1 ? `${W[0].p.name} is waiting on you` : `${W.length} people are waiting on you`}</h2></div>
+    <div class="bw-list">${top.map(w => bwRow(w, open && w.p.id===open.id)).join("")}</div>
+    ${W.length > 3 ? `<button type="button" class="bw-more" onclick="go('inbox')"><span>${W.length-3} more waiting in Messages</span>${LI("chevron-right",16)}</button>` : ""}</div>`;
+  const b = brBack();
+  return `<div class="brief bwait quiet" data-kc="KeyWaitingBlock" data-kv="state=${b?"back":"quiet"}">
+    <div class="bw-hd"><span class="bs-hi">${brGreeting()}</span><h2>Nobody's waiting on you</h2></div>
+    ${b ? `<button type="button" class="bw-back" onclick="${b.go}"><span class="bw-faces" aria-hidden="true">${b.who.map(p => `<span class="bw-face">${brPortrait(p.initials, p.id, 96)}</span>`).join("")}</span><span>${b.line}</span>${LI("chevron-right",16)}</button>`
+      : `<p class="bw-q">Kai will put people here when they need you.</p>`}</div>`;
+};
+function bwWire(){
+  const box = phone.querySelector(".bwait"); if (!box) return;
+  const W = () => brWaiting(), find = id => W().find(w => w.p.id===id);
+  box.querySelectorAll("[data-bwopen]").forEach(el => el.onclick = () => { STATE.brOpen = el.dataset.bwopen; render(); });
+  box.querySelectorAll("[data-bwlater]").forEach(el => el.onclick = () => { STATE.brSnooze[el.dataset.bwlater] = true; STATE.brOpen = null; render(); });
+  box.querySelectorAll("[data-bwsend]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwsend); if (!w) return;
+    const d = box.querySelector("[data-bwdraft]"), text = (d ? d.innerText : w.card.draft.text).trim(); if (!text) return;
+    const c = w.card, tgt = c.id.startsWith("ask:") ? (DB.asks||[]).find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
+    if (tgt) tgt._draft = text; c.draft.send(); STATE.brOpen = null; render();
+    toast(`Sent to ${firstName(w.p)}. ${c.kind==="intro" ? "It's in your messages." : "It's in the thread."}`); });
+}
+const _bwRender = render; render = function(){ const r = _bwRender.apply(this, arguments); bwWire(); return r; };
+
+/* ==== KeyKaiReport (29 Sep, Apoorv 17:48: "presented by ai as my daily report... quick to digest, catches me up quick, gives me the
+   next action items... every action taken gets visibility... easy to interact with"). Kai writes two sentences from structured
+   events only (every name links to its row, nothing is inferred), then Next up: people waiting on you and mission picks in one
+   list, three at most, each opening in place with Kai's draft; Send is the member's yes. Done keeps every action since the last
+   visit, yours, other people's and Kai's, so each one is seen. Tap only: no swipe, no stories, 44px targets. ==== */
+STATE.krDone = STATE.krDone || null;
+function krPicks(){
+  return (DB.opps||[]).filter(o => o.personId && ownerOf(o)==="you" && isNewOf(o) && !STATE.brSnooze["opp:"+o.id]).map(o => {
+    const p = targetOf(o), m = (DB.missions||[]).find(x => x.id===o.missionId), d = /<textarea[^>]*id="draft"[^>]*>([\s\S]*?)<\/textarea>/.exec(askSheet(o.id));
+    return { p, key:"opp:"+o.id, since:"12m", pick:true, why:`New pick for ${m ? m.name : "your mission"}`, ctx: o.receipts && o.receipts[0] && o.receipts[0][1],
+      card:{ id:"opp:"+o.id, kind:"pick", draft:{ to:firstName(p), text: d ? d[1].trim() : `Hi ${firstName(p)}, would you have twenty minutes this week?`, send:() => { sendAsk(o.id); STATE.sheet = null; } } } };
+  });
+}
+function krNext(){
+  const W = brWaiting().map(w => Object.assign({ key:w.p.id }, w)), K = krPicks().filter(k => !W.some(w => w.p.id===k.p.id));
+  return { list: K.length ? W.slice(0, 2).concat(K.slice(0, 1), W.slice(2), K.slice(1)) : W, W, K };
+}
+/* the log starts with what happened while you were away: people's answers, then Kai's own finished work */
+function krLog(){
+  if (STATE.krDone) return STATE.krDone;
+  const ns = notifs()||[], r = ns.find(n => (n.kind||n.type)==="reaction"), k = ns.find(n => (n.kind||n.type)==="kai" && n.unread), L = [];
+  if (k) L.push({ by:"kai", line: K => `Kai found ${K.length===1 ? "a new pick" : `${K.length} new picks`} for ${((DB.missions||[])[0]||{}).name||"your mission"}`, when:k.when, go:"go('home')" });
+  if (r) L.push({ by:"them", who: Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).sort((x, y) => r.title.indexOf(x.name) - r.title.indexOf(y.name)).slice(0, 2), where: (/^channel:(.+)/.exec(r.to)||[])[1], line: () => r.title, when:r.when, go:`go('${r.to}')` });
+  return STATE.krDone = L;
+}
+const krName = w => `<button type="button" class="kr-n" data-kropen="${w.key}">${firstName(w.p)}</button>`;
+const krFor = w => { const [, n, u] = /^(\d+)(\w)$/.exec(bwAgo(w)) || [, 1, "m"]; const unit = ({ d:"day", h:"hour", m:"minute" })[u]; return +n===1 ? (u==="h" ? "an hour" : `a ${unit}`) : `${n} ${unit}s`; };
+function krSummary(N, L){
+  const back = L.filter(x => x.by==="them")[0], kai = L.filter(x => x.by==="kai")[0], sent = L.filter(x => x.by==="you" && !x.undo).length, later = L.filter(x => x.undo).length;
+  const a = back ? `${back.who.map(p => `<b>${firstName(p)}</b>`).join(" and ")} reacted to your ${back.where ? `#${back.where} ` : ""}message` : "";
+  const b = kai && N.K.length ? `I found you a <button type="button" class="kr-n" data-kropen="${N.K[0].key}">new pick</button> for ${((DB.missions||[])[0]||{}).name}` : "";
+  const s1 = [a, b].filter(Boolean).join(a && b ? ", and " : "");
+  const w = N.W[0], s2 = N.W.length ? N.W.length===1 ? `${krName(w)} is waiting on you, ${krFor(w.since)} now.` : `${N.W.length} people are waiting on you, ${krName(w)} longest.`
+    : N.K.length ? `Nobody's waiting on you, so start with ${krName(N.K[0])}.`
+    : `You're clear${sent ? `. You sent ${sent===1 ? "one message" : `${sent} messages`}${later ? ` and put ${later===1 ? "one" : later} off till tomorrow` : ""}` : ""}.`;
+  return (s1 && N.list.length ? brCap(s1) + ". " : "") + s2;
+}
+function krDoneRow(x, N){
+  const lead = x.by==="kai" ? `<span class="kr-lead k" aria-hidden="true">${typeof kaiMark==="function" ? kaiMark(24) : ""}</span>`
+    : x.by==="them" ? `<span class="kr-lead f" aria-hidden="true">${x.who.map(p => `<span class="bw-face">${brPortrait(p.initials, p.id, 96)}</span>`).join("")}</span>`
+    : `<span class="kr-lead t" aria-hidden="true">${LI(x.icon||"check", 20)}</span>`;
+  return `<div class="kr-d"><button type="button" class="kr-dm" onclick="${x.go}">${lead}<span class="kr-dl">${x.line(N.K)}</span><span class="bw-t">${x.when==="now" ? "Now" : bwAgo(x.when)}</span></button>${x.undo ? `<button type="button" class="kr-undo" data-krundo="${x.undo}">Undo</button>` : ""}</div>`;
+}
+brBanner = function(){
+  if (!STATE.member) return "";
+  const N = krNext(), L = krLog(), top = N.list.slice(0, 3), mine = L.filter(x => x.by==="you" && !x.undo).length, total = mine + N.list.length;
+  const open = top.find(w => w.key===STATE.brOpen) || (STATE.brOpen===false ? null : top[0]);
+  const part = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
+  return `<section class="brief kreport" data-kc="KeyKaiReport" data-kv="next=${N.list.length};done=${L.length}" aria-label="Kai's ${part} report">
+    <div class="kr-hd">${typeof kaiMark==="function" ? kaiMark(24) : ""}<span class="kr-ttl">Kai's ${part} report</span>
+      <button type="button" class="kr-ask" onclick="STATE.kaiScope=null;openSheet('kai')">Ask Kai</button></div>
+    <p class="kr-sum">${krSummary(N, L)}</p>
+    ${N.list.length ? `<div class="kr-sh"><span>Next up</span><span class="kr-c">${mine} of ${total} done</span></div>
+    <div class="bw-list">${top.map(w => bwRow(w, open && w.key===open.key)).join("")}</div>
+    ${N.list.length > 3 ? `<button type="button" class="bw-more" onclick="go('inbox')"><span>${N.list.length-3} more in Messages</span>${LI("chevron-right",16)}</button>` : ""}` : ""}
+    ${L.length ? `<div class="kr-sh"><span>Done</span><span class="kr-c">${L.length}</span></div><div class="kr-done">${L.slice(0, STATE.krAll ? 99 : 1).map(x => krDoneRow(x, N)).join("")}</div>
+      ${L.length > 1 && !STATE.krAll ? `<button type="button" class="bw-more" data-krall="1"><span>Show all ${L.length} done</span>${LI("chevron-down",16)}</button>` : ""}` : ""}
+  </section>`;
+};
+function krUndo(k){ delete STATE.brSnooze[k]; STATE.krDone = krLog().filter(x => x.undo!==k); STATE.brOpen = k; }
+function krWire(){
+  const box = phone.querySelector(".kreport"); if (!box) return;
+  const find = k => krNext().list.find(w => w.key===k), L = krLog();
+  box.querySelectorAll("[data-bwopen],[data-kropen]").forEach(el => el.onclick = () => { const k = el.dataset.bwopen || el.dataset.kropen;
+    STATE.brOpen = STATE.brOpen===k && el.dataset.bwopen ? false : k; render(); const r = phone.querySelector(`.kreport [data-bw="${k}"]`); if (r && el.dataset.kropen) r.scrollIntoView({ block:"nearest", behavior:"smooth" }); });
+  box.querySelectorAll("[data-bwlater]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwlater); if (!w) return;
+    STATE.brSnooze[w.key] = true; STATE.brOpen = null; L.unshift({ by:"you", icon:"clock", line: () => `You put ${firstName(w.p)} off till tomorrow`, when:"now", go:"void 0", undo:w.key });
+    toast(`${firstName(w.p)} is back tomorrow morning.`, () => krUndo(w.key)); });
+  box.querySelectorAll("[data-krundo]").forEach(el => el.onclick = () => { krUndo(el.dataset.krundo); render(); });
+  box.querySelectorAll("[data-krall]").forEach(el => el.onclick = () => { STATE.krAll = true; render(); });
+  box.querySelectorAll("[data-bwsend]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwsend); if (!w) return;
+    const d = box.querySelector("[data-bwdraft]"), text = (d ? d.innerText : w.card.draft.text).trim(); if (!text) return;
+    const c = w.card, tgt = c.id.startsWith("ask:") ? (DB.asks||[]).find(a => "ask:"+a.id===c.id) : c.id.startsWith("opp:") ? DB.opps.find(o => "opp:"+o.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
+    if (tgt) { tgt._draft = text; if (c.kind==="pick") tgt.kaiDraft = text; } c.draft.send(); STATE.brOpen = null;
+    const f = firstName(w.p), go = c.kind==="pick" ? `go('mission:${(DB.opps.find(o => "opp:"+o.id===c.id)||{}).missionId}')` : "go('inbox')";
+    L.unshift({ by:"you", line: () => c.kind==="pick" ? `You said hi to ${f}. Kai tells you when ${f} answers` : `You replied to ${f}`, when:"now", go }); render();
+    toast(c.kind==="pick" ? `Sent to ${f}. It's in your ${((DB.missions||[]).find(m => go.includes(m.id))||{}).name||"mission"} mission.` : `Sent to ${f}. It's in your messages.`); });
+}
+const _krRender = render; render = function(){ const r = _krRender.apply(this, arguments); krWire(); return r; };
 
 /* ==== Brief stories motion (Motion design thread, 28 Sep; the brief-as-stories plan Apoorv asked for at 23:47). Load after
    brief.js. Missions' brOpen already runs the agreed numbers (open 420 clip-grow, card 280, chapter 360 with a wash, close 360);
@@ -17334,6 +17543,8 @@ function mcWire(){
   phone.querySelectorAll("[data-mkmission]").forEach(el => el.onclick = () => { const q = (STATE.searchQ||"").trim(); STATE.sheet = null; mcStart({ text:q }); });
 }
 
+STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
+
 /* ---- Out of scope ---- */
 function sOOS(s) {
   const map = { events:["Events","Everything this week across your families, with who to meet on every event."], you:["You","What Kai knows, line by line. Rules. Your people. Connectors."], };
@@ -18134,6 +18345,160 @@ if (typeof ob3Welcome === "function" && typeof render === "function") {
     if (w) { obwPlay(w, !obwSeen); obwSeen = true; } else if (!STATE.ob3Wel) obwSeen = false;
     return r; };
 }
+
+</script>
+<style>
+/* ==== SIMPLER HOME (Home simplify thread, 29 Sep): four blocks, rows with hairlines, no cards as containers ==== */
+.hs-home .hs-sec { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:22px 0 4px; }
+.hs-home .hs-st { font-size:16px; line-height:1.25; font-weight:700; letter-spacing:-.01em; color:var(--text-primary,#0B0E11); }
+.hs-home .hs-sa { all:unset; cursor:pointer; min-height:44px; display:inline-flex; align-items:center; font-size:14px; font-weight:600; color:var(--text-secondary,#48515C); }
+.hs-home .hs-sa:focus-visible, .hs-home .hs-mrow:focus-visible, .hs-home .hs-kr:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:8px; }
+
+/* KeyTopPick: one person, one reason, one action */
+.hs-home .hs-pick { padding:12px 0 16px; border-top:1px solid var(--border-subtle,#E6E9EE); border-bottom:1px solid var(--border-subtle,#E6E9EE); cursor:pointer; }
+.hs-home .hs-ph { display:flex; align-items:center; gap:14px; }
+.hs-home .hs-pt { position:relative; flex:0 0 auto; display:block; width:32px; height:32px; border-radius:50%; overflow:hidden; }
+.hs-home .hs-pt.hs-56, .hs-home .avatar.hs-56 { width:64px; height:64px; min-width:64px; font-size:20px; }
+.hs-home .avatar.sq { border-radius:var(--radius-absolute-12,12px); }
+.hs-home .hs-pt .bs-pt { position:absolute; inset:0; width:auto; height:auto; border-radius:0; }
+.hs-home .hs-pt .bs-pt em { font-size:11px; transform:none; color:rgba(255,255,255,.88); font-style:normal; font-weight:700; }
+.hs-home .hs-pt.hs-56 .bs-pt em { font-size:20px; }
+.hs-home .hs-pm { min-width:0; display:grid; gap:2px; }
+.hs-home .hs-pm b { font-size:18px; line-height:1.25; font-weight:700; letter-spacing:-.01em; color:var(--text-primary,#0B0E11); }
+.hs-home .hs-pm span { font-size:14px; line-height:1.35; color:var(--text-secondary,#48515C); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hs-home .hs-why { display:flex; gap:8px; align-items:flex-start; margin-top:12px; font-size:14px; line-height:1.4; color:var(--text-primary,#0B0E11); }
+.hs-home .hs-why .kn { flex:0 0 auto; margin-top:2px; }
+.hs-home .hs-for { margin:6px 0 0 24px; font-size:12px; line-height:1.3; color:var(--text-tertiary,#6B7480); }
+.hs-home .hs-acts { display:flex; gap:8px; margin-top:14px; }
+.hs-home .hs-acts button { all:unset; box-sizing:border-box; cursor:pointer; height:44px; padding:0 18px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12,12px); font-size:15px; font-weight:700; }
+.hs-home .hs-acts .hs-p { flex:1 1 auto; background:var(--component-button-primary-bg-default,#0B0E11); color:var(--component-button-primary-ink,#FFFFFF); }
+.hs-home .hs-acts .hs-p.sec { background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); }
+.hs-home .hs-acts .hs-q { color:var(--text-secondary,#48515C); }
+.hs-home .hs-acts button:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; }
+
+/* KeyMissionRow: tile, name, one outcome line, at most three faces */
+.hs-home .hs-ms { border-top:1px solid var(--border-subtle,#E6E9EE); }
+.hs-home .hs-mrow { display:flex; align-items:center; gap:12px; min-height:68px; padding:10px 0; border-bottom:1px solid var(--border-subtle,#E6E9EE); cursor:pointer; }
+.hs-home .hs-mrow > .mh-mark, .hs-home .hs-mrow > .cv-th, .hs-home .hs-mrow > .avatar { flex:0 0 auto; width:40px; height:40px; border-radius:var(--radius-absolute-12,12px); overflow:hidden; }
+.hs-home .hs-mm { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
+.hs-home .hs-mm b { font-size:15px; line-height:1.3; font-weight:700; color:var(--text-primary,#0B0E11); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hs-home .hs-mm span { font-size:13px; line-height:1.35; color:var(--text-secondary,#48515C); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.hs-home .hs-faces { flex:0 0 auto; display:flex; }
+.hs-home .hs-faces > * { margin-left:-6px; box-shadow:0 0 0 2px var(--bg-page,#FFFFFF); }
+.hs-home .hs-faces > *:first-child { margin-left:0; }
+.hs-home .hs-faces .avatar { width:32px; height:32px; min-width:32px; font-size:11px; }
+.hs-home .hs-go { flex:0 0 auto; display:flex; color:var(--text-tertiary,#6B7480); }
+
+/* KeyKaiLine: what Kai does while you're away, the welcome week, the next setup step */
+.hs-home .hs-kai { margin:22px 0 8px; border-top:1px solid var(--border-subtle,#E6E9EE); }
+.hs-home .hs-kr { all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:flex; align-items:center; gap:12px; min-height:60px; padding:8px 0; border-bottom:1px solid var(--border-subtle,#E6E9EE); color:var(--text-tertiary,#6B7480); }
+.hs-home .hs-kr > .kn { flex:0 0 auto; width:40px; height:40px; }
+.hs-home .hs-ki { flex:0 0 auto; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12,12px); background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); }
+.hs-home .hs-kr > span:not(.hs-ki):not(.hs-pt) { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
+.hs-home .hs-kr b { font-size:15px; line-height:1.3; font-weight:700; color:var(--text-primary,#0B0E11); }
+.hs-home .hs-kr em { font-style:normal; font-size:13px; line-height:1.35; color:var(--text-secondary,#48515C); }
+.hs-home > .hs-kai > .xrow.hs-walk { margin:0 !important; border:0 !important; border-bottom:1px solid var(--border-subtle,#E6E9EE) !important; border-radius:0 !important; padding:8px 0 !important; min-height:60px; }
+.hs-home .hs-pickrow { border-top:1px solid var(--border-subtle,#E6E9EE); }
+.hs-home .hs-pt.hs-40 { width:40px; height:40px; }
+.hs-home .hs-pt.hs-40 .bs-pt em { font-size:14px; }
+.hs-home .hs-kr em.hs-forf { font-size:12px; color:var(--text-tertiary,#6B7480); }
+
+</style>
+<script>
+/* ==== SIMPLER HOME (Home simplify thread, 29 Sep; Kush's DM 28 Sep 01:29 PDT "Homepage should be very simple and easy to read. Also
+   outcomes and not process", Granola 27 Sep "a lot of density of information"). Research: Airbnb Today, Slack Home, Linear Inbox put
+   what needs you first; Hinge shows one pick at a time (Most Compatible) and caps new picks while people wait (Your Turn Limits);
+   Uber, Things and Duolingo keep long-running progress on its own page with one marker on home; Pulse and Pro Inbox Zero end on a
+   finish line. So Home is four blocks, in this order:
+     1. the brief (Brief rethink's block, drawn by brBanner; this module never draws its own),
+     2. KeyTopPick: Kai's one pick for today across every mission, one action in place (folds into Kai's daily report when
+        that brief is on Home, since its Next up already carries the pick),
+     3. KeyMissionRow per mission: its tile, its name, the fixed state word and count then the outcome, at most three faces. The rails, counts and pause/end
+        tiles live on the mission page,
+     4. KeyKaiLine: one line saying what Kai is doing for you while you're away, plus the welcome week and the next setup step.
+   Same data and the same data-* hooks as before (data-mission, data-act, data-exit), so every tap still routes where it did. ==== */
+const hsOn = () => STATE.member && STATE.intakeDone && STATE.persona!=="maya";
+const HS_RANK = ["New pick","Next step","Waiting","In conversation","Went well"];
+const hsStage = o => { const k = scK(o); return k[2]==="Met" ? 3 : HS_RANK.indexOf(k[0]); };
+const hsPaths = m => DB.opps.filter(o => o.missionId===m.id && o.state!=="dropped" && o.state!=="candidate");
+const hsWho = o => o.roleTitle ? `${o.roleTitle}${o.roleCompany ? ", "+o.roleCompany : ""}` : f1(targetOf(o));
+const hsFace = (o, px) => o.roleTitle ? av(scIni(o), "sq") : typeof brPortrait==="function" ? `<span class="hs-pt">${brPortrait(scIni(o), o.personId, px)}</span>` : av(scIni(o));
+/* Apoorv's fixed state word and its count lead the row ("New pick 3"); the furthest person's outcome follows */
+function hsOutcome(m, ps){
+  const best = [...ps].sort((a,b) => hsStage(b)-hsStage(a))[0], st = best ? hsStage(best) : -1;
+  if (st >= 0) { const n = ps.filter(o => hsStage(o)===st).length, word = `${HS_RANK[st]} ${n}`;
+    const lead = st===4 ? `with ${hsWho(best)}` : st===3 ? `with ${hsWho(best)}` : st===2 ? `on ${hsWho(best)}` : st===1 ? `with ${hsWho(best)}` : "";
+    const fresh = st > 0 ? ps.filter(o => ownerOf(o)==="you" && isNewOf(o)).length : 0;
+    return [n===1 && lead ? `${HS_RANK[st]} ${lead}` : word, fresh ? `New pick ${fresh}` : ""].filter(Boolean).join(" · "); }
+  const k = scMissionStatus(m, ps);
+  return m.status==="paused" ? "Paused. Kai stops looking" : [k[0], k[2]].filter(Boolean).join(" · ");
+}
+function hsMissionRow(m, orig){
+  if (!orig.trim()) return "";
+  const ps = hsPaths(m), o0 = document.createElement("template"); o0.innerHTML = orig;
+  const ob = !o0.content.querySelector(".msec") && o0.content.querySelector(".row .b");
+  const line = ob ? [...ob.childNodes].map(n => n.textContent.trim()).filter(Boolean).join(" · ") : hsOutcome(m, ps);
+  const faces = [...ps].filter(o => !o.roleTitle && o.personId).sort((a,b) => hsStage(b)-hsStage(a)).slice(0,3);
+  const tile = typeof mhThumb==="function" ? mhThumb(m) : `<div class="avatar" style="border-radius:12px">${LI(m.type==="Cofounder"?"users":"briefcase",20)}</div>`;
+  return `<div class="hs-mrow" data-mission="${m.id}" role="button" tabindex="0" data-kc="KeyMissionRow">${tile}
+    <div class="hs-mm"><b>${m.name}</b><span>${line}</span></div>
+    ${faces.length ? `<span class="hs-faces" aria-hidden="true" data-kc="KeyFaceStack" data-kv="layout=row, size=32">${faces.map(o => hsFace(o, 120)).join("")}</span>` : ""}
+    <span class="hs-go" aria-hidden="true">${LI("chevron-right",20)}</span></div>`;
+}
+/* one pick, the first new one on the first mission that has any: people before roles */
+function hsPick(){
+  const act = DB.missions.filter(m => m.status==="active");
+  for (const m of act) { const fresh = hsPaths(m).filter(o => ownerOf(o)==="you" && isNewOf(o));
+    const o = fresh.find(x => !x.roleTitle) || fresh[0]; if (o) return { o, m, left: act.reduce((n,x) => n + hsPaths(x).filter(z => ownerOf(z)==="you" && isNewOf(z)).length, 0) - 1 }; }
+  return null;
+}
+function hsPickHTML(){
+  /* with Kai's daily report on Home, its Next up already carries the day's pick: the block folds into it */
+  if (typeof krNext==="function") return "";
+  const p = hsPick(); if (!p) return "";
+  const { o, m } = p, t = targetOf(o), v = scVerb(o), q = scQuiet(o), why = scWhy(o);
+  /* people first (Hinge's Your Turn Limits): while someone waits on you, the pick is one quiet row; it opens once they're answered */
+  const waiting = typeof brWaiting==="function" ? brWaiting().length : 0;
+  if (waiting && !STATE.hsPickOpen) return `<div class="hs-sec"><span class="hs-st">Kai's pick for today</span></div>
+  <button type="button" class="hs-kr hs-pickrow" onclick="STATE.hsPickOpen=true;render()" data-kc="KeyTopPick" data-kv="state=folded, kind=${o.roleTitle?"role":"person"}">${o.roleTitle ? av(scIni(o), "sq") : `<span class="hs-pt hs-40">${typeof brPortrait==="function" ? brPortrait(scIni(o), o.personId, 120) : av(scIni(o))}</span>`}<span><b>${scName(o)}</b><em>${why || (t ? t.title+", "+t.company : "")}</em><em class="hs-forf">For ${m.name}</em></span>${LI("chevron-right",20)}</button>`;
+  return `<div class="hs-sec"><span class="hs-st">Kai's pick for today</span>${p.left>0 ? `<button type="button" class="hs-sa" data-mission="${m.id}">${p.left} more</button>` : ""}</div>
+  <div class="hs-pick" data-opp="${o.id}" data-kc="KeyTopPick" data-kv="state=open, kind=${o.roleTitle?"role":"person"}">
+    <div class="hs-ph">${o.roleTitle ? av(scIni(o), "sq hs-56") : `<span class="hs-pt hs-56" ${o.personId?`data-profile="${o.personId}"`:""}>${typeof brPortrait==="function" ? brPortrait(scIni(o), o.personId, 240) : av(scIni(o))}</span>`}
+      <div class="hs-pm"><b>${scName(o)}</b><span>${o.roleTitle ? (typeof scRole==="function" ? scRole(o) : o.roleCompany) : `${t.title}, ${t.company}`}</span></div></div>
+    ${why ? `<div class="hs-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}<span>${why}</span></div>` : ""}
+    <div class="hs-for">For ${m.name}</div>
+    <div class="hs-acts">${v ? `<button type="button" class="hs-p ${v[2]||""}" ${v[1]}>${v[0]}</button>` : ""}${q ? `<button type="button" class="hs-q" ${q[1]}>${q[0]}</button>` : ""}</div>
+  </div>`;
+}
+/* what Kai is doing for you while you're away: the long-running work, in one line */
+function hsKai(){
+  const n = DB.missions.filter(m => m.status==="active" && !m.host && !m.evKind).length, fams = DB.families.map(f => f.name.split(" ")[0]);
+  const where = fams.length > 1 ? fams.slice(0,-1).join(", ") + " and " + fams[fams.length-1] : fams[0] || "your families";
+  const week = typeof KY!=="undefined" && KY.week && !(typeof kyPaid==="function" && kyPaid());
+  return `<div class="hs-kai" data-kc="KeyKaiLine">
+    <button type="button" class="hs-kr" onclick="openSheet('kai')">${typeof kaiMark==="function" ? kaiMark(24) : ""}<span><b>Kai is working on ${n} mission${n===1?"":"s"}</b><em>Reading ${where} for you. Next pass Friday</em></span>${LI("chevron-right",20)}</button>
+    ${week ? `<button type="button" class="hs-kr" onclick="openSheet('kygift')"><span class="hs-ki">${LI("phone",20)}</span><span><b>Your welcome week</b><em>Call Kai as much as you like · ${KY.week} days left</em></span>${LI("chevron-right",20)}</button>` : ""}
+  </div>`;
+}
+const _hsSection = missionSection; let HS_ROWS = false;
+missionSection = function(m){ const h = _hsSection.apply(this, arguments); return HS_ROWS ? hsMissionRow(m, h) : h; };
+const _hsHome = sHome; sHome = function(){
+  if (!hsOn()) return _hsHome.apply(this, arguments);
+  HS_ROWS = true; let h; try { h = _hsHome.apply(this, arguments); } finally { HS_ROWS = false; }
+  const t = document.createElement("template"); t.innerHTML = h; const body = t.content.querySelector(".body"); if (!body) return h;
+  body.classList.add("hs-home");
+  body.querySelectorAll(":scope > .ky-wk").forEach(e => e.remove());
+  const rows = [...body.querySelectorAll(":scope > .hs-mrow")];
+  if (rows.length) { const wrap = document.createElement("div"); wrap.className = "hs-ms"; rows[0].before(wrap);
+    wrap.insertAdjacentHTML("beforebegin", `<div class="hs-sec"><span class="hs-st">Your missions</span></div>`); rows.forEach(r => wrap.append(r));
+    wrap.insertAdjacentHTML("afterend", hsKai()); wrap.previousElementSibling.insertAdjacentHTML("beforebegin", hsPickHTML()); }
+  /* the next setup step rides under Kai's line; Completed shows only once something is completed */
+  const walk = [...body.querySelectorAll(":scope > .xrow, :scope > .walk")].find(e => /Connect your accounts|Add your|Turn on/.test(e.textContent)); const kai = body.querySelector(":scope > .hs-kai");
+  if (walk && kai) { walk.classList.add("hs-walk"); kai.append(walk); }
+  const comp = [...body.querySelectorAll(":scope > .row")].find(e => /^\s*Completed/.test(e.textContent));
+  if (comp && !DB.missions.some(m => m.status==="closed")) comp.remove(); else if (comp) comp.classList.add("hs-comp");
+  return t.innerHTML;
+};
 
 </script>
 </body>
