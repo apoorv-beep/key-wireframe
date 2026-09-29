@@ -5124,6 +5124,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 /* the new mission's page: its first search running (KeyKaiLine state=looking) */
 #phone.hf-mis .mc-look, .hf-mis .mc-look { margin:4px 0 12px; font:var(--type-body-s); color:var(--text-secondary); }
+/* a message swapped in place on an answer (the question that lost its chips, a replaced draft) does not replay its entrance */
+.mc-sheet .mc-seen { animation:none; }
 @media (prefers-reduced-motion: reduce) { .mc-page.hf { animation:none; } }
 </style>
 </head>
@@ -16979,15 +16981,15 @@ function mcAnswer(t){
   if (STATE.sheet && STATE.sheet.type==="kai" && !STATE.sheetFull) { const el = phone.querySelector("#sheet"); STATE.sheetFull = true; STATE.kaiGrew = el ? el.offsetHeight : 0; }
   m.msgs.push({ who:"u", text:mcQ(t) });
   if (!m.kind) { const i = START_VERBS.findIndex(v=>v[0]===t); m.kind = i>=0 ? MC_VERB[i] : mcKindOf(t); if (i<0) mcSeed(m, t);
-    m.msgs.push({ who:"k", text:mcOpen(m) }); mcAskNext(); render(); return; }
+    m.msgs.push({ who:"k", text:mcOpen(m) }); mcAskNext(); mcRefresh(); return; }
   if (m.edit==="menu") { const f = Object.entries(MC_EDIT).find(([,l])=>l===t); m.edit = null; if (f) { m.msgs.pop(); mcEdit(f[0]); return; } }
   if (m.edit) { const f = m.edit; m.edit = null;
     if (f==="look") m.a.look = t==="All my communities" ? null : t.replace(/ only$/,"");
     else mcSet(f, t);
-    mcDraft(true); render(); return; }
+    mcDraft(true); mcRefresh(); return; }
   if (m.card) { /* after the draft: their words become a Must have line, the draft updates */
-    m.a.extra = (m.a.extra||[]).concat(t.charAt(0).toUpperCase()+t.slice(1)); mcDraft(true, `Added "${mcQ(t)}" as a must have.`); render(); return; }
-  const q = mcQs()[m.step]; mcSet(q[0], t); m.step++; mcAskNext(); render();
+    m.a.extra = (m.a.extra||[]).concat(t.charAt(0).toUpperCase()+t.slice(1)); mcDraft(true, `Added "${mcQ(t)}" as a must have.`); mcRefresh(); return; }
+  const q = mcQs()[m.step]; mcSet(q[0], t); m.step++; mcAskNext(); mcRefresh();
 }
 /* the brief, composed only from what the member said (never from data they haven't given) */
 function mcBrief(){
@@ -17009,7 +17011,36 @@ function mcEdit(field){
   if (field==="menu") m.msgs.push({ who:"k", text:"What should change?", chips:Object.keys(MC_EDIT).filter(f=>f==="look"||mcQs().some(q=>q[0]===f)).map(f=>MC_EDIT[f]) });
   else if (field==="look") m.msgs.push({ who:"k", text:"Where should I look?", chips:["All my communities", ...mcFams().map(f=>`${f} only`)] });
   else { const q = MC_KINDS[m.kind].qs.find(x=>x[0]===field); m.msgs.push({ who:"k", text:q[1], chips:q[2].map(c=>mcChip(c)[0]), q:field }); }
-  render();
+  mcRefresh();
+}
+/* an answer updates the open sheet in place: the sheet, its scrim and the earlier messages stay put (a full render slid the sheet
+   in again and replayed every bubble). Only what changed is swapped; new messages animate in; the thread scrolls on from where it was */
+function mcRefresh(){
+  const old = phone.querySelector("#sheet.mc-sheet");
+  if (!old || STATE.mcDoc || phone.querySelector(".mc-page") || !(STATE.mc && STATE.mc.open && STATE.sheet && STATE.sheet.type==="kai")) { render(); return; }
+  const t = document.createElement("div"); t.innerHTML = sheetHTML(); const nu = t.querySelector("#sheet"); if (!nu) { render(); return; }
+  /* the same glyph-to-Lucide pass render() runs over the phone, so unchanged parts compare equal and new ones arrive finished */
+  if (typeof GLYPH_ICON!=="undefined") { const w = document.createTreeWalker(nu, NodeFilter.SHOW_TEXT), hits = []; let x;
+    while ((x = w.nextNode())) { const g = x.nodeValue.trim(), el = x.parentNode; if (GLYPH_ICON[g] && el.childNodes.length===1 && !/^(TEXTAREA|SCRIPT|STYLE|OPTION)$/.test(el.tagName)) hits.push(x); }
+    hits.forEach(x => { x.parentNode.innerHTML = LI(GLYPH_ICON[x.nodeValue.trim()], x.parentNode.classList.contains("back")?20:16); }); }
+  const box = old.querySelector(".ks-body") || old.querySelector(".sb"), top = box ? box.scrollTop : 0;
+  const grew = old.classList.contains("grew");
+  ["class","style","data-kv"].forEach(n=>{ if (nu.hasAttribute(n)) old.setAttribute(n, nu.getAttribute(n)); else old.removeAttribute(n); });
+  if (grew) old.classList.add("grew"); /* dropping it would swap the growth animation for the slide-in and play that */
+  const deep = e => e.matches(".sb, .ks-body, .ks-thread, .thread");
+  const morph = (o, n) => { const oc = [...o.children], keep = new Set(); let at = 0;
+    const cls = e => e.className.replace(/\s*mc-seen/, "");
+    [...n.children].forEach(c => { const j = oc.findIndex((e, k) => k>=at && e.tagName===c.tagName && cls(e)===c.className);
+      if (j<0) { o.insertBefore(c, oc[at] || null); return; }
+      const was = oc[j]; at = j+1; keep.add(was); if (was.classList.contains("mc-seen")) c.classList.add("mc-seen");
+      if (was.outerHTML===c.outerHTML) return;
+      if (deep(c)) { morph(was, c); return; }
+      c.classList.add("mc-seen"); was.replaceWith(c); keep.add(c); });
+    oc.forEach(e => { if (!keep.has(e)) e.remove(); }); };
+  const osb = old.querySelector(".sb"), nsb = nu.querySelector(".sb"); if (osb && nsb) morph(osb, nsb); else { render(); return; }
+  old.classList.add("mc-sheet"); if (mcHF()) old.setAttribute("data-kv", `height=${STATE.sheetFull?"full":"hug"}, content=mission-create`);
+  if (box) { box.scrollTop = top; requestAnimationFrame(()=>box.scrollTo({ top:box.scrollHeight, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })); }
+  mcWire();
 }
 /* Approve: the member's yes. Only now does it become a mission, and the first search for a New pick starts */
 function mcApprove(){
