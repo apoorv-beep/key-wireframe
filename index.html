@@ -15460,7 +15460,7 @@ function bfCard(c, i, total){
     return `<div class="bs-card bf-one bf-sum" data-kind="sum" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=sum;facts=${c.facts.length}">
     <div class="bf-pic">${c.lead ? brPortrait(c.lead.who.initials, c.lead.who.id, 720) : f ? `<div class="bf-cover" style="background:${BS_WASH[f.id]||"#1B2530"}">${typeof cCoverArt==="function" ? cCoverArt(f) : ""}</div>` : brKaiArt()}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
     <div class="bf-tx"><span class="bf-k"><span>${c.need ? "Also moving" : "What moved"}</span></span><h3>${c.lead ? (c.lead.head || c.lead[1]) : (k => !f ? "New in your messages" : k ? `${k===1?"One more needs":k+" more need"} you in ${nm}` : c.need ? `Also in ${nm}` : `Nothing in ${nm} needs you`)(c.facts.filter(x => x[3]).length)}</h3>${c.lead && c.lead.quote ? `<p>"${c.lead.quote.replace(/^"|"$/g,"")}"</p>` : ""}
-      <div class="bf-facts">${c.facts.map(([g,t,go,nc],fi) => `<span class="bf-fact ${nc?"need":""}" role="button" data-fact="${fi}"><i>${LI(g,16)}</i><span>${t}</span>${nc ? `<b>${nc.draft ? "Reply" : nc.act.label}</b>` : LI("chevron-right",16)}</span>`).join("")}</div></div>
+      <div class="bf-facts">${c.facts.map(([g,t,go,nc],fi) => `<span class="bf-fact ${nc?"need":""}" role="button" data-fact="${fi}"><i>${LI(g,16)}</i><span>${t}</span>${nc ? `<b>${nc.draft ? "Reply" : nc.act.label}</b>` : LI("chevron-right",16)}</span>`).join("")}</div>${c.origin ? `<button type="button" class="bf-open" data-bs="origin">${c.origin.label}${LI("chevron-right",16)}</button>` : ""}</div>
     <div class="bs-acts"><button type="button" class="p" data-bs="act">${c.lead ? c.lead.open : `Open ${nm}`}</button><button type="button" class="s" data-bs="later">Next</button></div></div>`; }
   if (c.card==="also") return `<div class="bs-card bf-also" data-kind="also" data-chapter="also" data-kc="KeyStoryCard" data-kv="kind=also;rows=${c.rows.length}">
     <div class="bf-tx"><span class="bf-k">Also moving</span><h3>Nothing else needs you</h3><p>The rest, by community. Open one when you have a minute.</p></div>
@@ -15577,7 +15577,9 @@ function brPicks(){
 function brBackCard(){
   const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"); if (!r) return null;
   const ps = Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).sort((x, y) => r.title.indexOf(x.name) - r.title.indexOf(y.name)).slice(0, 4);
-  return { id:"back:"+r.id, kind:"back", label:"Came back", fam: brFam(brFamOf(ps[0])), who:ps[0], faces:ps, title:r.title, act:{ label:"See it", go:`go('${r.to}')` }, did:"Seen" };
+  const ch = (/^channel:(.+)/.exec(r.to)||[])[1];
+  return { id:"back:"+r.id, kind:"back", label:"Came back", fam: brFam(brFamOf(ps[0])), who:ps[0], faces:ps, title:r.title, act:{ label:"See it", go:`go('${r.to}')` }, did:"Seen",
+    origin:{ label: ch ? `Open in #${ch}` : "Open it", go:`go('${r.to}')` } };
 }
 /* the running order: what needs you, your mission picks, what came back to you, then what moved in each community */
 function brCards(){
@@ -15585,11 +15587,13 @@ function brCards(){
   /* every card can open the place it came from (Apoorv 20:04), not only its quick action */
   L.forEach(c => { const ch = c.alt && (/channel:([\w-]+)/.exec(c.alt.go)||[])[1];
     c.origin = c.draft ? { label: c.kind==="intro" ? `Open ${c.draft.to}'s intro` : ch ? `Open in #${ch}` : "Open the conversation", go:c.alt.go }
-      : c.ev ? { label:`Open ${c.ev.name}`, go:`go('eventd:${c.ev.id}')` } : null; });
+      : c.ev ? { label:`Open ${c.ev.name}`, go:`go('eventd:${c.ev.id}')` }
+      : c.kind==="reqs" ? { label: c.faces && c.faces.length > 1 ? "Open your requests" : `Open ${firstName(c.who)}'s request`, go:c.act.go } : null; });
   brPicks().forEach(c => L.push(Object.assign(c, { card:"one" }))); const b = brBackCard(); if (b) L.push(Object.assign(b, { card:"one" }));
   /* what moved: two at most, the ones where a person said something first */
   const S = []; [["you", null], ...DB.families.map(f => [f.id, f])].forEach(([k, f]) => { const F = (facts[k]||[]).slice(0, 3); if (!F.length) return;
-    const lead = F.find(x => x.who); S.push({ id:"sum:"+k, card:"sum", kind:"sum", fam:f, facts: lead && !lead.keep ? F.filter(x => x!==lead) : F, lead, need:0 }); });
+    const lead = F.find(x => x.who); S.push({ id:"sum:"+k, card:"sum", kind:"sum", fam:f, facts: lead && !lead.keep ? F.filter(x => x!==lead) : F, lead, need:0,
+      origin: f ? { label:`Open ${f.name.split(" ")[0]}`, go:`STATE.family='${f.id}';go('family')` } : { label:"Open Messages", go:"go('inbox')" } }); });
   return L.concat(S.sort((x, y) => !!y.lead - !!x.lead).slice(0, 2));
 }
 function brRunNow(){
@@ -15652,6 +15656,7 @@ brOpen = function(fromEl){
   if (phone.querySelector(".bs-vw")) return;
   const R = brRunNow(), L = R.L; if (R.at >= L.length) R.at = L.length; let si = R.at;
   const vw = document.createElement("div"); vw.className = "bs-vw bbrief"; vw.setAttribute("data-kc","KeyStoryViewer"); phone.appendChild(vw);
+  if (STATE.push) { brHeld.unshift([STATE.push.title, STATE.push.body, STATE.push.actions]); STATE.push = null; const pe = phone.querySelector(".push"); if (pe) pe.remove(); }
   const view = phone.querySelector(".view"); if (view) view.classList.add("bs-back");
   let busy = false;
   const cardOf = i => { if (i >= L.length) return brFin(R); const c = L[i]; if (R.done[c.id] && !c.sent) c.sent = R.done[c.id];
@@ -17668,7 +17673,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.142";
+window.KEY_BUILD = "2.143";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
