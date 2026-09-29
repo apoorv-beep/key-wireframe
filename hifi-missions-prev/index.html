@@ -5227,6 +5227,38 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-mis .sc .fr.mh-wr.gold .k { color:var(--text-gold); }
 #phone.hf-mis .sc .fr.mh-wr .b { font:var(--type-body-m); color:var(--text-primary); }
 #phone.hf-mis .sc .fr.mh-wr .chev { align-self:center; color:var(--icon-tertiary, var(--icon-secondary)); line-height:0; }
+/* The posting's own facts (29 Sep). KeyFactStrip on the pick card; KeyJobFacts, KeyStateRow closed, KeyQuote, the fold and the apply row on the sheet */
+#phone.hf-mis .mh-pk .mh-pkf { display:flex; flex-wrap:wrap; gap:4px 12px; font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .mh-pk .mh-pkf > span { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+#phone.hf-mis .mh-pk .mh-pkf svg, #phone.hf-mis .mh-pk .mh-shut > svg { color:var(--icon-secondary); flex:0 0 auto; }
+#phone.hf-mis .mh-pk .mh-shut > svg { margin-top:2px; }
+#phone.hf-mis .sc .mh-jf { display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; margin:12px 0 4px; }
+#phone.hf-mis .sc .mh-jc { display:flex; align-items:flex-start; gap:10px; min-width:0; }
+#phone.hf-mis .sc .mh-jc .mh-fi, #phone.hf-mis .sc .mh-shut-row .mh-fi { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; font-style:normal; line-height:0; }
+#phone.hf-mis .sc .mh-jc .m { display:flex; flex-direction:column; min-width:0; }
+#phone.hf-mis .sc .mh-jc .k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking, .06em); text-transform:uppercase; color:var(--text-secondary); }
+#phone.hf-mis .sc .mh-jc .v { font:var(--type-body-m-strong); color:var(--text-primary); overflow-wrap:anywhere; }
+#phone.hf-mis .sc .mh-jc .s { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .sc .mh-shut-row { display:flex; align-items:center; gap:12px; margin:12px 0 4px; padding:12px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+#phone.hf-mis .sc .mh-shut-row .mh-fi { background:var(--bg-surface-default); }
+#phone.hf-mis .sc .mh-shut-row .m { display:flex; flex-direction:column; min-width:0; }
+#phone.hf-mis .sc .mh-shut-row .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone.hf-mis .sc .mh-shut-row .b { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .sc .fr.mh-src, #phone.hf-mis .sc .fr.mh-fold, #phone.hf-mis .sc .fr.mh-link { cursor:pointer; min-height:44px; }
+#phone.hf-mis .sc .fr.mh-src:focus-visible, #phone.hf-mis .sc .fr.mh-fold:focus-visible, #phone.hf-mis .sc .fr.mh-link:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-12); }
+#phone.hf-mis .sc .fr.mh-fold:not([aria-expanded="true"]) .b { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.hf-mis .sc .mh-words { margin:0 0 8px 44px; padding:12px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); display:flex; flex-direction:column; gap:8px; }
+#phone.hf-mis .sc .mh-words .mh-wh { display:flex; align-items:center; gap:10px; }
+#phone.hf-mis .sc .mh-words .mh-wh .avatar { width:32px; height:32px; flex:0 0 32px; }
+#phone.hf-mis .sc .mh-words .mh-wh .m { display:flex; flex-direction:column; min-width:0; flex:1; }
+#phone.hf-mis .sc .mh-words .mh-wh .a { font:var(--type-body-s-strong, var(--type-body-s)); color:var(--text-primary); }
+#phone.hf-mis .sc .mh-words .mh-wh .b { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-mis .sc .mh-words .mh-wh > i { color:var(--icon-tertiary, var(--icon-secondary)); line-height:0; font-style:normal; }
+#phone.hf-mis .sc .mh-words p { margin:0; font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-mis .sc .mh-does { margin:0 0 8px 44px; display:flex; flex-direction:column; gap:8px; }
+#phone.hf-mis .sc .mh-does .k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking, .06em); text-transform:uppercase; color:var(--text-secondary); }
+#phone.hf-mis .sc .mh-do { display:flex; gap:8px; align-items:flex-start; font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-mis .sc .mh-do svg { color:var(--icon-secondary); flex:0 0 auto; margin-top:2px; }
 </style>
 <style>@font-face {
   font-family: 'Manrope';
@@ -5364,8 +5396,8 @@ const DB = {
     { id:"g-dinner", group:"Xoogler dinner · event chat", last:"Daniel: Break's over, back in five", when:"Thu", unread:0, event:true }
   ],
   pool: [
-    { kind:"role", title:"Senior PM, new product line", org:"Anthropic", via:"rahul", fam:"Xoogler", when:"Sep 9", why:"Matches your role mission" },
-    { kind:"role", title:"Senior PM, agents", org:"Perplexity", via:"sana", fam:"Xoogler", when:"Sep 12", why:"Matches your role mission" },
+    { kind:"role", title:"Senior PM, new product line", org:"Anthropic", via:"rahul", fam:"Xoogler", when:"Sep 9", why:"Matches your role goal" },
+    { kind:"role", title:"Senior PM, agents", org:"Perplexity", via:"sana", fam:"Xoogler", when:"Sep 12", why:"Matches your role goal" },
     { kind:"role", title:"Platform PM", org:"Sierra", via:"ana", fam:"Xoogler", when:"Today", why:"Opens in October" },
     { kind:"role", title:"PM, growth", org:"Duolingo", via:"kate", fam:"Michigan", when:"Sep 10", why:"Outside your constraints: not AI" },
     { kind:"role", title:"Head of Product", org:"Stealth, agents infra", via:"maya", fam:"Xoogler", when:"Sep 14", why:"Cofounder-adjacent" },
@@ -5406,7 +5438,7 @@ const DB = {
     sources:[ ["Contacts","granted"], ["Device calendar","granted"], ["LinkedIn","sign in"], ["Xoogler channels","#jobs, #introductions, #cofounders, #general. Not #sf-this-week"] ],
     shared:[ ["Open to intros via connector, 3 a week","to other members' Kai"], ["Can help with: product reviews, PM hiring","on your profile"], ["Looking for: revealed only on mutual match","never on your profile"] ]
   },
-  rules: { quiet:null, intros:"Via connector", hiring:"Open", advice:"Open", investing:"Closed", cofounder:"Open", capacity:3, path:"Anyone in my families, via connector", window:"None set", delegate:true, share:"Openness and capacity only" },
+  rules: { quiet:null, intros:"Via connector", hiring:"Open", advice:"Open", investing:"Closed", cofounder:"Open", capacity:3, path:"Anyone in my communities, via connector", window:"None set", delegate:true, share:"Openness and capacity only" },
   posts: [
     { kind:"Update", who:"Daniel Reyes", when:"Today", title:"Where I've been this month", text:"Three cities, two hackathons, one very good dinner. What I keep hearing: everyone's hiring PMs who've shipped AI, and nobody can find them. If that's you, say so in #jobs." },
     { kind:"Digest", who:"Kai, published by Daniel", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Maya's looking for eval-tooling folks. Six new members, all greeted." },
@@ -5589,7 +5621,7 @@ function applyIntake() {
   if (!STATE.member) { STATE.intakeDone = true; return; }
   if (m1) {
     DB.opps.push(opp("o1",m1.id,"person","rahul","direct",[ ["Connected","You've met 3 times this year","calendar"], ["Role","Posted in #jobs: hiring senior PMs for a new product line","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ],"Say hi to Rahul","new"));
-    DB.opps.push(opp("o3",m1.id,"role","sana","connector",[ ["Fit","Senior PM, agents team. Matches your mission","mission"], ["Vouched","Sana is on the hiring panel and posted it herself","#jobs, Sep 12"], ["Shared","2 other Xooglers work there","people"] ],"Ask Sana to refer you","new",{ via:"sana", roleTitle:"Senior PM, agents", roleCompany:"Perplexity", timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
+    DB.opps.push(opp("o3",m1.id,"role","sana","connector",[ ["Fit","Senior PM, agents team. Matches your goal","mission"], ["Vouched","Sana is on the hiring panel and posted it herself","#jobs, Sep 12"], ["Shared","2 other Xooglers work there","people"] ],"Ask Sana to refer you","new",{ via:"sana", roleTitle:"Senior PM, agents", roleCompany:"Perplexity", timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
   }
   if (m2) {
     DB.opps.push(opp("o2",m2.id,"person","maya","connector",[ ["Vouched","Daniel recommended her in #cofounders in August","#cofounders, Aug 21"], ["Shared","Both at Xoogler dinner and the AI meetup","events"], ["Open","Cofounder conversations, 2 slots left this month","rules"] ],"Ask Daniel to intro you","new",{ via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
@@ -5619,8 +5651,8 @@ const OPP_SUGGESTIONS = {
 };
 const KAI_COMPOSER = [
   { t:"Start a mission", flow:"newmission" },
-  { t:"Who's hiring PMs in Xoogler?", r:"Three people this month: Rahul at Anthropic (you've met), Sana at Perplexity (posted in #jobs), and Ana Ruiz at Sierra (met twice). Rahul and Sana are already in your role mission. Want Ana as a path?", mini:["Ana Ruiz, Sierra. Platform PM. Met twice."] },
-  { t:"Add a constraint to my role mission", r:"Say the constraint and I'll add it. For example: only companies under 200 people, or remote is fine.", chips:["Under 200 people","Remote is fine","Nothing before November"] },
+  { t:"Who's hiring PMs in Xoogler?", r:"Three people this month: Rahul at Anthropic (you've met), Sana at Perplexity (posted in #jobs), and Ana Ruiz at Sierra (met twice). Rahul and Sana are already in your role goal. Want Ana as a path?", mini:["Ana Ruiz, Sierra. Platform PM. Met twice."] },
+  { t:"Add a constraint to my role goal", r:"Say the constraint and I'll add it. For example: only companies under 200 people, or remote is fine.", chips:["Under 200 people","Remote is fine","Nothing before November"] },
   { t:"Catch me up on #jobs", r:"Out of scope for this proof of concept. In the product this returns a read-only summary with receipts." }
 ];
 const START_VERBS = [ ["Find a role","Looking","Find a role"], ["Find a cofounder","Cofounder","Find a cofounder"], ["Hire someone","Hiring","Hire for my team"], ["Raise","Raising","Raise a round"], ["Meet people","The people","Meet people worth knowing"] ];
@@ -6713,7 +6745,7 @@ function sPendingFamily() {
   <div class="body">
     ${STATE.applied ? `<div class="vcard" style="cursor:default;margin-top:4px"><div class="kicker"><span class="d"></span>Pending</div><div class="id">${av("X","lg")}<div style="min-width:0"><div class="n">${inv.name}</div><div class="s">Applied ${STATE.appliedAt}. You'll hear the moment they decide</div></div></div><div class="r4"><span class="ty">Opens on approval</span><span>Channels, people, events, and Kai's first pass</span></div>${STATE.provisional?`<div class="acts"><button class="btn sec" onclick="STATE.member=true;go('family');STATE.member=false" style="margin:0">Read public channels</button></div>`:''}</div>`
     : `<div class="empty" style="margin-top:4px"><b style="color:var(--ink)">No family yet</b><br>A family is a vetted group with channels, people and events, and it's where Kai looks for you. These fit your background.</div><div style="margin-top:10px">${famRecRow({...inv, why:"Ex-Google, from your LinkedIn", kind:"vetted"})}</div>`}
-    <div class="msec"><div class="msh" style="cursor:default"><div class="mg t2">✦</div><div class="mst">Also for you</div></div><div class="kline"><span class="stdot off"></span><span>${(STATE.signinWith==="linkedin"||STATE.linkedinConnected)?"From your LinkedIn and who you know":"Popular with people like you"}</span></div><div style="padding:8px 20px 0">${DB.recommendedFamilies.map(famRecRow).join("")}<div class="xrow" onclick="go('doorway')"><div class="m"><div class="a">Browse all families</div><div class="b">Vetted ones take applications. Open ones join instantly.</div></div><span class="s">›</span></div></div></div>
+    <div class="msec"><div class="msh" style="cursor:default"><div class="mg t2">✦</div><div class="mst">Also for you</div></div><div class="kline"><span class="stdot off"></span><span>${(STATE.signinWith==="linkedin"||STATE.linkedinConnected)?"From your LinkedIn and who you know":"Popular with people like you"}</span></div><div style="padding:8px 20px 0">${DB.recommendedFamilies.map(famRecRow).join("")}<div class="xrow" onclick="go('doorway')"><div class="m"><div class="a">Browse all communities</div><div class="b">Vetted ones take applications. Open ones join instantly.</div></div><span class="s">›</span></div></div></div>
   </div>
   ${navHTML("families")}`;
 }
@@ -6752,7 +6784,7 @@ function trackRole(cid, i) {
   const id = "o"+(DB.opps.length+10);
   const poster = DB.people[r.poster] || { id:r.poster, name:x.who, initials:x.ini, title:"", company:r.company, line:"" };
   if (!DB.people[r.poster]) DB.people[r.poster] = Object.assign({ families:["Xoogler"], openTo:["Referrals"], notNow:[], lookingFor:"", help:["Referrals at "+r.company], shared:["Both in #jobs"] }, poster);
-  DB.opps.push(opp(id, m1.id, "role", r.poster, "connector", [ ["Fit", `${r.title} at ${r.company}. Matches your mission`, "mission"], ["Vouched", `${x.who} posted it. ${r.rel}.`, cid==="jobs"?"#jobs, "+x.when:"#jobs"], ["Shared","Both in Xoogler","xoogler"] ], `Ask ${x.who.split(" ")[0]} to refer you`, "new", { via:r.poster, roleTitle:r.title, roleCompany:r.company, timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
+  DB.opps.push(opp(id, m1.id, "role", r.poster, "connector", [ ["Fit", `${r.title} at ${r.company}. Matches your goal`, "mission"], ["Vouched", `${x.who} posted it. ${r.rel}.`, cid==="jobs"?"#jobs, "+x.when:"#jobs"], ["Shared","Both in Xoogler","xoogler"] ], `Ask ${x.who.split(" ")[0]} to refer you`, "new", { via:r.poster, roleTitle:r.title, roleCompany:r.company, timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
   OPP_SUGGESTIONS[id] = [ ["Who posted this?", `${x.who}, ${r.rel.toLowerCase()}. Posted in ${cid==="jobs"?"#jobs":"the channel"} on ${x.when}.`], ["What did Kai extract?", `Title: ${r.title}. Company: ${r.company}. Poster's relationship: ${r.rel}. Link: ${r.link||"none, the message didn't include one"}. Confidence: high on title and company, medium on level.`], ["Should I just apply?", r.link?"You can, the link is on the role screen. A referral skips the screen, so ask first.":"There's no link. The only route is the poster, which is the better route anyway."] ];
   toast(`Tracking under ${m1.name}. It's on your Missions tab.`);
 }
@@ -6866,7 +6898,7 @@ function sManageSection(id) {
 }
 function switcherSheet() {
   const recs = DB.recommendedFamilies.filter(r=>!DB.families.some(f=>f.id===r.id)).slice(0,2);
-  return `<h2>Your families</h2>${DB.families.map(f=>`<div class="rowitem" data-switch="${f.id}"><div class="avatar" style="border-radius:8px">${f.initial}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members, ${f.proof}</div></div><div class="s">${STATE.family===f.id?'current':''}</div></div>`).join("")}<div class="rowitem" onclick="toast('Join another family: application flow (out of scope)')"><div class="avatar" style="border-radius:8px;border-style:dashed">+</div><div class="m"><div class="a">Join another family</div><div class="b">Nominations and applications</div></div></div>`;
+  return `<h2>Your families</h2>${DB.families.map(f=>`<div class="rowitem" data-switch="${f.id}"><div class="avatar" style="border-radius:8px">${f.initial}</div><div class="m"><div class="a">${f.name}</div><div class="b">${f.members} members, ${f.proof}</div></div><div class="s">${STATE.family===f.id?'current':''}</div></div>`).join("")}<div class="rowitem" onclick="toast('Join another community: application flow (out of scope)')"><div class="avatar" style="border-radius:8px;border-style:dashed">+</div><div class="m"><div class="a">Join another community</div><div class="b">Nominations and applications</div></div></div>`;
 }
 
 
@@ -7099,7 +7131,7 @@ function sYou() {
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="t">You</div></div>
   <div class="body">
     <div class="row" style="align-items:center;gap:12px;margin-top:6px">${av(u.initials,"lg")}<div style="flex:1;min-width:0"><div style="font-size:20px;font-weight:700">${u.name}</div><div class="sm muted">${u.title}, ${u.company}</div><div class="xs faint">Xoogler · Michigan · Desi Founders</div></div></div>
-    <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec sm" style="flex:1;height:40px;padding:0" data-profile="priya">Your profile</button><button class="btn sec sm" style="flex:1;height:40px;padding:0" onclick="toast('Per family: Xoogler sees everything, Michigan and Desi see profile and open-to, nobody sees Context.')">Who sees what</button></div>
+    <div class="row" style="gap:8px;margin-top:14px"><button class="btn sec sm" style="flex:1;height:40px;padding:0" data-profile="priya">Your profile</button><button class="btn sec sm" style="flex:1;height:40px;padding:0" onclick="toast('Per community: Xoogler sees everything, Michigan and Desi see profile and open-to, nobody sees Context.')">Who sees what</button></div>
     <div class="prow" style="margin-top:14px;border-top:1px solid var(--line);cursor:default"><div class="avatar" style="border-radius:8px;border-style:solid;border-color:var(--ink);font-size:11px">RL</div><div class="m"><div class="a">Standing · Reliable</div><div class="b">Replied to 2 of 3 requests, 1 intro landed. Standing sets how much Kai asks of you and how fast your requests route. Only you see this.</div></div></div>
     ${rows.map(([id,a,b])=>`<div class="prow" data-you="${id}"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><div class="s">›</div></div>`).join("")}
   </div>`;
@@ -7141,7 +7173,7 @@ function sContextHub() {
     <div class="tlist">${eps.map((e,i)=>`<div class="ep"><div class="epd"><div class="epi">${icon(e.t)}</div><div class="xs faint">${e.d}</div></div><div class="epm"><div class="epa">${e.what}</div>${e.learned.map(l=>`<div class="epl ${e.inferred?'inf':''}">${e.inferred?"Kai noticed: ":"Kai learned: "}${l}</div>`).join("")}<div class="xs faint" style="margin-top:4px;text-decoration:underline" onclick="STATE.ctxSeg='now';render();toast('Highlighted in Now')">See in Now</div></div></div>`).join("")}</div>
     <div class="xs faint" style="margin-top:12px">Every event, call, journal answer, and thing you tell Kai lands here, with what changed because of it. Searchable. Never edited, only added to.</div>`;
   const sharedHTML = `
-    <p class="sm muted" style="margin-top:8px">What leaves this page. Other members' Kai can read only these lines, only in the families you tick.</p>
+    <p class="sm muted" style="margin-top:8px">What leaves this page. Other members' Kai can read only these lines, only in the communities you tick.</p>
     ${C.shared.map(([t,fm],i)=>`<div class="ctxline"><div class="m"><div class="a">${t}</div></div><div class="row" style="gap:4px">${fams.map(([fid,ini])=>`<span class="chip ${fm.includes(fid)?'on':''}" style="padding:2px 8px;font-size:11px" data-share="${i}|${fid}">${ini}</span>`).join("")}</div></div>`).join("")}
     <div class="xs faint" style="margin-top:6px">X Xoogler · M Michigan · D Desi Founders. Looking-for is never shared; it reveals only on a mutual match.</div>
     <div class="lbl">What Kai has told others' Kai</div>
@@ -7173,7 +7205,7 @@ function sContextSection(id) {
   if (sec) body = `<p class="sm muted" style="margin-top:6px">Used for ${sec[2]}. Each line says where it came from.</p>${C[id].map((l,i)=> id==="offer" ? ctxLine(l[0],l[1],l[2],l[3],`<div class="toggle ${l[4]?'on':''}" style="padding:0;border:0" data-offer="${i}"><div class="sw"></div></div>`) : id==="after"&&i<2 ? ctxLine(l[0],l[1],l[2],l[3],`<span class="chip" style="padding:3px 9px;font-size:12px" onclick="go('mission:m${i+1}')">Mission ›</span>`) : ctxLine(...l)).join("")}<div class="xs faint" style="margin-top:10px;text-decoration:underline" onclick="toast('Add a line here, or say it to Kai anywhere.')">Add</div>${id==="offer"?`<div class="xs faint" style="margin-top:6px">On means Kai flags you when someone in a family asks about it.</div>`:''}`;
   else if (id==="inferred") body = `<p class="sm muted" style="margin-top:6px">Kai noticed these. It won't use them until you say yes.</p>${C.inferred.map((l,i)=>ctxLine(l[0],l[1],l[2],l[3],`<div class="row" style="gap:6px"><span class="chip" style="padding:3px 9px;font-size:12px" data-inf="${i}|yes">Yes</span><span class="chip" style="padding:3px 9px;font-size:12px" data-inf="${i}|no">No</span></div>`)).join("")||'<div class="empty">Nothing waiting.</div>'}`;
   else if (id==="stale") body = `<p class="sm muted" style="margin-top:6px">Said a while ago. A tap keeps it or changes it.</p>${C.stale.map(x=>`<div class="ctxline"><div class="m"><div class="a">${x}</div></div><div class="row" style="gap:6px"><span class="chip" style="padding:3px 9px;font-size:12px" onclick="DB.contextV2.stale=[];go('you:context');toast('Kept.')">Yes</span><span class="chip" style="padding:3px 9px;font-size:12px" onclick="go('you:rules')">Change</span></div></div>`).join("")}`;
-  else if (id==="shared") body = `<p class="sm muted" style="margin-top:6px">Other members' Kai can read only these, only in the families you tick. Looking-for is never shared; it reveals only on a mutual match.</p>${C.shared.map(([t,f],i)=>`<div class="ctxline"><div class="m"><div class="a">${t}</div></div><div class="row" style="gap:4px">${fams.map(([fid,ini])=>`<span class="chip ${f.includes(fid)?'on':''}" style="padding:2px 8px;font-size:11px" data-share="${i}|${fid}">${ini}</span>`).join("")}</div></div>`).join("")}<div class="xs faint" style="margin-top:6px">X Xoogler · M Michigan · D Desi Founders</div>`;
+  else if (id==="shared") body = `<p class="sm muted" style="margin-top:6px">Other members' Kai can read only these, only in the communities you tick. Looking-for is never shared; it reveals only on a mutual match.</p>${C.shared.map(([t,f],i)=>`<div class="ctxline"><div class="m"><div class="a">${t}</div></div><div class="row" style="gap:4px">${fams.map(([fid,ini])=>`<span class="chip ${f.includes(fid)?'on':''}" style="padding:2px 8px;font-size:11px" data-share="${i}|${fid}">${ini}</span>`).join("")}</div></div>`).join("")}<div class="xs faint" style="margin-top:6px">X Xoogler · M Michigan · D Desi Founders</div>`;
   else body = `<p class="sm muted" style="margin-top:6px">Every time Kai told another member's Kai something about you, on your behalf.</p>${C.told.map(([who,what,when])=>`<div class="ctxline"><div class="m"><div class="a" style="font-size:14px"><b>${who}</b>: ${what}</div><div class="b">${when}</div></div></div>`).join("")}`;
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="t">${title}</div></div><div class="body">${body}</div>`;
 }
@@ -7202,7 +7234,7 @@ function sRulesSection(id) {
   let body = "";
   if (id==="reach") body = `<div class="lbl" style="margin-top:6px">Openness by request type</div>${[["Intros","intros"],["Hiring conversations","hiring"],["Product advice","advice"],["Cofounder conversations","cofounder"],["Investing","investing"]].map(([k,key])=>`<div class="ctxline"><div class="m"><div class="a">${k}</div></div><div class="row" style="gap:4px">${["Open","Via connector","Closed"].map(o=>`<span class="chip ${R[key]===o?'on':''}" style="padding:3px 8px;font-size:11px" data-rule="${k}|${o}">${o}</span>`).join("")}</div></div>`).join("")}
     <div class="lbl">Capacity</div><div class="ctxline"><div class="m"><div class="a">${R.capacity} requests a week</div><div class="b">Kai declines the rest for you and tells you it did</div></div><div class="row" style="gap:6px"><span class="chip" data-cap="-1">−</span><span class="chip" data-cap="1">+</span></div></div>
-    <div class="lbl">Who can reach you</div><div class="chips">${["Anyone in my families, via connector","Anyone in my families, direct","Only through named people"].map(o=>`<span class="chip ${R.path===o?'on':''}" style="font-size:13px" data-path="${o}">${o}</span>`).join("")}</div>
+    <div class="lbl">Who can reach you</div><div class="chips">${["Anyone in my communities, via connector","Anyone in my communities, direct","Only through named people"].map(o=>`<span class="chip ${R.path===o?'on':''}" style="font-size:13px" data-path="${o}">${o}</span>`).join("")}</div>
     <div class="lbl">Per family <span class="xs faint" style="font-weight:400">· tighter only</span></div>${[["Xoogler","Same as above"],["Michigan","Via connector only"],["Desi Founders","Same as above"]].map(([f,v])=>`<div class="ctxline"><div class="m"><div class="a">${f}</div><div class="b">${v}</div></div><span class="chip" style="padding:3px 9px;font-size:12px" onclick="toast('Override for ${f}: openness and capacity, tighter only.')">Change</span></div>`).join("")}`;
   else if (id==="time") body = `${R.quiet?`<div class="card" style="border-color:var(--ink);margin-top:6px"><div class="name" style="font-size:15px">Quiet until ${R.quiet}</div><div class="sub">Requests hold. Askers see "not available until ${R.quiet}" on your profile. Paths keep moving.</div><div class="row" style="margin-top:8px"><span class="chip" style="font-size:12px" onclick="DB.rules.quiet=null;render();toast('Back on.')">End quiet</span></div></div>`:`<div class="prow" data-quiet="1" style="margin-top:6px"><div class="m"><div class="a">Quiet mode</div><div class="b">Heads down, on leave, travelling. Requests hold until a date you pick.</div></div><span class="chip" style="font-size:12px">Set</span></div>`}
     <div class="lbl">Availability window</div><div class="ctxline"><div class="m"><div class="a">${R.window}</div><div class="b">A window makes you bookable from your profile, one tap</div></div><span class="chip" style="padding:3px 9px;font-size:12px" onclick="DB.rules.window='Coffee, Fridays 3 to 5pm';render();toast('Bookable. Shows on your profile.')">${R.window==="None set"?"Set":"Change"}</span></div>
@@ -7239,7 +7271,7 @@ function sYouSection(id) {
       ${R.quiet?`<div class="card" style="border-color:var(--ink)"><div class="name" style="font-size:15px">Quiet until ${R.quiet}</div><div class="sub">Requests hold. Askers see "not available until ${R.quiet}" on your profile. Paths keep moving.</div><div class="row" style="margin-top:8px"><span class="chip" style="font-size:12px" onclick="DB.rules.quiet=null;render();toast('Back on.')">End quiet</span></div></div>`:`<div class="prow" data-quiet="1"><div class="m"><div class="a">Quiet mode</div><div class="b">Heads down, on leave, travelling. Requests hold until a date you pick.</div></div><span class="chip" style="font-size:12px">Set</span></div>`}
       <div class="lbl">Openness by request type</div>${[["Intros","intros"],["Hiring conversations","hiring"],["Product advice","advice"],["Cofounder conversations","cofounder"],["Investing","investing"]].map(([k,key])=>`<div class="ctxline"><div class="m"><div class="a">${k}</div></div><div class="row" style="gap:4px">${["Open","Via connector","Closed"].map(o=>`<span class="chip ${R[key]===o?'on':''}" style="padding:3px 8px;font-size:11px" data-rule="${k}|${o}">${o}</span>`).join("")}</div></div>`).join("")}
       <div class="lbl">Capacity</div><div class="ctxline"><div class="m"><div class="a">${R.capacity} requests a week</div><div class="b">Kai declines the rest for you and tells you it did</div></div><div class="row" style="gap:6px"><span class="chip" data-cap="-1">−</span><span class="chip" data-cap="1">+</span></div></div>
-      <div class="lbl">Who can reach you</div><div class="chips">${["Anyone in my families, via connector","Anyone in my families, direct","Only through named people"].map(o=>`<span class="chip ${R.path===o?'on':''}" style="font-size:13px" data-path="${o}">${o}</span>`).join("")}</div>
+      <div class="lbl">Who can reach you</div><div class="chips">${["Anyone in my communities, via connector","Anyone in my communities, direct","Only through named people"].map(o=>`<span class="chip ${R.path===o?'on':''}" style="font-size:13px" data-path="${o}">${o}</span>`).join("")}</div>
       <div class="lbl">Per family <span class="xs faint" style="font-weight:400">· tighter than the above, never looser</span></div>${[["Xoogler","Same as above"],["Michigan","Via connector only"],["Desi Founders","Same as above"]].map(([f,v])=>`<div class="ctxline"><div class="m"><div class="a">${f}</div><div class="b">${v}</div></div><span class="chip" style="padding:3px 9px;font-size:12px" onclick="toast('Override for ${f}: openness and capacity, tighter only.')">Change</span></div>`).join("")}
       <div class="lbl">Availability window</div><div class="ctxline"><div class="m"><div class="a">${R.window}</div><div class="b">A window makes you bookable from your profile, one tap</div></div><span class="chip" style="padding:3px 9px;font-size:12px" onclick="DB.rules.window='Coffee, Fridays 3 to 5pm';render();toast('Bookable. Shows on your profile.')">${R.window==="None set"?"Set":"Change"}</span></div>
       <div class="lbl">What Kai prepares for your yes</div>${[["Batch declines over capacity","Drafted together, one tap sends them",R.delegate,"delegate"],["Draft a nudge after a week of silence","In your voice. You send it.",true,"nudge"],["Reschedule a meeting","Never. Kai proposes, you confirm.",false,"lock"],["Send anything to a person","Never without your tap. Not a setting.",false,"lock"]].map(([a,b,on,key])=>`<div class="ctxline"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div>${key==="lock"?`<span class="xs faint">locked</span>`:`<div class="toggle ${on?'on':''}" style="padding:0;border:0" data-delegate="${key}"><div class="sw"></div></div>`}</div>`).join("")}
@@ -7283,7 +7315,7 @@ function confirmSheet(key) {
 }
 function metricsSheet() {
   const m = STATE.metrics; const secs = Math.round((Date.now()-m.start)/1000);
-  const rows = [["Session length",secs+"s"],["Time to first action", m.firstAction?Math.round((m.firstAction-m.start)/1000)+"s":"not yet"],["Requests sent", m.sends],["Decisions made (yes, not now, drop)", m.decisions],["Journal answers", m.journal],["Applications submitted", m.applications],["Families connected (organizer)", m.connects],["Undos", m.undos]];
+  const rows = [["Session length",secs+"s"],["Time to first action", m.firstAction?Math.round((m.firstAction-m.start)/1000)+"s":"not yet"],["Requests sent", m.sends],["Decisions made (yes, not now, drop)", m.decisions],["Journal answers", m.journal],["Applications submitted", m.applications],["Communities connected (organizer)", m.connects],["Undos", m.undos]];
   return `<h2>Metrics this session</h2><p class="sm muted">What the product would instrument. Time to first value is the first action after paths exist.</p><div class="card" style="padding:4px 14px;margin-top:10px">${rows.map(([a,b])=>`<div class="rowitem" style="cursor:default"><div class="m"><div class="a" style="font-weight:500">${a}</div></div><div class="s" style="font-weight:700;color:var(--ink)">${b}</div></div>`).join("")}</div>`;
 }
 function bookSheet(pid) {
@@ -16038,7 +16070,7 @@ const _mhPortSheet = portSheet; portSheet = function(type, id){
   if (type!=="mhlook") return _mhPortSheet(type, id);
   const m = DB.missions.find(x=>x.id===id); const l = mhLook(m);
   const set = (k,v) => `onclick="(function(){ const m=DB.missions.find(x=>x.id==='${id}'); m.${k}='${v}'; })();render()"`;
-  return `<div class="sc"><div class="t20">Colour and icon</div><div class="m12">Only you see this. It marks the goal on Goals and on its page.</div>
+  return `<div class="sc"><div class="t20">Colour and icon</div><div class="m12">Only you see this. It marks the mission on Missions and on its page.</div>
     <div class="mh-lookprev">${mhMark(m,44)}<span>${m.name}</span></div>
     <div class="sl">Colour</div><div class="mh-swatches">${MH_THEMES.map(t=>`<button class="mh-sw${t===l.theme?" on":""}" style="background:${mhPlate(t)}" aria-label="${EV_THEMES[t][0]}" ${set("mhTheme",t)}>${t===l.theme?LI("check",20):""}</button>`).join("")}</div>
     <div class="sl">Icon</div><div class="mh-icons">${MH_ICONS.map(i=>`<button class="mh-ic${i===l.icon?" on":""}" aria-label="${i}" ${set("mhIcon",i)}>${LI(i,22)}</button>`).join("")}</div>
@@ -16066,7 +16098,7 @@ function mhPendingHome(root){
       sec.outerHTML = `<div class="msec sc mh-mc mh-pend" data-kc="KeyMissionCard" data-kv="place=pending">${mhBand(m, [], false, cap)}</div>`; return; }
     const e = sec.querySelector(".empty"); if (!e) return;
     const note = (sec.querySelector(".kline span:last-child")||{}).textContent || "";
-    sec.outerHTML = `<div class="sl mh-psl">Goals</div><div class="mh-empty" data-kc="KeyEmptyState" data-kv="lead=mark">${mhMark({ type:"" }, 44)}<div class="m"><div class="a">${note}</div><div class="b">${e.textContent.trim()}</div></div></div>`;
+    sec.outerHTML = `<div class="sl mh-psl">Missions</div><div class="mh-empty" data-kc="KeyEmptyState" data-kv="lead=mark">${mhMark({ type:"" }, 44)}<div class="m"><div class="a">${note}</div><div class="b">${e.textContent.trim()}</div></div></div>`;
   });
 }
 /* All paths: rows on hairlines grouped by stage, the step count as a five-part bar */
@@ -16096,13 +16128,13 @@ function mhTabGo(id, t){ STATE.mhTab[id] = t; render(); }
 function mhBriefPane(m){
   const facts = [...(m.constraints||[])];
   const rows = [
-    [LI("search",16), "Looking for", m.brief || "Kai is looking across your communities."],
+    [LI("search",16), "Looking for", m.brief || "Kai is looking across your families."],
     ...facts.map(f=>[LI("check",16), "Must have", f]),
     [LI("flag",16), "Done when", m.standing ? "Standing, no end date" : (m.done || "You close it")],
-    [LI("users",16), "Where Kai looks", (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name).slice(0,3).join(", ") || "Your communities"],
+    [LI("users",16), "Where Kai looks", (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.name).slice(0,3).join(", ") || "Your families"],
   ];
   return `<div class="mh-brief" data-kc="KeyBriefDoc">
-    <div class="mh-bq">${m.brief || "Kai is looking across your communities."}</div>
+    <div class="mh-bq">${m.brief || "Kai is looking across your families."}</div>
     <div class="rows">${rows.slice(1).map(r=>`<div class="row mh-bf" ${typeof bBriefSheet==="function" ? `onclick="openSheet('bsheet','${m.id}')"` : `data-kaibrief="${m.id}"`}><i class="mh-fi">${r[0]}</i><div class="m"><div class="b">${r[1]}</div><div class="a">${r[2]}</div></div><span class="chev">›</span></div>`).join("")}</div>
     <div class="acts mh-bacts"><button class="btn" data-kaibrief="${m.id}">${kaiMark(20)}<span>Sharpen it with Kai</span></button></div>
     <div class="m12 mh-bnote">Every change here changes who Kai looks for next.</div></div>`;
@@ -16189,7 +16221,7 @@ function mhDecorate(){
   if ((STATE.screen||"").startsWith("paths:")) mhAllPaths(root);
   /* the mission menu offers the mark */
   const sh = STATE.sheet; const sb = phone.querySelector("#sheet .sb");
-  if (sh && sh.type==="mmenu" && sb && !sb.querySelector(".mh-lookrow")) { const r = sb.querySelector(".xrow"); if (r) r.insertAdjacentHTML("beforebegin", `<div class="xrow mh-lookrow" onclick="STATE.sheet={type:'mhlook',id:'${sh.id}'};render()"><div class="m"><div class="a">Colour and icon</div><div class="b">Make this goal yours</div></div><span class="chev">›</span></div>`); }
+  if (sh && sh.type==="mmenu" && sb && !sb.querySelector(".mh-lookrow")) { const r = sb.querySelector(".xrow"); if (r) r.insertAdjacentHTML("beforebegin", `<div class="xrow mh-lookrow" onclick="STATE.sheet={type:'mhlook',id:'${sh.id}'};render()"><div class="m"><div class="a">Colour and icon</div><div class="b">Make this mission yours</div></div><span class="chev">›</span></div>`); }
   /* KeyStatBlock row: "4 shown · 0 asked · 0 met" becomes three numbers */
   root.querySelectorAll(".funnel-l:not(.mh-stats)").forEach(f=>{
     const parts = f.textContent.split(" · ").map(p=>p.trim().match(/^(\S+)\s+(.+)$/));
@@ -16252,15 +16284,80 @@ function mhTag(r){
   t(".sc .chip", "KeyChip");
   t(".sc .avatar", "KeyAvatar", e=>`size=${Math.round(e.getBoundingClientRect().width)||32}`);
 }
-/* Goals and Communities (29 Sep): user-facing copy only; ids, labels and component names keep the old words. Nav is its owner's. */
-const MH_COPY = [["Move to another mission","Move to another goal"],["New mission","New goal"],["Start a mission","Set a goal"],["Your families","Your communities"],["your families","your communities"]];
-function mhCopy(root){
-  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode:n=>n.parentElement.closest(".nav,script,style,textarea")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT });
-  for (let n; (n = w.nextNode()); ) { let v = n.nodeValue; MH_COPY.forEach(([a,b])=>{ if (v.includes(a)) v = v.split(a).join(b); }); v = v.replace(/\b([Mm])ission(s?)\b/g, (_,m,s)=>(m==="M"?"G":"g")+"oal"+s); if (v!==n.nodeValue) n.nodeValue = v; }
+/* The posting itself, back from production (29 Sep): pay, where, level, equity, when it was posted, the poster's own words,
+   the description, the apply link, and a role that closed. Demo pay sits inside Levels.fyi's published PM ranges for each company. */
+Object.entries({
+  wallet:'<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  "chart-pie":'<path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"/><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>',
+  quote:'<path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/>',
+  archive:'<rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+}).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
+const MH_JOB = {
+  o3: { pay:"$200–280k", where:"San Francisco", mode:"Hybrid, 3 days a week", short:"SF, hybrid", level:"Senior, 5+ years", equity:"Included", posted:"Sep 25",
+        chan:"#jobs on the Xoogler Slack", link:"perplexity.ai/careers",
+        words:"We're hiring a senior PM for the agents team at Perplexity. You'd own how agents plan and act inside the product, from the first query to the finished task. Looking for 5+ years as a PM and something you've shipped with LLMs. I'm on the panel and happy to refer Xooglers, DM me.",
+        about:"The agents team builds the part of Perplexity that finishes tasks for people, not just answers. It's a small team of engineers and researchers shipping every week.",
+        does:["Own the agents roadmap from research to launch","Decide what agents do on their own and when they ask","Measure whether tasks actually get done"] },
+  o5: { pay:"$325–450k", where:"San Francisco", mode:"In office, 4 days a week", short:"SF, in office", level:"Senior, 6+ years", equity:"Included", posted:"Sep 24",
+        chan:"#jobs on the Xoogler Slack", link:"openai.com/careers", closed:"Sep 28", closedWhy:"OpenAI filled it",
+        words:"Applied AI at OpenAI is hiring a senior PM to take models into products businesses run on. You'll work with research, engineering and a handful of big customers. 6+ years of PM, some of it on developer or platform products. Happy to talk to anyone from Xoogler.",
+        about:"Applied AI turns research into products for businesses and developers.",
+        does:["Take a model from research preview to general availability","Work directly with the first customers on each launch","Set what good looks like for reliability and cost"] },
+  o7: { posted:"Sep 20", chan:"#resources on the Xoogler Slack", link:"Linked in the Slack post", open:"the form", linkLabel:"Programme form",
+        words:"Reminder that Xoogler members building a startup can get $5k in cloud credits for 12 months. There's a short form, and I send the code once it's in. Ping me if you're not sure you qualify." },
+  o8: { posted:"Sep 22", chan:"the Desi Founders WhatsApp group",
+        words:"Doing office hours for first-time founders again this month. Wednesdays, 30 minutes, whatever's on your mind: raising, first hires, pricing. Two slots left. Just message me, no form." },
+};
+const mhJob = o => o && (o.job || MH_JOB[o.id]);
+/* KeyJobFacts: the posting's facts as icon cells, two to a row. Only what the posting says; missing facts leave no gap */
+function mhFacts(j){
+  const cells = [["wallet","Pay",j.pay],["map-pin","Where",j.where,j.mode],["trending-up","Level",j.level],["chart-pie","Equity",j.equity],["clock","Posted",j.posted]].filter(c=>c[2]);
+  return cells.length > 1 ? `<div class="mh-jf" data-kc="KeyJobFacts" data-kv="cells=${cells.length}">${cells.map(([i,k,v,sub])=>`<div class="mh-jc"><i class="mh-fi" aria-hidden="true">${LI(i,16)}</i><span class="m"><span class="k">${k}</span><span class="v">${v}</span>${sub?`<span class="s">${sub}</span>`:""}</span></div>`).join("")}</div>` : "";
 }
+const _mhPick2 = mhPick; mhPick = function(o){
+  const j = mhJob(o); if (!j) return _mhPick2(o);
+  const d = document.createElement("template"); d.innerHTML = _mhPick2(o); const c = d.content.firstElementChild;
+  const f = [["wallet",j.pay],["map-pin",j.short],["clock",j.posted]].filter(x=>x[1]);
+  if (f.length > 1) c.querySelector(".mh-pkh").insertAdjacentHTML("afterend", `<div class="mh-pkf" data-kc="KeyFactStrip">${f.map(([i,v])=>`<span>${LI(i,14)}${v}</span>`).join("")}</div>`);
+  if (j.closed) {
+    const w = c.querySelector(".mh-why"); if (w) w.outerHTML = `<div class="mh-why mh-shut">${LI("archive",16)}<span>Role closed ${j.closed}. ${j.closedWhy}.</span></div>`;
+    const b = c.querySelector(".acts .btn"); if (b) { [...b.attributes].filter(a=>a.name!=="class").forEach(a=>b.removeAttribute(a.name)); b.className = "btn sec"; b.setAttribute("data-exit", `${o.id}|close`); b.textContent = "Close path"; }
+  }
+  return c.outerHTML;
+};
+const _mhPathBody2 = scPathBody; scPathBody = function(id, asSheet){
+  const h = _mhPathBody2(id, asSheet), o = DB.opps.find(x=>x.id===id), j = mhJob(o);
+  if (!mhOn() || !j) return h;
+  const d = document.createElement("template"); d.innerHTML = h; const r = d.content;
+  const anchor = r.querySelector(".mh-rw") || r.querySelector(".mh-route") || r.querySelector(".sc > .st");
+  const shut = j.closed ? `<div class="mh-shut-row" data-kc="KeyStateRow" data-kv="state=closed"><i class="mh-fi" aria-hidden="true">${LI("archive",16)}</i><span class="m"><span class="a">Role closed ${j.closed}</span><span class="b">${j.closedWhy}. Kai stopped showing it.</span></span></div>` : "";
+  if (anchor) anchor.insertAdjacentHTML("afterend", shut + mhFacts(j));
+  /* Source: the row opens the poster's own words in place */
+  let rows = r.querySelector(".mh-why-rows");
+  if (rows && j.words) {
+    let src = [...rows.children].find(x=>x.querySelector(".k") && x.querySelector(".k").textContent==="Source");
+    if (!src) { rows.insertAdjacentHTML("afterbegin", `<div class="fr mh-fr mh-wr" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI("hash",16)}</span><span class="m"><span class="k">Source</span><span class="b">${f1(targetOf(o))} posted it in ${j.chan}, ${j.posted}</span></span></div>`); src = rows.firstElementChild; }
+    const open = STATE.mhWords===id; const p = targetOf(o);
+    src.classList.add("mh-src"); src.setAttribute("role","button"); src.setAttribute("tabindex","0"); src.setAttribute("aria-expanded", String(open));
+    src.setAttribute("onclick", `STATE.mhWords=STATE.mhWords==='${id}'?null:'${id}';render()`);
+    const ch = src.querySelector(".chev"); const glyph = `<span class="chev">${LI(open?"chevron-up":"chevron-down",16)}</span>`;
+    if (ch) ch.outerHTML = glyph; else src.insertAdjacentHTML("beforeend", glyph);
+    if (open) src.insertAdjacentHTML("afterend", `<div class="mh-words" data-kc="KeyQuote"><div class="mh-wh">${av(p.initials)}<span class="m"><span class="a">${p.name}</span><span class="b">${j.chan}, ${j.posted}</span></span><i aria-hidden="true">${LI("quote",16)}</i></div><p>${j.words}</p></div>`);
+  }
+  /* the description as a fold, then the way to apply; a closed role keeps neither */
+  let tail = "";
+  if (j.about) { const open = STATE.mhAbout===id;
+    tail += `<div class="fr mh-fr mh-wr mh-fold" role="button" tabindex="0" aria-expanded="${open}" onclick="STATE.mhAbout=STATE.mhAbout==='${id}'?null:'${id}';render()" data-kc="KeyFactRow" data-kv="lead=icon, fold=true"><span class="mh-fi">${LI("file-text",16)}</span><span class="m"><span class="k">About the role</span><span class="b">${j.about}</span></span><span class="chev">${LI(open?"chevron-up":"chevron-down",16)}</span></div>`;
+    if (open && j.does) tail += `<div class="mh-does"><div class="k">What you'll do</div>${j.does.map(x=>`<div class="mh-do">${LI("check",16)}<span>${x}</span></div>`).join("")}</div>`; }
+  if (j.link && !j.closed) tail += `<div class="fr mh-fr mh-wr mh-link" role="link" tabindex="0" onclick="toast('Opens ${j.open || j.link} in your browser')" data-kc="KeyFactRow" data-kv="lead=icon, trail=external"><span class="mh-fi">${LI("external-link",16)}</span><span class="m"><span class="k">${j.linkLabel || "Apply"}</span><span class="b">${j.link}</span></span><span class="chev">${LI("chevron-right",16)}</span></div>`;
+  if (tail) { if (rows) rows.insertAdjacentHTML("beforeend", tail); else if (anchor) anchor.insertAdjacentHTML("afterend", `<div class="rows mh-why-rows">${tail}</div>`); }
+  if (j.closed) { r.querySelectorAll(".sc > .st, .sc > .stp").forEach(e=>e.remove()); const b = r.querySelector(".sbar .btn"); if (b) { [...b.attributes].filter(a=>a.name!=="class").forEach(a=>b.removeAttribute(a.name)); b.className = "btn sec"; b.setAttribute("data-exit", `${id}|close`); b.textContent = "Close this path"; }
+    const q = r.querySelector(".sbar .quiet"); if (q) q.remove(); }
+  return d.innerHTML;
+};
 const _mhRender = render; render = function(){
   const r = _mhRender.apply(this, arguments);
-  if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); phone.classList.toggle("hf-mfr", mhOn()); if (on) mhDecorate(); else if (mhOn()) mhFactRows(phone); if (mhOn()) mhCopy(phone); }
+  if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); phone.classList.toggle("hf-mfr", mhOn()); if (on) mhDecorate(); else if (mhOn()) mhFactRows(phone); }
   return r;
 };
 
@@ -16395,7 +16492,7 @@ function sheetHTML() {
   else if (type==="sent") inner = sentSheet(id);
   else if (type==="profile") inner = profileSheet(id);
   else if (type==="preview") { const o=DB.opps.find(x=>x.id===id); const t=targetOf(o); const c=viaOf(o); const to=c&&!o.viaAgreed?c:t; const f=firstName; const draft = STATE.previewText || `Hi ${f(to)}, just floating this back up in case it slipped. No rush at all.`; inner = `<h2>Preview before it goes</h2><p class="sm muted" style="margin-top:2px">To ${to.name}. ${f(to)} sees you approved it and that Kai drafted it.</p><div class="draftbox"><textarea id="pv">${draft}</textarea><div class="drow"><span class="xs faint">Drafted with Kai, in your voice.</span></div></div><div class="acts" style="margin-top:12px"><button class="btn" style="margin:0;flex:1" onclick="(function(){ const x=DB.opps.find(z=>z.id==='${id}'); x.nudgeDraft=false; x.quiet=true; x.log.push(['You','sent the nudge','now']); STATE.sheet=null; })();render();toast('Sent. ${f(to)} was told Kai drafted it.', ()=>{ const x=DB.opps.find(z=>z.id==='${id}'); x.quiet=false; x.nudgeDraft=true; x.log.pop(); })">Send</button><div class="sec2" data-cancel="1" onclick="closeSheet()">Not now</div></div>`; }
-  else if (type==="ownmenu") inner = `<h2>Your profile</h2>${[["View as a member","Exactly what others see, and what stays hidden","STATE.ownPreview=true;render()"],["Change photo","","toast('Photo picker')"],["Edit links","LinkedIn, X, GitHub, a site","toast('Links editor')"],["What leaves this page","Per family, line by line","go('you:context')"]].map(([a,b,act])=>`<div class="xrow" onclick="STATE.sheet=null;${act}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div><span class="s">›</span></div>`).join("")}`;
+  else if (type==="ownmenu") inner = `<h2>Your profile</h2>${[["View as a member","Exactly what others see, and what stays hidden","STATE.ownPreview=true;render()"],["Change photo","","toast('Photo picker')"],["Edit links","LinkedIn, X, GitHub, a site","toast('Links editor')"],["What leaves this page","Per community, line by line","go('you:context')"]].map(([a,b,act])=>`<div class="xrow" onclick="STATE.sheet=null;${act}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div><span class="s">›</span></div>`).join("")}`;
   else if (type==="mmenu") { const m=DB.missions.find(x=>x.id===id); const started = m.started!==false && (STATE.member||m.started); const rows = [
       ...(!started?[["Start this mission","Kai begins on the next pass. Paths land here.","(function(){m.started=true;})();render();toast('Started.')"]]:[]),
       ...(started&&m.status==="active"?[["Pause","Paths stay where they are. Kai stops surfacing.","(function(){m.status='paused';})();render();toast('Paused.')"]]:[]),
@@ -16408,7 +16505,7 @@ function sheetHTML() {
   else if (type==="newmission") inner = newMissionSheet();
   else if (type==="source") inner = sourceSheet(id);
   else if (type==="why") inner = whySheet(id);
-  else if (type==="switcher") inner = switcherSheet() + `<div class="lbl">Join another</div>${DB.recommendedFamilies.filter(r=>!DB.families.some(f=>f.id===r.id)).slice(0,2).map(famRecRow).join("")}<div class="xrow" onclick="STATE.sheet=null;go('doorway')"><div class="m"><div class="a">Browse all families</div><div class="b">Vetted ones take applications. Open ones join instantly.</div></div><span class="s">›</span></div>`;
+  else if (type==="switcher") inner = switcherSheet() + `<div class="lbl">Join another</div>${DB.recommendedFamilies.filter(r=>!DB.families.some(f=>f.id===r.id)).slice(0,2).map(famRecRow).join("")}<div class="xrow" onclick="STATE.sheet=null;go('doorway')"><div class="m"><div class="a">Browse all communities</div><div class="b">Vetted ones take applications. Open ones join instantly.</div></div><span class="s">›</span></div>`;
   else if (type==="reply") inner = replySheet(id);
   else if (type==="askview") inner = askViewSheet(id);
   else if (type==="forward") inner = forwardSheet(id);
@@ -16777,7 +16874,7 @@ function wire() {
   phone.querySelectorAll("[data-mseg]").forEach(el=>el.onclick=()=>{ STATE.mseg=el.dataset.mseg; render(); });
   phone.querySelectorAll("[data-mfilter]").forEach(el=>el.onclick=()=>{ STATE.mfilter=el.dataset.mfilter; STATE.filterAuto=false; STATE.filterNote=null; render(); });
   phone.querySelectorAll("[data-kaibrief]").forEach(el=>el.onclick=()=>{ el.classList.add("grow"); setTimeout(()=>{ STATE.kaiScope=null; openSheet("kai"); }, 170); });
-  phone.querySelectorAll("[data-kaic]").forEach(el=>el.onclick=()=>{ const m=DB.missions.find(x=>x.type==="Looking")||DB.missions[0]; if(m&&!m.constraints.includes(el.dataset.kaic)) m.constraints.push(el.dataset.kaic); STATE.kaiMsgs.push({who:"sys",text:`Added to Senior PM role mission: ${el.dataset.kaic}`}); render(); });
+  phone.querySelectorAll("[data-kaic]").forEach(el=>el.onclick=()=>{ const m=DB.missions.find(x=>x.type==="Looking")||DB.missions[0]; if(m&&!m.constraints.includes(el.dataset.kaic)) m.constraints.push(el.dataset.kaic); STATE.kaiMsgs.push({who:"sys",text:`Added to Senior PM role goal: ${el.dataset.kaic}`}); render(); });
   phone.querySelectorAll("[data-nm]").forEach(el=>el.onclick=()=>createMission(el.dataset.nm));
   phone.querySelectorAll("[data-profile]").forEach(el=>el.onclick=(e)=>{ e.stopPropagation(); if (el.dataset.profile==="priya") { STATE.profileId="priya"; STATE.sheet=null; go("profile"); return; } STATE.sheet={type:"profile",id:el.dataset.profile}; STATE.sheetFull=true; render(); return; STATE.screen="profile"; render(); });
   // edge swipe back
@@ -16958,9 +17055,9 @@ function wire() {
   const km=phone.querySelector("#kaiMic");
   if (km) { let t=null, words=["Add","a","constraint:","only","companies","under","200","people"], i=0, iv=null;
     km.onpointerdown=(e)=>{ km.setPointerCapture(e.pointerId); STATE.listening=true; render(); i=0; iv=setInterval(()=>{ const el=phone.querySelector("#liveTx"); if(el && i<words.length){ el.textContent+= (i?" ":"")+words[i++]; } },220); };
-    km.onpointerup=()=>{ clearInterval(iv); if(STATE.quick&&STATE.quick.phase==="listen") endQuickVoice(); STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:"(Spoken) Add a constraint: only companies under 200 people"}); const m=DB.missions.find(x=>x.type==="Looking")||DB.missions[0]; if(m&&!m.constraints.includes("Under 200 people")) m.constraints.push("Under 200 people"); STATE.kaiMsgs.push({who:"k",text:"Added \"under 200 people\" to your Senior PM role mission. Anthropic is bigger than that, so Rahul moved to candidates. Next search Friday uses it.",chips:null}); STATE.kaiMsgs.push({who:"sys",text:"Brief updated in Senior PM role at an AI company"}); render(); };
+    km.onpointerup=()=>{ clearInterval(iv); if(STATE.quick&&STATE.quick.phase==="listen") endQuickVoice(); STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:"(Spoken) Add a constraint: only companies under 200 people"}); const m=DB.missions.find(x=>x.type==="Looking")||DB.missions[0]; if(m&&!m.constraints.includes("Under 200 people")) m.constraints.push("Under 200 people"); STATE.kaiMsgs.push({who:"k",text:"Added \"under 200 people\" to your Senior PM role goal. Anthropic is bigger than that, so Rahul moved to candidates. Next search Friday uses it.",chips:null}); STATE.kaiMsgs.push({who:"sys",text:"Brief updated in Senior PM role at an AI company"}); render(); };
     km.onpointercancel=()=>{ clearInterval(iv); if(STATE.quick&&STATE.quick.phase==="listen") endQuickVoice(); render(); }; }
-  const ks=phone.querySelector("#kaiSend"); if(ks) ks.onclick=()=>{ const ta=phone.querySelector("#kaiInput"); if(!ta||!ta.value.trim()) return; STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:ta.value.trim()}); STATE.kaiMsgs.push({who:"k",text:"In the product this routes to the right mission or answers with receipts. In this proof of concept, the suggested prompts are the scripted ones."}); render(); };
+  const ks=phone.querySelector("#kaiSend"); if(ks) ks.onclick=()=>{ const ta=phone.querySelector("#kaiInput"); if(!ta||!ta.value.trim()) return; STATE.kaiMsgs=STATE.kaiMsgs||[]; STATE.kaiMsgs.push({who:"u",text:ta.value.trim()}); STATE.kaiMsgs.push({who:"k",text:"In the product this routes to the right goal or answers with receipts. In this proof of concept, the suggested prompts are the scripted ones."}); render(); };
   const tr=phone.querySelector("#tr"); if(tr) tr.scrollTop=tr.scrollHeight;
 }
 render();
@@ -16970,5 +17067,5 @@ render();
   const fix=()=>document.querySelectorAll("body *").forEach(e=>{ const c=getComputedStyle(e); S.forEach(s=>{ if (bad(c["border"+s+"Style"])) e.style["border"+s+"Style"]="solid"; }); if (bad(c.outlineStyle)) e.style.outlineStyle="solid"; });
   let q=0; new MutationObserver(()=>{ if (!q) q=requestAnimationFrame(()=>{ q=0; fix(); }); }).observe(document.body,{subtree:true,childList:true}); fix(); })();
 </script>
-</script><script>try{STATE.authIntent='signup';STATE.signinWith='linkedin';STATE.lookupReady=true;submitApp();STATE.micAsked=true;startCall();for(let i=0;i<6;i++) answer(INTAKE[i].a[0]);approveMe();STATE.push=null;STATE.callActive=false;STATE.welcomeDue=false;STATE.coached={paths:true,inbox:true};go('home');}catch(e){}</script></body>
+<script>try{STATE.authIntent='signup';STATE.signinWith='linkedin';STATE.lookupReady=true;submitApp();STATE.micAsked=true;startCall();for(let i=0;i<6;i++) answer(INTAKE[i].a[0]);approveMe();STATE.push=null;STATE.callActive=false;STATE.welcomeDue=false;STATE.coached={paths:true,inbox:true};go('home');}catch(e){}</script></body>
 </html>
