@@ -1137,8 +1137,7 @@ p,
   @keyframes evxInL { from { transform:translateX(-28px); opacity:0; } to { transform:none; opacity:1; } }
   @keyframes evxFade { from { opacity:0; } to { opacity:1; } }
   .evx-pane.in-r { animation:evxInR 260ms cubic-bezier(.2,.8,.2,1); } .evx-pane.in-l { animation:evxInL 260ms cubic-bezier(.2,.8,.2,1); }
-  .evx-list.in-f { animation:evxFade 180ms ease-out; }
-  @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l, .evx-list.in-f { animation:none; } }
+  @media (prefers-reduced-motion: reduce) { .evx-pane.in-r, .evx-pane.in-l { animation:none; } }
   .body:has(.evx-pane) { overflow-x:hidden; }
   /* event chat on the page: rows on the ground, the same room previewed */
   .evx-lh { display:flex; align-items:center; justify-content:space-between; } .evx-lh .xs { cursor:pointer; font-weight:600; }
@@ -1152,22 +1151,29 @@ p,
   .evx-cta.hid { transform:translateY(14px); opacity:0; pointer-events:none; }
   .body:has(~ .evx-cta) { padding-bottom:176px; }
   @media (prefers-reduced-motion: reduce) { .evx-cta { transition:none; } }
-  /* the room (Apoorv 28 Sep 02:24, it read crowded): updates, questions and intros are bubbles like every message, told apart by one label and
-     with their actions in the bubble's foot; the pinned update floats in only once its own bubble has scrolled away, so it never shows twice */
+  /* the room is one log (Apoorv 29 Sep 17:52): updates, questions and answers are bubbles like every message, told apart by one label, with
+     their actions in the bubble's foot. The latest update pins above the log and steps back through the others (Telegram); the chips above the
+     composer pick a question or an update and step through open questions; a tile returns to the latest once you have scrolled up */
   .evx-rthumb { width:34px; height:34px; border-radius:9px; flex:0 0 auto; cursor:pointer; }
-  .evx-rchips { padding:10px 0 2px; } .evx-rchips .pill { font-size:13px; padding:6px 12px; }
-  .evx-pin { position:sticky; top:0; z-index:2; height:0; }
-  .evx-pin .pinbar { position:absolute; left:0; right:0; top:0; gap:8px; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
-  .evx-pin.show .pinbar { opacity:1; transform:none; pointer-events:auto; }
-  @media (prefers-reduced-motion: reduce) { .evx-pin .pinbar { transition:none; } }
+  .evx-pinwrap, #phone .ev-canvas > .evx-pinwrap { flex:0 0 auto; position:relative; height:0; z-index:3; }
+  .evx-pinwrap .evx-pinbar { position:absolute; left:12px; right:12px; top:4px; margin:0; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
+  .evx-pinwrap.show .evx-pinbar { opacity:1; transform:none; pointer-events:auto; }
+  @media (prefers-reduced-motion: reduce) { .evx-pinwrap .evx-pinbar { transition:none; } }
+  .evx-pinl { flex:0 0 auto; width:40px; height:40px; margin:-8px -8px -8px 0; display:flex; align-items:center; justify-content:center; border-radius:12px; cursor:pointer; }
   .evx-bn { display:flex; align-items:center; flex-wrap:wrap; column-gap:8px; }
   .evx-kind { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; line-height:16px; }
   .bub .bf.evx-bact { display:flex; align-items:center; gap:8px; margin-top:6px; } .evx-bact .evx-tm { margin-left:auto; }
   .evx-vote, .evx-act { display:inline-flex; align-items:center; gap:4px; min-height:32px; padding:0 10px; border:0; border-radius:12px; background:color-mix(in srgb, currentColor 14%, transparent); font:inherit; font-size:13px; font-weight:700; color:inherit; cursor:pointer; }
-  .evx-act.on { background:transparent; padding:0 2px; font-weight:600; }
-  .evx-ans { margin-top:8px; padding:8px 10px; border-radius:12px; background:color-mix(in srgb, currentColor 8%, transparent); font-size:14px; line-height:1.4; } .evx-ans span { font-size:11.5px; opacity:.7; }
-  .evx-first { display:flex; justify-content:center; margin:14px 0 4px; } .evx-first .chip { font-size:13px; }
-  .evx-ro { display:flex; align-items:center; justify-content:center; gap:8px; font-size:13px; color:var(--ink2); }
+  .evx-act { background:transparent; padding:0 6px; }
+  .evx-act.on { font-weight:600; }
+  .bub .qq[data-evto] { cursor:pointer; }
+  .evx-cchips { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; margin:0 0 8px; } .evx-cchips::-webkit-scrollbar { display:none; }
+  .evx-cchips .chip { flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; margin:0; }
+  .rq.evx-mode > svg { flex:0 0 auto; }
+  .evx-jump, #phone .ev-canvas > .evx-jump { flex:0 0 auto; position:relative; height:0; z-index:3; }
+  .evx-jl { position:absolute; right:16px; bottom:8px; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; background:var(--ink); color:#fff; box-shadow:0 8px 20px -8px rgba(0,0,0,.5); opacity:0; transform:translateY(8px); pointer-events:none; transition:opacity 160ms ease-out, transform 160ms ease-out; }
+  .evx-jl.show { opacity:1; transform:none; pointer-events:auto; }
+  @media (prefers-reduced-motion: reduce) { .evx-jl { transition:none; } }
   /* ---- event themes and effects: effects.css from the events branch (web app/events-review), comments stripped ---- */
 
 .ev-canvas {
@@ -2881,6 +2887,47 @@ p,
     .evx-card .evx-s2 span { white-space:normal; text-wrap:balance; }
     .evx-cm:not(:has(.evx-pill)) > .evx-kai { grid-column:1 / -1; }
   }
+  /* KeyCalendarByline (Apoorv 29 Sep 17:55): the event's calendar as its channel, Follow attached to the name, the host underneath */
+  .evt-chan { display:flex; align-items:center; gap:12px; margin:4px 0 0; }
+  .evt-chl { flex:0 0 auto; cursor:pointer; }
+  .evt-screen .evt-chl .evx-clogo { width:40px; height:40px; margin:0; border:0; border-radius:12px; }
+  .evt-cht { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .evt-chn { display:flex; align-items:center; min-width:0; }
+  .evt-chn b { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:pointer; font-size:15px; font-weight:700; color:var(--ev-ink); }
+  .evt-chf { flex:0 0 auto; display:inline-flex; align-items:center; min-height:44px; margin:-12px 0; padding:0 8px 0 0; font-size:13px; font-weight:700; color:var(--ev-accent-text); cursor:pointer; white-space:nowrap; }
+  .evt-chf::before { content:"·"; padding:0 6px; color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-chf.on { color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-cht > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; color:rgb(var(--ev-ink-rgb) / var(--ev-ink-mute)); }
+  .evt-chh { cursor:pointer; }
+  /* An event's floating emoji drift across its poster only, at full strength, so no faint glyph ever sits behind the title or the text under it */
+  .evt-poster > .fx.evt-emofx-p { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; }
+  .evt-poster > .fx.evt-emofx-p i { position:absolute; animation-name:evtRiseP; opacity:.85; }
+  .evt-poster .evt-stamp { z-index:2; }
+  @keyframes evtRiseP { to { transform:translate(var(--dx), -480px) rotate(var(--r)); } }
+  /* The event chat and its threads are Messages' chat in the event's colours (Apoorv 28 Sep 23:40, 29 Sep 17:52): no effects behind the
+     messages, bare header icons, and bubbles, the day pill, the chips above the composer, the composer and the pinned update on one tone
+     (--evx-bub, a veil of white on dark themes; Messages' white on light ones) */
+  .evt-screen.evx-room .hdr .back, .evt-screen.evx-room .hdr .icon { background:transparent; border:0; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evt-screen.evx-room .bub, .evt-screen.evx-room .tparent, .evt-screen.evx-room .dsep span, .evt-screen.evx-room .syspill span, .evt-screen.evx-room .evx-cchips .chip,
+  .evt-screen.evx-room .chip.sug, .evt-screen.evx-room .hdr .chip, .evt-screen.evx-room .crow, .evt-screen.evx-room .evx-pinbar, .evt-screen.evx-room .bav { background:var(--evx-bub, #fff); color:var(--ev-ink); border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .evt-screen.evx-room .bub { border:0; }
+  .evt-screen.evx-room .bub.me { background:var(--ev-ink); color:var(--ev-ink-inverse); }
+  .evt-screen.evx-room .bub.oth.first { border-top-left-radius:4px; }
+  .evt-screen.evx-room .bub.me.first { border-top-right-radius:4px; }
+  .evt-screen.evx-room .dsep::before, .evt-screen.evx-room .dsep::after { display:none; }
+  .evt-screen.evx-room .foot { background:transparent; border-top:0; -webkit-backdrop-filter:none; backdrop-filter:none; }
+  #phone .evt-screen.evx-room .rchip { background:#fff; color:#111114; }
+  .evt-screen.evx-room .tcount { background:rgb(var(--ev-ink-rgb) / .12); }
+  .evt-screen .thchip .tf { color:inherit; background:color-mix(in srgb, currentColor 14%, transparent); }
+  .evt-screen.evx-room .evx-pinwrap .evx-pinbar { gap:12px; padding:8px 12px 8px 8px; border:0; border-radius:12px; background:rgb(var(--ev-ink-inverse-rgb) / .72); -webkit-backdrop-filter:blur(20px) saturate(1.3); backdrop-filter:blur(20px) saturate(1.3); box-shadow:0 8px 24px -12px rgb(0 0 0 / .45); }
+  .evt-screen.evx-room .evx-pinbar > span:first-child { width:32px; height:32px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; border-radius:12px; background:rgb(var(--ev-ink-rgb) / .12); color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .evx-pinbar .xs { color:rgb(var(--ev-ink-rgb) / .78); }
+  .evt-screen.evx-room .evx-pinl { color:var(--ev-ink); }
+  .evt-screen.evx-room .evx-cchips .chip svg { color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .rq { color:rgb(var(--ev-ink-rgb) / .78); } .evt-screen.evx-room .rq b { color:var(--ev-ink); } .evt-screen.evx-room .rq i { background:var(--ev-accent-fill); }
+  .evt-screen.evx-room .rq > svg { color:var(--ev-accent-fill); }
+  .evt-screen.evx-room .brow.hl { background:rgb(var(--ev-ink-rgb) / .14); border-radius:12px; }
+  .evt-screen.evx-room .evx-jl { background:var(--ev-ink); color:var(--ev-ink-inverse); }
 
   /* ==== COMMUNITY, 25 Sep 2026 (community thread). Tabs move, chips filter; sequences are rows on the page ground, hairlines between, no card surface. ==== */
   .cm-bar { position:sticky; top:0; z-index:4; background:var(--paper); margin:0 -16px; border-bottom:1px solid var(--line); }
@@ -3590,8 +3637,6 @@ p,
 }
 .mo-promo * { box-sizing:border-box; }
 .mo-promo::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:2; background:radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,0,.55) 100%); }
-.mo-gl { position:absolute; inset:0; z-index:1; }
-.mo-gl canvas { display:block; width:100% !important; height:100% !important; }
 /* each story carries its event's theme: story one the founders dinner (sand), story two AI infra office hours (tide) */
 .mo-s1 { --ev-bg:linear-gradient(150deg,#F7F0E3,#EAD9BB 55%,#D9BE93); --ev-m1:#F7F0E3; --ev-m2:#C9A36A; --ev-ink:#6B4E1F; --ev-card:rgba(255,252,246,.72); --ev-edge:rgba(255,255,255,.7);
   --ev-pill:#6B4E1F; --ev-pill-ink:#F7F0E3; --ev-face:#FBF6EC; --ev-shadow:rgba(90,62,20,.55); --ev-cap:#6B4E1F; }
@@ -3613,10 +3658,7 @@ p,
 .mo-promo[data-th="light"] .mo-bars i { background:rgba(107,78,31,.2); } .mo-promo[data-th="light"] .mo-bars b { background:#6B4E1F; }
 
 /* 1. the ask: the call's globe and its transcript, word by word */
-.mo-orbw { position:absolute; left:50%; top:104px; width:200px; height:200px; margin-left:-100px; z-index:4; opacity:0; --gold:0; }
-.mo-orbw::before, .mo-orbw::after { content:""; position:absolute; inset:-30px; border-radius:50%; pointer-events:none; }
-.mo-orbw::before { background:radial-gradient(closest-side, rgba(249,250,252,.16), transparent 72%); opacity:calc(1 - var(--gold)); }
-.mo-orbw::after { background:radial-gradient(closest-side, rgba(220,184,84,.30), transparent 72%); opacity:var(--gold); }
+.mo-orbw { position:absolute; left:50%; top:104px; width:200px; height:200px; margin-left:-100px; z-index:4; opacity:0; }
 .mo-orb { position:relative; z-index:1; display:block; width:200px; height:200px; }
 .mo-ask { position:absolute; left:24px; right:24px; top:312px; z-index:4; text-align:center; }
 .mo-ask p { margin:0; opacity:0; }
@@ -3686,8 +3728,6 @@ p,
 .mo-prog i { flex:1; height:3px; border-radius:2px; background:#E8ECF1; overflow:hidden; position:relative; }
 .mo-prog i b { position:absolute; inset:0; background:var(--mo-ink); transform:scaleX(0); transform-origin:left; }
 .mo-prog i:last-child b { background:linear-gradient(90deg,#F7E7B8,#DCB854,#A87F2A); }
-.mo-burst { position:absolute; left:24px; top:24px; width:0; height:0; z-index:2; }
-.mo-burst i { position:absolute; width:6px; height:6px; margin:-3px; border-radius:50%; background:radial-gradient(circle,#FFF4D0,#DCB854 60%,#A87F2A); opacity:0; }
 
 /* 5. the room: the event card in its theme */
 .mo-ev { position:absolute; left:16px; right:16px; top:140px; z-index:5; padding:16px; border-radius:22px; opacity:0; color:var(--ev-ink);
@@ -3705,9 +3745,6 @@ p,
 .mo-faces i.n { background:var(--ev-face); color:var(--ev-ink); box-shadow:inset 0 0 0 1px var(--ev-edge), 0 0 0 2px var(--ev-face); }
 .mo-going { position:relative; display:flex; align-items:center; gap:6px; height:34px; padding:0 14px 0 11px; border-radius:999px; background:var(--ev-pill); color:var(--ev-pill-ink); font-size:14px; font-weight:700; opacity:0; }
 .mo-going svg { width:15px; height:15px; }
-.mo-conf { position:absolute; left:50%; top:50%; width:0; height:0; }
-.mo-conf i { position:absolute; width:6px; height:9px; margin:-4px -3px; border-radius:1.5px; opacity:0; background:var(--ev-m2); }
-.mo-conf i:nth-child(3n) { background:var(--ev-pill); } .mo-conf i:nth-child(3n+1) { background:#F7E7B8; } .mo-conf i:nth-child(4n) { width:6px; height:6px; border-radius:50%; }
 
 /* 6. it went well: the intro folds into a point of light */
 .mo-dot { position:absolute; left:50%; top:204px; width:12px; height:12px; margin:-6px; z-index:5; border-radius:50%; opacity:0;
@@ -3730,10 +3767,6 @@ p,
 .mo-stats em { display:block; font-style:normal; font-size:11.5px; color:var(--mo-on-deep-line); }
 
 /* still frame (reduced motion, tests, no libraries): the reply beat, composed, gone well */
-.mo-promo.still .mo-gl { background:
-  radial-gradient(3px 3px at 22% 30%, rgba(247,231,184,.9), transparent 70%), radial-gradient(2px 2px at 70% 22%, rgba(249,250,252,.7), transparent 70%),
-  radial-gradient(2px 2px at 84% 40%, rgba(249,250,252,.5), transparent 70%), radial-gradient(2px 2px at 12% 48%, rgba(249,250,252,.45), transparent 70%),
-  radial-gradient(2.5px 2.5px at 58% 36%, rgba(249,250,252,.6), transparent 70%), radial-gradient(40% 30% at 50% 34%, rgba(249,250,252,.06), transparent 70%); }
 .mo-promo.still .mo-s1 .mo-card, .mo-promo.still .mo-s1 .mo-bub, .mo-promo.still .mo-s1 .mo-cap span:nth-child(4) { opacity:1; }
 .mo-promo.still .mo-why, .mo-promo.still .mo-act { height:0; margin-top:0; opacity:0; }
 .mo-promo.still .mo-bars b, .mo-promo.still .mo-prog b { transform:none; }
@@ -3743,10 +3776,8 @@ p,
 .call { background:var(--mo-deep); }
 .call .viz { padding-top:40px; }
 .call .viz { position:relative; }
-.call .viz::before { content:""; position:absolute; left:50%; top:40px; width:230px; height:230px; transform:translateX(-50%); border-radius:50%; pointer-events:none;
-  background:radial-gradient(closest-side, rgba(249,250,252,.10), transparent); transition:background .4s var(--mo-std); }
-.call[data-who="you"] .viz::before { background:radial-gradient(closest-side, rgba(220,184,84,.16), transparent); }
-.call .viz canvas { position:relative; width:230px; height:230px; }
+/* the globe and its halo are gone from the call (dot clusters, 29 Sep); the gold glow at the foot is the voice, so the words sit under the header */
+#phone .call #vizc { display:none; }
 .call .vizs { font-size:18px; font-weight:700; letter-spacing:-.01em; transition:color .32s var(--mo-std); }
 .call[data-who="you"] .vizs { color:var(--mo-user); }
 .call .vizt { color:var(--mo-on-deep-muted); }
@@ -4359,70 +4390,6 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-meet > span:first-child { margin-left:0; } .bs-vw .bf-meet .bs-pt em { font-size:22px; transform:none; color:rgba(255,255,255,.72); }
 @media (max-height:700px), (max-width:360px) { .bs-vw .bf-meet > span { width:44px; height:44px; } }
 .bstray .bt-art .bs-pt { display:grid; } .bstray .bt-art .bs-pt em { font-size:40px; transform:none; color:rgba(255,255,255,.72); }
-
-/* ==== KeyWaitingBlock: who is waiting on you. Rows with hairlines (no card), people as 44 circles, the open row carries Kai's draft on
-   the flat fill (Kai's ground inside a surface), KeyButton r12. Quiet state is two lines. ==== */
-.brief.bwait { margin:2px 0 18px; display:grid; gap:4px; padding:0; background:none; border:0; border-radius:0; box-shadow:none; height:auto; color:var(--text-primary,#0B0E11); }
-:is(.bwait,.kreport) .bw-hd { display:grid; gap:6px; padding-bottom:6px; }
-.bwait .bs-hi { font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-tertiary,#6B7480); }
-.bwait h2 { margin:0; font-size:20px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
-:is(.bwait,.kreport) .bw-list { display:grid; }
-:is(.bwait,.kreport) .bw-row { border-top:1px solid var(--border-subtle,#E6E9EE); }
-:is(.bwait,.kreport) .bw-row:last-child { border-bottom:1px solid var(--border-subtle,#E6E9EE); }
-:is(.bwait,.kreport) .bw-top { all:unset; box-sizing:border-box; width:100%; min-height:64px; display:flex; align-items:center; gap:12px; padding:10px 0; cursor:pointer; }
-:is(.bwait,.kreport) .bw-top:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:8px; }
-:is(.bwait,.kreport) .bw-face { position:relative; flex:0 0 auto; width:44px; height:44px; border-radius:50%; overflow:hidden; }
-:is(.bwait,.kreport) .bw-face .bs-pt em { font-size:16px; transform:none; color:rgba(255,255,255,.85); }
-:is(.bwait,.kreport) .bw-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
-:is(.bwait,.kreport) .bw-m b { font-size:15px; line-height:1.25; font-weight:700; }
-:is(.bwait,.kreport) .bw-m span { font-size:13px; line-height:1.35; color:var(--text-secondary,#4A535E); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-:is(.bwait,.kreport) .bw-row.open .bw-m span { white-space:normal; }
-:is(.bwait,.kreport) .bw-t { flex:0 0 auto; align-self:flex-start; padding-top:4px; font-size:12px; font-weight:600; color:var(--text-tertiary,#6B7480); font-variant-numeric:tabular-nums; }
-:is(.bwait,.kreport) .bw-body { display:grid; gap:12px; padding:0 0 14px 56px; }
-:is(.bwait,.kreport) .bw-ctx { margin:0; font-size:14px; line-height:1.45; color:var(--text-secondary,#4A535E); }
-:is(.bwait,.kreport) .bw-draft { display:grid; gap:6px; padding:12px 14px; border-radius:12px; background:var(--bg-fill-default,#F1F3F6); }
-:is(.bwait,.kreport) .bw-dh { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--text-secondary,#4A535E); }
-:is(.bwait,.kreport) .bw-dt { font-size:14px; line-height:1.45; outline:none; }
-:is(.bwait,.kreport) .bw-acts { display:flex; gap:8px; }
-:is(.bwait,.kreport) .bw-acts button { height:44px; padding:0 18px; border-radius:12px; font:inherit; font-size:14px; font-weight:700; cursor:pointer; border:0; }
-:is(.bwait,.kreport) .bw-acts .p { flex:1 1 auto; background:var(--component-button-primary-bg-default,#0B0E11); color:var(--component-button-primary-ink,#FFFFFF); }
-:is(.bwait,.kreport) .bw-acts .s { background:none; color:var(--text-secondary,#4A535E); }
-:is(.bwait,.kreport) .bw-more, :is(.bwait,.kreport) .bw-back { all:unset; box-sizing:border-box; width:100%; min-height:44px; display:flex; align-items:center; gap:10px; cursor:pointer; font-size:14px; font-weight:600; color:var(--text-secondary,#4A535E); }
-:is(.bwait,.kreport) .bw-more span, :is(.bwait,.kreport) .bw-back > span:not(.bw-faces) { flex:1 1 auto; min-width:0; }
-:is(.bwait,.kreport) .bw-faces { display:flex; flex:0 0 auto; } :is(.bwait,.kreport) .bw-faces .bw-face { width:32px; height:32px; margin-left:-4px; box-shadow:0 0 0 1.5px var(--bg-page,#FFFFFF); } :is(.bwait,.kreport) .bw-faces .bw-face:first-child { margin-left:0; }
-:is(.bwait,.kreport) .bw-faces .bs-pt em { font-size:12px; }
-:is(.bwait,.kreport) .bw-q { margin:0; font-size:14px; color:var(--text-secondary,#4A535E); }
-.bwait.quiet h2 { font-size:18px; }
-.brief.bwait > * { min-width:0; } :is(.bwait,.kreport) .bw-back > span:not(.bw-faces) { white-space:normal; line-height:1.35; }
-:is(.bwait,.kreport) .bw-acts button { white-space:nowrap; }
-@media (max-width:360px) { :is(.bwait,.kreport) .bw-body { padding-left:0; } :is(.bwait,.kreport) .bw-acts button { padding:0 14px; } }
-
-/* ==== KeyKaiReport: Kai's voice on the page ground, no card. Kai mark 24 + title, two sentences at 17 with names as links to their row,
-   Next up rows (the waiting rows) with an n of m done count, then Done rows with a 40 r12 lead tile, a face or the Kai mark. ==== */
-.brief.kreport { margin:2px 0 18px; display:grid; gap:4px; padding:0; background:none; border:0; border-radius:0; box-shadow:none; height:auto; color:var(--text-primary,#0B0E11); }
-.brief.kreport > * { min-width:0; }
-.kreport .kr-hd { display:flex; align-items:center; gap:8px; min-height:44px; }
-.kreport .kr-ttl { flex:1 1 auto; font-size:13px; font-weight:800; letter-spacing:-.005em; }
-.kreport .kr-ask { all:unset; box-sizing:border-box; height:44px; padding:0 4px 0 12px; display:inline-flex; align-items:center; font-size:14px; font-weight:700; color:var(--text-secondary,#4A535E); cursor:pointer; }
-.kreport .kr-sum { margin:0 0 12px; font-size:17px; line-height:1.45; font-weight:500; letter-spacing:-.01em; text-wrap:pretty; }
-.kreport .kr-sum b, .kreport .kr-n { font-weight:750; }
-.kreport .kr-n { all:unset; cursor:pointer; font-weight:750; text-decoration:underline; text-decoration-thickness:1.5px; text-underline-offset:3px; text-decoration-color:var(--text-tertiary,#6B7480); }
-.kreport .kr-n:focus-visible, .kreport .kr-ask:focus-visible, .kreport .kr-dm:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:6px; }
-.kreport .kr-sh { display:flex; align-items:baseline; justify-content:space-between; padding:8px 0 10px; font-size:11px; line-height:1; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-tertiary,#6B7480); }
-.kreport .kr-c { letter-spacing:0; text-transform:none; font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
-.kreport .kr-done { display:grid; }
-.kreport .kr-d { display:flex; align-items:center; gap:8px; border-top:1px solid var(--border-subtle,#E6E9EE); }
-.kreport .kr-d:last-child { border-bottom:1px solid var(--border-subtle,#E6E9EE); }
-.kreport .kr-dm { all:unset; box-sizing:border-box; flex:1 1 auto; min-width:0; min-height:56px; display:flex; align-items:center; gap:12px; padding:8px 0; cursor:pointer; }
-.kreport .kr-lead { flex:0 0 auto; width:44px; height:40px; display:flex; align-items:center; }
-.kreport .kr-lead.t { width:40px; justify-content:center; border-radius:12px; background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); margin-right:4px; }
-.kreport .kr-lead.k { justify-content:center; width:40px; margin-right:4px; }
-.kreport .kr-lead.f .bw-face { width:32px; height:32px; margin-left:-12px; box-shadow:0 0 0 1.5px var(--bg-page,#FFFFFF); } .kreport .kr-lead.f .bw-face:first-child { margin-left:0; }
-.kreport .kr-lead.f .bs-pt em { font-size:12px; }
-.kreport .kr-dl { flex:1 1 auto; min-width:0; font-size:14px; line-height:1.35; color:var(--text-secondary,#4A535E); }
-.kreport .kr-undo { all:unset; box-sizing:border-box; height:44px; padding:0 4px 0 8px; display:inline-flex; align-items:center; font-size:14px; font-weight:700; cursor:pointer; }
-.kreport .bw-more span { flex:1 1 auto; min-width:0; }
-@media (max-width:360px) { .kreport .kr-sum { font-size:16px; } }
 
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
@@ -10988,7 +10955,7 @@ const evE = id => DB.fevents.find(x=>x.id===id);
 /* Icons the shared LUCIDE map (port.js) lacks; merged into it so LI() draws them too. */
 const EV_IC = {"chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","calendar-check":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
 Object.keys(EV_IC).forEach(k=>{ LUCIDE[k] = LUCIDE[k] || EV_IC[k]; });
-Object.assign(LUCIDE, Object.fromEntries(Object.entries({ "repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>", "handshake":"<path d=\"m11 17 2 2a1 1 0 1 0 3-3\"/><path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\"/><path d=\"m21 3 1 11h-2\"/><path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\"/><path d=\"M3 4h8\"/>", "calendar-plus":"<path d=\"M16 18h6\"/><path d=\"M16 2v3\"/><path d=\"M19 15v6\"/><path d=\"M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3\"/><path d=\"M3 9h18\"/><path d=\"M8 2v3\"/>" }).filter(([k])=>!LUCIDE[k])));
+Object.assign(LUCIDE, Object.fromEntries(Object.entries({ "contrast":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 18a6 6 0 0 0 0-12v12z\"/>", "sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>", "repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>", "handshake":"<path d=\"m11 17 2 2a1 1 0 1 0 3-3\"/><path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\"/><path d=\"m21 3 1 11h-2\"/><path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\"/><path d=\"M3 4h8\"/>", "calendar-plus":"<path d=\"M16 18h6\"/><path d=\"M16 2v3\"/><path d=\"M19 15v6\"/><path d=\"M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3\"/><path d=\"M3 9h18\"/><path d=\"M8 2v3\"/>" }).filter(([k])=>!LUCIDE[k])));
 const evIc = (n, sz) => LUCIDE[n] ? LI(n, sz||18) : (n||"");
 const evC = id => DB.calendars.find(x=>x.id===id);
 const evFirst = id => (DB.people[id]||{name:"Someone"}).name.split(" ")[0];
@@ -11209,11 +11176,11 @@ sEventDetail = function(id){
   const cta = evCta(e, live, locked); const inRoom = ["going","hosting"].includes(e.reg) || live || e.past;
   const people = !peopleIds.length ? "" : `<div class="evt-sec">${e.past?"You met":"Who to meet"}</div><div class="evt-people">${peopleIds.map(pid=>{ const p=DB.people[pid]; const here = live && ["rahul","maya"].includes(pid);
       return `<div class="evt-person" data-profile="${pid}"><i class="evt-pav">${p.initials}${here?'<em>Here</em>':''}</i><b>${p.name.split(" ")[0]}</b><span>${intros.includes(pid)?`${evIc("handshake",12)} ${evFirst(e.host)}'s intro`:EV_WHY_SHORT[pid]||p.title}</span>${e.past?"":live?`<button class="btn sm sec" data-opener="${e.id}|${pid}">${evIc("hand",15)} Find</button>`:(e.booped||{})[pid]?`<em class="evt-sent">${evIc("check",15)} Sent</em>`:`<button class="btn sm sec" data-evboop="${e.id}|${pid}">${evIc("coffee",15)} Meet?</button>`}</div>`; }).join("")}</div>`;
-  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("palette")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
+  return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="STATE.backNav=true;go(STATE.evBack||'events')">‹</div><div style="flex:1"></div><div class="icon" data-evsheet="evlook|${e.id}" aria-label="Look">${evIc("contrast")}</div><div class="icon" data-evsheet="evshare|${e.id}" aria-label="More">${evIc("ellipsis")}</div></div>
   <div class="body evt-body">
     ${e.past ? evRoll(e, stamp) : evPoster(e, stamp)}
     <h1 class="evt-title">${e.name}</h1>
-    <div class="evt-host">${home?`<span ${home.kind==="personal"?`data-cal="${home.id}"`:`data-profile="${e.host}"`} class="evt-by"><i class="evt-bav">${host.initials}</i>${e.host===EV_ME?"You":host.name.split(" ")[0]}</span>${home.kind==="personal"?"":`<span data-cal="${home.id}" class="evt-by">${evCalThumb(home,"evt-ct")}${home.name}</span>`}${evIsAdmin(home)?"":`<span class="evt-follow ${evFollows(home)?'on':''}" data-evfollow="${home.id}">${evFollows(home)?"Following":"+ Follow"}</span>`}`:""}</div>
+    ${home?evChanRow(e, home, host):""}
     ${evFacts(e, live, locked)}
     ${locked?"":evSeriesStrip(e)}
     ${locked?"":`<div class="evt-going" data-evgo="eventd:guests.${e.id}"><div class="evt-faces">${(["going","hosting"].includes(e.reg)||live?[DB.user.initials]:[]).concat(EV_FACES).slice(0,Math.min(3,e.going)).map((x,i)=>`<i class="${i===0&&x===DB.user.initials?`me ${STATE.evJustIn===e.id?"pop":""}`:""}">${x}</i>`).join("")}</div><div><b>${e.priv&&e.priv.count==="Hosts only"&&e.reg!=="hosting"?"See who's going":`${e.going} ${e.past?"went":"going"}`}</b>${names.length&&e.going>2?`<span>${names.join(", ")} and ${e.going-names.length} other${e.going-names.length===1?"":"s"}</span>`:""}</div></div>`}
@@ -11239,6 +11206,13 @@ function evDraft(){ if (!STATE.evDraft) STATE.evDraft = { name:"", theme:"dusk",
 const EV_DAYS = [[15,"Thu"],[16,"Fri"],[17,"Sat"],[18,"Sun"],[19,"Mon"],[20,"Tue"],[21,"Wed"]];
 const EV_PLACES = [["Blue Bottle, Palo Alto","315 Homer Ave"],["Hacker Dojo, Mountain View","855 Maude Ave"],["Stanford GSB, Stanford","655 Knight Way"]];
 const evHr = h => h===12 ? "12pm" : h>12 ? `${h-12}pm` : `${h}am`;
+/* The calendar an event sits on reads as its channel (Apoorv 29 Sep 17:55: "there's no YouTube video without a YouTube channel"): under the
+   title, the calendar's logo and name with Follow attached to the name (YouTube's channel row, Instagram's "name · Follow"), and who hosts it
+   on the line below. Follow stays off the right-hand column the date, place and ticket actions use, so the eye goes title, calendar, facts */
+function evChanRow(e, c, host){ const own=evIsAdmin(c), per=c.kind==="personal";
+  const f = own ? "" : `<span class="evt-chf ${evFollows(c)?'on':''}" data-evfollow="${c.id}">${evFollows(c)?"Following":"Follow"}</span>`;
+  const sub = per ? `${own?"You host":`${evFirst(c.host)} hosts`} · ${(c.subs||0).toLocaleString()} follower${c.subs===1?"":"s"}` : `Hosted by <span class="evt-chh" data-profile="${e.host}">${e.host===EV_ME?"you":host.name}</span>`;
+  return `<div class="evt-chan" data-kc="KeyCalendarByline"><div class="evt-chl" data-cal="${c.id}">${evCalLogo(c)}</div><div class="evt-cht"><div class="evt-chn"><b data-cal="${c.id}">${per&&!own?(DB.people[c.host]||{name:c.name}).name:evCalName(c)}</b>${f}</div><span>${sub}</span></div></div>`; }
 const evCalName = c => c.kind==="personal"&&evIsAdmin(c) ? "Your calendar" : c.name;
 function evDraftWhen(d){ const dw=(EV_DAYS.find(x=>x[0]===d.dayN)||EV_DAYS[1]); return { dow:dw[1], n:dw[0], label:`${dw[1]}, Oct ${dw[0]}`, time:`${evHr(d.hour)} – ${evHr(d.hour+d.len)}` }; }
 function evCreate(){
@@ -11426,7 +11400,7 @@ function evLive(id){ const e=evE(id); const c=evC(e.cal); const who=e.awaiting&&
     ${e.awaiting||!c||!c.subs?"":`<div class="evt-rows"><div class="evt-frow" data-evtellnow="${id}"><i>${evIc("megaphone",20)}</i><div><b>Tell ${c.subs} followers now</b><span>${e.told===false?"You'll tell them later from Manage":"They get one notification"}</span></div><span class="evt-tog ${e.told===false?"":"on"}"></span></div></div>`}
     ${evMsStarters(e)}
   </div>
-  <div class="evx-cta evt-rsvp"><button class="btn sec" data-evgo="eventd:manage.${id}">${evIc("settings")} Manage</button><button class="btn" data-evsheet="evinvite|${id}">${evIc("mail")} Invite guests</button></div>`); }
+  <div class="evx-cta evt-rsvp"><button class="btn sec" data-evgo="eventd:manage.${id}">${evIc("sliders-horizontal")} Manage</button><button class="btn" data-evsheet="evinvite|${id}">${evIc("mail")} Invite guests</button></div>`); }
 
 /* ---- calendar page, and calendar admin for the ones you run ---- */
 /* ==== CALENDAR PAGE (27 Sep, events thread; Apoorv 20:02). A calendar reads like a channel page: anyone can look at all of it,
@@ -11858,9 +11832,8 @@ function evSheet(type, id){
   if (type==="evroomnotif") { const c=convOf(id); const cur=c.evNotif||"key"; return `<h2>Notifications for this event</h2><p class="sm muted">The chat stays quiet unless something is for you.</p>
     ${[["key","Updates and replies to you","Host updates, answers to your questions, replies to you"],["all","Every message",""],["off","Off","You still see everything when you open it"]].map(([k,a,b])=>`<div class="rowitem" data-evnotif="${id}|${k}"><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div><span class="evx-radio ${cur===k?'on':''}"></span></div>`).join("")}
     <div class="xs faint" style="margin-top:10px">Everything else arrives as one digest the morning of the event.</div>`; }
-  if (type==="evanswer") { const [cid,mid]=id.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); return `<h2>Answer ${P(m.from).name.split(" ")[0]}</h2><p class="sm muted">${m.text}</p>
-    ${keyComposer({ id:"evans", wrap:false, placeholder:"Your answer", sendAttr:`data-evansok="${id}"` })}
-    <div class="xs faint" style="margin-top:8px">Shows under the question. ${P(m.from).name.split(" ")[0]} and everyone who upvoted get a push.</div>`; }
+  if (type==="evups") { const c=convOf(id); return `<h2>Updates</h2><p class="sm muted">Everything ${evFirst(evE(c.ev||"e1").host)} has posted, newest first. Tap one to see it in the chat.</p>
+    <div class="evt-rows">${evUps(c).slice().reverse().map(m=>`<div class="evt-frow" data-evupj="${id}|${m.id}"><i>${evIc("megaphone",20)}</i><div><b style="white-space:normal">${m.text}</b><span>${m.day==="Today"?"Today":m.day.replace(", 2026","")} · ${m.time}</span></div></div>`).join("")}</div>`; }
   if (type==="evnewcal") return `<h2>New calendar</h2><p class="sm muted">For a series you run, like a dinner club or a talk series. You already have your own calendar; this is another.</p>
     <div class="lbl">Name</div><input class="input" id="evcalname" placeholder="AI Founders Breakfast">
     <div class="lbl">Who can add events</div>${[["admins","Only admins"],["anyone","Anyone; you approve each one"]].map(([k,l])=>`<div class="rowitem" data-evcalacc="${k}"><div class="m"><div class="a">${l}</div></div><span class="evx-radio ${(STATE.evCalAcc||"admins")===k?'on':''}"></span></div>`).join("")}
@@ -11939,15 +11912,25 @@ portWire = function(){
   q("[data-evcalcreate]", ()=>{ const nm=(document.getElementById("evcalname")||{}).value||"AI Founders Breakfast"; const id="cal-n"+DB.calendars.length; DB.calendars.push({ id, name:nm, family:null, host:EV_ME, subs:0, kind:"user", theme:"sage", admins:[EV_ME], accepts:STATE.evCalAcc||"admins", about:"New calendar. Add a line about what happens here.", events:[], requests:[], subscribed:false, sync:false }); STATE.sheet=null; go("cal:"+id); toast(`${nm} is ready. Add your first event.`); });
   q("[data-evroom]", el=>{ const [id,f]=el.dataset.evroom.split("|"); evOpenRoom(id, f==="focus"); });
   q("[data-evroomq]", el=>evOpenRoom(el.dataset.evroomq, false, "q"));
-  q("[data-evrf]", el=>{ const cid=STATE.screen.split(":")[1]; STATE.evRf=STATE.evRf||{}; const f=el.dataset.evrf; STATE.evRf[cid]=f; render(); const b=phone.querySelector(".chatbody"); if (b) b.scrollTop = f==="all"?b.scrollHeight:0; const l=phone.querySelector(".evx-list"); if (l) l.classList.add("in-f"); });
-  const pin = phone.querySelector(".evx-pin");
-  if (pin) { const b=pin.parentElement, up=b.querySelector(`[data-lp$="|${pin.dataset.m}|"]`), ch=b.querySelector(".evx-rchips");
-    const set = () => { const top=b.getBoundingClientRect().top, r=up&&up.getBoundingClientRect(); pin.classList.toggle("show", ch.getBoundingClientRect().bottom<=top && !(r && r.bottom>top+48 && r.top<b.getBoundingClientRect().bottom-48)); };
-    b.addEventListener("scroll", set, { passive:true }); set(); }
+  q("[data-evmode]", el=>{ const [cid,k]=el.dataset.evmode.split("|"); STATE.evMode=STATE.evMode||{}; STATE.evMode[cid]=k||null; render(); scrollChat(); const t=phone.querySelector("#ci"); if (t&&k) t.focus(); });
+  q("[data-evto]", el=>{ const [cid,mid]=el.dataset.evto.split("|"); evTo(cid, mid); });
+  q("[data-evpin]", el=>{ const [cid,mid]=el.dataset.evpin.split("|"); evTo(cid, mid); });
+  /* the pinned bar shows the latest update scrolled away above you, so it never repeats one on screen; tapping it jumps there and it moves on to
+     the one before (Telegram's pinned messages) */
+  const pb = phone.querySelector(".evx-pinbar"), pbody = pb && phone.querySelector(".chatbody");
+  if (pbody) { const cid=pb.dataset.evpin.split("|")[0], ups=evUps(convOf(cid));
+    const set = () => { const top=pbody.getBoundingClientRect().top; let i=-1; ups.forEach((m,j)=>{ const el=pbody.querySelector(`[data-lp^="${cid}|${m.id}|"]`); if (el && el.getBoundingClientRect().bottom < top+8) i=j; });
+      pb.parentElement.classList.toggle("show", i>=0); if (i<0) return; pb.dataset.evpin=`${cid}|${ups[i].id}`;
+      pb.querySelector(".xs").textContent = ups.length>1 ? `Update ${i+1} of ${ups.length}` : "Pinned update"; pb.querySelector(".sm").textContent = ups[i].text.replace(/[*_~`>]/g,""); };
+    pbody.addEventListener("scroll", set, { passive:true }); set(); }
+  q("[data-evjq]", el=>{ const cid=el.dataset.evjq, open=evQs(convOf(cid)).filter(m=>!m.answer); STATE.evJq=STATE.evJq||{}; const i=(STATE.evJq[cid]||0)%open.length; STATE.evJq[cid]=i+1; evTo(cid, open[i].id); });
+  q("[data-evupj]", el=>{ const [cid,mid]=el.dataset.evupj.split("|"); STATE.sheet=null; render(); evTo(cid, mid); });
+  const jl = phone.querySelector(".evx-jl"), jb = jl && phone.querySelector(".chatbody");
+  if (jb) { const set = () => jl.classList.toggle("show", jb.scrollHeight-jb.scrollTop-jb.clientHeight > jb.clientHeight*.5); jb.addEventListener("scroll", set, { passive:true }); set();
+    jl.onclick = () => jb.scrollTo({ top:jb.scrollHeight, behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth" }); }
   q("[data-evvote]", el=>{ const [cid,mid]=el.dataset.evvote.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); m.votes=m.votes||[]; const i=m.votes.indexOf(EV_ME); if (i<0) m.votes.push(EV_ME); else m.votes.splice(i,1); evKeep(); });
   q("[data-evwave]", el=>{ const [cid,mid]=el.dataset.evwave.split("|"); const m=convOf(cid).msgs.find(x=>x.id===mid); if (m.waved) return; m.waved=true; evKeep(); toast(`Waved. ${P(m.from).name.split(" ")[0]} sees it once.`); });
-  q("[data-evanswer]", el=>openSheet("evanswer", el.dataset.evanswer));
-  q("[data-evansok]", el=>{ const [cid,mid]=el.dataset.evansok.split("|"); const v=((document.getElementById("evans")||{}).value||"").trim(); if (!v) { toast("Write an answer first."); return; } convOf(cid).msgs.find(x=>x.id===mid).answer={ from:EV_ME, text:v }; STATE.sheet=null; evKeep(); toast("Answered. They get a push."); });
+  q("[data-evanswer]", el=>{ const [cid,mid]=el.dataset.evanswer.split("|"); (STATE.evMode=STATE.evMode||{})[cid]=null; setReplyTo(cid, mid); });
   q("[data-evnotif]", el=>{ const [cid,k]=el.dataset.evnotif.split("|"); convOf(cid).evNotif=k; STATE.sheet=null; render(); toast({ key:"Updates and replies to you.", all:"Every message.", off:"Off for this event." }[k]); });
   q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]="Hi all, Priya here. PM on Google Cloud, hoping to meet people building AI products."; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
   q("[data-evphotos]", el=>{ const e=evE(el.dataset.evphotos); const c=evRoom(e); c.msgs.push(M(EV_ME, "", { day:"Today", time:nowTime(), att:[{t:"img",n:4}] })); go("dm:"+c.id); toast("Four photos added. Everyone who went sees them."); });
@@ -11955,10 +11938,11 @@ portWire = function(){
   const scr = phone.querySelector(".evt-screen"), screenEl = phone.querySelector(".screen");
   if (scr) { const t = EVT.applyTheme(scr, evPreset(scr.dataset.evtTheme)); const pad = screenEl ? parseFloat(getComputedStyle(screenEl).paddingTop)||0 : 0;
     if (pad) { scr.style.marginTop = -pad+"px"; scr.style.paddingTop = pad+"px"; } if (t.inkIsLight && screenEl) screenEl.classList.add("dark-status");
-    const fx = scr.dataset.evtFx; evtMount = EVT.mountEffects(scr, fx==="emoji"?"none":fx, { signal:{ going:+scr.dataset.evtGoing, capacity:+scr.dataset.evtCap } });
+    const room = !!scr.querySelector(".chatbody"); if (room) { scr.classList.add("evx-room"); evRoomTone(scr, evPreset(scr.dataset.evtTheme), t); }
+    const fx = room ? "none" : scr.dataset.evtFx; evtMount = EVT.mountEffects(scr, fx==="emoji"?"none":fx, { signal:{ going:+scr.dataset.evtGoing, capacity:+scr.dataset.evtCap } });
     if (fx==="emoji" && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const l=document.createElement("div"); l.className="fx evt-emofx";
       l.innerHTML = Array.from({length:12},(_,i)=>`<i style="left:${(i*8.3+Math.random()*6).toFixed(1)}%;--s:${18+(i*7)%22}px;--d:${16+(i*5)%14}s;--dl:-${(i*2.7).toFixed(1)}s;--dx:${(i%2?1:-1)*(10+i*3)}px;--r:${(i%2?1:-1)*40}deg">${scr.dataset.evtEmoji}</i>`).join("");
-      scr.prepend(l); } }
+      const pz = scr.querySelector(".evt-poster"); if (pz) { l.classList.add("evt-emofx-p"); pz.appendChild(l); } else scr.prepend(l); } }
   /* the calendar page's cover runs under the status bar like the profile photo (Apoorv 28 Sep 01:45); the header turns solid once it scrolls away */
   const cpg = phone.querySelector(".evx-calpg"), cscr = phone.querySelector(".screen");
   if (cpg && cscr) { const pad = parseFloat(getComputedStyle(cscr).paddingTop)||0, hd = phone.querySelector(".evx-over"), cb = cpg.querySelector(".evx-cban");
@@ -12861,8 +12845,11 @@ portWire = function(){
 };
 
 
-/* ---- event chat: one room per event. Chat, host updates and questions live together; chips filter them.
-   Research: Meetup folded event comments into one chat (2024); Slido/Zoom rank questions by votes; Apple Invites posts the RSVP note. ---- */
+/* ---- event chat: one room per event, one log in the order things happened (Apoorv 29 Sep 17:52: tabs split it, "its not like a log of
+   everything that has happened in order"). The host's updates, questions and answers are messages told apart by one label, as announcements are
+   in WhatsApp Communities and Discord's announcement channels; an answer is the host's reply quoting the question (WhatsApp and iMessage quoted
+   replies), so a question and its answer each sit where they happened. Navigation replaces the tabs: the pinned bar steps back through the
+   updates (Telegram's pinned messages), a chip steps through open questions (Telegram's mention jumper), a tile returns to the latest. ---- */
 const EV_ROOM = { e1:"g-dinner" };
 const evRoomId = e => EV_ROOM[e.id] || "ev-"+e.id;
 function evRoom(e){
@@ -12874,43 +12861,65 @@ function evRoom(e){
   if (e.id==="e1" && !c.evSeeded) { c.evSeeded = true;
     const up = M("chris","Table cards go by interest: AI, climate, hiring. Reply with yours and I'll seat you.",{ day:"Sep 21, 2026", time:"10:02 AM", evType:"update" });
     up.thread = [M("rahul","AI please.",{ day:"Sep 21, 2026", time:"10:20 AM" }), M("maya","AI, next to anyone hiring engineers.",{ day:"Sep 21, 2026", time:"11:05 AM" })]; up.threadCount = 9;
+    const kq = Object.assign(M("kate","Is there parking near the venue?",{ day:"Sep 23, 2026", time:"9:02 AM", evType:"question" }), { votes:["rahul","sana"] });
+    const ka = M("chris","The garage on Hamilton is free after 6.",{ day:"Sep 23, 2026", time:"9:40 AM", evType:"answer", q:kq.id, reply:{ name:P("kate").name, text:kq.text } });
+    kq.answer = { from:"chris", text:ka.text, mid:ka.id };
     c.msgs.unshift(up,
       M("maya","Looking for a technical cofounder for a health-data company. Happy to swap notes on hiring.",{ day:"Sep 22, 2026", time:"9:14 AM", evType:"intro" }),
       M("rahul","Anyone driving down from SF? Two seats in my car.",{ day:"Sep 22, 2026", time:"6:30 PM", react:{"🙌":["sana"]} }),
-      Object.assign(M("kate","Is there parking near the venue?",{ day:"Sep 23, 2026", time:"9:02 AM", evType:"question" }), { votes:["rahul","sana"], answer:{ from:"chris", text:"The garage on Hamilton is free after 6." } }),
+      kq, ka,
       Object.assign(M("sana","Can we bring a plus-one who isn't on Key?",{ day:"Sep 23, 2026", time:"4:40 PM", evType:"question" }), { votes:["rahul","maya","ana","jordan","kate"] }));
     const doors = c.msgs.find(m=>/^Doors at 7/.test(m.text)); if (doors) doors.evType = "update";
   }
   return c;
 }
-function evOpenRoom(id, focus, f){ const e=evE(id); const c=evRoom(e); STATE.evRf=STATE.evRf||{}; STATE.evRf[c.id]=f||"all"; go("dm:"+c.id); if (focus) { const t=phone.querySelector("#ci"); if (t) t.focus(); } }
+function evOpenRoom(id, focus, f){ const e=evE(id); const c=evRoom(e); STATE.evMode=STATE.evMode||{}; STATE.evMode[c.id] = f==="q"&&!e.qaOff ? "question" : f==="up"&&e.host===EV_ME ? "update" : null;
+  go("dm:"+c.id); if (focus || STATE.evMode[c.id]) { const t=phone.querySelector("#ci"); if (t) t.focus(); } }
 function evThread(cid, mid){ const m=(convOf(cid)||{msgs:[]}).msgs.find(x=>x.id===mid); if (m && !m.thread) m.thread=[]; go(`thread:${cid}:${mid}`); }
 function evKeep(){ const b=phone.querySelector(".body"); const y=b?b.scrollTop:0; render(); const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=y; }
 const evUps = c => c.msgs.filter(m=>m.evType==="update"&&!m.deleted);
 const evQs = c => c.msgs.filter(m=>m.evType==="question"&&!m.deleted);
-/* what the composer posts follows the chip you are on: Questions asks, Updates (the host) updates, anything else is a message (Slido, Zoom Q&A) */
-const evRoomPost = c => { const e=evE(c.ev), f=(STATE.evRf||{})[c.id]; return f==="q"&&!e.qaOff ? "question" : f==="up"&&e.host===EV_ME ? "update" : "message"; };
-
+/* what the composer posts follows its mode, picked from the chips above it: a question, or (the host) an update; anything else is a message */
+const evRoomPost = c => { const e=evE(c.ev), f=(STATE.evMode||{})[c.id]; return f==="question"&&!e.qaOff ? "question" : f==="update"&&e.host===EV_ME ? "update" : "message"; };
+/* scrolls the log to one message and flashes its row (Messages' highlight) */
+function evTo(cid, mid){ const b=phone.querySelector(".chatbody"), el=b&&b.querySelector(`[data-lp^="${cid}|${mid}|"]`); if (!el) return; const r=el.closest(".brow")||el;
+  const y = b.scrollTop + r.getBoundingClientRect().top - b.getBoundingClientRect().top - Math.max(0, (b.clientHeight - r.offsetHeight)/2);
+  b.scrollTo({ top:y, behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth" }); r.classList.add("hl"); setTimeout(()=>r.classList.remove("hl"), 1400); }
 /* updates, questions and intros read as messages like the rest of the room, told apart by one label (Apoorv 28 Sep 02:24: the room read crowded) */
-const EV_KIND = { update:["megaphone","Update"], question:["message-circle-question-mark","Question"], intro:["hand","Intro"] };
-function evRoomBubble(c, e, m, flat){
-  const [ic, label] = EV_KIND[m.evType]; const q = m.evType==="question", v = m.votes||[];
-  const kind = `<span class="evx-kind">${evIc(ic,14)}${label}${q&&m.answer?" · Answered":""}</span>`;
-  const acts = q ? `<button class="evx-vote ${v.includes(EV_ME)?'on':''}" data-evvote="${c.id}|${m.id}" aria-label="Upvote">${evIc("chevron-up",14)}<b>${v.length}</b></button>${!m.answer&&e.host===EV_ME?`<button class="evx-act" data-evanswer="${c.id}|${m.id}">Answer</button>`:""}`
-    : m.evType==="update" ? (m.thread&&m.thread.length ? "" : `<button class="evx-act" onclick="event.stopPropagation();evThread('${c.id}','${m.id}')">Reply</button>`)
-    : m.from===EV_ME ? "" : `<button class="evx-act ${m.waved?'on':''}" data-evwave="${c.id}|${m.id}">${evIc(m.waved?"check":"hand",14)}${m.waved?"Waved":"Wave"}</button>`;
-  const ans = q && m.answer ? `<div class="evx-ans"><b>${P(m.answer.from).name}</b> <span>host</span><div>${fmtText(m.answer.text)}</div></div>` : "";
-  const day = flat && m.day!=="Today" ? `${m.day.replace(", 2026","")} · ` : "";
+/* The event chat is Messages' chat in the event's colours (Apoorv 28 Sep 23:40): no effects behind the messages. On a dark theme the ground dims
+   (WhatsApp's wallpaper dimming) and others' bubbles are a veil of white over it, the way iMessage, WhatsApp and Telegram lift received bubbles
+   off a dark ground (Apoorv 29 Sep 17:52: the bubbles looked weird in the theme's middle colour): the thinnest veil that stands off every part
+   of the ground while its times (white at 70%) still pass AA. A light theme keeps Messages' white bubbles */
+const evRgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const evLum = c => c.map(v=>{ v/=255; return v<=.04045 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4); }).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i], 0);
+const evCon = (a,b) => { const x=evLum(a), y=evLum(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05); };
+const evMix = (a,b,k) => a.map((v,i)=>Math.round(v+(b[i]-v)*k));
+function evRoomTone(scr, p, t){ if (!t.inkIsLight) return;
+  const dim = 1-(1-(t.scrim?t.scrim.alpha:0))*.55, st = p.stops.map(evRgb), W=[255,255,255], K=[0,0,0];
+  const ground = Array.from({length:9}, (_,i)=>{ const x=i/8*(st.length-1), j=Math.min(st.length-2, Math.floor(x)); return evMix(evMix(st[j], st[j+1], x-j), K, dim); });
+  const ok = a => ground.every(g=>{ const b=evMix(g, W, a); return evCon(b, g)>=1.25 && evCon(evMix(b, W, .7), b)>=4.5; });
+  const a = Array.from({length:15}, (_,i)=>.08+i*.01).find(ok) || .08;
+  scr.style.setProperty("--ev-scrim", `rgb(0 0 0 / ${dim.toFixed(2)})`); scr.style.setProperty("--evx-bub", `rgb(255 255 255 / ${a.toFixed(2)})`); }
+const _evThreadScreen = sThread;
+sThread = function(cid, pid){ const c=convOf(cid), e=c && c.kind==="event" && evE(c.ev || (cid==="g-dinner"?"e1":"")); const h=_evThreadScreen(cid, pid); return e ? evScreen(e, h) : h; };
+const EV_KIND = { update:["megaphone","Update"], question:["message-circle-question-mark","Question"], answer:["reply","Answer"], intro:["hand","Intro"] };
+function evRoomBubble(c, e, m){
+  const [ic, label] = EV_KIND[m.evType]; const v = m.votes||[];
+  const kind = `<span class="evx-kind">${evIc(ic,14)}${label}</span>`;
+  const acts = m.evType==="question" ? `<button class="evx-vote ${v.includes(EV_ME)?'on':''}" data-evvote="${c.id}|${m.id}" aria-label="Upvote">${evIc("arrow-up",14)}<b>${v.length}</b></button>${m.answer&&m.answer.mid?`<button class="evx-act" data-evto="${c.id}|${m.answer.mid}">${evIc("check",14)}Answered</button>`:e.host===EV_ME?`<button class="evx-act" data-evanswer="${c.id}|${m.id}">${evIc("reply",14)}Answer</button>`:""}`
+    : m.evType==="update" ? (m.thread&&m.thread.length || m.from===EV_ME ? "" : `<button class="evx-act" onclick="event.stopPropagation();evThread('${c.id}','${m.id}')">${evIc("reply",14)}Reply</button>`)
+    : m.evType==="intro" && m.from!==EV_ME ? `<button class="evx-act ${m.waved?'on':''}" data-evwave="${c.id}|${m.id}">${evIc(m.waved?"check":"hand",14)}${m.waved?"Waved":"Wave"}</button>` : "";
   let h = bubbleHTML(c, m, true).replace('class="brow ', `class="brow evx-k-${m.evType} `);
   h = h.includes('<div class="bn"') ? h.replace(/(<div class="bn"[^>]*>[^<]*<\/div>)/, `<div class="evx-bn">$1${kind}</div>`) : h.replace(/(<div class="bub [^>]*>)/, `$1<div class="evx-bn">${kind}</div>`);
-  return h.replace(/<div class="bf">((?:(?!<\/div>).)*)<\/div>/, (_, t)=>`${ans}<div class="bf evx-bact">${acts}<span class="evx-tm">${day}${t}</span></div>`);
+  if (m.q) h = h.replace('<div class="qq">', `<div class="qq" data-evto="${c.id}|${m.q}">`);
+  return acts ? h.replace(/<div class="bf">((?:(?!<\/div>).)*)<\/div>/, (_, t)=>`<div class="bf evx-bact">${acts}<span class="evx-tm">${t}</span></div>`) : h;
 }
-function evRoomMsgs(c, e, list, flat){
+function evRoomMsgs(c, e, list){
   let out="", prevDay=null, prev=null;
   list.forEach(m=>{
-    if (!flat && m.day!==prevDay) { out += `<div class="dsep"><span>${m.day}</span></div>`; prevDay=m.day; prev=null; }
+    if (m.day!==prevDay) { out += `<div class="dsep"><span>${m.day}</span></div>`; prevDay=m.day; prev=null; }
     if (m.sys) { out += `<div class="syspill"><span>${m.sys}</span></div>`; return; }
-    if (m.evType) { out += evRoomBubble(c, e, m, flat); prev=null; return; }
+    if (m.evType) { out += evRoomBubble(c, e, m); prev=null; return; }
     out += bubbleHTML(c, m, !prev || prev.from!==m.from); prev=m;
   });
   return out;
@@ -12920,38 +12929,45 @@ chatScreen = function(id){
   seedChats(); if (!DB.chat[id] && /^ev-/.test(id) && evE(id.slice(3))) evRoom(evE(id.slice(3)));
   const c = convOf(id); const e = c && c.kind==="event" && evE(c.ev || (id==="g-dinner"?"e1":""));
   if (!e || STATE.editMsg) return _evBaseChat(id);
-  evRoom(e); const host = e.host===EV_ME; const f0 = (STATE.evRf||{})[id]||"all", f = f0==="q"&&e.qaOff ? "all" : f0;
-  const ups = evUps(c), qs = evQs(c), open = qs.filter(m=>!m.answer).length;
-  const closed = e.past && e.id!=="e1";
-  const list = f==="q" ? qs.slice().sort((a,b)=>(!!a.answer-!!b.answer)||((b.votes||[]).length-(a.votes||[]).length)) : f==="up" ? ups.slice().reverse() : c.msgs;
-  const latest = ups[ups.length-1];
-  const pin = latest && f==="all" ? `<div class="evx-pin" data-m="${latest.id}"><div class="pinbar" data-evrf="up">${evIc("megaphone",16)}<div class="m"><div class="sm ell">${latest.text}</div></div>${ups.length>1?`<span class="xs faint">${ups.length-1} more</span>`:""}</div></div>` : "";
-  const chips = `<div class="pills evx-rchips">${[["all","All"]].concat(e.qaOff?[]:[["q",`Questions${qs.length?` · ${open?open+" open":qs.length}`:""}`]], [["up",`Updates${ups.length?` · ${ups.length}`:""}`]]).map(([k,l])=>`<div class="pill ${f===k?'on':''}" data-evrf="${k}">${l}</div>`).join("")}</div>`;
-  const mine = c.msgs.some(m=>m.from===EV_ME);
-  const first = !mine && !closed && f==="all" && !((STATE.drafts||{})[id]) ? `<div class="evx-first"><span class="chip sug" data-evhi="${id}">Say what you're hoping to get out of it</span></div>` : "";
-  const empty = !list.length ? `<div class="estate"><div class="et">${f==="q"?"No questions yet":"No updates yet"}</div><div class="es">${f==="q"?"Ask the host anything. Others can upvote it.":"The host's updates pin here and reach everyone going."}</div></div>` : "";
+  evRoom(e); const host = e.host===EV_ME, closed = e.past && e.id!=="e1", mode = evRoomPost(c);
+  const ups = evUps(c), open = e.qaOff ? [] : evQs(c).filter(m=>!m.answer);
+  const pm = ups[ups.length-1];
+  const pin = pm ? `<div class="evx-pinwrap"><div class="pinbar evx-pinbar" data-evpin="${id}|${pm.id}"><span>${evIc("megaphone",16)}</span><div class="m"><div class="xs faint">${ups.length>1?`Update ${ups.length} of ${ups.length}`:"Pinned update"}</div><div class="sm ell">${pm.text.replace(/[*_~`>]/g,"")}</div></div>${ups.length>1?`<span class="evx-pinl" data-evsheet="evups|${id}" aria-label="All updates">${evIc("list",18)}</span>`:""}</div></div>` : "";
+  const rt = (STATE.replyTo||{})[id], rq = rt && c.msgs.find(x=>x.id===rt.mid), answering = host && rq && rq.evType==="question";
+  const mine = c.msgs.some(m=>m.from===EV_ME), draft = ((STATE.drafts||{})[id]||"").trim();
+  const chips = closed || rt || mode!=="message" ? "" : [
+    host ? `<span class="chip" data-evmode="${id}|update">${evIc("megaphone",16)}Post an update</span>` : e.qaOff ? "" : `<span class="chip" data-evmode="${id}|question">${evIc("message-circle-question-mark",16)}Ask ${evFirst(e.host)}</span>`,
+    open.length ? `<span class="chip" data-evjq="${id}">${evIc("arrow-up",16)}${open.length} open question${open.length>1?"s":""}</span>` : "",
+    !mine && !draft ? `<span class="chip" data-evhi="${id}">${evIc("hand",16)}Introduce yourself</span>` : ""].join("");
+  const modeBar = mode==="message" ? "" : `<div class="rq evx-mode"><i></i>${evIc(mode==="question"?"message-circle-question-mark":"megaphone",16)}<div class="m"><b>${mode==="question"?`Question for ${evFirst(e.host)}`:"Update"}</b><span>${mode==="question"?"Everyone going sees it and can upvote it":`Pins at the top and reaches all ${e.going} going`}</span></div><span class="x" data-evmode="${id}|" aria-label="Back to a message">×</span></div>`;
   const hdr = `<div class="hdr chdr"><div class="back" onclick="STATE.backNav=true;goBack()">‹</div><div class="evx-rthumb cv-th" onclick="go('eventd:${e.id}')">${evCvArt(e)}</div><div class="hm" onclick="go('eventd:${e.id}')"><div class="hn">${e.name}</div><div class="xs faint">${e.going} going · ${evDayLabel(e)}</div></div><div class="icon" data-evsheet="evroomnotif|${id}" aria-label="Notifications">${evIc("bell")}</div><div class="icon" onclick="openSheet('conv','${id}')" aria-label="More">${evIc("ellipsis")}</div></div>`;
-  const ph = { message:"Message everyone going", question:"Ask the host a question", update:"Update everyone going" }[evRoomPost(c)];
-  const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>`
-    : f==="up" && !host ? `<div class="foot cbar evx-ro">${evIc("megaphone",16)}<span>Only ${evFirst(e.host)} posts updates</span></div>`
-    : composerBar(c).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
-  return evScreen(e, `${hdr}<div class="body chatbody">${pin}${chips}<div class="evx-list">${empty}${evRoomMsgs(c, e, list, f!=="all")}</div>${first}</div>${bar}`);
+  const ph = answering ? `Answer ${evFirst(rq.from)}` : { message:"Message everyone going", question:`Ask ${evFirst(e.host)} a question`, update:"Update everyone going" }[mode];
+  let comp = composerBar(c).replace('placeholder="Start typing..."', `placeholder="${ph}"`);
+  if (answering) comp = comp.replace(/(<div class="rq"><i><\/i>(?:(?!<b>).)*<b>)[^<]*/, `$1Answering ${P(rq.from).name}`);
+  comp = comp.replace('<div class="crow', `${chips?`<div class="evx-cchips">${chips}</div>`:""}${modeBar}<div class="crow`);
+  const bar = closed ? `<div class="foot cbar"><div class="xs faint" style="text-align:center;margin-bottom:8px">Read-only since Jul 23. Photos and updates stay.</div><button class="btn sec" data-evphotos="${e.id}">Add photos</button></div>` : comp;
+  return evScreen(e, `${hdr}${pin}<div class="body chatbody"><div class="evx-list">${evRoomMsgs(c, e, c.msgs)}</div></div><div class="evx-jump"><span class="evx-jl" aria-label="Jump to the latest">${evIc("arrow-down",20)}</span></div>${bar}`);
 };
 const _evSend = sendMsg;
 sendMsg = function(cid, k, confirmed){
-  const c = convOf(cid); const n = c ? c.msgs.length : 0; _evSend(cid, k, confirmed);
-  const t = c && c.kind==="event" ? evRoomPost(c) : "message";
-  if (String(k||"").includes("::") || t==="message" || c.msgs.length===n) return;
-  const m = c.msgs[c.msgs.length-1]; m.evType = t; if (t==="question") m.votes = [];
+  const c = convOf(cid), ev = c && c.kind==="event" && !String(k||"").includes("::"); const n = c ? c.msgs.length : 0;
+  const t = ev ? evRoomPost(c) : "message", rt = ev && (STATE.replyTo||{})[k], rq = rt && c.msgs.find(x=>x.id===rt.mid);
+  _evSend(cid, k, confirmed);
+  if (!ev || c.msgs.length===n) return;
+  const m = c.msgs[c.msgs.length-1], e = evE(c.ev || (cid==="g-dinner"?"e1":""));
+  if (rq && rq.evType==="question" && e.host===EV_ME) { m.evType = "answer"; m.q = rq.id; rq.answer = { from:EV_ME, text:m.text, mid:m.id }; render(); scrollChat();
+    toast(`Answered. ${evFirst(rq.from)}${(rq.votes||[]).length?" and everyone who upvoted":""} get${(rq.votes||[]).length?"":"s"} a push.`); return; }
+  if (t==="message") return;
+  m.evType = t; if (t==="question") m.votes = []; STATE.evMode[cid] = null;
   render(); scrollChat();
-  toast(t==="update" ? `Pinned and pushed to ${c.members} going.` : "Asked. The host sees it; others can upvote it.");
+  toast(t==="update" ? `Pinned and pushed to ${e.going} going.` : "Asked. The host sees it; others can upvote it.");
 };
 
 /* one sticky action per state; hides while you scroll down (Luma, Partiful). Invited and waiting states act inside their section. */
 function evCta(e, live, locked){
   if (locked) return [`${evIc("lock")} Apply to join`, `toast('Application opens. Tabs stay open while it\\'s pending.')`, ""];
   if (e.past) return [`${evIc("image-plus")} Add photos`, "", `data-evphotos="${e.id}"`];
-  if (e.reg==="hosting") return [`${evIc("settings")} Manage`, "", `data-evgo="eventd:manage.${e.id}"`];
+  if (e.reg==="hosting") return [`${evIc("sliders-horizontal")} Manage`, "", `data-evgo="eventd:manage.${e.id}"`];
   if (live && !e.checkedIn) return [`${evIc("map-pin-check")} Check in`, "", `data-checkin="${e.id}"`];
   if (e.reg==="going" || live) return [`${evIc("message-circle")} Open event chat`, "", `data-evroom="${e.id}"`];
   if (e.reg==="none") return [`${evIc(e.approval?"hand":"ticket")} ${e.approval?"Request to join":"Register"}, ${e.price?`$${e.price}`:"free"}`, "", `data-evrsvp="${e.id}"`, e.approval?`${evFirst(e.host)} approves each guest`:""];
@@ -15419,151 +15435,6 @@ function brOpen(fromEl, sid){
   open();
 }
 
-/* ==== KeyWaitingBlock (29 Sep, value research https://claude.ai/artifact/UYSwhaeKRcRy4VLcQ27XYC). The brief answers one question:
-   is a real person waiting on you? One row per person, longest wait first, three at most; the top one opens with Kai's draft and
-   Send is the member's yes. Nobody waiting: what came back from people, else one quiet line. Community news stays on each
-   community's page. The story tray above is no longer drawn on Home. ==== */
-const brMins = w => { const m = /^(\d+)\s*([mhd])/.exec(w||""); return m ? +m[1] * ({ m:1, h:60, d:1440 })[m[2]] : 0; };
-const brCap = t => t ? t[0].toUpperCase() + t.slice(1) : "";
-STATE.brSnooze = STATE.brSnooze || {};
-function brWaiting(){
-  const asks = typeof myAsks==="function" ? myAsks() : [], ns = notifs() || [], W = {};
-  const add = (p, e) => { if (!p || !p.id || STATE.brSnooze[p.id]) return; const w = W[p.id];
-    if (!w) W[p.id] = Object.assign({ p, more:0 }, e); else if (brMins(e.since) > brMins(w.since)) W[p.id] = Object.assign({ p, more:w.more+1 }, e); else w.more++; };
-  brDeck().deck.filter(c => c.draft && c.who).forEach(c => {
-    const a = c.id.startsWith("ask:") && asks.find(x => "ask:"+x.id===c.id), n = !a && ns.find(x => x.title===c.title);
-    const why = c.kind==="intro" ? c.title.replace(/ to .*$/,"") : brCap(c.title.replace(c.who.name+" ","").replace(firstName(c.who)+" ",""));
-    add(c.who, { since: (a && a.when) || (n && n.when) || "1h", why, ctx:c.ctx, card:c }); });
-  asks.filter(a => a.kind==="direct" && a.state==="open").forEach(a => { const p = P(a.from);
-    add(p, { since:a.when, why: brCap(a.what), card:{ id:"ask:"+a.id, kind:"intro", draft:{ to:firstName(p), text:`Hi ${firstName(p)}, happy to. Does Thursday afternoon work for 20 minutes?`, send:() => { bfSendIntro(a); a.outcomeLine = "You replied"; } } } }); });
-  asks.filter(a => a.kind==="connector" && a.state==="open").forEach(a => add(P(a.from), { since:a.when, why: brCap(a.what), act:{ label:"Review", go:`go('req:${a.id}')` } }));
-  ns.filter(n => (n.kind||n.type)==="message" && n.unread && /^dm:/.test(n.to||"")).forEach(n => { const p = Object.values(DB.people||{}).find(x => n.title.startsWith(x.name));
-    add(p, { since:n.when, why: brCap(n.title.replace(p ? p.name+" " : "", "")), act:{ label:"Reply", go:`go('${n.to}')` } }); });
-  return Object.values(W).sort((x, y) => brMins(y.since) - brMins(x.since));
-}
-function bwAgo(w){ const m = brMins(w); return m >= 1440 ? `${Math.round(m/1440)}d` : m >= 60 ? `${Math.round(m/60)}h` : `${m||1}m`; }
-function bwRow(w, open){
-  const f = firstName(w.p), draft = w.card && w.card.draft, k = w.key || w.p.id;
-  return `<div class="bw-row ${open?"open":""}" data-bw="${k}">
-    <button type="button" class="bw-top" data-bwopen="${k}" aria-expanded="${open}"><span class="bw-face" aria-hidden="true">${brPortrait(w.p.initials, w.p.id, 120)}</span>
-      <span class="bw-m"><b>${w.p.name}</b><span>${w.why}${w.more ? ` · ${w.more} more` : ""}</span></span><span class="bw-t">${bwAgo(w.since)}</span></button>
-    ${open ? `<div class="bw-body">${draft ? `<div class="bw-draft"><span class="bw-dh">${typeof kaiMark==="function" ? kaiMark(16) : ""}Kai's draft to ${f}</span><div class="bw-dt" contenteditable="true" spellcheck="false" data-bwdraft="1">${draft.text}</div></div>` : w.ctx ? `<p class="bw-ctx">${w.ctx}</p>` : ""}
-      <div class="bw-acts">${draft ? `<button type="button" class="p" data-bwsend="${k}">Send to ${f}</button>` : `<button type="button" class="p" onclick="${w.act.go}">${w.act.label}</button>`}<button type="button" class="s" data-bwlater="${k}">Not now</button></div></div>` : ""}
-  </div>`;
-}
-/* what came back: other people's answers to you, never Kai's own activity */
-function brBack(){
-  const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"), sent = (DB.asks||[]).filter(a => a.outcomeLine && a.when==="now").map(a => P(a.from));
-  if (!r && !sent.length) return null;
-  const who = r ? Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).slice(0,3) : sent.slice(0,3);
-  return { who, line: r ? r.title : `You answered ${sent.map(firstName).join(", ")}`, go: r ? `go('${r.to}')` : "go('inbox')" };
-}
-brBanner = function(){
-  if (!STATE.member) return "";
-  const W = brWaiting(), top = W.slice(0, 3), open = (top.find(w => w.p.id===STATE.brOpen) || top[0] || {}).p;
-  if (W.length) return `<div class="brief bwait" data-kc="KeyWaitingBlock" data-kv="state=waiting;people=${W.length}">
-    <div class="bw-hd"><span class="bs-hi">${brGreeting()}</span><h2>${W.length===1 ? `${W[0].p.name} is waiting on you` : `${W.length} people are waiting on you`}</h2></div>
-    <div class="bw-list">${top.map(w => bwRow(w, open && w.p.id===open.id)).join("")}</div>
-    ${W.length > 3 ? `<button type="button" class="bw-more" onclick="go('inbox')"><span>${W.length-3} more waiting in Messages</span>${LI("chevron-right",16)}</button>` : ""}</div>`;
-  const b = brBack();
-  return `<div class="brief bwait quiet" data-kc="KeyWaitingBlock" data-kv="state=${b?"back":"quiet"}">
-    <div class="bw-hd"><span class="bs-hi">${brGreeting()}</span><h2>Nobody's waiting on you</h2></div>
-    ${b ? `<button type="button" class="bw-back" onclick="${b.go}"><span class="bw-faces" aria-hidden="true">${b.who.map(p => `<span class="bw-face">${brPortrait(p.initials, p.id, 96)}</span>`).join("")}</span><span>${b.line}</span>${LI("chevron-right",16)}</button>`
-      : `<p class="bw-q">Kai will put people here when they need you.</p>`}</div>`;
-};
-function bwWire(){
-  const box = phone.querySelector(".bwait"); if (!box) return;
-  const W = () => brWaiting(), find = id => W().find(w => w.p.id===id);
-  box.querySelectorAll("[data-bwopen]").forEach(el => el.onclick = () => { STATE.brOpen = el.dataset.bwopen; render(); });
-  box.querySelectorAll("[data-bwlater]").forEach(el => el.onclick = () => { STATE.brSnooze[el.dataset.bwlater] = true; STATE.brOpen = null; render(); });
-  box.querySelectorAll("[data-bwsend]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwsend); if (!w) return;
-    const d = box.querySelector("[data-bwdraft]"), text = (d ? d.innerText : w.card.draft.text).trim(); if (!text) return;
-    const c = w.card, tgt = c.id.startsWith("ask:") ? (DB.asks||[]).find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
-    if (tgt) tgt._draft = text; c.draft.send(); STATE.brOpen = null; render();
-    toast(`Sent to ${firstName(w.p)}. ${c.kind==="intro" ? "It's in your messages." : "It's in the thread."}`); });
-}
-const _bwRender = render; render = function(){ const r = _bwRender.apply(this, arguments); bwWire(); return r; };
-
-/* ==== KeyKaiReport (29 Sep, Apoorv 17:48: "presented by ai as my daily report... quick to digest, catches me up quick, gives me the
-   next action items... every action taken gets visibility... easy to interact with"). Kai writes two sentences from structured
-   events only (every name links to its row, nothing is inferred), then Next up: people waiting on you and mission picks in one
-   list, three at most, each opening in place with Kai's draft; Send is the member's yes. Done keeps every action since the last
-   visit, yours, other people's and Kai's, so each one is seen. Tap only: no swipe, no stories, 44px targets. ==== */
-STATE.krDone = STATE.krDone || null;
-function krPicks(){
-  return (DB.opps||[]).filter(o => o.personId && ownerOf(o)==="you" && isNewOf(o) && !STATE.brSnooze["opp:"+o.id]).map(o => {
-    const p = targetOf(o), m = (DB.missions||[]).find(x => x.id===o.missionId), d = /<textarea[^>]*id="draft"[^>]*>([\s\S]*?)<\/textarea>/.exec(askSheet(o.id));
-    return { p, key:"opp:"+o.id, since:"12m", pick:true, why:`New pick for ${m ? m.name : "your mission"}`, ctx: o.receipts && o.receipts[0] && o.receipts[0][1],
-      card:{ id:"opp:"+o.id, kind:"pick", draft:{ to:firstName(p), text: d ? d[1].trim() : `Hi ${firstName(p)}, would you have twenty minutes this week?`, send:() => { sendAsk(o.id); STATE.sheet = null; } } } };
-  });
-}
-function krNext(){
-  const W = brWaiting().map(w => Object.assign({ key:w.p.id }, w)), K = krPicks().filter(k => !W.some(w => w.p.id===k.p.id));
-  return { list: K.length ? W.slice(0, 2).concat(K.slice(0, 1), W.slice(2), K.slice(1)) : W, W, K };
-}
-/* the log starts with what happened while you were away: people's answers, then Kai's own finished work */
-function krLog(){
-  if (STATE.krDone) return STATE.krDone;
-  const ns = notifs()||[], r = ns.find(n => (n.kind||n.type)==="reaction"), k = ns.find(n => (n.kind||n.type)==="kai" && n.unread), L = [];
-  if (k) L.push({ by:"kai", line: K => `Kai found ${K.length===1 ? "a new pick" : `${K.length} new picks`} for ${((DB.missions||[])[0]||{}).name||"your mission"}`, when:k.when, go:"go('home')" });
-  if (r) L.push({ by:"them", who: Object.values(DB.people||{}).filter(p => r.title.includes(p.name)).sort((x, y) => r.title.indexOf(x.name) - r.title.indexOf(y.name)).slice(0, 2), where: (/^channel:(.+)/.exec(r.to)||[])[1], line: () => r.title, when:r.when, go:`go('${r.to}')` });
-  return STATE.krDone = L;
-}
-const krName = w => `<button type="button" class="kr-n" data-kropen="${w.key}">${firstName(w.p)}</button>`;
-const krFor = w => { const [, n, u] = /^(\d+)(\w)$/.exec(bwAgo(w)) || [, 1, "m"]; const unit = ({ d:"day", h:"hour", m:"minute" })[u]; return +n===1 ? (u==="h" ? "an hour" : `a ${unit}`) : `${n} ${unit}s`; };
-function krSummary(N, L){
-  const back = L.filter(x => x.by==="them")[0], kai = L.filter(x => x.by==="kai")[0], sent = L.filter(x => x.by==="you" && !x.undo).length, later = L.filter(x => x.undo).length;
-  const a = back ? `${back.who.map(p => `<b>${firstName(p)}</b>`).join(" and ")} reacted to your ${back.where ? `#${back.where} ` : ""}message` : "";
-  const b = kai && N.K.length ? `I found you a <button type="button" class="kr-n" data-kropen="${N.K[0].key}">new pick</button> for ${((DB.missions||[])[0]||{}).name}` : "";
-  const s1 = [a, b].filter(Boolean).join(a && b ? ", and " : "");
-  const w = N.W[0], s2 = N.W.length ? N.W.length===1 ? `${krName(w)} is waiting on you, ${krFor(w.since)} now.` : `${N.W.length} people are waiting on you, ${krName(w)} longest.`
-    : N.K.length ? `Nobody's waiting on you, so start with ${krName(N.K[0])}.`
-    : `You're clear${sent ? `. You sent ${sent===1 ? "one message" : `${sent} messages`}${later ? ` and put ${later===1 ? "one" : later} off till tomorrow` : ""}` : ""}.`;
-  return (s1 && N.list.length ? brCap(s1) + ". " : "") + s2;
-}
-function krDoneRow(x, N){
-  const lead = x.by==="kai" ? `<span class="kr-lead k" aria-hidden="true">${typeof kaiMark==="function" ? kaiMark(24) : ""}</span>`
-    : x.by==="them" ? `<span class="kr-lead f" aria-hidden="true">${x.who.map(p => `<span class="bw-face">${brPortrait(p.initials, p.id, 96)}</span>`).join("")}</span>`
-    : `<span class="kr-lead t" aria-hidden="true">${LI(x.icon||"check", 20)}</span>`;
-  return `<div class="kr-d"><button type="button" class="kr-dm" onclick="${x.go}">${lead}<span class="kr-dl">${x.line(N.K)}</span><span class="bw-t">${x.when==="now" ? "Now" : bwAgo(x.when)}</span></button>${x.undo ? `<button type="button" class="kr-undo" data-krundo="${x.undo}">Undo</button>` : ""}</div>`;
-}
-brBanner = function(){
-  if (!STATE.member) return "";
-  const N = krNext(), L = krLog(), top = N.list.slice(0, 3), mine = L.filter(x => x.by==="you" && !x.undo).length, total = mine + N.list.length;
-  const open = top.find(w => w.key===STATE.brOpen) || (STATE.brOpen===false ? null : top[0]);
-  const part = new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening";
-  return `<section class="brief kreport" data-kc="KeyKaiReport" data-kv="next=${N.list.length};done=${L.length}" aria-label="Kai's ${part} report">
-    <div class="kr-hd">${typeof kaiMark==="function" ? kaiMark(24) : ""}<span class="kr-ttl">Kai's ${part} report</span>
-      <button type="button" class="kr-ask" onclick="STATE.kaiScope=null;openSheet('kai')">Ask Kai</button></div>
-    <p class="kr-sum">${krSummary(N, L)}</p>
-    ${N.list.length ? `<div class="kr-sh"><span>Next up</span><span class="kr-c">${mine} of ${total} done</span></div>
-    <div class="bw-list">${top.map(w => bwRow(w, open && w.key===open.key)).join("")}</div>
-    ${N.list.length > 3 ? `<button type="button" class="bw-more" onclick="go('inbox')"><span>${N.list.length-3} more in Messages</span>${LI("chevron-right",16)}</button>` : ""}` : ""}
-    ${L.length ? `<div class="kr-sh"><span>Done</span><span class="kr-c">${L.length}</span></div><div class="kr-done">${L.slice(0, STATE.krAll ? 99 : 1).map(x => krDoneRow(x, N)).join("")}</div>
-      ${L.length > 1 && !STATE.krAll ? `<button type="button" class="bw-more" data-krall="1"><span>Show all ${L.length} done</span>${LI("chevron-down",16)}</button>` : ""}` : ""}
-  </section>`;
-};
-function krUndo(k){ delete STATE.brSnooze[k]; STATE.krDone = krLog().filter(x => x.undo!==k); STATE.brOpen = k; }
-function krWire(){
-  const box = phone.querySelector(".kreport"); if (!box) return;
-  const find = k => krNext().list.find(w => w.key===k), L = krLog();
-  box.querySelectorAll("[data-bwopen],[data-kropen]").forEach(el => el.onclick = () => { const k = el.dataset.bwopen || el.dataset.kropen;
-    STATE.brOpen = STATE.brOpen===k && el.dataset.bwopen ? false : k; render(); const r = phone.querySelector(`.kreport [data-bw="${k}"]`); if (r && el.dataset.kropen) r.scrollIntoView({ block:"nearest", behavior:"smooth" }); });
-  box.querySelectorAll("[data-bwlater]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwlater); if (!w) return;
-    STATE.brSnooze[w.key] = true; STATE.brOpen = null; L.unshift({ by:"you", icon:"clock", line: () => `You put ${firstName(w.p)} off till tomorrow`, when:"now", go:"void 0", undo:w.key });
-    toast(`${firstName(w.p)} is back tomorrow morning.`, () => krUndo(w.key)); });
-  box.querySelectorAll("[data-krundo]").forEach(el => el.onclick = () => { krUndo(el.dataset.krundo); render(); });
-  box.querySelectorAll("[data-krall]").forEach(el => el.onclick = () => { STATE.krAll = true; render(); });
-  box.querySelectorAll("[data-bwsend]").forEach(el => el.onclick = () => { const w = find(el.dataset.bwsend); if (!w) return;
-    const d = box.querySelector("[data-bwdraft]"), text = (d ? d.innerText : w.card.draft.text).trim(); if (!text) return;
-    const c = w.card, tgt = c.id.startsWith("ask:") ? (DB.asks||[]).find(a => "ask:"+a.id===c.id) : c.id.startsWith("opp:") ? DB.opps.find(o => "opp:"+o.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
-    if (tgt) { tgt._draft = text; if (c.kind==="pick") tgt.kaiDraft = text; } c.draft.send(); STATE.brOpen = null;
-    const f = firstName(w.p), go = c.kind==="pick" ? `go('mission:${(DB.opps.find(o => "opp:"+o.id===c.id)||{}).missionId}')` : "go('inbox')";
-    L.unshift({ by:"you", line: () => c.kind==="pick" ? `You said hi to ${f}. Kai tells you when ${f} answers` : `You replied to ${f}`, when:"now", go }); render();
-    toast(c.kind==="pick" ? `Sent to ${f}. It's in your ${((DB.missions||[]).find(m => go.includes(m.id))||{}).name||"mission"} mission.` : `Sent to ${f}. It's in your messages.`); });
-}
-const _krRender = render; render = function(){ const r = _krRender.apply(this, arguments); krWire(); return r; };
-
 /* ==== Brief stories motion (Motion design thread, 28 Sep; the brief-as-stories plan Apoorv asked for at 23:47). Load after
    brief.js. Missions' brOpen already runs the agreed numbers (open 420 clip-grow, card 280, chapter 360 with a wash, close 360);
    this adds what the viewer needs to feel held rather than switched:
@@ -16174,30 +16045,30 @@ const _talkSendMsg = sendMsg; sendMsg = function(cid, k){
 };
 
 /* ==== MOTION (26 Sep, "Motion design" thread, second pass). Owns: the sign-in story in place of the marketing placeholder,
-   the Kai call globe (Apoorv's pick, 22 Sep; the member's voice is gold) and the transcript spoken word by word.
-   Rendering: three.js r128 (WebGL points with soft sprites, depth and additive light) and GSAP 3.12.5 for choreography, both from
-   cdnjs and loaded only when motion is on. Motion is off under navigator.webdriver (tests, captures) unless the URL has ?motion,
+   the Kai call's speech clock (the gold glow in kai-call.js reads it) and the transcript spoken word by word.
+   Rendering: canvas 2D glows and GSAP 3.12.5 for choreography, from cdnjs and loaded only when motion is on. No point clouds, star fields or
+   dot bursts anywhere (trypophobia rule; the globe and the member cloud went on 29 Sep).
+   Motion is off under navigator.webdriver (tests, captures) unless the URL has ?motion,
    and under prefers-reduced-motion: then nothing loads, the story shows one composed still and the call behaves as before.
    Load before data.js. ==== */
 const MO_ON = (()=>{ try { const q=new URLSearchParams(location.search); if (q.has("motion")) return true; return !navigator.webdriver && !matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e) { return false; } })();
-const MO_LIBS = ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"];
+const MO_LIBS = ["https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"];
 let moLibs = null;
 function moLoad() {
   if (!MO_ON) return Promise.reject(new Error("motion off"));
   if (!moLibs) moLibs = Promise.all(MO_LIBS.map(src => new Promise((ok, no) => {
-    if ((/three/.test(src) && window.THREE) || (/gsap/.test(src) && window.gsap)) return ok();
+    if (window.gsap) return ok();
     const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); setTimeout(()=>no(new Error("slow")), 8000); // a phone on a bad connection gets the still frame
   }))).then(() => document.fonts ? Promise.race([document.fonts.load("700 80px Manrope"), new Promise(r=>setTimeout(r,1200))]) : 0);
   return moLibs;
 }
 (()=>{ if (!MO_ON || document.querySelector("link[data-mo-font]")) return; const l=document.createElement("link"); l.rel="stylesheet"; l.dataset.moFont="1"; l.href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"; document.head.appendChild(l); moLoad().catch(()=>{}); })();
 const MO_SPARK = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c.5 4.6 2.4 7 7 7.6-4.6.6-6.5 3-7 7.6-.5-4.6-2.4-7-7-7.6 4.6-.6 6.5-3 7-7.6z"/><path d="M19 15.5c.2 1.8 1 2.7 2.6 3-1.6.2-2.4 1.1-2.6 3-.2-1.9-1-2.8-2.6-3 1.6-.3 2.4-1.2 2.6-3z"/></svg>`;
-const MO_GLSL_SOFT = `varying vec3 vCol; varying float vA; void main(){ float r = length(gl_PointCoord - .5); float a = 1. - smoothstep(0., .5, r); gl_FragColor = vec4(vCol, a*a*vA); }`;
 
 /* ---- Sign-in reel, script A (Apoorv's pick, 26 Sep 02:16; round 2 02:44): two weeks on Key told on the same screens, then Key itself.
    Each story: 1 the ask (Kai call) · 2 the path (mission, vouched pick) · 3 the yes · 4 the reply · 5 the room (themed event) · 6 it went well,
-   and the intro folds into a point of light. Story one's point grows into story two's globe; story two's becomes the glow behind the Key
-   wordmark, which holds with the family's numbers, then gathers back into the globe. ---- */
+   and the intro folds into a point of light. Story one's point grows into story two's voice glow; story two's becomes the glow behind the Key
+   wordmark, which holds with the family's numbers, then gathers back to the point. ---- */
 const MO_STORIES = [
   { ask:["What are you looking for right now?", "A technical cofounder for an agents idea."], mission:"Find a cofounder",
     p:{ ini:"MC", first:"Maya", name:"Maya Chen", role:"Head of Engineering, seed-stage" }, v:{ ini:"DR", first:"Daniel" }, why:"Daniel recommended her in #cofounders",
@@ -16219,7 +16090,6 @@ let moT0 = null; // one clock for the reel, so a re-render or a remount continue
 const moCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
 
 function moStoryHTML(S, n) {
-  const dots = k => Array.from({length:k},()=>`<i></i>`).join("");
   return `<div class="mo-story mo-s${n}" data-st="${MO_ON?'new':'well'}">
     <div class="mo-theme"><i></i><i></i></div>
     <div class="mo-cap">${MO_CAPS.map(c=>`<span>${c}</span>`).join("")}</div>
@@ -16231,20 +16101,19 @@ function moStoryHTML(S, n) {
     <div class="mo-card">
       <div class="mo-crow"><div class="mo-state"><span class="s-new">New pick</span><span class="s-waiting">Waiting</span><span class="s-talking">In conversation</span><span class="s-well">Went well</span></div>
         <div class="mo-route"><i class="y">You</i><b></b><i class="g">${S.v.ini}</i><b></b><i>${S.p.ini}</i></div></div>
-      <div class="mo-who"><div class="mo-av"><div class="fc">${S.p.ini}</div><div class="mo-burst">${dots(12)}</div></div><div><div class="mo-nm">${S.p.name}</div><div class="mo-ro">${S.p.role}</div></div></div>
+      <div class="mo-who"><div class="mo-av"><div class="fc">${S.p.ini}</div></div><div><div class="mo-nm">${S.p.name}</div><div class="mo-ro">${S.p.role}</div></div></div>
       <div class="mo-why"><span class="tg">Vouched</span><span>${S.why}</span></div>
       <div class="mo-act"><div class="mo-btn"><span class="b1">Ask ${S.v.first}</span><span class="b2">${moCheck}Asked ${S.v.first}</span></div><span class="mo-skip">Skip</span><div class="mo-tap"></div></div>
       <div class="mo-prog">${'<i><b></b></i>'.repeat(5)}</div>
     </div>
     <div class="mo-ev"><div class="mo-evk">${S.ev.k}</div><div class="mo-evt">${S.ev.t}</div><div class="mo-evm">${S.ev.m}</div>
-      <div class="mo-evr"><div class="mo-faces">${S.ev.faces.map(f=>`<i>${f}</i>`).join("")}<i class="g">${S.p.ini}</i><i class="n">${S.ev.more}</i></div><div class="mo-going">${moCheck}Going<div class="mo-conf">${dots(16)}</div></div></div></div>
+      <div class="mo-evr"><div class="mo-faces">${S.ev.faces.map(f=>`<i>${f}</i>`).join("")}<i class="g">${S.p.ini}</i><i class="n">${S.ev.more}</i></div><div class="mo-going">${moCheck}Going</div></div></div>
     <div class="mo-chip mo-c2"><span class="ks">${MO_SPARK}</span><span><b>${S.p.first} is going too</b></span></div>
     <div class="mo-dot"></div>
   </div>`;
 }
 function moPromoHTML() {
   return `<div class="mo-promo${MO_ON?'':' still'}" data-promo role="img" aria-label="Two weeks on Key. Priya tells Kai she needs a technical cofounder; Kai finds Maya through Daniel, who vouches for her; Priya taps Ask Daniel, Maya replies, they meet at a founders dinner, and it went well. Then a PM role, through Rahul to Sana. Key: over 11,000 members and 3,300 event check-ins.">
-    <div class="mo-gl"></div>
     <div class="mo-top"><div class="mo-bars">${MO_BEATS.map(()=>`<i><b></b></i>`).join("")}</div></div>
     ${MO_STORIES.map((S,i)=>moStoryHTML(S, i+1)).join("")}
     <div class="mo-fin"><div class="mo-glow"></div><div class="mo-logo" aria-hidden="true"></div><div class="mo-tag">People who vouch for each other</div>
@@ -16252,41 +16121,25 @@ function moPromoHTML() {
   </div>`;
 }
 
-// The community behind everything: 1,800 members as points of light in a slow, breathing cloud; a few are gold (people who vouch).
-let MO_FIELD = null;
-function moFieldBuild() {
-  const T = THREE, renderer = new T.WebGLRenderer({ antialias:true, alpha:true, powerPreference:"high-performance" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2)); renderer.setClearColor(0x000000, 0);
-  const scene = new T.Scene(), camera = new T.PerspectiveCamera(38, 1, 0.1, 60), group = new T.Group(); scene.add(group);
-  const u = { uTime:{value:0}, uPx:{value:renderer.getPixelRatio()}, uDim:{value:1}, uField:{value:0} };
-  const N = 1800, pos = new Float32Array(N*3), col = new Float32Array(N*3), size = new Float32Array(N), seed = new Float32Array(N);
-  let s = 7; const rnd = () => (s = (s*16807) % 2147483647) / 2147483647;
-  for (let i=0;i<N;i++) {
-    const a = rnd()*Math.PI*2, v = Math.acos(2*rnd()-1), r = Math.pow(rnd(), 0.55)*5.2;
-    pos[i*3] = Math.sin(v)*Math.cos(a)*r*1.15; pos[i*3+1] = Math.cos(v)*r*0.62; pos[i*3+2] = Math.sin(v)*Math.sin(a)*r - 1.2;
-    const gold = rnd() < 0.045, k = 0.55 + rnd()*0.45;
-    if (gold) { col[i*3]=0.86; col[i*3+1]=0.72; col[i*3+2]=0.33; } else { col[i*3]=0.66*k+0.3; col[i*3+1]=0.70*k+0.3; col[i*3+2]=0.76*k+0.3; }
-    size[i] = (gold ? 2.6 : 1.2) + rnd()*rnd()*3.2; seed[i] = rnd();
-  }
-  const g = new T.BufferGeometry();
-  g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aCol", new T.BufferAttribute(col,3)); g.setAttribute("aSize", new T.BufferAttribute(size,1)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
-  group.add(new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
-    vertexShader:`uniform float uTime,uPx,uDim,uField; attribute vec3 aCol; attribute float aSize,aSeed; varying vec3 vCol; varying float vA;
-      void main(){ vec3 p = position + .16*vec3(sin(uTime*.31+aSeed*6.28), cos(uTime*.23+aSeed*4.1), sin(uTime*.19+aSeed*5.3));
-        p *= mix(1.35, 1., uField);
-        vec4 mv = modelViewMatrix*vec4(p,1.); gl_PointSize = aSize*uPx*(8.5/-mv.z); gl_Position = projectionMatrix*mv;
-        float d = clamp((-mv.z-5.)/10., 0., 1.);
-        vA = (1.-d*.85) * uDim * uField * (.6 + .4*sin(uTime*1.1 + aSeed*40.)); vCol = aCol; }`,
-    fragmentShader: MO_GLSL_SOFT })));
-  MO_FIELD = { renderer, scene, camera, group, u, w:0, h:0 };
-  return MO_FIELD;
-}
 
 // The two lines of the ask, timed like speech (moSchedule) and fitted to their window in the beat (story time).
 function moLine(text, at, len) { const sc = moSchedule(text, 1), k = len/(sc.dur/1000); return sc.words.map(w=>({ s:at + w.s/1000*k, e:at + w.e/1000*k, syl:w.syl })); }
 function moLineAmp(words, t) {
   const w = words.find(x=>t>=x.s && t<x.e); if (!w) return 0;
   const ph = ((t-w.s)/(w.e-w.s)*w.syl) % 1; return 0.22 + 0.78*Math.pow(Math.sin(Math.PI*ph), 1.6);
+}
+
+// The reel's voice: the call's gold glow in miniature, soft falloffs only. A tall beam over a wide base, rising with the level,
+// white while Kai asks and gold with the member's voice; everything fades out inside the canvas, so it has no edge.
+function moVoiceGlow(g, S, lvl, gold, t) {
+  const c = MO_COL.kai.map((k,i)=>Math.round(k + (MO_COL.you[i]-k)*gold)).join(","), sw = S*.012*Math.sin(t*.8);
+  const blob = (x, y, rx, ry, stops) => { g.save(); g.translate(x, y); g.scale(rx, ry); const gr = g.createRadialGradient(0,0,0,0,0,1);
+    stops.forEach(([o,a]) => gr.addColorStop(o, `rgba(${c},${a})`)); g.fillStyle = gr; g.beginPath(); g.arc(0,0,1,0,Math.PI*2); g.fill(); g.restore(); };
+  g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,S,S); g.globalCompositeOperation = "lighter";
+  blob(S/2 + sw, S*.6, S*(.3+.06*lvl), S*(.26+.08*lvl), [[0,.22],[.5,.09],[1,0]]);
+  blob(S/2 - sw, S*.56, S*(.19+.05*lvl), S*(.3+.1*lvl), [[0,.26],[.5,.1],[1,0]]);
+  blob(S/2, S*.54, S*(.1+.03*lvl), S*(.18+.1*lvl), [[0,.3+.2*lvl],[1,0]]);
+  g.globalCompositeOperation = "source-over";
 }
 
 // One story, authored in story time (0 to MO_SN); the caller slows it and places it on the reel.
@@ -16298,13 +16151,13 @@ function moStoryTL(g, V, SV, W, k) {
     tl.fromTo(cap[i], { y:16, opacity:0, filter:"blur(6px)" }, { y:0, opacity:1, filter:"blur(0px)", duration:.8 }, at + .15);
     tl.to(cap[i], { y:-12, opacity:0, filter:"blur(6px)", duration:.3, ease:"power2.in" }, Math.min(cuts[i], MO_SN - .1) - .32); });
   const bars = q(".mo-prog b"), bar = (i, at) => tl.fromTo(bars[i], { scaleX:0 }, { scaleX:1, duration:.55, ease:"power2.inOut" }, at);
-  // 1. the ask: the globe grows out of a point of light, breathes white while Kai asks, turns gold with the member's voice
+  // 1. the ask: the voice glow grows out of a point of light, white while Kai asks, gold with the member's voice
   const orb = one(".mo-orbw"), ask = q(".mo-ask p");
   tl.fromTo(orb, { scale:.06, opacity:0, x:0, y:0 }, { keyframes:[{ opacity:1, duration:.15, ease:"none" }, { scale:1, duration:1.1, ease:"expo.out" }] }, 0);
   tl.fromTo(SV, { orb:0 }, { orb:1, duration:.2, ease:"none" }, 0);
   tl.fromTo(ask, { y:10, opacity:0 }, { y:0, opacity:1, duration:.5, stagger:1.6 }, .25);
   tl.fromTo(SV, { gold:0 }, { gold:1, duration:.35, ease:"power2.out" }, 1.85);
-  // 2. the path: the globe folds into the Kai chip; the mission's first pick rises with its reason
+  // 2. the path: the glow folds into the Kai chip; the mission's first pick rises with its reason
   tl.to(ask, { y:-8, opacity:0, duration:.3, ease:"power2.in", stagger:.05 }, 3.3);
   tl.to(orb, { x:32 - W/2, y:-36, scale:.12, duration:.7, ease:"expo.inOut" }, 3.4);
   tl.to(orb, { opacity:0, duration:.2, ease:"none" }, 3.95);
@@ -16318,7 +16171,6 @@ function moStoryTL(g, V, SV, W, k) {
   tl.fromTo(card.querySelectorAll(".mo-route b"), { scaleX:0 }, { scaleX:1, duration:.3, ease:"power2.inOut", stagger:.32 }, 4.93);
   tl.fromTo(card.querySelector(".mo-why .tg"), { backgroundPosition:"120% 0" }, { backgroundPosition:"-60% 0", duration:1.1, ease:"power2.inOut" }, 5.6);
   bar(0, 5.3);
-  tl.fromTo(V, { field:.55, dim:.35, camZ:10.5 }, { field:1, dim:.22, camZ:9, duration:3, ease:"power2.inOut", immediateRender:!k }, 3.4);
   // 3. the yes: the thumb taps Ask; the card settles from lifted to flat; the forward arrives
   tl.to(c1, { y:-10, opacity:0, duration:.3, ease:"power2.in" }, 7.0);
   const tap = one(".mo-tap"), btn = one(".mo-btn");
@@ -16341,30 +16193,24 @@ function moStoryTL(g, V, SV, W, k) {
   tl.fromTo(bub[0], { y:18, scale:.86, opacity:0 }, { y:0, scale:1, opacity:1, duration:.7, ease:"back.out(1.8)" }, 10.95);
   tl.fromTo(bub[1], { y:18, scale:.86, opacity:0 }, { y:0, scale:1, opacity:1, duration:.7, ease:"back.out(1.8)" }, 12.0);
   bar(3, 12.2);
-  // 5. the room: the event's theme repaints the frame, faces stack in, Going lands with confetti
+  // 5. the room: the event's theme repaints the frame, faces stack in, Going lands
   tl.to(bub, { y:-10, opacity:0, duration:.3, ease:"power2.in", stagger:.05 }, 13.35);
   tl.to(card, { y:60, opacity:0, duration:.4, ease:"power2.in" }, 13.35);
   const th = one(".mo-theme");
   tl.fromTo(th, { clipPath:"circle(0% at 50% 64%)" }, { clipPath:"circle(120% at 50% 64%)", duration:.9, ease:"power3.inOut" }, 13.45);
-  tl.to(V, { field:0, duration:.5, ease:"power2.in" }, 13.45);
   const ev = one(".mo-ev");
   tl.fromTo(ev, { y:70, rotationX:38, opacity:0, transformPerspective:700 }, { y:0, rotationX:0, opacity:1, duration:1.0 }, 13.85);
   tl.fromTo(q(".mo-faces i"), { scale:0 }, { scale:1, duration:.45, ease:"back.out(2.6)", stagger:.09 }, 14.45);
   tl.fromTo(one(".mo-going"), { scale:.5, opacity:0 }, { scale:1, opacity:1, duration:.55, ease:"back.out(2.2)" }, 15.0);
-  q(".mo-conf i").forEach((el,i)=>{ const a = -Math.PI/2 + (i/15 - .5)*2.6, r = 40 + (i*13)%34;
-    tl.fromTo(el, { x:0, y:0, rotation:0, opacity:0 }, { keyframes:[{ opacity:1, duration:.03 }, { x:Math.cos(a)*r, y:Math.sin(a)*r, rotation:(i%2?1:-1)*220, duration:.7, ease:"expo.out" }, { y:"+=26", opacity:0, duration:.5, ease:"power1.in" }] }, 15.05 + (i%4)*.02); });
   const c2 = one(".mo-c2");
   tl.fromTo(c2, { scale:.4, opacity:0, y:8 }, { scale:1, opacity:1, y:0, duration:.7, ease:"back.out(1.8)" }, 15.45);
-  // 6. it went well; the intro folds into a point of light where the next globe, or the Key wordmark, begins
+  // 6. it went well; the intro folds into a point of light where the next glow, or the Key wordmark, begins
   tl.to(th, { clipPath:"circle(0% at 50% 64%)", duration:.6, ease:"power3.inOut" }, 16.35);
-  tl.to(V, { field:1, dim:.5, duration:.8, ease:"power2.out" }, 16.5);
   tl.to([ev, c2], { y:-16, opacity:0, duration:.35, ease:"power2.in" }, 16.3);
   tl.fromTo(card, { y:60, opacity:0, scale:1 }, { y:0, opacity:1, duration:.6, ...again }, 16.65);
   const av = one(".mo-av");
   tl.fromTo(av, { "--sweep":"0deg" }, { "--sweep":"360deg", duration:.9, ease:"power2.inOut" }, 17.0);
   tl.fromTo(av, { scale:1 }, { scale:1.1, duration:.18, ease:"power2.out" }, 17.7).to(av, { scale:1, duration:.7, ease:"elastic.out(1,.4)" }, 17.88);
-  q(".mo-burst i").forEach((el,i)=>{ const a = i/12*Math.PI*2 + (i%2)*.2, r = 34 + (i*7)%18;
-    tl.fromTo(el, { x:0, y:0, scale:1.2, opacity:0 }, { keyframes:[{ opacity:1, duration:.04 }, { x:Math.cos(a)*r, y:Math.sin(a)*r + 8, scale:.2, opacity:0, duration:1.1, ease:"expo.out" }] }, 17.75 + (i%3)*.03); });
   bar(4, 17.6);
   tl.to(card, { scale:.04, y:-160, opacity:0, duration:.55, ease:"power3.in" }, 18.3);
   tl.fromTo(one(".mo-dot"), { scale:0, opacity:0 }, { keyframes:[{ scale:1.6, opacity:1, duration:.25, ease:"power2.out" }, { scale:1, duration:.3, ease:"power2.inOut" }, { opacity:0, duration:.1, ease:"none" }] }, 18.75);
@@ -16374,12 +16220,11 @@ function moStoryTL(g, V, SV, W, k) {
 // The finale, after each story: the point of light blooms into an oval glow centred on the Key logo, the logo resolves inside it, the numbers
 // count up; it holds while the glow breathes and the foil crosses, then everything contracts back to the point. Every tween is a fromTo, so
 // the second finale replays the first exactly.
-function moFinaleTL(tl, root, V, F, k) {
+function moFinaleTL(tl, root, V, F) {
   const one = sel => root.querySelector(sel), glow = one(".mo-glow"), logo = one(".mo-logo"), tag = one(".mo-tag"), st = root.querySelectorAll(".mo-stats > div"), bars = one(".mo-bars");
   const ft = (el, from, to, at) => tl.fromTo(el, from, { ...to, immediateRender:false }, F + at); // the CSS holds the resting state until each tween starts
   ft(glow, { scaleX:.04, scaleY:.067, opacity:0 }, { keyframes:[{ opacity:1, duration:.05, ease:"none" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.4, ease:"expo.out" }] }, -.05);
   ft(bars, { opacity:1 }, { opacity:0, duration:.5, ease:"power2.out" }, .1);
-  ft(V, { field:1, dim:.5, camZ:9 }, { field:1, dim:1, camZ:14, duration:1.8, ease:"power2.inOut" }, 0);
   ft(logo, { opacity:0, scale:1.12, filter:"blur(14px)" }, { opacity:1, scale:1, filter:"blur(0px)", duration:1.5, ease:"expo.out" }, .5);
   ft(tag, { y:10, opacity:0 }, { y:0, opacity:1, duration:.8, ease:"expo.out" }, 1.3);
   ft(st, { y:14, opacity:0 }, { y:0, opacity:1, duration:.7, stagger:.14, ease:"expo.out" }, 1.7);
@@ -16388,20 +16233,18 @@ function moFinaleTL(tl, root, V, F, k) {
   ft(glow, { scaleX:1, scaleY:1, opacity:.5 }, { keyframes:[{ scaleX:1.06, scaleY:1.08, opacity:.62, duration:1.1, ease:"sine.inOut" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.1, ease:"sine.inOut" },
     { scaleX:1.1, scaleY:1.12, opacity:.72, duration:.9, ease:"sine.inOut" }, { scaleX:1, scaleY:1, opacity:.5, duration:1.3, ease:"sine.inOut" }, { opacity:.5, duration:1.5, ease:"none" }] }, 1.8);
   ft(logo, { backgroundPosition:"130% 0, 0% 0%" }, { backgroundPosition:"-30% 0, 0% 0%", duration:1.6, ease:"power2.inOut" }, 3.8);
-  ft(V, { camZ:14 }, { camZ:15.5, duration:6.1, ease:"sine.inOut" }, 1.8);
-  // exit: numbers settle away, the logo draws in, the glow contracts to the point, the camera flies back into the cloud
+  // exit: numbers settle away, the logo draws in, the glow contracts to the point
   ft(st, { y:0, opacity:1 }, { y:10, opacity:0, duration:.45, ease:"power2.in", stagger:.06 }, 7.8);
   ft(tag, { y:0, opacity:1 }, { y:6, opacity:0, duration:.4, ease:"power2.in" }, 7.95);
   ft(logo, { scale:1, opacity:1, filter:"blur(0px)" }, { scale:.6, opacity:0, filter:"blur(8px)", duration:.6, ease:"power3.in" }, 8.1);
   ft(glow, { scaleX:1, scaleY:1, opacity:.5 }, { keyframes:[{ scaleX:.04, scaleY:.067, opacity:1, duration:.6, ease:"power3.in" }, { scaleX:.02, scaleY:.034, opacity:0, duration:.35, ease:"power1.in" }] }, 8.3);
-  ft(V, { field:1, dim:1, camZ:15.5 }, { field:.55, dim:.35, camZ:10.5, duration:1.1, ease:"power2.inOut" }, 8.1);
   ft(bars, { opacity:0 }, { opacity:1, duration:.4, ease:"power2.out" }, 9.0);
 }
 
 function moTimeline(root) {
-  const W = root.clientWidth || 390, V = { field:.55, dim:.35, camZ:10.5, count:0 }, SV = MO_STORIES.map(()=>({ orb:0, gold:0 }));
+  const W = root.clientWidth || 390, V = { count:0 }, SV = MO_STORIES.map(()=>({ orb:0, gold:0 }));
   const tl = gsap.timeline({ paused:true });
-  root.querySelectorAll(".mo-story").forEach((g,k)=>{ tl.add(moStoryTL(g, V, SV[k], W, k).timeScale(1/MO_SLOW), k*MO_SEG); moFinaleTL(tl, root, V, k*MO_SEG + MO_SL, k); });
+  root.querySelectorAll(".mo-story").forEach((g,k)=>{ tl.add(moStoryTL(g, V, SV[k], W, k).timeScale(1/MO_SLOW), k*MO_SEG); moFinaleTL(tl, root, V, k*MO_SEG + MO_SL); });
   tl.set({}, {}, MO_LOOP);
   return { tl, V, SV };
 }
@@ -16420,8 +16263,8 @@ function moPromoMount(root) {
   moPromoFit(root); const refit = () => root.isConnected ? moPromoFit(root) : removeEventListener("resize", refit); addEventListener("resize", refit); if (document.fonts) document.fonts.ready.then(refit); // Manrope sets the copy taller than the fallback, so fit again once it lands
   if (!MO_ON) return moPromoStill(root);
   moLoad().then(() => { if (!root.isConnected) return;
-    const F = MO_FIELD || moFieldBuild(), gl = root.querySelector(".mo-gl"), { tl, V, SV } = moTimeline(root);
-    gl.appendChild(F.renderer.domElement); root.classList.add("ready");
+    const { tl, V, SV } = moTimeline(root);
+    root.classList.add("ready");
     if (moT0===null) moT0 = performance.now();
     root.onclick = () => { const t = ((performance.now()-moT0)/1000) % MO_LOOP; const c = MO_CUTS.find(x=>x>t+.05); moT0 -= (c - t)*1000; }; // tap skips to the next beat
     const dpr = Math.min(window.devicePixelRatio||1, 2), OS = Math.round(200*dpr);
@@ -16432,27 +16275,16 @@ function moPromoMount(root) {
       return { g, orb, og:orb.getContext("2d"), words:[moLine(S.ask[0], .35, 1.4), moLine(S.ask[1], 1.95, 1.15)], ws:lines.map(el=>Array.from(el.querySelectorAll(".w"))), shown:[-2,-2] };
     });
     const bars = root.querySelectorAll(".mo-bars b"), nums = root.querySelectorAll(".mo-stats b"), cuts = MO_BEATS.map((b,i)=>MO_BEATS.slice(0,i).reduce((a,x)=>a+x,0));
-    let lvl = 0, last = 0, rot = 0;
+    let lvl = 0, last = 0;
     const loop = now => {
       if (!root.isConnected) return;
       const clock = (now - moT0)/1000, t = ((clock % MO_LOOP) + MO_LOOP) % MO_LOOP, dt = Math.min(.05, last ? (now-last)/1000 : .016); last = now;
       tl.time(t, false);
-      const w = gl.clientWidth, h = gl.clientHeight;
-      if (w !== F.w || h !== F.h) { F.w = w; F.h = h; F.renderer.setSize(w, h, false); F.camera.aspect = w/h; F.camera.updateProjectionMatrix(); }
-      F.u.uTime.value = clock; F.u.uField.value = V.field; F.u.uDim.value = V.dim;
-      F.camera.position.set(Math.sin(clock*.11)*.35, Math.sin(clock*.17)*.12, V.camZ); F.camera.lookAt(0, 0, 0);
-      F.group.rotation.y = .2*Math.sin(clock*.16) + clock*.02;
-      if (V.field > .005) F.renderer.render(F.scene, F.camera); else F.renderer.clear();
       const si = Math.max(0, Math.min(MO_STORIES.length-1, Math.floor(t/MO_SEG))), s = stories[si], u = t - si*MO_SEG, inStory = u < MO_SL, lt = inStory ? u/MO_SLOW : MO_SN + 1; // story time
-      // the globe: the call's own renderer, driven by the two lines of the ask
+      // the voice glow, driven by the two lines of the ask
       const target = Math.max(moLineAmp(s.words[0], lt), moLineAmp(s.words[1], lt)) || (lt < 3.4 ? .05 : 0);
       lvl += (target - lvl) * (target > lvl ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7));
-      rot += dt*.3;
-      const sv = SV[si], G = sv.orb > .01 && moGlobeGL();
-      if (G) { G.u.uTime.value = clock; G.u.uAmp.value = lvl; G.u.uThink.value = 0; G.pts.rotation.y = rot;
-        const c = MO_COL.kai.map((k,i)=>(k + (MO_COL.you[i]-k)*sv.gold)/255); G.u.uColor.value.setRGB(c[0], c[1], c[2]);
-        G.renderer.render(G.scene, G.camera); s.og.clearRect(0,0,OS,OS); s.og.globalCompositeOperation = "lighter"; s.og.drawImage(G.renderer.domElement, 0, 0, OS, OS); }
-      s.orb.parentNode.style.setProperty("--gold", sv.gold.toFixed(3));
+      const sv = SV[si]; if (sv.orb > .01) moVoiceGlow(s.og, OS, lvl, sv.gold, clock); else s.og.clearRect(0,0,OS,OS);
       s.words.forEach((line,j)=>{ let k = -1; line.forEach((x,i)=>{ if (lt>=x.s) k=i; }); if (lt >= 3.3) k = line.length-1;
         if (k !== s.shown[j]) { s.shown[j] = k; s.ws[j].forEach((el,i)=>el.classList.toggle("off", i>k)); } });
       nums.forEach((el,i)=>{ const [v,,p] = MO_STATS[i], n = Math.round(v*V.count).toLocaleString("en-US") + p; if (el.textContent !== n) el.textContent = n; });
@@ -16464,14 +16296,14 @@ function moPromoMount(root) {
     requestAnimationFrame(loop);
   }).catch(() => moPromoStill(root));
 }
-// The reel waits for Apoorv's yes on the preview (script A, round 2); until then sign-in keeps its placeholder and only the globe ships.
+// The reel waits for Apoorv's yes on the preview (script A, round 2); until then sign-in keeps its placeholder.
 const MO_REEL = true;
 const _moSignin = sSignin;
 if (MO_REEL) sSignin = function() { return _moSignin.apply(this, arguments).replace(/<div class="mvis full">[\s\S]*?<\/div><\/div>/, moPromoHTML()); };
 
-/* ---- Kai call: the globe, driven by what is being said ---- */
+/* ---- Kai call: the speech clock, driven by what is being said ---- */
 // Speech is scheduled from the words themselves: each syllable a pulse, a comma a short breath, a full stop a longer one.
-const MO_SIG = { level:0, bands:new Float32Array(24), who:"idle", words:[], start:0, end:0, onEnd:null, els:[], shown:-1, rot:0, rad:1, col:[166,175,187] };
+const MO_SIG = { level:0, bands:new Float32Array(24), who:"idle", words:[], start:0, end:0, onEnd:null, els:[], shown:-1, col:[166,175,187] };
 const MO_COL = { idle:[166,175,187], kai:[249,250,252], you:[220,184,84], think:[200,206,214] };
 function moSchedule(text, pace) {
   let t = 0; const out = [];
@@ -16515,90 +16347,26 @@ function moTick(now, dt) {
   const target = STATE.callMuted ? 0.03 : moAmp(now);
   MO_SIG.level += (target - MO_SIG.level) * (target > MO_SIG.level ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7)); // fast attack, slow release
   for (let b=0; b<24; b++) { const want = MO_SIG.level*(0.35+0.65*(Math.sin(b*3.1*12.9898 + now/1000*(1.15+b*0.4))*0.5+0.5))*(1-b/62); MO_SIG.bands[b] += (want-MO_SIG.bands[b])*(1-Math.exp(-dt*14)); }
-  const think = MO_SIG.who==="think";
-  MO_SIG.rot += dt * (think ? 1.4 : 0.30);
-  MO_SIG.rad += ((think ? 0.86 : 1) - MO_SIG.rad) * (1-Math.exp(-dt*6));
   const tc = MO_COL[MO_SIG.who]; MO_SIG.col = MO_SIG.col.map((v,i)=>v+(tc[i]-v)*(1-Math.exp(-dt*8)));
 }
-function moBand(a) { const f = (((a % (Math.PI*2)) + Math.PI*2) % (Math.PI*2)) / (Math.PI*2) * 24; const i = Math.floor(f), m = f-i; const x = MO_SIG.bands[i%24], y = MO_SIG.bands[(i+1)%24]; return x + (y-x)*(m*m*(3-2*m)); }
-function moGlobe(c, t) {
-  const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return; // layout size, so the page stepping back under a sheet (scale .93) doesn't resize the buffer every frame
-  const W = Math.round(r.width), H = Math.round(r.height);
-  if (c.width !== W*dpr) { c.width = W*dpr; c.height = H*dpr; }
-  const g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
-  const cx = W/2, cy = H/2, R = Math.min(W,H)*0.30*MO_SIG.rad, amp = MO_SIG.level, tilt = -0.32, small = W < 60;
-  g.fillStyle = `rgb(${MO_SIG.col.map(Math.round).join(",")})`;
-  const RINGS = small ? 7 : 15;
-  for (let ri=0; ri<RINGS; ri++) {
-    const lat = (ri/(RINGS-1)-0.5)*Math.PI, cl = Math.cos(lat), sl = Math.sin(lat), count = Math.max(4, Math.round((small?12:30)*cl));
-    for (let j=0; j<count; j++) {
-      const lon = j/count*Math.PI*2 + MO_SIG.rot + ri*0.21, e = moBand(lon + lat*1.7);
-      const rr = R*(1 + amp*(0.10+0.34*e) + 0.03*Math.sin(t*1.1+ri));
-      const x3 = cl*Math.cos(lon), z3 = cl*Math.sin(lon), yt = sl*Math.cos(tilt) - z3*Math.sin(tilt), zt = sl*Math.sin(tilt) + z3*Math.cos(tilt), depth = (zt+1)/2;
-      g.globalAlpha = 0.10 + 0.90*depth*depth;
-      g.beginPath(); g.arc(cx + x3*rr, cy + yt*rr, (small?0.5:0.7) + (small?0.9:1.5)*depth*(0.5+e*amp), 0, Math.PI*2); g.fill();
-    }
-  }
-  g.globalAlpha = 1;
-}
-// The globe in WebGL: 4,200 points on a sphere, pushed along their normals by 3D simplex noise scaled by the voice level,
-// brighter at the rim (fresnel) and at the front; the glow behind it is CSS, keyed to who is speaking. One renderer, blitted into
-// whichever canvases are on screen (the call and the minimised bar), so re-renders never create a new GL context.
-const MO_SNOISE = `vec3 m289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 m289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 perm(vec4 x){return m289(((x*34.)+1.)*x);}
-vec4 tis(vec4 r){return 1.79284291400159-.85373472095314*r;}
-float snoise(vec3 v){ const vec2 C=vec2(1./6.,1./3.); const vec4 D=vec4(0.,.5,1.,2.); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
- vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
- i=m289(i); vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
- float n_=.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.*x_);
- vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
- vec4 s0=floor(b0)*2.+1.; vec4 s1=floor(b1)*2.+1.; vec4 sh=-step(h,vec4(0.)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
- vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
- vec4 nr=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=nr.x; p1*=nr.y; p2*=nr.z; p3*=nr.w;
- vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.); m=m*m;
- return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3))); }`;
-let MO_GLOBE = null;
-function moGlobeGL() {
-  if (MO_GLOBE) return MO_GLOBE;
-  if (!window.THREE) return null;
-  const T = THREE, S = 460, renderer = new T.WebGLRenderer({ antialias:true, alpha:true }); renderer.setPixelRatio(1); renderer.setSize(S, S, false); renderer.setClearColor(0,0);
-  const scene = new T.Scene(), camera = new T.PerspectiveCamera(32, 1, .1, 20); camera.position.z = 4.9;
-  const u = { uTime:{value:0}, uAmp:{value:0}, uThink:{value:0}, uColor:{value:new T.Color(1,1,1)}, uPx:{value:1} };
-  const N = 2600, pos = new Float32Array(N*3), seed = new Float32Array(N), ga = Math.PI*(3-Math.sqrt(5));
-  for (let i=0;i<N;i++) { const y = 1 - (i/(N-1))*2, r = Math.sqrt(1-y*y), th = ga*i; pos.set([Math.cos(th)*r, y, Math.sin(th)*r], i*3); seed[i] = (Math.sin(i*12.9898)*43758.5453) % 1; }
-  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
-  const pts = new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
-    vertexShader: MO_SNOISE + `uniform float uTime,uAmp,uThink,uPx; attribute float aSeed; varying float vA;
-      void main(){ vec3 n = normalize(position);
-        float n1 = snoise(n*1.5 + vec3(0., uTime*.32, uTime*.21)); float n2 = snoise(n*3.8 - vec3(uTime*.9));
-        float disp = uAmp*(.05 + .26*max(n1,0.) + .04*n2) + .018*sin(uTime*1.4 + aSeed*6.28) - uThink*(.10 + .04*sin(uTime*9. + n.y*8.));
-        vec3 p = n*(1. + disp);
-        vec4 mv = modelViewMatrix*vec4(p,1.); vec3 nv = normalize(normalMatrix*n);
-        float rim = pow(1. - abs(nv.z), 2.2); float front = smoothstep(-.35, 1., nv.z);
-        gl_PointSize = uPx*(2.2 + 3.4*front + 3.0*uAmp*max(n1,0.))*(4.3/-mv.z);
-        gl_Position = projectionMatrix*mv;
-        vA = (.06 + .62*front*front + .7*rim) * (.55 + .45*uAmp + .25*uThink); }`,
-    fragmentShader:`uniform vec3 uColor; varying float vA; void main(){ float r = length(gl_PointCoord-.5); float a = 1. - smoothstep(0.,.5,r); gl_FragColor = vec4(uColor, a*a*vA); }` }));
-  pts.rotation.x = -.32; scene.add(pts);
-  MO_GLOBE = { renderer, scene, camera, pts, u };
-  return MO_GLOBE;
-}
-function moGlobeBlit(G, cs) {
-  G.renderer.render(G.scene, G.camera);
-  cs.forEach(c => { const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return;
-    const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr); if (c.width !== W) { c.width = W; c.height = H; }
-    const g = c.getContext("2d"); g.clearRect(0,0,W,H); g.globalCompositeOperation = "lighter"; for (let k = W < 120 ? 3 : 1; k--;) g.drawImage(G.renderer.domElement, 0, 0, W, H); }); // the mini globe is drawn three times over so its points survive the downscale
-}
 let moLast = 0;
+// The call's voice visual is Kai call's gold glow (KeyVoiceGlow, kai-call.js), which reads MO_SIG; the dotted globe no longer draws in the
+// call (trypophobia rule, 29 Sep). The loop still runs the speech clock, and the minimised bar gets four solid bars instead of a mini globe.
+function moBars(c) {
+  const dpr = Math.min(window.devicePixelRatio||1, 2), W = c.clientWidth, H = c.clientHeight; if (!W) return;
+  if (c.width !== Math.round(W*dpr)) { c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); }
+  const g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+  g.fillStyle = `rgb(${MO_SIG.col.map(Math.round).join(",")})`;
+  const n = 4, bw = W*.1, gap = W*.1, x0 = (W - n*bw - (n-1)*gap)/2;
+  for (let b=0; b<n; b++) { const h = H*(.3 + .4*Math.min(1, 1.8*MO_SIG.bands[b*5])); g.beginPath(); g.roundRect(x0 + b*(bw+gap), (H-h)/2, bw, h, bw/2); g.fill(); }
+}
 vizLoop = function() {
-  const cs = phone.querySelectorAll("#vizc, canvas.mo-mini");
-  if (!cs.length) { vizRAF = null; return; }
+  const cs = phone.querySelectorAll("canvas.mo-mini");
+  if (!cs.length && !phone.querySelector("#vizc")) { vizRAF = null; return; }
   const now = performance.now(), dt = Math.min(0.05, moLast ? (now-moLast)/1000 : 0.016); moLast = now;
-  if (!MO_ON) { MO_SIG.level = MO_SIG.who==="idle" ? 0.08 : 0.55; for (let b=0;b<24;b++) MO_SIG.bands[b] = MO_SIG.level*(0.3+0.5*(Math.sin(b*3.1)*0.5+0.5)); MO_SIG.col = MO_COL[MO_SIG.who].slice(); cs.forEach(c=>moGlobe(c, 1.7)); vizRAF = null; return; }
+  if (!MO_ON) { MO_SIG.level = MO_SIG.who==="idle" ? 0.08 : 0.55; for (let b=0;b<24;b++) MO_SIG.bands[b] = MO_SIG.level*(0.3+0.5*(Math.sin(b*3.1)*0.5+0.5)); MO_SIG.col = MO_COL[MO_SIG.who].slice(); cs.forEach(moBars); vizRAF = null; return; }
   moTick(now, dt);
-  const G = moGlobeGL();
-  if (G) { G.u.uTime.value = now/1000; G.u.uAmp.value = MO_SIG.level; G.u.uThink.value += ((MO_SIG.who==="think"?1:0) - G.u.uThink.value)*(1-Math.exp(-dt*6));
-    G.u.uColor.value.setRGB(MO_SIG.col[0]/255, MO_SIG.col[1]/255, MO_SIG.col[2]/255); G.pts.rotation.y = MO_SIG.rot; moGlobeBlit(G, cs); }
-  else { moLoad().catch(()=>{}); cs.forEach(c=>moGlobe(c, now/1000)); }
+  cs.forEach(moBars);
   vizRAF = requestAnimationFrame(vizLoop);
 };
 vizKick = function(mode) { moWho(MO_ON && mode==="user" ? "you" : MO_ON && mode==="kai" ? "kai" : "idle"); if (!vizRAF) vizRAF = requestAnimationFrame(vizLoop); };
@@ -17545,6 +17313,10 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
+window.KEY_BUILD = "2.133";
+const _verYouSection = sYouSection;
+sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
+
 /* ---- Out of scope ---- */
 function sOOS(s) {
   const map = { events:["Events","Everything this week across your families, with who to meet on every event."], you:["You","What Kai knows, line by line. Rules. Your people. Connectors."], };
@@ -18345,160 +18117,6 @@ if (typeof ob3Welcome === "function" && typeof render === "function") {
     if (w) { obwPlay(w, !obwSeen); obwSeen = true; } else if (!STATE.ob3Wel) obwSeen = false;
     return r; };
 }
-
-</script>
-<style>
-/* ==== SIMPLER HOME (Home simplify thread, 29 Sep): four blocks, rows with hairlines, no cards as containers ==== */
-.hs-home .hs-sec { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:22px 0 4px; }
-.hs-home .hs-st { font-size:16px; line-height:1.25; font-weight:700; letter-spacing:-.01em; color:var(--text-primary,#0B0E11); }
-.hs-home .hs-sa { all:unset; cursor:pointer; min-height:44px; display:inline-flex; align-items:center; font-size:14px; font-weight:600; color:var(--text-secondary,#48515C); }
-.hs-home .hs-sa:focus-visible, .hs-home .hs-mrow:focus-visible, .hs-home .hs-kr:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; border-radius:8px; }
-
-/* KeyTopPick: one person, one reason, one action */
-.hs-home .hs-pick { padding:12px 0 16px; border-top:1px solid var(--border-subtle,#E6E9EE); border-bottom:1px solid var(--border-subtle,#E6E9EE); cursor:pointer; }
-.hs-home .hs-ph { display:flex; align-items:center; gap:14px; }
-.hs-home .hs-pt { position:relative; flex:0 0 auto; display:block; width:32px; height:32px; border-radius:50%; overflow:hidden; }
-.hs-home .hs-pt.hs-56, .hs-home .avatar.hs-56 { width:64px; height:64px; min-width:64px; font-size:20px; }
-.hs-home .avatar.sq { border-radius:var(--radius-absolute-12,12px); }
-.hs-home .hs-pt .bs-pt { position:absolute; inset:0; width:auto; height:auto; border-radius:0; }
-.hs-home .hs-pt .bs-pt em { font-size:11px; transform:none; color:rgba(255,255,255,.88); font-style:normal; font-weight:700; }
-.hs-home .hs-pt.hs-56 .bs-pt em { font-size:20px; }
-.hs-home .hs-pm { min-width:0; display:grid; gap:2px; }
-.hs-home .hs-pm b { font-size:18px; line-height:1.25; font-weight:700; letter-spacing:-.01em; color:var(--text-primary,#0B0E11); }
-.hs-home .hs-pm span { font-size:14px; line-height:1.35; color:var(--text-secondary,#48515C); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.hs-home .hs-why { display:flex; gap:8px; align-items:flex-start; margin-top:12px; font-size:14px; line-height:1.4; color:var(--text-primary,#0B0E11); }
-.hs-home .hs-why .kn { flex:0 0 auto; margin-top:2px; }
-.hs-home .hs-for { margin:6px 0 0 24px; font-size:12px; line-height:1.3; color:var(--text-tertiary,#6B7480); }
-.hs-home .hs-acts { display:flex; gap:8px; margin-top:14px; }
-.hs-home .hs-acts button { all:unset; box-sizing:border-box; cursor:pointer; height:44px; padding:0 18px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12,12px); font-size:15px; font-weight:700; }
-.hs-home .hs-acts .hs-p { flex:1 1 auto; background:var(--component-button-primary-bg-default,#0B0E11); color:var(--component-button-primary-ink,#FFFFFF); }
-.hs-home .hs-acts .hs-p.sec { background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); }
-.hs-home .hs-acts .hs-q { color:var(--text-secondary,#48515C); }
-.hs-home .hs-acts button:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:2px; }
-
-/* KeyMissionRow: tile, name, one outcome line, at most three faces */
-.hs-home .hs-ms { border-top:1px solid var(--border-subtle,#E6E9EE); }
-.hs-home .hs-mrow { display:flex; align-items:center; gap:12px; min-height:68px; padding:10px 0; border-bottom:1px solid var(--border-subtle,#E6E9EE); cursor:pointer; }
-.hs-home .hs-mrow > .mh-mark, .hs-home .hs-mrow > .cv-th, .hs-home .hs-mrow > .avatar { flex:0 0 auto; width:40px; height:40px; border-radius:var(--radius-absolute-12,12px); overflow:hidden; }
-.hs-home .hs-mm { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
-.hs-home .hs-mm b { font-size:15px; line-height:1.3; font-weight:700; color:var(--text-primary,#0B0E11); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.hs-home .hs-mm span { font-size:13px; line-height:1.35; color:var(--text-secondary,#48515C); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.hs-home .hs-faces { flex:0 0 auto; display:flex; }
-.hs-home .hs-faces > * { margin-left:-6px; box-shadow:0 0 0 2px var(--bg-page,#FFFFFF); }
-.hs-home .hs-faces > *:first-child { margin-left:0; }
-.hs-home .hs-faces .avatar { width:32px; height:32px; min-width:32px; font-size:11px; }
-.hs-home .hs-go { flex:0 0 auto; display:flex; color:var(--text-tertiary,#6B7480); }
-
-/* KeyKaiLine: what Kai does while you're away, the welcome week, the next setup step */
-.hs-home .hs-kai { margin:22px 0 8px; border-top:1px solid var(--border-subtle,#E6E9EE); }
-.hs-home .hs-kr { all:unset; box-sizing:border-box; width:100%; cursor:pointer; display:flex; align-items:center; gap:12px; min-height:60px; padding:8px 0; border-bottom:1px solid var(--border-subtle,#E6E9EE); color:var(--text-tertiary,#6B7480); }
-.hs-home .hs-kr > .kn { flex:0 0 auto; width:40px; height:40px; }
-.hs-home .hs-ki { flex:0 0 auto; width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-absolute-12,12px); background:var(--bg-fill-default,#F1F3F6); color:var(--text-primary,#0B0E11); }
-.hs-home .hs-kr > span:not(.hs-ki):not(.hs-pt) { flex:1 1 auto; min-width:0; display:grid; gap:2px; }
-.hs-home .hs-kr b { font-size:15px; line-height:1.3; font-weight:700; color:var(--text-primary,#0B0E11); }
-.hs-home .hs-kr em { font-style:normal; font-size:13px; line-height:1.35; color:var(--text-secondary,#48515C); }
-.hs-home > .hs-kai > .xrow.hs-walk { margin:0 !important; border:0 !important; border-bottom:1px solid var(--border-subtle,#E6E9EE) !important; border-radius:0 !important; padding:8px 0 !important; min-height:60px; }
-.hs-home .hs-pickrow { border-top:1px solid var(--border-subtle,#E6E9EE); }
-.hs-home .hs-pt.hs-40 { width:40px; height:40px; }
-.hs-home .hs-pt.hs-40 .bs-pt em { font-size:14px; }
-.hs-home .hs-kr em.hs-forf { font-size:12px; color:var(--text-tertiary,#6B7480); }
-
-</style>
-<script>
-/* ==== SIMPLER HOME (Home simplify thread, 29 Sep; Kush's DM 28 Sep 01:29 PDT "Homepage should be very simple and easy to read. Also
-   outcomes and not process", Granola 27 Sep "a lot of density of information"). Research: Airbnb Today, Slack Home, Linear Inbox put
-   what needs you first; Hinge shows one pick at a time (Most Compatible) and caps new picks while people wait (Your Turn Limits);
-   Uber, Things and Duolingo keep long-running progress on its own page with one marker on home; Pulse and Pro Inbox Zero end on a
-   finish line. So Home is four blocks, in this order:
-     1. the brief (Brief rethink's block, drawn by brBanner; this module never draws its own),
-     2. KeyTopPick: Kai's one pick for today across every mission, one action in place (folds into Kai's daily report when
-        that brief is on Home, since its Next up already carries the pick),
-     3. KeyMissionRow per mission: its tile, its name, the fixed state word and count then the outcome, at most three faces. The rails, counts and pause/end
-        tiles live on the mission page,
-     4. KeyKaiLine: one line saying what Kai is doing for you while you're away, plus the welcome week and the next setup step.
-   Same data and the same data-* hooks as before (data-mission, data-act, data-exit), so every tap still routes where it did. ==== */
-const hsOn = () => STATE.member && STATE.intakeDone && STATE.persona!=="maya";
-const HS_RANK = ["New pick","Next step","Waiting","In conversation","Went well"];
-const hsStage = o => { const k = scK(o); return k[2]==="Met" ? 3 : HS_RANK.indexOf(k[0]); };
-const hsPaths = m => DB.opps.filter(o => o.missionId===m.id && o.state!=="dropped" && o.state!=="candidate");
-const hsWho = o => o.roleTitle ? `${o.roleTitle}${o.roleCompany ? ", "+o.roleCompany : ""}` : f1(targetOf(o));
-const hsFace = (o, px) => o.roleTitle ? av(scIni(o), "sq") : typeof brPortrait==="function" ? `<span class="hs-pt">${brPortrait(scIni(o), o.personId, px)}</span>` : av(scIni(o));
-/* Apoorv's fixed state word and its count lead the row ("New pick 3"); the furthest person's outcome follows */
-function hsOutcome(m, ps){
-  const best = [...ps].sort((a,b) => hsStage(b)-hsStage(a))[0], st = best ? hsStage(best) : -1;
-  if (st >= 0) { const n = ps.filter(o => hsStage(o)===st).length, word = `${HS_RANK[st]} ${n}`;
-    const lead = st===4 ? `with ${hsWho(best)}` : st===3 ? `with ${hsWho(best)}` : st===2 ? `on ${hsWho(best)}` : st===1 ? `with ${hsWho(best)}` : "";
-    const fresh = st > 0 ? ps.filter(o => ownerOf(o)==="you" && isNewOf(o)).length : 0;
-    return [n===1 && lead ? `${HS_RANK[st]} ${lead}` : word, fresh ? `New pick ${fresh}` : ""].filter(Boolean).join(" · "); }
-  const k = scMissionStatus(m, ps);
-  return m.status==="paused" ? "Paused. Kai stops looking" : [k[0], k[2]].filter(Boolean).join(" · ");
-}
-function hsMissionRow(m, orig){
-  if (!orig.trim()) return "";
-  const ps = hsPaths(m), o0 = document.createElement("template"); o0.innerHTML = orig;
-  const ob = !o0.content.querySelector(".msec") && o0.content.querySelector(".row .b");
-  const line = ob ? [...ob.childNodes].map(n => n.textContent.trim()).filter(Boolean).join(" · ") : hsOutcome(m, ps);
-  const faces = [...ps].filter(o => !o.roleTitle && o.personId).sort((a,b) => hsStage(b)-hsStage(a)).slice(0,3);
-  const tile = typeof mhThumb==="function" ? mhThumb(m) : `<div class="avatar" style="border-radius:12px">${LI(m.type==="Cofounder"?"users":"briefcase",20)}</div>`;
-  return `<div class="hs-mrow" data-mission="${m.id}" role="button" tabindex="0" data-kc="KeyMissionRow">${tile}
-    <div class="hs-mm"><b>${m.name}</b><span>${line}</span></div>
-    ${faces.length ? `<span class="hs-faces" aria-hidden="true" data-kc="KeyFaceStack" data-kv="layout=row, size=32">${faces.map(o => hsFace(o, 120)).join("")}</span>` : ""}
-    <span class="hs-go" aria-hidden="true">${LI("chevron-right",20)}</span></div>`;
-}
-/* one pick, the first new one on the first mission that has any: people before roles */
-function hsPick(){
-  const act = DB.missions.filter(m => m.status==="active");
-  for (const m of act) { const fresh = hsPaths(m).filter(o => ownerOf(o)==="you" && isNewOf(o));
-    const o = fresh.find(x => !x.roleTitle) || fresh[0]; if (o) return { o, m, left: act.reduce((n,x) => n + hsPaths(x).filter(z => ownerOf(z)==="you" && isNewOf(z)).length, 0) - 1 }; }
-  return null;
-}
-function hsPickHTML(){
-  /* with Kai's daily report on Home, its Next up already carries the day's pick: the block folds into it */
-  if (typeof krNext==="function") return "";
-  const p = hsPick(); if (!p) return "";
-  const { o, m } = p, t = targetOf(o), v = scVerb(o), q = scQuiet(o), why = scWhy(o);
-  /* people first (Hinge's Your Turn Limits): while someone waits on you, the pick is one quiet row; it opens once they're answered */
-  const waiting = typeof brWaiting==="function" ? brWaiting().length : 0;
-  if (waiting && !STATE.hsPickOpen) return `<div class="hs-sec"><span class="hs-st">Kai's pick for today</span></div>
-  <button type="button" class="hs-kr hs-pickrow" onclick="STATE.hsPickOpen=true;render()" data-kc="KeyTopPick" data-kv="state=folded, kind=${o.roleTitle?"role":"person"}">${o.roleTitle ? av(scIni(o), "sq") : `<span class="hs-pt hs-40">${typeof brPortrait==="function" ? brPortrait(scIni(o), o.personId, 120) : av(scIni(o))}</span>`}<span><b>${scName(o)}</b><em>${why || (t ? t.title+", "+t.company : "")}</em><em class="hs-forf">For ${m.name}</em></span>${LI("chevron-right",20)}</button>`;
-  return `<div class="hs-sec"><span class="hs-st">Kai's pick for today</span>${p.left>0 ? `<button type="button" class="hs-sa" data-mission="${m.id}">${p.left} more</button>` : ""}</div>
-  <div class="hs-pick" data-opp="${o.id}" data-kc="KeyTopPick" data-kv="state=open, kind=${o.roleTitle?"role":"person"}">
-    <div class="hs-ph">${o.roleTitle ? av(scIni(o), "sq hs-56") : `<span class="hs-pt hs-56" ${o.personId?`data-profile="${o.personId}"`:""}>${typeof brPortrait==="function" ? brPortrait(scIni(o), o.personId, 240) : av(scIni(o))}</span>`}
-      <div class="hs-pm"><b>${scName(o)}</b><span>${o.roleTitle ? (typeof scRole==="function" ? scRole(o) : o.roleCompany) : `${t.title}, ${t.company}`}</span></div></div>
-    ${why ? `<div class="hs-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}<span>${why}</span></div>` : ""}
-    <div class="hs-for">For ${m.name}</div>
-    <div class="hs-acts">${v ? `<button type="button" class="hs-p ${v[2]||""}" ${v[1]}>${v[0]}</button>` : ""}${q ? `<button type="button" class="hs-q" ${q[1]}>${q[0]}</button>` : ""}</div>
-  </div>`;
-}
-/* what Kai is doing for you while you're away: the long-running work, in one line */
-function hsKai(){
-  const n = DB.missions.filter(m => m.status==="active" && !m.host && !m.evKind).length, fams = DB.families.map(f => f.name.split(" ")[0]);
-  const where = fams.length > 1 ? fams.slice(0,-1).join(", ") + " and " + fams[fams.length-1] : fams[0] || "your families";
-  const week = typeof KY!=="undefined" && KY.week && !(typeof kyPaid==="function" && kyPaid());
-  return `<div class="hs-kai" data-kc="KeyKaiLine">
-    <button type="button" class="hs-kr" onclick="openSheet('kai')">${typeof kaiMark==="function" ? kaiMark(24) : ""}<span><b>Kai is working on ${n} mission${n===1?"":"s"}</b><em>Reading ${where} for you. Next pass Friday</em></span>${LI("chevron-right",20)}</button>
-    ${week ? `<button type="button" class="hs-kr" onclick="openSheet('kygift')"><span class="hs-ki">${LI("phone",20)}</span><span><b>Your welcome week</b><em>Call Kai as much as you like · ${KY.week} days left</em></span>${LI("chevron-right",20)}</button>` : ""}
-  </div>`;
-}
-const _hsSection = missionSection; let HS_ROWS = false;
-missionSection = function(m){ const h = _hsSection.apply(this, arguments); return HS_ROWS ? hsMissionRow(m, h) : h; };
-const _hsHome = sHome; sHome = function(){
-  if (!hsOn()) return _hsHome.apply(this, arguments);
-  HS_ROWS = true; let h; try { h = _hsHome.apply(this, arguments); } finally { HS_ROWS = false; }
-  const t = document.createElement("template"); t.innerHTML = h; const body = t.content.querySelector(".body"); if (!body) return h;
-  body.classList.add("hs-home");
-  body.querySelectorAll(":scope > .ky-wk").forEach(e => e.remove());
-  const rows = [...body.querySelectorAll(":scope > .hs-mrow")];
-  if (rows.length) { const wrap = document.createElement("div"); wrap.className = "hs-ms"; rows[0].before(wrap);
-    wrap.insertAdjacentHTML("beforebegin", `<div class="hs-sec"><span class="hs-st">Your missions</span></div>`); rows.forEach(r => wrap.append(r));
-    wrap.insertAdjacentHTML("afterend", hsKai()); wrap.previousElementSibling.insertAdjacentHTML("beforebegin", hsPickHTML()); }
-  /* the next setup step rides under Kai's line; Completed shows only once something is completed */
-  const walk = [...body.querySelectorAll(":scope > .xrow, :scope > .walk")].find(e => /Connect your accounts|Add your|Turn on/.test(e.textContent)); const kai = body.querySelector(":scope > .hs-kai");
-  if (walk && kai) { walk.classList.add("hs-walk"); kai.append(walk); }
-  const comp = [...body.querySelectorAll(":scope > .row")].find(e => /^\s*Completed/.test(e.textContent));
-  if (comp && !DB.missions.some(m => m.status==="closed")) comp.remove(); else if (comp) comp.classList.add("hs-comp");
-  return t.innerHTML;
-};
 
 </script>
 </body>
