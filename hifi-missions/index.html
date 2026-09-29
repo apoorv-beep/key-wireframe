@@ -6527,6 +6527,9 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .mh-tell { align-self:flex-start; min-height:44px; padding:0; border:0; background:none; font:var(--type-body-s-strong, var(--type-body-s)); color:var(--text-secondary); cursor:pointer; }
 #phone.hf-mis .sc .mh-tell:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-8); }
 
+#phone.hf-mfr button.quiet { border:0; background:none; padding:0 4px; min-height:44px; min-width:44px; cursor:pointer; }
+#phone.hf-mfr button.quiet:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-8); }
+
 
 
 
@@ -19629,7 +19632,7 @@ function mhPick(o){
   return `<div class="vcard sc scard mh-pk" data-opp="${o.id}" data-kc="KeyMoveCard" data-kv="layout=avatar, kind=${o.roleTitle?"role":"person"}">
     <div class="mh-pkh">${av(scIni(o), "mh-56" + (o.roleTitle?" mh-sq":""))}<div class="m"><div class="a" ${o.roleTitle?"":`data-profile="${o.personId}"`}>${scName(o)}</div><div class="b">${o.roleTitle ? scRole(o) : `${t.title}, ${t.company}`}</div></div></div>
     ${why?`<div class="mh-why">${isNewOf(o)?kaiMark(16):""}<span>${why}</span></div>`:""}
-    <div class="acts"><button class="btn ${v&&v[2]||""}" ${v?v[1]:""}>${v?v[0]:""}</button>${q?`<span class="quiet" ${q[1]}>${q[0]}</span>`:scMore(o)}</div></div>`;
+    <div class="acts"><button class="btn ${v&&v[2]||""}" ${v?v[1]:""}>${v?v[0]:""}</button>${q?`<button type="button" class="quiet" ${q[1]} aria-label="${q[0]}: ${mhAttr(scName(o).replace(/<[^>]*>/g,""))}">${q[0]}</button>`:scMore(o)}</div></div>`;
 }
 /* KeyMissionCard: the mission's hero plate (mark, title, where its people are), then your picks on a rail, one in focus */
 const _mhSection = missionSection; missionSection = function(m){
@@ -19969,8 +19972,18 @@ const _mhPathBody2 = scPathBody; scPathBody = function(id, asSheet){
     const q = r.querySelector(".sbar .quiet"); if (q) q.remove(); }
   return d.innerHTML;
 };
+/* the quiet verbs (Skip, Later, More) are real buttons, so a keyboard reaches them and a reader names them (WCAG 2.1.1, 4.1.2).
+   Base modules still write spans; each becomes a button keeping its attributes and the handler wire() already gave it */
+function mhQuietButtons(root){
+  root.querySelectorAll("span.quiet").forEach(sp=>{ const b = document.createElement("button"); b.type = "button";
+    [...sp.attributes].forEach(a=>b.setAttribute(a.name, a.value)); b.innerHTML = sp.innerHTML; if (sp.onclick) b.onclick = sp.onclick;
+    const o = sp.closest("[data-opp]"), op = o && DB.opps.find(x=>x.id===o.dataset.opp);
+    if (op && !b.hasAttribute("aria-label") && o.querySelectorAll(".quiet").length) b.setAttribute("aria-label", `${sp.textContent.trim()}: ${scName(op).replace(/<[^>]*>/g,"")}`);
+    sp.replaceWith(b); });
+}
 const _mhRender = render; render = function(){
   const r = _mhRender.apply(this, arguments);
+  if (typeof phone!=="undefined" && phone && mhOn()) mhQuietButtons(phone);
   if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); phone.classList.toggle("hf-mfr", mhOn()); if (on) mhDecorate(); else if (mhOn()) mhFactRows(phone); }
   return r;
 };
