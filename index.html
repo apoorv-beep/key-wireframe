@@ -4452,6 +4452,8 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .bs-vw .bf-fin .bf-did > div { display:flex; align-items:center; gap:10px; min-height:40px; border-top:1px solid rgba(249,250,252,.1); font-size:14px; color:#D8DEE6; }
 .bs-vw .bf-fin .bf-did > div:first-child { border-top:0; } .bs-vw .bf-fin .bf-did .li { color:#F9FAFC; flex:0 0 auto; }
 .bs-vw .bf-open { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:4px; min-height:44px; margin:-4px 0 -10px; font-size:14px; font-weight:600; color:#D8DEE6; cursor:pointer; } .bs-vw .bf-open:focus-visible { outline:2px solid #F9FAFC; outline-offset:2px; border-radius:6px; }
+/* belt and braces for the hold in brief.js: whatever draws a push, it never sits over the brief or its Back to brief bar */
+#phone:has(> .bs-vw) > .push, #phone:has(.br-backbar) > .push { display:none; }
 
 /* ==== PROFILE v2 (profiles thread). Pairs with profile2.js. Wireframe tokens only; gold = people (#FBF3DC / #7A5C10). */
 .p2 { display:flex; flex-direction:column; gap:14px; }
@@ -15581,6 +15583,13 @@ function brBackCard(){
   return { id:"back:"+r.id, kind:"back", label:"Came back", fam: brFam(brFamOf(ps[0])), who:ps[0], faces:ps, title:r.title, act:{ label:"See it", go:`go('${r.to}')` }, did:"Seen",
     origin:{ label: ch ? `Open in #${ch}` : "Open it", go:`go('${r.to}')` } };
 }
+/* Kai's other asks: the place the ask's own row opens, named by where it goes */
+function brOriginOf(i){
+  const g = (/onclick="([^"]*go\([^"]*)"/.exec(i.html||"")||[])[1]; if (!g) return null;
+  const r = (/go\('([^']+)'\)/.exec(g)||[])[1] || "", m = /^mission:(.+)/.exec(r), ms = m && (DB.missions||[]).find(x => x.id===m[1]);
+  const label = ms ? `Open ${ms.name}` : m ? "Open the mission" : /^eventd:/.test(r) ? "Open the event" : /^channel:/.test(r) ? `Open in #${r.split(":")[1]}` : /^(dm|inbox)/.test(r) ? "Open Messages" : "Open where it lives";
+  return { label, go:g.replace(/&quot;/g,'"').replace(/&#39;/g,"'") };
+}
 /* the running order: what needs you, your mission picks, what came back to you, then what moved in each community */
 function brCards(){
   const { deck, facts } = brDeck(), L = deck.map(c => Object.assign(c, { card:"one" }));
@@ -15588,7 +15597,8 @@ function brCards(){
   L.forEach(c => { const ch = c.alt && (/channel:([\w-]+)/.exec(c.alt.go)||[])[1];
     c.origin = c.draft ? { label: c.kind==="intro" ? `Open ${c.draft.to}'s intro` : ch ? `Open in #${ch}` : "Open the conversation", go:c.alt.go }
       : c.ev ? { label:`Open ${c.ev.name}`, go:`go('eventd:${c.ev.id}')` }
-      : c.kind==="reqs" ? { label: c.faces && c.faces.length > 1 ? "Open your requests" : `Open ${firstName(c.who)}'s request`, go:c.act.go } : null; });
+      : c.kind==="reqs" ? { label: c.faces && c.faces.length > 1 ? "Open your requests" : `Open ${firstName(c.who)}'s request`, go:c.act.go }
+      : c.act && c.act.item ? brOriginOf(c.act.item) : null; });
   brPicks().forEach(c => L.push(Object.assign(c, { card:"one" }))); const b = brBackCard(); if (b) L.push(Object.assign(b, { card:"one" }));
   /* what moved: two at most, the ones where a person said something first */
   const S = []; [["you", null], ...DB.families.map(f => [f.id, f])].forEach(([k, f]) => { const F = (facts[k]||[]).slice(0, 3); if (!F.length) return;
@@ -17673,7 +17683,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.143";
+window.KEY_BUILD = "2.144";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
