@@ -4401,32 +4401,50 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 @media (max-height:700px), (max-width:360px) { .bs-vw .bf-meet > span { width:44px; height:44px; } }
 .bstray .bt-art .bs-pt { display:grid; } .bstray .bt-art .bs-pt em { font-size:40px; transform:none; color:rgba(255,255,255,.72); }
 
-/* ==== KeyBriefEntry: the one way into the brief. Ink tile (the viewer's own ground, so opening reads as the tile growing), Kai mark
-   and part of day, one headline, who needs you, faces of the people in it (KeyFaceStack, max three), a solid progress track and
-   Start/Continue. Done state is one quiet row. KeyBriefReturn: the bar that brings you back from an action's screen, on the minimised-call bar's pattern. ==== */
-.brief.bentry { all:unset; box-sizing:border-box; display:grid; gap:14px; width:100%; margin:2px 0 18px; padding:16px; border-radius:16px; background:#0B0E11; color:#F9FAFC; cursor:pointer; }
+/* ==== KeyBriefEntry: a colour field by time of day (morning orange to pink to violet, afternoon teal to blue to violet, evening indigo
+   to fuchsia to rose; each stop carries white at 4.5:1 or better), three soft light pools drifting 16 to 22s, the welcome at 26/800,
+   community mark 44 r12 then two faces 44, one white button. Enters once per session: pools fade up, faces rise 80ms apart.
+   KeyBriefReturn: the bar that brings you back from an action's screen, on the minimised-call bar's pattern. ==== */
+.brief.bentry { all:unset; box-sizing:border-box; position:relative; isolation:isolate; overflow:hidden; display:grid; gap:10px; width:100%; margin:2px 0 18px; padding:16px 16px 14px; border-radius:20px; color:#FFFFFF; cursor:pointer; background:var(--be-a); }
+.bentry.pal-morning { --be-a:#C2410C; --be-b:#BE185D; --be-c:#7C3AED; }
+.bentry.pal-afternoon { --be-a:#0F766E; --be-b:#2563EB; --be-c:#7C3AED; }
+.bentry.pal-evening { --be-a:#4338CA; --be-b:#A21CAF; --be-c:#E11D48; }
+.bentry .be-glow { position:absolute; inset:0; z-index:-1; background:linear-gradient(135deg, var(--be-a) 0%, var(--be-b) 55%, var(--be-c) 100%); }
+.bentry .be-glow i { position:absolute; width:70%; aspect-ratio:1; border-radius:50%; filter:blur(36px); opacity:.55; will-change:transform; }
+.bentry .be-glow i:nth-child(1) { left:-20%; top:-40%; background:var(--be-c); animation:beDrift1 18s ease-in-out infinite alternate; }
+.bentry .be-glow i:nth-child(2) { right:-25%; top:-10%; background:var(--be-a); animation:beDrift2 22s ease-in-out infinite alternate; }
+.bentry .be-glow i:nth-child(3) { left:20%; bottom:-55%; background:var(--be-b); animation:beDrift3 16s ease-in-out infinite alternate; }
+@keyframes beDrift1 { to { transform:translate(30%, 25%) scale(1.15); } }
+@keyframes beDrift2 { to { transform:translate(-30%, 20%) scale(.9); } }
+@keyframes beDrift3 { to { transform:translate(-20%, -30%) scale(1.2); } }
 .bentry:focus-visible { outline:2px solid var(--text-primary,#0B0E11); outline-offset:3px; }
 .bentry .be-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.bentry .be-k { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:#D8DEE6; }
-.bentry .be-t { flex:1 1 auto; font-size:13px; font-weight:600; color:#A6AFBB; font-variant-numeric:tabular-nums; }
-.bentry .be-bar + .be-t { flex:0 0 auto; }
-.bentry .be-mid { display:flex; align-items:center; gap:12px; }
-.bentry .be-m { flex:1 1 auto; min-width:0; display:grid; gap:4px; }
-.bentry .be-m b { font-size:20px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; }
-.bentry .be-m span { font-size:14px; line-height:1.35; color:#C6CDD5; }
-.bentry .be-faces { flex:0 0 auto; display:flex; }
-.bentry .be-faces > span { position:relative; width:56px; height:56px; border-radius:50%; overflow:hidden; margin-left:-14px; box-shadow:0 0 0 2px #0B0E11; }
-.bentry .be-faces > span:first-child { margin-left:0; } .bentry .be-faces .bs-pt em { font-size:20px; transform:none; color:rgba(255,255,255,.8); }
-.bentry .be-foot { display:flex; align-items:center; gap:12px; }
-.bentry .be-bar { flex:1 1 auto; height:4px; border-radius:2px; background:rgba(249,250,252,.18); overflow:hidden; }
-.bentry .be-bar i { display:block; height:100%; background:#F9FAFC; border-radius:2px; }
-.bentry .be-go { flex:0 0 auto; height:44px; padding:0 20px; border-radius:12px; background:#F9FAFC; color:#0B0E11; font-size:14px; font-weight:700; display:inline-flex; align-items:center; }
-.brief.bentry.fin { display:flex; align-items:center; gap:12px; padding:10px 0; border-radius:0; background:none; color:var(--text-primary,#0B0E11); }
-.bentry.fin .be-tick { flex:0 0 auto; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--bg-fill-default,#F1F3F6); }
-.bentry.fin .be-m b { font-size:15px; font-weight:700; letter-spacing:0; } .bentry.fin .be-m span { font-size:13px; color:var(--text-secondary,#4A535E); }
+.bentry .be-k { display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700; }
+.bentry .be-t { font-size:13px; font-weight:600; font-variant-numeric:tabular-nums; color:#FFFFFF; }
+.bentry .be-hi { margin-top:6px; font-size:26px; line-height:1.1; font-weight:800; letter-spacing:-.025em; }
+.bentry .be-sub { font-size:15px; line-height:1.4; font-weight:500; color:#FFFFFF; text-wrap:pretty; }
+.bentry .be-bar { height:4px; border-radius:2px; background:rgba(255,255,255,.28); overflow:hidden; }
+.bentry .be-bar i { display:block; height:100%; background:#FFFFFF; border-radius:2px; }
+.bentry .be-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:6px; }
+.bentry .be-who { display:flex; align-items:center; }
+.bentry .be-fm, .bentry .be-fc { position:relative; flex:0 0 auto; width:44px; height:44px; overflow:hidden; box-shadow:0 4px 12px rgba(11,14,17,.28); }
+.bentry .be-fm { border-radius:12px; } .bentry .be-fm .bs-mk { display:block; width:44px; height:44px; } .bentry .be-fm svg { display:block; width:100%; height:100%; }
+.bentry .be-fc { border-radius:50%; margin-left:-8px; } .bentry .be-fm + .be-fc { margin-left:6px; }
+.bentry .be-fc .bs-pt em { font-size:16px; transform:none; color:rgba(255,255,255,.85); }
+.bentry .be-go { flex:0 0 auto; height:44px; padding:0 16px 0 20px; border-radius:12px; background:#FFFFFF; color:#0B0E11; font-size:15px; font-weight:800; display:inline-flex; align-items:center; gap:8px; }
+.bentry.enter .be-glow { animation:beFade .6s ease-out both; }
+.bentry.enter .be-who > * { animation:beRise .44s cubic-bezier(.2,.8,.2,1) both; }
+.bentry.enter .be-who > :nth-child(2) { animation-delay:.08s; } .bentry.enter .be-who > :nth-child(3) { animation-delay:.16s; }
+@keyframes beFade { from { opacity:0; } } @keyframes beRise { from { opacity:0; transform:translateY(10px) scale(.92); } }
+@media (prefers-reduced-motion: reduce) { .bentry .be-glow i:nth-child(n), .bentry.enter .be-glow, .bentry.enter .be-who > * { animation:none; } }
+.bentry.still .be-glow i:nth-child(n), .bentry.still.enter .be-glow, .bentry.still.enter .be-who > * { animation:none; }
+.brief.bentry.fin { display:flex; align-items:center; gap:12px; padding:10px 0; border-radius:0; background:none; color:var(--text-primary,#0B0E11); overflow:visible; }
+.bentry.fin .be-tick { flex:0 0 auto; width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#FFFFFF; background:linear-gradient(135deg, var(--be-a), var(--be-b) 55%, var(--be-c)); }
+.bentry.fin .be-tick.pal-morning { --be-a:#C2410C; --be-b:#BE185D; --be-c:#7C3AED; } .bentry.fin .be-tick.pal-afternoon { --be-a:#0F766E; --be-b:#2563EB; --be-c:#7C3AED; } .bentry.fin .be-tick.pal-evening { --be-a:#4338CA; --be-b:#A21CAF; --be-c:#E11D48; }
+.bentry.fin .be-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; } .bentry.fin .be-m b { font-size:15px; font-weight:700; } .bentry.fin .be-m span { font-size:13px; color:var(--text-secondary,#4A535E); }
 .bentry.fin > .li { color:var(--text-tertiary,#6B7480); }
-@media (max-width:360px) { .bentry .be-faces > span { width:44px; height:44px; } .bentry .be-m b { font-size:18px; } }
-.br-backbar.callbar { font:inherit; border:0; text-align:left; min-height:52px; padding:8px 14px 8px 10px; background:#0B0E11; color:#F9FAFC; flex:0 0 auto; }
+@media (max-width:360px) { .bentry .be-hi { font-size:23px; } .bentry .be-sub { font-size:14px; } }
+.br-backbar.callbar { position:relative; z-index:60; font:inherit; border:0; text-align:left; min-height:52px; padding:8px 14px 8px 10px; background:#0B0E11; color:#F9FAFC; flex:0 0 auto; }
 .br-backbar:focus-visible { outline:2px solid #0B0E11; outline-offset:2px; }
 .br-backbar .bb-m { flex:1 1 auto; min-width:0; display:grid; gap:2px; } .br-backbar .bb-m b { font-size:15px; font-weight:700; } .br-backbar .bb-m span { font-size:12px; color:#A6AFBB; }
 .bs-vw.bbrief .bs-vh .bs-mk.bk { background:none; } .bs-vw.bbrief .bs-bars i.did::after { background:#F9FAFC; }
@@ -15458,7 +15476,7 @@ function bfCard(c, i, total){
     : `<button type="button" class="p" data-bs="act">${c.act.label}</button><button type="button" class="s" data-bs="later">Next</button>`;
   return `<div class="bs-card bf-one" data-kind="${c.kind}" data-chapter="${c.id}" data-kc="KeyStoryCard" data-kv="kind=${c.kind}">
     <div class="bf-pic ${c.ev?"ev":""}">${bfPic(c)}<div class="bf-shade"></div><div class="bs-tz l" aria-label="Previous"></div><div class="bs-tz r" aria-label="Next"></div></div>
-    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${c.draft && !sent ? `<button type="button" class="bf-open" data-bs="alt">${c.kind==="intro" ? `Open ${c.draft.to}'s intro` : "Open the conversation"}${LI("chevron-right",16)}</button>` : ""}${done}</div>
+    <div class="bf-tx">${where}<h3>${c.title}</h3>${c.ctx?`<p>${c.ctx}</p>`:""}${c.why && !sent ? `<span class="bf-why">${typeof kaiMark==="function" ? kaiMark(16) : ""}${c.why}</span>`:""}${draft}${c.origin && !sent ? `<button type="button" class="bf-open" data-bs="origin">${c.origin.label}${LI("chevron-right",16)}</button>` : ""}${done}</div>
     <div class="bs-acts">${acts}</div></div>`;
 }
 STATE.brSeen = STATE.brSeen || {};
@@ -15553,7 +15571,8 @@ function brPicks(){
   return (DB.opps||[]).filter(o => o.personId && typeof ownerOf==="function" && ownerOf(o)==="you" && isNewOf(o)).slice(0, 2).map(o => {
     const p = targetOf(o), m = (DB.missions||[]).find(x => x.id===o.missionId);
     return { id:"opp:"+o.id, kind:"pick", label:"New pick", fam:null, where: m ? m.name : "", who:p, title:`${p.name}, ${p.title} at ${p.company}`,
-      why: o.receipts && o.receipts[0] ? o.receipts[0][1] : "", act:{ label:`Say hi to ${firstName(p)}`, go:`openSheet('ask','${o.id}')` }, did:`Opened your hello to ${firstName(p)}` }; });
+      why: o.receipts && o.receipts[0] ? o.receipts[0][1] : "", act:{ label:`Say hi to ${firstName(p)}`, go:`openSheet('ask','${o.id}')` }, did:`Opened your hello to ${firstName(p)}`,
+      origin: m ? { label:`Open ${m.name}`, go:`go('mission:${m.id}')` } : null }; });
 }
 function brBackCard(){
   const r = (notifs()||[]).find(n => (n.kind||n.type)==="reaction"); if (!r) return null;
@@ -15563,6 +15582,10 @@ function brBackCard(){
 /* the running order: what needs you, your mission picks, what came back to you, then what moved in each community */
 function brCards(){
   const { deck, facts } = brDeck(), L = deck.map(c => Object.assign(c, { card:"one" }));
+  /* every card can open the place it came from (Apoorv 20:04), not only its quick action */
+  L.forEach(c => { const ch = c.alt && (/channel:([\w-]+)/.exec(c.alt.go)||[])[1];
+    c.origin = c.draft ? { label: c.kind==="intro" ? `Open ${c.draft.to}'s intro` : ch ? `Open in #${ch}` : "Open the conversation", go:c.alt.go }
+      : c.ev ? { label:`Open ${c.ev.name}`, go:`go('eventd:${c.ev.id}')` } : null; });
   brPicks().forEach(c => L.push(Object.assign(c, { card:"one" }))); const b = brBackCard(); if (b) L.push(Object.assign(b, { card:"one" }));
   /* what moved: two at most, the ones where a person said something first */
   const S = []; [["you", null], ...DB.families.map(f => [f.id, f])].forEach(([k, f]) => { const F = (facts[k]||[]).slice(0, 3); if (!F.length) return;
@@ -15576,19 +15599,28 @@ function brRunNow(){
 const brMins2 = n => Math.max(1, Math.round(n * 15 / 60));
 const brPart = () => { const h = new Date().getHours(); return h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"; };
 function brWho(L){ const s = []; L.forEach(c => { const w = c.who || (c.lead && c.lead.who); if (w && w.id && !s.some(p => p.id===w.id)) s.push(w); }); return s; }
+/* KeyBriefEntry (Apoorv 20:04: "show the welcome message, with some good colorful card inviting me which can be dynamic with motion
+   design... community logo then a couple of user avatars... look damn fun"). A welcome, a colour field that follows the time of day
+   and drifts slowly, the community with most in the brief then the people who need you, and one button. Every colour carries white
+   text at 4.5:1 or better. Still under reduced motion. Done collapses to one quiet row. */
+function brLeadFam(L){ const n = {}; L.forEach(c => { if (c.fam) n[c.fam.id] = (n[c.fam.id]||0) + 1; }); return brFam(Object.keys(n).sort((a, b) => n[b] - n[a])[0]); }
 brBanner = function(){
   if (!STATE.member) return "";
   const R = STATE.brRun, L = R ? R.L : brCards(); if (!L.length) return "";
   const n = L.length, handled = R ? Object.keys(R.done).length : 0, seen = R ? Math.min(R.at, n) : 0, fin = R && R.at >= n;
-  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean), W = brWho(L).slice(0, 3);
   if (fin) return `<button type="button" class="brief bentry fin" data-kc="KeyBriefEntry" data-kv="state=done" onclick="brOpen(this)">
-    <span class="be-tick" aria-hidden="true">${LI("check",20)}</span><span class="be-m"><b>You're through your ${brPart()} brief</b><span>${handled ? `You handled ${handled} of ${n}` : `${n} seen`}. Kai brings the next ones here.</span></span>${LI("chevron-right",18)}</button>`;
-  const line = need.length ? `${need.slice(0, 2).map(firstName).join(need.length===2 ? " and " : ", ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you` : "Nothing needs you, just what moved";
-  return `<button type="button" class="brief bentry" data-kc="KeyBriefEntry" data-kv="state=${seen ? "part" : "new"};cards=${n}" onclick="brOpen(this)" aria-label="${seen ? `Continue your brief, ${seen} of ${n}` : `Open your brief, ${n} things`}">
-    <span class="be-top"><span class="be-k">${typeof kaiMark==="function" ? kaiMark(20) : ""}Your ${brPart()} brief</span></span>
-    <span class="be-mid"><span class="be-m"><b>${seen ? `${n-seen} left to go` : `${n} things since you were here`}</b><span>${line}</span></span>
-      <span class="be-faces" aria-hidden="true">${W.map(p => `<span>${brPortrait(p.initials, p.id, 160)}</span>`).join("")}</span></span>
-    <span class="be-foot">${seen ? `<span class="be-bar" aria-hidden="true"><i style="width:${Math.round(seen/n*100)}%"></i></span><span class="be-t">${seen} of ${n}</span>` : `<span class="be-t">About ${brMins2(n)} min · one at a time</span>`}<span class="be-go">${seen ? "Continue" : "Start"}</span></span></button>`;
+    <span class="be-tick pal-${brPart()}" aria-hidden="true">${LI("check",20)}</span><span class="be-m"><b>You're through your ${brPart()} brief</b><span>${handled ? `You handled ${handled} of ${n}` : `${n} seen`}. Kai brings the next ones here.</span></span>${LI("chevron-right",18)}</button>`;
+  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean);
+  const W = [...need, ...brWho(L)].filter((p, k, a) => a.findIndex(x => x.id===p.id)===k).slice(0, 2), f = brLeadFam(L), enter = !STATE.brEntered; STATE.brEntered = true;
+  const line = need.length ? `${need.slice(0, 2).map(firstName).join(" and ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you.` : "Nobody's waiting, just what moved.";
+  return `<button type="button" class="brief bentry pal-${brPart()} ${enter ? "enter" : ""} ${bsStill() ? "still" : ""}" data-kc="KeyBriefEntry" data-kv="state=${seen ? "part" : "new"};cards=${n};tone=${brPart()}" onclick="brOpen(this)" aria-label="${seen ? `Continue your brief, ${seen} of ${n}` : `Open your brief, ${n} things`}">
+    <span class="be-glow" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="be-top"><span class="be-k">${typeof kaiMark==="function" ? kaiMark(20) : ""}Your ${brPart()} brief</span><span class="be-t">${seen ? `${seen} of ${n}` : `About ${brMins2(n)} min`}</span></span>
+    <span class="be-hi">${brGreeting()}</span>
+    <span class="be-sub">${seen ? `${n-seen} left in your brief.` : `${n} things since you were here.`} ${line}</span>
+    ${seen ? `<span class="be-bar" aria-hidden="true"><i style="width:${Math.round(seen/n*100)}%"></i></span>` : ""}
+    <span class="be-foot"><span class="be-who" aria-hidden="true">${f ? `<span class="be-fm">${brFamMark(f, 44)}</span>` : ""}${W.map(p => `<span class="be-fc">${brPortrait(p.initials, p.id, 160)}</span>`).join("")}</span>
+      <span class="be-go">${seen ? "Continue" : "Start"}${LI("arrow-right",18)}</span></span></button>`;
 };
 /* Back to brief: while you're on an action's own screen, a bar at the top (the minimised-call bar, so it never covers a composer or
    the nav) takes you back to the next card */
@@ -15642,6 +15674,7 @@ brOpen = function(fromEl){
       if (what==="done") { R.at = L.length; (notifs()||[]).forEach(a => a.unread = false); (DB.activity||[]).forEach(a => a.unread = false); return close(true); }
       if (what==="left") { const k = L.findIndex(x => !R.done[x.id] && x.card==="one" && x.label==="Needs you"); return go2(k); }
       if (what==="alt") return out(c.alt.go, c, didOf(c));
+      if (what==="origin") return out(c.origin.go, c, c.kind==="pick" ? `Looked at ${c.where}` : didOf(c));
       if (what==="act") return c.card==="sum" ? out(c.lead ? c.lead.go || c.lead[2] : c.fam ? `STATE.family='${c.fam.id}';go('family')` : "go('inbox')", c, didOf(c)) : c.act.item ? runAsk(c.act.item, c, didOf(c)) : out(c.act.go, c, didOf(c));
       if (what==="send") { const d = vw.querySelector("[data-bfdraft]"), text = (d ? d.innerText : c.draft.text).trim(); if (!text) return;
         const tgt = c.id.startsWith("ask:") ? DB.asks.find(a => "ask:"+a.id===c.id) : brItems().find(i => i.n && "n:"+i.n.id===c.id);
@@ -17627,7 +17660,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.140";
+window.KEY_BUILD = "2.141";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
