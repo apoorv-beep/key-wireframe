@@ -6410,6 +6410,153 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 
 
 
+#phone.hf-gp .gp-tile { flex:0 0 auto; width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); display:inline-flex; align-items:center; justify-content:center; font-style:normal; border:0 !important; }
+#phone.hf-gp .gp-tile.ink { background:var(--bg-inverse-default); color:var(--icon-inverse); }
+#phone.hf-gp .gp-tile.gold { background:var(--fill-gold); color:var(--text-gold); }
+#phone.hf-gp .gp-tile.empty { color:var(--icon-tertiary); }
+#phone.hf-gp .avatar.gp-44 { width:44px !important; height:44px !important; font:var(--type-body-m-strong) !important; }
+#phone.hf-gp .avatar.gp-56 { width:56px !important; height:56px !important; font:var(--type-title) !important; }
+#phone.hf-gp .avatar.mh-sq { border-radius:var(--radius-absolute-12) !important; }
+#phone.hf-gp .avatar.gold { box-shadow:0 0 0 2px var(--component-avatar-ring-gold); }
+
+
+#phone.hf-gp .gp-age { display:inline-flex; flex-direction:column; align-items:flex-end; gap:5px; min-width:64px; }
+#phone.hf-gp .gp-age b { font:var(--type-caption); font-weight:600; color:var(--text-secondary); white-space:nowrap; }
+#phone.hf-gp .gp-age i { display:block; width:48px; height:4px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); overflow:hidden; }
+#phone.hf-gp .gp-age s { display:block; height:100%; background:var(--component-progress-fill); border-radius:inherit; text-decoration:none; }
+#phone.hf-gp .gp-age.due b { color:var(--text-primary); }
+#phone.hf-gp .gp-age.quiet b { color:var(--text-tertiary); } #phone.hf-gp .gp-age.quiet s { background:var(--icon-tertiary); }
+#phone.hf-gp .gp-age.gold b { color:var(--text-gold); }
+#phone.hf-gp .gp-age.talk b { color:var(--actions-going, var(--text-secondary)); }
+#phone.hf-gp .row > .r { display:flex; align-items:center; gap:8px; }
+
+
+#phone.hf-gp .gp-strip { position:relative; display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:4px; margin:14px 0 6px; }
+#phone.hf-gp .gp-line { position:absolute; left:10%; right:10%; top:21px; height:2px; background:var(--border-default); border-radius:1px; }
+#phone.hf-gp .gp-line s { display:block; height:100%; background:var(--text-primary); border-radius:inherit; text-decoration:none; transition:width var(--duration-slow, .4s) ease; }
+#phone.hf-gp .gp-col { position:relative; appearance:none; border:0; background:none; padding:0; font:inherit; color:inherit; display:flex; flex-direction:column; align-items:center; gap:6px; min-height:44px; cursor:pointer; }
+#phone.hf-gp .gp-col[disabled] { cursor:default; }
+#phone.hf-gp .gp-node { height:44px; display:flex; align-items:center; justify-content:center; }
+#phone.hf-gp .gp-node .gp-tile { background:var(--bg-surface-default); box-shadow:0 0 0 4px var(--bg-surface-default); }
+#phone.hf-gp .gp-node .gp-tile.empty { background:var(--bg-fill-default); }
+#phone.hf-gp .gp-faces { display:flex; box-shadow:none; }
+#phone.hf-gp .gp-faces .avatar { width:32px !important; height:32px !important; box-shadow:0 0 0 2px var(--bg-surface-default); }
+#phone.hf-gp .gp-faces .avatar { position:relative; }
+#phone.hf-gp .gp-faces .avatar:first-child { z-index:2; }
+#phone.hf-gp .gp-faces .avatar + .avatar { margin-left:-6px; z-index:1; }
+#phone.hf-gp .gp-l { font:var(--type-caption); color:var(--text-tertiary); text-align:center; line-height:1.25; min-height:2.5em; }
+#phone.hf-gp .gp-col.on .gp-l { color:var(--text-primary); font-weight:600; }
+#phone.hf-gp .gp-l b { display:block; font-weight:700; }
+@media (max-width:359px){ #phone.hf-gp .gp-l { font-size:11px; } }
+@media (max-width:359px){ #phone.hf-gp .gp-faces .avatar + .avatar { display:none; } }
+
+
+#phone.hf-gp .sc .sl.gp-sl { display:flex; align-items:center; gap:10px; margin:22px 0 4px; scroll-margin-top:12px; color:var(--text-primary); font:var(--type-overline); letter-spacing:var(--type-overline-tracking); }
+#phone.hf-gp .sc .sl.gp-sl .gp-n { margin-left:auto; color:var(--text-tertiary); font:var(--type-label); letter-spacing:0; }
+#phone.hf-gp .sc .sl.gp-sl .chev { color:var(--icon-tertiary); display:flex; }
+#phone.hf-gp .sc .sl.gp-sl[onclick] { cursor:pointer; min-height:44px; }
+#phone.hf-gp .gp-rows > .row:first-child { border-top:0; }
+#phone.hf-gp .gp-rows > .row { align-items:center; min-height:64px; }
+
+
+#phone.hf-gp .gp-sent-hd { display:flex; align-items:center; gap:12px; margin:2px 0 14px; }
+#phone.hf-gp .gp-sent-hd .t20 { margin:0; }
+#phone.hf-gp .gp-ok { flex:0 0 auto; width:44px; height:44px; border-radius:var(--radius-absolute-12); background:var(--bg-inverse-default); color:var(--icon-inverse); display:flex; align-items:center; justify-content:center; animation:gpPop var(--duration-base, .24s) cubic-bezier(.2,.8,.2,1.1); }
+#phone.hf-gp .gp-plan { position:relative; margin-top:4px; }
+#phone.hf-gp .gp-pr { position:relative; display:flex; gap:12px; padding:0 0 14px; }
+#phone.hf-gp .gp-pr::before { content:""; position:absolute; left:15px; top:34px; bottom:2px; width:2px; background:var(--border-default); border-radius:1px; }
+#phone.hf-gp .gp-pr:last-child::before { display:none; } #phone.hf-gp .gp-pr:last-child { padding-bottom:4px; }
+#phone.hf-gp .gp-pr .gp-w { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); color:var(--text-tertiary); text-transform:uppercase; }
+#phone.hf-gp .gp-pr.on .gp-w { color:var(--text-primary); }
+#phone.hf-gp .gp-pr .a { font:var(--type-body-m-strong); color:var(--text-primary); margin-top:1px; }
+#phone.hf-gp .gp-pr .b { font:var(--type-body-s); color:var(--text-secondary); margin-top:1px; }
+#phone.hf-gp .gp-pr:not(.on) .a { color:var(--text-secondary); }
+#phone.hf-gp .gp-sent .acts { margin-top:14px; }
+#phone.hf-gp .gp-sent .mh-route { margin-top:4px; }
+
+
+#phone.hf-gp .gp-track { list-style:none; display:flex; gap:4px; margin:10px 0 14px; padding:0; }
+#phone.hf-gp .gp-track li { flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:6px; }
+#phone.hf-gp .gp-track li i { display:block; height:4px; border-radius:var(--radius-absolute-infinite); background:var(--component-progress-track); }
+#phone.hf-gp .gp-track li.on i { background:var(--component-progress-fill); }
+#phone.hf-gp .gp-track li b { font:var(--type-caption); color:var(--text-tertiary); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone.hf-gp .gp-track li.on b { color:var(--text-secondary); }
+#phone.hf-gp .gp-track li.now b { color:var(--text-primary); font-weight:700; }
+#phone.hf-gp .gp-track li small { font:var(--type-caption); color:var(--text-tertiary); margin-top:-4px; }
+#phone.hf-gp .st .gp-age { margin-left:auto; }
+#phone.hf-gp .sc .row.gp-upd { cursor:pointer; min-height:56px; }
+#phone.hf-gp .row.gp-upd .chev { display:flex; }
+
+
+#phone.hf-gp .gp-uhd { display:flex; align-items:center; gap:12px; margin:2px 0 10px; }
+#phone.hf-gp .gp-uhd .t20 { margin:0 0 2px; }
+#phone.hf-gp .gp-uhd > .m { min-width:0; }
+#phone.hf-gp .gp-pair { display:flex; flex:0 0 auto; }
+#phone.hf-gp .gp-pair .avatar { width:44px !important; height:44px !important; box-shadow:0 0 0 2px var(--bg-surface-default); }
+#phone.hf-gp .gp-pair .avatar + .avatar { margin-left:-14px; }
+#phone.hf-gp .sc .row.gp-opt { cursor:pointer; min-height:64px; align-items:center; }
+#phone.hf-gp .sc .row.gp-opt:active { background:var(--bg-fill-default); }
+#phone.hf-gp .sc .row.gp-opt.gold .a { color:var(--text-gold); }
+#phone.hf-gp .gp-guess { display:flex; align-items:center; gap:10px; padding:12px; margin:0 0 6px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+#phone.hf-gp .gp-guess .m { flex:1; min-width:0; } #phone.hf-gp .gp-guess .a { font:var(--type-body-m-strong); } #phone.hf-gp .gp-guess .b { font:var(--type-body-s); color:var(--text-secondary); }
+
+
+#phone.hf-gp .hs { background:#0B0E11; background:var(--bg-deep, #0B0E11); }
+#phone.hf-gp .gp-hs { display:flex; flex-direction:column; align-items:center; text-align:center; max-width:300px; }
+#phone.hf-gp .gp-hs-f { display:flex; align-items:center; justify-content:center; margin-bottom:22px; }
+#phone.hf-gp .gp-hs-f .avatar { width:56px !important; height:56px !important; font:var(--type-title) !important; border:0 !important; background:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
+#phone.hf-gp .gp-hs-f > i { display:block; width:36px; height:2px; border-radius:1px; background:var(--mark-gold); transform-origin:left center; animation:gpDraw .5s ease-out both; }
+#phone.hf-gp .gp-hs-f > i:nth-of-type(2) { animation-delay:.35s; }
+#phone.hf-gp .gp-hs-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--mark-gold); }
+#phone.hf-gp .gp-hs-t { font:var(--type-display-s); letter-spacing:var(--type-display-s-tracking); color:var(--text-on-deep-default); margin:6px 0 8px; }
+#phone.hf-gp .gp-hs p { font:var(--type-body-m); color:var(--text-on-deep-muted); margin:0 0 22px; }
+#phone.hf-gp .gp-hs-b { min-width:200px; background:var(--bg-surface-default) !important; color:var(--text-primary) !important; border:0 !important; border-radius:var(--radius-absolute-12); height:48px; padding:0 20px; font:var(--type-body-m-strong); }
+#phone.hf-gp .hs .avs, #phone.hf-gp .hs > .sc { display:none; }
+
+
+#phone.hf-gp .gp-mo { display:flex; flex-direction:column; align-items:center; text-align:center; padding:12px 0 16px; margin-bottom:6px; border-bottom:var(--border-width-hairline) solid var(--border-subtle); }
+#phone.hf-gp .gp-mo .gp-hs-f { margin-bottom:12px; }
+#phone.hf-gp .gp-mo .gp-hs-f .avatar { width:44px !important; height:44px !important; font:var(--type-body-m-strong) !important; background:var(--component-avatar-bg); color:var(--component-avatar-ink); }
+#phone.hf-gp .gp-mo .gp-hs-f > i { width:28px; }
+#phone.hf-gp .gp-mo-k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; color:var(--text-gold); }
+#phone.hf-gp .gp-mo-t { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); margin:2px 0 4px; }
+
+
+#phone.hf-gp .sc .row.gp-out { cursor:pointer; align-items:center; padding:12px 0; }
+#phone.hf-gp .row.gp-out .gp-mo-k { margin-bottom:2px; }
+#phone.hf-gp .row.gp-out .b { display:flex; align-items:center; gap:6px; }
+#phone.hf-gp .row.gp-out .b .avatar.sm { width:24px !important; height:24px !important; }
+#phone.hf-gp .gp-none { padding:8px 0 2px; }
+#phone.hf-gp .gp-cacts { flex-direction:column; align-items:stretch; gap:8px; margin-top:16px; }
+#phone.hf-gp .gp-dim { color:var(--text-tertiary) !important; }
+#phone.hf-gp .gp-closing .row { min-height:56px; }
+#phone.hf-gp .sc .row.gp-fresh { align-items:center; }
+#phone.hf-gp .row.gp-fresh .gp-faces .avatar { width:32px !important; height:32px !important; }
+#phone.hf-gp .gp-recap .mh-band.big { margin-top:4px; }
+#phone.hf-gp .gp-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(72px, 1fr)); gap:14px 8px; margin-top:10px; }
+#phone.hf-gp .gp-gf { appearance:none; border:0; background:none; padding:0; font:inherit; display:flex; flex-direction:column; align-items:center; gap:4px; min-height:44px; cursor:pointer; }
+#phone.hf-gp .gp-gf b { font:var(--type-label); color:var(--text-primary); max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone.hf-gp .gp-gf small { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-gp .gp-gf.good small { color:var(--text-gold); font-weight:600; }
+#phone.hf-gp .gp-kept { margin:18px 0 0; }
+#phone.hf-gp .gp-recap .acts .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; }
+#phone.hf-gp .gp-recap[data-kv="fresh=true"] .mh-band { animation:gpRise var(--duration-slow, .4s) cubic-bezier(.2,.8,.2,1); }
+
+@keyframes gpPop { from { transform:scale(.6); opacity:0; } to { transform:none; opacity:1; } }
+@keyframes gpDraw { from { transform:scaleX(0); } to { transform:none; } }
+@keyframes gpRise { from { transform:translateY(12px); opacity:0; } to { transform:none; opacity:1; } }
+@media (prefers-reduced-motion: reduce) {
+  #phone.hf-gp .gp-ok, #phone.hf-gp .gp-hs-f > i, #phone.hf-gp .gp-recap .mh-band { animation:none !important; }
+  #phone.hf-gp .gp-line s { transition:none; }
+}
+
+
+#phone.hf-gp .push:has(.pa span + span) { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; row-gap:var(--space-absolute-10, 10px); }
+#phone.hf-gp .push:has(.pa span + span) .pa { grid-column:2; flex-wrap:wrap; }
+
+
+
+
 .mc-prog { display:flex; gap:4px; margin:0 0 12px; }
 .mc-prog i { flex:1; height:4px; border-radius:999px; background:var(--component-progress-track, #E3E8EE); }
 .mc-prog i.on { background:var(--component-progress-fill, #0B0E11); }
@@ -13117,7 +13264,7 @@ function evChatCard(e, live, locked){
     <div class="evt-react">${EV_REACT.map(r=>`<button data-evreact="${e.id}|${r}" aria-label="Send ${r}">${r}</button>`).join("")}<div class="evt-say" data-evroom="${e.id}|focus">Say hi…</div></div></div>`;
 }
 function evStateRow(e, live, locked){
-  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"community"} members</div>`;
+  if (locked) return `<div class="evt-note">${evIc("lock",16)} For ${evC(e.cal).famExt||"family"} members</div>`;
   if (e.reg==="pending") return `<div class="evt-note">${evIc("hourglass",15)} ${evFirst(e.host)} is reviewing your request <span data-evunrsvp="${e.id}">Withdraw</span></div>`;
   if (e.reg==="waitlist") return `<div class="evt-note">${evIc("hourglass",15)} #${e.wait||1} on the waitlist <span data-evunrsvp="${e.id}">Leave</span></div>`;
   if (e.reg==="hosting") return `<div class="evt-duo"><button class="btn sec" data-evpost="${e.id}">${evIc("megaphone")} Post update</button><button class="btn sec" data-evsheet="evshare|${e.id}">${evIc("share")} Share</button></div>${(e.requests||[]).length?`<div class="evt-note" data-evgo="eventd:manage.${e.id}">${evIc("hand",16)} ${e.requests.length} waiting for your yes <span>Review</span></div>`:""}`;
@@ -16896,7 +17043,7 @@ function p2QuickView(pid){ const p=DB.people[pid], f=firstName(p), fams=(p.famil
    profile on a tap; Instagram's long-press peek shows only enough to decide. The peek now answers "who is this and why now":
    how you're connected, then the one thing you could act on, then the way into everything else */
 function p2Preview(pid){ const p=DB.people[pid], d=p2d(pid), f=firstName(p), open=p2OpenList(p)[0], n=d.needs[0];
-  const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"communities", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
+  const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"families", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
   const top = n ? `<div class="p2sec">${p2H("search",`${f} is looking for`)}<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}</span><button class="p2x" onclick="event.stopPropagation();openSheet('p2need','${pid}|0')">${n.fit?"Offer yourself":"Suggest"}</button></div></div>`
     : open ? `<div class="p2sec">${p2H("door-open",`${f} is open to`)}<div class="p2nd p2op"><span class="p2ico">${LI(P2_OPEN[open][0],18)}</span><span><b>${open}</b></span><button class="p2x" onclick="event.stopPropagation();openSheet('p2open','${pid}|${open}')">${P2_OPEN[open][1]}</button></div></div>` : "";
   return `<div class="p2 p2pv">${p2BetweenLine(pid)}${d.now?`<div class="p2bld">${d.now}</div>`:''}${top}
@@ -19156,6 +19303,7 @@ function mhAllPaths(root){
     if (x && !n.querySelector?.("svg")) { const bar = document.createElement("span"); bar.className = "mh-mini"; bar.setAttribute("aria-label", `Step ${x[1]} of ${x[2]}`); bar.setAttribute("data-kc","KeyProgressBar"); bar.setAttribute("data-kv",`steps=${x[2]}, at=${x[1]}, size=s`);
       bar.innerHTML = `<i style="width:${Math.round(100*x[1]/x[2])}%"></i>`; n.replaceWith(bar); } }); });
   const hc = root.querySelector(".hdr > .chip"); if (hc) hc.setAttribute("data-kc","KeyChip");
+  root.querySelectorAll(".mh-plist .rowitem[data-opp]").forEach(r=>{ const j = mhJob(DB.opps.find(x=>x.id===r.dataset.opp)); const b = r.querySelector(".m > .b"); if (j && j.closed && b) b.textContent = `Role closed ${j.closed}. ${j.closedWhy}`; });
 }
 /* A mission before you're in: the same hero, Start, and the brief as the document you shape; paths come after the first pass */
 function mhPendingPage(root, id){
@@ -19371,6 +19519,12 @@ const _mhPick2 = mhPick; mhPick = function(o){
   }
   return c.outerHTML;
 };
+/* a closed role says so on its row, wherever the row is drawn */
+const _mhPathRow = scPathRow; scPathRow = function(o){
+  const h = _mhPathRow(o), j = mhJob(o);
+  if (!mhOn() || !j || !j.closed) return h;
+  return h.replace(/(<div class="b">)[\s\S]*?(<\/div>)/, `$1Role closed ${j.closed}. ${j.closedWhy}$2`).replace(/<button class="mini[^"]*"[^>]*>[\s\S]*?<\/button>/, `<button class="mini sec" data-exit="${o.id}|close">Close path</button>`);
+};
 const _mhPathBody2 = scPathBody; scPathBody = function(id, asSheet){
   const h = _mhPathBody2(id, asSheet), o = DB.opps.find(x=>x.id===id), j = mhJob(o);
   if (!mhOn() || !j) return h;
@@ -19406,6 +19560,288 @@ const _mhRender = render; render = function(){
   if (typeof phone!=="undefined" && phone) { const on = mhOn() && mhScreen(); phone.classList.toggle("hf-mis", on); phone.classList.toggle("hf-mfr", mhOn()); if (on) mhDecorate(); else if (mhOn()) mhFactRows(phone); }
   return r;
 };
+
+/* ==== MISSIONS PIPELINE (29 Sep, Missions pipeline thread; Apoorv 17:43: "the whole pipeline needs to be accounted for now, from new picks
+   to updates to closing"). Hi-fi copy only, gated on KEY_HIFI. Loads after missions-hifi.js and before hifi-last.js; CSS after missions-hifi.css.
+   What it draws, in the order a path lives:
+     1. KeyPipelineStrip + stage groups on the mission's Paths tab: faces in each of the five fixed stages, then the rows grouped by stage,
+        your move first; a waiting row carries KeyAgeMeter (day N toward Kai's day-7 nudge, "Went quiet" at 14).
+     2. KeySentMoment: the sent sheet shows the route with the ask on it, and KeyWaitPlan (today, day 7, day 14, day 21), who does what.
+     3. KeyStageTrack on the path page: the path's own steps with their names, and "Log an update" (KeyUpdateSheet): screen, interview,
+        offer, met, went well, not a fit. Kai's calendar guess is offered first and never assumed.
+     4. KeyHandshake: the yes moment, faces on one line (the role version shows the company, not the referrer twice).
+     5. KeyOutcomeSheet: "How did it go?" as three choices with what each one does; KeyOutcomeMoment heads the keep sheet after Went well.
+     6. KeyCloseSheet: closing a mission starts from what came of it (faces), who helped (thank), what closes with it (who sees what).
+     7. KeyMissionRecap: a closed mission's page is its record: what came of it, everyone on the way, thanks, reopen.
+   Handlers: sheets keep the base data-* hooks (wired by render); decorations after render use inline calls to globals only.
+   Every root carries data-kc (ledger name) and data-kv (variant). Copy uses Missions and Families (rename on hold, his 17:45). ==== */
+const gpOn = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI && !!STATE.member;
+Object.entries({
+  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  hourglass:'<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/>',
+  archive:'<rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/>',
+  "undo-2":'<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"/>',
+  "calendar-check":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>',
+  "file-check":'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m9 15 2 2 4-4"/>',
+  "log-in":'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>',
+  "circle-slash":'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+}).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
+
+/* ---- the clock: the prototype's own time moves (Simulate is about two days, Advance a week is seven), and each path remembers when it
+   entered its stage, so a row can say "Day 3" instead of a date. A log line written as "-6d" backdates the stamp. ---- */
+STATE.gpDay = STATE.gpDay || 0;
+const _gpSim = simulate; simulate = function(){ STATE.gpDay = (STATE.gpDay||0) + 2; return _gpSim.apply(this, arguments); };
+const _gpAdv = advanceWeek; advanceWeek = function(){ STATE.gpDay = (STATE.gpDay||0) + 7; return _gpAdv.apply(this, arguments); };
+const gpAgo = w => { const x = /^-(\d+)d$/.exec(w||""); return x ? +x[1] : 0; };
+function gpStamp(){
+  const d = STATE.gpDay||0;
+  (DB.opps||[]).forEach(o=>{
+    const k = [o.state, o.phase||"", o.viaAgreed?1:0, o.met?1:0, o.outcome||""].join("|");
+    if (o.gpKey!==k) { const last = (o.log||[]).slice(-1)[0]; o.gpKey = k; o.gpAt = d - gpAgo(last && last[2]); }
+    if (o.state==="waiting" && o.gpAsked==null) { const a = (o.timeline||[]).find(t=>t[0]==="Asked"); o.gpAsked = d - gpAgo(a && a[1]); }
+  });
+}
+const gpAge = o => Math.max(0, (STATE.gpDay||0) - (o.gpAt==null ? (STATE.gpDay||0) : o.gpAt));
+const gpWaited = o => Math.max(0, (STATE.gpDay||0) - (o.gpAsked==null ? (STATE.gpDay||0) : o.gpAsked));
+const gpDays = n => n===0 ? "Today" : n===1 ? "1 day" : `${n} days`;
+const gpStage = o => o.state==="done" ? (o.outcome==="good" ? 4 : 5) : mhSt(o);
+const GP_ST = [["New pick","inbox"],["Next step","reply"],["Waiting","hourglass"],["In conversation","message-circle"],["Went well","check"],["Closed","archive"]];
+const gpFace = (o, cls) => av(scIni(o), (cls||"") + (o.roleTitle ? " mh-sq" : ""));
+const gpVouch = o => (o.receipts||[]).some(r=>r[0]==="Vouched") && o.strength!=="none";
+const gpTile = (ic, cls) => `<i class="gp-tile${cls?" "+cls:""}" aria-hidden="true">${LI(ic,16)}</i>`;
+
+/* KeyAgeMeter: how long it has been with them, against the next thing that happens (day 7 nudge, day 14 went quiet) */
+function gpMeter(o){
+  const d = gpWaited(o); let label, pct, tone = "";
+  if (o.stale || d>=14) { label = "Went quiet"; pct = 100; tone = "quiet"; }
+  else if (o.quiet) { label = `Nudged · ${gpDays(d)}`; pct = Math.round(100*d/14); }
+  else if (o.nudgeDraft || d>=7) { label = "Nudge ready"; pct = 100; tone = "due"; }
+  else { label = d ? `Day ${d} of 7` : "Sent today"; pct = Math.round(100*d/7); }
+  return `<span class="gp-age${tone?" "+tone:""}" data-kc="KeyAgeMeter" data-kv="state=${tone||"counting"}"><b>${label}</b>${pct?`<i><s style="width:${pct}%"></s></i>`:""}</span>`;
+}
+function gpTalk(o){
+  if (o.state==="done") return `<span class="gp-age ${o.outcome==="good"?"gold":""}" data-kc="KeyAgeMeter" data-kv="state=done"><b>${o.outcome==="good"?"Went well":o.outcome==="nofit"?"Not a fit":"Closed"}</b></span>`;
+  const d = gpAge(o);
+  return `<span class="gp-age talk" data-kc="KeyAgeMeter" data-kv="state=talking"><b>${o.met ? "Met" : d ? `Talking · ${gpDays(d)}` : "Talking"}</b></span>`;
+}
+
+/* ---- 1. KeyPipelineStrip and the stage groups on the Paths tab ---- */
+STATE.gpFold = STATE.gpFold || {};
+function gpStrip(ps){
+  const cols = GP_ST.slice(0,5).map(([l,ic],i)=>{ const os = ps.filter(o=>gpStage(o)===i);
+    const node = os.length ? `<span class="gp-faces">${os.slice(0,2).map(o=>gpFace(o)).join("")}</span>` : gpTile(ic, "empty");
+    return `<button class="gp-col${os.length?" on":""}" ${os.length?`onclick="gpJump(${i})"`:"disabled"} aria-label="${l}: ${os.length}"><span class="gp-node">${node}</span><span class="gp-l">${l}${os.length?`<b>${os.length}</b>`:""}</span></button>`; }).join("");
+  const reach = [0,1,2,3,4].filter(i=>ps.some(o=>gpStage(o)===i)).pop();
+  const pct = reach==null ? 0 : Math.round(100*reach/4);
+  return `<div class="gp-strip" data-kc="KeyPipelineStrip" data-kv="stages=5, reached=${reach==null?0:reach+1}"><i class="gp-line" aria-hidden="true"><s style="width:${pct}%"></s></i>${cols}</div>`;
+}
+function gpJump(i){ const el = phone.querySelector(`#gp-s${i}`); if (el) el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start" }); }
+function gpPaths(root, mid){
+  const pane = root.querySelector('.mh-pane[data-tab="paths"]'); if (!pane || pane.querySelector(".gp-strip")) return;
+  const ps = DB.opps.filter(o=>o.missionId===mid && o.state!=="dropped" && o.state!=="candidate");
+  const leg = pane.querySelector(".mh-legend"); if (leg) leg.outerHTML = gpStrip(ps); else pane.insertAdjacentHTML("afterbegin", gpStrip(ps));
+  const list = pane.querySelector(".mlist"); if (!list) return;
+  const rows = [...list.querySelectorAll(":scope > .row[data-opp]")];
+  const order = [1,0,2,3,4,5]; const frag = document.createElement("div"); frag.className = "gp-groups";
+  order.forEach(i=>{
+    const rs = rows.filter(r=>{ const o = DB.opps.find(x=>x.id===r.dataset.opp); return o && gpStage(o)===i; }); if (!rs.length) return;
+    const fold = i===5 && !STATE.gpFold[mid];
+    frag.insertAdjacentHTML("beforeend", `<div class="sl gp-sl" id="gp-s${i}" data-kc="KeySectionLabel"${i===5?` onclick="STATE.gpFold['${mid}']=!STATE.gpFold['${mid}'];render()"`:""}>${gpTile(GP_ST[i][1], i===1?"ink":i===4?"gold":"")}<span>${GP_ST[i][0]}</span><span class="gp-n">${rs.length}</span>${i===5?`<span class="chev">${LI(fold?"chevron-right":"chevron-down",16)}</span>`:""}</div>`);
+    const box = document.createElement("div"); box.className = "rows gp-rows"; if (fold) box.hidden = true;
+    rs.forEach(r=>{ const o = DB.opps.find(x=>x.id===r.dataset.opp); gpRow(r, o); box.appendChild(r); });
+    frag.appendChild(box);
+  });
+  list.replaceWith(frag);
+}
+function gpRow(r, o){
+  const a = r.querySelector(":scope > .avatar"); if (a) { a.classList.add("gp-44"); if (o.roleTitle) a.classList.add("mh-sq"); }
+  r.setAttribute("data-kc","KeyPipelineRow"); r.setAttribute("data-kv",`stage=${GP_ST[gpStage(o)][0]}, owner=${ownerOf(o)}`);
+  const right = r.querySelector(":scope > .r"); const own = ownerOf(o);
+  if (right && (own==="them" || own==="kai" || own==="done")) { right.querySelectorAll(".k").forEach(k=>k.remove()); right.insertAdjacentHTML("beforeend", own==="them" ? gpMeter(o) : gpTalk(o)); }
+  if (own==="them" && !o.quiet && (o.nudgeDraft || gpWaited(o)>=7) && right && !right.querySelector("button")) { right.querySelectorAll(".gp-age").forEach(k=>k.remove()); right.insertAdjacentHTML("afterbegin", `<button class="mini sec" onclick="event.stopPropagation();cycleExit('${o.id}','nudge')">Nudge</button>`); }
+}
+
+/* ---- 2. KeySentMoment and KeyWaitPlan ---- */
+const _gpSent = sentSheet; sentSheet = function(id){
+  const h = _gpSent(id); const o = DB.opps.find(x=>x.id===id); if (!gpOn() || !o) return h;
+  const to = scHolder(o), c = viaOf(o), t = targetOf(o), m = DB.missions.find(x=>x.id===o.missionId);
+  const done = /dAfterSent\(\)/.test(h) ? "dAfterSent()" : "closeSheet()";
+  const plan = [
+    ["send", "Today", "Sent", o.offKey ? `${f1(c)} forwards it on WhatsApp` : `${f1(to)} has it. You hear the moment it moves`, "on"],
+    ["pencil", "Day 7", "Kai drafts a nudge", o.offKey ? `Kai asks ${f1(c)} what came back` : "Only if it's quiet. You send it or let it be"],
+    ["hourglass", "Day 14", "Keep waiting?", "Kai asks once: wait, try another route, or archive"],
+    ["archive", "Day 21", "It closes quietly", `${f1(to)} sees Expired. No words are sent`],
+  ];
+  return `<div class="sc gp-sent" data-kc="KeySentMoment" data-kv="route=${c?"connector":"direct"}">
+    <div class="gp-sent-hd"><span class="gp-ok" aria-hidden="true">${LI("check",24)}</span><div><div class="t20">Sent to ${f1(to)}</div><div class="m12">${o.roleTitle ? `${o.roleTitle}, ${o.roleCompany}` : c ? `For an intro to ${f1(t)}` : t.name}</div></div></div>
+    ${typeof mhRoute==="function" ? mhRoute(o) : ""}
+    <div class="sl">What happens next</div>
+    <div class="gp-plan" data-kc="KeyWaitPlan" data-kv="steps=4">${plan.map(([ic,when,a,b,on])=>`<div class="gp-pr${on?" on":""}">${gpTile(ic, on?"ink":"")}<div class="m"><div class="gp-w">${when}</div><div class="a">${a}</div><div class="b">${b}</div></div></div>`).join("")}</div>
+    <div class="acts"><button class="btn" onclick="${done}">Done</button></div></div>`;
+};
+
+/* ---- 3. KeyStageTrack and "Log an update" on the path page ---- */
+const GP_SHORT = { Interested:"Pick", Surfaced:"Pick", "Connector agreed":"Agreed", "Daniel agreed":"Agreed", "Target replied":"Replied", "In conversation":"Talking", Resolved:"Done", Decision:"Offer" };
+const gpShort = l => GP_SHORT[l] || (/ agreed$/.test(l) ? "Agreed" : / replied$/.test(l) ? "Replied" : l);
+const gpWhen = w => !w ? "" : /^(now|today)$/i.test(w) ? "Today" : /^-(\d+)d$/.test(w) ? `${gpAgo(w)}d ago` : /^\+\d+d$/.test(w) ? "" : w;
+function gpTrack(o){
+  const tl = o.timeline||[]; const n = tl.filter(x=>x[2]).length; const done = o.state==="done";
+  return `<ol class="gp-track" data-kc="KeyStageTrack" data-kv="steps=${tl.length}, at=${n}" aria-label="Step ${n} of ${tl.length}">${tl.map((s,i)=>`<li class="${s[2]?"on":""}${i===n-1&&!done?" now":""}"><i></i><b>${gpShort(s[0])}</b>${i===n-1&&gpWhen(s[1])?`<small>${gpWhen(s[1])}</small>`:""}</li>`).join("")}</ol>`;
+}
+const gpCanUpdate = o => o.state==="conversation" || (o.state==="yourmove" && o.phase==="replied") || (o.state==="waiting" && o.viaAgreed && !!o.roleTitle);
+function gpPath(root, id){
+  const o = DB.opps.find(x=>x.id===id); const body = root.querySelector(".body.sc"); if (!o || !body || body.querySelector(".gp-track")) return;
+  const stp = body.querySelector(".stp");
+  if (stp) { const st = stp.nextElementSibling; if (st && st.classList.contains("st")) st.remove(); stp.outerHTML = gpTrack(o); }
+  const own = ownerOf(o), head = body.querySelector(":scope > .sc > .st, :scope > .st");
+  if (head) head.querySelectorAll("span:not(.k)").forEach(sp=>{ sp.textContent = sp.textContent.replace(/(,? since |^)([-+]\d+d|now)$/, (x, pre, w)=>{ const v = gpWhen(w); return v ? `${pre}${v.toLowerCase()==="today"?"today":v}` : ""; }); });
+  if (o.roleTitle && o.state==="conversation") { const nn = body.querySelector(".nn"); if (nn) nn.innerHTML = `<div><span class="lab">Now</span><span>With the ${o.roleCompany} hiring team</span></div><div><span class="lab">Next</span><span>Log the screen or interview when it's booked. Kai briefs you the night before</span></div>`; }
+  if (head && own==="them" && !head.querySelector(".gp-age")) head.insertAdjacentHTML("beforeend", gpMeter(o));
+  if (gpCanUpdate(o)) { const nn = body.querySelector(".nn"); const at = nn || body.querySelector(".gp-track");
+    if (at) at.insertAdjacentHTML("afterend", `<div class="row gp-upd" onclick="openSheet('gpupd','${id}')" data-kc="KeyActionRow" data-kv="lead=icon">${gpTile("pencil","ink")}<div class="m"><div class="a">Log an update</div><div class="b">${o.roleTitle ? "Screen, interview, offer, or it stopped" : "Met, went well, not a fit"}. One tap</div></div><span class="chev">${LI("chevron-right",16)}</span></div>`); }
+}
+function gpUpdSheet(id){
+  const o = DB.opps.find(x=>x.id===id); if (!o) return "";
+  const t = targetOf(o), c = viaOf(o), lit = l => (o.timeline||[]).some(s=>s[0]===l && s[2]);
+  const who = c && o.viaAgreed ? `${f1(c)} sees the outcome, never your words` : "Only Kai records it";
+  const opt = (k, ic, a, b, cls) => `<div class="row gp-opt${cls?" "+cls:""}" onclick="gpUpd('${id}','${k}')" data-kc="KeyChoiceRow">${gpTile(ic, cls==="gold"?"gold":"")}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`;
+  const opts = o.roleTitle ? [
+    !lit("Screen") && ["screen","calendar-check","Screen booked","Kai briefs you the night before"],
+    lit("Screen") && !lit("Interview") && ["interview","users","Moving to interviews","Kai finds Xooglers who've done this loop"],
+    ["offer","file-check",`Offer from ${o.roleCompany}`,"Kai asks if this closes the mission","gold"],
+    ["nofit","circle-slash","They didn't move forward",`Logged. ${c?f1(c)+" sees Closed. ":""}Kai looks for more like the good ones`],
+  ] : [
+    !o.met && ["met","calendar-check",`We met`,"Kai asks how it went in a few days"],
+    ["good","check","It went well",c?`${f1(c)} sees Landed. Kai drafts a thank-you`:"Kept on your record","gold"],
+    ["nofit","circle-slash","Not a fit","Kai shows fewer like this. Nobody is told why"],
+  ];
+  const guess = o.roleTitle && !lit("Screen") && STATE.connect && STATE.connect.calendar ? `<div class="gp-guess" data-kc="KeyKaiGuess">${kaiMark(20)}<div class="m"><div class="a">${o.roleCompany} recruiter, Monday 10am</div><div class="b">On your calendar. Is that the screen?</div></div><button class="mini" onclick="gpUpd('${id}','screen')">Yes</button></div>` : "";
+  return `<div class="sc gp-upds" data-kc="KeyUpdateSheet"><div class="gp-uhd">${gpFace(o,"gp-44")}<div class="m"><div class="t20">What moved with ${o.roleTitle ? o.roleCompany : f1(t)}?</div><div class="m12">${who}</div></div></div>
+    ${guess}<div class="rows">${opts.filter(Boolean).map(x=>opt(...x)).join("")}</div>
+    <div class="acts"><span class="quiet" style="margin:0 auto" onclick="closeSheet()">Nothing yet</span></div></div>`;
+}
+function gpUpd(id, k){
+  const o = DB.opps.find(x=>x.id===id); if (!o) return; const t = targetOf(o); o.log = o.log||[];
+  const toConv = () => { if (o.state!=="conversation") { o.state = "conversation"; o.phase = null; o.asked = null; } };
+  STATE.sheet = null;
+  if (k==="screen") { toConv(); lit(o,"Screen","today"); o.log.push(["You",`logged the ${o.roleCompany} screen.`,"now"]); o.log.push(["Kai","will brief you the night before.","now"]); toast("Logged. Kai briefs you the night before the screen."); }
+  else if (k==="interview") { toConv(); lit(o,"Interview","today"); o.log.push(["You","moved to interviews.","now"]); toast("Logged. Kai looks for Xooglers who've done this loop."); }
+  else if (k==="met") { toConv(); o.met = true; lit(o,"In conversation","today"); o.log.push(["You",`met ${f1(t)}.`,"now"]); toast(`Logged. Kai asks how it went with ${f1(t)} in a few days.`); }
+  else if (k==="offer") { toConv(); lit(o,"Decision","today"); o.log.push(["You",`got an offer from ${o.roleCompany}.`,"now"]); const m = DB.missions.find(x=>x.id===o.missionId); if (m && !m.standing && m.status==="active") STATE.closeProposed = m.id; logOutcome(id, "good"); return; }
+  else if (k==="good" || k==="nofit") { toConv(); logOutcome(id, k); return; }
+  render();
+}
+const _gpPortSheet = portSheet; portSheet = function(type, id){ return type==="gpupd" ? gpUpdSheet(id) : _gpPortSheet(type, id); };
+
+/* ---- 4. KeyHandshake: the yes ---- */
+const _gpHs = handshakeHTML; handshakeHTML = function(id){
+  const o = DB.opps.find(x=>x.id===id); if (!gpOn() || !o) return _gpHs(id);
+  const t = targetOf(o), c = viaOf(o), me = DB.people[STATE.persona] || { initials: DB.user.initials };
+  const mid = c || (o.roleTitle ? t : null); const faces = [av(me.initials)]; if (mid && (o.roleTitle || mid!==t)) faces.push(av(mid.initials, gpVouch(o)?"gold":"")); faces.push(o.roleTitle ? av((o.roleCompany||"?")[0], "mh-sq") : av(t.initials));
+  const title = o.roleTitle ? `You're in at ${o.roleCompany}` : `${f1(t)} said yes`;
+  const line = o.roleTitle ? `${f1(c||t)} passed you to the hiring team. Log the screen when it's booked and Kai briefs you the night before.` : `You're talking now.${c?` ${f1(c)} sees: Landed.`:""} Kai steps back until there's something to do.`;
+  return `<div class="gp-hs" data-kc="KeyHandshake" data-kv="kind=${o.roleTitle?"role":"person"}"><div class="gp-hs-f">${faces.filter(Boolean).join('<i aria-hidden="true"></i>')}</div>
+    <div class="gp-hs-k">${o.roleTitle?"Next step":"In conversation"}</div><div class="gp-hs-t">${title}</div><p>${line}</p>
+    <button class="btn gp-hs-b" onclick="event.stopPropagation();closeSheet();${o.roleTitle?"":`cycleExit('${id}','thread')`}">${o.roleTitle?"Done":`Message ${f1(t)}`}</button></div>`;
+};
+
+/* ---- 5. KeyOutcomeSheet and KeyOutcomeMoment ---- */
+const _gpJ = journalSheet; journalSheet = function(id){
+  const o = DB.opps.find(x=>x.id===id); if (!gpOn() || !o) return _gpJ(id);
+  const h = _gpJ(id), t = targetOf(o), c = viaOf(o);
+  const note = (h.match(/<div class="row" data-sctog="jnote:[\s\S]*$/)||[""])[0].replace(/<\/div>\s*$/, "");
+  const opt = (v, ic, a, b, cls) => `<div class="row gp-opt${cls?" "+cls:""}" data-outcome="${id}|${v}" data-kc="KeyChoiceRow">${gpTile(ic, cls||"")}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div></div>`;
+  return `<div class="sc gp-upds" data-kc="KeyOutcomeSheet"><div class="gp-uhd"><span class="gp-pair">${av((DB.people[STATE.persona]||DB.user).initials)}${gpFace(o)}</span><div class="m"><div class="t20">How did it go with ${f1(t)}?</div><div class="m12">${c?`${f1(c)} is told the outcome, never your words`:"One tap. Only Kai records it"}</div></div></div>
+    <div class="rows">${opt("good","check","It went well", c ? `${f1(c)} sees Landed. Kai drafts a thank-you for you to send` : "Kept on your record. Kai looks for more like this", "gold")}
+    ${opt("nofit","circle-slash","Not a fit","Kai shows fewer like this. Nobody is told why")}
+    ${opt("no","clock","Not yet","Kai asks once more in your weekly review, then stops")}</div>${note}</div>`;
+};
+function gpMoment(){
+  const sh = STATE.sheet; if (!sh || sh.type!=="jsheet" || !/^keep\|/.test(sh.id||"")) return;
+  const o = DB.opps.find(x=>x.id===sh.id.split("|")[1]); const sb = phone.querySelector("#sheet .sb"); if (!o || !sb || sb.querySelector(".gp-mo") || o.outcome!=="good") return;
+  const t = targetOf(o), c = viaOf(o), me = DB.people[STATE.persona] || { initials: DB.user.initials };
+  const mid = c || (o.roleTitle ? t : null); const faces = [av(me.initials)]; if (mid && (o.roleTitle || mid!==t)) faces.push(av(mid.initials, gpVouch(o)?"gold":"")); faces.push(o.roleTitle ? av((o.roleCompany||"?")[0],"mh-sq") : av(t.initials));
+  sb.insertAdjacentHTML("afterbegin", `<div class="gp-mo" data-kc="KeyOutcomeMoment" data-kv="outcome=good"><div class="gp-hs-f">${faces.join('<i aria-hidden="true"></i>')}</div><div class="gp-mo-k">Went well</div><div class="gp-mo-t">${o.roleTitle ? `${o.roleTitle}, ${o.roleCompany}` : `You and ${f1(t)}`}</div>${c?`<div class="m12">${f1(c)} sees Landed. A thank-you waits on Missions for your yes</div>`:""}</div>`);
+}
+
+/* ---- 6. KeyCloseSheet: what came of it, who helped, what closes ---- */
+const gpAll = mid => DB.opps.filter(o=>o.missionId===mid && o.state!=="dropped" && o.state!=="candidate");
+const gpTried = o => o.outcome==="good" || (o.timeline||[]).filter(x=>x[2]).length>1;
+const gpActed = mid => gpAll(mid).filter(gpTried);
+function gpOutRow(o){
+  const c = viaOf(o), t = targetOf(o);
+  return `<div class="row gp-out" onclick="closeSheet();go('path:${o.id}')" data-kc="KeyOutcomeRow">${gpFace(o,"gp-56")}<div class="m"><div class="gp-mo-k">Went well</div><div class="a">${o.roleTitle ? `${o.roleTitle}, ${o.roleCompany}` : t.name}</div>${c?`<div class="b">${av(c.initials, gpVouch(o)?"sm gold":"sm")}Through ${f1(c)}</div>`:""}</div></div>`;
+}
+function gpThanks(mid){
+  return gpAll(mid).filter(o=>viaOf(o) && o.viaAgreed && o.outcome==="good").map(o=>{ const c = viaOf(o);
+    return `<div class="row gp-thx" data-kc="KeyRow" data-kv="lead=avatar, action=${o.thanked?"none":"button"}">${av(c.initials,"gp-44")}<div class="m"><div class="a">${c.name}</div><div class="b">${o.roleTitle ? `Referred you to ${o.roleCompany}` : `Introduced you to ${f1(targetOf(o))}`}</div></div><div class="r">${o.thanked ? `<span class="gp-age gold"><b>Thanked</b></span>` : `<button class="mini" onclick="event.stopPropagation();openSheet('thank','${o.id}')">Thank ${f1(c)}</button>`}</div></div>`; }).join("");
+}
+const _gpClose = closeMissionSheet; closeMissionSheet = function(mid){
+  const m = DB.missions.find(x=>x.id===mid); if (!gpOn() || !m) return _gpClose(mid);
+  const h = _gpClose(mid);
+  const good = gpAll(mid).filter(o=>o.outcome==="good");
+  const open = gpAll(mid).filter(o=>o.state!=="done" && gpTried(o)), fresh = gpAll(mid).filter(o=>o.state!=="done" && !gpTried(o));
+  const note = (h.match(/<div class="row" data-sctog="cnote:[\s\S]*?(?=<div class="row" onclick="openSheet\('confirm')/)||[""])[0];
+  const openRows = open.map(o=>{ const c = viaOf(o), t = targetOf(o); const who = []; if (typeof connectorHas==="function" && connectorHas(o)) who.push(`${f1(c)} sees Closed`); if (typeof targetHas==="function" && targetHas(o)) who.push(`${f1(t)} sees Closed`);
+    return `<div class="row">${gpFace(o)}<div class="m"><div class="a">${scName(o)}</div><div class="b">${scK(o)[0]} · ${who.length ? who.join(", ") : "Nobody is told"}</div></div></div>`; }).join("");
+  const thx = gpThanks(mid);
+  return `<div class="sc gp-close" data-kc="KeyCloseSheet"><div class="gp-uhd">${mhMark(m,44)}<div class="m"><div class="t20">Close ${m.name}?</div><div class="m12">${m.standing ? "Standing mission" : `Done when: ${m.done}`}. Reopen any time</div></div></div>
+    <div class="sl">What came of it</div>${good.length ? `<div class="rows">${good.map(gpOutRow).join("")}</div>` : `<div class="m12 gp-none">Nothing logged as went well yet. You can still close it</div>`}
+    ${thx ? `<div class="sl">Who helped</div><div class="rows">${thx}</div>` : ""}
+    ${open.length ? `<div class="sl">${open.length===1 ? "Closes with it" : `${open.length} close with it`}</div><div class="rows gp-closing">${openRows}</div><div class="m12">A status each, never words. Nobody is told why</div>` : ""}
+    ${fresh.length ? `<div class="row gp-fresh"><span class="gp-faces">${fresh.slice(0,3).map(o=>gpFace(o)).join("")}</span><div class="m"><div class="a">${fresh.length===1?"One new pick is":fresh.length+" new picks are"} set aside</div><div class="b">Nobody was asked, so nobody is told</div></div></div>` : ""}
+    ${note}
+    <div class="acts gp-cacts"><button class="btn" data-closefinal="${mid}|got">Close it</button><button class="btn sec" data-closefinal="${mid}|notyet">Keep going</button></div>
+    <div class="row" onclick="openSheet('confirm','irrelevant|${mid}')"><div class="m"><div class="a plain gp-dim">No longer relevant</div></div><span class="chev">${LI("chevron-right",16)}</span></div></div>`;
+};
+const _gpCloseM = closeMission; closeMission = function(mid, how){
+  _gpCloseM(mid, how); const m = DB.missions.find(x=>x.id===mid);
+  if (!gpOn() || !m || how==="notyet" || m.status!=="closed") return;
+  const n = gpActed(mid).length, g = gpAll(mid).filter(o=>o.outcome==="good").length;
+  if (how==="got") m.closedNote = `${n===1?"One person":n+" people"} on the way, ${g===1?"one went well":g?g+" went well":"none logged as went well"}.`;
+  m.gpClosedDay = STATE.gpDay||0; STATE.gpFresh = mid; STATE.toast = null; go("mission:"+mid);
+};
+
+/* ---- 7. KeyMissionRecap: the closed mission's page is its record ---- */
+function gpReopen(mid){ const m = DB.missions.find(x=>x.id===mid); if (!m) return; m.status = "active"; if (typeof missionLogAdd==="function") missionLogAdd(m,"You","reopened this."); STATE.gpFresh = null; toast("Reopened. Nobody is told until you act."); render(); }
+function gpRecap(root, mid){
+  const m = DB.missions.find(x=>x.id===mid); const body = root.querySelector(".body.sc"); if (!m || !body || body.querySelector(".gp-recap")) return;
+  const all = gpAll(mid), acted = gpActed(mid), good = all.filter(o=>o.outcome==="good");
+  const word = o => o.outcome==="good" ? "Went well" : o.outcome==="nofit" ? "Not a fit" : o.state==="done" ? "Closed" : scK(o)[0];
+  const cap = m.closedHow==="irrelevant" || /no longer relevant/i.test(m.closedNote||"") ? "Closed · No longer relevant" : STATE.gpFresh===mid ? "Closed today" : "Closed";
+  const grid = acted.map(o=>`<button class="gp-gf${o.outcome==="good"?" good":""}" onclick="go('path:${o.id}')" aria-label="${scName(o)}, ${word(o)}">${gpFace(o,"gp-44")}<b>${o.roleTitle ? o.roleCompany : f1(targetOf(o))}</b><small>${word(o)}</small></button>`).join("");
+  const thx = gpThanks(mid);
+  body.innerHTML = `<div class="gp-recap" data-kc="KeyMissionRecap" data-kv="fresh=${STATE.gpFresh===mid}">${mhBand(m, all, true, cap)}
+    <div class="sl">What came of it</div>${good.length ? `<div class="rows">${good.map(gpOutRow).join("")}</div>` : `<div class="m12 gp-none">${m.closedNote || "Nothing logged as went well."}</div>`}
+    ${acted.length ? `<div class="sl">Everyone on the way</div><div class="gp-grid" data-kc="KeyFaceGrid">${grid}</div>` : ""}
+    ${thx ? `<div class="sl">Who helped</div><div class="rows">${thx}</div>` : ""}
+    <div class="m12 gp-kept">Kept on your record. Kai uses what worked here for your next mission</div>
+    <div class="acts"><button class="btn sec" onclick="gpReopen('${mid}')">${LI("undo-2",18)}<span>Reopen</span></button></div></div><div class="body-gap"></div>`;
+}
+
+/* ---- after every render ---- */
+const _gpRender = render; render = function(){
+  if (gpOn()) gpStamp();
+  const r = _gpRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  phone.classList.toggle("hf-gp", gpOn());
+  if (!gpOn()) return r;
+  const root = phone.querySelector(".view") || phone; const s = STATE.screen||"";
+  if (s.startsWith("mission:")) { const m = DB.missions.find(x=>x.id===s.slice(8)); if (m && m.status==="closed") gpRecap(root, m.id); else if (m && !m.host && !m.evKind && !m.series) gpPaths(root, m.id); }
+  if (s.startsWith("path:")) gpPath(root, s.slice(5));
+  gpMoment();
+  return r;
+};
+
+/* ---- calendar push: "Coffee with Rahul just ended" only once the coffee has happened.
+   capture.js fired it seconds after the first hello. Now it waits for the calendar, a yes from Rahul (in conversation, not yet met)
+   and two days in conversation, the "Thursday afternoon?" he offered. */
+if (typeof lgCalendarPush==="function") { const _gpCal = lgCalendarPush; lgCalendarPush = function(){
+  if (!gpOn()) return _gpCal();
+  const o = DB.opps.find(x=>x.personId==="rahul" && x.state==="conversation" && !x.met);
+  if (!o || !STATE.connect || !STATE.connect.calendar || gpAge(o)<2) return;
+  _gpCal();
+}; }
 
 /* ==== ONBOARDING REV 4 (27 Sep, Stress test onboarding thread; Apoorv 21:43, 22:10 and 22:34). Rev 3 helpers, then rev 4 screens. Brand link icons: Simple Icons (CC0). */
 /* ---- Onboarding rev 3 (Stress test onboarding thread, Apoorv's yes 27 Sep 17:51) ----
