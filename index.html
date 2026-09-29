@@ -3783,8 +3783,10 @@ p,
 .call { background:var(--mo-deep); }
 .call .viz { padding-top:40px; }
 .call .viz { position:relative; }
-/* the globe and its halo are gone from the call (dot clusters, 29 Sep); the gold glow at the foot is the voice, so the words sit under the header */
-#phone .call #vizc { display:none; }
+.call .viz::before { content:""; position:absolute; left:50%; top:40px; width:230px; height:230px; transform:translateX(-50%); border-radius:50%; pointer-events:none;
+  background:radial-gradient(closest-side, rgba(249,250,252,.10), transparent); transition:background .4s var(--mo-std); }
+.call[data-who="you"] .viz::before { background:radial-gradient(closest-side, rgba(220,184,84,.16), transparent); }
+.call .viz canvas { position:relative; width:230px; height:230px; }
 .call .vizs { font-size:18px; font-weight:700; letter-spacing:-.01em; transition:color .32s var(--mo-std); }
 .call[data-who="you"] .vizs { color:var(--mo-user); }
 .call .vizt { color:var(--mo-on-deep-muted); }
@@ -16287,19 +16289,19 @@ const _talkSendMsg = sendMsg; sendMsg = function(cid, k){
 };
 
 /* ==== MOTION (26 Sep, "Motion design" thread, second pass). Owns: the sign-in story in place of the marketing placeholder,
-   the Kai call's speech clock (the gold glow in kai-call.js reads it) and the transcript spoken word by word.
-   Rendering: canvas 2D glows and GSAP 3.12.5 for choreography, from cdnjs and loaded only when motion is on. No point clouds, star fields or
-   dot bursts anywhere (trypophobia rule; the globe and the member cloud went on 29 Sep).
+   the Kai call globe (Apoorv's pick, 22 Sep, restored at his word 29 Sep; the member's voice is gold) and the transcript spoken word by word.
+   Rendering: three.js r128 for the call globe (WebGL points with soft sprites) and GSAP 3.12.5 for choreography, both from cdnjs and loaded
+   only when motion is on. The sign-in reel has no point clouds or dot bursts (29 Sep); its voice is a canvas 2D glow.
    Motion is off under navigator.webdriver (tests, captures) unless the URL has ?motion,
    and under prefers-reduced-motion: then nothing loads, the story shows one composed still and the call behaves as before.
    Load before data.js. ==== */
 const MO_ON = (()=>{ try { const q=new URLSearchParams(location.search); if (q.has("motion")) return true; return !navigator.webdriver && !matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e) { return false; } })();
-const MO_LIBS = ["https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"];
+const MO_LIBS = ["https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"];
 let moLibs = null;
 function moLoad() {
   if (!MO_ON) return Promise.reject(new Error("motion off"));
   if (!moLibs) moLibs = Promise.all(MO_LIBS.map(src => new Promise((ok, no) => {
-    if (window.gsap) return ok();
+    if ((/three/.test(src) && window.THREE) || (/gsap/.test(src) && window.gsap)) return ok();
     const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); setTimeout(()=>no(new Error("slow")), 8000); // a phone on a bad connection gets the still frame
   }))).then(() => document.fonts ? Promise.race([document.fonts.load("700 80px Manrope"), new Promise(r=>setTimeout(r,1200))]) : 0);
   return moLibs;
@@ -16543,9 +16545,9 @@ const MO_REEL = true;
 const _moSignin = sSignin;
 if (MO_REEL) sSignin = function() { return _moSignin.apply(this, arguments).replace(/<div class="mvis full">[\s\S]*?<\/div><\/div>/, moPromoHTML()); };
 
-/* ---- Kai call: the speech clock, driven by what is being said ---- */
+/* ---- Kai call: the globe, driven by what is being said ---- */
 // Speech is scheduled from the words themselves: each syllable a pulse, a comma a short breath, a full stop a longer one.
-const MO_SIG = { level:0, bands:new Float32Array(24), who:"idle", words:[], start:0, end:0, onEnd:null, els:[], shown:-1, col:[166,175,187] };
+const MO_SIG = { level:0, bands:new Float32Array(24), who:"idle", words:[], start:0, end:0, onEnd:null, els:[], shown:-1, rot:0, rad:1, col:[166,175,187] };
 const MO_COL = { idle:[166,175,187], kai:[249,250,252], you:[220,184,84], think:[200,206,214] };
 function moSchedule(text, pace) {
   let t = 0; const out = [];
@@ -16589,26 +16591,90 @@ function moTick(now, dt) {
   const target = STATE.callMuted ? 0.03 : moAmp(now);
   MO_SIG.level += (target - MO_SIG.level) * (target > MO_SIG.level ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7)); // fast attack, slow release
   for (let b=0; b<24; b++) { const want = MO_SIG.level*(0.35+0.65*(Math.sin(b*3.1*12.9898 + now/1000*(1.15+b*0.4))*0.5+0.5))*(1-b/62); MO_SIG.bands[b] += (want-MO_SIG.bands[b])*(1-Math.exp(-dt*14)); }
+  const think = MO_SIG.who==="think";
+  MO_SIG.rot += dt * (think ? 1.4 : 0.30);
+  MO_SIG.rad += ((think ? 0.86 : 1) - MO_SIG.rad) * (1-Math.exp(-dt*6));
   const tc = MO_COL[MO_SIG.who]; MO_SIG.col = MO_SIG.col.map((v,i)=>v+(tc[i]-v)*(1-Math.exp(-dt*8)));
 }
-let moLast = 0;
-// The call's voice visual is Kai call's gold glow (KeyVoiceGlow, kai-call.js), which reads MO_SIG; the dotted globe no longer draws in the
-// call (trypophobia rule, 29 Sep). The loop still runs the speech clock, and the minimised bar gets four solid bars instead of a mini globe.
-function moBars(c) {
-  const dpr = Math.min(window.devicePixelRatio||1, 2), W = c.clientWidth, H = c.clientHeight; if (!W) return;
-  if (c.width !== Math.round(W*dpr)) { c.width = Math.round(W*dpr); c.height = Math.round(H*dpr); }
+function moBand(a) { const f = (((a % (Math.PI*2)) + Math.PI*2) % (Math.PI*2)) / (Math.PI*2) * 24; const i = Math.floor(f), m = f-i; const x = MO_SIG.bands[i%24], y = MO_SIG.bands[(i+1)%24]; return x + (y-x)*(m*m*(3-2*m)); }
+function moGlobe(c, t) {
+  const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return; // layout size, so the page stepping back under a sheet (scale .93) doesn't resize the buffer every frame
+  const W = Math.round(r.width), H = Math.round(r.height);
+  if (c.width !== W*dpr) { c.width = W*dpr; c.height = H*dpr; }
   const g = c.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2, R = Math.min(W,H)*0.30*MO_SIG.rad, amp = MO_SIG.level, tilt = -0.32, small = W < 60;
   g.fillStyle = `rgb(${MO_SIG.col.map(Math.round).join(",")})`;
-  const n = 4, bw = W*.1, gap = W*.1, x0 = (W - n*bw - (n-1)*gap)/2;
-  for (let b=0; b<n; b++) { const h = H*(.3 + .4*Math.min(1, 1.8*MO_SIG.bands[b*5])); g.beginPath(); g.roundRect(x0 + b*(bw+gap), (H-h)/2, bw, h, bw/2); g.fill(); }
+  const RINGS = small ? 7 : 15;
+  for (let ri=0; ri<RINGS; ri++) {
+    const lat = (ri/(RINGS-1)-0.5)*Math.PI, cl = Math.cos(lat), sl = Math.sin(lat), count = Math.max(4, Math.round((small?12:30)*cl));
+    for (let j=0; j<count; j++) {
+      const lon = j/count*Math.PI*2 + MO_SIG.rot + ri*0.21, e = moBand(lon + lat*1.7);
+      const rr = R*(1 + amp*(0.10+0.34*e) + 0.03*Math.sin(t*1.1+ri));
+      const x3 = cl*Math.cos(lon), z3 = cl*Math.sin(lon), yt = sl*Math.cos(tilt) - z3*Math.sin(tilt), zt = sl*Math.sin(tilt) + z3*Math.cos(tilt), depth = (zt+1)/2;
+      g.globalAlpha = 0.10 + 0.90*depth*depth;
+      g.beginPath(); g.arc(cx + x3*rr, cy + yt*rr, (small?0.5:0.7) + (small?0.9:1.5)*depth*(0.5+e*amp), 0, Math.PI*2); g.fill();
+    }
+  }
+  g.globalAlpha = 1;
 }
+// The globe in WebGL: 4,200 points on a sphere, pushed along their normals by 3D simplex noise scaled by the voice level,
+// brighter at the rim (fresnel) and at the front; the glow behind it is CSS, keyed to who is speaking. One renderer, blitted into
+// whichever canvases are on screen (the call and the minimised bar), so re-renders never create a new GL context.
+const MO_SNOISE = `vec3 m289(vec3 x){return x-floor(x*(1./289.))*289.;} vec4 m289(vec4 x){return x-floor(x*(1./289.))*289.;} vec4 perm(vec4 x){return m289(((x*34.)+1.)*x);}
+vec4 tis(vec4 r){return 1.79284291400159-.85373472095314*r;}
+float snoise(vec3 v){ const vec2 C=vec2(1./6.,1./3.); const vec4 D=vec4(0.,.5,1.,2.); vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+ vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy); vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+ i=m289(i); vec4 p=perm(perm(perm(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+ float n_=.142857142857; vec3 ns=n_*D.wyz-D.xzx; vec4 j=p-49.*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.*x_);
+ vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.-abs(x)-abs(y); vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+ vec4 s0=floor(b0)*2.+1.; vec4 s1=floor(b1)*2.+1.; vec4 sh=-step(h,vec4(0.)); vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+ vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+ vec4 nr=tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3))); p0*=nr.x; p1*=nr.y; p2*=nr.z; p3*=nr.w;
+ vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.); m=m*m;
+ return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3))); }`;
+let MO_GLOBE = null;
+function moGlobeGL() {
+  if (MO_GLOBE) return MO_GLOBE;
+  if (!window.THREE) return null;
+  const T = THREE, S = 460, renderer = new T.WebGLRenderer({ antialias:true, alpha:true }); renderer.setPixelRatio(1); renderer.setSize(S, S, false); renderer.setClearColor(0,0);
+  const scene = new T.Scene(), camera = new T.PerspectiveCamera(32, 1, .1, 20); camera.position.z = 4.9;
+  const u = { uTime:{value:0}, uAmp:{value:0}, uThink:{value:0}, uColor:{value:new T.Color(1,1,1)}, uPx:{value:1} };
+  const N = 2600, pos = new Float32Array(N*3), seed = new Float32Array(N), ga = Math.PI*(3-Math.sqrt(5));
+  for (let i=0;i<N;i++) { const y = 1 - (i/(N-1))*2, r = Math.sqrt(1-y*y), th = ga*i; pos.set([Math.cos(th)*r, y, Math.sin(th)*r], i*3); seed[i] = (Math.sin(i*12.9898)*43758.5453) % 1; }
+  const g = new T.BufferGeometry(); g.setAttribute("position", new T.BufferAttribute(pos,3)); g.setAttribute("aSeed", new T.BufferAttribute(seed,1));
+  const pts = new T.Points(g, new T.ShaderMaterial({ uniforms:u, transparent:true, depthWrite:false, blending:T.AdditiveBlending,
+    vertexShader: MO_SNOISE + `uniform float uTime,uAmp,uThink,uPx; attribute float aSeed; varying float vA;
+      void main(){ vec3 n = normalize(position);
+        float n1 = snoise(n*1.5 + vec3(0., uTime*.32, uTime*.21)); float n2 = snoise(n*3.8 - vec3(uTime*.9));
+        float disp = uAmp*(.05 + .26*max(n1,0.) + .04*n2) + .018*sin(uTime*1.4 + aSeed*6.28) - uThink*(.10 + .04*sin(uTime*9. + n.y*8.));
+        vec3 p = n*(1. + disp);
+        vec4 mv = modelViewMatrix*vec4(p,1.); vec3 nv = normalize(normalMatrix*n);
+        float rim = pow(1. - abs(nv.z), 2.2); float front = smoothstep(-.35, 1., nv.z);
+        gl_PointSize = uPx*(2.2 + 3.4*front + 3.0*uAmp*max(n1,0.))*(4.3/-mv.z);
+        gl_Position = projectionMatrix*mv;
+        vA = (.06 + .62*front*front + .7*rim) * (.55 + .45*uAmp + .25*uThink); }`,
+    fragmentShader:`uniform vec3 uColor; varying float vA; void main(){ float r = length(gl_PointCoord-.5); float a = 1. - smoothstep(0.,.5,r); gl_FragColor = vec4(uColor, a*a*vA); }` }));
+  pts.rotation.x = -.32; scene.add(pts);
+  MO_GLOBE = { renderer, scene, camera, pts, u };
+  return MO_GLOBE;
+}
+function moGlobeBlit(G, cs) {
+  G.renderer.render(G.scene, G.camera);
+  cs.forEach(c => { const dpr = Math.min(window.devicePixelRatio||1, 2), r = { width:c.clientWidth, height:c.clientHeight }; if (!r.width) return;
+    const W = Math.round(r.width*dpr), H = Math.round(r.height*dpr); if (c.width !== W) { c.width = W; c.height = H; }
+    const g = c.getContext("2d"); g.clearRect(0,0,W,H); g.globalCompositeOperation = "lighter"; for (let k = W < 120 ? 3 : 1; k--;) g.drawImage(G.renderer.domElement, 0, 0, W, H); }); // the mini globe is drawn three times over so its points survive the downscale
+}
+let moLast = 0;
 vizLoop = function() {
-  const cs = phone.querySelectorAll("canvas.mo-mini");
-  if (!cs.length && !phone.querySelector("#vizc")) { vizRAF = null; return; }
+  const cs = phone.querySelectorAll("#vizc, canvas.mo-mini");
+  if (!cs.length) { vizRAF = null; return; }
   const now = performance.now(), dt = Math.min(0.05, moLast ? (now-moLast)/1000 : 0.016); moLast = now;
-  if (!MO_ON) { MO_SIG.level = MO_SIG.who==="idle" ? 0.08 : 0.55; for (let b=0;b<24;b++) MO_SIG.bands[b] = MO_SIG.level*(0.3+0.5*(Math.sin(b*3.1)*0.5+0.5)); MO_SIG.col = MO_COL[MO_SIG.who].slice(); cs.forEach(moBars); vizRAF = null; return; }
+  if (!MO_ON) { MO_SIG.level = MO_SIG.who==="idle" ? 0.08 : 0.55; for (let b=0;b<24;b++) MO_SIG.bands[b] = MO_SIG.level*(0.3+0.5*(Math.sin(b*3.1)*0.5+0.5)); MO_SIG.col = MO_COL[MO_SIG.who].slice(); cs.forEach(c=>moGlobe(c, 1.7)); vizRAF = null; return; }
   moTick(now, dt);
-  cs.forEach(moBars);
+  const G = moGlobeGL();
+  if (G) { G.u.uTime.value = now/1000; G.u.uAmp.value = MO_SIG.level; G.u.uThink.value += ((MO_SIG.who==="think"?1:0) - G.u.uThink.value)*(1-Math.exp(-dt*6));
+    G.u.uColor.value.setRGB(MO_SIG.col[0]/255, MO_SIG.col[1]/255, MO_SIG.col[2]/255); G.pts.rotation.y = MO_SIG.rot; moGlobeBlit(G, cs); }
+  else { moLoad().catch(()=>{}); cs.forEach(c=>moGlobe(c, now/1000)); }
   vizRAF = requestAnimationFrame(vizLoop);
 };
 vizKick = function(mode) { moWho(MO_ON && mode==="user" ? "you" : MO_ON && mode==="kai" ? "kai" : "idle"); if (!vizRAF) vizRAF = requestAnimationFrame(vizLoop); };
@@ -17555,7 +17621,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.135";
+window.KEY_BUILD = "2.136";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
