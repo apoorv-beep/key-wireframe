@@ -4886,11 +4886,11 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2src .p2add { margin-top:8px; }
 .p2src .p2srcx { border-radius:var(--radius-absolute-12, 12px); height:var(--space-absolute-48, 48px); font:var(--type-button-l, 700 16px/1.2 inherit); margin-top:4px; }
 
-/* ==== rev 14 (Apoorv 29 Sep 00:19): sections read as titled parts, shared communities under the name, Links with real logos,
+/* ==== rev 14 (Apoorv 29 Sep 00:19): sections read as titled parts (no rules between them: borders only where he asks), shared communities under the name, Links with real logos,
    Get updates says what it does, the quick view is a preview, and the page is opaque below the photo so scrolling never shows it through ==== */
 .p2hd { display:flex; align-items:center; gap:8px; font-size:16px; font-weight:700; text-transform:none; letter-spacing:0; color:var(--ink); margin-bottom:4px; }
 .p2hd svg { flex:0 0 auto; }
-.p2 > .p2sec { border-top:1px solid var(--line); padding-top:14px; }
+.p2 > .p2sec { padding-top:14px; }
 .p2sec > :last-child { border-bottom:0; }
 .p2brand { background:#F2F3F5; color:var(--ink); }
 .p2mut { display:flex; align-items:center; gap:8px; margin-top:6px; padding:0; border:0; background:transparent; font:inherit; font-size:13px; color:var(--ink2); text-align:left; cursor:pointer; }
@@ -4899,7 +4899,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2mt .flg { width:20px; height:20px; border-radius:6px; display:grid; place-items:center; font-size:10px; font-weight:700; background:#F2F3F5; overflow:hidden; }
 .p2qcap { font-size:12px; color:var(--ink2); margin-top:8px; }
 .p2pv .p2more { margin-top:4px; }
-#phone.hf-prof .p2 > .p2sec { border-top:var(--border-width-hairline) solid var(--border-default); padding-top:var(--space-absolute-20); }
+#phone.hf-prof .p2 > .p2sec { padding-top:var(--space-absolute-20); }
 #phone.hf-prof .p2hd { font:var(--type-title); letter-spacing:var(--type-title-tracking); text-transform:none; color:var(--text-primary); gap:var(--space-absolute-8); margin-bottom:var(--space-absolute-4); }
 #phone.hf-prof .p2hd svg { color:var(--icon-primary); }
 #phone.hf-prof .p2brand { background:var(--bg-fill-default); color:var(--icon-primary); }
@@ -13609,7 +13609,7 @@ function cDetails(cid){
       ${org?`<div class="cm-row cm-danger" onclick="${isCh?`toast('Deleting a channel asks you to confirm by name.')`:`openSheet('pconfirm','delconv|${cid}')`}"><div class="cm-ic">${LI("trash-2",18)}</div><div class="m"><div class="a">${isCh?"Delete channel":"Delete group"}</div><div class="b">${isCh?"Removes it and its messages for everyone":"Removes it for everyone"}</div></div></div>`:''}
     </div></div>`;
 }
-/* An event chat has no details page: its header opens the event (events thread, 26 Sep). Its ··· sheet opens the shared photos and files list here. */
+/* Event chats get their details page from Events (events.js sChatInfo override, round 2, Apoorv 29 Sep 18:43). */
 sChatInfo = function(cid){ const c = convOf(cid); return c && (c.kind==="channel" || c.kind==="group" || (c.kind==="event" && ["media","view"].includes(STATE.ciTab))) ? cDetails(cid) : _cChatInfo(cid); };
 
 /* ---- Posts: the prod library, shown here unchanged (settings/product_library): the family's own categories, the list card's fields,
@@ -17683,7 +17683,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.146";
+window.KEY_BUILD = "2.147";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
