@@ -17683,7 +17683,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.144";
+window.KEY_BUILD = "2.146";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
@@ -18487,6 +18487,105 @@ if (typeof ob3Welcome === "function" && typeof render === "function") {
     if (w) { obwPlay(w, !obwSeen); obwSeen = true; } else if (!STATE.ob3Wel) obwSeen = false;
     return r; };
 }
+
+</script>
+<style>
+/* KeySlideConfirm (slide-drop, 30 Sep): slide to commit, only where an action reaches another person or can't be undone.
+   Tokens only. The original button stays in the DOM, hidden, and is clicked on commit. */
+.ksl-src{display:none!important}
+.ksl{position:relative;width:100%;height:56px;border-radius:12px;background:var(--bg-fill-default,var(--fill));overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;margin:0}
+.ksl + .row, .ksl + .acts{margin-top:8px}
+.ksl-fill{position:absolute;inset:0 auto 0 0;width:52px;background:var(--text-primary,var(--ink));opacity:.12;border-radius:12px}
+.ksl-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 16px 0 60px;font-size:16px;font-weight:600;color:var(--text-secondary,var(--ink2));pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ksl-knob{position:absolute;top:4px;left:4px;width:48px;height:48px;border-radius:12px;border:0;padding:0;background:var(--bg-inverse-default,var(--ink));color:var(--text-inverse,#fff);display:grid;place-items:center;cursor:grab}
+.ksl-knob svg{width:24px;height:24px}
+.ksl-knob:focus-visible{outline:2px solid var(--text-primary,var(--ink));outline-offset:2px}
+.ksl.danger .ksl-knob{background:var(--state-danger-default,var(--danger))}
+.ksl.danger .ksl-fill{background:var(--state-danger-default,var(--danger))}
+.ksl.armed .ksl-label{color:var(--text-primary,var(--ink))}
+.ksl.done{background:var(--bg-inverse-default,var(--ink))}
+.ksl.done.danger{background:var(--state-danger-default,var(--danger))}
+.ksl.done .ksl-label{color:var(--text-inverse,#fff);padding-left:16px}
+.ksl.done .ksl-knob,.ksl.done .ksl-fill{opacity:0}
+.ksl.off{opacity:.45}
+.ksl.off .ksl-knob{cursor:default}
+.ksl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+</style>
+<script>
+/* KeySlideConfirm (slide-drop, 30 Sep; Apoorv 20:50 "lets get the slide thing in").
+   Slide to commit, only where an action reaches another person or can't be undone.
+   Upgrades existing buttons after every render; their own handlers run unchanged on commit.
+   Tap path (WCAG 2.2 2.5.7): tap the knob, then tap again within 3 seconds. */
+(function(){
+  const KSL_TARGETS = [
+    ["button[data-send]", b => "Slide to " + kslLower(kslText(b))],
+    ["button[onclick^=\"dReach(\"]", b => "Slide to " + kslLower(kslText(b))],
+    ["button[onclick^=\"oDo(\"]", b => "Slide to " + kslLower(kslText(b))],
+    ["button[onclick^=\"evmE(\"]", b => "Slide to " + kslLower(kslText(b))],
+    ["button[data-evpublish]", b => "Slide to " + kslLower(kslText(b))],
+    ["button[data-checkinok]", () => "Slide to check in"],
+    ["button[data-evcancelok]", () => "Slide to cancel event", "danger"],
+    ["button[data-cleave]", b => "Slide to leave " + ((b.closest(".sheet,[class*=sheet]")||document).querySelector("h2")||{textContent:""}).textContent.replace(/^Leave |\?$/g,""), "danger"],
+    ["button[onclick*=\"Invite sent in your name\"]", () => "Slide to send invite"]
+  ];
+  const KSL_DONE = { send:"Sent", publish:"Published", check:"Checked in", cancel:"Cancelled", leave:"Left", invite:"Sent" };
+  const KSL_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+  const kslReduced = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function kslText(b){ const c=b.cloneNode(true); c.querySelectorAll("small,svg,i,img").forEach(x=>x.remove()); return c.textContent.replace(/\s+/g," ").trim(); }
+  function kslLower(t){ return t ? t[0].toLowerCase()+t.slice(1) : t; }
+  function kslBuzz(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} }
+  function kslDoneText(label){ const k=Object.keys(KSL_DONE).find(x=>label.toLowerCase().includes(x)); return k ? KSL_DONE[k] : "Done"; }
+
+  function kslBuild(btn, label, tone){
+    const rail = document.createElement("div");
+    rail.className = "ksl" + (tone ? " "+tone : "");
+    rail.dataset.kc = "KeySlideConfirm"; rail.dataset.kv = "tone=" + (tone||"default");
+    rail.innerHTML = `<div class="ksl-fill"></div><span class="ksl-label">${label}</span><button type="button" class="ksl-knob" aria-label="${label.replace(/^Slide to /,"").replace(/^./,c=>c.toUpperCase())}">${KSL_ARROW}</button><span class="ksl-sr" aria-live="polite"></span>`;
+    const knob = rail.querySelector(".ksl-knob"), fill = rail.querySelector(".ksl-fill"), lab = rail.querySelector(".ksl-label"), sr = rail.querySelector(".ksl-sr");
+    if (btn.disabled) { knob.disabled = true; rail.classList.add("off"); }
+    let pos=0, x0=0, step=0, over=false, moved=false, armed=false, armT=null, done=false;
+    const max = () => rail.clientWidth - 56;
+    const set = p => { pos=Math.max(0,Math.min(max(),p)); knob.style.transform=`translateX(${pos}px)`; fill.style.width=(pos+52)+"px"; };
+    const ease = on => { const t = on && !kslReduced(); knob.style.transition = t ? "transform .35s cubic-bezier(.2,1.4,.4,1)" : "none"; fill.style.transition = t ? "width .35s" : "none"; };
+    const reset = () => { ease(true); set(0); step=0; over=false; armed=false; clearTimeout(armT); rail.classList.remove("armed"); lab.textContent=label; };
+    const commit = () => { if (done) return; done=true; clearTimeout(armT); ease(true); set(max()); rail.classList.add("done"); rail.classList.remove("armed"); lab.textContent=kslDoneText(label); sr.textContent=lab.textContent; kslBuzz([12,60,24]); setTimeout(()=>btn.click(), kslReduced()?0:320); };
+    knob.addEventListener("pointerdown", e => {
+      if (done || knob.disabled) return;
+      knob.setPointerCapture(e.pointerId); x0=e.clientX-pos; moved=false; ease(false);
+      const mv = ev => { if (!moved && Math.abs(ev.clientX-x0-pos)<4) return; moved=true; set(ev.clientX-x0);
+        const f=pos/max(), s=Math.floor(f*5);
+        if (s!==step && f<.85) { step=s; kslBuzz(8); }
+        if (f>=.85 && !over) { over=true; kslBuzz(18); } if (f<.85) over=false; };
+      const up = () => { knob.removeEventListener("pointermove",mv); knob.removeEventListener("pointerup",up); knob.removeEventListener("pointercancel",up);
+        if (!moved) { kslTap(); return; }
+        if (pos/max() >= .85) commit(); else reset(); };
+      knob.addEventListener("pointermove",mv); knob.addEventListener("pointerup",up); knob.addEventListener("pointercancel",up);
+    });
+    function kslTap(){ if (armed) { commit(); return; } armed=true; rail.classList.add("armed"); lab.textContent = label.replace(/^Slide to/,"Tap again to"); sr.textContent=lab.textContent; kslBuzz(8); ease(true); set(24); armT=setTimeout(reset,3000); }
+    knob.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); if (!knob.disabled) kslTap(); } });
+    knob.addEventListener("click", e => e.stopPropagation());
+    return rail;
+  }
+
+  function kslUpgrade(root){
+    KSL_TARGETS.forEach(([sel, labelOf, tone]) => {
+      root.querySelectorAll(sel).forEach(btn => {
+        if (btn.dataset.ksl) return; btn.dataset.ksl="1";
+        const rail = kslBuild(btn, labelOf(btn), tone);
+        if (btn.style.marginTop) rail.style.marginTop = btn.style.marginTop;
+        const p = btn.parentElement;
+        const inRow = p && /(^|\s)(row|acts)(\s|$)/.test(p.className) && p.querySelectorAll("button,[onclick]").length > 1;
+        if (inRow) p.parentElement.insertBefore(rail, p); else p.insertBefore(rail, btn);
+        btn.classList.add("ksl-src");
+      });
+    });
+  }
+  let kslQueued = false;
+  const kslObs = new MutationObserver(() => { if (kslQueued) return; kslQueued=true; queueMicrotask(()=>{ kslQueued=false; kslUpgrade(document); }); });
+  kslObs.observe(document.body, { childList:true, subtree:true });
+  kslUpgrade(document);
+})();
 
 </script>
 </body>
