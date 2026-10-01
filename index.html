@@ -4678,6 +4678,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2 { padding-bottom:24px; }
 .pact.p2pact { left:0; right:0; bottom:0; padding:24px 12px 14px; background:linear-gradient(to bottom, rgba(255,255,255,0), #fff 40%); }
 .pact.p2pact .btn { box-shadow:0 6px 20px rgba(0,0,0,.14); }
+#pbody:has(~ .p2pact) { scroll-padding-bottom:112px; }   /* focus and scrollIntoView stop above the floating bar (WCAG 2.4.11) */
 .btn.p2round { border-radius:12px; }
 #phone.hf-prof .pact.p2pact { padding:var(--space-absolute-24) var(--space-absolute-12) var(--space-absolute-14); background:linear-gradient(to bottom, transparent, var(--bg-page) 40%); }
 #phone.hf-prof .pact.p2pact .btn { box-shadow:var(--elevation-2); }
@@ -4914,9 +4915,13 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2kcard.p2out-x { transform:translateX(-40%); opacity:0; }
 .p2kcard.p2in { animation:p2kin .28s ease both; }
 @keyframes p2kin { from { transform:translateX(28px); opacity:.4; } }
-.p2kdone { display:flex; align-items:center; gap:12px; max-height:80px; overflow:hidden; transition:opacity .3s ease, max-height .3s ease, margin .3s ease; }
-.p2kdone.p2gone { opacity:0; max-height:0; margin:0; }
-@media (prefers-reduced-motion: reduce) { .p2kcard, .p2kdone { transition:none; } .p2kcard.p2in { animation:none; } }
+.p2kdone { display:flex; align-items:center; gap:12px; }
+/* edit in place: the value becomes a field on the card */
+.p2ked .p2upm { cursor:default; }
+.p2ked textarea { box-sizing:border-box; width:100%; resize:none; border:0; border-radius:12px; padding:8px 12px; background:rgba(255,255,255,.14); color:#fff; font:inherit; font-size:16px; line-height:22px; }
+.p2ked textarea:focus { outline:2px solid #fff; outline-offset:0; }
+.p2ked .p2upx small { margin-top:4px; }
+@media (prefers-reduced-motion: reduce) { .p2kcard { transition:none; } .p2kcard.p2in { animation:none; } }
 #phone.hf-prof .p2kn { margin:0 0 var(--space-absolute-16); }
 #phone.hf-prof .p2kh { margin-bottom:var(--space-absolute-8); }
 #phone.hf-prof .p2krail { gap:var(--space-absolute-8); }
@@ -4927,6 +4932,8 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-prof .p2kcard .p2acts2 button { height:calc(var(--space-absolute-40) + var(--space-absolute-4)); background:var(--bg-on-deep-fill); border-color:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
 #phone.hf-prof .p2kcard .p2acts2 button.on { flex:1; background:var(--text-on-deep-default); border-color:var(--text-on-deep-default); color:var(--bg-deep); }
 #phone.hf-prof .p2kdone .p2upt { color:var(--icon-primary); }
+#phone.hf-prof .p2ked textarea { border-radius:var(--radius-absolute-12); padding:var(--space-absolute-8) var(--space-absolute-12); background:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
+#phone.hf-prof .p2ked textarea:focus { outline-color:var(--text-on-deep-default); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -14967,13 +14974,19 @@ const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]
    on the front card sends it off and the next slides in; swiping sideways browses without deciding; tapping the value edits it first.
    No sheet: the last action leaves "Profile up to date" for a moment and the stack is gone. Order: an update tied to an active goal
    first, then newest */
-function p2UpdCard(u, i, n){ const was=u.was(p2Own()), a=`event.stopPropagation();p2UpdAct('${u.id}',`;
-  return `<div class="p2kcard" role="listitem" aria-label="Update ${i+1} of ${n}" data-upd="${u.id}" data-kc="KeyProfileUpdate"><button class="p2upm" aria-label="${u.ch}, ${u.lbl}. Edit before ${was?"updating":"adding"}" onclick="${a}'edit')"><span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span><span class="p2upx"><b>${u.ch}</b><small>${u.lbl} · ${was?`was ${was}`:u.why}</small></span><span class="p2uppen" aria-hidden="true">${LI("pencil",14)}</span></button>
-    <div class="p2acts2"><button class="on" onclick="${a}'yes')">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now" onclick="${a}'no')">${LI("x",18)}</button></div></div>`; }
+function p2UpdCard(u, i, n){ const was=u.was(p2Own()), a=`event.stopPropagation();p2UpdAct('${u.id}',`, ico=`<span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span>`, cap=`${u.lbl} · ${was?`was ${was}`:u.why}`;
+  const live = i ? ` inert aria-hidden="true"` : "";   // only the front card takes focus; a swipe moves it (p2KLive)
+  if (STATE.p2updEd===u.id) return `<div class="p2kcard p2ked" role="listitem" aria-label="Editing ${u.lbl}" data-upd="${u.id}" data-kc="KeyProfileUpdate"${live}><div class="p2upm">${ico}<span class="p2upx"><textarea id="p2uv" rows="2" aria-label="${u.lbl}" onkeydown="if(event.key==='Escape'){event.preventDefault();p2UpdAct('${u.id}','cancel')}else if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();p2UpdSave('${u.id}')}">${u.ch}</textarea><small>${cap}</small></span></div>
+    <div class="p2acts2"><button class="on" onclick="event.stopPropagation();p2UpdSave('${u.id}')">Save</button><button class="p2upno" aria-label="Cancel editing ${u.lbl}" onclick="${a}'cancel')">${LI("x",18)}</button></div></div>`;
+  return `<div class="p2kcard" role="listitem" aria-label="Update ${i+1} of ${n}" data-upd="${u.id}" data-kc="KeyProfileUpdate"${live}><button class="p2upm" aria-label="${u.ch}, ${u.lbl}. Edit before ${was?"updating":"adding"}" onclick="${a}'edit')">${ico}<span class="p2upx"><b>${u.ch}</b><small>${cap}</small></span><span class="p2uppen" aria-hidden="true">${LI("pencil",14)}</span></button>
+    <div class="p2acts2"><button class="on" aria-label="${was?"Update":"Add"} ${u.ch}" onclick="${a}'yes')">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now: ${u.ch}" onclick="${a}'no')">${LI("x",18)}</button></div></div>`; }
+/* after a swipe, the card in view becomes the live one and the rest leave the tab order */
+function p2KLive(r){ const c=[...r.querySelectorAll(".p2kcard")]; if (c.length<2) return; const k=Math.round(r.scrollLeft/(c[1].offsetLeft-c[0].offsetLeft));
+  c.forEach((x,i)=>{ x.inert = i!==k; if (i===k) x.removeAttribute("aria-hidden"); else x.setAttribute("aria-hidden","true"); }); }
 function p2UpdStack(){ const P=p2Pending(), d=STATE.p2updDone;
   if (!P.length) return d ? `<div class="p2kn p2kdone" role="status" tabindex="-1"><span class="p2upt">${LI("check",20)}</span><span class="p2upx"><b>Profile up to date</b><small>${[d.yes&&`${d.yes} ${d.yes===1?"change":"changes"} under Recently`, d.no&&`${d.no} skipped`].filter(Boolean).join(" · ")}</small></span></div>` : "";
   return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b aria-live="polite">${P.length===1?"Kai has an update":`Kai has ${P.length} updates`}</b></div>
-    <div class="p2krail ${P.length>1?"more":""}" role="list">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div></div>`; }
+    <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
@@ -14998,21 +15011,22 @@ function p2UpdDo(id, a, v){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if (!u
   o.done[id]=1; const d=STATE.p2updDone||(STATE.p2updDone={yes:0,no:0}); d[a==="no"?"no":"yes"]++;
   if (a!=="no") { u.apply(o, v||u.ch); o.recent.unshift([`${u.lbl}: ${v||u.ch}`, u.src.replace(/^From/,"from")]); } }
 /* the front card leaves (up for a yes, left for Not now), the stack closes over it, then the page redraws with the next card in front */
-function p2UpdSave(id){ const v=document.getElementById("p2uv").value.trim(), y=STATE.p2updY||0; if (!v) return;
-  p2UpdDo(id, "yes", v); closeSheet();   // the sheet closes over 190ms and redraws; keep the page where it was
-  setTimeout(() => { toast("Saved to your profile"); const nb=document.querySelector("#pbody"); if (nb) nb.scrollTop=y;
-    p2UpdNext(true); }, 220); }
-function p2UpdNext(quiet){ const next=document.querySelector(".p2kcard");   // after an action: the next card slides in, or the done row takes focus then fades
-  if (next) { if (!quiet) next.classList.add("p2in"); next.querySelector("button.on").focus({preventScroll:true}); return; }
-  const k=document.querySelector(".p2kdone"); if (!k) return; k.focus({preventScroll:true});
-  setTimeout(()=>{ const nx=[...document.querySelectorAll("#pbody button")].find(b=>k.compareDocumentPosition(b)&4);
-    if (document.activeElement===k && nx) nx.focus({preventScroll:true}); k.classList.add("p2gone"); STATE.p2updDone=null; }, 2400); }
-function p2UpdAct(id, a){ if (a==="edit") { const pb=document.querySelector("#pbody"); STATE.p2updY = pb ? pb.scrollTop : 0; openSheet("p2updedit", id); return; }
-  const card = document.querySelector(`.p2kcard[data-upd="${id}"]`), pb = document.querySelector("#pbody"), y = pb ? pb.scrollTop : 0;
-  const quiet = !card || matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const finish = () => { p2UpdDo(id, a); toast(a==="no"?"Kai won't ask about this again":"Updated. It's under Recently");   // toast() redraws the page
-    const nb=document.querySelector("#pbody"); if (nb) nb.scrollTop=y;
-    p2UpdNext(quiet); };
+function p2UpdSave(id){ const f=document.getElementById("p2uv"), v=f.value.trim(); if (!v) return f.focus();
+  STATE.p2updEd=null; p2UpdAct(id, "yes", v); }
+function p2KShow(k){ const r=document.querySelector(".p2krail"), c=r?[...r.querySelectorAll(".p2kcard")]:[]; if (!c.length) return null;   // put card k in front after a redraw
+  k=Math.min(k,c.length-1); if (c.length>1) { r.scrollLeft=k*(c[1].offsetLeft-c[0].offsetLeft); p2KLive(r); } return c[k]; }
+function p2UpdNext(quiet, k){ const next=p2KShow(k||0);   // after an action: the next card slides in, or the done row takes focus
+  if (next) { if (!quiet) next.classList.add("p2in"); next.querySelector("button.on").focus({preventScroll:true}); next.querySelector(".p2acts2").scrollIntoView({block:"nearest"}); return; }
+  const d=document.querySelector(".p2kdone"); if (d) d.focus({preventScroll:true}); }
+const _p2Go = go; go = function(s){ if (s!==STATE.screen) STATE.p2updDone = STATE.p2updEd = null; return _p2Go.apply(this, arguments); };   // the done row stays until you leave the page
+function p2UpdAct(id, a, v){ const pb = document.querySelector("#pbody"), y = pb ? pb.scrollTop : 0, keep = () => { const nb=document.querySelector("#pbody"); if (nb) nb.scrollTop=y; };
+  if (a==="edit"||a==="cancel") { STATE.p2updEd = a==="edit" ? id : null; render(); keep();   // the value becomes a field on the card itself
+    const c=p2KShow([...document.querySelectorAll(".p2kcard")].findIndex(x=>x.dataset.upd===id)); if (c) { const t=c.querySelector(a==="edit"?"#p2uv":".p2upm"); t.focus({preventScroll:true}); if (a==="edit") t.setSelectionRange(t.value.length,t.value.length); c.querySelector(".p2acts2").scrollIntoView({block:"nearest"}); } return; }
+  const card = document.querySelector(`.p2kcard[data-upd="${id}"]`);
+  const k = card ? [...card.parentNode.children].indexOf(card) : 0, quiet = !card || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finish = () => { p2UpdDo(id, a, v); toast(a==="no"?"Kai won't ask about this again":v?"Saved to your profile":"Updated. It's under Recently");   // toast() redraws the page
+    keep();
+    p2UpdNext(quiet, k); };
   if (quiet) return finish();
   card.classList.add(a==="no"?"p2out-x":"p2out-y"); setTimeout(finish, 260); }
 function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
@@ -15060,8 +15074,6 @@ portSheet = function(type, id){
       <div class="p2nd"><span><b>Show on my profile</b><small>Members of your families see it under Work</small></span><span class="p2sw" role="switch" id="p2rshow" aria-label="Show on my profile" aria-checked="${!!w[4]}" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>
       <div class="xs faint" style="margin:10px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai keeps this current from your connectors and asks before it changes anything.</span></div>
       <button class="btn" onclick="p2SaveRole('${id}')">Save</button>${isNew?"":`<button class="btn ghost p2danger" style="margin-top:6px" onclick="p2Own().work.splice(${+id},1);closeSheet();render();setTimeout(()=>toast('Role removed'),200)">Remove this role</button>`}`; }
-  if (type==="p2updedit") { const u=P2_UPD.find(x=>x.id===id); if (!u) return "";
-    return `<div class="p2shd"><span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span><h2>${u.lbl}</h2></div><textarea class="input" id="p2uv" rows="2" aria-label="${u.lbl}">${u.ch}</textarea><div class="xs faint" style="margin:8px 0 12px">${u.src}</div><button class="btn" onclick="p2UpdSave('${u.id}')">Save to profile</button>`; }
   if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
     return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
   if (type==="p2addlink") return `<h2>Add a link</h2>${[["github","GitHub","Sign in with GitHub. Reads your username only"],["linkedin","LinkedIn","Paste your profile link"],["site","Website","Portfolio, blog, anything"],["x","X","Your handle"]].map(([k,a,b])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Brand(k)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
@@ -17718,7 +17730,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.151";
+window.KEY_BUILD = "2.153";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
