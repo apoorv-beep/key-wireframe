@@ -4547,7 +4547,6 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2sh2 > .p2lf, .p2sh2 > .p2sh { margin-bottom:6px; }
 .p2pen { width:32px; height:32px; margin:-6px -6px 0 0; display:inline-flex; align-items:center; justify-content:center; border:0; border-radius:12px; background:transparent; color:var(--ink2); cursor:pointer; }
 .p2pen:active { background:var(--fill); }
-.p2kn { padding:12px 0; margin-bottom:12px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
 .p2kh { display:flex; align-items:center; gap:8px; }
 .p2kh b { font-size:14px; }
 .p2kh small { margin-left:auto; font-size:12px; color:var(--ink3); }
@@ -4645,7 +4644,6 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 /* your own profile: pencils are bare header-style icons, Kai noticed sits between hairlines with the Kai mark */
 #phone.hf-prof .p2pen { width:var(--space-absolute-40); height:var(--space-absolute-40); border-radius:var(--radius-absolute-12); color:var(--icon-secondary); margin:calc(-1 * var(--space-absolute-12)) calc(-1 * var(--space-absolute-8)) 0 0; }
 #phone.hf-prof .p2pen:active { background:var(--bg-fill-default); }
-#phone.hf-prof .p2kn { border-color:var(--border-default); padding:var(--space-absolute-16) 0; }
 #phone.hf-prof .p2kh b { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); color:var(--text-primary); }
 #phone.hf-prof .p2kh small, #phone.hf-prof .p2kc span { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:var(--text-tertiary); }
 #phone.hf-prof .p2kc b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
@@ -4722,27 +4720,11 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .pbar .pbtn.p2prev { width:auto; padding:0 12px; gap:6px; font-size:14px; font-weight:600; }
 .pbar.show .pbtn.p2prev span { display:none; }
 .p2cnt { margin-left:6px; font-size:11px; font-weight:700; padding:2px 6px; border-radius:6px; background:var(--ink); color:#fff; }
-.p2kd2 { font-size:13px; color:var(--ink2); margin:4px 0 8px; }
-.p2up { padding:10px 0; border-bottom:1px solid var(--line); }
-.p2kn .p2up { border-bottom:0; padding-bottom:4px; }
-.p2uph { display:flex; align-items:center; gap:8px; }
-.p2upl { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; color:var(--ink); }
-.p2uph small { margin-left:auto; font-size:11px; color:var(--ink3); text-align:right; }
-.p2upw { font-size:13px; color:var(--ink3); text-decoration:line-through; margin-top:6px; }
-.p2upw.new { text-decoration:none; }
-.p2upc { font-size:16px; font-weight:600; margin:2px 0 10px; }
 .p2f { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; flex:1; min-width:0; }
 .p2f > span { font-size:12px; font-weight:600; color:var(--ink2); }
 .p2f2 { display:flex; gap:10px; }
 .p2danger { color:#C8322F; width:100%; }
 #phone.hf-prof .pbar .pbtn.p2prev { font:var(--type-label); font-weight:700; color:var(--text-primary); }
-#phone.hf-prof .p2kd2 { font:var(--type-body-s); color:var(--text-secondary); }
-#phone.hf-prof .p2up { border-bottom:var(--border-width-hairline) solid var(--border-default); padding:var(--space-absolute-12) 0; }
-#phone.hf-prof .p2kn .p2up { border-bottom:0; }
-#phone.hf-prof .p2upl { font:var(--type-label-strong); color:var(--text-primary); }
-#phone.hf-prof .p2uph small { font:var(--type-caption); color:var(--text-tertiary); }
-#phone.hf-prof .p2upw { font:var(--type-body-s); color:var(--text-tertiary); }
-#phone.hf-prof .p2upc { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
 #phone.hf-prof .p2f > span { font:var(--type-label); color:var(--text-secondary); }
 #phone.hf-prof .p2f .input { border-radius:var(--radius-absolute-12); border:var(--border-width-hairline) solid var(--component-input-border-default); background:var(--component-input-bg); font:var(--type-body-m); height:var(--space-absolute-48); padding:0 var(--space-absolute-12); box-sizing:border-box; }
 #phone.hf-prof .p2danger { color:var(--component-button-danger-ink); }
@@ -4831,15 +4813,6 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2qhero { height:auto; aspect-ratio:1 / 1; }
 #phone.hf-prof .pphoto.ph-cover, #phone.hf-prof .p2qph.ph-cover { background-position:center 20% !important; }
 /* Item 3: Kai's pending update is a deep Kai plate (same plate as the dock), not a row that blends in */
-#phone.hf-prof .p2kn { background:var(--bg-deep); color:var(--text-on-deep-default); border:0; border-radius:var(--radius-absolute-16); padding:var(--space-absolute-16); margin-bottom:var(--space-absolute-24); box-shadow:var(--elevation-2); }
-#phone.hf-prof .p2kn .p2kh b, #phone.hf-prof .p2kn .p2upl, #phone.hf-prof .p2kn .p2upc { color:var(--text-on-deep-default); }
-#phone.hf-prof .p2kn .p2kd2, #phone.hf-prof .p2kn .p2uph small, #phone.hf-prof .p2kn .p2upw { color:var(--text-on-deep-muted); }
-#phone.hf-prof .p2kn .p2upl svg { color:var(--icon-on-deep); }
-#phone.hf-prof .p2kn .p2up { margin-top:var(--space-absolute-12); padding:0; border:0; }
-#phone.hf-prof .p2kn .p2upc { margin-bottom:var(--space-absolute-16); }
-#phone.hf-prof .p2kn .p2acts2 button { flex:0 0 auto; background:var(--bg-on-deep-fill); border-color:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
-#phone.hf-prof .p2kn .p2acts2 button.on { flex:1; background:var(--text-on-deep-default); border-color:var(--text-on-deep-default); color:var(--bg-deep); }
-#phone.hf-prof .p2kn .p2add { color:var(--text-on-deep-default); padding-bottom:0; }
 
 /* 05:04 fixes. Hero: the photo stands alone (square, like members' photos) and the name sits under it on the page, never on the face */
 #phone.hf-prof .phero { height:var(--p2w, 375px); }
@@ -4917,30 +4890,43 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .p2upx b { font-size:16px; font-weight:600; }
 .p2upx small { font-size:12px; color:var(--ink2); }
 .p2acts2 .p2upno { flex:0 0 auto; width:40px; padding:0; display:grid; place-items:center; }
-.p2khb { width:100%; min-height:44px; font:inherit; color:inherit; background:transparent; border:0; padding:0; text-align:left; cursor:pointer; }
-.p2kall { margin-left:auto; font-size:13px; font-weight:600; color:var(--ink); }
 #phone.hf-prof .p2upm { gap:var(--space-absolute-12); margin-bottom:var(--space-absolute-16); }
 #phone.hf-prof .p2upt { border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-primary); }
 #phone.hf-prof .p2upx b { font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--text-primary); }
 #phone.hf-prof .p2upx small { font:var(--type-body-s); color:var(--text-secondary); }
-#phone.hf-prof .p2up .p2acts2 button { height:calc(var(--space-absolute-40) + var(--space-absolute-4)); }
 #phone.hf-prof .p2acts2 .p2upno { width:calc(var(--space-absolute-40) + var(--space-absolute-4)); }
-#phone.hf-prof .p2kall { font:var(--type-label-strong); }
-#phone.hf-prof .p2kn .p2upt { background:var(--bg-on-deep-fill); color:var(--icon-on-deep); }
-#phone.hf-prof .p2kn .p2upx b, #phone.hf-prof .p2kn .p2kall { color:var(--text-on-deep-default); }
-#phone.hf-prof .p2kn .p2upx small { color:var(--text-on-deep-muted); }
-#phone.hf-prof .p2kn .p2up { margin-top:var(--space-absolute-16); }
-.p2upf { display:flex; align-items:center; gap:12px; }
-.p2upf .p2upm { flex:1; min-width:0; margin:0; }
-.p2upf .p2acts2 { flex:0 0 auto; }
-#phone.hf-prof .p2upf { gap:var(--space-absolute-12); }
-#phone.hf-prof .p2upf .p2upm { margin:0; }
-#phone.hf-prof .p2upf .p2acts2 .p2upno { background:transparent; border-color:transparent; color:var(--icon-secondary); }
 .p2uppen { margin-left:auto; flex:0 0 auto; align-self:center; color:var(--ink3); display:grid; }
-#phone.hf-prof .p2khb { min-height:calc(var(--space-absolute-40) + var(--space-absolute-4)); }
 #phone.hf-prof .p2uppen { color:var(--icon-tertiary); }
-#phone.hf-prof .p2kn .p2uppen { color:var(--text-on-deep-muted); }
-#phone.hf-prof .p2kn .p2up { margin-top:var(--space-absolute-4); }
+/* ==== rev 16 (Apoorv 1 Oct 00:54): Kai's updates are a stack of cards cleared in place. Act on the front card and it leaves (up for a
+   yes, left for Not now); the next slides in. The next card peeks at the edge, so swiping browses without deciding. No sheet ==== */
+.p2kn { margin:4px 0 16px; }
+.p2kh { margin-bottom:8px; }
+.p2krail { display:flex; gap:8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; margin:0 -16px; padding:0 16px 8px; scroll-padding:0 16px; }
+.p2krail::-webkit-scrollbar { display:none; }
+.p2kcard { flex:0 0 100%; box-sizing:border-box; display:flex; flex-direction:column; scroll-snap-align:start; padding:16px; border-radius:16px; background:var(--ink); color:#fff; transition:transform .24s ease, opacity .24s ease; }
+.p2krail.more .p2kcard { flex-basis:calc(100% - 28px); }
+.p2kcard .p2upt { background:rgba(255,255,255,.14); color:#fff; }
+.p2kcard .p2upx small, .p2kcard .p2uppen { color:rgba(255,255,255,.72); }
+.p2kcard .p2acts2 { margin-top:auto; }
+.p2kcard .p2acts2 button { height:44px; border-radius:12px; background:rgba(255,255,255,.14); border-color:transparent; color:#fff; }
+.p2kcard .p2acts2 button.on { flex:1; background:#fff; color:var(--ink); }
+.p2kcard.p2out-y { transform:translateY(-12px) scale(.96); opacity:0; }
+.p2kcard.p2out-x { transform:translateX(-40%); opacity:0; }
+.p2kcard.p2in { animation:p2kin .28s ease both; }
+@keyframes p2kin { from { transform:translateX(28px); opacity:.4; } }
+.p2kdone { display:flex; align-items:center; gap:12px; max-height:80px; overflow:hidden; transition:opacity .3s ease, max-height .3s ease, margin .3s ease; }
+.p2kdone.p2gone { opacity:0; max-height:0; margin:0; }
+@media (prefers-reduced-motion: reduce) { .p2kcard, .p2kdone { transition:none; } .p2kcard.p2in { animation:none; } }
+#phone.hf-prof .p2kn { margin:0 0 var(--space-absolute-16); }
+#phone.hf-prof .p2kh { margin-bottom:var(--space-absolute-8); }
+#phone.hf-prof .p2krail { gap:var(--space-absolute-8); }
+#phone.hf-prof .p2kcard { padding:var(--space-absolute-16); border-radius:var(--radius-absolute-16); background:var(--bg-deep); color:var(--text-on-deep-default); box-shadow:var(--elevation-2); }
+#phone.hf-prof .p2kcard .p2upt { background:var(--bg-on-deep-fill); color:var(--icon-on-deep); }
+#phone.hf-prof .p2kcard .p2upx b { color:var(--text-on-deep-default); }
+#phone.hf-prof .p2kcard .p2upx small, #phone.hf-prof .p2kcard .p2uppen { color:var(--text-on-deep-muted); }
+#phone.hf-prof .p2kcard .p2acts2 button { height:calc(var(--space-absolute-40) + var(--space-absolute-4)); background:var(--bg-on-deep-fill); border-color:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
+#phone.hf-prof .p2kcard .p2acts2 button.on { flex:1; background:var(--text-on-deep-default); border-color:var(--text-on-deep-default); color:var(--bg-deep); }
+#phone.hf-prof .p2kdone .p2upt { color:var(--icon-primary); }
 
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
@@ -14967,32 +14953,37 @@ function p2Own(){
    connectors; when a piece of it touches something your profile shows, Kai queues it here as before -> after with its source.
    Nothing changes until you tap Update. Not now drops it and Kai won't ask about it again. */
 const P2_UPD = [
-  { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", why:"from your email signature", apply:o=>{ o.work[0][1]="Group PM"; DB.user.title="Group Product Manager"; } },
-  { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", why:"from your Kai call", apply:o=>{ o.bld="Leading the Gemini agents launch"; } },
-  { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", why:"from your Hire two PMs mission", goal:1, apply:o=>{ o.needs.unshift({ t:"Two PMs for Gemini agents", m:"Hire two PMs", on:1 }); } },
-  { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", why:"from your journal", apply:()=>{ if(!DB.contextV2.offer.some(x=>/scale/i.test(x[0]))) DB.contextV2.offer.push(["AI features at scale","Kai noticed","Sep 27","help nudges",true]); } }
+  { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", why:"from your email signature", apply:(o,v)=>{ const t=v.split(" · ")[0].trim(); o.work[0][1]=t; DB.user.title=t==="Group PM"?"Group Product Manager":t; } },
+  { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Gemini agents launch", src:"From your Kai call · 22 Sep", why:"from your Kai call", apply:(o,v)=>{ o.bld=v; } },
+  { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Gemini agents", src:"From your new mission · Hire two PMs", why:"from your Hire two PMs mission", goal:1, apply:(o,v)=>{ o.needs.unshift({ t:v, m:"Hire two PMs", on:1 }); } },
+  { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", why:"from your journal", apply:(o,v)=>{ if(!DB.contextV2.offer.some(x=>x[0]===v)) DB.contextV2.offer.push([v,"Kai noticed","Sep 27","help nudges",true]); } }
 ];
 /* hero photos come uncropped (member photos are square or portrait); CSS keeps the face in frame */
 const p2PhUrl = id => phUrl(id, 900, 0).replace(/&fit=crop|&h=0/g, "");
 /* P2_UPD is kept newest first; an update tied to an active goal jumps ahead, so the card leads with what moves a goal */
 const p2Pending = () => { const o=p2Own(); return P2_UPD.filter(u=>!o.done[u.id]).sort((a,b)=>(b.goal?1:0)-(a.goal?1:0)); };
-/* Apoorv 30 Sep 23:49: "too much text without proper info and visual arch ... progressive disclosure and easy scannibility". One update
-   reads as a row: the field's tile, the new value, one caption (field · where Kai found it). Add or Update and a quiet X are the only
-   controls; tapping the value (pencil beside it) opens it to edit first; the whole header row opens See all. In the review sheet each row trades the source for what it replaces */
-function p2UpdRow(u, full){ const was=u.was(p2Own()), a=`event.stopPropagation();p2Upd('${u.id}',`, f=full?1:0;
-  return `<div class="p2up ${full?'p2upf':''}" data-kc="KeyProfileUpdate"><button class="p2upm" aria-label="${u.ch}, ${u.lbl}. Edit before ${was?"updating":"adding"}" onclick="${a}'edit',${f})"><span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span><span class="p2upx"><b>${u.ch}</b><small>${u.lbl} · ${full&&was?`was ${was}`:u.why}</small></span><span class="p2uppen" aria-hidden="true">${LI("pencil",14)}</span></button>
-    <div class="p2acts2"><button class="on" onclick="${a}'yes',${f})">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now" onclick="${a}'no',${f})">${LI("x",18)}</button></div></div>`; }
+/* Apoorv 30 Sep 23:49 ("progressive disclosure and easy scannibility") and 1 Oct 00:54: Kai's profile updates are a stack of cards you
+   clear in place. Each card: the field's tile, the new value, one caption (field · where Kai found it), Add or Update and a quiet X. Acting
+   on the front card sends it off and the next slides in; swiping sideways browses without deciding; tapping the value edits it first.
+   No sheet: the last action leaves "Profile up to date" for a moment and the stack is gone. Order: an update tied to an active goal
+   first, then newest */
+function p2UpdCard(u, i, n){ const was=u.was(p2Own()), a=`event.stopPropagation();p2UpdAct('${u.id}',`;
+  return `<div class="p2kcard" role="listitem" aria-label="Update ${i+1} of ${n}" data-upd="${u.id}" data-kc="KeyProfileUpdate"><button class="p2upm" aria-label="${u.ch}, ${u.lbl}. Edit before ${was?"updating":"adding"}" onclick="${a}'edit')"><span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span><span class="p2upx"><b>${u.ch}</b><small>${u.lbl} · ${was?`was ${was}`:u.why}</small></span><span class="p2uppen" aria-hidden="true">${LI("pencil",14)}</span></button>
+    <div class="p2acts2"><button class="on" onclick="${a}'yes')">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now" onclick="${a}'no')">${LI("x",18)}</button></div></div>`; }
+function p2UpdStack(){ const P=p2Pending(), d=STATE.p2updDone;
+  if (!P.length) return d ? `<div class="p2kn p2kdone" role="status" tabindex="-1"><span class="p2upt">${LI("check",20)}</span><span class="p2upx"><b>Profile up to date</b><small>${[d.yes&&`${d.yes} ${d.yes===1?"change":"changes"} under Recently`, d.no&&`${d.no} skipped`].filter(Boolean).join(" · ")}</small></span></div>` : "";
+  return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b aria-live="polite">${P.length===1?"Kai has an update":`Kai has ${P.length} updates`}</b></div>
+    <div class="p2krail ${P.length>1?"more":""}" role="list">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div></div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
   if (mode==="outside") return `<div class="p2"><div class="p2btl">${`<span class="p2ico">${LI("lock",16)}</span><span><b>Someone outside your families sees only this</b><small>Photo, name and role. Everything else needs a shared family</small></span>`}</div></div>`;
-  const pend = edit ? p2Pending() : [];
   const needs = o.needs.filter(n=>edit||n.on);
   const links = profileLinks("priya").filter(([k])=>edit||o.links[k]);
   const help = C.offer.map(x=>x[0]);
   return `<div class="p2">
     ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
-    ${pend.length?`<div class="p2kn">${pend.length>1?`<button class="p2kh p2khb" onclick="event.stopPropagation();openSheet('p2updates','')">${kaiMark(16)}<b>Kai has ${pend.length} updates</b><span class="p2kall">See all</span></button>`:`<div class="p2kh">${kaiMark(16)}<b>Kai has an update</b></div>`}${p2UpdRow(pend[0])}</div>`:''}
+    ${edit?p2UpdStack():''}
     <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
       ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
@@ -15003,12 +14994,27 @@ function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
     ${links.length||edit?`<div class="p2sec">${p2H("link","Links")}${links.map(([k,l])=>`<div class="p2lk" style="cursor:default">${p2Brand(k)}<b>${l}</b>${edit?`<span class="p2sw" role="switch" aria-label="Show ${l}" aria-checked="${!!o.links[k]}" onclick="p2LinkVis('${k}')"></span>`:LI("external-link",16)}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2addlink','')">${LI("plus",16)}Add a link</button>`:''}</div>`:''}
   </div>`;
 }
-function p2Upd(id, a, inSheet){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if (!u) return;
-  if (a==="edit") { openSheet(id==="role"?"p2editrole":id==="now"?"p2editnow":id==="help"?"p2editask":"p2missions", id==="role"?"0":""); return; }
-  o.done[id]=1;
-  if (a==="yes") { u.apply(o); o.recent.unshift([`${u.lbl}: ${u.ch}`, u.src.replace(/^From/,"from")]); }
-  if (inSheet && p2Pending().length) openSheet("p2updates",""); else { if (inSheet) closeSheet(); render(); }
-  setTimeout(()=>toast(a==="yes"?"Updated. It's under Recently":"Kai won't ask about this again"), inSheet?0:0); }
+function p2UpdDo(id, a, v){ const o=p2Own(), u=P2_UPD.find(x=>x.id===id); if (!u || o.done[id]) return;
+  o.done[id]=1; const d=STATE.p2updDone||(STATE.p2updDone={yes:0,no:0}); d[a==="no"?"no":"yes"]++;
+  if (a!=="no") { u.apply(o, v||u.ch); o.recent.unshift([`${u.lbl}: ${v||u.ch}`, u.src.replace(/^From/,"from")]); } }
+/* the front card leaves (up for a yes, left for Not now), the stack closes over it, then the page redraws with the next card in front */
+function p2UpdSave(id){ const v=document.getElementById("p2uv").value.trim(), y=STATE.p2updY||0; if (!v) return;
+  p2UpdDo(id, "yes", v); closeSheet();   // the sheet closes over 190ms and redraws; keep the page where it was
+  setTimeout(() => { toast("Saved to your profile"); const nb=document.querySelector("#pbody"); if (nb) nb.scrollTop=y;
+    p2UpdNext(true); }, 220); }
+function p2UpdNext(quiet){ const next=document.querySelector(".p2kcard");   // after an action: the next card slides in, or the done row takes focus then fades
+  if (next) { if (!quiet) next.classList.add("p2in"); next.querySelector("button.on").focus({preventScroll:true}); return; }
+  const k=document.querySelector(".p2kdone"); if (!k) return; k.focus({preventScroll:true});
+  setTimeout(()=>{ const nx=[...document.querySelectorAll("#pbody button")].find(b=>k.compareDocumentPosition(b)&4);
+    if (document.activeElement===k && nx) nx.focus({preventScroll:true}); k.classList.add("p2gone"); STATE.p2updDone=null; }, 2400); }
+function p2UpdAct(id, a){ if (a==="edit") { const pb=document.querySelector("#pbody"); STATE.p2updY = pb ? pb.scrollTop : 0; openSheet("p2updedit", id); return; }
+  const card = document.querySelector(`.p2kcard[data-upd="${id}"]`), pb = document.querySelector("#pbody"), y = pb ? pb.scrollTop : 0;
+  const quiet = !card || matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finish = () => { p2UpdDo(id, a); toast(a==="no"?"Kai won't ask about this again":"Updated. It's under Recently");   // toast() redraws the page
+    const nb=document.querySelector("#pbody"); if (nb) nb.scrollTop=y;
+    p2UpdNext(quiet); };
+  if (quiet) return finish();
+  card.classList.add(a==="no"?"p2out-x":"p2out-y"); setTimeout(finish, 260); }
 function p2NeedVis(i){ const n=p2Own().needs[i]; n.on=!n.on; render(); toast(n.on?"Shown to your families":"Hidden. Still your mission"); }
 function p2LinkVis(k){ const o=p2Own(); o.links[k]=!o.links[k]; render(); toast(o.links[k]?"Shown on your profile":"Hidden"); }
 function p2SaveRole(id){ const o=p2Own(), v=x=>document.getElementById(x), now=v("p2rnow").getAttribute("aria-checked")==="true";
@@ -15054,7 +15060,8 @@ portSheet = function(type, id){
       <div class="p2nd"><span><b>Show on my profile</b><small>Members of your families see it under Work</small></span><span class="p2sw" role="switch" id="p2rshow" aria-label="Show on my profile" aria-checked="${!!w[4]}" onclick="this.setAttribute('aria-checked',this.getAttribute('aria-checked')!=='true')"></span></div>
       <div class="xs faint" style="margin:10px 0 12px;display:flex;gap:6px;align-items:flex-start">${kaiMark(14)}<span>Kai keeps this current from your connectors and asks before it changes anything.</span></div>
       <button class="btn" onclick="p2SaveRole('${id}')">Save</button>${isNew?"":`<button class="btn ghost p2danger" style="margin-top:6px" onclick="p2Own().work.splice(${+id},1);closeSheet();render();setTimeout(()=>toast('Role removed'),200)">Remove this role</button>`}`; }
-  if (type==="p2updates") { const P=p2Pending(); return `<div class="p2shd">${kaiMark(20)}<h2>${P.length===1?"1 update for your profile":`${P.length} updates for your profile`}</h2></div>${P.map(u=>p2UpdRow(u,true)).join("")}${P.length>1?`<button class="btn" style="margin-top:12px" onclick="p2Pending().forEach(u=>{ const o=p2Own(); o.done[u.id]=1; u.apply(o); o.recent.unshift([u.lbl+': '+u.ch, u.src.replace(/^From/,'from')]); });closeSheet();render();setTimeout(()=>toast('Profile updated. Changes are under Recently'),200)">Update all ${P.length}</button>`:''}`; }
+  if (type==="p2updedit") { const u=P2_UPD.find(x=>x.id===id); if (!u) return "";
+    return `<div class="p2shd"><span class="p2upt">${LI(LUCIDE[u.ico]?u.ico:"flag",20)}</span><h2>${u.lbl}</h2></div><textarea class="input" id="p2uv" rows="2" aria-label="${u.lbl}">${u.ch}</textarea><div class="xs faint" style="margin:8px 0 12px">${u.src}</div><button class="btn" onclick="p2UpdSave('${u.id}')">Save to profile</button>`; }
   if (type==="p2missions") { const M=DB.missions.filter(m=>!m.ev&&m.type!=="Hosting").map(m=>m.name); const ow=p2Own();
     return `<h2>Show a mission on your profile</h2><div class="xs faint" style="margin-bottom:8px">Missions are private. Show one when members could help it move. Kai words it as what you're looking for.</div>${M.map(m=>{ const n=ow.needs.find(x=>x.m===m); return `<div class="p2nd"><span><b>${m}</b><small>${n&&n.on?"Shown as “"+n.t+"”":"Private"}</small></span><span class="p2sw" role="switch" aria-checked="${!!(n&&n.on)}" onclick="(function(){ const ow=p2Own(); let n=ow.needs.find(x=>x.m==='${m.replace(/'/g,"")}'); if(n) n.on=!n.on; else ow.needs.push({t:'${m.replace(/'/g,"")}',m:'${m.replace(/'/g,"")}',on:1}); })();openSheet('p2missions','');render()"></span></div>`; }).join("")}`; }
   if (type==="p2addlink") return `<h2>Add a link</h2>${[["github","GitHub","Sign in with GitHub. Reads your username only"],["linkedin","LinkedIn","Paste your profile link"],["site","Website","Portfolio, blog, anything"],["x","X","Your handle"]].map(([k,a,b])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Added. It shows once you turn it on'),200)">${p2Brand(k)}<div class="m"><div class="a">${a}</div><div class="s xs faint">${b}</div></div>${LI("chevron-right",16)}</div>`).join("")}`;
@@ -17711,7 +17718,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.150";
+window.KEY_BUILD = "2.151";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
