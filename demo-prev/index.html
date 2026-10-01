@@ -5040,6 +5040,22 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-prof .p2ked textarea { border-radius:var(--radius-absolute-12); padding:var(--space-absolute-8) var(--space-absolute-12); background:var(--bg-on-deep-fill); color:var(--text-on-deep-default); }
 #phone.hf-prof .p2ked textarea:focus { outline-color:var(--text-on-deep-default); }
 
+/* rev 17: "Right now" is the hook, set apart from "Looking for" (Apoorv 1 Oct 02:09) */
+.p2hook { padding:16px; border-radius:12px; background:var(--fill); }
+.p2hook .p2lf { margin-bottom:4px; }
+.p2hook .p2bld { font-size:22px; line-height:1.2; font-weight:800; margin-bottom:0; }
+#phone.hf-prof .p2hook { padding:var(--space-absolute-16); border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+#phone.hf-prof .p2hook .p2lf { margin-bottom:var(--space-absolute-4); }
+#phone.hf-prof .p2hook .p2bld { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); margin-bottom:0; }
+/* rev 17: carousel position under the update cards */
+.p2kdots { display:flex; justify-content:center; align-items:center; gap:6px; padding-top:4px; }
+.p2kdots i { width:6px; height:6px; border-radius:3px; background:var(--ink3); transition:width .2s ease, background .2s ease; }
+.p2kdots i.on { width:18px; background:var(--ink); }
+#phone.hf-prof .p2kdots { gap:var(--space-absolute-6); padding-top:var(--space-absolute-4); }
+#phone.hf-prof .p2kdots i { background:var(--text-tertiary); }
+#phone.hf-prof .p2kdots i.on { background:var(--bg-deep); }
+@media (prefers-reduced-motion: reduce) { .p2kdots i { transition:none; } }
+
 /* Onboarding rev 3 (Stress test onboarding thread, 27 Sep): visual first, five steps plus the Welcome card */
 .ob3bar { display:flex; gap:4px; padding:0 16px; } .ob3bar i { flex:1; height:4px; border-radius:2px; background:var(--line); } .ob3bar i.d { background:var(--ink); }
 .ob3hdr { display:flex; align-items:center; gap:8px; padding:8px 12px 6px; } .ob3hdr .back { width:36px; height:36px; display:grid; place-items:center; font-size:22px; cursor:pointer; } .ob3hdr .n { margin-left:auto; font-size:12px; color:var(--ink3); padding-right:4px; }
@@ -14912,9 +14928,10 @@ function p2Body(pid){
     return `<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}${n.fit?`<small class="p2why">${n.fit}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2need','${pid}|${i}')">${done?(n.fit?"Offered":"Suggested"):lbl}</button></div>`; };
   const links=(typeof profileLinks==="function"?profileLinks(pid):[]);
   return `<div class="p2">
+    ${d.now?`<div class="p2now p2hook"><div class="p2lf">Right now</div><div class="p2bld">${d.now}</div></div>`:''}
     ${p2BetweenLine(pid)}
     ${fams.length?`<div class="p2sec p2both">${p2H("users","You're both in")}${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members`},true)).join("")}</div>`:''}
-    ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
+    ${d.needs.length?`<div class="p2sec">${p2H("search","Looking for")}${d.needs.map(need).join("")}</div>`:''}
     ${p2OpenList(p).length?`<div class="p2sec">${p2H("door-open",`${f} is open to`)}${p2OpenList(p).map(k=>{ const [ic,act]=P2_OPEN[k], done=STATE.p2done["open"+pid+k];
       return `<div class="p2nd p2op"><span class="p2ico">${LI(ic,18)}</span><span><b>${k}</b>${k==="Office hours"&&p.slots?`<small>${p.slots}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2open','${pid}|${k}')">${done?"Asked":act}</button></div>`; }).join("")}${(p.notNow||[]).length?`<div class="p2nn">${LI("hand",14)}<span>Not now: ${p.notNow.join(", ").toLowerCase()}. Kai won't suggest these</span></div>`:''}</div>`:''}
     ${(p.help||[]).length?`<div class="p2sec">${p2H("handshake",`${f} can help with`)}<div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
@@ -15087,11 +15104,14 @@ function p2UpdCard(u, i, n){ const was=u.was(p2Own()), a=`event.stopPropagation(
     <div class="p2acts2"><button class="on" aria-label="${was?"Update":"Add"} ${u.ch}" onclick="${a}'yes')">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now: ${u.ch}" onclick="${a}'no')">${LI("x",18)}</button></div></div>`; }
 /* after a swipe, the card in view becomes the live one and the rest leave the tab order */
 function p2KLive(r){ const c=[...r.querySelectorAll(".p2kcard")]; if (c.length<2) return; const k=Math.round(r.scrollLeft/(c[1].offsetLeft-c[0].offsetLeft));
-  c.forEach((x,i)=>{ x.inert = i!==k; if (i===k) x.removeAttribute("aria-hidden"); else x.setAttribute("aria-hidden","true"); }); }
+  c.forEach((x,i)=>{ x.inert = i!==k; if (i===k) x.removeAttribute("aria-hidden"); else x.setAttribute("aria-hidden","true"); });
+  const n=c.length, m=Math.min(n,5), on = n<=5 ? k : k<2 ? k : k>n-3 ? m-(n-k) : 2;
+  r.parentNode.querySelectorAll(".p2kdots i").forEach((d,i)=>d.classList.toggle("on", i===on)); }
 function p2UpdStack(){ const P=p2Pending(), d=STATE.p2updDone;
   if (!P.length) return d ? `<div class="p2kn p2kdone" role="status" tabindex="-1"><span class="p2upt">${LI("check",20)}</span><span class="p2upx"><b>Profile up to date</b><small>${[d.yes&&`${d.yes} ${d.yes===1?"change":"changes"} under Recently`, d.no&&`${d.no} skipped`].filter(Boolean).join(" · ")}</small></span></div>` : "";
   return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b aria-live="polite">${P.length===1?"Kai has an update":`Kai has ${P.length} updates`}</b></div>
-    <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div></div>`; }
+    <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div>
+    ${P.length>1?`<div class="p2kdots" aria-hidden="true">${"<i></i>".repeat(Math.min(P.length,5)).replace("<i>",'<i class="on">')}</div>`:""}</div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
@@ -15102,8 +15122,8 @@ function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   return `<div class="p2">
     ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
     ${edit?p2UpdStack():''}
-    <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
-      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
+    <div class="p2now p2hook"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div></div>
+      ${needs.length||edit?`<div class="p2sec"><div class="p2sh2"><span class="p2sh">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}</div>`:''}
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail">${o.work.filter(w=>edit||w[4]).map(w=>`<div class="p2wk">${p2Logo(w[0][0],"#1A73E8")}<b>${w[0]}</b><small>${w[1]} · ${w[2]} – ${w[3]}</small></div>`).join("")}</div></div>
     ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
@@ -15229,7 +15249,7 @@ function p2Preview(pid){ const p=DB.people[pid], d=p2d(pid), f=firstName(p), ope
   const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"families", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
   const top = n ? `<div class="p2sec">${p2H("search",`${f} is looking for`)}<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}</span><button class="p2x" onclick="event.stopPropagation();openSheet('p2need','${pid}|0')">${n.fit?"Offer yourself":"Suggest"}</button></div></div>`
     : open ? `<div class="p2sec">${p2H("door-open",`${f} is open to`)}<div class="p2nd p2op"><span class="p2ico">${LI(P2_OPEN[open][0],18)}</span><span><b>${open}</b></span><button class="p2x" onclick="event.stopPropagation();openSheet('p2open','${pid}|${open}')">${P2_OPEN[open][1]}</button></div></div>` : "";
-  return `<div class="p2 p2pv">${p2BetweenLine(pid)}${d.now?`<div class="p2bld">${d.now}</div>`:''}${top}
+  return `<div class="p2 p2pv">${d.now?`<div class="p2now p2hook"><div class="p2lf">Right now</div><div class="p2bld">${d.now}</div></div>`:''}${p2BetweenLine(pid)}${top}
     <button class="p2lk p2more" onclick="event.stopPropagation();STATE.sheet=null;STATE.profileId='${pid}';go('profile')">${p2Logo(LI("user-round",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">See full profile</b>${parts.length?`<small>${parts.join(", ").replace(/^./,c=>c.toUpperCase())} and more</small>`:''}</span>${LI("chevron-right",16)}</button></div>`; }
 const _p2ProfileSheet3 = profileSheet;
 profileSheet = function(pid){ if ((pid==="priya" && !STATE.member) || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
@@ -17835,7 +17855,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.155";
+window.KEY_BUILD = "2.157";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
