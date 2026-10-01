@@ -16352,8 +16352,9 @@ const _talkSendMsg = sendMsg; sendMsg = function(cid, k){
 
 /* ==== MOTION (26 Sep, "Motion design" thread, second pass). Owns: the sign-in story in place of the marketing placeholder,
    the Kai call globe (Apoorv's pick, 22 Sep, restored at his word 29 Sep; the member's voice is gold) and the transcript spoken word by word.
-   Rendering: three.js r128 for the call globe (WebGL points with soft sprites) and GSAP 3.12.5 for choreography, both from cdnjs and loaded
-   only when motion is on. The sign-in reel has no point clouds or dot bursts (29 Sep); its voice is a canvas 2D glow.
+   Rendering: three.js r128 for the Kai globe on the call and the reel (WebGL points with soft sprites) and GSAP 3.12.5 for choreography, both from cdnjs and loaded
+   only when motion is on. The Kai globe is the one dotted form (Apoorv 29 Sep 19:23 on the call, 30 Sep 23:40 on the reel); the reel
+   keeps no member cloud, bursts or confetti (trypophobia rule).
    Motion is off under navigator.webdriver (tests, captures) unless the URL has ?motion,
    and under prefers-reduced-motion: then nothing loads, the story shows one composed still and the call behaves as before.
    Load before data.js. ==== */
@@ -16373,7 +16374,7 @@ const MO_SPARK = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c
 
 /* ---- Sign-in reel, script A (Apoorv's pick, 26 Sep 02:16; round 2 02:44): two weeks on Key told on the same screens, then Key itself.
    Each story: 1 the ask (Kai call) · 2 the path (mission, vouched pick) · 3 the yes · 4 the reply · 5 the room (themed event) · 6 it went well,
-   and the intro folds into a point of light. Story one's point grows into story two's voice glow; story two's becomes the glow behind the Key
+   and the intro folds into a point of light. Story one's point grows into story two's globe; story two's becomes the glow behind the Key
    wordmark, which holds with the family's numbers, then gathers back to the point. ---- */
 const MO_STORIES = [
   { ask:["What are you looking for right now?", "A technical cofounder for an agents idea."], mission:"Find a cofounder",
@@ -16435,19 +16436,6 @@ function moLineAmp(words, t) {
   const ph = ((t-w.s)/(w.e-w.s)*w.syl) % 1; return 0.22 + 0.78*Math.pow(Math.sin(Math.PI*ph), 1.6);
 }
 
-// The reel's voice: the call's gold glow in miniature, soft falloffs only. A tall beam over a wide base, rising with the level,
-// white while Kai asks and gold with the member's voice; everything fades out inside the canvas, so it has no edge.
-function moVoiceGlow(g, S, lvl, gold, t) {
-  const c = MO_COL.kai.map((k,i)=>Math.round(k + (MO_COL.you[i]-k)*gold)).join(","), sw = S*.012*Math.sin(t*.8);
-  const blob = (x, y, rx, ry, stops) => { g.save(); g.translate(x, y); g.scale(rx, ry); const gr = g.createRadialGradient(0,0,0,0,0,1);
-    stops.forEach(([o,a]) => gr.addColorStop(o, `rgba(${c},${a})`)); g.fillStyle = gr; g.beginPath(); g.arc(0,0,1,0,Math.PI*2); g.fill(); g.restore(); };
-  g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,S,S); g.globalCompositeOperation = "lighter";
-  blob(S/2 + sw, S*.6, S*(.3+.06*lvl), S*(.26+.08*lvl), [[0,.22],[.5,.09],[1,0]]);
-  blob(S/2 - sw, S*.56, S*(.19+.05*lvl), S*(.3+.1*lvl), [[0,.26],[.5,.1],[1,0]]);
-  blob(S/2, S*.54, S*(.1+.03*lvl), S*(.18+.1*lvl), [[0,.3+.2*lvl],[1,0]]);
-  g.globalCompositeOperation = "source-over";
-}
-
 // One story, authored in story time (0 to MO_SN); the caller slows it and places it on the reel.
 function moStoryTL(g, V, SV, W, k) {
   const q = sel => g.querySelectorAll(sel), one = sel => g.querySelector(sel);
@@ -16457,13 +16445,13 @@ function moStoryTL(g, V, SV, W, k) {
     tl.fromTo(cap[i], { y:16, opacity:0, filter:"blur(6px)" }, { y:0, opacity:1, filter:"blur(0px)", duration:.8 }, at + .15);
     tl.to(cap[i], { y:-12, opacity:0, filter:"blur(6px)", duration:.3, ease:"power2.in" }, Math.min(cuts[i], MO_SN - .1) - .32); });
   const bars = q(".mo-prog b"), bar = (i, at) => tl.fromTo(bars[i], { scaleX:0 }, { scaleX:1, duration:.55, ease:"power2.inOut" }, at);
-  // 1. the ask: the voice glow grows out of a point of light, white while Kai asks, gold with the member's voice
+  // 1. the ask: the globe grows out of a point of light, breathes white while Kai asks, turns gold with the member's voice
   const orb = one(".mo-orbw"), ask = q(".mo-ask p");
   tl.fromTo(orb, { scale:.06, opacity:0, x:0, y:0 }, { keyframes:[{ opacity:1, duration:.15, ease:"none" }, { scale:1, duration:1.1, ease:"expo.out" }] }, 0);
   tl.fromTo(SV, { orb:0 }, { orb:1, duration:.2, ease:"none" }, 0);
   tl.fromTo(ask, { y:10, opacity:0 }, { y:0, opacity:1, duration:.5, stagger:1.6 }, .25);
   tl.fromTo(SV, { gold:0 }, { gold:1, duration:.35, ease:"power2.out" }, 1.85);
-  // 2. the path: the glow folds into the Kai chip; the mission's first pick rises with its reason
+  // 2. the path: the globe folds into the Kai chip; the mission's first pick rises with its reason
   tl.to(ask, { y:-8, opacity:0, duration:.3, ease:"power2.in", stagger:.05 }, 3.3);
   tl.to(orb, { x:32 - W/2, y:-36, scale:.12, duration:.7, ease:"expo.inOut" }, 3.4);
   tl.to(orb, { opacity:0, duration:.2, ease:"none" }, 3.95);
@@ -16510,7 +16498,7 @@ function moStoryTL(g, V, SV, W, k) {
   tl.fromTo(one(".mo-going"), { scale:.5, opacity:0 }, { scale:1, opacity:1, duration:.55, ease:"back.out(2.2)" }, 15.0);
   const c2 = one(".mo-c2");
   tl.fromTo(c2, { scale:.4, opacity:0, y:8 }, { scale:1, opacity:1, y:0, duration:.7, ease:"back.out(1.8)" }, 15.45);
-  // 6. it went well; the intro folds into a point of light where the next glow, or the Key wordmark, begins
+  // 6. it went well; the intro folds into a point of light where the next globe, or the Key wordmark, begins
   tl.to(th, { clipPath:"circle(0% at 50% 64%)", duration:.6, ease:"power3.inOut" }, 16.35);
   tl.to([ev, c2], { y:-16, opacity:0, duration:.35, ease:"power2.in" }, 16.3);
   tl.fromTo(card, { y:60, opacity:0, scale:1 }, { y:0, opacity:1, duration:.6, ...again }, 16.65);
@@ -16581,16 +16569,21 @@ function moPromoMount(root) {
       return { g, orb, og:orb.getContext("2d"), words:[moLine(S.ask[0], .35, 1.4), moLine(S.ask[1], 1.95, 1.15)], ws:lines.map(el=>Array.from(el.querySelectorAll(".w"))), shown:[-2,-2] };
     });
     const bars = root.querySelectorAll(".mo-bars b"), nums = root.querySelectorAll(".mo-stats b"), cuts = MO_BEATS.map((b,i)=>MO_BEATS.slice(0,i).reduce((a,x)=>a+x,0));
-    let lvl = 0, last = 0;
+    let lvl = 0, last = 0, rot = 0;
     const loop = now => {
       if (!root.isConnected) return;
       const clock = (now - moT0)/1000, t = ((clock % MO_LOOP) + MO_LOOP) % MO_LOOP, dt = Math.min(.05, last ? (now-last)/1000 : .016); last = now;
       tl.time(t, false);
       const si = Math.max(0, Math.min(MO_STORIES.length-1, Math.floor(t/MO_SEG))), s = stories[si], u = t - si*MO_SEG, inStory = u < MO_SL, lt = inStory ? u/MO_SLOW : MO_SN + 1; // story time
-      // the voice glow, driven by the two lines of the ask
+      // the globe: the call's own renderer, driven by the two lines of the ask
       const target = Math.max(moLineAmp(s.words[0], lt), moLineAmp(s.words[1], lt)) || (lt < 3.4 ? .05 : 0);
       lvl += (target - lvl) * (target > lvl ? 1-Math.exp(-dt*22) : 1-Math.exp(-dt*7));
-      const sv = SV[si]; if (sv.orb > .01) moVoiceGlow(s.og, OS, lvl, sv.gold, clock); else s.og.clearRect(0,0,OS,OS);
+      rot += dt*.3;
+      const sv = SV[si], G = sv.orb > .01 && moGlobeGL();
+      if (G) { G.u.uTime.value = clock; G.u.uAmp.value = lvl; G.u.uThink.value = 0; G.pts.rotation.y = rot;
+        const c = MO_COL.kai.map((k,i)=>(k + (MO_COL.you[i]-k)*sv.gold)/255); G.u.uColor.value.setRGB(c[0], c[1], c[2]);
+        G.renderer.render(G.scene, G.camera); s.og.clearRect(0,0,OS,OS); s.og.globalCompositeOperation = "lighter"; s.og.drawImage(G.renderer.domElement, 0, 0, OS, OS); }
+      s.orb.parentNode.style.setProperty("--gold", sv.gold.toFixed(3));
       s.words.forEach((line,j)=>{ let k = -1; line.forEach((x,i)=>{ if (lt>=x.s) k=i; }); if (lt >= 3.3) k = line.length-1;
         if (k !== s.shown[j]) { s.shown[j] = k; s.ws[j].forEach((el,i)=>el.classList.toggle("off", i>k)); } });
       nums.forEach((el,i)=>{ const [v,,p] = MO_STATS[i], n = Math.round(v*V.count).toLocaleString("en-US") + p; if (el.textContent !== n) el.textContent = n; });
@@ -17683,7 +17676,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.147";
+window.KEY_BUILD = "2.148";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
