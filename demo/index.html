@@ -29,7 +29,7 @@
 <title>Key Wireframe Working Copy</title>
 <style>
   :root {
-    --bg:#E9EAEA; --paper:#FFFFFF; --ink:#141414; --ink2:#5A5A5A; --ink3:#8A8A8A;
+    --bg:#E9EAEA; --paper:#FFFFFF; --ink:#141414; --ink2:#5A5A5A; --ink3:#6B6B6B;
     --line:#D6D6D6; --fill:#F3F3F3; --fill2:#E7E7E7; --accent:#141414; --danger:#B33A3A;
     box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
   }
@@ -483,7 +483,7 @@
   .trow .m { flex:1; min-width:0; } .trow .btn.sm { flex:0 0 auto; padding:7px 12px; font-size:13px; } .trow .a { font-size:15px; font-weight:600; } .trow .b { font-size:13px; color:var(--ink2); }
   /* v3 framework */
   .mg { width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; flex:0 0 auto; }
-  .mg.t1 { background:#E8E4DC; color:var(--ink); } .mg.t2 { background:#DDE3E6; color:var(--ink); } .mg.t3 { background:#F1E8CF; color:#8F7527; }
+  .mg.t1 { background:#E8E4DC; color:var(--ink); } .mg.t2 { background:#DDE3E6; color:var(--ink); } .mg.t3 { background:linear-gradient(135deg,#6E579C,#805179); color:#fff; }
   .msec { margin:0 -16px; padding:24px 0 20px; border-top:0; }
   .msec + .msec { border-top:1px solid var(--line); }
   .body > .msec:first-child { padding-top:8px; }
@@ -2454,6 +2454,12 @@ p,
   .evt-screen .btn.sec, .evt-screen .chip, .evt-screen .pill, .evt-screen .evt-chip, .evt-screen .evt-cal, .evt-screen .evt-note, .evt-screen .evt-chat, .evt-screen .evt-person, .evt-screen .evt-follow.on { background:var(--evt-glass); border:1px solid var(--evt-edge); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
   .evt-screen .chip.on, .evt-screen .pill.on { background:var(--ev-ink); color:var(--ev-ink-inverse); border-color:var(--ev-ink); }
   .evt-screen .evt-bt, .evt-screen .evt-react button, .evt-screen .evt-say { background:var(--evt-glass-2); }
+  /* the fact rows stay AA as rendered (two-chevron, 1 Oct): second lines take at least 90% ink, more where the theme's muted ink needs it. On a
+     tight canvas (data-ev-tight) a light ground's date and icon tiles frost toward white, and the waves' waterline deepens instead of washing out the text */
+  .evt-screen .evt-fact span { color:rgb(var(--ev-ink-rgb) / max(.9, var(--ev-ink-mute))); }
+  .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-cal, .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-ico { background:rgb(var(--ev-ink-inverse-rgb) / .3); }
+  .evt-screen[data-ev-tight="true"] .fx-wave:not(.fx-wave--accent) { background:rgb(var(--ev-ink-inverse-rgb)); }
+  .evt-screen[data-ev-tight="true"] .fx-wave--accent { opacity:calc(var(--ev-fx-alpha) * .35); }
   .evt-float { position:absolute; z-index:40; font-size:32px; pointer-events:none; animation:evtFloatUp 1s cubic-bezier(.2,.8,.2,1) forwards; }
   @keyframes evtFloatUp { 0% { transform:translateY(0) scale(.6); opacity:0; } 20% { opacity:1; transform:translateY(-20px) scale(1.2); } 100% { transform:translateY(-140px) scale(1); opacity:0; } }
   @media (prefers-reduced-motion: reduce) { .evt-float { animation:none; opacity:0; } }
@@ -5597,7 +5603,7 @@ const DB = {
   opps: [],
   recommendedFamilies: [
     { id:"michigan", name:"Michigan Alumni Network", initial:"M", members:1240, kind:"open", why:"From your LinkedIn: UMSI, 2025", proof:"12 intros last quarter" },
-    { id:"aipm", name:"AI PM Circle", initial:"A", members:180, kind:"vetted", why:"Two people you know are members", proof:"Runs a monthly hiring thread" },
+    { id:"aipm", name:"AI PM Circle", initial:"A", members:180, kind:"vetted", why:"People you know are here", proof:"Runs a monthly hiring thread" },
     { id:"desi", name:"Desi Founders", initial:"D", members:900, kind:"vetted", why:"Daniel is also a member", proof:"4 cofounder matches this year" }
   ],
   families: [
@@ -6459,7 +6465,7 @@ function famCard(f, compact) {
   const act = f.id==="xoogler" ? "go('family-step')" : `toast('${f.name} (family page, out of scope here)')`;
   const status = f.status==="member"?"Member":f.status==="pending"?"Pending":f.kind==="open"?"Join":"Apply";
   if (compact) return `<div class="fcard compact" onclick="${act}"><div class="fcov" style="background:${tint}"><div class="flg">${f.initial}</div></div><div class="fm"><div class="fn">${f.name}</div><div class="fw">${f.why||f.proof||""}</div></div><span class="tag ${f.status?'':'act'}">${status}</span></div>`;
-  return `<div class="fcard" onclick="${act}"><div class="fcov big" style="background:linear-gradient(135deg,${tint},#fff)"><div class="flg">${f.initial}</div>${f.status?`<span class="tag" style="position:absolute;right:12px;top:12px;background:#fff">${status}</span>`:f.best?`<span class="tag" style="position:absolute;right:12px;top:12px;background:#fff;border-color:#E6D39A;color:#8F7527">Best fit</span>`:''}</div><div class="fb"><div class="fn">${f.name}</div><div class="fw">${f.why}</div><div class="row" style="align-items:center;gap:10px;margin-top:10px"><span class="xs muted" style="flex:1">${f.members} members${f.proof?". "+f.proof:""}</span>${f.status?'':`<button class="btn sm" style="margin:0;height:36px;padding:0 14px">${status}</button>`}</div></div></div>`;
+  return `<div class="fcard" onclick="${act}"><div class="fcov big" style="background:linear-gradient(135deg,${tint},#fff)"><div class="flg">${f.initial}</div>${f.status?`<span class="tag" style="position:absolute;right:12px;top:12px;background:#fff">${status}</span>`:f.best?`<span class="tag" style="position:absolute;right:12px;top:12px;background:#fff">Best fit</span>`:''}</div><div class="fb"><div class="fn">${f.name}</div><div class="fw">${f.why}</div><div class="row" style="align-items:center;gap:10px;margin-top:10px"><span class="xs muted" style="flex:1">${f.members} members${f.proof?". "+f.proof:""}</span>${f.status?'':`<button class="btn sm" style="margin:0;height:36px;padding:0 14px">${status}</button>`}</div></div></div>`;
 }
 function famRecRow(f) { return famCard(f, true); }
 function famRecRow_old(f) {
@@ -9017,7 +9023,7 @@ missionSection = function(m){
   const you=ps.filter(p=>ownerOf(p)==="you");
   return `<div class="msec sc ${glyph[1]}"><div class="msh" data-mission="${m.id}"><div class="mg ${glyph[1]}">${glyph[0]}</div><div class="mst">${m.name}</div><span class="chev">›</span></div>
     <div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>
-    ${you.length?`<div class="rail">${you.slice(0,3).map(vcard).join("")}${you.length>3?`<div class="vcard sc scard" data-mission="${m.id}" style="flex-basis:40%;justify-content:center;align-items:center;text-align:center"><div class="t20">${you.length-3}</div><div class="b">more for you</div></div>`:''}</div>${you.length>1?`<div class="dots">${you.slice(0,Math.min(you.length,3)+(you.length>3?1:0)).map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join("")}</div>`:''}`:(ps.length?"":`<div class="empty">No paths yet. ${STATE.intakeDone?"Kai's next pass is Friday.":"The call makes this specific."}</div>`)}
+    ${you.length?`<div class="rail">${you.slice(0,3).map(vcard).join("")}${you.length>3?`<div class="vcard sc scard" data-mission="${m.id}" style="flex-basis:40%;justify-content:center;align-items:center;text-align:center"><div class="t20">${you.length-3}</div><div class="b">more for you</div></div>`:''}</div>${you.length>1?`<div class="dots">${you.slice(0,Math.min(you.length,3)+(you.length>3?1:0)).map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join("")}</div>`:''}`:(ps.length?"":`<div class="empty">${m.org&&typeof oTotal==="function"?`${oTotal()} things this week. Nothing is sent until you say so.`:`No paths yet. ${STATE.intakeDone?"Kai's next pass is Friday.":"The call makes this specific."}`}</div>`)}
   </div>`;
 };
 sHome = function(){
@@ -10197,8 +10203,7 @@ function ensureInSurface(hex, samples, scrimRgb, scrimA, surface, target) {
     if (measure(start) >= target)
         return { hex: hex.toUpperCase(), adjusted: false, ratio: measure(start) };
     const worstBg = samples.map(bgAt).sort((a, b) => relLuminance(b) - relLuminance(a))[0];
-    /* white-ink themes walk the accent toward white: a mid-tone plate (Sage) otherwise tips past 0.18 under the surface and lands on black */
-    const goDarker = surface !== SURFACE.dark && relLuminance(worstBg) > 0.18;
+    const goDarker = relLuminance(worstBg) > 0.18;
     let [h, sat, l] = rgbToHsl(start);
     for (let i = 0; i < 50; i++) {
         l += goDarker ? -0.02 : 0.02;
@@ -10365,8 +10370,9 @@ function verify(theme, opts = {}) {
         passes: failures === 0
     };
 }
-/* cover themes follow the content-colour rule (VISUAL-DIRECTION.md; Apoorv 1 Oct 08:30): no amber or orange, chroma 0.13 or less, lightness 0.55 or less (Graphite is the neutral), and the names
-   the mission plates use carry the plates' hexes */
+/* cover themes are the host's to make fun (Apoorv 1 Oct 08:55: "events should be fun"), so the content-colour limits don't apply here.
+   Sand, Dawn and Ember are off (his pick, 08:30) and there's no gold. Meadow and Twilight have their own names so Sage and Dusk stay
+   the mission plates' hexes */
 const PRESETS = [
     {
         id: "graphite",
@@ -10377,24 +10383,38 @@ const PRESETS = [
         mono: true
     },
     {
-        id: "sage",
-        name: "Sage",
-        stops: ["#346B57", "#36686E"],
-        angle: 120,
-        accent: "#C4E6D8"
+        id: "aurora",
+        name: "Aurora",
+        stops: ["#1580FA", "#3A7AF9", "#D563F7", "#FF7700"],
+        angle: 130,
+        accent: "#FFD9B0"
+    },
+    {
+        id: "meadow",
+        name: "Meadow",
+        stops: ["#EDF3E7", "#CFE0C6", "#A9C7A0"],
+        angle: 150,
+        accent: "#2E4A2B"
+    },
+    {
+        id: "petal",
+        name: "Petal",
+        stops: ["#FBE9F0", "#F3BCD3", "#E58BB2"],
+        angle: 150,
+        accent: "#7C2748"
     },
     {
         id: "tide",
         name: "Tide",
-        stops: ["#0E3A5C", "#1B6E8F", "#2B807E"],
+        stops: ["#0E3A5C", "#1B6E8F", "#3E918E"],
         angle: 140,
         accent: "#BFEDEA"
     },
     {
-        id: "dusk",
-        name: "Dusk",
-        stops: ["#6E579C", "#805179"],
-        angle: 120,
+        id: "twilight",
+        name: "Twilight",
+        stops: ["#3B2A5A", "#7A4E8C", "#C76782"],
+        angle: 140,
         accent: "#F3CFE0"
     },
     {
@@ -10775,6 +10795,7 @@ function applyTheme(el, theme) {
     el.dataset.evInk = t.inkIsLight ? "light" : "dark";
     el.dataset.evAccentMono = String(t.accentIsMono);
     el.dataset.evPlateEdge = String(t.plate.needsEdge);
+    el.dataset.evTight = String(t.inkMute > 0.8);  /* muted ink can barely go below full: little contrast headroom on this canvas */
     return t;
 }
 function ensureLayer(root) {
@@ -11263,10 +11284,10 @@ const EV_ME = "priya";
 /* plate colours, the same hex per name as the mission plates (mission-colours.css); no gold plate, gold is Kai and vouched only (visual direction, 1 Oct) */
 const EV_THEMES = { ink:["Ink","linear-gradient(120deg, #36445A 20%, #51466A)"], dusk:["Dusk","linear-gradient(120deg, #6E579C 20%, #805179)"], sage:["Sage","linear-gradient(120deg, #346B57 20%, #36686E)"], harbour:["Harbour","linear-gradient(120deg, #416C98 20%, #5C63A8)"], photo:["Photo","repeating-linear-gradient(135deg,#9AA3AD 0 10px,#8A939D 10px 20px)"] };
 const EV_MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], EV_DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const EV_OLD = { gold:"tide", ink:"midnight", dusk:"dusk", sage:"sage", harbour:"tide", photo:"graphite", sand:"tide", dawn:"graphite", petal:"dusk", ember:"dusk", aurora:"midnight" };
+const EV_OLD = { gold:"tide", ink:"midnight", dusk:"twilight", sage:"meadow", harbour:"tide", photo:"graphite", sand:"tide", dawn:"petal", ember:"twilight" };
 const evPreset = t => EVT.PRESETS.find(p=>p.id===(EV_OLD[t]||t)) || EVT.PRESETS.find(p=>p.id==="tide");
 const evBg = t => { const p=evPreset(t); return `linear-gradient(${p.angle}deg, ${p.stops.join(", ")})`; };
-const EV_LOOK = { e1:["dusk","glints","🍝"], e0:["tide","dust","🤖"], e2:["midnight","constellation","🧠"], e3:["sage","petals","🌿"], e4:["dusk","sheen","🔍"], e5:["tide","waves","🛠️"], e6:["sage","breathe","🌱"], e7:["midnight","confetti","🚀"], e8:["midnight","beams","🪑"], e9:["tide","fireflies","🔥"], e10:["graphite","emoji","☕"], e11:["graphite","bits","✍️"], e12:["dusk","bokeh","🥂"], e13:["sage","mesh","🎨"] };
+const EV_LOOK = { e1:["twilight","glints","🍝"], e0:["tide","dust","🤖"], e2:["midnight","constellation","🧠"], e3:["meadow","petals","🌿"], e4:["twilight","sheen","🔍"], e5:["tide","waves","🛠️"], e6:["petal","breathe","🌱"], e7:["aurora","confetti","🚀"], e8:["midnight","beams","🪑"], e9:["twilight","fireflies","🔥"], e10:["graphite","emoji","☕"], e11:["graphite","bits","✍️"], e12:["twilight","bokeh","🥂"], e13:["petal","mesh","🎨"] };
 const EV_FX_PICK = ["none","emoji","aurora","mesh","breathe","sheen","glints","bokeh","stars","fireflies","petals","snow","constellation","confetti","balloons","hearts"];
 const evFxName = f => f==="emoji" ? "Emoji" : EVT.effectById(f).name;
 DB.fevents.forEach(e=>{ const l=EV_LOOK[e.id] || EV_LOOK[e.id.replace(/[a-z]$/,"")]; e.theme = l?l[0]:(EV_OLD[e.theme]||e.theme||"tide"); e.fx = e.fx || (l?l[1]:"breathe"); e.emoji = e.emoji || (l?l[2]:"✨"); });
@@ -11520,7 +11541,7 @@ sEventDetail = function(id){
   + navHTML("events");
 };
 function evBurst(){ const scr=phone.querySelector(".evt-screen"); if (!scr || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const b=document.createElement("div"); b.className="evt-burst"; const cols=["var(--ev-accent-fill)","#fff"];
+  const b=document.createElement("div"); b.className="evt-burst"; const cols=["var(--ev-accent-fill)","#ff5a5f","#3ecf8e","#4d9fff","#b76cff"];
   b.innerHTML = Array.from({length:46},(_,i)=>`<i style="left:${Math.random()*100}%;background:${cols[i%cols.length]};--dx:${Math.round(Math.random()*120-60)}px;--r:${Math.round(Math.random()*720-360)}deg;animation-delay:${Math.round(Math.random()*260)}ms;${i%3?"":"border-radius:50%;height:8px;"}"></i>`).join("");
   scr.appendChild(b); setTimeout(()=>b.remove(), 2200); }
 
@@ -13382,7 +13403,7 @@ function evCta(e, live, locked){
       P({ id:"p3", cat:"Playbooks", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Last week", title:"How I got into Sierra", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know.", read:"5 min read", featured:true, img:true, up:64, cm:21, tags:["Interviews"] }),
       P({ id:"p4", cat:"Wins", who:"Rahul Mehta", ini:"RM", sub:"Engineering Director, Anthropic", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred her, Daniel vouched. Offer to signed in eleven days.", read:"1 min read", up:37, cm:9 }),
       P({ id:"p5", cat:"Questions", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Sierra", when:"Monday", title:"Who knows Figma's PM bar?", text:"Interviewing a candidate from Figma next week. What does a strong PM there look like?", read:"1 min read", up:12, cm:7 }),
-      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Six new members, all greeted.", read:"1 min read", up:18, cm:3 }),
+      P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. 28 joined this month: 21 greeted, 7 still waiting for a hello.", read:"1 min read", up:18, cm:3 }),
       P({ id:"p7", cat:"Playbooks", who:"Dev Patel", ini:"DP", sub:"Founder, Legal-tech agents", when:"2h", title:"Shipping tool use in legal agents: what broke", text:"Three months in production. Where the model over-called tools, and the eval that caught it.", read:"7 min read", st:"pending" }),
       P({ id:"p8", cat:"Questions", who:"Jordan Tan", ini:"JT", sub:"Product Manager, Ex-Google Maps", when:"5h", title:"Maps PM to AI PM: where would you start?", text:"Six years on Maps, two on ML ranking. Which of that counts in an AI PM loop?", read:"1 min read", st:"pending" }),
       P({ id:"p9", cat:"Questions", who:"Priya Sharma", ini:"PS", sub:"Senior PM, Google Cloud", when:"Edited 2d ago", title:"Anyone hiring senior PMs for agents?", text:"Looking at AI PM roles in the Bay Area. Happy to trade notes on loops.", read:"1 min read", st:"draft", mine:true })
@@ -14032,7 +14053,9 @@ function cOrgBrief(){
    from the organizer (Kai can draft it), each person's copy with their first name to check, edit or drop, then Send N on a slide. */
 const C_NEW = ["ines","eli","dev","kofi","felix","zoe","ruth"];   /* joined this month, no hello yet: 28 joined, 21 welcomed */
 /* the mission's Greet list is the same seven, so every welcome count agrees (some of them load after this file, so it runs on render) */
-function cGreetSync(){ if (typeof O_PEOPLE!=="undefined" && O_PEOPLE.welcome) C_NEW.forEach(pid=>{ const p = DB.people[pid]; if (p && !O_PEOPLE.welcome.some(c=>c.pid===pid))
+const cRecapHello = () => `${C_FSTAT.xoogler[0]} joined this month: ${C_FSTAT.xoogler[0]-C_NEW.length} greeted, ${C_NEW.length} still waiting for a hello.`;
+function cGreetSync(){ const rp = (DB.posts||[]).find(p=>p.id==="p2"); if (rp) rp.text = rp.text.replace(/ [^.]*joined this month[^.]*\./, " "+cRecapHello());
+  if (typeof O_PEOPLE!=="undefined" && O_PEOPLE.welcome) C_NEW.forEach(pid=>{ const p = DB.people[pid]; if (p && !O_PEOPLE.welcome.some(c=>c.pid===pid))
   O_PEOPLE.welcome.push({ pid, why:"Joined this month. Nobody has said hello yet", draft:`Welcome to Xoogler, ${p.name.split(" ")[0]}. What are you hoping to find here?` }); }); }
 const cNewRow = () => `<div class="cm-bnums cm-newrow"><span class="cm-osfs">${C_NEW.slice(0,3).map(id=>`<span class="cm-osf">${DB.people[id].initials}</span>`).join("")}</span><div class="m"><b>${C_NEW.length}</b> new members<span>Joined this month, no hello yet</span></div><button type="button" class="cm-osbtn" data-cbulk="welcome">Welcome</button></div>`;
 const cBulk = (kind, ids, o) => typeof mxBulkReview==="function" ? mxBulkReview(kind, ids, Object.assign({ community:cF().name }, o)) : toast("Opens the review: each person's copy to check, then Send");
@@ -18311,7 +18334,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.160";
+window.KEY_BUILD = "2.161";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
