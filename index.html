@@ -3659,7 +3659,7 @@ p,
 .ea-row .m { flex:1; min-width:0; } .ea-row .m i { display:block; font-style:normal; font-weight:600; font-size:12px; color:var(--ink); } .ea-row .m u { display:block; text-decoration:none; height:5px; border-radius:3px; background:var(--line); margin-top:4px; width:70%; }
 .ea-row .lab { font-size:11px; font-weight:600; color:var(--ink2); white-space:nowrap; }
 .ea-row.hi { box-shadow:0 0 0 1.5px var(--ink); }
-.ea-why { display:flex; gap:6px; align-items:center; font-size:11px; color:#8A6A16; } .ea-why:before { content:""; width:6px; height:6px; border-radius:50%; background:#DCB854; }
+.ea-why { font-size:11px; color:var(--ink2); }
 .ea-pair { display:flex; gap:8px; } .ea-pair > div { flex:1; background:#fff; border-radius:10px; padding:8px; text-align:center; font-size:11px; color:var(--ink2); } .ea-pair b { display:block; font-size:12px; color:var(--ink); margin-bottom:2px; }
 .ea-pair .pri { background:var(--ink); color:#fff; } .ea-pair .pri b { color:#fff; }
 .ea-kai { display:flex; align-items:center; gap:12px; justify-content:center; }
@@ -8733,7 +8733,7 @@ const _logOutcome = logOutcome; logOutcome = function(id, v){
 function cycleAsks(mid){
   const out=[]; const os=DB.opps.filter(o=>o.missionId===mid&&o.state!=="done"&&o.state!=="dropped"); const card=(k,inner)=>`<div class="vcard" style="border-color:var(--ink)"><div class="kicker"><span class="d ${k}"></span>Kai asks<span class="t">now</span></div>${inner}</div>`;
   os.filter(o=>o.updateDue).forEach(o=>{ const t=firstName(targetOf(o)); out.push(card("", `<div class="id">${av("K","lg")}<div><div class="n">Still talking with ${t}?</div><div class="s">Ten days since the thread opened, no meeting on your calendar. One tap; nothing is sent.</div></div></div><div class="acts"><button class="btn sec" style="margin:0;flex:1;height:44px" data-exit="${o.id}|met">We met</button><button class="btn sec" style="margin:0;flex:1;height:44px" onclick="(function(){ const x=DB.opps.find(z=>z.id==='${o.id}'); x.updateDue=false; x.log.push(['You','still talking. Kai checks again in two weeks.','now']); })();render();toast('Okay. Kai asks again in two weeks.')">Still talking</button><div class="sec2" data-exit="${o.id}|close">It fizzled</div></div>`)); });
-  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===mid&&viaOf(o)&&!o.thanked) { const c=firstName(viaOf(o)); out.push(card("gold", `<div class="id">${av("K","lg")}<div><div class="n">Thank ${c}?</div><div class="s">${c} sees: Landed. A line in your voice is drafted. Only you send it.</div></div></div><div class="acts"><button class="btn" style="margin:0;flex:1;height:44px" onclick="openSheet('thank','${o.id}')">Preview</button><div class="sec2" onclick="STATE.thankOffer=null;render()">Not now</div></div>`)); } }
+  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===mid&&viaOf(o)&&!o.thanked) { const c=firstName(viaOf(o)); out.push(card("", `<div class="id">${av("K","lg")}<div><div class="n">Thank ${c}?</div><div class="s">${c} sees: Landed. A line in your voice is drafted. Only you send it.</div></div></div><div class="acts"><button class="btn" style="margin:0;flex:1;height:44px" onclick="openSheet('thank','${o.id}')">Preview</button><div class="sec2" onclick="STATE.thankOffer=null;render()">Not now</div></div>`)); } }
   return out;
 }
 const _sMission = sMission; sMission = function(id){
@@ -9023,8 +9023,8 @@ function scKaiAsks(id, m, os){
   os.filter(o=>o.logPrompt&&o.state!=="done").forEach(o=>card("green", o.logPrompt, "From your calendar", sec(`${fix(o.id,"x.log.push(['You','we talked. Logged from the prompt.','now']); if(x.state==='waiting'||x.state==='yourmove'){ x.state='conversation'; x.met=true; lit(x,'In conversation','now'); } x.logPrompt=null;").replace(/render\(\)"$/,"render();toast('Logged. Kai asks how it went in a week.')\"")}`,"We talked")+sec(`${fix(o.id,"x.log.push(['You','nothing yet','now']); x.logPrompt=null;").replace(/render\(\)"$/,"render();toast('Okay. Kai asks again if it moves.')\"")}`,"Nothing yet")+q(fix(o.id,"x.logPrompt=null;"),"Not related")));
   os.filter(o=>o.stale&&o.state!=="done"&&(STATE.archiveProposed||[]).includes(o.id)).forEach(o=>card("grey", `Archive ${o.roleTitle||f1(targetOf(o))}?`, `Three weeks quiet, nudged once. ${f1(scHolder(o))} sees: Expired, no words`, sec(`${fix(o.id,`x.state='done'; x.outcome='closed'; x.log.push(['You','archived','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`).replace(/render\(\)"$/,"render();toast('Archived. Reopen from Done any time.')\"")}`,"Archive")+q(`data-exit="${o.id}|other"`, o.roleTitle?"Apply directly":"Another route")+q(fix(o.id,`x.log.push(['You','keep waiting','now']); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!=='${o.id}');`),"Keep waiting")));
   os.filter(o=>o.updateDue&&o.state!=="done").forEach(o=>card("green", `Still talking with ${f1(targetOf(o))}?`, "Ten days, no meeting on your calendar", sec(`data-exit="${o.id}|met"`,"We met")+sec(`${fix(o.id,"x.updateDue=false; x.log.push(['You','still talking. Kai checks again in two weeks.','now']);").replace(/render\(\)"$/,"render();toast('Okay. Kai asks again in two weeks.')\"")}`,"Still talking")+q(`data-exit="${o.id}|close"`,"It fizzled")));
-  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===id&&viaOf(o)&&!o.thanked) card("gold", `Thank ${f1(viaOf(o))}?`, `${f1(viaOf(o))} sees: Landed. A line in your voice is drafted`, pri(`onclick="openSheet('thank','${o.id}')"`,"Preview")+q(`onclick="STATE.thankOffer=null;render()"`,"Not now")); }
-  if (STATE.closeProposed===id) card("gold", "Close this mission?", `${m.done}. Reopen any time`, pri(`data-close="${id}"`,"Close it")+q(`onclick="STATE.closeProposed=null;render()"`,"Not yet"));
+  if (STATE.thankOffer) { const o=DB.opps.find(x=>x.id===STATE.thankOffer); if (o&&o.missionId===id&&viaOf(o)&&!o.thanked) card("", `Thank ${f1(viaOf(o))}?`, `${f1(viaOf(o))} sees: Landed. A line in your voice is drafted`, pri(`onclick="openSheet('thank','${o.id}')"`,"Preview")+q(`onclick="STATE.thankOffer=null;render()"`,"Not now")); }
+  if (STATE.closeProposed===id) card("", "Close this mission?", `${m.done}. Reopen any time`, pri(`data-close="${id}"`,"Close it")+q(`onclick="STATE.closeProposed=null;render()"`,"Not yet"));
   return qs;
 }
 function scPathRow(o){
@@ -18228,7 +18228,7 @@ function mcWire(){
 
 STATE.lgPushed = true; // coordinator 29 Sep 18:09: the early Coffee-with-Rahul push is held (it interrupted Kai's report on Home) until Missions pipeline fixes capture.js
 
-window.KEY_BUILD = "2.158";
+window.KEY_BUILD = "2.159";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") h += `<div class="xs faint" style="text-align:center;padding:20px 0 28px">${window.KEY_BUILD}</div>`; return h; };
 
