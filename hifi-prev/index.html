@@ -5391,6 +5391,22 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 #phone.hf-prof .p2ked textarea:focus { outline-color:var(--text-on-deep-default); }
 
 
+.p2hook { padding:16px; border-radius:12px; background:var(--fill); }
+.p2hook .p2lf { margin-bottom:4px; }
+.p2hook .p2bld { font-size:20px; line-height:1.2; font-weight:800; margin-bottom:0; }
+#phone.hf-prof .p2hook { padding:var(--space-absolute-16); border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); }
+#phone.hf-prof .p2hook .p2lf { margin-bottom:var(--space-absolute-4); }
+#phone.hf-prof .p2hook .p2bld { font:var(--type-display-m); letter-spacing:var(--type-display-m-tracking); margin-bottom:0; }
+
+.p2kdots { display:flex; justify-content:center; align-items:center; gap:6px; padding-top:4px; }
+.p2kdots i { width:6px; height:6px; border-radius:3px; background:var(--ink3); transition:width .2s ease, background .2s ease; }
+.p2kdots i.on { width:18px; background:var(--ink); }
+#phone.hf-prof .p2kdots { gap:var(--space-absolute-6); padding-top:var(--space-absolute-4); }
+#phone.hf-prof .p2kdots i { background:var(--text-tertiary); }
+#phone.hf-prof .p2kdots i.on { background:var(--bg-deep); }
+@media (prefers-reduced-motion: reduce) { .p2kdots i { transition:none; } }
+
+
 .call.kc { background:var(--component-call-bg, #0B0E11); color:var(--component-call-ink-default, #F9FAFC); }
 .call.kc > canvas.kai-stars { z-index:0; }
 .call.kc > *:not(canvas) { position:relative; z-index:1; }
@@ -5449,15 +5465,29 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .kc-b.on .l { color:var(--component-call-ink-default, #F9FAFC); }
 .kc-b.end .d { background:var(--component-call-end-bg, #C8322F); color:var(--component-call-end-ink, #F9FAFC); }
 
-.callbar.kc-bar { margin:4px 12px 6px; background:var(--component-callbar-bg, #0B0E11); color:var(--component-callbar-ink, #F9FAFC); border-radius:999px; display:flex; align-items:center; gap:10px; padding:6px 6px 6px 8px; box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35)); cursor:pointer; border:0; }
-.callbar.kc-bar canvas.mo-mini { width:36px; height:36px; margin:0; }
-.callbar.kc-bar .cbm { flex:1; min-width:0; }
-.callbar.kc-bar .cbm b { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); display:block; }
-.callbar.kc-bar .cbl { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-call-ink-muted, #A6AFBB); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.callbar.kc-bar .kc-sb { width:40px; height:40px; border-radius:999px; display:grid; place-items:center; background:var(--component-call-control-bg, #F9FAFC24); color:#F9FAFC; flex:0 0 auto; }
-.callbar.kc-bar .kc-sb.on { background:var(--component-call-control-active-bg, #F9FAFC); color:var(--component-call-control-active-ink, #12161A); }
-.callbar.kc-bar .kc-sb.end { background:var(--component-call-end-bg, #C8322F); }
+.callbar.kc-bar { position:absolute; top:4px; left:12px; right:12px; z-index:30; margin:0; display:block; padding:6px 6px 10px 8px; border-radius:var(--radius-absolute-20, 20px); border:0; cursor:pointer;
+  --kb-ink:var(--text-primary, #12161A); --kb-ground:var(--bg-surface-default, #FFFFFF); --kb-ctl:color-mix(in srgb, var(--kb-ink) 8%, transparent); --kb-ctl-ink:var(--kb-ink);
+  color:var(--kb-ink); background:color-mix(in srgb, var(--kb-ground) 82%, transparent); -webkit-backdrop-filter:blur(28px) saturate(1.6); backdrop-filter:blur(28px) saturate(1.6);
+  box-shadow:0 1px 3px rgba(11,14,17,.10), var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.25)); }
+.callbar.kc-bar.kb-dark { --kb-ink:var(--component-callbar-ink, #F9FAFC); --kb-ground:var(--component-callbar-bg, #0B0E11); --kb-ctl:var(--component-call-control-bg, #F9FAFC24); background:color-mix(in srgb, var(--kb-ground) 62%, transparent); box-shadow:var(--elevation-lift, 0 8px 24px -6px rgba(11,14,17,.35)); }
+.callbar.kc-bar.kb-dark .kb-st { color:color-mix(in srgb, var(--kb-ink) 90%, transparent); }
+.callbar.kc-bar:has(.kb-open:focus-visible) { outline:2px solid var(--kb-ink); outline-offset:2px; }
+.callbar.kc-bar canvas.mo-mini { display:block; position:absolute; width:0; height:0; visibility:hidden; }
+.callbar.kc-bar .kb-row { display:flex; align-items:center; gap:6px; min-height:44px; }
+.callbar.kc-bar .kc-k { width:32px; height:32px; flex:0 0 auto; box-shadow:none; margin-right:4px; }
+.callbar.kc-bar .cbm { flex:1; min-width:0; display:flex; align-items:baseline; gap:8px; }
+.callbar.kc-bar .cbm b { font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); white-space:nowrap; }
+.callbar.kc-bar .kb-st { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:color-mix(in srgb, var(--kb-ink) 80%, transparent); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.callbar.kc-bar .kb-snip { margin:4px 6px 0 2px; font:var(--type-body-s, 400 13px/18px Manrope, system-ui, sans-serif); line-height:18px; height:36px; overflow:hidden; color:var(--kb-ink); }
+.callbar.kc-bar .kb-open { position:static; width:0; height:0; padding:0; margin:0; border:0; background:none; outline:none; }
+.callbar.kc-bar .kb-open::after { content:""; position:absolute; inset:0; border-radius:inherit; z-index:1; } 
+.callbar.kc-bar .kc-sb { width:40px; height:40px; position:relative; z-index:2; margin:0 2px; padding:0; border:0; cursor:pointer; border-radius:999px; display:grid; place-items:center; background:var(--kb-ctl); color:var(--kb-ctl-ink); flex:0 0 auto; }
+.callbar.kc-bar .kc-sb::before { content:""; position:absolute; inset:-2px; border-radius:999px; } 
+.callbar.kc-bar .kc-sb:focus-visible { outline:2px solid var(--kb-ink); outline-offset:2px; }
+.callbar.kc-bar .kc-sb.on { background:var(--kb-ink); color:var(--kb-ground); }
+.callbar.kc-bar .kc-sb.end { background:var(--component-call-end-bg, #C8322F); color:var(--component-call-end-ink, #F9FAFC); }
 .callbar.kc-bar .kc-sb svg { width:20px; height:20px; }
+.view > .body > .kb-gap { flex:0 0 auto; }
 @media (max-height:620px) { .kc-top { padding-top:44px; } .call.kc .viz canvas { width:170px; height:170px; } .call.kc .viz::before { width:170px; height:170px; } .kc-b .d { width:56px; height:56px; } .kc-ctl { padding:12px 0 24px; } .kc-ideas, .kc-type { bottom:124px; } }
 @media (max-width:360px) { .kc-ctl { gap:12px; padding-left:12px; padding-right:12px; } }
 
@@ -5546,7 +5576,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ks-box { border:1px solid var(--border-default, #E3E8EE); border-radius:var(--radius-absolute-24, 24px); padding:4px 6px 6px; background:var(--bg-surface-default, #FFFFFF); box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); }
 .ks-box textarea { width:100%; border:0; outline:0; resize:none; font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); padding:8px 8px 2px; min-height:36px; color:var(--text-primary, #0B0E11); background:none; }
 .ks-box textarea::placeholder { color:var(--text-tertiary, #8A94A3); }
-.ks-crow { display:flex; align-items:center; gap:4px; }
+.ks-crow { display:flex; align-items:center; gap:8px; }
 .ks-crow .grow { flex:1; }
 .ks-ci { width:36px; height:36px; display:grid; place-items:center; color:var(--icon-secondary, #5B6573); background:none; border:0; border-radius:var(--radius-absolute-12, 12px); cursor:pointer; }
 .ks-ci#kaiMic { border-radius:999px; } 
@@ -5569,7 +5599,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ks-hrow .w { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary, #8A94A3); flex:0 0 auto; align-self:flex-start; margin-top:3px; }
 .ks-empty { font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-tertiary, #8A94A3); padding:24px 0; }
 .ks-next { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
-.ks-sec { display:inline-flex; align-items:center; gap:6px; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); background:none; border:1px solid var(--component-button-secondary-border, #C6CED8); border-radius:var(--radius-absolute-12, 12px); padding:9px 12px; cursor:pointer; }
+.ks-sec { display:inline-flex; align-items:center; min-height:44px; gap:6px; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); background:none; border:1px solid var(--component-button-secondary-border, #C6CED8); border-radius:var(--radius-absolute-12, 12px); padding:9px 12px; cursor:pointer; }
 .ks-sec svg { color:var(--icon-secondary, #5B6573); }
 .ks-page .ks-comp { padding-bottom:30px; }
 
@@ -5614,7 +5644,7 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ks-pick .m { flex:1; min-width:0; }
 .ks-pick .m b { display:block; font:var(--type-body-m-strong, 600 14px/21px Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .ks-pick .m > span:not(.via) { display:block; font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.ks-pick .via { display:inline-block; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--component-tag-gold-ink, #7E6011); border:1px solid var(--border-gold, #E8CD82); border-radius:6px; padding:1px 6px; margin-bottom:4px; }
+.ks-pick .via { display:inline-block; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); background:var(--bg-fill-default, #F2F5F8); border-radius:6px; padding:1px 6px; margin-bottom:4px; }
 .ks-why { margin:0; font:var(--type-body-m, 400 14px/21px Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); padding-left:68px; }
 .ks-acts { display:flex; gap:8px; padding:12px 0 12px 68px; border-bottom:1px solid var(--border-default, #E3E8EE); }
 .ks-intro { flex:1; min-height:44px; border:0; border-radius:var(--radius-absolute-12, 12px); background:var(--component-button-primary-bg-default, #0B0E11); color:var(--component-button-primary-ink, #FFFFFF); font:var(--type-label-strong, 700 13px/1.2 Manrope, system-ui, sans-serif); cursor:pointer; padding:0 16px; }
@@ -5647,6 +5677,30 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 .ks-comp[data-kv*="state=empty"] #kaiSendBtn, .ks-comp[data-kv*="state=typing"] .ks-callb, .ks-comp[data-kv*="state=typing"] #kaiMic { display:none; }
 .ks-go svg { fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .ks-go.ks-stop svg rect { fill:currentColor; }
+
+.ks-ci, .ks-go { position:relative; }
+.ks-ci::before, .ks-go::before { content:""; position:absolute; inset:-4px; }
+
+.ks-comp { position:relative; }
+.ks-menu { position:absolute; left:12px; bottom:calc(100% - 2px); z-index:5; width:256px; max-width:calc(100% - 24px); padding:6px; background:var(--bg-surface-default, #FFFFFF); border-radius:var(--radius-absolute-16, 16px); box-shadow:0 8px 24px rgba(11,14,17,.14), 0 1px 3px rgba(11,14,17,.08); }
+.ks-mi { display:flex; align-items:center; gap:12px; width:100%; min-height:48px; padding:0 12px; background:none; border:0; border-radius:var(--radius-absolute-12, 12px); font:var(--type-body-m, 400 15px/1.5 Manrope, system-ui, sans-serif); font-weight:500; color:var(--text-primary, #0B0E11); text-align:left; cursor:pointer; }
+.ks-mi span { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ks-mi svg { flex:0 0 auto; color:var(--icon-secondary, #5B6573); }
+.ks-mi:hover, .ks-mi:focus-visible { background:var(--bg-fill-default, #F2F5F8); }
+.ks-mi:focus-visible { outline:2px solid var(--text-primary, #0B0E11); outline-offset:-2px; }
+.ks-mi.back { font-weight:600; }
+.ks-mnone { margin:0; padding:8px 12px 10px; font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-secondary, #5B6573); }
+.ks-ctx { display:flex; gap:6px; overflow:hidden; padding:6px 2px 0; }
+.ks-ctx.all { flex-wrap:wrap; }
+.ks-cc { position:relative; display:inline-flex; align-items:center; gap:6px; flex:0 0 auto; height:32px; max-width:140px; padding:0 8px 0 10px; background:var(--bg-fill-default, #F2F5F8); border:0; border-radius:999px; font:var(--type-label, 600 13px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary, #0B0E11); cursor:pointer; }
+.ks-cc::before { content:""; position:absolute; inset:-6px 0; }
+.ks-cc span { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ks-cc svg { flex:0 0 auto; color:var(--icon-secondary, #5B6573); }
+.ks-cc.more { padding:0 12px; min-width:44px; justify-content:center; }
+.ks-cc[hidden] { display:none; }
+.ks-uatt { align-self:flex-end; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px; max-width:80%; margin-bottom:-8px; }
+.ks-uatt .ks-cc { cursor:default; padding:0 10px; }
+.ks-uatt .ks-cc::before { content:none; }
 @media (max-width:360px) { .ks-why { padding-left:0; } .ks-acts { padding-left:0; } .ks-pick .ks-intro.sm { display:none; } }
 @media (prefers-reduced-motion: reduce) { .sheet.ks.grew, .ks-k, .ks-k.ks-ans.fresh > *, .ks-st.in { animation:none; } .ks-think i, .ks-st.cur .g svg { animation-duration:2.4s; } .ks-tl { animation:none; background:none; -webkit-text-fill-color:currentColor; } }
 
@@ -6230,7 +6284,8 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .sl > .m12 { margin-left:auto; font:var(--type-caption) !important; color:var(--text-tertiary); }
 #phone.hf-mis .sc .sl .kn-disc { flex:0 0 auto; }
 #phone.hf-mis .sc .k { font:var(--type-label-strong); letter-spacing:var(--type-overline-tracking); text-transform:uppercase; }
-#phone.hf-mis .sc .k.green { color:var(--actions-going); } #phone.hf-mis .sc .k.gold { color:var(--text-gold); } #phone.hf-mis .sc .k.grey { color:var(--text-tertiary); }
+
+#phone.hf-mis .sc .k.green { color:var(--actions-going); } #phone.hf-mis .sc .k.gold { color:var(--text-primary); } #phone.hf-mis .sc .k.grey { color:var(--text-tertiary); }
 #phone.hf-mis .sc .st { font:var(--type-body-s); color:var(--text-secondary); gap:6px; margin:4px 0 12px; }
 #phone.hf-mis .sc .t20 { font:var(--type-title); letter-spacing:var(--type-title-tracking); color:var(--text-primary); margin:4px 0 6px; }
 #phone.hf-mis .sc .m12 { font:var(--type-body-s); color:var(--text-secondary); }
@@ -6387,7 +6442,6 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mfr .sc .fr.mh-fr::before { display:none; }
 #phone.hf-mfr .sc .rows > .fr:first-child { border-top:0; }
 #phone.hf-mfr .sc .fr .mh-fi { width:32px; height:32px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-style:normal; }
-#phone.hf-mfr .sc .fr.gold .mh-fi { background:var(--bg-surface-default); box-shadow:inset 0 0 0 var(--border-width-thin) var(--border-gold); color:var(--text-gold); }
 #phone.hf-mfr .sc .fr .who { flex:0 0 64px; font:var(--type-body-m-strong); }
 #phone.hf-mis .pact { background:var(--component-header-bg) !important; border-top:var(--border-width-hairline) solid var(--border-default); }
 #phone.hf-mis .pact .sbar { padding:0 16px 8px; gap:4px; }
@@ -6487,7 +6541,6 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 #phone.hf-mis .sc .fr.mh-wr .mh-fi { width:32px; height:32px; }
 #phone.hf-mis .sc .fr.mh-wr .m { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; }
 #phone.hf-mis .sc .fr.mh-wr .k { font:var(--type-overline); letter-spacing:var(--type-overline-tracking, .06em); text-transform:uppercase; color:var(--text-secondary); }
-#phone.hf-mis .sc .fr.mh-wr.gold .k { color:var(--text-gold); }
 #phone.hf-mis .sc .fr.mh-wr .b { font:var(--type-body-m); color:var(--text-primary); }
 #phone.hf-mis .sc .fr.mh-wr .chev { align-self:center; color:var(--icon-tertiary, var(--icon-secondary)); line-height:0; }
 
@@ -6783,10 +6836,11 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 @media (prefers-reduced-motion: reduce) { .mc-page.hf { animation:none; } }
 
 
-[data-kc="KeyMissionHero"][data-kv*="theme=harbour"], [data-kc="KeyMissionMark"][data-kv*="theme=harbour"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Harbour"] { background:radial-gradient(90% 140% at 100% 0%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%), linear-gradient(120deg, #416C98 20%, #5C63A8) !important; }
-[data-kc="KeyMissionHero"][data-kv*="theme=sage"], [data-kc="KeyMissionMark"][data-kv*="theme=sage"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Sage"] { background:radial-gradient(90% 140% at 100% 0%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%), linear-gradient(120deg, #39745F 20%, #3B7178) !important; }
-[data-kc="KeyMissionHero"][data-kv*="theme=dusk"], [data-kc="KeyMissionMark"][data-kv*="theme=dusk"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Dusk"] { background:radial-gradient(90% 140% at 100% 0%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%), linear-gradient(120deg, #6E579C 20%, #8B5883) !important; }
-[data-kc="KeyMissionHero"][data-kv*="theme=ink"], [data-kc="KeyMissionMark"][data-kv*="theme=ink"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Ink"] { background:radial-gradient(90% 140% at 100% 0%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%), linear-gradient(120deg, #36445A 20%, #51466A) !important; }
+[data-kc="KeyMissionHero"][data-kv*="theme=harbour"], [data-kc="KeyMissionMark"][data-kv*="theme=harbour"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Harbour"] { background:linear-gradient(170deg, #3A5E96, #4F6FA8) !important; --face-ring:#4B6CA4; }
+[data-kc="KeyMissionHero"][data-kv*="theme=dusk"], [data-kc="KeyMissionMark"][data-kv*="theme=dusk"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Dusk"] { background:linear-gradient(170deg, #584A8E, #7E4F78) !important; --face-ring:#764E7C; }
+[data-kc="KeyMissionHero"][data-kv*="theme=ink"], [data-kc="KeyMissionMark"][data-kv*="theme=ink"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Ink"] { background:linear-gradient(170deg, #1E2638, #353F5C) !important; --face-ring:#303A55; }
+[data-kc="KeyMissionHero"][data-kv*="theme=sage"], [data-kc="KeyMissionMark"][data-kv*="theme=sage"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Sage"] { background:linear-gradient(170deg, #2A4F66, #2C5F6C) !important; --face-ring:#2C5C6B; }
+[data-kc="KeyMissionHero"] .mh-ghost, [data-kc="KeyMissionHero"] .mc-ghost { display:none; }
 
 
 #phone.hf-ob .screen { background:var(--bg-page); }
@@ -16995,9 +17049,10 @@ function p2Body(pid){
     return `<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}${n.fit?`<small class="p2why">${n.fit}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2need','${pid}|${i}')">${done?(n.fit?"Offered":"Suggested"):lbl}</button></div>`; };
   const links=(typeof profileLinks==="function"?profileLinks(pid):[]);
   return `<div class="p2">
+    ${d.now?`<div class="p2now p2hook"><div class="p2lf">Right now</div><div class="p2bld">${d.now}</div></div>`:''}
     ${p2BetweenLine(pid)}
     ${fams.length?`<div class="p2sec p2both">${p2H("users","You're both in")}${fams.map(fm=>famCard({...fm, status:"member", why:`${fm.members} members`},true)).join("")}</div>`:''}
-    ${d.now||d.needs.length?`<div class="p2now">${d.now?`<div class="p2bld">${d.now}</div>`:''}${d.needs.length?`<div class="p2lf">Looking for</div>${d.needs.map(need).join("")}`:''}</div>`:''}
+    ${d.needs.length?`<div class="p2sec">${p2H("search","Looking for")}${d.needs.map(need).join("")}</div>`:''}
     ${p2OpenList(p).length?`<div class="p2sec">${p2H("door-open",`${f} is open to`)}${p2OpenList(p).map(k=>{ const [ic,act]=P2_OPEN[k], done=STATE.p2done["open"+pid+k];
       return `<div class="p2nd p2op"><span class="p2ico">${LI(ic,18)}</span><span><b>${k}</b>${k==="Office hours"&&p.slots?`<small>${p.slots}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2open','${pid}|${k}')">${done?"Asked":act}</button></div>`; }).join("")}${(p.notNow||[]).length?`<div class="p2nn">${LI("hand",14)}<span>Not now: ${p.notNow.join(", ").toLowerCase()}. Kai won't suggest these</span></div>`:''}</div>`:''}
     ${(p.help||[]).length?`<div class="p2sec">${p2H("handshake",`${f} can help with`)}<div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
@@ -17170,11 +17225,14 @@ function p2UpdCard(u, i, n){ const was=u.was(p2Own()), a=`event.stopPropagation(
     <div class="p2acts2"><button class="on" aria-label="${was?"Update":"Add"} ${u.ch}" onclick="${a}'yes')">${was?"Update":"Add"}</button><button class="p2upno" aria-label="Not now: ${u.ch}" onclick="${a}'no')">${LI("x",18)}</button></div></div>`; }
 /* after a swipe, the card in view becomes the live one and the rest leave the tab order */
 function p2KLive(r){ const c=[...r.querySelectorAll(".p2kcard")]; if (c.length<2) return; const k=Math.round(r.scrollLeft/(c[1].offsetLeft-c[0].offsetLeft));
-  c.forEach((x,i)=>{ x.inert = i!==k; if (i===k) x.removeAttribute("aria-hidden"); else x.setAttribute("aria-hidden","true"); }); }
+  c.forEach((x,i)=>{ x.inert = i!==k; if (i===k) x.removeAttribute("aria-hidden"); else x.setAttribute("aria-hidden","true"); });
+  const n=c.length, m=Math.min(n,5), on = n<=5 ? k : k<2 ? k : k>n-3 ? m-(n-k) : 2;
+  r.parentNode.querySelectorAll(".p2kdots i").forEach((d,i)=>d.classList.toggle("on", i===on)); }
 function p2UpdStack(){ const P=p2Pending(), d=STATE.p2updDone;
   if (!P.length) return d ? `<div class="p2kn p2kdone" role="status" tabindex="-1"><span class="p2upt">${LI("check",20)}</span><span class="p2upx"><b>Profile up to date</b><small>${[d.yes&&`${d.yes} ${d.yes===1?"change":"changes"} under Recently`, d.no&&`${d.no} skipped`].filter(Boolean).join(" · ")}</small></span></div>` : "";
   return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b aria-live="polite">${P.length===1?"Kai has an update":`Kai has ${P.length} updates`}</b></div>
-    <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div></div>`; }
+    <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div>
+    ${P.length>1?`<div class="p2kdots" aria-hidden="true">${"<i></i>".repeat(Math.min(P.length,5)).replace("<i>",'<i class="on">')}</div>`:""}</div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   const o=p2Own(), C=DB.contextV2, edit=mode==="edit", f=firstName(DB.people.priya);
   const pen = (sheet, lbl) => edit ? `<button class="p2pen" aria-label="Edit ${lbl}" onclick="event.stopPropagation();openSheet('${sheet}','')">${LI("pencil",14)}</button>` : "";
@@ -17185,8 +17243,8 @@ function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
   return `<div class="p2">
     ${mode==="match"?`<div class="p2btl you"><span class="p2ico">${LI("badge-check",16)}</span><span><b>A match also sees why you match</b><small>You both know PM hiring. You fit what they're looking for</small></span></div>`:''}
     ${edit?p2UpdStack():''}
-    <div class="p2now"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div>
-      ${needs.length||edit?`<div class="p2sh2"><span class="p2lf">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}`:''}</div>
+    <div class="p2now p2hook"><div class="p2sh2"><span class="p2lf">Right now</span>${pen("p2editnow","right now")}</div><div class="p2bld">${o.bld}</div></div>
+      ${needs.length||edit?`<div class="p2sec"><div class="p2sh2"><span class="p2sh">Looking for</span></div>${needs.map((n,i)=>`<div class="p2nd"><span><b>${n.t}</b><small>${edit?(n.on?"Shown to your families":"Hidden. Still your mission"):"Members can suggest someone"}</small></span>${edit?`<span class="p2sw" role="switch" aria-label="Show ${n.t}" aria-checked="${!!n.on}" onclick="p2NeedVis(${o.needs.indexOf(n)})"></span>`:`<button class="p2x">Suggest</button>`}</div>`).join("")}${edit?`<button class="p2add" onclick="openSheet('p2missions','')">${LI("plus",16)}Show another mission</button>`:''}</div>`:''}
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">I can help with</span>${pen("p2editask","what you can help with")}</div><div class="p2chips">${help.map(h=>`<span class="p2chip" style="cursor:default">${LI("message-circle-question",14)}${h}</span>`).join("")}</div></div>
     <div class="p2sec"><div class="p2sh2"><span class="p2sh">Work</span>${pen("p2editwork","work")}</div><div class="p2rail">${o.work.filter(w=>edit||w[4]).map(w=>`<div class="p2wk">${p2Logo(w[0][0],"#1A73E8")}<b>${w[0]}</b><small>${w[1]} · ${w[2]} – ${w[3]}</small></div>`).join("")}</div></div>
     ${edit&&o.recent.length?`<div class="p2sec"><div class="p2sh">Recently</div>${o.recent.slice(0,4).map(([t,s])=>`<div class="p2rc"><b>${t}</b><small>${s}</small></div>`).join("")}</div>`:''}
@@ -17312,7 +17370,7 @@ function p2Preview(pid){ const p=DB.people[pid], d=p2d(pid), f=firstName(p), ope
   const parts=[d.work.length&&"work", d.school.length&&"school", p2Shared(pid).length&&"families", (typeof profileLinks==="function"&&profileLinks(pid).length)&&"links"].filter(Boolean);
   const top = n ? `<div class="p2sec">${p2H("search",`${f} is looking for`)}<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}</span><button class="p2x" onclick="event.stopPropagation();openSheet('p2need','${pid}|0')">${n.fit?"Offer yourself":"Suggest"}</button></div></div>`
     : open ? `<div class="p2sec">${p2H("door-open",`${f} is open to`)}<div class="p2nd p2op"><span class="p2ico">${LI(P2_OPEN[open][0],18)}</span><span><b>${open}</b></span><button class="p2x" onclick="event.stopPropagation();openSheet('p2open','${pid}|${open}')">${P2_OPEN[open][1]}</button></div></div>` : "";
-  return `<div class="p2 p2pv">${p2BetweenLine(pid)}${d.now?`<div class="p2bld">${d.now}</div>`:''}${top}
+  return `<div class="p2 p2pv">${d.now?`<div class="p2now p2hook"><div class="p2lf">Right now</div><div class="p2bld">${d.now}</div></div>`:''}${p2BetweenLine(pid)}${top}
     <button class="p2lk p2more" onclick="event.stopPropagation();STATE.sheet=null;STATE.profileId='${pid}';go('profile')">${p2Logo(LI("user-round",16),"#F2F3F5")}<span style="flex:1"><b style="display:block">See full profile</b>${parts.length?`<small>${parts.join(", ").replace(/^./,c=>c.toUpperCase())} and more</small>`:''}</span>${LI("chevron-right",16)}</button></div>`; }
 const _p2ProfileSheet3 = profileSheet;
 profileSheet = function(pid){ if ((pid==="priya" && !STATE.member) || !DB.people[pid] || p2Blocked(pid)) return _p2ProfileSheet3(pid); return p2QuickView(pid); };
@@ -18922,18 +18980,39 @@ sCall = function() {
       ${ideas.map(a=>`<button class="kc-idea" data-ans="${kcQ(a)}"><span>${a}</span>${kcI("up",18)}</button>`).join("")}</div>
     <div class="kc-type${STATE.callTyping?" open":""}"><textarea id="kcType" rows="1" placeholder="Type your answer"></textarea><button class="kc-send" data-kcsend aria-label="Send">${kcI("up",20)}</button></div>
     <div class="kc-ctl" data-kc="KeyCallControls" data-kv="buttons=4">
-      ${b(STATE.callMuted, "data-cmute", STATE.callMuted?"micoff":"mic", STATE.callMuted?"Unmute":"Mute")}
+      ${b(STATE.callMuted, "data-cmute", STATE.callMuted?"micoff":"mic", "Mute")}
       ${b(STATE.callIdeas, "data-kcideas", "bulb", "Ideas")}
       ${b(STATE.callTyping, "data-kctype", "kbd", "Type")}
       ${b(false, "data-cend", "end", "End", " end")}
     </div>
   </div>`;
 };
+/* Minimised call (Apoorv 1 Oct 02:28, Town's voice bar as reference): stays at the top, under the header, floating over the page
+   so it scrolls underneath; a little translucent; the Kai mark instead of the tiny globe; the last two lines of the live
+   transcript. canvas.mo-mini stays, hidden, because Motion's loop (and so Kai's speech) runs while a canvas is on screen. */
+const KC_ST_TXT = { kai:"Speaking", you:"Listening", think:"Thinking", idle:"Your turn" };
+STATE.kbLook = /[?&]bar=dark/.test(location.search) ? "dark" : "light"; // light frosted by default; ?bar=dark shows the dark glass to compare
 callBarHTML = function() {
-  const last = STATE.callStep<INTAKE.length ? INTAKE[STATE.callStep].q : "Wrapping up";
-  return `<div class="callbar kc-bar" data-expand data-kc="KeyCallBar" data-kv="state=${STATE.callMuted?"muted":"live"}"><canvas class="mo-mini" width="36" height="36"></canvas><div class="cbm"><b>Kai · <span data-timer>${fmt(STATE.callSeconds)}</span></b><div class="cbl">${last}</div></div>
-    <span class="kc-sb${STATE.callMuted?" on":""}" data-cmute role="button" aria-label="${STATE.callMuted?"Unmute":"Mute"}">${kcI(STATE.callMuted?"micoff":"mic",20)}</span><span class="kc-sb end" data-cend role="button" aria-label="End call">${kcI("end",20)}</span></div>`;
+  const who = typeof MO_SIG!=="undefined" ? MO_SIG.who : "idle";
+  return `<div class="callbar kc-bar kb-${STATE.kbLook}" role="group" aria-label="Call with Kai" data-kc="KeyCallBar" data-kv="look=${STATE.kbLook}, state=${STATE.callMuted?"muted":"live"}, transcript=2"><canvas class="mo-mini" width="36" height="36" aria-hidden="true"></canvas>
+    <div class="kb-row"><span aria-hidden="true">${KC_K}</span><div class="cbm"><b>Kai · <span data-timer>${fmt(STATE.callSeconds)}</span></b><span class="kb-st" data-kbst aria-live="polite">${STATE.callMuted?"Muted":KC_ST_TXT[who]||"Your turn"}</span></div>
+    <button class="kb-open" data-expand aria-label="Open the call with Kai"></button>
+    <button class="kc-sb${STATE.callMuted?" on":""}" data-cmute aria-pressed="${!!STATE.callMuted}" aria-label="Mute">${kcI(STATE.callMuted?"micoff":"mic",20)}</button><button class="kc-sb end" data-cend aria-label="End call">${kcI("end",20)}</button></div>
+    <p class="kb-snip" data-kbsnip data-kc="KeyLiveTranscript" data-kv="lines=2">${kcQ(kcSnip())}</p></div>`;
 };
+function kcSnip() {
+  if (typeof MO_SIG!=="undefined" && /^(kai|you)$/.test(MO_SIG.who) && MO_SIG.els.length) {
+    const ws = MO_SIG.els.map(e=>e.textContent).join(" ").split(/\s+/).filter(Boolean);
+    return ws.slice(0, Math.max(1, MO_SIG.shown+1)).join(" ");
+  }
+  return STATE.callStep<INTAKE.length ? INTAKE[STATE.callStep].q : "Wrapping up";
+}
+function kcBarTick() {
+  const bar = phone.querySelector(".callbar.kc-bar"); if (!bar) return;
+  const sn = bar.querySelector("[data-kbsnip]"), st = bar.querySelector("[data-kbst]"), t = kcSnip(), w = typeof MO_SIG!=="undefined" ? MO_SIG.who : "idle";
+  if (sn && sn.textContent !== t) { sn.textContent = t; sn.scrollTop = sn.scrollHeight; } // newest words stay in view, the older line scrolls off the top
+  const l = STATE.callMuted ? "Muted" : KC_ST_TXT[w] || "Your turn"; if (st && st.textContent !== l) st.textContent = l;
+}
 const _kcAnswer = answer;
 answer = function(a) {
   if (STATE.callActive && STATE.callMuted) { toast("You're muted. Unmute to answer."); return; }
@@ -18948,6 +19027,10 @@ endCall = function() { STATE.callIdeas = false; STATE.callTyping = false; return
 const _kcPortWire = portWire;
 portWire = function() {
   _kcPortWire.apply(this, arguments);
+  const bar = phone.querySelector(".screen > .callbar.kc-bar"), view = phone.querySelector(".screen > .view");
+  if (bar && view) { view.prepend(bar); const body = view.querySelector(".body"); if (body) { const g = document.createElement("div"); g.className = "kb-gap"; g.setAttribute("aria-hidden", "true"); g.style.height = bar.offsetHeight + 8 + "px"; body.prepend(g); }
+    const sn = bar.querySelector("[data-kbsnip]"); if (sn) sn.scrollTop = sn.scrollHeight;
+  }
   const call = phone.querySelector(".call.kc"); if (!call) return;
   if (typeof kaiStars==="function" && !call.querySelector("canvas.kai-stars")) { KC_ST = kaiStars(call, STATE.callCap ? { cx:.5, cy:.25, clear:118 } : { cx:.5, cy:.33, clear:148 }); KC_ST.canvas.dataset.kc = "KeyStarField"; KC_ST.canvas.dataset.kv = "framing=call"; }
   const tr = call.querySelector("#tr"); if (tr) tr.scrollTop = tr.scrollHeight;
@@ -18976,6 +19059,7 @@ const _kcViz = vizLoop;
 vizLoop = function() {
   _kcViz.apply(this, arguments);
   if (KC_ST) KC_ST.level(typeof MO_SIG!=="undefined" ? MO_SIG.level||0 : 0);
+  kcBarTick();
 };
 
 /* ==== Kai call captions, on and off in place (Motion design thread, 28 Sep; Apoorv 00:09 "make that transition of showing the
@@ -19151,7 +19235,7 @@ function ksAnswer(m, idx) {
     ${body?`<p class="ks-para${(m.mini||[]).length&&!m.ksMore?" clip":""}"${(m.mini||[]).length?` data-ksmore="${idx}"`:""}>${body}</p>`:""}${src}${chips}</div>`;
 }
 function ksMsg(m, i) {
-  if (m.who==="u") return `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${m.text}</div>`;
+  if (m.who==="u") return `${(m.att||[]).length?ksAttHTML(m.att):""}<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${m.text}</div>`;
   if (m.who==="sys") return `<div class="ks-sys">${m.text}</div>`;
   if (m.talkPending) { m.ksSeen = true; m.think = m.think || { idle:true, steps:[], t0:Date.now() }; return ksThinking(m); }
   if (m.ksHold) return KS_RUN && KS_RUN.first===m ? ksThinking(m) : "";
@@ -19176,16 +19260,89 @@ kaiSheet = function() {
       <span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="go">${ksI("phone")}</span></button>` : "";
   const nudgeRow = nudge && !isCall ? `<button class="ks-nudge" data-kai="${ksQ(nudge.ask)}"><span class="m"><b>${ksQ(nudge.title)}</b><span>${ksQ(nudge.body)}</span></span><span class="ks-chip">${ksQ(nudge.ask)}</span></button>` : "";
   const hello = `<div class="ks-hello"><h4>Hey ${ksQ(first)}.</h4><p>${scope?`What about ${ksQ(scope.label.length>30?scope.label.slice(0,30)+"…":scope.label)}?`:"What are you looking for?"}</p></div>
-    ${scopeChip&&!isCall?`<div class="ks-scopes">${scopeChip}</div>`:""}${callCard}${nudgeRow}
+    ${!scope&&scopeChip&&!isCall?`<div class="ks-scopes">${scopeChip}</div>`:""}${callCard}${nudgeRow}
     ${isCall?"":`<div class="ks-try">${sugg.map(c=>`<button class="ks-row" data-kai="${ksQ(c)}"><span class="lead">${ksI(ksLead(c))}</span><span class="tx">${c}</span>${ksI("right",18)}</button>`).join("")}</div>`}`; // until the intake call is done: the greeting and the call card only (Apoorv, 28 Sep 00:07)
-  const body = empty ? hello : `${scopeChip?`<div class="ks-scopes top">${scopeChip}</div>`:""}<div class="ks-thread">${list.map(ksMsg).join("")}</div>`;
+  const body = empty ? hello : `<div class="ks-thread">${list.map(ksMsg).join("")}</div>`;
   return `${head}<div class="ks-body">${body}</div>
-    <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=${thinking?"thinking":"empty"}"><div class="ks-box">
+    <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=${thinking?"thinking":"empty"}">${ksMenu()}<div class="ks-box">${ksCtxRow(scope)}
       <textarea class="kin" id="kaiIn" rows="1" placeholder="${scope?"Ask about "+ksQ(scope.label.split(" ").slice(0,3).join(" "))+"…":"Ask Kai anything"}"></textarea>
-      <div class="ks-crow"><button class="ks-ci" onclick="toast('Attach a person, a message or a link')" aria-label="Attach">${ksI("plus")}</button><span class="grow"></span>
+      <div class="ks-crow"><button class="ks-ci" data-ksplus aria-label="Add" aria-haspopup="menu" aria-expanded="${!!STATE.ksPlus}" aria-controls="ksMenu">${ksI("plus")}</button><span class="grow"></span>
       ${thinking?`<button class="ks-go ks-stop" data-ksstop aria-label="Stop">${ksI("stop")}</button>`:`<button class="ks-ci" id="kaiMic" aria-label="Hold to talk">${ksI("mic")}</button><button class="ks-go ks-callb" data-kscall aria-label="Call Kai" data-kc="KeyIconButton" data-kv="kind=call">${ksI("call",20)}</button><button class="ks-go" id="kaiSendBtn" aria-label="Send">${ksI("up",18)}</button>`}</div></div></div>`; // empty: mic to dictate, then the call (ChatGPT, Claude and Gemini put voice there); typing: Send; working: Stop
 };
 
+// One + in the composer (Apoorv's rule): Add context, Photo library, Take photo, Upload a file, the same rows as the message
+// attach sheet. What rides along sits above the text in one row; what doesn't fit folds into +N. Mission chat audit, 1 Oct.
+Object.assign(KS_IC, { ctx:'<path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="M18 9v6"/><path d="M21 12h-6"/>',
+  img:'<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+  cam:'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  fup:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 12v6"/><path d="m15 15-3-3-3 3"/>',
+  file:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>' });
+const KS_SCOPE_IC = { mission:"flag", family:"hash", profile:"users", event:"cal", request:"msg", context:"list" };
+const ksAttHTML = att => `<div class="ks-uatt">${att.map(a => `<span class="ks-cc">${ksI(a.ic,16)}<span>${ksQ(a.label)}</span></span>`).join("")}</div>`;
+const ksMc = () => !!(STATE.mc && STATE.mc.open && STATE.sheet && STATE.sheet.type==="kai");
+const ksScopeNow = () => STATE.kaiScope===false ? null : (STATE.kaiScope || kaiScopeFor());
+const ksSame = (a, b) => a && b && a.kind===b.kind && a.id===b.id;
+function ksCtxOptions(scope) { // your own missions and your family; nothing about people you aren't connected to
+  const f = typeof fam==="function" ? fam() : null, here = kaiScopeFor();
+  const list = [here, ...DB.missions.filter(m => m.status!=="done").slice(0,3).map(m => ({ kind:"mission", id:m.id, label:m.name, sugg:["Log what happened","Why these picks?","Show me more like this"] })),
+    f && { kind:"family", id:f.id, label:f.name, sugg:["Catch me up on #jobs","Who's going Thursday?"] }].filter(Boolean);
+  const on = [scope, ...(STATE.ksCtx||[])];
+  return list.filter((o, i) => list.findIndex(x => ksSame(x, o))===i && !on.some(x => ksSame(x, o)));
+}
+function ksMenu() {
+  if (!STATE.ksPlus) return "";
+  const row = (k, ic, t, more) => `<button class="ks-mi" role="menuitem" data-ksmi="${k}">${ksI(ic)}<span>${ksQ(t)}</span>${more?ksI("right",18):""}</button>`;
+  if (STATE.ksPlus==="ctx") { const opts = ksCtxOptions(ksMc() ? null : ksScopeNow());
+    return `<div class="ks-menu" id="ksMenu" role="menu" aria-label="Add context" data-kc="KeyMenu" data-kv="level=context"><button class="ks-mi back" role="menuitem" data-ksmi="back">${ksI("back")}<span>Back</span></button>
+      ${opts.length ? opts.map((o, i) => row(`ctx:${i}`, KS_SCOPE_IC[o.kind]||"list", o.label)).join("") : `<p class="ks-mnone">Everything here is already in.</p>`}</div>`; }
+  return `<div class="ks-menu" id="ksMenu" role="menu" aria-label="Add" data-kc="KeyMenu" data-kv="level=root">${row("ctx", "ctx", "Add context", true)}${row("lib", "img", "Photo library")}${row("cam", "cam", "Take photo")}${row("file", "fup", "Upload a file")}</div>`;
+}
+function ksCtxRow(scope) {
+  const items = [...(scope ? [{ key:"scope", ic:KS_SCOPE_IC[scope.kind]||"list", label:scope.label }] : []),
+    ...(STATE.ksCtx||[]).map((o, i) => ({ key:`ctx:${i}`, ic:KS_SCOPE_IC[o.kind]||"list", label:o.label })),
+    ...(STATE.ksAtt||[]).map((a, i) => ({ key:`att:${i}`, ic:a.ic, label:a.label }))];
+  if (!items.length) return "";
+  return `<div class="ks-ctx${STATE.ksCtxAll?" all":""}" data-kc="KeyContextRow" data-kv="items=${items.length}">${items.map(o => `<button class="ks-cc" data-kscc="${o.key}" aria-label="Remove ${ksQ(o.label)}">${ksI(o.ic,16)}<span>${ksQ(o.label)}</span>${ksI("x",14)}</button>`).join("")}<button class="ks-cc more" data-ksccmore hidden aria-expanded="false"></button></div>`;
+}
+// the row stays one line: chips that don't fit hide behind +N, which opens the row to show them all
+const ksRoot = () => phone.querySelector(".sheet.ks") || phone.querySelector(".ks-page .ks-comp")?.closest(".ks-page");
+function ksFitCtx() {
+  const row = ksRoot() && ksRoot().querySelector(".ks-ctx"); if (!row) return;
+  const more = row.querySelector("[data-ksccmore]"), chips = [...row.querySelectorAll("[data-kscc]")];
+  chips.forEach(c => c.hidden = false); more.hidden = true;
+  if (row.classList.contains("all")) { more.hidden = false; more.textContent = "Less"; more.setAttribute("aria-label", "Show fewer"); more.setAttribute("aria-expanded", "true"); return; }
+  if (row.scrollWidth <= row.clientWidth + 1) return;
+  more.hidden = false; let n = 0;
+  for (let i = chips.length - 1; i > 0 && row.scrollWidth > row.clientWidth + 1; i--) { chips[i].hidden = true; n++; more.textContent = `+${n}`; more.setAttribute("aria-label", `Show ${n} more`); }
+}
+function ksMenuWire() {
+  const sh = ksRoot(); if (!sh) return;
+  const plus = sh.querySelector("[data-ksplus]"), menu = sh.querySelector("#ksMenu"), items = menu ? [...menu.querySelectorAll("[role=menuitem]")] : [];
+  const close = () => { STATE.ksPlus = null; render(); const p = ksRoot() && ksRoot().querySelector("[data-ksplus]"); p && p.focus(); };
+  const go = lvl => { STATE.ksPlus = lvl; STATE.ksFocus = true; render(); };
+  if (plus) plus.onclick = e => { e.stopPropagation(); STATE.ksPlus ? close() : go("root"); };
+  if (menu) {
+    if (STATE.ksFocus) { STATE.ksFocus = false; (items[STATE.ksPlus==="ctx" && items.length>1 ? 1 : 0]||menu).focus(); }
+    menu.onkeydown = e => { const k = items.indexOf(document.activeElement);
+      if (e.key==="Escape") { e.preventDefault(); e.stopPropagation(); STATE.ksPlus==="ctx" ? go("root") : close(); }
+      else if (e.key==="ArrowDown"||e.key==="ArrowUp") { e.preventDefault(); items[(k + (e.key==="ArrowDown"?1:-1) + items.length) % items.length].focus(); }
+      else if (e.key==="Tab") close(); };
+    menu.onclick = e => e.stopPropagation();
+    items.forEach(el => el.onclick = () => { const v = el.dataset.ksmi;
+      if (v==="ctx") return go("ctx"); if (v==="back") return go("root");
+      if (v.startsWith("ctx:")) { const scope = ksMc() ? null : ksScopeNow(), o = ksCtxOptions(scope)[+v.slice(4)];
+        if (!scope && !ksMc()) STATE.kaiScope = o; else STATE.ksCtx = (STATE.ksCtx||[]).concat(o); }
+      else STATE.ksAtt = (STATE.ksAtt||[]).concat(v==="file" ? { ic:"file", label:"deck-v3.pdf" } : { ic:"img", label:v==="cam" ? "New photo" : "Photo" });
+      STATE.ksPlus = null; render(); const i = ksRoot() && ksRoot().querySelector("textarea.kin"); i && i.focus(); });
+    sh.addEventListener("click", () => { if (STATE.ksPlus) close(); }, { once:true });
+  }
+  sh.querySelectorAll("[data-kscc]").forEach(el => el.onclick = () => { const [k, i] = el.dataset.kscc.split(":");
+    if (k==="scope") { const next = (STATE.ksCtx||[]).shift(); STATE.kaiScope = next || false; }
+    else if (k==="ctx") STATE.ksCtx.splice(+i, 1); else STATE.ksAtt.splice(+i, 1);
+    render(); const i2 = ksRoot() && ksRoot().querySelector("textarea.kin"); i2 && i2.focus(); });
+  const mo = sh.querySelector("[data-ksccmore]"); if (mo) mo.onclick = () => { STATE.ksCtxAll = !STATE.ksCtxAll; render(); };
+  ksFitCtx();
+}
 // Kai history and a saved conversation, as pages in the same language as the sheet: bare header icons, rows with hairlines,
 // K on ink for general chats, the same message shapes and composer. Keeps [data-kthread] and [data-kainew].
 KS_IC.back = '<path d="m15 18-6-6 6-6"/>'; KS_IC.search = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'; KS_IC.trash = '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'; KS_IC.hash = '<path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="M16 3l-2 18"/>';
@@ -19210,8 +19367,8 @@ sKaiThread = function(key) {
   return `<div class="ks-page">${ksHead(t.title, t.kind==="family"?"Xoogler":"Kai", `<button class="ks-ib" onclick="toast('Deleted. Nothing from it was in your context.');goBack()" aria-label="Delete chat">${ksI("trash")}</button>`)}
   <div class="body ks-pbody"><div class="ks-thread">${msgs}</div>
     <div class="ks-next"><button class="ks-sec" onclick="toast('Made a mission from this chat. Set how you will know it is done, and Kai starts looking.')">${ksI("flag",18)}Make it a mission</button>${t.kind==="family"?"":`<button class="ks-sec" onclick="toast('Attached to Xoogler. It shows under the family in Recent.')">${ksI("hash",18)}Attach to a family</button>`}</div></div>
-  <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="ks-box"><textarea class="kin" id="ksCont" rows="1" placeholder="Continue this chat"></textarea>
-    <div class="ks-crow"><button class="ks-ci" onclick="toast('Attach a person, a message or a link')" aria-label="Attach">${ksI("plus")}</button><span class="grow"></span><button class="ks-go" data-kscont="${t.id}" aria-label="Send">${ksI("up",18)}</button></div></div></div></div>`;
+  <div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty">${ksMenu()}<div class="ks-box">${ksCtxRow(ksScopeNow())}<textarea class="kin" id="ksCont" rows="1" placeholder="Continue this chat"></textarea>
+    <div class="ks-crow"><button class="ks-ci" data-ksplus aria-label="Add" aria-haspopup="menu" aria-expanded="${!!STATE.ksPlus}" aria-controls="ksMenu">${ksI("plus")}</button><span class="grow"></span><button class="ks-go" data-kscont="${t.id}" aria-label="Send">${ksI("up",18)}</button></div></div></div></div>`;
 };
 // Half sheet on open; the first message grows it to the top, once, with the sheet's own ease.
 const _ksSheetHTML = sheetHTML;
@@ -19302,10 +19459,11 @@ portWire = function() {
   const b = phone.querySelector(".sheet.ks .ks-body"); if (b && (STATE.kaiMsgs||[]).length) b.scrollTop = b.scrollHeight;
   phone.querySelectorAll(".sheet.ks [data-kspath]").forEach(el => el.onclick = () => { const p = DB.people[el.dataset.kspath], o = talkDraft(p.id); if (!o) { toast("Start a mission first, then I can add paths."); return; }
     STATE.kaiMsgs.push({ who:"k", text:`Added ${ksQ(firstName(p))} as a path in ${ksQ(DB.missions.find(m => m.id===o.missionId).name)}, with a hello drafted. Nothing goes until you tap Send.`, chips:[`Review the ask to ${firstName(p)}`] }); render(); });
-  phone.querySelectorAll("[data-kthread]").forEach(el => { const on = el.onclick; el.onclick = () => { STATE.ksThread = el.dataset.kthread; on && on(); }; });
+  phone.querySelectorAll("[data-kthread]").forEach(el => { const on = el.onclick; el.onclick = () => { STATE.ksThread = el.dataset.kthread; STATE.kaiScope = null; STATE.ksCtx = []; STATE.ksAtt = []; STATE.ksPlus = null; STATE.ksCtxAll = false; on && on(); }; });
   const kc = phone.querySelector("[data-kscont]"); if (kc) kc.onclick = () => { const v = (phone.querySelector("#ksCont")||{}).value; if (!v || !v.trim()) return; const t = DB.threads.find(x => x.id===kc.dataset.kscont);
-    STATE.kaiMsgs = (t.msgs||[{who:"u",text:t.title},{who:"k",text:t.last}]).map(m => Object.assign({}, m)); STATE.kaiScope = false; STATE.ksCo = null; openSheet("kai"); STATE.kaiScope = false; kaiAsk(v.trim()); }; // continuing reopens the chat in the Kai sheet
-  ksMountMarks();
+    const keep = [ksScopeNow(), ...(STATE.ksCtx||[])].filter(Boolean), att = STATE.ksAtt||[];
+    STATE.kaiMsgs = (t.msgs||[{who:"u",text:t.title},{who:"k",text:t.last}]).map(m => Object.assign({}, m)); STATE.kaiScope = false; STATE.ksCo = null; openSheet("kai"); STATE.kaiScope = keep[0] || false; STATE.ksCtx = keep.slice(1); STATE.ksAtt = att; kaiAsk(v.trim()); }; // continuing reopens the chat in the Kai sheet
+  ksMountMarks(); ksWrapMc(); ksMenuWire();
   const at = sel => phone.querySelectorAll(`.sheet.ks [${sel}]`), msgAt = el => STATE.kaiMsgs[+el.getAttribute(el.getAttributeNames().find(a => a.startsWith("data-ks"))).split(":")[0]];
   at("data-ksfold").forEach(el => el.onclick = () => { const m = msgAt(el); m.ksOpen = !m.ksOpen; render(); });
   at("data-kssrc").forEach(el => el.onclick = () => { const m = msgAt(el); m.ksSrc = !m.ksSrc; render(); });
@@ -19318,6 +19476,24 @@ portWire = function() {
   const i = phone.querySelector(".sheet.ks #kaiIn"), s = phone.querySelector(".sheet.ks #kaiSendBtn");
   if (i && s && !i.dataset.ks) { i.dataset.ks = 1; const comp = i.closest(".ks-comp"); if (!/thinking/.test(comp.dataset.kv)) i.addEventListener("input", () => { comp.dataset.kv = `variant=chat, state=${i.value.trim()?"typing":"empty"}`; }); i.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); s.click(); } }); }
 };
+// The new-mission draft composer (#mcIn) takes the same + and row. Mission create loads after this drop, so it is wrapped on first wire.
+function ksWrapMc() {
+  if (typeof mcSheet!=="function" || mcSheet.ksPlus) return;
+  const _sheet = mcSheet, _msg = mcMsg, _ans = mcAnswer;
+  mcSheet = function() { const h = _sheet.apply(this, arguments); if (STATE.ksMcFor!==STATE.mc) { STATE.ksMcFor = STATE.mc; STATE.ksCtx = []; STATE.ksAtt = []; STATE.ksPlus = null; STATE.ksCtxAll = false; }
+    if (!/<div class="ks-box"><textarea class="kin" id="mcIn"/.test(h)) return h;
+    return h.replace('<div class="ks-box"><textarea class="kin" id="mcIn"', `${ksMenu()}<div class="ks-box">${ksCtxRow(null)}<textarea class="kin" id="mcIn"`)
+      .replace('<div class="ks-crow"><span class="grow"></span>', `<div class="ks-crow"><button class="ks-ci" data-ksplus aria-label="Add" aria-haspopup="menu" aria-expanded="${!!STATE.ksPlus}" aria-controls="ksMenu">${ksI("plus")}</button><span class="grow"></span>`); };
+  mcSheet.ksPlus = true;
+  if (typeof mcWire==="function") { const _wire = mcWire; mcWire = function() { const r = _wire.apply(this, arguments); ksMenuWire(); return r; }; } // the draft sheet patches itself in place, then wires
+  mcMsg = function(x) { const h = _msg.apply(this, arguments); return x.who==="u" && (x.att||[]).length ? ksAttHTML(x.att) + h : h; };
+  mcAnswer = function() { const att = STATE.ksAtt||[], n = STATE.mc.msgs.length; STATE.ksAtt = []; STATE.ksCtxAll = false; const r = _ans.apply(this, arguments);
+    const u = att.length && STATE.mc.msgs.slice(n).find(m => m.who==="u"); if (u) { u.att = att; render(); } else if (att.length && !u) STATE.ksAtt = att; return r; };
+}
+// what you attached rides on your message, then the row clears; added context stays for the chat, like the page scope
+{ const _ksAskAtt = kaiAsk; kaiAsk = function(t) { const att = STATE.ksAtt||[], n = (STATE.kaiMsgs||[]).length; STATE.ksAtt = []; STATE.ksCtxAll = false;
+  const r = _ksAskAtt.apply(this, arguments); const u = att.length && (STATE.kaiMsgs||[]).slice(n).find(m => m.who==="u"); if (u) { u.att = att; render(); } return r; }; }
+{ const _ksOpen = openSheet; openSheet = function(type) { if (type==="kai") { STATE.ksCtx = []; STATE.ksAtt = []; STATE.ksPlus = null; STATE.ksCtxAll = false; } return _ksOpen.apply(this, arguments); }; }
 // A stopped answer stays stopped: the live Kai's late reply is dropped instead of landing after "Stopped".
 if (typeof talkSay==="function") { const _ksTalkSay = talkSay; talkSay = function() { if (STATE.ksStopped) { STATE.ksStopped = false; if (!(STATE.kaiMsgs||[]).some(m => m.talkPending)) return; } return _ksTalkSay.apply(this, arguments); }; }
 }
@@ -19607,10 +19783,11 @@ Object.entries({
   square:'<rect width="18" height="18" x="3" y="3" rx="2"/>',
   "send-horizontal":'<path d="M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z"/><path d="M6 12h16"/>',
 }).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
-const MH_THEMES = ["harbour","dusk","sage","ink"];
+/* four plates, one meaning each (visual direction 1 Oct): harbour people, sage money, dusk events, ink learn; the glyph shows the kind */
+const MH_THEMES = ["harbour","sage","dusk","ink"];
 const MH_ICONS = ["briefcase","rocket","users","handshake","compass","sprout","lightbulb","graduation-cap"];
 function mhLook(m){
-  const d = m.type==="Looking"||m.type==="Hiring" ? ["harbour","briefcase"] : m.type==="Raising" ? ["sage","rocket"] : m.type==="Cofounder" ? ["dusk","handshake"] : ["ink","compass"];
+  const d = m.type==="Looking"||m.type==="Hiring" ? ["harbour","briefcase"] : m.type==="Raising" ? ["sage","rocket"] : m.type==="Cofounder" ? ["harbour","handshake"] : m.type==="Hosting" ? ["dusk","calendar"] : ["ink","compass"];
   return { theme: m.mhTheme||d[0], icon: m.mhIcon||d[1] };
 }
 const mhPlate = t => (typeof EV_THEMES!=="undefined" && EV_THEMES[t] ? EV_THEMES[t][1] : "var(--bg-deep)");
@@ -19892,7 +20069,7 @@ function mhTag(r){
   const lead = e => e.querySelector(":scope > .avs") ? "faces" : e.querySelector(":scope > .avatar.mh-lead") ? "icon" : e.querySelector(":scope > .avatar") ? "avatar" : "none";
   const act = e => e.querySelector(":scope > .mini, :scope > .r .mini") ? "button" : e.querySelector(":scope > .chev") ? "chevron" : "none";
   t(".msec .msh", "KeyMissionRow", "place=home");
-  t(".sc .k", "KeyStateLabel", e=>`tone=${["green","gold","grey"].find(c=>e.classList.contains(c))||"grey"}`);
+  t(".sc .k", "KeyStateLabel", e=>`tone=${e.classList.contains("green")?"green":e.classList.contains("gold")?"ink":"grey"}`);
   t(".sc .row", "KeyRow", e=>`lead=${lead(e)}, action=${act(e)}`);
   t(".sc .lrow", "KeyLogRow");
   t(".sc .stp", "KeyProgressBar", e=>`steps=${e.children.length}, at=${e.querySelectorAll(".on").length}`);
@@ -23116,10 +23293,10 @@ kyCtl(); kyCtlSync();
 .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:hsIn .26s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes hsIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { .hs-acc .hs-more svg { transition:none; } .hs-acc.hs-open > .mh-rail, .hs-acc.hs-open > .mh-quiet { animation:none; } }
-/* KeyLayerTag: which event, series, channel or family a mission belongs to, under its title on the plate, led by its 18 picture */
+/* KeyLayerTag (ink 24% under the 12/600 white, so it only darkens the plate): which event, series, channel or family a mission belongs to, under its title on the plate, led by its 18 picture */
 .mh-band .hs-bnw { flex:1; min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
 .mh-band .hs-bnw > .mh-bn { flex:none; width:100%; }
-.mh-band .hs-layer { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:6px; max-width:100%; height:24px; padding:0 10px 0 3px; border-radius:var(--radius-absolute-infinite,999px); background:color-mix(in srgb, var(--text-on-deep-default,#FFFFFF) 16%, transparent); color:var(--text-on-deep-default,#FFFFFF); font-size:12px; line-height:1; font-weight:600; white-space:nowrap; }
+.mh-band .hs-layer { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; gap:6px; max-width:100%; height:24px; padding:0 10px 0 3px; border-radius:var(--radius-absolute-infinite,999px); background:rgba(11,14,17,.24); color:var(--text-on-deep-default,#FFFFFF); font-size:12px; line-height:1; font-weight:600; white-space:nowrap; }
 .mh-band .hs-layer > span { overflow:hidden; text-overflow:ellipsis; }
 .mh-band .hs-layer > .hs-lt { flex:0 0 auto; position:relative; display:grid; place-items:center; width:18px; height:18px; border-radius:var(--radius-absolute-6,6px); overflow:hidden; }
 .mh-band .hs-layer > .hs-lt > svg, .mh-band .hs-layer > .cv-th > * { width:100%; height:100%; }
@@ -23168,10 +23345,10 @@ function hsLayer(m){
   if (m.family) return { kind:"Family", icon:"users", name: m.family, to: "" };
   return null;
 }
-/* layer missions take their event's colour when it is one of the mission plates, and the layer's glyph */
+/* layer missions on an event or series are events, so they take the dusk plate (ink otherwise), and the layer's glyph */
 const _hsLook = mhLook; mhLook = function(m){
   const l = _hsLook.apply(this, arguments), y = hsLayer(m); if (!y) return l;
-  const e = mhEvent(m), t = e && MH_THEMES.includes(e.theme) ? e.theme : "ink";
+  const t = mhEvent(m) ? "dusk" : "ink";
   return { theme: m.mhTheme || t, icon: m.mhIcon || y.icon };
 };
 /* KeyLayerTag: a pill under the title on the plate, led by the layer's own picture (event cover, family mark) rather than a word. On the page it opens the layer */
@@ -23266,6 +23443,100 @@ const _hsRender = render; render = function(){
   if (y && y.manage && sb && !sb.querySelector(".hs-manage")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow hs-manage" onclick="closeSheet();go('${y.manage}')"><div class="m"><div class="a">Manage ${y.what}</div><div class="b">${y.sub}</div></div><span class="chev">›</span></div>`); }
   return r;
 };
+
+</script>
+<style>
+/* the travel pick on Home, laid out as the mission-rail KeyMoveCard */
+#phone .vcard.scard.tv-pk { display:flex; flex-direction:column; gap:10px; margin:0 16px 16px; padding:14px; border:var(--border-width-hairline) solid var(--border-subtle); border-radius:var(--radius-absolute-16); background:var(--bg-surface-default); box-shadow:none; }
+#phone .tv-pk .mh-pkh { display:flex; align-items:center; gap:12px; }
+#phone .tv-pk .mh-pkh .m { min-width:0; }
+#phone .tv-pk .avatar.mh-56 { width:56px; height:56px; flex:0 0 56px; font:var(--type-body-m-strong); }
+#phone .tv-pk .a { font:var(--type-body-m-strong); color:var(--text-primary); }
+#phone .tv-pk .b { font:var(--type-body-s); color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .tv-pk .mh-why { display:flex; gap:8px; align-items:flex-start; font:var(--type-body-s); color:var(--text-primary); }
+#phone .tv-pk .mh-why .kn-disc, #phone .tv-pk .mh-why > svg { flex:0 0 auto; margin-top:2px; }
+/* the line is too long to share a row with Say hi at 320, so the quiet action sits under the button */
+#phone .view .vcard.scard.tv-pk .acts { display:flex; flex-direction:column; align-items:stretch; gap:4px; }
+#phone .view .vcard.scard.tv-pk .acts .btn { flex:none; height:44px; margin:0; }
+#phone .view .vcard.scard.tv-pk .acts .quiet { align-self:center; border:0; background:none; padding:0 8px; min-height:44px; font:var(--type-body-m-strong); color:var(--component-button-ghost-ink); cursor:pointer; }
+#phone .view .vcard.scard.tv-pk .acts .quiet:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-8); }
+
+</style>
+<script>
+/* ==== TRAVEL ALERT (Chris demo mock, Apoorv 1 Oct 08:00): one Kai pick on Home for a family member passing through your city.
+   Lars shared the trip with Xoogler, so only Xoogler members in Singapore see it. Mock only, the feature comes later.
+   Kai never sends without a yes: both actions open a draft, and nothing joins a mission. ==== */
+DB.people.lars = DB.people.lars || { id:"lars", name:"Lars Holm", initials:"LH", title:"Founder", company:"Nordlys", line:"Ex-Google Maps. Building logistics software out of Copenhagen.",
+  families:["Xoogler"], openTo:["Meeting founders"], notNow:[], slots:"In Singapore Tue to Thu", lookingFor:"Founders building in Southeast Asia", help:["Hiring in Europe","Logistics"], shared:["Both in Xoogler"] };
+/* no photo: every portrait the hi-fi ships is already someone else, so Lars keeps the LH initials */
+const TV_TRIP = { who:"lars", fam:"Xoogler", city:"Singapore", shared:true };
+const tvSees = () => TV_TRIP.shared && DB.user.family===TV_TRIP.fam && !STATE.tvDone;
+/* the draft lives on its own opp, outside every mission, so no pick appears until a human sends it; backing out removes it */
+function tvDraft(kind){
+  const me = DB.user.name.split(" ")[0];
+  let o = DB.opps.find(x=>x.id==="otv");
+  if (!o) { o = opp("otv", null, "person", "lars", "direct", [["Shared", `Lars shared a trip to ${TV_TRIP.city} · ${TV_TRIP.fam}`, "trip"]], "Say hi to Lars", "new"); o.log = []; DB.opps.push(o); }
+  o.kaiDraft = kind==="kai"
+    ? `Hi Lars, ${me} from Xoogler. I hear you're in Singapore Tue to Thu. Would you have time for a coffee while you're here?`
+    : `Hi Lars, ${me} here, also in Xoogler. Saw you're in Singapore this week. Happy to meet if you have time.`;
+  openSheet("ask", o.id);
+}
+const _tvClose = closeSheet; closeSheet = function(){
+  const o = DB.opps.find(x=>x.id==="otv");
+  if (o && o.state==="new" && STATE.sheet && STATE.sheet.id==="otv") DB.opps.splice(DB.opps.indexOf(o), 1);
+  return _tvClose.apply(this, arguments);
+};
+/* the draft has no pick behind it, so Back from the draft closes it rather than opening a pick sheet */
+const _tvOpen = openSheet; openSheet = function(type, id){
+  if (type==="opp" && id==="otv") return closeSheet();
+  return _tvOpen.apply(this, arguments);
+};
+/* sending stays off every mission for the demo: the sent sheet confirms it and the card leaves Home */
+const _tvSend = sendAsk; sendAsk = function(id){
+  if (id==="otv") STATE.tvDone = true;
+  return _tvSend.apply(this, arguments);
+};
+/* KeyMoveCard (avatar layout), kind=travel: the same pick card as the mission rails */
+function tvCard(){
+  const p = DB.people.lars;
+  return `<div class="vcard sc scard mh-pk tv-pk" data-kc="KeyMoveCard" data-kv="layout=avatar, kind=travel" role="group" aria-label="Kai pick: ${p.name}">
+    <div class="mh-pkh">${av(p.initials, "mh-56")}<div class="m"><div class="a" data-profile="lars">${p.name}</div><div class="b">${p.title}, ${p.company} · ${TV_TRIP.fam}</div></div></div>
+    <div class="mh-why">${kaiMark(16)}<span>Lars from Copenhagen is in Singapore Tue to Thu and wants to meet founders</span></div>
+    <div class="acts"><button type="button" class="btn" onclick="tvDraft('hi')">Say hi</button><button type="button" class="quiet" onclick="tvDraft('kai')">Ask Kai to set up a coffee</button></div></div>`;
+}
+const _tvRender = render; render = function(){
+  const r = _tvRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone || typeof KEY_HIFI==="undefined" || !KEY_HIFI || !hsOn() || !tvSees()) return r;
+  const body = phone.querySelector(".view .body");
+  if (!body || body.querySelector(".tv-pk")) return r;
+  // 1 Oct 23:10: with the brief bar above the tabs there is no .bentry; the card then leads the mission cards
+  const at = body.querySelector(":scope > .bentry"), first = body.querySelector(":scope > .msec");
+  if (at) at.insertAdjacentHTML("afterend", tvCard()); else if (first) first.insertAdjacentHTML("beforebegin", tvCard());
+  return r;
+};
+
+</script>
+<style>
+/* the Kai nav button keeps the div's look: no native button chrome */
+#phone button#kaiBtn { -webkit-appearance:none; appearance:none; border:0; background:none; margin:0; line-height:inherit; text-align:center; }
+#phone button#kaiBtn:focus-visible { outline:var(--border-width-focus, 2px) solid var(--border-focus, var(--text-primary)); outline-offset:2px; border-radius:var(--radius-absolute-12, 12px); }
+
+</style>
+<script>
+/* ==== KAI NAV BUTTON (1 Oct, Two-chevron finding in audits/brief-kai-bar-2026-10-01.md): #kaiBtn was a div with no role, name or
+   tabindex. It becomes a real <button aria-label="Kai"> with the same id, classes and children, so every style and the pointer
+   handlers bound to #kaiBtn after render still apply. A keyboard press opens Kai, as a tap does. Load last, after nav.js. ==== */
+const _kbNav = navHTML;
+navHTML = function(){
+  const h = _kbNav.apply(this, arguments);
+  const t = document.createElement("template"); t.innerHTML = h;
+  const d = t.content.querySelector("div#kaiBtn"); if (!d) return h;
+  const b = document.createElement("button"); b.type = "button";
+  [...d.attributes].forEach(a => b.setAttribute(a.name, a.value)); b.setAttribute("aria-label", "Kai");
+  while (d.firstChild) b.appendChild(d.firstChild);
+  d.replaceWith(b); return t.innerHTML;
+};
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("#phone button#kaiBtn"); if (b && e.detail === 0) openSheet("kai"); });
 
 </script>
 <style>
@@ -23441,8 +23712,450 @@ const _hsRender = render; render = function(){
 })();
 
 </script>
+<style>
+/* ==== Mission as a chat with Kai (Simplify Home, 1 Oct). Pairs with mission-chat.js; load after home.css. Today's tokens only. ==== */
+/* the Kai chatbar is the page's foot; the tab bar steps aside on a mission */
+#phone.mt-on .screen > .nav { display:none; }
+#phone.mt-on .view > .body.sc { padding-bottom:16px; }
+#phone .view > .mt-comp { flex:0 0 auto; padding:8px 12px 12px; position:relative; z-index:3; }
+#phone .mt-comp .ks-crow { display:flex; align-items:center; gap:4px; }
+#phone .mt-comp .mt-ctxrow { display:flex; gap:6px; padding:8px 8px 0; min-width:0; }
+#phone .mt-comp .mt-ctx { height:32px; padding:0 10px; cursor:default; min-width:96px; max-width:60%; flex:0 1 auto; }
+#phone .mt-comp .mt-ctxa, #phone .mt-comp .mt-ctxn { min-width:0; }
+#phone .mt-comp .mt-ctxa, #phone .mt-comp .mt-ctxn { flex:0 0 auto; }
+#phone .mt-comp .mt-ctx > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone .mt-comp .mt-ctx svg { flex:0 0 auto; width:14px; height:14px; }
+#phone .mt-comp textarea.kin { display:block; width:100%; box-sizing:border-box; min-height:44px; max-height:110px; resize:none; border:0; outline:0; background:none; padding:11px 8px; font:400 14px/22px var(--font-family-kai, "DM Sans"), Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .mt-comp .ks-box:focus-within { outline:2px solid var(--text-primary); outline-offset:1px; }
+#phone .mt-comp .ks-ci, #phone .mt-comp .ks-go { min-width:44px; min-height:44px; }
+/* Opportunities: one ranked list of cards; the stage sits on the card */
+#phone .mt-opps { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+#phone .mt-card { background:var(--bg-surface-default); border-radius:var(--radius-absolute-20, 20px); box-shadow:var(--elevation-1); padding:16px; }
+#phone .mt-card[hidden] { display:none; }
+#phone .mt-card > .row.mt-row { display:grid; grid-template-columns:44px minmax(0,1fr) auto; column-gap:12px; row-gap:12px; align-items:center; margin:0; padding:0; border:0; background:none; box-shadow:none; }
+#phone .mt-card > .row.mt-row::after, #phone .mt-card > .row.mt-row::before { display:none; }
+#phone .mt-card .mt-row > .avatar { grid-column:1; grid-row:1; }
+#phone .mt-card .mt-row > .m { grid-column:2; grid-row:1; min-width:0; }
+#phone .mt-card .mt-row > .m .b { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .mt-card .mt-row > .mt-lab { grid-column:3; grid-row:1; align-self:start; font:var(--type-caption-strong, 600 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary); white-space:nowrap; }
+#phone .mt-card .mt-row > .mt-lab.now { color:var(--text-primary); }
+#phone .mt-card .mt-row > .r { grid-column:1 / -1; grid-row:2; display:flex; flex-wrap:wrap; align-items:center; gap:8px; justify-content:flex-start; }
+#phone .mt-card .mt-row > .chev { display:none; }
+#phone .mt-card .mt-row > .r .btn, #phone .mt-card .mt-row > .r button { min-height:44px; padding:0 16px; font:var(--type-label-strong, 600 14px/1.2 Manrope, system-ui, sans-serif); }
+#phone .mt-more { align-self:center; margin-top:4px; min-height:44px; }
+#phone .mt-browse { min-height:44px; box-sizing:border-box; }
+/* Chat: one stream, newest at the bottom */
+#phone .mt-thread { padding:16px 0 8px; }
+#phone .mt-lr { all:unset; box-sizing:border-box; display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:10px; align-items:center; min-height:44px; cursor:pointer; }
+#phone .mt-lr:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:12px; }
+#phone .mt-lr > .avatar { width:32px; height:32px; font-size:12px; }
+#phone .mt-lr > .m { font:var(--type-body-s, 400 13px/1.45 Manrope, system-ui, sans-serif); color:var(--text-secondary); min-width:0; }
+#phone .mt-lr > .m b { color:var(--text-primary); font-weight:600; }
+#phone .mt-lr > .m .pn { display:block; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary); margin-top:2px; }
+#phone .mt-lr > .when { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary); }
+#phone .mt-empty { display:flex; gap:10px; align-items:flex-start; padding:20px 0; font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone.mt-on .mh-tabs button { min-width:44px; justify-content:center; }
+/* a toast clears the chatbar */
+#phone.mt-on .toast { bottom:173px; }
+/* the + menu (KeyMenu): opens above the chatbar, one row per way to add */
+#phone .mt-comp .mt-menu { position:absolute; left:12px; bottom:calc(100% - 4px); min-width:220px; padding:6px; background:var(--bg-surface-raised); border-radius:16px; box-shadow:var(--elevation-2); display:flex; flex-direction:column; }
+#phone .mt-comp .mt-menu[hidden] { display:none; }
+#phone .mt-comp .mt-menu button { display:flex; align-items:center; gap:12px; min-height:44px; padding:0 12px; border:0; background:none; border-radius:10px; font:500 14px/20px Manrope, system-ui, sans-serif; color:var(--text-primary); text-align:left; cursor:pointer; }
+#phone .mt-comp .mt-menu button:hover, #phone .mt-comp .mt-menu button:focus-visible { background:var(--bg-fill-default); }
+#phone .mt-comp .mt-menu button:focus-visible { outline:2px solid var(--text-primary); outline-offset:-2px; }
+#phone .mt-comp .mt-menu svg { width:20px; height:20px; flex:0 0 auto; color:var(--text-secondary); }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-d695";
+/* ==== Mission as a chat with Kai (Simplify Home; Apoorv 1 Oct 01:53 "each mission is its own chat with Kai, composer fixed at the bottom,
+   consistent with the Kai designs", "opportunities are cards"; 20:50 "push the new missions layout to hifi prototype"). A layer over the
+   mission page, loaded after home.js; it rewrites the page after every render and edits no other file.
+   - Tabs: the mission's work (Opportunities on a personal mission, People on an event, series or family one), Chat, Brief.
+   - Opportunities: one list of KeyOpportunityCards ranked by what needs you (a reply, then Next step, New pick, Waiting,
+     In conversation, Went well, Closed), five shown, then "See N more". No pipeline strip, no stage headings: the stage is on the card.
+   - Chat: one stream. Your notes and Kai's answers as bubbles; what happened on a path as one KeyLogRow with its face. Newest at the bottom.
+   - The Kai chatbar (KeyComposer variant=chat) sits fixed at the bottom of every tab; the tab bar steps aside on a mission, like any
+     pushed chat. Context sits above the text (the mission, then the first thing you added, +N for the rest); + opens the one + menu (Add context,
+     Photo library, Take photo, Upload a file). Sending logs it and opens Chat; a question opens Kai, as missionSend already does.
+   Colours stay on today's four plates: no sky hues, no stars (Motion has those). ==== */
+STATE.mtMore = STATE.mtMore || {}; STATE.mtAdd = STATE.mtAdd || {}; STATE.mtDraft = STATE.mtDraft || {};
+const MT_ORDER = [1, 0, 2, 3, 4, 5];
+const mtLayer = m => typeof hsLayer==="function" ? !!hsLayer(m) : !!(m.evKind || m.host || m.org || m.series);
+function mtRank(o){ return ownerOf(o)==="you" && o.phase==="replied" ? -1 : MT_ORDER.indexOf(gpStage(o)); }
+function mtSend(id){ const ta = document.querySelector(".mt-comp #mupd"); if (ta) ta.value = ta.value.trim().replace(/^./, c=>c.toUpperCase()); STATE.mhTab[id] = "log"; delete STATE.mtAdd[id]; delete STATE.mtDraft[id]; missionSend(id); }
+
+function mtOpps(pane, m){
+  pane.querySelectorAll(":scope > .gp-strip, :scope > .mh-legend").forEach(e=>e.remove());
+  const rows = [...pane.querySelectorAll(".row[data-opp]")].map(r=>[r, DB.opps.find(o=>o.id===r.dataset.opp)]).filter(x=>x[1]);
+  const at = pane.querySelector(":scope > .gp-groups, :scope > .mlist"); if (!rows.length || !at) return;
+  rows.sort((a,b)=>mtRank(a[1])-mtRank(b[1]));
+  const all = !!STATE.mtMore[m.id], list = document.createElement("div");
+  list.className = "mt-opps"; list.setAttribute("data-kc", "KeyOpportunityList"); list.setAttribute("data-kv", `count=${rows.length}`);
+  rows.forEach(([r,o],i)=>{
+    const s = gpStage(o), card = document.createElement("div");
+    card.className = "mt-card"; card.setAttribute("data-kc", "KeyOpportunityCard"); card.setAttribute("data-kv", `stage=${GP_ST[s][0]}`);
+    r.removeAttribute("data-kc"); r.classList.add("mt-row");
+    r.insertAdjacentHTML("beforeend", `<span class="mt-lab${s===1||mtRank(o)<0?" now":""}">${GP_ST[s][0]}</span>`);
+    card.appendChild(r); if (i>=5 && !all) card.hidden = true; list.appendChild(card);
+  });
+  if (rows.length>5 && !all) list.insertAdjacentHTML("beforeend", `<button class="btn sec mt-more" onclick="STATE.mtMore['${m.id}']=true;render()">See ${rows.length-5} more</button>`);
+  at.replaceWith(list);
+}
+
+function mtChat(pane, m){
+  const os = DB.opps.filter(o=>o.missionId===m.id && o.state!=="dropped");
+  /* a layer mission without its own log keeps the rows its page already drew (event, series, family) */
+  const drawn = [...pane.querySelectorAll(".lrow")].map(e=>{ const b = e.querySelector("b"), w = e.querySelector(".when");
+    return { who: b ? b.textContent.trim() : "", text: e.textContent.replace(w ? w.textContent : "", "").replace(b ? b.textContent : "", "").trim(), when: w ? w.textContent.trim() : "" }; });
+  const own = m.mlog ? m.mlog.map(l=>({ who:l[0], text:l[1], when:l[2] }))
+    : mtLayer(m) ? drawn
+    : [{ who:"You", text:"started this at sign-up", when:"Tue" }, { who:"Kai", text:"first pass. Found "+os.length+" path"+(os.length===1?"":"s")+".", when:"Tue" }];
+  /* Kai's first pass is a search line: it folds into the line that starts the mission */
+  const st = own.find(r=>r.who==="You" && /^started this/.test(r.text)), fp = own.findIndex(r=>r.who==="Kai" && /^first pass/i.test(r.text));
+  if (st && fp>=0) { own.splice(fp, 1); st.found = os.length; }
+  const rows = own.concat(os.flatMap(o=>(o.log||[]).slice(1).map(l=>({ who:l[0].split(",")[0], text:l[1], when:l[2], o }))));
+  const tk = w=>{ if (!w||w==="now"||w==="today") return 0; const d = /^([+-])(\d+)d$/.exec(w); if (d) return (d[1]==="-"?-1:1)*+d[2]; return -10; };
+  const list = rows.map((r,i)=>Object.assign(r,{ i })).sort((a,b)=>(tk(a.when)-tk(b.when))||(a.i-b.i));
+  const cap = t => t.charAt(0).toUpperCase()+t.slice(1);
+  /* what you did ("approved the brief", "reopened this") is a quiet line; what you told Kai is your bubble */
+  const one = r => /^started this/.test(r.text) && r.who==="You" ? `<div class="ks-sys">You started this mission.${r.found!=null?` Kai found ${r.found} path${r.found===1?"":"s"}.`:""}${r.when?" · "+r.when:""}</div>`
+    : r.who==="You" && !r.o && /^[a-z]/.test(r.text) ? `<div class="ks-sys">You ${r.text.replace(/\.$/,"")}${r.when?" · "+r.when:""}</div>`
+    : r.who==="You" && !r.o ? `<div class="ks-u mt-u" data-kc="KeyMessageBubble" data-kv="from=you">${r.text}</div>`
+    : r.who==="Kai" && !r.o ? `<div class="ks-k mt-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${cap(r.text)}</p></div></div>`
+    : `<${r.o?`button onclick="go('path:${r.o.id}')"`:"div"} class="mt-lr" data-kc="KeyLogRow" data-kv="kind=${r.who==="Kai"?"kaiPass":"face"}">${r.who==="Kai"?kaiMark(24):av(r.o?scIni(r.o):(r.who.match(/\b\w/g)||["?"]).slice(0,2).join(""))}<span class="m"><b>${r.who}</b> ${r.text}${r.o?`<span class="pn">${r.o.roleTitle||f1(targetOf(r.o))}</span>`:""}</span><span class="when">${r.when}</span></${r.o?"button":"div"}>`;
+  pane.innerHTML = list.length ? `<div class="ks-thread mt-thread">${list.map(one).join("")}</div>`
+    : `<div class="mt-empty">${kaiMark(24)}<span>Nothing here yet. Tell Kai what moved and it lands here.</span></div>`;
+}
+
+/* the same + menu as the Kai sheet's drop (kai-chat.js): its icons, its "Add" name */
+LUCIDE["list-plus"] = LUCIDE["list-plus"] || '<path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="M18 9v6"/><path d="M21 12h-6"/>';
+LUCIDE["file-up"] = LUCIDE["file-up"] || '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 12v6"/><path d="m15 15-3-3-3 3"/>';
+const MT_ADD = [["list-plus","Add context",null], ["image","Photo library","Photo"], ["camera","Take photo","Photo"], ["file-up","Upload a file","deck-v3.pdf"]];
+function mtCtx(m){
+  const nm = m.name.length>22 ? m.name.slice(0,22)+"…" : m.name, add = STATE.mtAdd[m.id] || [];
+  const chip = (g,t,x) => `<span class="ks-scope on mt-ctx" data-kc="KeyChip" data-kv="state=on, kind=context"${x?` title="${x}"`:""}>${LI(g,14)}<span>${t}</span></span>`;
+  return `<div class="mt-ctxrow">${chip("compass", nm, m.name)}${add.slice(0,1).map(a=>chip(a==="Photo"?"image":"file-up", a).replace("mt-ctx","mt-ctx mt-ctxa")).join("")}${add.length>1?`<span class="ks-scope mt-ctx mt-ctxn">+${add.length-1}</span>`:""}</div>`;
+}
+function mtComposer(m){
+  return `<div class="ks-comp mt-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="mt-menu" role="menu" aria-label="Add" data-kc="KeyMenu" hidden>${MT_ADD.map(([g,t],i)=>`<button type="button" role="menuitem" data-kc="KeyMenuItem" onclick="mtPick('${m.id}',${i})">${LI(g,20)}<span>${t}</span></button>`).join("")}</div><div class="ks-box">
+    ${mtCtx(m)}<textarea class="kin" id="mupd" rows="1" placeholder="Anything new? Tell Kai" aria-label="Tell Kai about ${m.name}"></textarea>
+    <div class="ks-crow"><button class="ks-ci mt-plus" onclick="mtMenu()" aria-label="Add" aria-haspopup="menu" aria-expanded="false">${LI("plus",20)}</button><span class="grow"></span><button class="ks-ci" onclick="toast('Hold to talk. Kai writes it down.')" aria-label="Hold to talk">${LI("mic",20)}</button><button class="ks-go" onclick="mtSend('${m.id}')" aria-label="Send">${LI("arrow-up",18)}</button></div></div></div>`;
+}
+function mtMenu(open){
+  const c = phone.querySelector(".mt-comp"); if (!c) return; const mn = c.querySelector(".mt-menu"), b = c.querySelector(".mt-plus");
+  if (open===undefined) open = mn.hidden; mn.hidden = !open; b.setAttribute("aria-expanded", open);
+  if (open) mn.querySelector("button").focus();
+}
+function mtPick(id, i){
+  const m = DB.missions.find(x=>x.id===id), [, t, add] = MT_ADD[i]; mtMenu(false); if (!m) return;
+  if (!add) { toast("Pick a person, a message or a link to add"); return; }
+  (STATE.mtAdd[id] = STATE.mtAdd[id] || []).push(add);
+  phone.querySelector(".mt-comp .mt-ctxrow").outerHTML = mtCtx(m); phone.querySelector(".mt-comp #mupd").focus();
+}
+document.addEventListener("click", e=>{ const mn = typeof phone!=="undefined" && phone && phone.querySelector(".mt-menu:not([hidden])"); if (mn && !e.target.closest(".mt-menu, .mt-plus")) mtMenu(false); });
+document.addEventListener("keydown", e=>{ const mn = typeof phone!=="undefined" && phone && phone.querySelector(".mt-menu:not([hidden])"); if (!mn) return;
+  const its = [...mn.querySelectorAll("button")], k = its.indexOf(document.activeElement);
+  if (e.key==="Escape") { mtMenu(false); phone.querySelector(".mt-plus").focus(); }
+  else if (e.key==="Tab") mtMenu(false);
+  else if (e.key==="ArrowDown" || e.key==="ArrowUp") { e.preventDefault(); its[(k+(e.key==="ArrowDown"?1:its.length-1))%its.length].focus(); } });
+
+function mtFrame(id){
+  const m = DB.missions.find(x=>x.id===id), root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
+  const bar = body && body.querySelector(":scope > .mh-tabs"), pane = body && body.querySelector(":scope > .mh-pane");
+  if (!m || !bar || !pane || root.querySelector(".mt-comp")) return;
+  const tab = STATE.mhTab[id] || "paths", btn = k => [...bar.children].find(b=>(b.getAttribute("onclick")||"").includes(`'${k}')`));
+  const bw = btn("paths"), bl = btn("log"), bb = btn("brief");
+  if (bw && !mtLayer(m)) bw.firstChild.textContent = "Opportunities";
+  if (bl) { bl.textContent = "Chat"; }
+  if (bw && bl && bb) bar.append(bw, bl, bb);
+  if (tab==="paths" && !mtLayer(m)) mtOpps(pane, m);
+  pane.querySelectorAll(`.row[onclick*="go('explore')"]`).forEach(r=>r.classList.add("mt-browse"));
+  if (tab==="log") mtChat(pane, m);
+  body.querySelectorAll(".mlog, .mlog-hint, #mupd").forEach(e=>(e.closest(".mlog, .mlog-hint")||e).remove());
+  root.insertAdjacentHTML("beforeend", mtComposer(m));
+  phone.classList.add("mt-on");
+  /* a render (a toast, a sheet) redraws the page: what you were typing stays */
+  const ta = root.querySelector("#mupd"), fit = ()=>{ ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 110)+"px"; };
+  if (STATE.mtDraft[id]) { ta.value = STATE.mtDraft[id]; fit(); }
+  ta.addEventListener("input", ()=>{ STATE.mtDraft[id] = ta.value; fit(); });
+  ta.addEventListener("keydown", e=>{ if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); mtSend(id); } });
+  if (tab==="log") body.scrollTop = body.scrollHeight;
+}
+const _mtRender = render; render = function(){
+  const typing = document.activeElement && document.activeElement.matches(".mt-comp #mupd");
+  const r = _mtRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  phone.classList.remove("mt-on");
+  if (typeof KEY_HIFI==="undefined" || !KEY_HIFI || !STATE.member) return r;
+  const s = STATE.screen || ""; if (s.startsWith("mission:")) mtFrame(s.slice(8));
+  if (typing && !STATE.sheet) { const ta = phone.querySelector(".mt-comp #mupd"); if (ta) ta.focus(); }
+  return r;
+};
+
+</script>
+<style>
+/* ==== KeySky layer (Motion, 1 Oct; placed by key-sky.js). The corner deepens toward ink, as the sky does overhead, and the stars
+   sit in it. Only ever darker than the plate (L and C fall), so white type gains contrast; no glow, no highlight, no border.
+   Stars are the onboarding kai-stars point: grey-white 214/222/232 with the reel's soft falloff inside a 3.5 to 6px box. ==== */
+[data-kc="KeyMissionHero"] > .key-sky, .sky[data-sky] { position:absolute; inset:0; pointer-events:none; overflow:hidden; border-radius:inherit; z-index:0;
+  background:radial-gradient(ellipse 62% 110% at 100% 0%, rgba(11,14,17,var(--sky-deep,.2)), rgba(11,14,17,0) 72%); }
+.key-sky i, .sky[data-sky] i { position:absolute; border-radius:50%; transform:translate(-50%,-50%); opacity:var(--o);
+  background:radial-gradient(closest-side, rgb(214,222,232) 0, rgba(214,222,232,.56) 38%, rgba(214,222,232,.14) 70%, rgba(214,222,232,0) 100%); }
+.key-sky.go i, .sky[data-sky].go i { animation:keySkyIn .7s cubic-bezier(.2,0,0,1) both; }
+@keyframes keySkyIn { from { opacity:0; } }
+@media (prefers-reduced-motion: reduce) { .key-sky.go i, .sky[data-sky].go i { animation:none; } }
+
+</style>
+<script>
+/* ==== KeySky: the corner of a mission plate where the sky is deepest (Motion, 1 Oct; replaces sky-stars.js).
+   The plates are one sky through the night, so the corner tells the hour: late afternoon shows the first star, dusk a few,
+   night the most, dawn a few fading. Same soft point as the onboarding kai-stars (grey-white 214/222/232, (1-smoothstep)^2
+   falloff), three magnitudes, one bright evening or morning star nearest the corner, the rest fainter as they leave it.
+   Placement: inside the top-right quarter ellipse, weighted to the corner, at least 14px apart, at least 10px inside the
+   rounded edge, and never within 10px beside or 8px above or below text, a pill, the mark, the layer tag, a face or a button.
+   Seeded by mission, so a card keeps its sky. Arrival once per mission per visit: the bright star, then the rest outward from
+   the corner, settled by 2.2s (last star starts at 1.5s, 0.7s fade), then still. Still from the first frame under reduced motion and webdriver.
+   Hooks: [data-kc="KeyMissionHero"] (wireframe and hi-fi, gets a .key-sky layer) and .sky[data-sky] (Home prototype). ==== */
+(function(){
+  const HOUR = { harbour:{ n:3, deep:.14 }, dusk:{ n:5, deep:.2 }, ink:{ n:9, deep:.3 }, sage:{ n:4, deep:.18 } };
+  const AVOID = "button, a, svg, [data-kc='KeySignalPill'], [data-kc='KeyFaceStack'], [data-kc='KeyAvatar'], [data-kc='KeyLayerTag'], .hs-layer, .pill, .mmark, .mk, .ltag, .faces, .av, .ib, .sbar";
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.webdriver;
+  const SEEN = new Set();
+  function plateOf(host){
+    const m = /theme=(\w+)/.exec(host.getAttribute("data-kv") || "") || /\bp-(\w+)/.exec(host.className || "");
+    return m && HOUR[m[1]] ? m[1] : "ink";
+  }
+  function paint(sky, host, seed, page){
+    const R = host.getBoundingClientRect(); if (!R.width) return;
+    const plate = plateOf(host), key = seed + "|" + plate + "|" + Math.round(R.width) + "x" + Math.round(R.height);
+    if (sky.dataset.key === key) return;
+    const keep = [];
+    host.querySelectorAll(AVOID).forEach(el => { if (!sky.contains(el)) { const r = el.getBoundingClientRect(); if (r.width) keep.push(r); } });
+    const tw = document.createTreeWalker(host, NodeFilter.SHOW_TEXT); let t;
+    while ((t = tw.nextNode())) { if (!t.textContent.trim() || sky.contains(t.parentNode)) continue; const rg = document.createRange(); rg.selectNodeContents(t); keep.push(...rg.getClientRects()); }
+    let h = 2166136261; for (const c of seed) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
+    const rnd = () => { h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
+    const rad = parseFloat(getComputedStyle(host).borderTopRightRadius) || 0, inset = 10;
+    const n = Math.max(1, Math.round(HOUR[plate].n * (page ? 1.6 : 1) * Math.min(1, R.width / 343))); // fewer on narrow plates, so the corner never crowds
+    const zw = Math.min(page ? 200 : 150, R.width * .45), zh = Math.min(page ? 120 : 96, R.height * (page ? .65 : .8));
+    const free = (x, y) => {
+      if (x > R.width - inset || y < inset || x < inset || y > R.height - inset) return false;
+      const cx = R.width - rad, cy = rad; // keep clear of the rounded corner
+      if (x > cx && y < cy && Math.hypot(x - cx, y - cy) > rad - inset) return false;
+      const ax = R.left + x, ay = R.top + y;
+      return !keep.some(r => ax > r.left - 10 && ax < r.right + 10 && ay > r.top - 8 && ay < r.bottom + 8);
+    };
+    const out = [];
+    for (let k = 0; k < 400 && out.length < n; k++) {
+      const a = rnd() * Math.PI / 2, d = Math.pow(rnd(), .75); // quarter ellipse around the corner, denser near it
+      const x = R.width - Math.cos(a) * d * zw, y = Math.sin(a) * d * zh;
+      if (!free(x, y) || out.some(p => Math.hypot(p.x - x, p.y - y) < 14)) continue;
+      out.push({ x, y, d: Math.hypot((R.width - x) / zw, y / zh) });
+    }
+    out.sort((p, q) => p.d - q.d); // the bright star is the one nearest the corner, the rest fade as they leave it
+    const first = !SEEN.has(seed) && !still; SEEN.add(seed);
+    sky.dataset.key = key;
+    sky.style.setProperty("--sky-deep", HOUR[plate].deep);
+    sky.innerHTML = out.map((p, k) => {
+      const mag = k === 0 ? 0 : (rnd() < .3 ? 1 : 2), box = [6, 4.5, 3.5][mag], op = [.95, .72, .5][mag] * (k ? 1 - .25 * Math.min(1, p.d) : 1);
+      return `<i style="left:${p.x.toFixed(1)}px;top:${p.y.toFixed(1)}px;width:${box}px;height:${box}px;--o:${op.toFixed(2)};animation-delay:${k ? (.5 + Math.min(1, p.d)).toFixed(2) : 0}s"></i>`;
+    }).join("");
+    sky.classList.toggle("go", first);
+  }
+  let queued = false;
+  function run(){
+    queued = false;
+    document.querySelectorAll('[data-kc="KeyMissionHero"]').forEach(host => {
+      let sky = host.querySelector(":scope > .key-sky");
+      if (!sky) { sky = document.createElement("span"); sky.className = "key-sky"; sky.setAttribute("aria-hidden", "true"); host.prepend(sky); }
+      const kv = host.getAttribute("data-kv") || "";
+      paint(sky, host, kv.replace(/theme=\w+/, "") + "|" + ((host.querySelector(".mh-bn") || host).textContent || "").trim().slice(0, 60), /size=page/.test(kv));
+    });
+    document.querySelectorAll(".sky[data-sky]").forEach(sky => paint(sky, sky.parentElement, sky.dataset.sky, /^hero-/.test(sky.dataset.sky)));
+  }
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(run); } };
+  new MutationObserver(m => { if (m.some(r => ![...r.addedNodes, r.target].every(n => n.closest && n.closest(".key-sky, .sky")))) queue(); }).observe(document.documentElement, { childList: true, subtree: true });
+  addEventListener("resize", queue); queue();
+  window.keySky = run;
+})();
+
+</script>
+<style>
+/* KeyBriefBar: Kai's bar above the tabs (Apoorv, 1 Oct 19:21-19:23). Ink like the Kai button it points at; the faces are who Kai found.
+   No colour of its own (visual direction 3 and 7): ink, white, the foil K, and members' faces. */
+.bk-bar { --bk-tail:50%; position:absolute; left:12px; right:12px; bottom:120px; z-index:40; display:flex; align-items:center; gap:2px; min-height:60px;
+  padding:6px 2px 6px 8px; border-radius:16px; background:#0B0E11; color:#FFFFFF; box-shadow:0 10px 28px rgba(11,14,17,.28); }
+.bk-tail { position:absolute; left:var(--bk-tail); bottom:-7px; width:16px; height:8px; margin-left:-8px; background:#0B0E11; clip-path:polygon(0 0, 100% 0, 50% 100%); }
+.bk-open { flex:1 1 auto; min-width:0; min-height:48px; display:flex; align-items:center; gap:10px; padding:0; border:0; background:none; color:inherit; font:inherit; text-align:left; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.bk-open:focus-visible, .bk-x:focus-visible { outline:2px solid #FFFFFF; outline-offset:2px; border-radius:12px; } .bk-x:focus-visible { outline-offset:-2px; border-radius:999px; }
+.bk-who { flex:0 0 auto; display:flex; }
+.bk-fc { position:relative; flex:0 0 auto; width:32px; height:32px; border-radius:50%; overflow:hidden; display:block; box-shadow:0 0 0 2px #0B0E11; }
+.bk-fc + .bk-fc { margin-left:-8px; }
+.bk-fc .bs-pt { width:100%; height:100%; border-radius:0; display:grid; place-items:center; }
+.bk-fc .bs-pt em { font-size:12px; font-weight:700; font-style:normal; transform:none; color:#FFFFFF; }
+.bk-m { flex:1 1 auto; min-width:0; display:grid; gap:1px; }
+.bk-m b { font-size:14px; line-height:1.3; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-m > span { font-size:12px; line-height:1.35; color:rgba(255,255,255,.74); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-prog { display:flex; gap:3px; margin-top:4px; } .bk-prog i { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,.28); } .bk-prog i.on { background:#FFFFFF; }
+.bk-go { flex:0 0 auto; height:36px; display:inline-flex; align-items:center; padding:0 14px; border-radius:999px; background:#FFFFFF; color:#0B0E11; font-size:14px; font-weight:700; }
+.bk-open:active .bk-go { transform:scale(.97); }
+.bk-x { flex:0 0 auto; width:44px; height:44px; display:grid; place-items:center; padding:0; border:0; border-radius:999px; background:none; color:rgba(255,255,255,.74); cursor:pointer; }
+.screen:has(> .bk-bar) .view .body { padding-bottom:200px; }
+body:has(.bk-bar) .toast { bottom:196px; } /* a toast sits above the bar, never over it */
+/* arrival: rises out of the Kai button, once per session */
+.bk-bar.aim { opacity:0; }
+.bk-bar.enter { transform-origin:var(--bk-tail) 100%; animation:bkRise .36s cubic-bezier(.05,.7,.1,1) both; }
+@keyframes bkRise { from { opacity:0; transform:translateY(16px) scale(.92); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { .bk-bar.enter { animation:none; } }
+
+/* the brief in Kai's sheet: Kai's header, Kai speaks first, then the one thing. Self-contained, so both copies draw it the same. */
+.bk-sheet .sb { display:flex; flex-direction:column; padding:0 0 8px; }
+.bk-hd { display:flex; align-items:center; gap:2px; padding:2px 8px 4px 20px; flex:0 0 auto; }
+.bk-t { flex:1 1 auto; min-width:0; display:flex; align-items:center; gap:10px; }
+.bk-t .kn-disc { flex:0 0 auto; }
+.bk-t b { min-width:0; font-size:17px; line-height:1.3; font-weight:600; color:var(--text-primary, #0B0E11); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-step { flex:0 0 auto; font-size:13px; font-weight:500; color:var(--text-secondary, #5B6573); }
+.bk-ib { flex:0 0 auto; width:44px; height:44px; display:grid; place-items:center; padding:0; border:0; border-radius:999px; background:none; color:var(--icon-primary, #0B0E11); cursor:pointer; }
+.bk-ib:focus-visible { outline:2px solid var(--text-primary, #0B0E11); outline-offset:-2px; }
+.bk-sheet .mc-prog { margin:0 20px 8px; }
+.bk-body { flex:1 1 auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:8px 20px 8px; }
+.bk-say { display:grid; grid-template-columns:24px 1fr; gap:10px; align-items:start; margin:0 0 16px; }
+.bk-say .kn-disc { margin-top:2px; }
+.bk-say p { margin:0; min-width:0; font-size:15px; line-height:1.5; font-weight:400; color:var(--text-primary, #0B0E11); }
+/* the draft's Shorter and Speak keep their size and get a 44 tap area */
+.bk-sheet .drow .mini, .bk-sheet .drow .mic.sm { position:relative; } .bk-sheet .drow .mini::after { content:""; position:absolute; inset:-6px 0; } .bk-sheet .drow .mic.sm::after { content:""; position:absolute; inset:-7px; }
+/* where it lives: one KeyConversationRow on Kai's greeting and at the top of Kai chats */
+.bk-pin { margin:16px 0 4px; }
+.bk-ov { font-size:11px; line-height:1.2; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-tertiary, #6B7480); padding:16px 0 4px; }
+.bk-row { display:flex; align-items:center; gap:12px; width:100%; min-height:64px; padding:12px 0; border:0; border-bottom:1px solid var(--border-subtle, #EDF0F4); background:none; font:inherit; text-align:left; color:var(--text-primary, #0B0E11); cursor:pointer; }
+.bk-row:focus-visible { outline:2px solid var(--text-primary, #0B0E11); outline-offset:2px; border-radius:12px; }
+.bk-row .kn-disc { flex:0 0 auto; }
+.bk-rm { flex:1 1 auto; min-width:0; display:grid; gap:1px; }
+.bk-rm b { font-size:15px; line-height:1.45; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-rm span { font-size:13px; line-height:1.45; color:var(--text-secondary, #5B6573); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.bk-rw { flex:0 0 auto; align-self:flex-start; margin-top:3px; font-size:12px; font-weight:500; color:var(--text-tertiary, #6B7480); }
+/* small phones: one face and no Start pill, so the line is never cut; the whole bar is still the button */
+@media (max-width:360px) { .bk-fc + .bk-fc { display:none; } .bk-go { display:none; } }
+
+</style>
+<script>
+/* The brief is Kai's (Apoorv, 1 Oct 19:21-19:23): he picked the bar above the tabs; "have a cross so that users can remove it",
+   "make it look like it's Kai getting you these, and make use of the Kai screens", "find a place it lives, so that users can come back to it".
+   So: the bar points at the Kai button it came from and shows who Kai found; it opens in Kai's sheet; it lives in Kai, on Kai's
+   greeting and at the top of Kai chats. The cross hides the bar for the session, never the brief. Home's scroll carries nothing. */
+STATE.brAlt = "dock";
+function brEntry(){
+  const R = STATE.brRun, L = R ? R.L : brCards(); if (!L.length) return null;
+  const n = L.length, handled = R ? Object.keys(R.done).length : 0, seen = R ? Math.min(R.at, n) : 0, fin = R && R.at >= n;
+  const need = L.filter(c => c.label==="Needs you" && !(R && R.done[c.id])).map(c => c.who).filter(Boolean);
+  const W = [...need, ...brWho(L)].filter((p, k, a) => a.findIndex(x => x.id===p.id)===k).slice(0, 2);
+  const line = need.length ? `${need.slice(0, 2).map(firstName).join(" and ")}${need.length > 2 ? ` and ${need.length-2} more` : ""} need${need.length===1?"s":""} you` : `${n} thing${n===1?"":"s"} Kai has ready`;
+  return { L, n, handled, seen, fin, W, line };
+}
+const bkHead = E => E.seen ? `${E.n-E.seen} left in your brief` : "Here's what you missed";
+/* label-in-name: the accessible name opens with the visible headline */
+const bkAria = E => `${bkHead(E)}. ${E.line}. ` + (E.seen ? `Continue your ${brPart()} brief, ${E.seen} of ${E.n}` : `Start your ${brPart()} brief, ${E.n} thing${E.n===1?"":"s"}`);
+const bkProg = (n, on) => `<span class="bk-prog" aria-hidden="true">${Array.from({ length:n }, (_, k) => `<i class="${on(k) ? "on" : ""}"></i>`).join("")}</span>`;
+/* where it lives: one row, the same KeyConversationRow as every Kai chat */
+const bkState = E => E.fin ? `You handled ${E.handled} of ${E.n}` : E.seen ? `${E.n-E.seen} left · ${E.line}` : `${E.n} thing${E.n===1?"":"s"} · ${E.line}`;
+const bkRow = E => `<button type="button" class="bk-row" data-brkai="1" data-kc="KeyConversationRow" data-kv="kind=brief">${kaiMark(40)}<span class="bk-rm"><b>Your ${brPart()} brief</b><span>${bkState(E)}</span></span><span class="bk-rw">Today</span></button>`;
+
+/* after Hide, focus goes where the brief now lives, the Kai button, and stays there through the redraws that follow
+   (the nav, the toast, a late touch re-render) until the person moves it or 3s pass */
+function bkHoldKai(){
+  const to = () => { const kb = phone.querySelector("#kaiBtn"); if (kb && (document.activeElement===document.body || !document.activeElement)) kb.focus({ preventScroll:true }); };
+  const mo = new MutationObserver(() => requestAnimationFrame(to)), end = () => { mo.disconnect(); document.removeEventListener("focusin", moved, true); };
+  const moved = e => { if (e.target.id!=="kaiBtn") end(); };
+  requestAnimationFrame(() => requestAnimationFrame(() => { to(); mo.observe(phone, { childList:true, subtree:true }); document.addEventListener("focusin", moved, true); }));
+  setTimeout(end, 3000);
+}
+brBanner = function(){ return ""; };
+const _bkRender = render;
+render = function(){
+  const r = _bkRender.apply(this, arguments);
+  const scr = phone.querySelector(".screen");
+  if (!scr || STATE.screen!=="home" || !STATE.member || !STATE.intakeDone || STATE.brHidden || phone.querySelector(".br-backbar")) return r;
+  const E = brEntry(); if (!E || E.fin) return r;
+  const first = !STATE.brEntered, enter = first && !bsStill(); STATE.brEntered = true;
+  scr.insertAdjacentHTML("beforeend", `<div class="bk-bar" data-kc="KeyBriefBar" data-kv="state=${E.seen ? "part" : "new"};cards=${E.n}">
+    <button type="button" id="brEntry" class="bk-open" aria-label="${bkAria(E)}">
+      <span class="bk-who" aria-hidden="true">${E.W.length ? E.W.map(p => `<span class="bk-fc">${brPortrait(p.initials, p.id, 96)}</span>`).join("") : kaiMark(32)}</span>
+      <span class="bk-m"><b>${bkHead(E)}</b><span>${E.line}</span>${E.seen ? bkProg(E.n, k => k < E.seen) : ""}</span>
+      <span class="bk-go">${E.seen ? "Continue" : "Start"}</span></button>
+    <button type="button" class="bk-x" aria-label="Hide your brief">${LI("x",20)}</button>
+    <span class="bk-tail" aria-hidden="true"></span></div>`);
+  const bar = scr.querySelector(".bk-bar");
+  /* the tail points at the Kai button the bar came from: aimed at rest once the nav has settled, then animated */
+  const aim = () => { const k = phone.querySelector("#kaiBtn") || phone.querySelector(".nav .kai"); if (k && bar.isConnected) bar.style.setProperty("--bk-tail", `${Math.round(k.getBoundingClientRect().left + k.getBoundingClientRect().width/2 - bar.getBoundingClientRect().left)}px`); };
+  aim(); if (first) bar.classList.add("aim"); /* held unseen until aimed, with or without motion */
+  requestAnimationFrame(() => requestAnimationFrame(() => { aim(); bar.classList.remove("aim"); if (enter) bar.classList.add("enter"); }));
+  bar.querySelector(".bk-open").onclick = () => brOpen(bar);
+  bar.querySelector(".bk-x").onclick = () => { STATE.brHidden = true; render(); toast("Hidden. It's in Kai when you want it.");
+    /* focus goes where the brief now lives, not to the page */
+    bkHoldKai(); };
+  return r;
+};
+
+/* the brief opens in Kai's sheet: Kai's header with All chats, Kai speaking first, then the one thing */
+const _bkSheetHTML = sheetHTML;
+sheetHTML = function(){
+  const h = _bkSheetHTML.apply(this, arguments);
+  if (!STATE.sheet || STATE.sheet.type!=="brief3") return h;
+  return h.replace('<div class="sheet ', '<div data-kc="KeyKaiSheet" data-kv="content=brief" class="sheet bk-sheet ');
+};
+brSheet3 = function(){
+  const R = brRunNow(), n = R.L.length, i = Math.min(R.at, n), c = R.L[R.at], E = brEntry();
+  const say = i===0 ? `Hey ${firstName(me())}, here's what you missed. ${E.line}.` : c ? `${n-i} left. ${E.line}.` : "";
+  return `<div class="bk-hd" data-kc="KeySheetHeader" data-kv="lead=mark"><span class="bk-t">${kaiMark(28)}<b>Your ${brPart()} brief</b><span class="bk-step" id="br3Step">${i < n ? `${i+1} of ${n}` : "Done"}</span></span>
+      <button type="button" class="bk-ib" data-kaihist="1" aria-label="All chats">${LI("history",22)}</button></div>
+    ${i < n ? brProg(n, i, k => k < i || R.done[R.L[k].id]) : ""}
+    <div class="bk-body"><div class="sc br3" data-kc="KeyBrief" data-kv="cards=${n}, at=${R.at}">
+      ${say ? `<div class="bk-say" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<p>${say}</p></div>` : ""}
+      ${c ? `<div class="br3-body" data-kind="${c.kind}">${br3Item(c)}</div>` : br3End(R)}</div></div>`;
+};
+
+/* where it lives: first thing on Kai's greeting, and pinned to the top of Kai chats under Today. Placed in the drawn page, so it
+   lands the same in either copy's Kai screens (hi-fi: .ks-hello, .ks-search, .ks-ov; wireframe: .chips, .toolrow, .lbl). */
+const _bkHome = render;
+render = function(){
+  const r = _bkHome.apply(this, arguments), E = STATE.member && STATE.intakeDone && brEntry();
+  if (!E) return r;
+  const sh = STATE.sheet && STATE.sheet.type==="kai" && !(STATE.kaiMsgs||[]).length && phone.querySelector("#sheet");
+  if (sh && !sh.querySelector(".bk-row")) {
+    const hello = sh.querySelector(".ks-hello"), chips = sh.querySelector(".chips");
+    if (hello) hello.insertAdjacentHTML("afterend", `<div class="bk-pin">${bkRow(E)}</div>`);
+    else if (chips) chips.insertAdjacentHTML("beforebegin", `<div class="bk-pin">${bkRow(E)}</div>`);
+  }
+  if (STATE.screen==="kaihistory") { const scr = phone.querySelector(".screen");
+    if (scr && !scr.querySelector(".bk-row")) {
+      const today = [...scr.querySelectorAll(".ks-ov, .lbl")].find(x => x.textContent.trim()==="Today"), search = scr.querySelector(".ks-search, .toolrow");
+      if (today) { const nx = today.nextElementSibling; if (nx && nx.classList.contains("empty")) nx.remove(); today.insertAdjacentHTML("afterend", bkRow(E)); }
+      else if (search) search.insertAdjacentHTML("afterend", `<div class="bk-ov">Today</div>${bkRow(E)}`);
+    } }
+  return r;
+};
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-brkai]"); if (!b) return;
+  e.stopPropagation(); STATE.sheet = null; brOpen(null);
+}, true);
+
+</script>
+<style>
+/* 1 Oct 21:17: hi-fi only measured fixes from audits/mission-chat-hifi-2026-10-01.md (coordinator relay). Last before </body>. */
+/* AA: morg "Standing · a fresh pass every Monday" was --ink3 #8A8A8A at 3.45:1 */
+#phone.hf-mis .sc .funnel-l { color:#6B6B6B; }
+/* 44 targets: People-pane .mini keeps its 32 look, hit area grows to 44 (same pattern as a11y.css .drow button.mini) */
+#phone.hf-mis .sc .mini { position:relative; min-width:44px; }
+#phone.hf-mis .sc .mini::after { content:""; position:absolute; inset:-6px 0; }
+/* 44 targets: OK, Preview, Sharpen it with Kai were 40; toggle rows were 42 */
+#phone.hf-mis .sc button.btn { min-height:44px; }
+#phone.hf-mis .sc .row[onclick] { min-height:44px; }
+/* 1 Oct 23:46: the .key-sky layer (absolute, z 0) painted over static hero rows and greyed the white title near its corner (audits/hifi-1670 addendum); keep hero content above it */
+[data-kc="KeyMissionHero"] > :not(.key-sky) { position:relative; z-index:1; }
+
+</style>
+<script>
+window.KEY_BUILD = "2.hifi-dfd0";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

@@ -5407,6 +5407,33 @@ html.pop-still .brief, html.mo-still .brief { animation:none; }
 @media (prefers-reduced-motion: reduce) { .p2kdots i { transition:none; } }
 
 
+
+.p2btl.you { background:var(--fill); }
+.p2btl.you small { color:var(--ink); font-weight:600; }
+.p2fit { color:var(--ink); background:var(--fill); }
+.p2nd small.p2why { color:var(--ink); font-weight:600; }
+.p2wk small.p2you { color:var(--ink); font-weight:600; }
+#phone.hf-prof .p2btl.you { background:var(--component-card-bg); border-color:var(--border-default); }
+#phone.hf-prof .p2btl.you small { color:var(--text-primary); font-weight:600; }
+#phone.hf-prof .p2nd small.p2why { color:var(--text-primary); font-weight:600; }
+#phone.hf-prof .p2fit { color:var(--text-primary); background:var(--bg-fill-default); border:0; }
+#phone.hf-prof .p2wk small.p2you { color:var(--text-primary); font-weight:600; }
+#phone.hf-rb .rb-fam { color:var(--text-primary); background:var(--bg-fill-default); border:0; }
+#phone.hf-ctx .epl.inf { color:var(--text-primary); font-weight:600; }
+#phone.hf-ctx .sent.inf .p2cm small { color:var(--text-primary); font-weight:600; }
+
+.p2kh { align-items:flex-start; }
+.p2kh > svg { margin-top:2px; }
+.p2khx { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.p2khx b { font-size:14px; }
+.p2khx span { font-size:12px; color:var(--ink2); }
+.p2hook { margin-bottom:16px; }
+#phone.hf-prof .p2khx b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone.hf-prof .p2khx span { font:var(--type-body-s); color:var(--text-secondary); }
+#phone.hf-prof .p2hook { margin-bottom:var(--space-absolute-16); }
+.p2kcard .p2upm { min-height:44px; }
+
+
 .call.kc { background:var(--component-call-bg, #0B0E11); color:var(--component-call-ink-default, #F9FAFC); }
 .call.kc > canvas.kai-stars { z-index:0; }
 .call.kc > *:not(canvas) { position:relative; z-index:1; }
@@ -6840,7 +6867,6 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
 [data-kc="KeyMissionHero"][data-kv*="theme=dusk"], [data-kc="KeyMissionMark"][data-kv*="theme=dusk"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Dusk"] { background:linear-gradient(170deg, #584A8E, #7E4F78) !important; --face-ring:#764E7C; }
 [data-kc="KeyMissionHero"][data-kv*="theme=ink"], [data-kc="KeyMissionMark"][data-kv*="theme=ink"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Ink"] { background:linear-gradient(170deg, #1E2638, #353F5C) !important; --face-ring:#303A55; }
 [data-kc="KeyMissionHero"][data-kv*="theme=sage"], [data-kc="KeyMissionMark"][data-kv*="theme=sage"]:not([data-kc="KeyMissionHero"] *), #phone .mh-sw[aria-label="Sage"] { background:linear-gradient(170deg, #2A4F66, #2C5F6C) !important; --face-ring:#2C5C6B; }
-[data-kc="KeyMissionHero"] .mh-ghost, [data-kc="KeyMissionHero"] .mc-ghost { display:none; }
 
 
 #phone.hf-ob .screen { background:var(--bg-page); }
@@ -17230,7 +17256,7 @@ function p2KLive(r){ const c=[...r.querySelectorAll(".p2kcard")]; if (c.length<2
   r.parentNode.querySelectorAll(".p2kdots i").forEach((d,i)=>d.classList.toggle("on", i===on)); }
 function p2UpdStack(){ const P=p2Pending(), d=STATE.p2updDone;
   if (!P.length) return d ? `<div class="p2kn p2kdone" role="status" tabindex="-1"><span class="p2upt">${LI("check",20)}</span><span class="p2upx"><b>Profile up to date</b><small>${[d.yes&&`${d.yes} ${d.yes===1?"change":"changes"} under Recently`, d.no&&`${d.no} skipped`].filter(Boolean).join(" · ")}</small></span></div>` : "";
-  return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<b aria-live="polite">${P.length===1?"Kai has an update":`Kai has ${P.length} updates`}</b></div>
+  return `<div class="p2kn"><div class="p2kh">${kaiMark(16)}<span class="p2khx"><b aria-live="polite">${P.length===1?"Kai suggests an update to your profile":`Kai suggests ${P.length} updates to your profile`}</b><span>Nothing changes until you tap ${P.some(u=>u.was(p2Own()))?"Add or Update":"Add"}</span></span></div>
     <div class="p2krail ${P.length>1?"more":""}" role="list" onscroll="clearTimeout(this.t);this.t=setTimeout(()=>p2KLive(this),80)">${P.map((u,i)=>p2UpdCard(u,i,P.length)).join("")}</div>
     ${P.length>1?`<div class="p2kdots" aria-hidden="true">${"<i></i>".repeat(Math.min(P.length,5)).replace("<i>",'<i class="on">')}</div>`:""}</div>`; }
 function p2OwnBody(mode){   // mode: "edit" | "member" | "match" | "outside"
@@ -23894,93 +23920,6 @@ const _mtRender = render; render = function(){
 
 </script>
 <style>
-/* ==== KeySky layer (Motion, 1 Oct; placed by key-sky.js). The corner deepens toward ink, as the sky does overhead, and the stars
-   sit in it. Only ever darker than the plate (L and C fall), so white type gains contrast; no glow, no highlight, no border.
-   Stars are the onboarding kai-stars point: grey-white 214/222/232 with the reel's soft falloff inside a 3.5 to 6px box. ==== */
-[data-kc="KeyMissionHero"] > .key-sky, .sky[data-sky] { position:absolute; inset:0; pointer-events:none; overflow:hidden; border-radius:inherit; z-index:0;
-  background:radial-gradient(ellipse 62% 110% at 100% 0%, rgba(11,14,17,var(--sky-deep,.2)), rgba(11,14,17,0) 72%); }
-.key-sky i, .sky[data-sky] i { position:absolute; border-radius:50%; transform:translate(-50%,-50%); opacity:var(--o);
-  background:radial-gradient(closest-side, rgb(214,222,232) 0, rgba(214,222,232,.56) 38%, rgba(214,222,232,.14) 70%, rgba(214,222,232,0) 100%); }
-.key-sky.go i, .sky[data-sky].go i { animation:keySkyIn .7s cubic-bezier(.2,0,0,1) both; }
-@keyframes keySkyIn { from { opacity:0; } }
-@media (prefers-reduced-motion: reduce) { .key-sky.go i, .sky[data-sky].go i { animation:none; } }
-
-</style>
-<script>
-/* ==== KeySky: the corner of a mission plate where the sky is deepest (Motion, 1 Oct; replaces sky-stars.js).
-   The plates are one sky through the night, so the corner tells the hour: late afternoon shows the first star, dusk a few,
-   night the most, dawn a few fading. Same soft point as the onboarding kai-stars (grey-white 214/222/232, (1-smoothstep)^2
-   falloff), three magnitudes, one bright evening or morning star nearest the corner, the rest fainter as they leave it.
-   Placement: inside the top-right quarter ellipse, weighted to the corner, at least 14px apart, at least 10px inside the
-   rounded edge, and never within 10px beside or 8px above or below text, a pill, the mark, the layer tag, a face or a button.
-   Seeded by mission, so a card keeps its sky. Arrival once per mission per visit: the bright star, then the rest outward from
-   the corner, settled by 2.2s (last star starts at 1.5s, 0.7s fade), then still. Still from the first frame under reduced motion and webdriver.
-   Hooks: [data-kc="KeyMissionHero"] (wireframe and hi-fi, gets a .key-sky layer) and .sky[data-sky] (Home prototype). ==== */
-(function(){
-  const HOUR = { harbour:{ n:3, deep:.14 }, dusk:{ n:5, deep:.2 }, ink:{ n:9, deep:.3 }, sage:{ n:4, deep:.18 } };
-  const AVOID = "button, a, svg, [data-kc='KeySignalPill'], [data-kc='KeyFaceStack'], [data-kc='KeyAvatar'], [data-kc='KeyLayerTag'], .hs-layer, .pill, .mmark, .mk, .ltag, .faces, .av, .ib, .sbar";
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches || navigator.webdriver;
-  const SEEN = new Set();
-  function plateOf(host){
-    const m = /theme=(\w+)/.exec(host.getAttribute("data-kv") || "") || /\bp-(\w+)/.exec(host.className || "");
-    return m && HOUR[m[1]] ? m[1] : "ink";
-  }
-  function paint(sky, host, seed, page){
-    const R = host.getBoundingClientRect(); if (!R.width) return;
-    const plate = plateOf(host), key = seed + "|" + plate + "|" + Math.round(R.width) + "x" + Math.round(R.height);
-    if (sky.dataset.key === key) return;
-    const keep = [];
-    host.querySelectorAll(AVOID).forEach(el => { if (!sky.contains(el)) { const r = el.getBoundingClientRect(); if (r.width) keep.push(r); } });
-    const tw = document.createTreeWalker(host, NodeFilter.SHOW_TEXT); let t;
-    while ((t = tw.nextNode())) { if (!t.textContent.trim() || sky.contains(t.parentNode)) continue; const rg = document.createRange(); rg.selectNodeContents(t); keep.push(...rg.getClientRects()); }
-    let h = 2166136261; for (const c of seed) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
-    const rnd = () => { h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
-    const rad = parseFloat(getComputedStyle(host).borderTopRightRadius) || 0, inset = 10;
-    const n = Math.max(1, Math.round(HOUR[plate].n * (page ? 1.6 : 1) * Math.min(1, R.width / 343))); // fewer on narrow plates, so the corner never crowds
-    const zw = Math.min(page ? 200 : 150, R.width * .45), zh = Math.min(page ? 120 : 96, R.height * (page ? .65 : .8));
-    const free = (x, y) => {
-      if (x > R.width - inset || y < inset || x < inset || y > R.height - inset) return false;
-      const cx = R.width - rad, cy = rad; // keep clear of the rounded corner
-      if (x > cx && y < cy && Math.hypot(x - cx, y - cy) > rad - inset) return false;
-      const ax = R.left + x, ay = R.top + y;
-      return !keep.some(r => ax > r.left - 10 && ax < r.right + 10 && ay > r.top - 8 && ay < r.bottom + 8);
-    };
-    const out = [];
-    for (let k = 0; k < 400 && out.length < n; k++) {
-      const a = rnd() * Math.PI / 2, d = Math.pow(rnd(), .75); // quarter ellipse around the corner, denser near it
-      const x = R.width - Math.cos(a) * d * zw, y = Math.sin(a) * d * zh;
-      if (!free(x, y) || out.some(p => Math.hypot(p.x - x, p.y - y) < 14)) continue;
-      out.push({ x, y, d: Math.hypot((R.width - x) / zw, y / zh) });
-    }
-    out.sort((p, q) => p.d - q.d); // the bright star is the one nearest the corner, the rest fade as they leave it
-    const first = !SEEN.has(seed) && !still; SEEN.add(seed);
-    sky.dataset.key = key;
-    sky.style.setProperty("--sky-deep", HOUR[plate].deep);
-    sky.innerHTML = out.map((p, k) => {
-      const mag = k === 0 ? 0 : (rnd() < .3 ? 1 : 2), box = [6, 4.5, 3.5][mag], op = [.95, .72, .5][mag] * (k ? 1 - .25 * Math.min(1, p.d) : 1);
-      return `<i style="left:${p.x.toFixed(1)}px;top:${p.y.toFixed(1)}px;width:${box}px;height:${box}px;--o:${op.toFixed(2)};animation-delay:${k ? (.5 + Math.min(1, p.d)).toFixed(2) : 0}s"></i>`;
-    }).join("");
-    sky.classList.toggle("go", first);
-  }
-  let queued = false;
-  function run(){
-    queued = false;
-    document.querySelectorAll('[data-kc="KeyMissionHero"]').forEach(host => {
-      let sky = host.querySelector(":scope > .key-sky");
-      if (!sky) { sky = document.createElement("span"); sky.className = "key-sky"; sky.setAttribute("aria-hidden", "true"); host.prepend(sky); }
-      const kv = host.getAttribute("data-kv") || "";
-      paint(sky, host, kv.replace(/theme=\w+/, "") + "|" + ((host.querySelector(".mh-bn") || host).textContent || "").trim().slice(0, 60), /size=page/.test(kv));
-    });
-    document.querySelectorAll(".sky[data-sky]").forEach(sky => paint(sky, sky.parentElement, sky.dataset.sky, /^hero-/.test(sky.dataset.sky)));
-  }
-  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(run); } };
-  new MutationObserver(m => { if (m.some(r => ![...r.addedNodes, r.target].every(n => n.closest && n.closest(".key-sky, .sky")))) queue(); }).observe(document.documentElement, { childList: true, subtree: true });
-  addEventListener("resize", queue); queue();
-  window.keySky = run;
-})();
-
-</script>
-<style>
 /* KeyBriefBar: Kai's bar above the tabs (Apoorv, 1 Oct 19:21-19:23). Ink like the Kai button it points at; the faces are who Kai found.
    No colour of its own (visual direction 3 and 7): ink, white, the foil K, and members' faces. */
 .bk-bar { --bk-tail:50%; position:absolute; left:12px; right:12px; bottom:120px; z-index:40; display:flex; align-items:center; gap:2px; min-height:60px;
@@ -24141,6 +24080,37 @@ document.addEventListener("click", e => {
 
 </script>
 <style>
+/* 2 Oct 00:15: your avatar is the same "you" circle everywhere until your photo paints over it */
+#phone .me-av { background-color:var(--component-avatar-you-bg) !important; color:var(--component-avatar-you-ink) !important; }
+#phone .me-av.ph-face { color:transparent !important; }   /* the photo, not the initials, once it paints */
+#phone .evx-pill .me-av { outline:none; border-radius:50%; }
+
+</style>
+<script>
+/* ==== YOUR AVATAR (Apoorv 2 Oct 00:15): "my avatar is different on every page, make it consistent and use a sample image of an indian male
+   for my profile and my avatar". Hi-fi only. The profile fixes in the same message are Profiles' rev 18b (profile2.js, rev18-delta.css). ==== */
+// One sample photo for you (Pexels 16659308, "Young Indian corporate man ... smiling in front of camera"): photos.js paints it on every AS avatar
+// and profile2 on your profile header. Until it loads, or where outside images are blocked, every avatar of yours is the same ink circle.
+if (typeof PH_FACE !== "undefined") PH_FACE.priya = 16659308;
+function meApply(){
+  if (typeof KEY_HIFI === "undefined" || !KEY_HIFI) return;
+  const root = document.getElementById("phone"); if (!root || !DB.user) return;
+  const ini = DB.user.initials;
+  // the host chip on your own calendar's events still carried the calendar's old letter; it shows your avatar like everywhere else
+  root.querySelectorAll('.evx-pill[data-cal="cal-me"] > i:not(.evx-fm)').forEach(i => { if (i.textContent !== ini) i.textContent = ini; });
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: t => t.nodeValue.trim() === ini ? 1 : 3 });
+  for (let t; (t = tw.nextNode()); ) {
+    const el = t.parentElement; if (!el || el.childNodes.length !== 1 || el.classList.contains("me-av")) continue;
+    const b = el.getBoundingClientRect();   // avatar-shaped only, the same test photos.js uses (the profile header's big initials stay as they are)
+    if (b.width >= 14 && b.width <= 80 && b.height / b.width <= 1.4 && b.width / b.height <= 1.4) el.classList.add("me-av");
+  }
+  if (typeof phApply === "function") phApply();
+}
+const _meRender = render; render = function(){ const r = _meRender.apply(this, arguments); meApply(); return r; };
+try { new MutationObserver(() => meApply()).observe(document.getElementById("phone") || document.body, { childList:true, subtree:true }); } catch(e) {}
+
+</script>
+<style>
 /* 1 Oct 21:17: hi-fi only measured fixes from audits/mission-chat-hifi-2026-10-01.md (coordinator relay). Last before </body>. */
 /* AA: morg "Standing · a fresh pass every Monday" was --ink3 #8A8A8A at 3.45:1 */
 #phone.hf-mis .sc .funnel-l { color:#6B6B6B; }
@@ -24150,12 +24120,10 @@ document.addEventListener("click", e => {
 /* 44 targets: OK, Preview, Sharpen it with Kai were 40; toggle rows were 42 */
 #phone.hf-mis .sc button.btn { min-height:44px; }
 #phone.hf-mis .sc .row[onclick] { min-height:44px; }
-/* 1 Oct 23:46: the .key-sky layer (absolute, z 0) painted over static hero rows and greyed the white title near its corner (audits/hifi-1670 addendum); keep hero content above it */
-[data-kc="KeyMissionHero"] > :not(.key-sky) { position:relative; z-index:1; }
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-dfd0";
+window.KEY_BUILD = "2.hifi-4d19";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
