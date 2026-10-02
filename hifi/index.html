@@ -24758,8 +24758,90 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 #phone.hf-mis .sc .row[onclick] { min-height:44px; }
 
 </style>
+<style>
+/* Translucent header (Apoorv 2 Oct 01:47): "make the header across the app a translucent gradient, so that on scroll its not a
+   completely filled white which makes the screen look smaller". Tab, back-page, chat, mission and family headers sit over the page
+   (translucent-header.js pulls the scroller up under them); the profile's collapsed bar takes the same glass. Sheets, event covers
+   and onboarding keep theirs.
+   AA as rendered: the glass behind header text and glyphs stays at 70% or more of the page colour (with blur), so even a black or
+   #12161A card underneath keeps primary text above 8:1; captions take primary ink there. Below the text the glass fades to clear
+   just under the header's edge, so content shows through its lower part. */
+#phone .kh-glass { --kh-tail:12px; position:relative; z-index:6; background:transparent !important; border-bottom-color:transparent !important; box-shadow:none !important; overflow:visible !important; isolation:isolate; }
+/* two layers: a blur that eases off towards the bottom (progressive), and the colour gradient. hb = the header's bottom edge
+   (header plus any filter row), measured from the phone top. Text and glyphs end 16px or more above hb, where the glass is
+   still 70%; below that it falls to 15% at the edge and clear 12px under it, so content shows through the header's lower part. */
+#phone .kh-glass::before, #phone .kh-glass::after { content:""; position:absolute; z-index:-1; left:0; right:0; top:calc(-1 * var(--kh-top, 0px)); bottom:calc(-1 * (var(--kh-ext, 0px) + var(--kh-tail))); pointer-events:none; }
+#phone .kh-glass::before { -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .5) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .5) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); }
+#phone .kh-glass::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 80%, transparent) calc(var(--kh-hb) - 28px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 70%, transparent) calc(var(--kh-hb) - 16px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 15%, transparent) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); }
+#phone .kh-row { position:relative; z-index:6; background:transparent !important; border-bottom-color:transparent !important; box-shadow:none !important; }
+/* AA on the glass: captions take primary ink (secondary #525B66 would need 83% behind it) */
+#phone :is(.kh-glass, .kh-row) :is(.xs, .faint, .m12, .quiet) { color:var(--text-primary); }
+
+/* profile: the collapsed bar already overlays the page; the solid fill becomes the same glass (its bottom is the 100% - 12px line) */
+#phone .pscreen .pbar { isolation:isolate; }
+#phone .pscreen .pbar::before, #phone .pscreen .pbar::after { content:""; position:absolute; z-index:-1; left:0; right:0; top:0; bottom:-12px; pointer-events:none; opacity:0; transition:opacity .2s; }
+#phone .pscreen .pbar::before { -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(100% - 40px), rgb(0 0 0 / .5) calc(100% - 12px), transparent); mask-image:linear-gradient(to bottom, #000 calc(100% - 40px), rgb(0 0 0 / .5) calc(100% - 12px), transparent); }
+#phone .pscreen .pbar::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--bg-page) 88%, transparent) 0, color-mix(in srgb, var(--bg-page) 80%, transparent) calc(100% - 40px), color-mix(in srgb, var(--bg-page) 70%, transparent) calc(100% - 28px), color-mix(in srgb, var(--bg-page) 15%, transparent) calc(100% - 12px), transparent); }
+#phone .pscreen .pbar.show { background:transparent !important; border-bottom-color:transparent !important; }
+#phone .pscreen .pbar.show::before, #phone .pscreen .pbar.show::after { opacity:1; }
+
+@media (prefers-reduced-motion: reduce) { #phone .pscreen .pbar::before, #phone .pscreen .pbar::after { transition:none; } }
+/* reduced transparency: a plain page-colour bar, no blur, no fade */
+@media (prefers-reduced-transparency: reduce) {
+  #phone .kh-glass::before, #phone .pscreen .pbar::before { display:none; }
+  #phone .kh-glass::after { background:var(--kh-bg, var(--bg-page)); bottom:calc(-1 * var(--kh-ext, 0px)); }
+  #phone .pscreen .pbar::after { background:var(--bg-page); bottom:0; }
+}
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-023d";
+/* Translucent header (Apoorv 2 Oct 01:47), with translucent-header.css. The header (plus any filter row under it) stays where it is;
+   the scroller below is pulled up to the top of the phone and padded by the same amount, so content starts where it did and scrolls
+   under the glass (sticky rows still stop at the padding edge, under the header). Event covers, onboarding and the readback skip it. */
+const KH_SKIP = ".evt-screen, .evt-hdr, .evx-over, .obk-hdr, .rb-h";
+const khScroll = e => { const o = getComputedStyle(e).overflowY; return (o === "auto" || o === "scroll") && e.clientHeight > 200; };
+const khFind = e => khScroll(e) ? e : [...e.querySelectorAll("*")].find(khScroll);
+const khBg = e => { for (; e && e !== document.documentElement; e = e.parentElement) { const c = getComputedStyle(e).backgroundColor; if (c !== "transparent" && !/,\s*0\)$/.test(c)) return c; } return ""; };
+function khGlass(){
+  const ph = document.getElementById("phone"), scr = ph && ph.querySelector(":scope > .screen");
+  if (!scr || /\bhf-obk?\b/.test(ph.className)) return;
+  const h = scr.querySelector(":scope > .hdr, :scope > .view > .hdr");
+  if (!h || h.matches(KH_SKIP) || h.closest(KH_SKIP) || h.offsetHeight < 40) return;
+  const rows = []; let s = h.nextElementSibling, sc = null;
+  for (; s; s = s.nextElementSibling) {
+    if (/absolute|fixed/.test(getComputedStyle(s).position)) continue;
+    if ((sc = khFind(s))) break;
+    rows.push(s);
+  }
+  if (!sc || Math.abs(sc.getBoundingClientRect().top - s.getBoundingClientRect().top) > 1) return;
+  const top = ph.getBoundingClientRect().top, T = Math.round(h.getBoundingClientRect().top - top);
+  const H = Math.round((rows.length ? rows[rows.length-1] : h).getBoundingClientRect().bottom - top) - T, X = T + H;
+  /* the minimized Kai call bar sits 4px under the header's bottom edge (5069 put it at 126 on tabs), and the scroller's padding makes
+     room for it instead of kai-call's .kb-gap spacer, which can land below blocks inserted after it */
+  const bar = scr.querySelector(".view > .callbar.kc-bar");
+  if (bar) bar.style.top = `${X + 4 - Math.round(bar.offsetParent.getBoundingClientRect().top - top)}px`;
+  sc.querySelectorAll(":scope > .kb-gap").forEach(g => { g.style.display = "none"; });
+  const P = X + (bar ? bar.offsetHeight + 8 : 0);
+  if (+sc.dataset.kh === P && h.classList.contains("kh-glass")) return;
+  if (sc.dataset.khBase === undefined) sc.dataset.khBase = parseFloat(getComputedStyle(sc).paddingTop);
+  const last = rows.length ? rows[rows.length-1] : h;
+  last.style.marginBottom = `${-X}px`;
+  h.classList.add("kh-glass"); rows.forEach(r => r.classList.add("kh-row"));
+  h.style.setProperty("--kh-top", `${T}px`); h.style.setProperty("--kh-ext", `${H - h.offsetHeight}px`); h.style.setProperty("--kh-hb", `${X}px`);
+  const bg = khBg(sc); if (bg) h.style.setProperty("--kh-bg", bg);
+  /* important: some screens zero the scroller's padding with !important (hf-gap .body:has(> .swr)) */
+  sc.style.setProperty("padding-top", `${+sc.dataset.khBase + P}px`, "important"); sc.style.scrollPaddingTop = `${P}px`; sc.dataset.kh = P;
+}
+const _khRender = render;
+render = function(){ const r = _khRender.apply(this, arguments); khGlass(); requestAnimationFrame(khGlass); return r; };
+let khQ = 0;
+new MutationObserver(() => { if (!khQ) khQ = requestAnimationFrame(() => { khQ = 0; khGlass(); }); }).observe(document.getElementById("phone"), { childList:true, subtree:true });
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-e5fc";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

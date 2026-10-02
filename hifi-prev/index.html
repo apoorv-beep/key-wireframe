@@ -23919,20 +23919,24 @@ const _hsRender = render; render = function(){
      mission is Paused, and the layer tag. Then a fixed 16 to one line: up to three faces (people only) and one summary that never repeats the pill.
    - One indicator, picked in a fixed order: a reply, new picks, next steps, Kai's question, then where things stand.
    - The summary is one line at every width (audit 2 Oct: long ones lost their meaning under the ellipsis). ==== */
+const hcWho = o => o.roleTitle ? (viaOf(o) || targetOf(o)) : targetOf(o);
+const hcIni = o => { const p = hcWho(o); return o.roleTitle ? (p.initials || (p.name.match(/\b\w/g)||[]).slice(0,2).join("")) : scIni(o); };
 function hcSignal(m, ps){
   if (m.status==="paused") return { pill:"Paused", quiet:true, sum:"Kai stopped looking", fs:[] };
   const you = ps.filter(o=>ownerOf(o)==="you"), fresh = you.filter(isNewOf), next = you.filter(o=>!isNewOf(o));
   const rep = next.filter(o=>o.phase==="replied");
+  /* plain words a member gets at a glance, never a "Best:" style label (Apoorv 2 Oct 01:36), and the face is the person the line names */
   if (rep.length) { const o = rep[0], l = (o.log||[]).slice(-1)[0];
-    return { pill:"Replied", sum: l && !/^(Kai|You)\b/.test(l[0]) ? `${l[0].split(/[ ,]/)[0]}: ${l[1].replace(/^replied:?\s*/i,"")}` : `Answer ${f1(scHolder(o))}`, fs:rep }; }
-  if (fresh.length) return { pill:`${fresh.length} new`, sum:`Best: ${scName(fresh[0])}`, fs:fresh };
-  if (next.length) return { pill:`${next.length} next step${next.length===1?"":"s"}`, sum:`${(scVerb(next[0])||["Next"])[0]}: ${scName(next[0])}`, fs:next };
+    return { pill:"Replied", sum:`Answer ${l && !/^(Kai|You)\b/.test(l[0]) ? l[0].split(/[ ,]/)[0] : f1(scHolder(o))}`, fs:[o] }; }
+  /* first names on the card, and for a role or a thing the person who gets you there (audit 2 Oct: "Start with Senior PM, agents") */
+  if (fresh.length) return { pill:`${fresh.length} new`, sum:`Start with ${f1(hcWho(fresh[0]))}`, fs:[fresh[0]] };
+  if (next.length) return { pill:`${next.length} next step${next.length===1?"":"s"}`, sum:`Your turn with ${f1(hcWho(next[0]))}`, fs:[next[0]] };
   const [k, , txt] = scMissionStatus(m, ps);
   if (k==="Kai asks") return { pill:"Kai asks", sum: txt.charAt(0).toUpperCase()+txt.slice(1), fs:[] };
   /* nothing waits on you: the counts that matter, short enough for one line at 320 */
   const n = w => ps.filter(o=>ownerOf(o)===w).length, good = ps.filter(o=>ownerOf(o)==="done" && o.outcome==="good").length;
   const sum = [[n("them"),"waiting"], [n("kai"),"in conversation"], [good,"went well"]].filter(x=>x[0]).slice(0,2).map(x=>`${x[0]} ${x[1]}`).join(" · ");
-  return { sum: sum || (STATE.intakeDone ? "Kai looks again Friday" : "The call makes this specific"), fs: ps.filter(o=>ownerOf(o)!=="you") };
+  return { sum: sum || (STATE.intakeDone ? "Kai looks again Friday" : "Talk it through with Kai"), fs: ps.filter(o=>ownerOf(o)!=="you") };
 }
 /* an event, series or family mission's summary is its page's own caption: one line, by dropping its last " · " part, then anything after its first comma */
 function hcFit(){
@@ -23955,7 +23959,8 @@ const _hcSection = missionSection; missionSection = function(m){
   /* the layer tag sits under the mark and the title, on the card's left edge */
   const head = document.createElement("div"); head.className = "hc-head"; bt.replaceWith(head); head.appendChild(bt); if (tag) head.appendChild(tag);
   if (sg.pill) bt.insertAdjacentHTML("beforeend", `<span class="hc-pill${sg.quiet?" hc-q":""}" data-kc="KeySignalPill" data-kv="tone=${sg.quiet?"quiet":"attention"}">${sg.pill}</span>`);
-  const pp = sg.fs.filter(o=>!o.roleTitle), fs = pp.slice(0,3).map(o=>av(scIni(o))).join("");
+  /* one face per person, and never two faces that read as the same person (Rahul Mehta and Ravi Menon are both RM) */
+  const pp = (sg.pill ? sg.fs : sg.fs.filter(o=>!o.roleTitle)).filter((o,i,a)=>a.findIndex(x=>hcIni(x)===hcIni(o))===i), fs = pp.slice(0,3).map(o=>av(hcIni(o))).join("");
   band.querySelectorAll(".mh-bf").forEach(e=>e.remove());
   band.insertAdjacentHTML("beforeend", `<div class="hc-line">${fs?`<span class="hc-faces" data-kc="KeyFaceStack" data-kv="count=${Math.min(pp.length,3)}">${fs}</span>`:""}<span class="mh-bs" id="hs-bs-${m.id}"${lay?' data-fit="1"':""}>${sg.sum}</span></div>`);
   band.setAttribute("aria-describedby", `hs-bs-${m.id}`);
@@ -24306,6 +24311,10 @@ document.addEventListener("click", e => { const b = e.target.closest && e.target
 /* the brief, opened from the more menu, is its own page: no chatbar, the tab bar stays aside */
 #phone.mt-pg .mh-pane.mt-brief { padding-top:4px; }
 @media (prefers-reduced-motion: reduce) { #phone .hdr.sc > .mt-ht, #phone.mt-on .view > .hdr.sc { transition:none; } }
+/* the brief in the chat: Kai's first message carries the KeyBriefDoc on a raised surface, full width under Kai's line */
+#phone .mt-bk .mt-bdoc { margin-top:10px; padding:4px 16px 16px; border-radius:16px; background:var(--bg-surface-raised, var(--bg-surface-default)); }
+#phone .mt-bk .mt-bdoc .mh-brief .row.mh-bf { cursor:default; }
+#phone .mt-bk + .mt-thread, #phone .mt-bk + .mt-empty { margin-top:16px; }
 
 </style>
 <script>
@@ -24331,16 +24340,22 @@ function mtPaths(m){ return DB.opps.filter(o=>o.missionId===m.id && o.state!=="d
 
 /* Kai's answer, from what the mission holds: who to start with (and that pick's card), why, where it stands, a rule for the brief, a pause.
    Rules and pauses wait for your tap. Anything that isn't a question is a log line, which missionSend files and acknowledges */
+/* a person is named by name; a role or a thing by what it is and the person who gets you there */
+function o1Lead(o, v){ const p = viaOf(o) || targetOf(o);
+  if (!o.roleTitle) return v ? `${scName(o)} ${v}` : scName(o);
+  const what = o.kind==="role" ? `the ${o.roleTitle} role` : o.roleTitle;
+  return v ? `${what.charAt(0).toUpperCase()+what.slice(1)} ${v}${p ? `, through ${f1(p)}` : ""}` : p ? `${f1(p)}, about ${what}` : what; }
 function mtAnswer(m, t){
   if (!MT_ASK.test(t)) return null;
   const ps = mtPaths(m), you = ps.filter(o=>ownerOf(o)==="you"), best = you[0];
-  const why = o => (scWhy(o) || scStatus(o) || "").replace(/\.?$/, ".");
+  /* a role's reason can open by repeating its title ("Senior PM, agents team."): that sentence goes, the title is already said */
+  const why = o => { const w = (scWhy(o) || scStatus(o) || "").replace(/\.?$/, "."), r = o.roleTitle && w.startsWith(o.roleTitle) ? w.replace(/^[^.]*\.\s*/, "") : w; return r || w; };
   if (/^pause\b/i.test(t)) return { text:"Pause this mission? Your paths stay where they are and I stop looking until you resume.", x:{ act:"pause", chips:["Pause", "Not now"] } };
   const rule = /^(only|no|never|just|skip)\b.+/i.exec(t.replace(/\s*(please|thanks)?[.?!]*$/i, ""));
   const rl = rule && rule[0].charAt(0).toLowerCase()+rule[0].slice(1);
   if (rule) return { text:`Add "${rl}" to the brief? It changes what clears the bar from the next pass.`, x:{ act:"rule", rule:rl, chips:["Add to the brief", "Not now"] } };
-  if (/\bwhy\b/i.test(t) && best) return { text: you.slice(0,2).map(o=>`${scName(o)}: ${why(o)}`).join(" ") };
-  if (/\b(who|first|start|best|next|should i)\b/i.test(t) && best) return { text:`Start with ${scName(best)}. ${why(best)}`, x:{ opp:best.id } };
+  if (/\bwhy\b/i.test(t) && best) return { text: `${o1Lead(best, "comes first")}. ${why(best)}` };
+  if (/\b(who|first|start|best|next|should i)\b/i.test(t) && best) return { text:`Start with ${o1Lead(best)}. ${why(best)}`, x:{ opp:best.id } };
   const now = (mhCounts(ps) || "").replace(/<\/?b>/g, ""), [, , st] = scMissionStatus(m, ps);
   if (/\b(status|stand|going|update|progress|happening)\b/i.test(t)) return { text:`${now ? mtCap(now)+"." : "Nothing in motion yet."} ${mtCap(st)}.` };
   return { text:`${now ? mtCap(now)+". " : ""}I can say who to start with and why, or add a rule to the brief, like "only remote roles".` };
@@ -24364,6 +24379,8 @@ function mtDo(id, li, yes){
   render();
 }
 
+/* the top outcome, then the rest behind "See N more": the chat and its brief start on the first screen (Apoorv 2 Oct 01:34 saw only picks and the composer) */
+const MT_SHOW = 1;
 function mtOpps(pane, m){
   pane.querySelectorAll(":scope > .gp-strip, :scope > .mh-legend").forEach(e=>e.remove());
   const rows = [...pane.querySelectorAll(".row[data-opp]")].map(r=>[r, DB.opps.find(o=>o.id===r.dataset.opp)]).filter(x=>x[1]);
@@ -24376,9 +24393,9 @@ function mtOpps(pane, m){
     card.className = "mt-card"; card.dataset.opp = o.id; card.setAttribute("data-kc", "KeyOpportunityCard"); card.setAttribute("data-kv", `stage=${GP_ST[s][0]}`);
     r.removeAttribute("data-kc"); r.classList.add("mt-row");
     r.insertAdjacentHTML("beforeend", `<span class="mt-lab${s===1||mtRank(o)<0?" now":""}">${GP_ST[s][0]}</span>`);
-    card.appendChild(r); if (i>=5 && !all) card.hidden = true; list.appendChild(card);
+    card.appendChild(r); if (i>=MT_SHOW && !all) card.hidden = true; list.appendChild(card);
   });
-  if (rows.length>5 && !all) list.insertAdjacentHTML("beforeend", `<button class="btn sec mt-more" onclick="STATE.mtMore['${m.id}']=true;render()">See ${rows.length-5} more</button>`);
+  if (rows.length>MT_SHOW && !all) list.insertAdjacentHTML("beforeend", `<button class="btn sec mt-more" onclick="STATE.mtMore['${m.id}']=true;render()">See ${rows.length-MT_SHOW} more</button>`);
   at.replaceWith(list);
 }
 
@@ -24457,6 +24474,19 @@ function mtHeader(root, body, m, title){
   body.addEventListener("scroll", set, { passive:true }); set();
 }
 
+/* the brief as Kai's message: the same KeyBriefDoc the Brief tab showed; its facts are read here and changed by telling Kai below */
+function mtBriefMsg(m){
+  const t = hsDom(mhBriefPane(m)), d = t.content.querySelector(".mh-brief");
+  d.querySelectorAll(".row.mh-bf").forEach(r=>{ r.removeAttribute("onclick"); r.removeAttribute("data-kaibrief"); r.querySelectorAll(".chev").forEach(c=>c.remove()); });
+  d.querySelectorAll(".mh-bnote").forEach(e=>e.remove());
+  /* "Where Kai looks" is this mission's own sources, the families its brief names, not every family you're in (audit 2 Oct) */
+  const fs = (DB.families||[]).filter(f=>f.joined!==false && new RegExp(`\\b${f.name.split(" ")[0]}\\b`).test(m.brief||"")).map(f=>f.name);
+  const src = fs.length ? fs.join(", ") : m.series ? "Everyone who came to a date" : m.ev ? "This event's guests" : "";
+  d.querySelectorAll(".row.mh-bf").forEach(r=>{ if (r.querySelector(".b").textContent!=="Where Kai looks") return; if (src) r.querySelector(".a").textContent = src; else r.remove(); });
+  /* before the call, the brief says how to make it specific in plain words */
+  d.querySelectorAll(".mh-bq").forEach(q=>{ q.textContent = q.textContent.replace("Do the intake call and I'll make this specific.", "Talk it through with Kai to make it specific."); });
+  return `<div class="ks-k mt-k mt-bk" data-kc="KeyMessageBubble" data-kv="from=kai, content=brief">${kaiMark(24)}<div class="tx"><p>Here's your brief. Tell me below to change any of it.</p><div class="mt-bdoc">${t.innerHTML}</div></div></div>`;
+}
 function mtFrame(id){
   const m = DB.missions.find(x=>x.id===id), root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
   const bar = body && body.querySelector(":scope > .mh-tabs"), pane = body && body.querySelector(":scope > .mh-pane");
@@ -24477,7 +24507,9 @@ function mtFrame(id){
   if (!mtLayer(m)) mtOpps(pane, m);
   pane.classList.remove("in-r", "in-l"); pane.classList.add("mt-out");
   pane.querySelectorAll(`.row[onclick*="go('explore')"]`).forEach(r=>r.classList.add("mt-browse"));
-  pane.insertAdjacentHTML("afterend", `<section class="mt-chat" aria-label="Chat with Kai"><div class="mt-div">Chat with Kai</div>${mtChat(m)}</section>`);
+  /* the brief is Kai's first entry in the chat (Apoorv 2 Oct 01:34: "Where's the brief in the chat?"): what it looks for, the rules, the timeline */
+  pane.insertAdjacentHTML("afterend", `<section class="mt-chat" aria-label="Chat with Kai"><div class="mt-div">Chat with Kai</div>${mtBriefMsg(m)}${mtChat(m)}</section>`);
+  root.querySelectorAll(".mt-bdoc [data-kaibrief]").forEach(el=>{ el.onclick = e=>{ e.stopPropagation(); const ta = phone.querySelector(".mt-comp #mupd"); if (ta) { ta.placeholder = "Tell Kai what to change in the brief"; ta.focus(); } }; });
   const list = pane.querySelector(".mt-opps"); root.querySelectorAll(".mt-pin").forEach(s=>mtPin(s, list));
   root.insertAdjacentHTML("beforeend", mtComposer(m));
   mtHeader(root, body, m);
@@ -24487,6 +24519,7 @@ function mtFrame(id){
   ta.addEventListener("input", ()=>{ STATE.mtDraft[id] = ta.value; fit(); });
   ta.addEventListener("keydown", e=>{ if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); mtSend(id); } });
   /* outcome first: the page opens at the top; after you send, it follows the chat to its newest line */
+  if (STATE.mtJump===id) { STATE.mtJump = null; const bd = root.querySelector(".mt-bk"); if (bd) body.scrollTop += bd.getBoundingClientRect().top - root.querySelector(".hdr.sc").getBoundingClientRect().bottom - 8; }
   if (STATE.mtEnd===id) { body.scrollTop = body.scrollHeight; clearTimeout(mtFrame.t); mtFrame.t = setTimeout(()=>{ STATE.mtEnd = null; }, 0); }
 }
 const _mtRender = render; render = function(){
@@ -24502,7 +24535,7 @@ const _mtRender = render; render = function(){
   /* the more menu: the brief first; "Edit the brief" opened the Kai sheet, and the brief page's own button now leads to this chat */
   const sh = STATE.sheet, sb = phone.querySelector("#sheet .sb");
   if (m && sh && sh.type==="mmenu" && sb) sb.querySelectorAll(".xrow").forEach(x=>{ const a = x.querySelector(".a"); if (a && a.textContent.trim()==="Edit the brief") x.remove(); });
-  if (m && sh && sh.type==="mmenu" && sb && !sb.querySelector(".mt-briefrow")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow mt-briefrow" onclick="STATE.sheet=null;STATE.mtBrief='${sh.id}';render()"><div class="m"><div class="a">See the brief</div><div class="b">What Kai looks for, in your words</div></div><span class="chev">›</span></div>`); }
+  if (m && sh && sh.type==="mmenu" && sb && !sb.querySelector(".mt-briefrow")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow mt-briefrow" onclick="STATE.sheet=null;STATE.mtJump='${sh.id}';render()"><div class="m"><div class="a">See the brief</div><div class="b">Kai's first message in this chat</div></div></div>`); }
   if (typing && !STATE.sheet) { const ta = phone.querySelector(".mt-comp #mupd"); if (ta) ta.focus(); }
   return r;
 };
@@ -24518,25 +24551,13 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 </script>
 <style>
 /* KeyBriefTop: the brief leads Home (Apoorv, 2 Oct 00:28), laid out like the morning brief he pointed to: the date, a welcome that
-   is the evening in one sentence, three short columns each led by who is in it, Start. Key's own surface, so it stays calm
-   (visual direction 3 and 7): ink on the page, Manrope, faces, the foil K once. No cross; done, it stays as the summary. */
+   is the evening in one sentence, one quiet line that points to the brief, Start. Key's own surface, so it stays calm
+   (visual direction 3 and 7): ink on the page, Manrope, the foil K once. No cross; done, it stays as the summary. */
 .btp { display:grid; gap:12px; padding:4px 0 20px; color:var(--text-primary, #12161A); }
 .btp-day { display:flex; align-items:center; gap:8px; margin:0; font-size:12px; line-height:1.35; font-weight:600; color:var(--text-secondary, #525B66); }
 .btp-day .kn-disc { flex:0 0 auto; }
 .btp-h { margin:0; font-family:inherit; font-size:26px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; color:var(--text-primary, #12161A); }
-/* each column's person stands on the line, over the start of its column */
-.bk-fc { position:relative; flex:0 0 auto; width:32px; height:32px; border-radius:50%; overflow:hidden; display:block; }
-.bk-fc .bs-pt { width:100%; height:100%; border-radius:0; display:grid; place-items:center; }
-.bk-fc .bs-pt em { font-size:12px; font-weight:700; font-style:normal; transform:none; color:#FFFFFF; }
-.btp-fc { box-shadow:0 0 0 2px var(--bg-surface-default, #FFFFFF); } /* the ring takes the page underneath */
-.btp-fm { display:block; width:32px; height:32px; display:grid; place-items:center; border-radius:9px; background:var(--bg-surface-default, #FFFFFF); box-shadow:0 0 0 2px var(--bg-surface-default, #FFFFFF); }
-.btp-cols { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); }
-.btp-col { min-width:0; display:flex; flex-direction:column; gap:10px; padding:0 10px 0 12px; border-left:1px solid var(--border-subtle, #EDF1F5); }
-.btp-col:first-child { padding-left:2px; border-left:0; }
-.btp-in { display:block; flex:0 0 auto; }
-.btp-cm { min-width:0; display:grid; gap:4px; align-content:start; }
-.btp-cm b { font-size:13px; line-height:1.3; font-weight:700; color:var(--text-primary, #12161A); }
-.btp-cm span { font-size:13px; line-height:1.45; color:var(--text-secondary, #525B66); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:4; overflow:hidden; }
+.btp-sub { margin:-4px 0 0; font-size:15px; line-height:1.5; color:var(--text-secondary, #525B66); text-wrap:pretty; }
 .btp-act { display:flex; align-items:center; gap:12px; margin-top:4px; }
 .btp-go { flex:0 0 auto; height:48px; padding:0 20px; border:0; border-radius:12px; background:var(--component-button-primary-bg, #12161A); color:var(--component-button-primary-ink, #F9FAFC); font:inherit; font-size:15px; font-weight:700; cursor:pointer; }
 .btp-go.btp-quiet { background:var(--bg-fill-default, #F1F3F6); color:var(--text-primary, #12161A); }
@@ -24547,12 +24568,6 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 .btp.enter .btp-day, .btp.enter .btp-h { animation:btUp .42s cubic-bezier(.05,.7,.1,1) both; } .btp.enter .btp-h { animation-delay:.06s; }
 @keyframes btUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { .btp.enter * { animation:none !important; } }
-/* phones under 400: the columns become rows, each with its person at the start, so no column is too narrow to read */
-@media (max-width:399px) {
-  .btp-cols { grid-template-columns:1fr; gap:12px; }
-  .btp-col, .btp-col:first-child { flex-direction:row; gap:12px; padding:0; border:0; }
-  .btp-cm span { -webkit-line-clamp:3; }
-}
 @media (max-width:359px) { .btp-h { font-size:22px; } }
 /* the travel pick no longer leads Home; it lives in the brief */
 #phone .view .body > .tv-pk { display:none; }
@@ -24588,10 +24603,9 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 <script>
 /* The brief leads Home (Apoorv, 2 Oct 00:28): "the brief cannot be crossed out. show the brief at the top, with the welcome and
    summary. look at the cowork morning brief for reference". So the top of Home is the brief, laid out like that morning brief: the
-   date, a welcome that is the evening in one sentence with your name, three short columns, each led by who is in it (Needs
-   you, New for you, Coming up), and Start. There is no cross; once you're through it stays, as the evening's summary. The bar above
-   the tabs is gone. The brief still opens in Kai's sheet and still lives in Kai (his 19:22-19:23 asks), and Chris's travel pick moves
-   off the top of Home into the brief: one line under New for you and one card inside. */
+   date, a welcome in your name that says who needs you, one quiet line pointing to the brief, and Start. There is no cross; once
+   you're through it stays. The bar above the tabs is gone. The brief still opens in Kai's sheet and still lives in Kai (his 19:22-19:23
+   asks), and Chris's travel pick moves off the top of Home into the brief as one of its cards. */
 STATE.brAlt = "top";
 function brEntry(){
   const R = STATE.brRun, L = R ? R.L : brCards(); if (!L.length) return null;
@@ -24618,36 +24632,29 @@ brCards = function(){
   return L;
 };
 
-/* KeyBriefTop: the summary is built from the brief's own cards, so the top of Home and the brief never disagree */
+/* KeyBriefTop (his 01:33: "keep it an intro message that points me to my brief"): a greeting in his name that says who needs
+   him, one quiet line on what else is there, and the brief. No columns, no faces, no cross. Built from the brief's own cards. */
 const btNames = P => `${P.slice(0, 2).map(firstName).join(" and ")}${P.length > 2 ? ` and ${P.length-2} more` : ""}`;
 const btUniq = P => P.filter((p, k, a) => p && a.findIndex(x => x && x.id===p.id)===k);
-function btSummary(E){
-  /* while the brief runs, a card you skipped leaves the summary; once you are through, what is still open comes back */
-  const R = STATE.brRun, left = E.L.filter(c => !(R && (R.done[c.id] || (!E.fin && R.skip[c.id])))), of = (...k) => left.filter(c => k.includes(c.kind));
-  const needP = btUniq(left.filter(c => c.label==="Needs you").map(c => c.who)), asks = left.filter(c => c.label==="Kai asks").length;
-  const trip = of("travel")[0], picks = of("pick"), back = of("back"), evs = of("event");
-  const cols = [
-    { k:"need", t:"Needs you", who:needP, mk: needP[0] && { p:needP[0] },
-      s: [needP.length ? `${btNames(needP)} ${needP.length===1 ? "is" : "are"} waiting on you.` : "", asks ? `Kai has ${asks} ask${asks===1?"":"s"} for you.` : ""].join(" ").trim() || "Nothing is waiting on you." },
-    { k:"new", t:"New for you", mk: (trip || picks[0] || back[0]) && { p:(trip || picks[0] || back[0]).who },
-      s: [trip ? "Lars is in Singapore Tue to Thu." : "", picks.length ? `${picks.length} new pick${picks.length===1?"":"s"} from Kai.` : "", back.length ? `${firstName(back[0].who)} came back to you.` : ""].filter(Boolean).slice(0, 2).join(" ") || "Nothing new yet." },
-    { k:"soon", t:"Coming up", mk: evs[0] && evs[0].fam && { f:evs[0].fam },
-      s: evs.length ? `${evs[0].title}.${evs.length > 1 ? ` And ${evs.length-1} more.` : ""}` : "Nothing new coming up." } ];
-  const say = [needP.length ? `${btNames(needP)} need${needP.length===1?"s":""} you` : "", trip ? "Lars is in town" : picks.length ? `Kai found ${picks.length} new pick${picks.length===1?"":"s"}` : ""].filter(Boolean);
-  return { cols, say, asks };
+function btSay(E){
+  /* while the brief runs, a card you skipped leaves the greeting; once you are through, what is still open comes back */
+  const R = STATE.brRun, left = E.L.filter(c => !(R && (R.done[c.id] || (!E.fin && R.skip[c.id])))), of = k => left.filter(c => c.kind===k);
+  const need = btUniq(left.filter(c => c.label==="Needs you").map(c => c.who)), asks = left.filter(c => c.label==="Kai asks").length, picks = of("pick"), evs = of("event");
+  const also = [of("travel").length ? "Lars is in town" : "", picks.length ? `Kai found ${picks.length} new pick${picks.length===1?"":"s"}` : "", evs.length ? `${evs[0].title.replace(/,.*/, "")} is coming up` : "", asks ? `Kai has ${asks} ask${asks===1?"":"s"}` : ""].filter(Boolean);
+  return { need, asks, also };
 }
-/* who is in each column leads it: faces are circles, a family is its tile */
-const btMark = m => m.p ? `<span class="bk-fc btp-fc">${brPortrait(m.p.initials, m.p.id, 96)}</span>` : `<span class="btp-fm">${brFamMark(m.f, 28)}</span>`;
 function btTop(){
   const E = brEntry(), day = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" }).replace(", ", " · ");
   const lead = `<p class="btp-day">${kaiMark(16)}<span>Your ${brPart()} brief · ${day}</span></p>`;
   if (!E) return `<section class="btp" data-kc="KeyBriefTop" data-kv="state=empty" aria-labelledby="btH">${lead}<h2 class="btp-h" id="btH">${brGreeting()}. Nothing needs you right now.</h2></section>`;
-  const S = btSummary(E), first = !STATE.brEntered && !bsStill(); STATE.brEntered = true;
-  const still = S.cols[0].who, open = still.length ? `${btNames(still)} still need${still.length===1?"s":""} you.` : S.asks ? `Kai still has ${S.asks} ask${S.asks===1?"":"s"} for you.` : "";
-  const head = E.fin ? `${brGreeting()}. ${open ? `You're through your brief. ${open}` : "You're caught up."}` : `${brGreeting()}. ${S.say.length ? S.say.join(", and ") : `${E.n} thing${E.n===1?"":"s"} ${E.n===1?"is":"are"} ready for you`}.`;
+  const S = btSay(E), first = !STATE.brEntered && !bsStill(); STATE.brEntered = true;
+  const needs = S.need.length ? `${btNames(S.need)} need${S.need.length===1?"s":""} you` : "";
+  const head = E.fin ? `${brGreeting()}. ${needs ? `You're through your brief. ${btNames(S.need)} still need${S.need.length===1?"s":""} you.` : "You're caught up."}`
+    : `${brGreeting()}. ${needs || S.also[0] || `${E.n} thing${E.n===1?"":"s"} ${E.n===1?"is":"are"} ready for you`}.`;
+  const rest = E.fin ? [] : (needs ? S.also : S.also.slice(1)).slice(0, 2);
+  const sub = E.fin ? "" : `${rest.length ? `${rest.join(", and ")}. ` : ""}It's all in your brief.`;
   return `<section class="btp ${first ? "enter" : ""}" data-kc="KeyBriefTop" data-kv="state=${E.fin ? "done" : E.seen ? "part" : "new"};cards=${E.n}" aria-labelledby="btH">
-    ${lead}<h2 class="btp-h" id="btH">${head}</h2>
-    <div class="btp-cols">${S.cols.map(c => `<div class="btp-col" data-k="${c.k}">${c.mk ? `<span class="btp-in" aria-hidden="true">${btMark(c.mk)}</span>` : ""}<span class="btp-cm"><b>${c.t}</b><span>${c.s}</span></span></div>`).join("")}</div>
+    ${lead}<h2 class="btp-h" id="btH">${head}</h2>${sub ? `<p class="btp-sub">${sub}</p>` : ""}
     ${E.fin ? `<div class="btp-act"><button type="button" class="btp-go btp-quiet" id="brEntry">See your brief</button><span class="btp-meta">You handled ${E.handled} of ${E.n}</span></div>`
       : `<div class="btp-act"><button type="button" class="btp-go" id="brEntry">${E.seen ? "Continue your brief" : "Start your brief"}</button><span class="btp-meta">${E.seen ? `${E.seen} of ${E.n}` : `${E.n} thing${E.n===1?"":"s"} · about ${brMins2(E.n)} min`}</span></div>`}
   </section>`;
@@ -24752,7 +24759,7 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-5069";
+window.KEY_BUILD = "2.hifi-023d";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
