@@ -25164,6 +25164,9 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
   #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * var(--kh-sext)); }
 }
 
+/* 5 Oct: spacer that replaces the scroller padding under the glass (translucent-header.js) */
+#phone .kh-sp { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
+
 </style>
 <script>
 /* Translucent header (Apoorv 2 Oct 01:47), with translucent-header.css. The header (plus any filter row under it) stays where it is;
@@ -25189,7 +25192,7 @@ function khGlass(){
   const H = Math.round((rows.length ? rows[rows.length-1] : h).getBoundingClientRect().bottom - top) - T, X = T + H;
   const P = X;
   if (!sc.dataset.khStick) { sc.dataset.khStick = 1; let q = 0; sc.addEventListener("scroll", () => { if (!q) q = requestAnimationFrame(() => { q = 0; khStick(h, sc); }); }, { passive:true }); }
-  if (+sc.dataset.kh === P && h.classList.contains("kh-glass")) return khStick(h, sc);
+  if (+sc.dataset.kh === P && h.classList.contains("kh-glass") && sc.firstElementChild && sc.firstElementChild.classList.contains("kh-sp")) { khTops(sc, P); return khStick(h, sc); }
   if (sc.dataset.khBase === undefined) sc.dataset.khBase = parseFloat(getComputedStyle(sc).paddingTop);
   const last = rows.length ? rows[rows.length-1] : h;
   last.style.marginBottom = `${-X}px`;
@@ -25197,14 +25200,24 @@ function khGlass(){
   h.style.setProperty("--kh-top", `${T}px`); h.style.setProperty("--kh-ext", `${H - h.offsetHeight}px`); h.style.setProperty("--kh-hb", `${X}px`);
   const bg = khBg(sc); if (bg) h.style.setProperty("--kh-bg", bg);
   /* important: some screens zero the scroller's padding with !important (hf-gap .body:has(> .swr)) */
-  sc.style.setProperty("padding-top", `${+sc.dataset.khBase + P}px`, "important"); sc.style.scrollPaddingTop = `${P}px`; sc.dataset.kh = P;
+  /* 5 Oct: a spacer instead of scroller padding, and sticky rows offset by the header height, so every engine stops them under the
+     header (WebKit measures sticky from the scrollport edge, not the padding edge, and tucked the tabs under the glass on iPhone) */
+  let sp = sc.firstElementChild; if (!sp || !sp.classList.contains("kh-sp")) { sp = document.createElement("div"); sp.className = "kh-sp"; sp.setAttribute("aria-hidden", "true"); sc.prepend(sp); }
+  sp.style.height = `${+sc.dataset.khBase + P}px`;
+  sc.style.setProperty("padding-top", "0px", "important"); sc.style.scrollPaddingTop = `${P}px`; sc.dataset.kh = P;
+  khTops(sc, P);
   khStick(h, sc);
 }
 /* Sticky tabs or chips under the header (Events, family pages): once a row is stuck at the header's edge, header and row read as one
    bar, like an iOS navigation bar with a scope bar or a Material top app bar with tabs. The row drops its own fill, inset and corners
    and runs edge to edge; the header's glass extends down to the row's bottom hairline (--kh-sb) and fades out just under it. */
+function khTops(sc, P){
+  sc.querySelectorAll("*").forEach(e => { if (e.dataset.khTop === undefined) { const cs = getComputedStyle(e); if (cs.position !== "sticky" || cs.top === "auto") return;
+      for (let a = e.parentElement; a && a !== sc; a = a.parentElement) if (/auto|scroll/.test(getComputedStyle(a).overflowY)) return; e.dataset.khTop = parseFloat(cs.top); }
+    e.style.setProperty("top", `${+e.dataset.khTop + P}px`, "important"); });
+}
 function khStick(h, sc){
-  const top = document.getElementById("phone").getBoundingClientRect().top, edge = top + (+sc.dataset.kh || 0);
+  const top = document.getElementById("phone").getBoundingClientRect().top, edge = top;
   const pad = getComputedStyle(sc).paddingLeft, scw = sc.getBoundingClientRect().width;
   let sb = 0;
   sc.querySelectorAll("*").forEach(e => { const cs = getComputedStyle(e); if (cs.position !== "sticky" || cs.top === "auto") return;
@@ -25941,7 +25954,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-3501";
+window.KEY_BUILD = "2.hifi-47cf";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

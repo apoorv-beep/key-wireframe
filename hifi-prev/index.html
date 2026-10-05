@@ -25883,15 +25883,16 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </script>
 <style>
-/* 2 Oct 22:38 (Apoorv): on a phone the Controls pill no longer takes a strip at the top. Long-press your photo in the header to open Controls; the button stays for screen readers and keyboards, visually hidden. The 54px status strip shrinks to 8px (the page root already pads by the safe area). */
+/* 2 Oct 22:38 (Apoorv): on a phone the Controls pill no longer takes a strip at the top; long-press opens Controls (ctl-float.js), the button stays for screen readers and keyboards, visually hidden.
+   5 Oct (Two-chevron 234d): with the pill gone the 54px status strip is collapsed, so the header starts right at the safe area (the page root already pads by it). Desktop keeps the pill and the strip. */
 @media (max-width:500px) {
-  #phone { --sb:8px; } #phone.hf-prof { --sb:0px; }
-  #phone .ios-status { height:var(--sb); padding:0; }
-  #phone .screen { padding-top:var(--sb); }
-  #phone .phero { top:calc(-1 * var(--sb)); }
-  #phone .pbar { top:calc(-1 * var(--sb)); padding-top:calc(var(--sb) + 8px); }
-  #phone .cm-viewer { padding-top:var(--sb); }
-  #phone.hf-prof .pbody { padding-top:calc(var(--p2w, 375px) - var(--sb) + var(--space-absolute-20)); background:linear-gradient(to bottom, transparent calc(var(--p2w, 375px) - var(--sb)), var(--bg-page) calc(var(--p2w, 375px) - var(--sb))) local; }
+  #phone { --sb:0px; }
+  #phone .ios-status { height:0; padding:0; overflow:hidden; }
+  #phone .screen { padding-top:0; }
+  #phone .phero { top:0; }
+  #phone .pbar { top:0; padding-top:8px; }
+  #phone .cm-viewer { padding-top:0; }
+  #phone.hf-prof .pbody { padding-top:calc(var(--p2w, 375px) + var(--space-absolute-20)); background:linear-gradient(to bottom, transparent var(--p2w, 375px), var(--bg-page) var(--p2w, 375px)) local; }
   .ctlbtn { position:fixed; top:0; left:0; transform:none; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
   .ctlbtn:focus-visible { width:auto; height:auto; margin:0; padding:7px 14px; clip:auto; clip-path:none; top:8px; left:8px; outline:2px solid #fff; }
   #phone .hdr.top .me-av { -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
@@ -25900,21 +25901,32 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-/* 2 Oct 22:38 (Apoorv): on a phone, a long-press (500ms) on your photo in the header opens or closes Controls; the tap that ends the press doesn't also open your profile. */
+/* 2 Oct 22:38 (Apoorv): on a phone, a long-press (500ms) on your photo in the header opens or closes Controls; the tap that ends the press doesn't also open your profile.
+   5 Oct 03:57 (Apoorv, the doorway has no photo): a long-press on empty page background does the same. Never inside a card, band, composer
+   or control, and never on text (so the iPhone selection loupe doesn't fire with it). */
 (function(){ const st = document.querySelector(".stage"); if (!st) return;
   const phoneW = () => matchMedia("(max-width:500px)").matches;
+  const ACT = "a,button,input,textarea,select,label,summary,[onclick],[role],[tabindex],[contenteditable]";
+  const SURF = "[class*=card], .ml-unit, .ml-filt, .btp, .mh-band, .ml-rules, .ks-comp, .ks-box, .ks-scope, .obk, .walk";
+  const ground = el => { const ph = document.getElementById("phone"); if (!ph || !ph.contains(el) || el.closest(ACT) || el.closest(SURF)) return false;
+    if ([...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return false;
+    for (let e = el; e && e !== ph; e = e.parentElement) { const cs = getComputedStyle(e);
+      if (e.matches(".screen, .view") || /auto|scroll/.test(cs.overflowY)) continue;
+      if (cs.cursor === "pointer" || cs.backgroundImage !== "none" || cs.boxShadow !== "none" || parseFloat(cs.borderTopLeftRadius) > 0
+        || (cs.backgroundColor !== "transparent" && !/,\s*0\)$/.test(cs.backgroundColor))) return false; }
+    return true; };
+  const spot = el => !!el.closest && (!!el.closest("#phone .hdr.top .me-av") || ground(el));
   let t = null, x0 = 0, y0 = 0, fired = false;
   const cancel = () => { clearTimeout(t); t = null; };
   document.addEventListener("pointerdown", e => {
-    const av = e.target.closest && e.target.closest("#phone .hdr.top .me-av");
-    fired = false; if (!av || !phoneW()) return;
+    fired = false; if (!phoneW() || !spot(e.target)) return;
     x0 = e.clientX; y0 = e.clientY;
     t = setTimeout(() => { t = null; fired = true; st.classList.toggle("ctl"); if (navigator.vibrate) navigator.vibrate(10); }, 500);
   }, true);
   document.addEventListener("pointermove", e => { if (t && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) cancel(); }, true);
   ["pointerup", "pointercancel"].forEach(n => document.addEventListener(n, cancel, true));
   document.addEventListener("click", e => { if (fired) { fired = false; e.preventDefault(); e.stopPropagation(); } }, true);
-  document.addEventListener("contextmenu", e => { if (e.target.closest && e.target.closest("#phone .hdr.top .me-av") && phoneW()) e.preventDefault(); }, true);
+  document.addEventListener("contextmenu", e => { if (phoneW() && spot(e.target)) e.preventDefault(); }, true);
 })();
 
 </script>
@@ -25929,7 +25941,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-c838";
+window.KEY_BUILD = "2.hifi-3501";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
