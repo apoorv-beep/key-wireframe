@@ -13586,7 +13586,7 @@ function evCalFilter(v){ v=v.trim().toLowerCase(); phone.querySelectorAll(".body
 
 /* Re-render, keep the scroll where the tabs are, and animate only the pane: r slides in from the right, l from the left, f fades (chips). */
 function evSwap(dir){
-  const b=phone.querySelector(".body"); const tabs=b&&b.querySelector(".evx-tabs,.evx-chips"); const keep=b?Math.min(b.scrollTop, tabs?tabs.offsetTop:0):0;
+  const b=phone.querySelector(".body"); const tabs=b&&b.querySelector(".evx-tabs,.evx-chips"); const keep=b?(tabs&&tabs.classList.contains("kh-dk")?b.scrollTop:Math.min(b.scrollTop, tabs?tabs.offsetTop:0)):0;
   render();
   const nb=phone.querySelector(".body"); if (nb) nb.scrollTop=keep;
   const pane=phone.querySelector(dir==="f"?".evx-list":".evx-pane"); if (pane) pane.classList.add("in-"+dir);
@@ -25168,6 +25168,10 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
    instead of 12-24px, so landing and scrolling read as one soft edge. Text zones above hb are unchanged. */
 /* 5 Oct: spacer that replaces the scroller padding under the glass (translucent-header.js) */
 #phone .kh-sp { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
+/* 5 Oct 14:32: a row pinned at the header's edge (translucent-header.js khStick) sits above the glass, edge to edge */
+#phone .kh-sn { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
+#phone .kh-dk.kh-stuck.kh-stuck { position:fixed !important; z-index:8 !important; margin:0 !important; box-sizing:border-box; }
+#phone .kh-dk.kh-stuck.kh-bleed { padding-left:var(--kh-padx) !important; padding-right:var(--kh-padx) !important; }
 
 </style>
 <script>
@@ -25222,15 +25226,40 @@ function khTops(sc, P){
   sc.style.scrollPaddingTop = `${P + row}px`;
 }
 function khStick(h, sc){
-  const top = document.getElementById("phone").getBoundingClientRect().top, edge = top;
-  const pad = getComputedStyle(sc).paddingLeft, scw = sc.getBoundingClientRect().width;
+  const top = document.getElementById("phone").getBoundingClientRect().top, P = +sc.dataset.kh || 0;
+  const pad = getComputedStyle(sc).paddingLeft, sr = sc.getBoundingClientRect();
   let sb = 0;
-  sc.querySelectorAll("*").forEach(e => { const cs = getComputedStyle(e); if (cs.position !== "sticky" || cs.top === "auto") return;
-    const r = e.getBoundingClientRect(), stuck = r.height > 0 && sc.scrollTop > 0 && Math.abs(r.top - edge - parseFloat(cs.top)) <= 1;
-    /* runs edge to edge: only rows inset by the scroller's padding get pulled out (family bars already span it) */
-    if (!e.classList.contains("kh-stuck")) { e.classList.toggle("kh-bleed", r.width < scw - 1); e.style.setProperty("--kh-padx", pad); }
-    e.classList.toggle("kh-stuck", stuck);
-    if (stuck) sb = Math.max(sb, Math.round(r.bottom - top)); });
+  /* 5 Oct 14:32 (Apoorv, iPhone: "I still don't see the sticky top nav"): sticky alone is not trusted. A sentinel marks each row's
+     place in the flow; once that place reaches the header's edge the row is pinned with position:fixed at the edge (the sentinel
+     keeps its height, so nothing jumps) and joins the header as one bar, like a scope bar in an iOS navigation bar. */
+  sc.querySelectorAll("[data-kh-top]").forEach(e => {
+    let s = e.previousElementSibling;
+    if (!s || !s.classList.contains("kh-sn")) { s = document.createElement("div"); s.className = "kh-sn"; s.setAttribute("aria-hidden", "true"); e.before(s); }
+    const cs = getComputedStyle(e), at = +e.dataset.khTop + P, docked = e.classList.contains("kh-dk");
+    const mt = docked ? +e.dataset.khMt : parseFloat(cs.marginTop);
+    const dock = e.offsetHeight > 0 && sc.scrollTop > 0 && s.getBoundingClientRect().top + mt - top <= at + 0.5;
+    if (!docked) { e.classList.toggle("kh-bleed", e.getBoundingClientRect().width < sr.width - 1); e.style.setProperty("--kh-padx", pad); }
+    if (dock && !docked) {
+      const r = e.getBoundingClientRect();
+      e.dataset.khMt = mt; e.dataset.khX = e.classList.contains("kh-bleed") ? sr.left : r.left; e.dataset.khW = e.classList.contains("kh-bleed") ? sc.clientWidth : r.width;
+      const nx = e.nextElementSibling, nb = nx ? nx.getBoundingClientRect().top : 0;
+      s.style.height = `${r.height + mt + parseFloat(cs.marginBottom)}px`;
+      e.classList.add("kh-dk", "kh-stuck");
+      /* a collapsing bottom margin would leave the sentinel taller than the row's place: shrink it by whatever moved */
+      if (nx) { const dy = nx.getBoundingClientRect().top - nb; if (Math.abs(dy) > 0.5) s.style.height = `${parseFloat(s.style.height) - dy}px`; }
+    } else if (!dock && docked) {
+      s.style.height = ""; e.classList.remove("kh-dk", "kh-stuck");
+      e.style.removeProperty("left"); e.style.removeProperty("width"); e.style.setProperty("top", `${at}px`, "important");
+    } else if (!dock) e.classList.remove("kh-stuck");
+    if (!dock) return;
+    /* fixed is measured from the viewport, or from a transformed ancestor; correct by what was actually rendered */
+    const y = top + at, x = +e.dataset.khX;
+    e.style.setProperty("top", `${y}px`, "important"); e.style.setProperty("left", `${x}px`, "important"); e.style.setProperty("width", `${e.dataset.khW}px`, "important");
+    const r = e.getBoundingClientRect();
+    if (Math.abs(r.top - y) > 0.5) e.style.setProperty("top", `${2 * y - r.top}px`, "important");
+    if (Math.abs(r.left - x) > 0.5) e.style.setProperty("left", `${2 * x - r.left}px`, "important");
+    sb = Math.max(sb, Math.round(e.getBoundingClientRect().bottom - top));
+  });
   h.classList.toggle("kh-has-stuck", !!sb);
   if (sb) { h.style.setProperty("--kh-sb", `${sb}px`); h.style.setProperty("--kh-sext", `${sb - Math.round(h.getBoundingClientRect().bottom - top)}px`); }
 }
@@ -25973,7 +26002,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-ce53";
+window.KEY_BUILD = "2.hifi-67ce";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
