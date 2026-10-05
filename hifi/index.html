@@ -25125,14 +25125,14 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
    AA as rendered: the glass behind header text and glyphs stays at 70% or more of the page colour (with blur), so even a black or
    #12161A card underneath keeps primary text above 8:1; captions take primary ink there. Below the text the glass fades to clear
    just under the header's edge, so content shows through its lower part. */
-#phone .kh-glass { --kh-tail:12px; position:relative; z-index:6; background:transparent !important; border-bottom-color:transparent !important; box-shadow:none !important; overflow:visible !important; isolation:isolate; }
+#phone .kh-glass { --kh-tail:40px; position:relative; z-index:6; background:transparent !important; border-bottom-color:transparent !important; box-shadow:none !important; overflow:visible !important; isolation:isolate; }
 /* two layers: a blur that eases off towards the bottom (progressive), and the colour gradient. hb = the header's bottom edge
    (header plus any filter row), measured from the phone top. Text and glyphs end 16px or more above hb, where the glass is
    still 70%; below that it falls to 15% at the edge and clear 12px under it, so content shows through the header's lower part. */
 #phone .kh-glass::before, #phone .kh-glass::after { content:""; position:absolute; z-index:-1; left:0; right:0; top:calc(-1 * var(--kh-top, 0px)); bottom:calc(-1 * (var(--kh-ext, 0px) + var(--kh-tail))); pointer-events:none; }
 #phone .kh-glass::before { -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4);
-  -webkit-mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .5) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .5) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); }
-#phone .kh-glass::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 80%, transparent) calc(var(--kh-hb) - 28px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 70%, transparent) calc(var(--kh-hb) - 16px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 15%, transparent) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); }
+  -webkit-mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .6) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); mask-image:linear-gradient(to bottom, #000 calc(var(--kh-hb) - 28px), rgb(0 0 0 / .6) var(--kh-hb), transparent calc(var(--kh-hb) + var(--kh-tail))); }
+#phone .kh-glass::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 80%, transparent) calc(var(--kh-hb) - 28px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 70%, transparent) calc(var(--kh-hb) - 16px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 40%, transparent) var(--kh-hb), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 12%, transparent) calc(var(--kh-hb) + var(--kh-tail) * .5), transparent calc(var(--kh-hb) + var(--kh-tail))); }
 #phone .kh-row { position:relative; z-index:6; background:transparent !important; border-bottom-color:transparent !important; box-shadow:none !important; }
 /* AA on the glass: captions take primary ink (secondary #525B66 would need 83% behind it) */
 #phone :is(.kh-glass, .kh-row) :is(.xs, .faint, .m12, .quiet) { color:var(--text-primary); }
@@ -25149,9 +25149,9 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 /* header + stuck tabs = one bar (iOS navigation bar with scope bar / Material 3 top app bar with tabs): one glass from the top to
    the row's bottom hairline (sb), flat 88%, then a short fade under the hairline. Unselected tab labels take secondary ink on the
    glass (tertiary #606974 would need 92% behind it over black; secondary passes at 88%). */
-#phone .kh-glass.kh-has-stuck::before, #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * (var(--kh-sext) + 24px)); }
-#phone .kh-glass.kh-has-stuck::before { -webkit-mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .5) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .5) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); }
-#phone .kh-glass.kh-has-stuck::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) var(--kh-sb), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 15%, transparent) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); }
+#phone .kh-glass.kh-has-stuck::before, #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * (var(--kh-sext) + 40px)); }
+#phone .kh-glass.kh-has-stuck::before { -webkit-mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .6) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 40px)); mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .6) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 40px)); }
+#phone .kh-glass.kh-has-stuck::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) var(--kh-sb), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 45%, transparent) calc(var(--kh-sb) + 12px), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 12%, transparent) calc(var(--kh-sb) + 26px), transparent calc(var(--kh-sb) + 40px)); }
 #phone .kh-stuck { --text-tertiary:var(--text-secondary); z-index:7 !important; background:transparent !important; box-shadow:none !important; border-radius:0 !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
 #phone .kh-stuck.kh-bleed { margin-left:calc(-1 * var(--kh-padx)) !important; margin-right:calc(-1 * var(--kh-padx)) !important; padding-left:var(--kh-padx) !important; padding-right:var(--kh-padx) !important; }
 
@@ -25164,6 +25164,8 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
   #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * var(--kh-sext)); }
 }
 
+/* 5 Oct 05:27 (Apoorv, "should not stand out as a cutoff"): the glass fades out over 40px under the header (and under stuck tabs)
+   instead of 12-24px, so landing and scrolling read as one soft edge. Text zones above hb are unchanged. */
 /* 5 Oct: spacer that replaces the scroller padding under the glass (translucent-header.js) */
 #phone .kh-sp { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
 
@@ -25204,7 +25206,7 @@ function khGlass(){
      header (WebKit measures sticky from the scrollport edge, not the padding edge, and tucked the tabs under the glass on iPhone) */
   let sp = sc.firstElementChild; if (!sp || !sp.classList.contains("kh-sp")) { sp = document.createElement("div"); sp.className = "kh-sp"; sp.setAttribute("aria-hidden", "true"); sc.prepend(sp); }
   sp.style.height = `${+sc.dataset.khBase + P}px`;
-  sc.style.setProperty("padding-top", "0px", "important"); sc.style.scrollPaddingTop = `${P}px`; sc.dataset.kh = P;
+  sc.style.setProperty("padding-top", "0px", "important"); sc.dataset.kh = P;
   khTops(sc, P);
   khStick(h, sc);
 }
@@ -25212,9 +25214,12 @@ function khGlass(){
    bar, like an iOS navigation bar with a scope bar or a Material top app bar with tabs. The row drops its own fill, inset and corners
    and runs edge to edge; the header's glass extends down to the row's bottom hairline (--kh-sb) and fades out just under it. */
 function khTops(sc, P){
+  let row = 0;
   sc.querySelectorAll("*").forEach(e => { if (e.dataset.khTop === undefined) { const cs = getComputedStyle(e); if (cs.position !== "sticky" || cs.top === "auto") return;
       for (let a = e.parentElement; a && a !== sc; a = a.parentElement) if (/auto|scroll/.test(getComputedStyle(a).overflowY)) return; e.dataset.khTop = parseFloat(cs.top); }
-    e.style.setProperty("top", `${+e.dataset.khTop + P}px`, "important"); });
+    e.style.setProperty("top", `${+e.dataset.khTop + P}px`, "important"); if (e.offsetHeight) row = Math.max(row, +e.dataset.khTop + e.offsetHeight); });
+  /* jumps (scrollIntoView, anchors) land below the stuck tab row too, not just below the header */
+  sc.style.scrollPaddingTop = `${P + row}px`;
 }
 function khStick(h, sc){
   const top = document.getElementById("phone").getBoundingClientRect().top, edge = top;
@@ -25897,20 +25902,34 @@ const _oiAsk = askSheet; askSheet = function(id){
 </script>
 <style>
 /* 2 Oct 22:38 (Apoorv): on a phone the Controls pill no longer takes a strip at the top; long-press opens Controls (ctl-float.js), the button stays for screen readers and keyboards, visually hidden.
-   5 Oct (Two-chevron 234d): with the pill gone the 54px status strip is collapsed, so the header starts right at the safe area (the page root already pads by it). Desktop keeps the pill and the strip. */
+   5 Oct (Two-chevron 234d): with the pill gone the 54px status strip is collapsed to the safe area. Desktop keeps the pill and the strip. */
 @media (max-width:500px) {
-  #phone { --sb:0px; }
-  #phone .ios-status { height:0; padding:0; overflow:hidden; }
-  #phone .screen { padding-top:0; }
-  #phone .phero { top:0; }
-  #phone .pbar { top:0; padding-top:8px; }
-  #phone .cm-viewer { padding-top:0; }
+  /* 5 Oct 05:27 (Apoorv): the iPhone status bar area takes the header's glass too. The page root stops padding by the safe area at
+     the top; the phone runs under the status bar and its status strip is exactly the safe area, so the header glass (which reaches
+     the phone top) sits behind the time and battery and reads as one surface with the header. */
+  :root { padding-top:0; }
+  #phone { --sb:env(safe-area-inset-top, 0px); }
+  #phone .ios-status { height:var(--sb); padding:0; overflow:hidden; }
+  #phone .screen { padding-top:var(--sb); }
+  #phone .screen:has(.mo-promo) { padding-top:0; }
+  #phone .phero { top:calc(-1 * var(--sb)); }
+  #phone .pbar { top:calc(-1 * var(--sb)); padding-top:calc(var(--sb) + 8px); }
+  #phone .cm-viewer { padding-top:var(--sb); }
+  #phone.hf-prof .screen { padding-top:0; }
+  #phone.hf-prof .phero { top:0; }
+  #phone.hf-prof .pbar { top:0; }
   #phone.hf-prof .pbody { padding-top:calc(var(--p2w, 375px) + var(--space-absolute-20)); background:linear-gradient(to bottom, transparent var(--p2w, 375px), var(--bg-page) var(--p2w, 375px)) local; }
+  #phone .screen:has(.cm-pj) { padding-top:0; }
+  #phone .cm-pj .cover.cm-cover { height:calc(176px + var(--sb)); }
+  #phone .cm-pjbar { top:calc(var(--sb) + var(--space-absolute-12, 12px)); }
   .ctlbtn { position:fixed; top:0; left:0; transform:none; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
   .ctlbtn:focus-visible { width:auto; height:auto; margin:0; padding:7px 14px; clip:auto; clip-path:none; top:8px; left:8px; outline:2px solid #fff; }
   #phone .hdr.top .me-av { -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
   body:has(.ctlbtn) .push { top:calc(env(safe-area-inset-top,0px) + 8px); }
 }
+
+/* 5 Oct (Two-chevron cb06): a jump inside the page never scrolls the phone or the page itself */
+#phone, #phone > .screen { overflow:clip; }
 
 </style>
 <script>
@@ -25954,7 +25973,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-47cf";
+window.KEY_BUILD = "2.hifi-ce53";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
