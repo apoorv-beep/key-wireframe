@@ -25170,8 +25170,22 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 #phone .kh-sp { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
 /* 5 Oct 14:32: a row pinned at the header's edge (translucent-header.js khStick) sits above the glass, edge to edge */
 #phone .kh-sn { flex:0 0 auto; display:block; margin:0 !important; padding:0; border:0; pointer-events:none; }
-#phone .kh-dk.kh-stuck.kh-stuck { position:fixed !important; z-index:8 !important; margin:0 !important; box-sizing:border-box; }
-#phone .kh-dk.kh-stuck.kh-bleed { padding-left:var(--kh-padx) !important; padding-right:var(--kh-padx) !important; }
+#phone .kh-dk { visibility:hidden; }
+#phone .kh-glass > .kh-cl { position:absolute !important; z-index:1 !important; margin:0 !important; box-sizing:border-box; }
+#phone .kh-glass > .kh-cl.kh-bleed { padding-left:var(--kh-padx) !important; padding-right:var(--kh-padx) !important; }
+#phone .kh-glass.kh-tint > .kh-cl { color:var(--text-primary); }
+/* 5 Oct 18:05 (Apoorv: "a weird gradient on top of the header and below it that's covering the content"): one flat frosted bar, the
+   same from the top of the screen to the header's edge (or the stuck row's bottom), nothing fading over the content below. */
+#phone .kh-glass { --kh-tail:0px; }
+#phone .kh-glass::before, #phone .kh-glass.kh-has-stuck::before { -webkit-mask-image:none; mask-image:none; }
+#phone .kh-glass::after, #phone .kh-glass.kh-has-stuck::after { background:color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent); }
+#phone .kh-glass.kh-has-stuck::before, #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * var(--kh-sext)); }
+/* mission header: the mission's own colour, solid, white ink */
+#phone .kh-glass.kh-tint { color:#fff; }
+#phone .kh-glass.kh-tint > :not(.kh-cl), #phone .kh-glass.kh-tint > :not(.kh-cl) :is(span,svg) { color:#fff; }
+#phone .kh-glass.kh-tint::before { display:none; }
+#phone .kh-glass.kh-tint::after { background:var(--kh-bgi, var(--kh-bg)); }
+#phone [data-kh] { overflow-anchor:none; }
 
 </style>
 <script>
@@ -25211,6 +25225,16 @@ function khGlass(){
   let sp = sc.firstElementChild; if (!sp || !sp.classList.contains("kh-sp")) { sp = document.createElement("div"); sp.className = "kh-sp"; sp.setAttribute("aria-hidden", "true"); sc.prepend(sp); }
   sp.style.height = `${+sc.dataset.khBase + P}px`;
   sc.style.setProperty("padding-top", "0px", "important"); sc.dataset.kh = P;
+  /* 5 Oct 18:05 (Apoorv): "Mission header should also be the thumbnail color". The mission's colour band runs up under the header
+     and the status bar, and the header takes the band's first colour, solid, with white ink. */
+  const bd = sp.nextElementSibling, bgi = bd && bd.classList.contains("mh-band") ? getComputedStyle(bd).backgroundImage : "", mc = bgi.match(/rgba?\([^)]*\)|#[0-9a-f]{6}/i);
+  if (mc) {
+    if (bd.dataset.khPt === undefined) bd.dataset.khPt = parseFloat(getComputedStyle(bd).paddingTop);
+    sp.style.height = `${+sc.dataset.khBase}px`;
+    bd.style.setProperty("padding-top", `${+bd.dataset.khPt + P}px`, "important");
+    bd.style.borderTopLeftRadius = bd.style.borderTopRightRadius = "0";
+    h.classList.add("kh-tint"); h.style.setProperty("--kh-bg", mc[0]); h.style.setProperty("--kh-bgi", bgi);
+  }
   khTops(sc, P);
   khStick(h, sc);
 }
@@ -25227,46 +25251,57 @@ function khTops(sc, P){
 }
 function khStick(h, sc){
   const top = document.getElementById("phone").getBoundingClientRect().top, P = +sc.dataset.kh || 0;
-  const pad = getComputedStyle(sc).paddingLeft, sr = sc.getBoundingClientRect();
-  let sb = 0;
-  /* 5 Oct 14:32 (Apoorv, iPhone: "I still don't see the sticky top nav"): sticky alone is not trusted. A sentinel marks each row's
-     place in the flow; once that place reaches the header's edge the row is pinned with position:fixed at the edge (the sentinel
-     keeps its height, so nothing jumps) and joins the header as one bar, like a scope bar in an iOS navigation bar. */
-  sc.querySelectorAll("[data-kh-top]").forEach(e => {
-    let s = e.previousElementSibling;
-    if (!s || !s.classList.contains("kh-sn")) { s = document.createElement("div"); s.className = "kh-sn"; s.setAttribute("aria-hidden", "true"); e.before(s); }
-    const cs = getComputedStyle(e), at = +e.dataset.khTop + P, docked = e.classList.contains("kh-dk");
-    const mt = docked ? +e.dataset.khMt : parseFloat(cs.marginTop);
-    const dock = e.offsetHeight > 0 && sc.scrollTop > 0 && s.getBoundingClientRect().top + mt - top <= at + 0.5;
-    if (!docked) { e.classList.toggle("kh-bleed", e.getBoundingClientRect().width < sr.width - 1); e.style.setProperty("--kh-padx", pad); }
-    if (dock && !docked) {
-      const r = e.getBoundingClientRect();
-      e.dataset.khMt = mt; e.dataset.khX = e.classList.contains("kh-bleed") ? sr.left : r.left; e.dataset.khW = e.classList.contains("kh-bleed") ? sc.clientWidth : r.width;
-      const nx = e.nextElementSibling, nb = nx ? nx.getBoundingClientRect().top : 0;
-      s.style.height = `${r.height + mt + parseFloat(cs.marginBottom)}px`;
-      e.classList.add("kh-dk", "kh-stuck");
-      /* a collapsing bottom margin would leave the sentinel taller than the row's place: shrink it by whatever moved */
-      if (nx) { const dy = nx.getBoundingClientRect().top - nb; if (Math.abs(dy) > 0.5) s.style.height = `${parseFloat(s.style.height) - dy}px`; }
-    } else if (!dock && docked) {
-      s.style.height = ""; e.classList.remove("kh-dk", "kh-stuck");
-      e.style.removeProperty("left"); e.style.removeProperty("width"); e.style.setProperty("top", `${at}px`, "important");
-    } else if (!dock) e.classList.remove("kh-stuck");
-    if (!dock) return;
-    /* fixed is measured from the viewport, or from a transformed ancestor; correct by what was actually rendered */
-    const y = top + at, x = +e.dataset.khX;
-    e.style.setProperty("top", `${y}px`, "important"); e.style.setProperty("left", `${x}px`, "important"); e.style.setProperty("width", `${e.dataset.khW}px`, "important");
-    const r = e.getBoundingClientRect();
-    if (Math.abs(r.top - y) > 0.5) e.style.setProperty("top", `${2 * y - r.top}px`, "important");
-    if (Math.abs(r.left - x) > 0.5) e.style.setProperty("left", `${2 * x - r.left}px`, "important");
-    sb = Math.max(sb, Math.round(e.getBoundingClientRect().bottom - top));
+  const pad = getComputedStyle(sc).paddingLeft, sr = sc.getBoundingClientRect(), hr = h.getBoundingClientRect();
+  let sb = 0; const live = new Set();
+  /* 5 Oct 18:05 (Apoorv, iPhone: the tabs still did not stick; a position:fixed row inside the scroller rendered under the glass in
+     WebKit). Once a row reaches the header's edge, a copy of it is drawn inside the header itself, as an iOS scope bar is part of
+     its navigation bar; taps on the copy go to the real row. The real row keeps its place in the flow (hidden), so nothing jumps. */
+  sc.querySelectorAll("[data-kh-top]").forEach((e, i) => {
+    const at = +e.dataset.khTop + P, r = e.getBoundingClientRect();
+    const dock = e.offsetHeight > 0 && sc.scrollTop > 0 && r.top - top <= at + 0.5;
+    let c = h.querySelector(`:scope > .kh-cl[data-kh-i="${i}"]`);
+    if (!dock) { if (c) c.remove(); e.classList.remove("kh-dk", "kh-stuck"); return; }
+    if (!e.classList.contains("kh-dk")) { e.classList.toggle("kh-bleed", r.width < sr.width - 1); e.classList.add("kh-dk"); }
+    const snap = e.className + e.innerHTML;
+    if (!c || c.dataset.khSnap !== snap) {
+      const n = e.cloneNode(true);
+      [n, ...n.querySelectorAll("*")].forEach(x => { x.removeAttribute("id"); [...x.attributes].forEach(a => { if (/^on/.test(a.name)) x.removeAttribute(a.name); }); });
+      n.removeAttribute("style"); delete n.dataset.khTop; n.classList.remove("kh-dk"); n.classList.add("kh-cl", "kh-stuck");
+      n.dataset.khI = i; n.dataset.khSnap = snap;
+      n.addEventListener("click", ev => {
+        const path = []; for (let x = ev.target; x && x !== n; x = x.parentElement) path.unshift([...x.parentElement.children].indexOf(x));
+        let t = e; for (const k of path) t = t && t.children[k];
+        ev.preventDefault(); ev.stopPropagation(); if (t) t.click();
+      });
+      if (c) c.replaceWith(n); else h.append(n); c = n;
+    }
+    live.add(c);
+    c.style.setProperty("--kh-padx", pad);
+    c.style.top = `${at - (hr.top - top)}px`;
+    c.style.left = `${(e.classList.contains("kh-bleed") ? sr.left : r.left) - hr.left}px`;
+    c.style.width = `${e.classList.contains("kh-bleed") ? sc.clientWidth : r.width}px`;
+    sb = Math.max(sb, Math.round(c.getBoundingClientRect().bottom - top));
   });
+  h.querySelectorAll(":scope > .kh-cl").forEach(c => { if (!live.has(c)) c.remove(); });
   h.classList.toggle("kh-has-stuck", !!sb);
-  if (sb) { h.style.setProperty("--kh-sb", `${sb}px`); h.style.setProperty("--kh-sext", `${sb - Math.round(h.getBoundingClientRect().bottom - top)}px`); }
+  if (sb) { h.style.setProperty("--kh-sb", `${sb}px`); h.style.setProperty("--kh-sext", `${sb - Math.round(hr.bottom - top)}px`); }
+}
+/* 5 Oct 18:05 (Apoorv): the status bar takes the colour of what is under it. Safari tints its bars from the page background (and
+   theme-color where honoured), so on a phone both follow the header's colour (a mission's own colour on mission pages). */
+function khTint(){
+  if (!matchMedia("(max-width:500px)").matches) return;
+  const ph = document.getElementById("phone"); if (!ph) return;
+  const h = ph.querySelector(".kh-glass"); let c = h ? h.style.getPropertyValue("--kh-bg").trim() : "";
+  if (!c) { const r = ph.getBoundingClientRect(), el = document.elementFromPoint(r.left + r.width / 2, r.top + 2); c = el ? khBg(el) : ""; }
+  if (!c) return;
+  let m = document.querySelector('meta[name="theme-color"]'); if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.append(m); }
+  if (m.content !== c) m.content = c;
+  document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
 }
 const _khRender = render;
-render = function(){ const r = _khRender.apply(this, arguments); khGlass(); requestAnimationFrame(khGlass); return r; };
+render = function(){ const r = _khRender.apply(this, arguments); khGlass(); khTint(); requestAnimationFrame(() => { khGlass(); khTint(); }); return r; };
 let khQ = 0;
-new MutationObserver(() => { if (!khQ) khQ = requestAnimationFrame(() => { khQ = 0; khGlass(); }); }).observe(document.getElementById("phone"), { childList:true, subtree:true });
+new MutationObserver(() => { if (!khQ) khQ = requestAnimationFrame(() => { khQ = 0; khGlass(); khTint(); }); }).observe(document.getElementById("phone"), { childList:true, subtree:true });
 
 </script>
 <style>
@@ -26002,7 +26037,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-67ce";
+window.KEY_BUILD = "2.hifi-0aec";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
