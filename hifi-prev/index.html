@@ -1561,7 +1561,7 @@ p,
   .evx-th { color:#fff; } .evthumb.evx-th .evd { color:#fff; background:rgba(0,0,0,.4); border:0; font-weight:800; font-size:10px; line-height:1.2; padding:2px 6px; border-radius:999px; text-shadow:none; white-space:nowrap; }
   .evx-tag { display:inline-block; font-size:10.5px; font-weight:700; border-radius:999px; padding:3px 8px; background:#fff; color:var(--ink); border:1px solid var(--line); white-space:nowrap; flex:0 0 auto; }
   .evx-tag.go { background:var(--ink); color:#fff; border-color:var(--ink); }
-  .evx-tag.host { background:#F1E8CF; border-color:#E2D2A6; color:#6B5317; }
+  .evx-tag.host { background:var(--fill2); border-color:var(--fill2); }
   .evx-tag.inv { border-color:var(--ink); font-weight:800; }
   .evx-tag.wait { color:var(--ink2); }
   .evx-tag.lock { background:var(--fill); color:var(--ink2); }
@@ -1587,7 +1587,6 @@ p,
   .evx-month .dn { font-size:11px; color:var(--ink3); font-weight:600; }
   .evx-month span { padding:7px 0; border-radius:10px; position:relative; }
   .evx-month span.has { background:var(--ink); color:#fff; font-weight:700; cursor:pointer; }
-  .evx-month span i { position:absolute; bottom:3px; left:50%; width:4px; height:4px; margin-left:-2px; border-radius:50%; background:#E8CD82; }
   .evx-tkt { border-radius:16px; padding:18px 16px; margin-top:4px; }
   .evx-kai { font-size:12px; line-height:1.4; margin:12px 0; padding-left:10px; border-left:2px solid var(--ink); } .evx-kai .ty { font-weight:700; margin-right:6px; }
   .evx-fw { display:grid; gap:10px; } .evx-fwh { display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer; } .evx-fwh .a { font-weight:700; }
@@ -1616,7 +1615,7 @@ p,
   .evx-cct { width:56px; height:36px; border-radius:8px; flex:0 0 auto; position:relative; overflow:hidden; }
   .evx-cct i { position:absolute; left:4px; bottom:4px; min-width:16px; height:16px; padding:0 3px; border-radius:4px; background:#fff; color:var(--ink); font-style:normal; font-size:8.5px; font-weight:800; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 2px rgba(0,0,0,.2); }
   .evx-cct.big { width:96px; height:60px; border-radius:12px; } .evx-cct.big i { left:6px; bottom:6px; height:20px; min-width:20px; font-size:10px; border-radius:6px; }
-  .evx-cct.mine { box-shadow:0 0 0 2px #fff,0 0 0 4px #C9A64B; }
+  .evx-cct.mine { box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ink); }
   .evx-cct i.evx-fm, .evx-pill i.evx-fm { padding:0; overflow:hidden; background:#fff; } .evx-fm > svg { width:100%; height:100%; display:block; }
   .evx-cct i.evx-fm { width:16px; } .evx-cct.big i.evx-fm { width:24px; height:24px; border-radius:6px; } .evx-pill i.evx-fm { border-radius:4px; box-shadow:0 0 0 1px var(--line); }
   .evx-cct.all { background:#fff; border:1px solid var(--line); color:var(--ink2); font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center; }
@@ -2958,6 +2957,12 @@ p,
   .evt-screen .btn.sec, .evt-screen .chip, .evt-screen .pill, .evt-screen .evt-chip, .evt-screen .evt-cal, .evt-screen .evt-note, .evt-screen .evt-chat, .evt-screen .evt-person, .evt-screen .evt-follow.on { background:var(--evt-glass); border:1px solid var(--evt-edge); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
   .evt-screen .chip.on, .evt-screen .pill.on { background:var(--ev-ink); color:var(--ev-ink-inverse); border-color:var(--ev-ink); }
   .evt-screen .evt-bt, .evt-screen .evt-react button, .evt-screen .evt-say { background:var(--evt-glass-2); }
+  
+  .evt-screen .evt-fact span { color:rgb(var(--ev-ink-rgb) / max(.9, min(1, calc(var(--ev-ink-mute) + .04)))); }
+  .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-cal, .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-ico, .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-fact em { background:rgb(var(--ev-ink-inverse-rgb) / .3); }
+  .evt-screen[data-ev-tight="true"][data-ev-ink="light"] .evt-fact em { background:rgb(var(--ev-ink-inverse-rgb) / .2); }
+  .evt-screen[data-ev-tight="true"] .fx-wave:not(.fx-wave--accent), .evt-screen[data-ev-tight="true"] .fx-dust { background:rgb(var(--ev-ink-inverse-rgb)); }
+  .evt-screen[data-ev-tight="true"] .fx-wave--accent { opacity:calc(var(--ev-fx-alpha) * .35); }
   .evt-float { position:absolute; z-index:40; font-size:32px; pointer-events:none; animation:evtFloatUp 1s cubic-bezier(.2,.8,.2,1) forwards; }
   @keyframes evtFloatUp { 0% { transform:translateY(0) scale(.6); opacity:0; } 20% { opacity:1; transform:translateY(-20px) scale(1.2); } 100% { transform:translateY(-140px) scale(1); opacity:0; } }
   @media (prefers-reduced-motion: reduce) { .evt-float { animation:none; opacity:0; } }
@@ -3328,7 +3333,7 @@ p,
   
   .evx-tag { font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); background:var(--bg-surface-default); color:var(--text-primary); border-color:var(--border-default); border-radius:var(--radius-absolute-infinite); padding:5px 10px; }
   .evx-tag.go { background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); color:var(--text-inverse); }
-  .evx-tag.host { background:var(--bg-surface-default); border-color:var(--component-tag-gold-border); color:var(--component-tag-gold-ink); }
+  .evx-tag.host { background:var(--bg-fill-strong); border-color:var(--bg-fill-strong); color:var(--text-primary); }
   .evx-tag.inv { background:var(--bg-surface-default); border-color:var(--component-tag-new-border); color:var(--component-tag-new-ink); }
   .evx-tag.wait { background:var(--bg-surface-default); border-color:var(--border-control); color:var(--text-secondary); }
   .evx-tag.lock { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-secondary); }
@@ -3340,7 +3345,7 @@ p,
   .evx-cct { border-radius:var(--radius-absolute-8); } .evx-cct.big { border-radius:var(--radius-absolute-12); }
   .evx-cct i { background:var(--bg-surface-default); color:var(--text-primary); font:var(--type-overline); letter-spacing:0; border-radius:var(--radius-absolute-4); box-shadow:var(--elevation-1); }
   .evx-cct.big i { border-radius:var(--radius-absolute-6); }
-  .evx-cct.mine { box-shadow:none; outline:2px solid var(--text-gold); outline-offset:2px; }
+  .evx-cct.mine { box-shadow:none; outline:2px solid var(--text-primary); outline-offset:2px; }
   .evx-cct.all { background:var(--bg-surface-default); border-color:var(--border-default); color:var(--text-secondary); font:var(--type-label); letter-spacing:var(--type-label-tracking); }
   .evx-sep { background:var(--border-default); }
   
@@ -9763,7 +9768,7 @@ function seedChats() {
   if (DB.chat) return; DB.chat = {};
   const me = "priya";
   DB.chat.d2 = { id:"d2", kind:"dm", with:"chris", msgs:[
-    M("chris","Just introduced you to Jordan. He's about two months behind you on the AI PM search, so you're the right person.",{day:"Yesterday",time:"10:02 AM"}),
+    M("chris","Just introduced you to Jordan. Jordan's about two months behind you on the AI PM search, so you're the right person.",{day:"Yesterday",time:"10:02 AM"}),
     M(me,"Thanks for the intro, Daniel",{day:"Yesterday",time:"10:15 AM",react:{"👍🏻":["chris"]}}),
     M("chris","Anytime. Tell me how it goes.",{day:"Yesterday",time:"10:16 AM"}) ] };
   DB.chat.d3 = { id:"d3", kind:"dm", with:"maya", path:true, msgs:[
@@ -12478,6 +12483,9 @@ function verify(theme, opts = {}) {
         passes: failures === 0
     };
 }
+/* cover themes are the host's to make fun (Apoorv 1 Oct 08:55: "events should be fun"), so the content-colour limits don't apply here.
+   Sand, Dawn and Ember are off (his pick, 08:30) and there's no gold. Meadow and Twilight have their own names so Sage and Dusk stay
+   the mission plates' hexes */
 const PRESETS = [
     {
         id: "graphite",
@@ -12495,25 +12503,11 @@ const PRESETS = [
         accent: "#FFD9B0"
     },
     {
-        id: "dawn",
-        name: "Dawn",
-        stops: ["#FFE9C7", "#FFC79A", "#F79BB0"],
-        angle: 150,
-        accent: "#8A3B2E"
-    },
-    {
-        id: "sage",
-        name: "Sage",
+        id: "meadow",
+        name: "Meadow",
         stops: ["#EDF3E7", "#CFE0C6", "#A9C7A0"],
         angle: 150,
         accent: "#2E4A2B"
-    },
-    {
-        id: "sand",
-        name: "Sand",
-        stops: ["#F7F0E3", "#EAD9BB", "#D9BE93"],
-        angle: 150,
-        accent: "#6B4E1F"
     },
     {
         id: "petal",
@@ -12530,15 +12524,8 @@ const PRESETS = [
         accent: "#BFEDEA"
     },
     {
-        id: "ember",
-        name: "Ember",
-        stops: ["#2B1B1B", "#8C3B2E", "#E5591C"],
-        angle: 140,
-        accent: "#FFC9A3"
-    },
-    {
-        id: "dusk",
-        name: "Dusk",
+        id: "twilight",
+        name: "Twilight",
         stops: ["#3B2A5A", "#7A4E8C", "#C76782"],
         angle: 140,
         accent: "#F3CFE0"
@@ -12921,6 +12908,7 @@ function applyTheme(el, theme) {
     el.dataset.evInk = t.inkIsLight ? "light" : "dark";
     el.dataset.evAccentMono = String(t.accentIsMono);
     el.dataset.evPlateEdge = String(t.plate.needsEdge);
+    el.dataset.evTight = String(t.inkMute > 0.8);  /* muted ink can barely go below full: little contrast headroom on this canvas */
     return t;
 }
 function ensureLayer(root) {
@@ -13406,18 +13394,19 @@ const EV_ME = "priya";
   STATE.evSeg = STATE.evSeg || "foryou"; STATE.evMine = STATE.evMine || "upcoming"; STATE.evAsked = STATE.evAsked || {}; STATE.evMtab = STATE.evMtab || "guests";
 })();
 
-const EV_THEMES = { gold:["Gold plate","linear-gradient(135deg,#D9BC6E,#A87F2A)"], ink:["Ink","linear-gradient(135deg,#3B4652,#12161A)"], dusk:["Dusk","linear-gradient(135deg,#8A7A9E,#2E2A3A)"], sage:["Sage","linear-gradient(135deg,#9DB3A3,#40584A)"], harbour:["Harbour","linear-gradient(135deg,#7E9DB5,#27394A)"], photo:["Photo","repeating-linear-gradient(135deg,#9AA3AD 0 10px,#8A939D 10px 20px)"] };
+/* plate colours, the same hex per name as the mission plates (mission-colours.css); no gold plate, gold is Kai and vouched only (visual direction, 1 Oct) */
+const EV_THEMES = { ink:["Ink","linear-gradient(120deg, #36445A 20%, #51466A)"], dusk:["Dusk","linear-gradient(120deg, #6E579C 20%, #805179)"], sage:["Sage","linear-gradient(120deg, #346B57 20%, #36686E)"], harbour:["Harbour","linear-gradient(120deg, #416C98 20%, #5C63A8)"], photo:["Photo","repeating-linear-gradient(135deg,#9AA3AD 0 10px,#8A939D 10px 20px)"] };
 const EV_MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], EV_DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const EV_OLD = { gold:"sand", ink:"midnight", dusk:"dusk", sage:"sage", harbour:"tide", photo:"graphite" };
-const evPreset = t => EVT.PRESETS.find(p=>p.id===(EV_OLD[t]||t)) || EVT.PRESETS[4];
+const EV_OLD = { gold:"tide", ink:"midnight", dusk:"twilight", sage:"meadow", harbour:"tide", photo:"graphite", sand:"tide", dawn:"petal", ember:"twilight" };
+const evPreset = t => EVT.PRESETS.find(p=>p.id===(EV_OLD[t]||t)) || EVT.PRESETS.find(p=>p.id==="tide");
 const evBg = t => { const p=evPreset(t); return `linear-gradient(${p.angle}deg, ${p.stops.join(", ")})`; };
-const EV_LOOK = { e1:["ember","glints","🍝"], e0:["sand","dust","🤖"], e2:["midnight","constellation","🧠"], e3:["sage","petals","🌿"], e4:["dusk","sheen","🔍"], e5:["tide","waves","🛠️"], e6:["dawn","breathe","🌱"], e7:["aurora","confetti","🚀"], e8:["midnight","beams","🪑"], e9:["ember","fireflies","🔥"], e10:["sand","emoji","☕"], e11:["graphite","bits","✍️"], e12:["dusk","bokeh","🥂"], e13:["petal","mesh","🎨"] };
+const EV_LOOK = { e1:["twilight","glints","🍝"], e0:["tide","dust","🤖"], e2:["midnight","constellation","🧠"], e3:["meadow","petals","🌿"], e4:["twilight","sheen","🔍"], e5:["tide","waves","🛠️"], e6:["petal","breathe","🌱"], e7:["aurora","confetti","🚀"], e8:["midnight","beams","🪑"], e9:["twilight","fireflies","🔥"], e10:["graphite","emoji","☕"], e11:["graphite","bits","✍️"], e12:["twilight","bokeh","🥂"], e13:["petal","mesh","🎨"] };
 const EV_FX_PICK = ["none","emoji","aurora","mesh","breathe","sheen","glints","bokeh","stars","fireflies","petals","snow","constellation","confetti","balloons","hearts"];
 const evFxName = f => f==="emoji" ? "Emoji" : EVT.effectById(f).name;
-DB.fevents.forEach(e=>{ const l=EV_LOOK[e.id] || EV_LOOK[e.id.replace(/[a-z]$/,"")]; e.theme = l?l[0]:(EV_OLD[e.theme]||e.theme||"sand"); e.fx = e.fx || (l?l[1]:"breathe"); e.emoji = e.emoji || (l?l[2]:"✨"); });
+DB.fevents.forEach(e=>{ const l=EV_LOOK[e.id] || EV_LOOK[e.id.replace(/[a-z]$/,"")]; e.theme = l?l[0]:(EV_OLD[e.theme]||e.theme||"tide"); e.fx = e.fx || (l?l[1]:"breathe"); e.emoji = e.emoji || (l?l[2]:"✨"); });
 const evE = id => DB.fevents.find(x=>x.id===id);
 /* Icons the shared LUCIDE map (port.js) lacks; merged into it so LI() draws them too. */
-const EV_IC = {"chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","calendar-check":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","settings":"<path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
+const EV_IC = {"chevron-up":"<path d=\"m18 15-6-6-6 6\"/>","calendar-check":"<path d=\"M8 2v4\"/><path d=\"M16 2v4\"/><rect width=\"18\" height=\"18\" x=\"3\" y=\"4\" rx=\"2\"/><path d=\"M3 10h18\"/><path d=\"m9 16 2 2 4-4\"/>","hourglass":"<path d=\"M5 22h14\"/><path d=\"M5 2h14\"/><path d=\"M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22\"/><path d=\"M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2\"/>","party-popper":"<path d=\"M5.8 11.3 2 22l10.7-3.79\"/><path d=\"M4 3h.01\"/><path d=\"M22 8h.01\"/><path d=\"M15 2h.01\"/><path d=\"M22 20h.01\"/><path d=\"m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10\"/><path d=\"m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17\"/><path d=\"m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7\"/><path d=\"M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z\"/>","megaphone":"<path d=\"M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14\"/><path d=\"M8 6v8\"/>","share":"<path d=\"M12 2v13\"/><path d=\"m16 6-4-4-4 4\"/><path d=\"M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8\"/>","hand":"<path d=\"M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2\"/><path d=\"M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2\"/><path d=\"M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8\"/><path d=\"M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15\"/>","user-check":"<path d=\"m16 11 2 2 4-4\"/><path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>","message-circle-question-mark":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/><path d=\"M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3\"/><path d=\"M12 17h.01\"/>","ticket":"<path d=\"M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z\"/><path d=\"M13 5v2\"/><path d=\"M13 17v2\"/><path d=\"M13 11v2\"/>","map-pin":"<path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/>","map-pin-check":"<path d=\"M19.43 12.935c.357-.967.57-1.955.57-2.935a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 1.202 0 32.197 32.197 0 0 0 .813-.728\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/><path d=\"m16 18 2 2 4-4\"/>","coffee":"<path d=\"M10 2v2\"/><path d=\"M14 2v2\"/><path d=\"M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1\"/><path d=\"M6 2v2\"/>","palette":"<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>","shuffle":"<path d=\"m18 14 4 4-4 4\"/><path d=\"m18 2 4 4-4 4\"/><path d=\"M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22\"/><path d=\"M2 6h1.972a4 4 0 0 1 3.6 2.2\"/><path d=\"M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45\"/>","align-left":"<path d=\"M21 5H3\"/><path d=\"M15 12H3\"/><path d=\"M17 19H3\"/>","sparkles":"<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\"/><path d=\"M20 2v4\"/><path d=\"M22 4h-4\"/><circle cx=\"4\" cy=\"20\" r=\"2\"/>","eye":"<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>","rocket":"<path d=\"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5\"/><path d=\"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09\"/><path d=\"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z\"/><path d=\"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05\"/>","circle-check":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m16 9-5.5 5.5L8 12\"/>","search":"<path d=\"m21 21-4.34-4.34\"/><circle cx=\"11\" cy=\"11\" r=\"8\"/>","ban":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M4.929 4.929 19.07 19.071\"/>","message-square-text":"<path d=\"M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z\"/><path d=\"M7 11h10\"/><path d=\"M7 15h6\"/><path d=\"M7 7h8\"/>","credit-card":"<rect width=\"20\" height=\"14\" x=\"2\" y=\"5\" rx=\"2\"/><line x1=\"2\" x2=\"22\" y1=\"10\" y2=\"10\"/><path d=\"M6 14h2\"/>","chart-column":"<path d=\"M3 3v16a2 2 0 0 0 2 2h16\"/><path d=\"M18 17V9\"/><path d=\"M13 17V5\"/><path d=\"M8 17v-3\"/>","hash":"<line x1=\"4\" x2=\"20\" y1=\"9\" y2=\"9\"/><line x1=\"4\" x2=\"20\" y1=\"15\" y2=\"15\"/><line x1=\"10\" x2=\"8\" y1=\"3\" y2=\"21\"/><line x1=\"16\" x2=\"14\" y1=\"3\" y2=\"21\"/>","code-xml":"<path d=\"m18 16 4-4-4-4\"/><path d=\"m6 8-4 4 4 4\"/><path d=\"m14.5 4-5 16\"/>","scan-line":"<path d=\"M3 7V5a2 2 0 0 1 2-2h2\"/><path d=\"M17 3h2a2 2 0 0 1 2 2v2\"/><path d=\"M21 17v2a2 2 0 0 1-2 2h-2\"/><path d=\"M7 21H5a2 2 0 0 1-2-2v-2\"/><path d=\"M7 12h10\"/>","user-plus":"<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>","qr-code":"<rect width=\"5\" height=\"5\" x=\"3\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"16\" y=\"3\" rx=\"1\"/><rect width=\"5\" height=\"5\" x=\"3\" y=\"16\" rx=\"1\"/><path d=\"M21 16h-3a2 2 0 0 0-2 2v3\"/><path d=\"M21 21v.01\"/><path d=\"M12 7v3a2 2 0 0 1-2 2H7\"/><path d=\"M3 12h.01\"/><path d=\"M12 3h.01\"/><path d=\"M12 16v.01\"/><path d=\"M16 12h1\"/><path d=\"M21 12v.01\"/><path d=\"M12 21v-1\"/>","calendar-sync":"<path d=\"M11 10v4h4\"/><path d=\"m11 14 1.535-1.605a5 5 0 018 1.5\"/><path d=\"M16 2v3\"/><path d=\"m21 18-1.535 1.605a5 5 0 01-8-1.5\"/><path d=\"M21 22v-4h-4\"/><path d=\"M21 8.517V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h3.517\"/><path d=\"M3 9h4\"/><path d=\"M8 2v3\"/>","image-plus":"<path d=\"M16 5h6\"/><path d=\"M19 2v6\"/><path d=\"M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5\"/><path d=\"m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21\"/><circle cx=\"9\" cy=\"9\" r=\"2\"/>","message-circle":"<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>"};
 Object.keys(EV_IC).forEach(k=>{ LUCIDE[k] = LUCIDE[k] || EV_IC[k]; });
 Object.assign(LUCIDE, Object.fromEntries(Object.entries({ "contrast":"<circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 18a6 6 0 0 0 0-12v12z\"/>", "sliders-horizontal":"<line x1=\"21\" x2=\"14\" y1=\"4\" y2=\"4\"/><line x1=\"10\" x2=\"3\" y1=\"4\" y2=\"4\"/><line x1=\"21\" x2=\"12\" y1=\"12\" y2=\"12\"/><line x1=\"8\" x2=\"3\" y1=\"12\" y2=\"12\"/><line x1=\"21\" x2=\"16\" y1=\"20\" y2=\"20\"/><line x1=\"12\" x2=\"3\" y1=\"20\" y2=\"20\"/><line x1=\"14\" x2=\"14\" y1=\"2\" y2=\"6\"/><line x1=\"8\" x2=\"8\" y1=\"10\" y2=\"14\"/><line x1=\"16\" x2=\"16\" y1=\"18\" y2=\"22\"/>", "repeat":"<path d=\"m17 2 4 4-4 4\"/><path d=\"M3 11v-1a4 4 0 0 1 4-4h14\"/><path d=\"m7 22-4-4 4-4\"/><path d=\"M21 13v1a4 4 0 0 1-4 4H3\"/>", "handshake":"<path d=\"m11 17 2 2a1 1 0 1 0 3-3\"/><path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\"/><path d=\"m21 3 1 11h-2\"/><path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\"/><path d=\"M3 4h8\"/>", "calendar-plus":"<path d=\"M16 18h6\"/><path d=\"M16 2v3\"/><path d=\"M19 15v6\"/><path d=\"M21 11.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h8.3\"/><path d=\"M3 9h18\"/><path d=\"M8 2v3\"/>" }).filter(([k])=>!LUCIDE[k])));
 const evIc = (n, sz) => LUCIDE[n] ? LI(n, sz||18) : (n||"");
@@ -13680,7 +13669,7 @@ sEventDetail = function(id){
   + navHTML("events");
 };
 function evBurst(){ const scr=phone.querySelector(".evt-screen"); if (!scr || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const b=document.createElement("div"); b.className="evt-burst"; const cols=["var(--ev-accent-fill)","#ff5a5f","#ffc93c","#3ecf8e","#4d9fff","#b76cff"];
+  const b=document.createElement("div"); b.className="evt-burst"; const cols=["var(--ev-accent-fill)","#ff5a5f","#3ecf8e","#4d9fff","#b76cff"];
   b.innerHTML = Array.from({length:46},(_,i)=>`<i style="left:${Math.random()*100}%;background:${cols[i%cols.length]};--dx:${Math.round(Math.random()*120-60)}px;--r:${Math.round(Math.random()*720-360)}deg;animation-delay:${Math.round(Math.random()*260)}ms;${i%3?"":"border-radius:50%;height:8px;"}"></i>`).join("");
   scr.appendChild(b); setTimeout(()=>b.remove(), 2200); }
 
@@ -19401,6 +19390,10 @@ vizLoop = function() {
   kcBarTick();
 };
 
+/* Kai call: a call ends unmuted, so the next one never starts muted (Kai auditor, 2 Oct). Loads after kai-call.js. */
+{ const _kmEnd = endCall; endCall = function() { STATE.callMuted = false; return _kmEnd.apply(this, arguments); }; }
+{ const _kmSkip = kcSkip; kcSkip = function() { STATE.callMuted = false; return _kmSkip.apply(this, arguments); }; } // Skip ends without endCall
+
 /* ==== Kai call captions, on and off in place (Motion design thread, 28 Sep; Apoorv 00:09 "make that transition of showing the
    transcript versus not showing the transcript a little better... when the Kai ball comes to the center, make that smoother...
    I should be able to scroll the captions"). Load after kai-call.js and kai-stars.js. The captions button no longer re-renders
@@ -24238,7 +24231,7 @@ document.addEventListener("click", e => { const b = e.target.closest && e.target
 
 </script>
 <style>
-/* ==== One mission, one full-screen Kai chat (Simplify Home, 2 Oct). Pairs with mission-thread.js and replaces mission-chat.css; load after
+/* ==== One mission: tabs for its work and its brief, Kai's chat as a layer over them (Simplify Home, 2 Oct). Pairs with mission-thread.js and replaces mission-chat.css; load after
    home.css and mission-card.css. Today's tokens only. ==== */
 /* the Kai chatbar is the page's foot; the tab bar steps aside on a mission */
 #phone.mt-on .screen > .nav { display:none; }
@@ -24274,9 +24267,6 @@ document.addEventListener("click", e => { const b = e.target.closest && e.target
 #phone .mh-pane.mt-out { min-height:0; }
 /* the People rows' mini buttons are full targets on a mission page */
 #phone.mt-on .mh-pane.mt-out .mini { min-height:44px; height:auto; }
-/* the chat, under the outcomes: one stream, newest at the bottom */
-#phone .mt-chat { margin-top:24px; }
-#phone .mt-div { text-align:center; font:var(--type-caption-strong, 600 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary); padding:4px 0; }
 #phone .mt-thread { padding:8px 0 8px; }
 #phone .mt-lr { all:unset; box-sizing:border-box; display:grid; grid-template-columns:32px minmax(0,1fr) auto; gap:10px; align-items:center; min-height:44px; cursor:pointer; }
 #phone .mt-lr:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:12px; }
@@ -24308,27 +24298,58 @@ document.addEventListener("click", e => { const b = e.target.closest && e.target
 #phone .hdr.sc > .mt-ht > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:18px; line-height:24px; font-weight:600; color:var(--text-primary); }
 #phone .hdr.sc > .mt-ht .mh-mark { flex:0 0 auto; width:24px; height:24px; border-radius:var(--radius-absolute-6, 6px); color:var(--text-on-deep-default); display:grid; place-items:center; }
 #phone .hdr.sc > .mt-ht .mh-mark svg { width:14px; height:14px; }
-/* the brief, opened from the more menu, is its own page: no chatbar, the tab bar stays aside */
-#phone.mt-pg .mh-pane.mt-brief { padding-top:4px; }
-@media (prefers-reduced-motion: reduce) { #phone .hdr.sc > .mt-ht, #phone.mt-on .view > .hdr.sc { transition:none; } }
-/* the brief in the chat: Kai's first message carries the KeyBriefDoc on a raised surface, full width under Kai's line */
-#phone .mt-bk .mt-bdoc { margin-top:10px; padding:4px 16px 16px; border-radius:16px; background:var(--bg-surface-raised, var(--bg-surface-default)); }
-#phone .mt-bk .mt-bdoc .mh-brief .row.mh-bf { cursor:default; }
-#phone .mt-bk + .mt-thread, #phone .mt-bk + .mt-empty { margin-top:16px; }
+/* KeyChatLayer: Kai's chat rises over the tab from the docked chatbar, under the app header; closed, one line over the chatbar is its door */
+#phone.mt-on .view { position:relative; }
+#phone .mt-layer { position:absolute; left:0; right:0; z-index:5; height:auto; display:flex; flex-direction:column; background:var(--bg-surface-default); border-radius:20px 20px 0 0; box-shadow:var(--elevation-2); animation:mt-rise .22s ease-out; }
+#phone .mt-layer[hidden] { display:none; }
+@keyframes mt-rise { from { transform:translateY(24px); opacity:0; } to { transform:none; opacity:1; } }
+#phone .mt-lhd { flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:4px 4px 0 16px; border-bottom:var(--border-width-hairline, 1px) solid var(--border-subtle); }
+#phone .mt-lhd > span { font:var(--type-label-strong, 600 14px/1.2 Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .mt-lx { width:44px; height:44px; display:grid; place-items:center; border:0; background:none; border-radius:12px; color:var(--icon-secondary, var(--text-secondary)); cursor:pointer; }
+#phone .mt-lx:focus-visible, #phone .mt-peek:focus-visible { outline:2px solid var(--text-primary); outline-offset:-2px; }
+#phone .mt-lbody { flex:1 1 auto; min-height:0; overflow-y:auto; padding:0 16px 8px; }
+#phone .mt-comp .mt-ctxrow { align-items:center; }
+#phone .mt-peek { position:relative; margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 10px 0 6px; border:0; border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-fill-default); color:var(--text-primary); font:var(--type-label-strong, 600 13px/1.2 Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .mt-peek::after { content:""; position:absolute; inset:-6px -2px; }
+#phone .mt-peek > svg { flex:0 0 auto; width:16px; height:16px; color:var(--icon-secondary, var(--text-secondary)); }
+/* the tab under an open chat holds still */
+#phone .view > .body.sc.mt-held { overflow:hidden; }
+#phone.mt-on .view > .body.sc { overflow-anchor:none; }
+/* a brief fact opens in place: its actions sit under it */
+#phone .mh-brief .row.mh-bf[role="button"] { cursor:pointer; }
+#phone .mh-brief .row.mh-bf[role="button"]:focus-visible { outline:2px solid var(--text-primary); outline-offset:-2px; border-radius:12px; }
+#phone .mt-bchev { margin-left:auto; display:grid; place-items:center; color:var(--icon-secondary, var(--text-secondary)); transition:transform .2s; }
+#phone .mt-bchev.on { transform:rotate(180deg); }
+#phone .mt-bx { display:flex; flex-wrap:wrap; gap:8px; padding:4px 0 12px 44px; }
+#phone .mt-bx .btn { width:auto; flex:0 0 auto; min-height:44px; padding:0 16px; font:var(--type-label-strong, 600 14px/1.2 Manrope, system-ui, sans-serif); }
+/* two tabs on a mission: each a full 44 target */
+#phone.mt-on .mh-tabs button { min-width:44px; justify-content:center; }
+/* the card Kai pins in the chat is the same KeyOpportunityCard: its buttons keep the page's KeyButton look outside the page's scroll */
+#phone.hf-mis .mt-layer .mini { display:inline-flex; align-items:center; justify-content:center; margin:0; padding:0 16px; border-radius:var(--radius-absolute-12); border:0; background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); font:var(--type-label-strong, 600 14px/1.2 Manrope, system-ui, sans-serif); white-space:nowrap; cursor:pointer; }
+#phone.hf-mis .mt-layer .mini.sec { background:var(--bg-surface-default); color:var(--component-button-secondary-ink); box-shadow:inset 0 0 0 var(--border-width-thin) var(--border-default); }
+#phone.hf-mis .mt-layer .mini:active { background:var(--component-button-primary-bg-pressed); }
+/* the card Kai names, when it is already in view on the tab: a ring on it instead of a second copy in the chat */
+#phone .mt-card.mt-hl { box-shadow:0 0 0 2px var(--text-primary), var(--elevation-1); }
+/* a quiet Undo on the line that says what you removed */
+#phone .ks-sys .mt-undo { position:relative; border:0; background:none; padding:0; font:inherit; font-weight:600; color:var(--text-primary); text-decoration:underline; cursor:pointer; }
+#phone .ks-sys .mt-undo::after { content:""; position:absolute; inset:-15px -10px; }
+@media (prefers-reduced-motion: reduce) { #phone .hdr.sc > .mt-ht, #phone.mt-on .view > .hdr.sc, #phone .mt-layer, #phone .mt-bchev { transition:none; animation:none; } }
 
 </style>
 <script>
-/* ==== One mission, one full-screen Kai chat (Simplify Home; Apoorv 2 Oct 00:25: "think of each mission as its own kai chat in full screen,
-   its just not chat first its outcome first", "when i scroll up, the mission header card should scroll up into the app header, similar to
-   how we do it for profiles and families", "chat messages are in the tab, but the conversation happens inside the sheet? thats
-   inconsistent"). Replaces mission-chat.js: load after home.js and mission-card.js, in its place. Edits no other file.
-   - No tabs. One scroll: the hero plate, Kai's question if there is one, the outcomes (Opportunities as ranked KeyOpportunityCards on a
-     personal mission, People on an event, series or family one), then the chat with Kai, newest at the bottom, over the Kai chatbar.
+/* ==== One mission: its work and its brief in tabs, Kai's chat as a layer over both (Simplify Home; Apoorv 2 Oct 00:25: "think of each
+   mission as its own kai chat in full screen, its just not chat first its outcome first", "when i scroll up, the mission header card should
+   scroll up into the app header, similar to how we do it for profiles and families"; 03:22: "BRIEF IN THE TABS LIKE BEFORE ... WHY ARE YOU
+   INCREASING THE SCROLL??? AND THE CHAT NEEDS TO BE AN INTEGRAL LAYER TOO, NOT REPLACING THE OPPORTUNITY. LOOK AT TOWN").
+   Replaces mission-chat.js: load after home.js and mission-card.js, in its place. Edits no other file.
+   - Two tabs under the hero, as before: the mission's work (Opportunities as ranked KeyOpportunityCards on a personal mission, People on an
+     event, series or family one) and Brief. The chat is not a tab and not a section of the page.
+   - The Kai chatbar is docked at the foot of both tabs, with a Chat button beside its context chip. Tap it (or send) and the chat rises
+     over the lower part of the tab, sized to what it holds, the way Town keeps its assistant beside the document it is working on. The hero
+     and the first card stay in view above it; close it and the tab is where you left it.
    - Everything typed lands in this chat and Kai answers here, with the pick it means as the same card. No question opens the Kai sheet.
-   - The hero scrolls up into the app header: once its title passes under the header, the header shows the mark and the title, as the
-     family and profile pages do.
-   - The brief moves to the more menu ("See the brief") and opens as its own page with a back arrow; pause and end were already there. ==== */
-STATE.mtMore = STATE.mtMore || {}; STATE.mtAdd = STATE.mtAdd || {}; STATE.mtDraft = STATE.mtDraft || {};
+   - The hero scrolls up into the app header: once its title passes under the header, the header shows the mark and the title. ==== */
+STATE.mtMore = STATE.mtMore || {}; STATE.mtOpen = STATE.mtOpen || null; STATE.mtScroll = STATE.mtScroll || null; STATE.mtAdd = STATE.mtAdd || {}; STATE.mtDraft = STATE.mtDraft || {};
 const MT_ORDER = [1, 0, 2, 3, 4, 5];
 const MT_ASK = /\?$|^(what|who|why|how|can|could|should|is|are|do|does|when|where|show|find|pause|only|no|never|skip)\b/i;
 const mtLayer = m => typeof hsLayer==="function" ? !!hsLayer(m) : !!(m.evKind || m.host || m.org || m.series);
@@ -24362,7 +24383,7 @@ function mtAnswer(m, t){
 }
 function mtSend(id){
   const ta = phone.querySelector(".mt-comp #mupd"), m = DB.missions.find(x=>x.id===id), v = ta ? ta.value.trim() : ""; if (!m || !v) return;
-  const t = mtCap(v); delete STATE.mtAdd[id]; delete STATE.mtDraft[id]; STATE.mtEnd = id;
+  const t = mtCap(v); delete STATE.mtAdd[id]; delete STATE.mtDraft[id]; STATE.mtEnd = id; STATE.mtFocus = id;
   const a = mtAnswer(m, t);
   /* a log line: missionSend files it and Kai's reply lands here, so its "Logged." toast would only cover the chat */
   if (!a) { const keep = toast; ta.value = t; if (!m.mlog && mtLayer(m)) m.mlog = []; toast = ()=>{}; try { missionSend(id); } finally { toast = keep; } return; }
@@ -24375,12 +24396,13 @@ function mtDo(id, li, yes){
   x.done = true; STATE.mtEnd = id;
   if (yes && x.act==="pause") { m.status = "paused"; mtLog(m, "You", "paused this mission"); mtLog(m, "Kai", "Paused. Nothing moves until you resume it from the menu."); }
   if (yes && x.act==="rule") { (m.constraints = m.constraints || []).push(mtCap(x.rule)); mtLog(m, "You", `added "${x.rule}" to the brief`); mtLog(m, "Kai", "Added. I'll use it on Friday's pass and say so on the picks it changes."); }
+  if (x.act==="undo") { (m.constraints = m.constraints || []).splice(Math.min(x.k, m.constraints.length), 0, x.rule); mtLog(m, "You", `put "${x.rule}" back in the brief`); }
   if (yes && x.act==="send") { STATE.mtSendOk = true; try { evmF(...x.ev); } finally { STATE.mtSendOk = false; } return; }
   render();
 }
 
-/* the top outcome, then the rest behind "See N more": the chat and its brief start on the first screen (Apoorv 2 Oct 01:34 saw only picks and the composer) */
-const MT_SHOW = 1;
+/* up to five outcomes, then the rest behind "See N more", as in build 5069 */
+const MT_SHOW = 5;
 function mtOpps(pane, m){
   pane.querySelectorAll(":scope > .gp-strip, :scope > .mh-legend").forEach(e=>e.remove());
   const rows = [...pane.querySelectorAll(".row[data-opp]")].map(r=>[r, DB.opps.find(o=>o.id===r.dataset.opp)]).filter(x=>x[1]);
@@ -24415,7 +24437,7 @@ function mtChat(m){
     : r.x.chips && !r.x.done ? `<div class="mt-chips">${r.x.chips.map((c,i)=>`<button type="button" class="btn ${i?"sec":""}" onclick="mtDo('${m.id}',${r.li},${!i})">${c}</button>`).join("")}</div>` : "";
   /* what you did ("approved the brief", "paused this mission") is a quiet line; what you told Kai is your bubble */
   const one = r => /^started this/.test(r.text) && r.who==="You" ? `<div class="ks-sys">You started this mission.${r.found!=null?` Kai found ${r.found} path${r.found===1?"":"s"}.`:""}${r.when?" · "+r.when:""}</div>`
-    : r.who==="You" && !r.o && /^[a-z]/.test(r.text) ? `<div class="ks-sys">You ${r.text.replace(/\.$/,"")}${r.when?" · "+r.when:""}</div>`
+    : r.who==="You" && !r.o && /^[a-z]/.test(r.text) ? `<div class="ks-sys">You ${r.text.replace(/\.$/,"")}${r.when?" · "+r.when:""}${r.x && r.x.act==="undo" && !r.x.done ? ` · <button type="button" class="mt-undo" onclick="mtDo('${m.id}',${r.li},true)">Undo</button>` : ""}</div>`
     : r.who==="You" && !r.o ? `<div class="ks-u mt-u" data-kc="KeyMessageBubble" data-kv="from=you">${r.text}</div>`
     : r.who==="Kai" && !r.o ? `<div class="ks-k mt-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${mtCap(r.text)}</p>${extra(r)}</div></div>`
     : `<${r.o?`button onclick="go('path:${r.o.id}')"`:"div"} class="mt-lr" data-kc="KeyLogRow" data-kv="kind=${r.who==="Kai"?"kaiPass":"face"}">${r.who==="Kai"?kaiMark(24):av(r.o?scIni(r.o):(r.who.match(/\b\w/g)||["?"]).slice(0,2).join(""))}<span class="m"><b>${r.who}</b> ${r.text}${r.o?`<span class="pn">${r.o.roleTitle||f1(targetOf(r.o))}</span>`:""}</span><span class="when">${r.when}</span></${r.o?"button":"div"}>`;
@@ -24437,7 +24459,7 @@ const MT_ADD = [["list-plus","Add context",null], ["image","Photo library","Phot
 function mtCtx(m){
   const nm = m.name.length>22 ? m.name.slice(0,22)+"…" : m.name, add = STATE.mtAdd[m.id] || [];
   const chip = (g,t,x) => `<span class="ks-scope on mt-ctx" data-kc="KeyChip" data-kv="state=on, kind=context"${x?` title="${x}"`:""}>${LI(g,14)}<span>${t}</span></span>`;
-  return `<div class="mt-ctxrow">${chip("compass", nm, m.name)}${add.slice(0,1).map(a=>chip(a==="Photo"?"image":"file-up", a).replace("mt-ctx","mt-ctx mt-ctxa")).join("")}${add.length>1?`<span class="ks-scope mt-ctx mt-ctxn">+${add.length-1}</span>`:""}</div>`;
+  return `<div class="mt-ctxrow">${chip("compass", nm, m.name)}${add.slice(0,1).map(a=>chip(a==="Photo"?"image":"file-up", a).replace("mt-ctx","mt-ctx mt-ctxa")).join("")}${add.length>1?`<span class="ks-scope mt-ctx mt-ctxn">+${add.length-1}</span>`:""}${mtPeek(m, STATE.mtOpen===m.id)}</div>`;
 }
 function mtComposer(m){
   return `<div class="ks-comp mt-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="mt-menu" role="menu" aria-label="Add" data-kc="KeyMenu" hidden>${MT_ADD.map(([g,t],i)=>`<button type="button" role="menuitem" data-kc="KeyMenuItem" onclick="mtPick('${m.id}',${i})">${LI(g,20)}<span>${t}</span></button>`).join("")}</div><div class="ks-box">
@@ -24474,68 +24496,131 @@ function mtHeader(root, body, m, title){
   body.addEventListener("scroll", set, { passive:true }); set();
 }
 
-/* the brief as Kai's message: the same KeyBriefDoc the Brief tab showed; its facts are read here and changed by telling Kai below */
-function mtBriefMsg(m){
-  const t = hsDom(mhBriefPane(m)), d = t.content.querySelector(".mh-brief");
-  d.querySelectorAll(".row.mh-bf").forEach(r=>{ r.removeAttribute("onclick"); r.removeAttribute("data-kaibrief"); r.querySelectorAll(".chev").forEach(c=>c.remove()); });
-  d.querySelectorAll(".mh-bnote").forEach(e=>e.remove());
-  /* "Where Kai looks" is this mission's own sources, the families its brief names, not every family you're in (audit 2 Oct) */
+/* the Brief tab: "Where Kai looks" is this mission's own sources, the families its brief names, not every family you're in (audit 2 Oct) */
+function mtBriefFix(pane, m){
   const fs = (DB.families||[]).filter(f=>f.joined!==false && new RegExp(`\\b${f.name.split(" ")[0]}\\b`).test(m.brief||"")).map(f=>f.name);
   const src = fs.length ? fs.join(", ") : m.series ? "Everyone who came to a date" : m.ev ? "This event's guests" : "";
-  d.querySelectorAll(".row.mh-bf").forEach(r=>{ if (r.querySelector(".b").textContent!=="Where Kai looks") return; if (src) r.querySelector(".a").textContent = src; else r.remove(); });
+  pane.querySelectorAll(".mh-brief .row.mh-bf").forEach(r=>{ const b = r.querySelector(".b"); if (!b || b.textContent!=="Where Kai looks") return; if (src) r.querySelector(".a").textContent = src; else r.remove(); });
   /* before the call, the brief says how to make it specific in plain words */
-  d.querySelectorAll(".mh-bq").forEach(q=>{ q.textContent = q.textContent.replace("Do the intake call and I'll make this specific.", "Talk it through with Kai to make it specific."); });
-  return `<div class="ks-k mt-k mt-bk" data-kc="KeyMessageBubble" data-kv="from=kai, content=brief">${kaiMark(24)}<div class="tx"><p>Here's your brief. Tell me below to change any of it.</p><div class="mt-bdoc">${t.innerHTML}</div></div></div>`;
+  pane.querySelectorAll(".mh-bq").forEach(q=>{ q.textContent = q.textContent.replace("Do the intake call and I'll make this specific.", "Talk it through with Kai to make it specific."); });
+  /* each fact opens in place (chevron down), never a sheet: a rule can go, and anything changes by telling Kai */
+  let ci = 0;
+  pane.querySelectorAll(".mh-brief .row.mh-bf").forEach((r,i)=>{
+    const lab = r.querySelector(".b").textContent, k = lab==="Must have" ? ci++ : -1, key = `${m.id}|${i}`, open = STATE.mtBOpen===key;
+    r.removeAttribute("onclick"); r.removeAttribute("data-kaibrief"); r.setAttribute("role", "button"); r.tabIndex = 0; r.setAttribute("aria-expanded", open);
+    r.querySelectorAll(".chev").forEach(c=>c.outerHTML = `<span class="mt-bchev${open?" on":""}" aria-hidden="true">${LI("chevron-down",16)}</span>`);
+    const tog = ()=>{ STATE.mtBOpen = open ? null : key; STATE.mtBFocus = key; render(); };
+    r.onclick = tog; r.onkeydown = e=>{ if (e.key==="Enter" || e.key===" ") { e.preventDefault(); tog(); } };
+    if (STATE.mtBFocus===key) { STATE.mtBFocus = null; setTimeout(()=>r.focus({ preventScroll:true }), 0); }
+    if (open) r.insertAdjacentHTML("afterend", `<div class="mt-bx">${k>=0?`<button type="button" class="btn sec" onclick="mtBDrop('${m.id}',${k})">Remove</button>`:""}<button type="button" class="btn sec" data-kaibrief="${m.id}">Change it with Kai</button></div>`);
+  });
+  /* "Sharpen it with Kai" and "Change it with Kai" open this mission's chat, never the Kai sheet */
+  pane.querySelectorAll("[data-kaibrief]").forEach(el=>{ el.onclick = e=>{ e.stopPropagation(); mtOpen(m.id, true);
+    const ta = phone.querySelector(".mt-comp #mupd"); if (ta) { ta.placeholder = "Tell Kai what to change in the brief"; ta.focus(); } }; });
 }
+
+function mtBDrop(id, k){
+  const m = DB.missions.find(x=>x.id===id), c = m && (m.constraints||[])[k]; if (!c) return;
+  m.constraints.splice(k, 1); mtLog(m, "You", `removed "${c}" from the brief`, { act:"undo", rule:c, k }); STATE.mtBOpen = null; STATE.mtEnd = id; render();
+}
+/* KeyChatLayer: the chat over the tab. Open, it rises from the chatbar and hugs its thread; the chatbar stays where it is and Close (or
+   the Chat button, or Esc) returns to the tab as you left it */
+function mtLayerHTML(m, open){
+  return `<section class="mt-layer${open?" open":""}" id="mt-layer" aria-label="Chat with Kai" data-kc="KeyChatLayer" data-kv="state=${open?"open":"closed"}"${open?"":" hidden"}>
+    <div class="mt-lhd"><span>Chat with Kai</span><button type="button" class="mt-lx" onclick="mtOpen('${m.id}',false)" aria-label="Close the chat">${LI("chevron-down",20)}</button></div>
+    <div class="mt-lbody">${mtChat(m)}</div></section>`;
+}
+function mtPeek(m, open){
+  return `<button type="button" class="mt-peek" onclick="mtOpen('${m.id}',STATE.mtOpen!=='${m.id}')" aria-controls="mt-layer" aria-expanded="${!!open}" aria-label="${open?"Close":"Open"} the chat with Kai">${kaiMark(16)}<span>Chat</span>${LI(open?"chevron-down":"chevron-up",16)}</button>`;
+}
+/* the layer hugs its thread, up to 60% of the space between the header and the chatbar and never over the tab's first card in view,
+   so the hero and that card stay above it (it keeps at least a third to talk in) */
+function mtFit(){
+  const root = phone.querySelector(".view"), ly = root && root.querySelector(".mt-layer"); if (!ly) return;
+  const h = root.querySelector(".hdr.sc").offsetHeight, c = root.querySelector(".mt-comp").offsetHeight, room = root.clientHeight - h - c;
+  const top = root.getBoundingClientRect().top + h, f = [...root.querySelectorAll(".body.sc .mt-opps > .mt-card:not([hidden]), .body.sc > .mh-pane .row, .body.sc > .mh-pane .mh-bq")].find(e=>e.getBoundingClientRect().bottom > top);
+  const under = f ? root.getBoundingClientRect().bottom - c - f.getBoundingClientRect().bottom - 8 : room;
+  ly.style.bottom = c+"px"; ly.style.maxHeight = Math.round(Math.max(room * 0.35, Math.min(room * 0.6, under)))+"px";
+}
+/* the chat opens at the start of its newest entry, so Kai's answer reads from its first word */
+function mtToNew(lb){ const t = lb && lb.querySelector(".mt-thread > :last-child"); if (!t) return; lb.scrollTop = 0; lb.scrollTop = t.getBoundingClientRect().top - lb.getBoundingClientRect().top - 8; }
+/* open, the tab under the layer holds still and takes no focus; closed, it is where you left it */
+function mtHold(on){
+  const b = phone.querySelector(".view > .body.sc"); if (!b) return; b.inert = on; b.classList.toggle("mt-held", on);
+  /* closing can resize the page under it (the chatbar losing focus): put the tab back where it was, after the layout settles */
+  const y = !on && STATE.mtScroll ? STATE.mtScroll[1] : null; if (y==null) return;
+  mtHold.lock = Date.now() + 400; const put = ()=>{ b.scrollTop = y; b.dispatchEvent(new Event("scroll")); };
+  put(); requestAnimationFrame(put); setTimeout(put, 250);
+}
+function mtOpen(id, on){
+  STATE.mtOpen = on ? id : null;
+  const ly = phone.querySelector(".mt-layer"), pk = phone.querySelector(".mt-peek"); if (!ly) return;
+  ly.hidden = !on; ly.classList.toggle("open", on); ly.setAttribute("data-kv", `state=${on?"open":"closed"}`);
+  if (pk) pk.outerHTML = mtPeek(DB.missions.find(x=>x.id===id), on);
+  if (!on) phone.querySelectorAll(".mt-card.mt-hl").forEach(c=>c.classList.remove("mt-hl"));
+  mtHold(on); mtFit();
+  if (on) { mtToNew(ly.querySelector(".mt-lbody")); ly.querySelector(".mt-lx").focus({ preventScroll:true }); }
+  else { const b = phone.querySelector(".mt-peek"); if (b) b.focus({ preventScroll:true }); }
+}
+document.addEventListener("keydown", e=>{ if (e.key!=="Escape" || typeof phone==="undefined" || !phone || phone.querySelector(".mt-menu:not([hidden])")) return;
+  const ly = phone.querySelector(".mt-layer.open"); if (ly && STATE.mtOpen) mtOpen(STATE.mtOpen, false); });
+
 function mtFrame(id){
   const m = DB.missions.find(x=>x.id===id), root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
   const bar = body && body.querySelector(":scope > .mh-tabs"), pane = body && body.querySelector(":scope > .mh-pane");
-  if (!m || !bar || !pane || root.querySelector(".mt-chat, .mt-brief")) return;
+  if (!m || !bar || !pane || root.querySelector(".mt-comp")) return;
   phone.classList.add("mt-on");
-  bar.remove(); body.querySelectorAll(".mlog, .mlog-hint, #mupd").forEach(e=>(e.closest(".mlog, .mlog-hint")||e).remove());
-  /* the brief, opened from the more menu: its own page, back returns to the chat */
-  if (STATE.mtBrief===id) {
-    body.querySelectorAll(":scope > .mh-band.big, :scope > .kq").forEach(e=>e.remove()); pane.classList.add("mt-brief");
-    mtHeader(root, body, m, "Brief");
-    root.querySelectorAll(".hdr.sc > .icon").forEach(e=>e.remove());
-    const bk = root.querySelector(".hdr.sc > .back"); if (bk) { bk.setAttribute("onclick", "STATE.mtBrief=null;render()"); bk.setAttribute("aria-label", "Back to the mission"); }
-    /* "Sharpen it with Kai" goes back to this mission's chat, never to the Kai sheet */
-    pane.querySelectorAll("[data-kaibrief]").forEach(el=>{ el.onclick = e=>{ e.stopPropagation(); STATE.mtBrief = null; render(); const ta = phone.querySelector(".mt-comp #mupd"); if (ta) ta.focus(); }; });
-    phone.classList.add("mt-pg"); return;
-  }
-  body.querySelectorAll(":scope > .mh-band.big .mh-ctl").forEach(e=>e.remove());
-  if (!mtLayer(m)) mtOpps(pane, m);
-  pane.classList.remove("in-r", "in-l"); pane.classList.add("mt-out");
-  pane.querySelectorAll(`.row[onclick*="go('explore')"]`).forEach(r=>r.classList.add("mt-browse"));
-  /* the brief is Kai's first entry in the chat (Apoorv 2 Oct 01:34: "Where's the brief in the chat?"): what it looks for, the rules, the timeline */
-  pane.insertAdjacentHTML("afterend", `<section class="mt-chat" aria-label="Chat with Kai"><div class="mt-div">Chat with Kai</div>${mtBriefMsg(m)}${mtChat(m)}</section>`);
-  root.querySelectorAll(".mt-bdoc [data-kaibrief]").forEach(el=>{ el.onclick = e=>{ e.stopPropagation(); const ta = phone.querySelector(".mt-comp #mupd"); if (ta) { ta.placeholder = "Tell Kai what to change in the brief"; ta.focus(); } }; });
-  const list = pane.querySelector(".mt-opps"); root.querySelectorAll(".mt-pin").forEach(s=>mtPin(s, list));
-  root.insertAdjacentHTML("beforeend", mtComposer(m));
+  /* two tabs, the work first: the Log tab goes, its lines live in the chat layer */
+  const tab = pane.getAttribute("data-tab"), btn = k => [...bar.children].find(b=>(b.getAttribute("onclick")||"").includes(`'${k}')`));
+  const bw = btn("paths"), bl = btn("log");
+  if (bw && !mtLayer(m)) bw.firstChild.textContent = "Opportunities";
+  if (bl) bl.remove(); bar.setAttribute("data-kv", "count=2, style=underline");
+  /* the hero already says how many: the tab doesn't repeat it */
+  bar.querySelectorAll("button > span").forEach(e=>e.remove());
+  body.querySelectorAll(".mlog, .mlog-hint, #mupd").forEach(e=>(e.closest(".mlog, .mlog-hint")||e).remove());
+  body.querySelectorAll(":scope > .mh-band.big .mh-ctl").forEach(e=>e.remove()); pane.classList.add("mt-out");
+  if (tab==="paths" && !mtLayer(m)) mtOpps(pane, m);
+  if (tab==="paths") pane.querySelectorAll(`.row[onclick*="go('explore')"]`).forEach(r=>r.classList.add("mt-browse"));
+  if (tab==="brief") mtBriefFix(pane, m);
+  /* after you send, or Kai drafts a note, the chat is open at its newest line */
+  if (STATE.mtEnd===id) { STATE.mtOpen = id; clearTimeout(mtFrame.t); mtFrame.t = setTimeout(()=>{ STATE.mtEnd = null; }, 0); }
+  const open = STATE.mtOpen===id;
+  root.insertAdjacentHTML("beforeend", mtLayerHTML(m, open) + mtComposer(m));
   mtHeader(root, body, m);
   /* a render (a toast, a sheet) redraws the page: what you were typing stays */
-  const ta = root.querySelector("#mupd"), fit = ()=>{ ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 110)+"px"; };
+  const ta = root.querySelector("#mupd"), fit = ()=>{ ta.style.height = "auto"; ta.style.height = Math.min(ta.scrollHeight, 110)+"px"; mtFit(); };
   if (STATE.mtDraft[id]) { ta.value = STATE.mtDraft[id]; fit(); }
   ta.addEventListener("input", ()=>{ STATE.mtDraft[id] = ta.value; fit(); });
   ta.addEventListener("keydown", e=>{ if (e.key==="Enter" && !e.shiftKey) { e.preventDefault(); mtSend(id); } });
-  /* outcome first: the page opens at the top; after you send, it follows the chat to its newest line */
-  if (STATE.mtJump===id) { STATE.mtJump = null; const bd = root.querySelector(".mt-bk"); if (bd) body.scrollTop += bd.getBoundingClientRect().top - root.querySelector(".hdr.sc").getBoundingClientRect().bottom - 8; }
-  if (STATE.mtEnd===id) { body.scrollTop = body.scrollHeight; clearTimeout(mtFrame.t); mtFrame.t = setTimeout(()=>{ STATE.mtEnd = null; }, 0); }
+  /* a render (a send, a chip, a brief row) redraws the page: the tab keeps its place */
+  if (STATE.mtScroll && STATE.mtScroll[0]===id+"|"+tab) { body.scrollTop = STATE.mtScroll[1]; body.dispatchEvent(new Event("scroll")); }
+  body.addEventListener("scroll", ()=>{ if (body.classList.contains("mt-held") || Date.now() < (mtHold.lock||0)) return; STATE.mtScroll = [id+"|"+tab, body.scrollTop]; }, { passive:true });
+  mtHold(open); mtFit();
+  /* the pick Kai names: when its card is in view on the tab, Kai points at it (a ring) instead of showing a second copy */
+  const list = pane.querySelector(".mt-opps"), slots = [...root.querySelectorAll(".mt-pin")];
+  if (slots.length) {
+    const lt = root.querySelector(open ? ".mt-layer" : ".mt-comp").getBoundingClientRect().top, tb = Math.max(bar.getBoundingClientRect().bottom, root.querySelector(".hdr.sc").getBoundingClientRect().bottom);
+    slots.forEach((sl,i)=>{ const src = list && list.querySelector(`.mt-card[data-opp="${sl.dataset.pin}"]:not([hidden])`), r = src && src.getBoundingClientRect();
+      if (r && r.top >= tb - 1 && r.bottom <= lt + 1) { if (open && i===slots.length-1) src.classList.add("mt-hl"); sl.remove(); } else mtPin(sl, list); });
+    mtFit();
+  }
+  if (open) mtToNew(root.querySelector(".mt-lbody"));
+  if (STATE.mtFocus===id) { STATE.mtFocus = null; ta.focus({ preventScroll:true }); }
 }
 const _mtRender = render; render = function(){
   const typing = document.activeElement && document.activeElement.matches(".mt-comp #mupd");
   const s = STATE.screen || "", on = typeof KEY_HIFI!=="undefined" && KEY_HIFI && STATE.member && s.startsWith("mission:"), id = on ? s.slice(8) : "";
   const m = on && DB.missions.find(x=>x.id===id);
-  if (STATE.mtBrief && STATE.mtBrief!==id) STATE.mtBrief = null;
-  if (m) STATE.mhTab[id] = STATE.mtBrief===id ? "brief" : "paths";
+  if (STATE.mtOpen && STATE.mtOpen!==id) STATE.mtOpen = null;
+  if (!m) { STATE.mtScroll = null; STATE.mtBOpen = null; }
+  if (m && STATE.mhTab[id]!=="brief") STATE.mhTab[id] = "paths";
   const r = _mtRender.apply(this, arguments);
   if (typeof phone==="undefined" || !phone) return r;
-  phone.classList.remove("mt-on", "mt-pg");
+  phone.classList.remove("mt-on");
   if (m) mtFrame(id);
-  /* the more menu: the brief first; "Edit the brief" opened the Kai sheet, and the brief page's own button now leads to this chat */
+  /* the more menu: "Edit the brief" opened the Kai sheet; the Brief tab's own button opens this chat */
   const sh = STATE.sheet, sb = phone.querySelector("#sheet .sb");
   if (m && sh && sh.type==="mmenu" && sb) sb.querySelectorAll(".xrow").forEach(x=>{ const a = x.querySelector(".a"); if (a && a.textContent.trim()==="Edit the brief") x.remove(); });
-  if (m && sh && sh.type==="mmenu" && sb && !sb.querySelector(".mt-briefrow")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow mt-briefrow" onclick="STATE.sheet=null;STATE.mtJump='${sh.id}';render()"><div class="m"><div class="a">See the brief</div><div class="b">Kai's first message in this chat</div></div></div>`); }
   if (typing && !STATE.sheet) { const ta = phone.querySelector(".mt-comp #mupd"); if (ta) ta.focus(); }
   return r;
 };
@@ -24550,25 +24635,34 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 
 </script>
 <style>
-/* KeyBriefTop: the brief leads Home (Apoorv, 2 Oct 00:28), laid out like the morning brief he pointed to: the date, a welcome that
-   is the evening in one sentence, one quiet line that points to the brief, Start. Key's own surface, so it stays calm
-   (visual direction 3 and 7): ink on the page, Manrope, the foil K once. No cross; done, it stays as the summary. */
-.btp { display:grid; gap:12px; padding:4px 0 20px; color:var(--text-primary, #12161A); }
-.btp-day { display:flex; align-items:center; gap:8px; margin:0; font-size:12px; line-height:1.35; font-weight:600; color:var(--text-secondary, #525B66); }
-.btp-day .kn-disc { flex:0 0 auto; }
-.btp-h { margin:0; font-family:inherit; font-size:26px; line-height:1.2; font-weight:800; letter-spacing:-.02em; text-wrap:balance; color:var(--text-primary, #12161A); }
-.btp-sub { margin:-4px 0 0; font-size:15px; line-height:1.5; color:var(--text-secondary, #525B66); text-wrap:pretty; }
-.btp-act { display:flex; align-items:center; gap:12px; margin-top:4px; }
+/* KeyBriefTop: the brief leads Home as a welcome (his 2 Oct 00:28, 01:33, 02:49). Type carries the hierarchy: a small date line,
+   the hello as the big line, who needs you with their faces, a quiet line of what else is there, Start. Key's own surface, so it
+   stays calm (visual direction 3 and 7): ink on the page, Manrope, members' faces, the foil K once. No cross. */
+.btp { --btp-name:#3A5E96; display:grid; gap:0; padding:4px 0 20px; color:var(--text-primary, #12161A); }
+.btp-day { margin:0 0 4px; font-size:13px; line-height:1.35; font-weight:500; color:var(--text-secondary, #525B66); }
+.btp-h { margin:0; font-family:inherit; font-size:34px; line-height:1.1; font-weight:800; letter-spacing:-.025em; text-wrap:balance; color:var(--text-primary, #12161A); }
+.btp-who { display:flex; align-items:center; gap:10px; margin:18px 0 0; min-width:0; }
+.btp-who b { min-width:0; font-size:20px; line-height:1.25; font-weight:700; text-wrap:balance; color:var(--text-primary, #12161A); }
+.btp-fs { flex:0 0 auto; display:flex; }
+.btp-fc { position:relative; width:32px; height:32px; border-radius:50%; overflow:hidden; display:block; box-shadow:0 0 0 2px var(--bg-surface-default, #FFFFFF); }
+.btp-fc + .btp-fc { margin-left:-5px; } /* KeyFaceStack overlap, 1/6 */
+.btp-fc .bs-pt { width:100%; height:100%; border-radius:0; display:grid; place-items:center; }
+.btp-fc .bs-pt em { font-size:12px; font-weight:700; font-style:normal; transform:none; color:#FFFFFF; }
+.btp-n { font-style:normal; color:var(--btp-name); }
+.btp-also .btp-n { font-weight:600; }
+.btp-also { margin:6px 0 0; font-size:15px; line-height:1.45; font-weight:400; color:var(--text-secondary, #525B66); }
+.btp-act { display:flex; align-items:center; gap:12px; margin-top:20px; }
 .btp-go { flex:0 0 auto; height:48px; padding:0 20px; border:0; border-radius:12px; background:var(--component-button-primary-bg, #12161A); color:var(--component-button-primary-ink, #F9FAFC); font:inherit; font-size:15px; font-weight:700; cursor:pointer; }
 .btp-go.btp-quiet { background:var(--bg-fill-default, #F1F3F6); color:var(--text-primary, #12161A); }
 .btp-go:active { transform:scale(.98); }
 .btp-go:focus-visible { outline:2px solid var(--text-primary, #12161A); outline-offset:2px; }
 .btp-meta { min-width:0; font-size:13px; line-height:1.35; color:var(--text-secondary, #525B66); font-variant-numeric:tabular-nums; }
 /* arrival, once per session: the welcome rises */
-.btp.enter .btp-day, .btp.enter .btp-h { animation:btUp .42s cubic-bezier(.05,.7,.1,1) both; } .btp.enter .btp-h { animation-delay:.06s; }
+.btp.enter .btp-day, .btp.enter .btp-h, .btp.enter .btp-who { animation:btUp .42s cubic-bezier(.05,.7,.1,1) both; } .btp.enter .btp-h { animation-delay:.06s; } .btp.enter .btp-who { animation-delay:.14s; }
 @keyframes btUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
 @media (prefers-reduced-motion: reduce) { .btp.enter * { animation:none !important; } }
-@media (max-width:359px) { .btp-h { font-size:22px; } }
+@media (max-width:389px) { .btp-who b { font-size:18px; } }
+@media (max-width:359px) { .btp-h { font-size:28px; } }
 /* the travel pick no longer leads Home; it lives in the brief */
 #phone .view .body > .tv-pk { display:none; }
 
@@ -24603,7 +24697,7 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 <script>
 /* The brief leads Home (Apoorv, 2 Oct 00:28): "the brief cannot be crossed out. show the brief at the top, with the welcome and
    summary. look at the cowork morning brief for reference". So the top of Home is the brief, laid out like that morning brief: the
-   date, a welcome in your name that says who needs you, one quiet line pointing to the brief, and Start. There is no cross; once
+   date, a big hello in your name, who needs you, a quiet line of what else is there, and Start. There is no cross; once
    you're through it stays. The bar above the tabs is gone. The brief still opens in Kai's sheet and still lives in Kai (his 19:22-19:23
    asks), and Chris's travel pick moves off the top of Home into the brief as one of its cards. */
 STATE.brAlt = "top";
@@ -24632,31 +24726,33 @@ brCards = function(){
   return L;
 };
 
-/* KeyBriefTop (his 01:33: "keep it an intro message that points me to my brief"): a greeting in his name that says who needs
-   him, one quiet line on what else is there, and the brief. No columns, no faces, no cross. Built from the brief's own cards. */
-const btNames = P => `${P.slice(0, 2).map(firstName).join(" and ")}${P.length > 2 ? ` and ${P.length-2} more` : ""}`;
+/* KeyBriefTop (his 01:33 "keep it an intro message that points me to my brief"; 02:49 "better type hierarchy between hello apoorv
+   and the info following. doesnt need to be a full coherent sentence... make it more visual"). The hello is the big line; under it,
+   glanceable lines, not a sentence: who needs you, with the faces of the people it names (one face per person, at most two), then a quiet line of what
+   else is in the brief, then Start. No columns, no cross. Built from the brief's own cards. */
+/* his 03:21: "improve type hierarchy with size and weight. and maybe a color on the names? no repetitive or redundant content". So the
+   date alone sits above the hello, people's names carry the one colour (harbour, the people plate), and nothing restates the button. */
+const btN = p => `<em class="btp-n">${firstName(p)}</em>`;
+const btNames = P => P.length > 2 ? `${P.slice(0, 2).map(btN).join(", ")} and ${P.length-2} more` : P.map(btN).join(" and ");
 const btUniq = P => P.filter((p, k, a) => p && a.findIndex(x => x && x.id===p.id)===k);
 function btSay(E){
-  /* while the brief runs, a card you skipped leaves the greeting; once you are through, what is still open comes back */
+  /* while the brief runs, a card you skipped leaves the welcome; once you are through, what is still open comes back */
   const R = STATE.brRun, left = E.L.filter(c => !(R && (R.done[c.id] || (!E.fin && R.skip[c.id])))), of = k => left.filter(c => c.kind===k);
   const need = btUniq(left.filter(c => c.label==="Needs you").map(c => c.who)), asks = left.filter(c => c.label==="Kai asks").length, picks = of("pick"), evs = of("event");
-  const also = [of("travel").length ? "Lars is in town" : "", picks.length ? `Kai found ${picks.length} new pick${picks.length===1?"":"s"}` : "", evs.length ? `${evs[0].title.replace(/,.*/, "")} is coming up` : "", asks ? `Kai has ${asks} ask${asks===1?"":"s"}` : ""].filter(Boolean);
-  return { need, asks, also };
+  const also = [of("travel").length ? `${btN(of("travel")[0].who)} is in town` : "", picks.length ? `${picks.length} new pick${picks.length===1?"":"s"}` : "", evs.length ? evs[0].title : "", asks ? `${asks} ask${asks===1?"":"s"} from Kai` : ""].filter(Boolean);
+  return { need, also };
 }
+const btFaces = P => `<span class="btp-fs" aria-hidden="true" data-kc="KeyFaceStack" data-kv="size=32">${P.slice(0, 2).map(p => `<span class="btp-fc">${brPortrait(p.initials, p.id, 96)}</span>`).join("")}</span>`;
 function btTop(){
-  const E = brEntry(), day = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" }).replace(", ", " · ");
-  const lead = `<p class="btp-day">${kaiMark(16)}<span>Your ${brPart()} brief · ${day}</span></p>`;
-  if (!E) return `<section class="btp" data-kc="KeyBriefTop" data-kv="state=empty" aria-labelledby="btH">${lead}<h2 class="btp-h" id="btH">${brGreeting()}. Nothing needs you right now.</h2></section>`;
+  const E = brEntry(), day = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" });
+  const lead = `<p class="btp-day">${day}</p><h2 class="btp-h" id="btH">${brGreeting()}</h2>`;
+  if (!E) return `<section class="btp" data-kc="KeyBriefTop" data-kv="state=empty" aria-labelledby="btH">${lead}<div class="btp-who"><b>Nothing needs you right now</b></div></section>`;
   const S = btSay(E), first = !STATE.brEntered && !bsStill(); STATE.brEntered = true;
-  const needs = S.need.length ? `${btNames(S.need)} need${S.need.length===1?"s":""} you` : "";
-  const head = E.fin ? `${brGreeting()}. ${needs ? `You're through your brief. ${btNames(S.need)} still need${S.need.length===1?"s":""} you.` : "You're caught up."}`
-    : `${brGreeting()}. ${needs || S.also[0] || `${E.n} thing${E.n===1?"":"s"} ${E.n===1?"is":"are"} ready for you`}.`;
-  const rest = E.fin ? [] : (needs ? S.also : S.also.slice(1)).slice(0, 2);
-  const sub = E.fin ? "" : `${rest.length ? `${rest.join(", and ")}. ` : ""}It's all in your brief.`;
+  const who = S.need.length ? `${btNames(S.need)} ${E.fin ? "still " : ""}need${S.need.length===1?"s":""} you` : E.fin ? "You're caught up" : S.also.shift() || `${E.n} thing${E.n===1?"":"s"} ready`;
+  const also = E.fin ? [] : S.also.slice(0, 2);
   return `<section class="btp ${first ? "enter" : ""}" data-kc="KeyBriefTop" data-kv="state=${E.fin ? "done" : E.seen ? "part" : "new"};cards=${E.n}" aria-labelledby="btH">
-    ${lead}<h2 class="btp-h" id="btH">${head}</h2>${sub ? `<p class="btp-sub">${sub}</p>` : ""}
-    ${E.fin ? `<div class="btp-act"><button type="button" class="btp-go btp-quiet" id="brEntry">See your brief</button><span class="btp-meta">You handled ${E.handled} of ${E.n}</span></div>`
-      : `<div class="btp-act"><button type="button" class="btp-go" id="brEntry">${E.seen ? "Continue your brief" : "Start your brief"}</button><span class="btp-meta">${E.seen ? `${E.seen} of ${E.n}` : `${E.n} thing${E.n===1?"":"s"} · about ${brMins2(E.n)} min`}</span></div>`}
+    ${lead}<div class="btp-who">${S.need.length ? btFaces(S.need) : ""}<b>${who}</b></div>${also.length ? `<p class="btp-also">${also.join(" · ")}</p>` : ""}
+    <div class="btp-act"><button type="button" class="btp-go${E.fin ? " btp-quiet" : ""}" id="brEntry">${E.fin ? "See your brief" : E.seen ? "Continue your brief" : "Start your brief"}</button>${E.seen && !E.fin ? `<span class="btp-meta">${E.n-E.seen} left</span>` : ""}</div>
   </section>`;
 }
 brBanner = function(){ return ""; };
@@ -24787,12 +24883,22 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 #phone .pscreen .pbar.show { background:transparent !important; border-bottom-color:transparent !important; }
 #phone .pscreen .pbar.show::before, #phone .pscreen .pbar.show::after { opacity:1; }
 
+/* header + stuck tabs = one bar (iOS navigation bar with scope bar / Material 3 top app bar with tabs): one glass from the top to
+   the row's bottom hairline (sb), flat 88%, then a short fade under the hairline. Unselected tab labels take secondary ink on the
+   glass (tertiary #606974 would need 92% behind it over black; secondary passes at 88%). */
+#phone .kh-glass.kh-has-stuck::before, #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * (var(--kh-sext) + 24px)); }
+#phone .kh-glass.kh-has-stuck::before { -webkit-mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .5) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); mask-image:linear-gradient(to bottom, #000 var(--kh-sb), rgb(0 0 0 / .5) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); }
+#phone .kh-glass.kh-has-stuck::after { background:linear-gradient(to bottom, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) 0, color-mix(in srgb, var(--kh-bg, var(--bg-page)) 88%, transparent) var(--kh-sb), color-mix(in srgb, var(--kh-bg, var(--bg-page)) 15%, transparent) calc(var(--kh-sb) + 12px), transparent calc(var(--kh-sb) + 24px)); }
+#phone .kh-stuck { --text-tertiary:var(--text-secondary); z-index:7 !important; background:transparent !important; box-shadow:none !important; border-radius:0 !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+#phone .kh-stuck.kh-bleed { margin-left:calc(-1 * var(--kh-padx)) !important; margin-right:calc(-1 * var(--kh-padx)) !important; padding-left:var(--kh-padx) !important; padding-right:var(--kh-padx) !important; }
+
 @media (prefers-reduced-motion: reduce) { #phone .pscreen .pbar::before, #phone .pscreen .pbar::after { transition:none; } }
 /* reduced transparency: a plain page-colour bar, no blur, no fade */
 @media (prefers-reduced-transparency: reduce) {
   #phone .kh-glass::before, #phone .pscreen .pbar::before { display:none; }
   #phone .kh-glass::after { background:var(--kh-bg, var(--bg-page)); bottom:calc(-1 * var(--kh-ext, 0px)); }
   #phone .pscreen .pbar::after { background:var(--bg-page); bottom:0; }
+  #phone .kh-glass.kh-has-stuck::after { bottom:calc(-1 * var(--kh-sext)); }
 }
 
 </style>
@@ -24818,13 +24924,9 @@ function khGlass(){
   if (!sc || Math.abs(sc.getBoundingClientRect().top - s.getBoundingClientRect().top) > 1) return;
   const top = ph.getBoundingClientRect().top, T = Math.round(h.getBoundingClientRect().top - top);
   const H = Math.round((rows.length ? rows[rows.length-1] : h).getBoundingClientRect().bottom - top) - T, X = T + H;
-  /* the minimized Kai call bar sits 4px under the header's bottom edge (5069 put it at 126 on tabs), and the scroller's padding makes
-     room for it instead of kai-call's .kb-gap spacer, which can land below blocks inserted after it */
-  const bar = scr.querySelector(".view > .callbar.kc-bar");
-  if (bar) bar.style.top = `${X + 4 - Math.round(bar.offsetParent.getBoundingClientRect().top - top)}px`;
-  sc.querySelectorAll(":scope > .kb-gap").forEach(g => { g.style.display = "none"; });
-  const P = X + (bar ? bar.offsetHeight + 8 : 0);
-  if (+sc.dataset.kh === P && h.classList.contains("kh-glass")) return;
+  const P = X;
+  if (!sc.dataset.khStick) { sc.dataset.khStick = 1; let q = 0; sc.addEventListener("scroll", () => { if (!q) q = requestAnimationFrame(() => { q = 0; khStick(h, sc); }); }, { passive:true }); }
+  if (+sc.dataset.kh === P && h.classList.contains("kh-glass")) return khStick(h, sc);
   if (sc.dataset.khBase === undefined) sc.dataset.khBase = parseFloat(getComputedStyle(sc).paddingTop);
   const last = rows.length ? rows[rows.length-1] : h;
   last.style.marginBottom = `${-X}px`;
@@ -24833,6 +24935,23 @@ function khGlass(){
   const bg = khBg(sc); if (bg) h.style.setProperty("--kh-bg", bg);
   /* important: some screens zero the scroller's padding with !important (hf-gap .body:has(> .swr)) */
   sc.style.setProperty("padding-top", `${+sc.dataset.khBase + P}px`, "important"); sc.style.scrollPaddingTop = `${P}px`; sc.dataset.kh = P;
+  khStick(h, sc);
+}
+/* Sticky tabs or chips under the header (Events, family pages): once a row is stuck at the header's edge, header and row read as one
+   bar, like an iOS navigation bar with a scope bar or a Material top app bar with tabs. The row drops its own fill, inset and corners
+   and runs edge to edge; the header's glass extends down to the row's bottom hairline (--kh-sb) and fades out just under it. */
+function khStick(h, sc){
+  const top = document.getElementById("phone").getBoundingClientRect().top, edge = top + (+sc.dataset.kh || 0);
+  const pad = getComputedStyle(sc).paddingLeft, scw = sc.getBoundingClientRect().width;
+  let sb = 0;
+  sc.querySelectorAll("*").forEach(e => { const cs = getComputedStyle(e); if (cs.position !== "sticky" || cs.top === "auto") return;
+    const r = e.getBoundingClientRect(), stuck = r.height > 0 && sc.scrollTop > 0 && Math.abs(r.top - edge - parseFloat(cs.top)) <= 1;
+    /* runs edge to edge: only rows inset by the scroller's padding get pulled out (family bars already span it) */
+    if (!e.classList.contains("kh-stuck")) { e.classList.toggle("kh-bleed", r.width < scw - 1); e.style.setProperty("--kh-padx", pad); }
+    e.classList.toggle("kh-stuck", stuck);
+    if (stuck) sb = Math.max(sb, Math.round(r.bottom - top)); });
+  h.classList.toggle("kh-has-stuck", !!sb);
+  if (sb) { h.style.setProperty("--kh-sb", `${sb}px`); h.style.setProperty("--kh-sext", `${sb - Math.round(h.getBoundingClientRect().bottom - top)}px`); }
 }
 const _khRender = render;
 render = function(){ const r = _khRender.apply(this, arguments); khGlass(); requestAnimationFrame(khGlass); return r; };
@@ -24840,8 +24959,303 @@ let khQ = 0;
 new MutationObserver(() => { if (!khQ) khQ = requestAnimationFrame(() => { khQ = 0; khGlass(); }); }).observe(document.getElementById("phone"), { childList:true, subtree:true });
 
 </script>
+<style>
+/* ==== KAI CALL BAR AT THE BOTTOM (Apoorv 2 Oct 02:53), with kai-callbar-bottom.js. Black glass so it stands out from the app; no Kai
+   mark of its own: the nav's Kai disc overlaps its bottom edge and stands in as its avatar (common region). Loads after kai-call.css. ==== */
+.callbar.kc-bar.kb-bottom { top:auto !important; bottom:var(--kb-bottom, 12px); z-index:30; padding:6px 6px 12px 14px;
+  --kb-ink:var(--component-callbar-ink, #F9FAFC); --kb-ground:var(--component-callbar-bg, #0B0E11); --kb-ctl:var(--component-call-control-bg, #F9FAFC24);
+  background:color-mix(in srgb, var(--kb-ground) 88%, transparent); -webkit-backdrop-filter:blur(24px) saturate(1.4); backdrop-filter:blur(24px) saturate(1.4);
+  box-shadow:0 8px 24px rgba(11,14,17,.24), 0 1px 3px rgba(11,14,17,.16); }
+/* under the bottom nav (z 10) so the Kai disc sits on top of it; the text stops short of the disc */
+.callbar.kc-bar.kb-bottom.kb-nav { z-index:9; padding-bottom:26px; }
+.callbar.kc-bar.kb-bottom .kb-st { color:color-mix(in srgb, var(--kb-ink) 78%, transparent); }
+.callbar.kc-bar.kb-bottom .kb-snip { margin:2px 8px 0 0; }
+.view > .body > .kb-tail { flex:0 0 auto; }
+.view > .kb-dock { position:static; height:0; margin:0; padding:0; }
+/* the named "Open the call with Kai" button is the bar's own size, so a screen reader's or keyboard's focus lands on the visible bar */
+.callbar.kc-bar.kb-bottom .kb-open { position:absolute; inset:0; width:auto; height:auto; z-index:1; border-radius:inherit; cursor:pointer; }
+.callbar.kc-bar.kb-bottom .kb-open::after { content:none; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-e5fc";
+/* ==== KAI CALL BAR AT THE BOTTOM (Apoorv 2 Oct 02:53: "black translucent, so that it stands out ... show it at the bottom ...
+   remove the kai avatar, coz the kai button in the bottom nav will feel like the avatar. have the button overlap this minimized
+   module"). Loads after kai-call.js and translucent-header.js. Docks the minimized call bar 4px above the bottom nav, under the nav's
+   Kai disc; with no nav it sits 8px above whatever is docked at the bottom (a composer), else 12px off the bottom edge. ==== */
+STATE.kbLook = "dark";
+callBarHTML = function() {
+  const who = typeof MO_SIG!=="undefined" ? MO_SIG.who : "idle";
+  return `<div class="callbar kc-bar kb-dark kb-bottom" role="group" aria-label="Call with Kai" data-kc="KeyCallBar" data-kv="look=dark, dock=bottom, state=${STATE.callMuted?"muted":"live"}, transcript=2"><canvas class="mo-mini" width="36" height="36" aria-hidden="true"></canvas>
+    <div class="kb-row"><div class="cbm"><b>Kai · <span data-timer>${fmt(STATE.callSeconds)}</span></b><span class="kb-st" data-kbst aria-live="polite">${STATE.callMuted?"Muted":KC_ST_TXT[who]||"Your turn"}</span></div>
+    <button class="kb-open" data-expand aria-label="Open the call with Kai"></button>
+    <button class="kc-sb${STATE.callMuted?" on":""}" data-cmute aria-pressed="${!!STATE.callMuted}" aria-label="Mute">${kcI(STATE.callMuted?"micoff":"mic",20)}</button><button class="kc-sb end" data-cend aria-label="End call">${kcI("end",20)}</button></div>
+    <p class="kb-snip" data-kbsnip data-kc="KeyLiveTranscript" data-kv="lines=2">${kcQ(kcSnip())}</p></div>`;
+};
+// what is docked at the bottom of the screen besides the scroller: a composer or an action bar, never the page's own scroller
+function kbDock(view) {
+  const vb = view.getBoundingClientRect().bottom;
+  return [...view.querySelectorAll(":scope > *, :scope > .body > *, :scope > * > .ks-comp")].find(e => {
+    if (e.classList.contains("callbar") || e.classList.contains("kb-tail") || !e.offsetHeight) return false;
+    const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+    return r.height < 220 && Math.abs(r.bottom - vb) < 3 && (/absolute|fixed|sticky/.test(cs.position) || e.parentElement === view);
+  });
+}
+function kbPlace() {
+  const view = phone.querySelector(".screen > .view"), bar = view && view.querySelector(".callbar.kc-bar"); if (!bar) return;
+  // a static wrapper keeps the bar out of reach of any header code that sizes for ".view > .callbar" (translucent-header.js pads the
+  // scroller top and sets the bar's top for it); the bar still positions against .view
+  if (bar.parentElement === view) { const d = document.createElement("div"); d.className = "kb-dock"; view.prepend(d); d.append(bar); bar.style.removeProperty("top"); }
+  const vr = view.getBoundingClientRect(), nav = phone.querySelector(".screen > .nav"), dock = !nav || !nav.offsetHeight ? kbDock(view) : null;
+  const edge = nav && nav.offsetHeight ? nav.getBoundingClientRect().top - 4 : dock ? dock.getBoundingClientRect().top - 8 : vr.bottom - 12;
+  bar.classList.toggle("kb-nav", !!(nav && nav.offsetHeight));
+  bar.style.setProperty("--kb-bottom", `${Math.round(vr.bottom - edge)}px`);
+  const body = view.querySelector(":scope > .body"); if (!body) return;
+  body.querySelectorAll(":scope > .kb-gap").forEach(g => g.remove()); // kai-call's spacer was for a bar at the top
+  let tail = body.querySelector(":scope > .kb-tail");
+  if (!tail) { tail = document.createElement("div"); tail.className = "kb-tail"; tail.setAttribute("aria-hidden", "true"); body.append(tail); }
+  tail.style.height = `${bar.offsetHeight + 8}px`; // the last row can scroll clear of the bar
+}
+const _kbPortWire = portWire;
+portWire = function() { _kbPortWire.apply(this, arguments); kbPlace(); requestAnimationFrame(kbPlace); }; // again once the nav has settled
+
+</script>
+<style>
+/* Events' KeyTabs as buttons (events-tabs.js): the look of events.css's .evx-tabs div rules without native button chrome, at least 44 high.
+   Short labels (Past, About) reach 44 wide through a hit area that runs half the 20-22 gap either side. The focus ring sits on the label inside the button, so the host Manage strip's scroller doesn't clip it */
+#phone .evx-tabs > button[role="tab"] { -webkit-appearance:none; appearance:none; background:none; border:0; border-bottom:2px solid transparent; border-radius:0; margin:0 0 -1px; padding:0; min-height:44px; box-sizing:border-box; position:relative; display:inline-flex; align-items:center; flex:none; font:inherit; font-size:14px; color:var(--ink3); cursor:pointer; white-space:nowrap; }
+#phone .evx-tabs > button[role="tab"]::after { content:""; position:absolute; inset:0 -10px; }
+#phone .evx-tabs > button[role="tab"].on { color:var(--ink); font-weight:800; border-bottom-color:var(--ink); }
+#phone .evx-hi .evx-tabs > button[role="tab"] { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-tertiary); }
+#phone .evx-hi .evx-tabs > button[role="tab"].on { color:var(--text-primary); border-bottom-color:var(--text-primary); }
+#phone .evx-tabs > button[role="tab"]:focus { outline:none; }
+#phone .evx-tabs > button[role="tab"]:focus-visible > span { outline:var(--border-width-focus) solid currentColor; outline-offset:2px; border-radius:var(--radius-absolute-4); }
+/* The calendar's Manage strip (Requests · N, Events, People, Settings) is 312 wide in the 288 column at 320. It scrolls to the screen edge
+   like the host's Manage, and its hairline stays inside the gutter as a background, so nothing changes where it fits */
+#phone .evx-hi .evx-tabs:has(> [data-evctab]) { overflow-x:auto; scrollbar-width:none; margin-left:calc(var(--space-absolute-16) * -1); margin-right:calc(var(--space-absolute-16) * -1); padding:0 var(--space-absolute-16); border-bottom:0; background:linear-gradient(var(--border-default), var(--border-default)) var(--space-absolute-16) 100% / calc(100% - var(--space-absolute-16) * 2) 1px no-repeat, var(--bg-page); }
+#phone .evx-hi .evx-tabs:has(> [data-evctab])::-webkit-scrollbar { display:none; }
+#phone .evx-hi .evx-tabs:has(> [data-evctab]) > button[role="tab"] { margin-bottom:0; }
+
+</style>
+<script>
+/* ==== EVENTS TABS (2 Oct, events thread; Kai auditor finding): Events' KeyTabs were divs 42 high with no role (For you / My events
+   at 59x42 and 81x42; the calendar page, its Manage and the host's Manage draw the same strip). Each strip becomes a tablist of real
+   <button role="tab">, at least 44 high, with aria-selected and a roving tabindex, and the pane under it a tabpanel. A button keeps
+   its div's attributes, classes and text, and this runs ahead of the wiring after every render, so events.js binds to it as before.
+   Left, Right, Home and End move between tabs; Enter or Space picks one, and focus comes back to the picked tab after the redraw.
+   A strip that scrolls (both Manage strips at 320) keeps the picked tab in view; the redraw used to scroll it back out.
+   Load last, after events.js. ==== */
+(function(){
+  const NAMES = { evseg:"Events", evcpt:"Calendar", evctab:"Manage calendar", evmtab:"Manage event" };
+  let seq = 0, refocus = null;
+  function tablists(){
+    phone.querySelectorAll(".evx-tabs:not([role])").forEach(list => {
+      const divs = [...list.children].filter(d => d.tagName === "DIV"); if (!divs.length) return;
+      const key = Object.keys(divs[0].dataset).find(k => NAMES[k]); const n = ++seq;
+      const pane = list.nextElementSibling && list.nextElementSibling.classList.contains("evx-pane") ? list.nextElementSibling : null;
+      list.setAttribute("role", "tablist"); if (key) list.setAttribute("aria-label", NAMES[key]);
+      if (pane) { pane.id = "evpane" + n; pane.setAttribute("role", "tabpanel"); }
+      divs.forEach((d, i) => {
+        const b = document.createElement("button"); b.type = "button";
+        [...d.attributes].forEach(a => b.setAttribute(a.name, a.value));
+        const on = d.classList.contains("on");
+        b.id = "evtab" + n + "-" + i; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1;
+        if (pane) { b.setAttribute("aria-controls", pane.id); if (on) pane.setAttribute("aria-labelledby", b.id); }
+        const s = document.createElement("span"); while (d.firstChild) s.appendChild(d.firstChild); b.appendChild(s);
+        d.replaceWith(b);
+      });
+      if (!list.querySelector('[aria-selected="true"]')) list.querySelector('[role="tab"]').tabIndex = 0;
+    });
+  }
+  const _etWire = portWire;
+  portWire = function(){
+    tablists();
+    _etWire.apply(this, arguments);
+    phone.querySelectorAll('.evx-tabs[role="tablist"]').forEach(l => {
+      const t = l.querySelector('[aria-selected="true"]'); if (!t || l.scrollWidth <= l.clientWidth) return;
+      const lr = l.getBoundingClientRect(), tr = t.getBoundingClientRect();
+      if (tr.right > lr.right) l.scrollLeft += tr.right - lr.right + 16; else if (tr.left < lr.left) l.scrollLeft -= lr.left - tr.left + 16;
+    });
+    if (refocus) { const t = phone.querySelector(`.evx-tabs > [${refocus}].on`); refocus = null; if (t) t.focus({ preventScroll:true }); }
+  };
+  document.addEventListener("click", e => {
+    const t = e.target.closest && e.target.closest('#phone .evx-tabs > [role="tab"]');
+    if (t && e.detail === 0) refocus = "data-" + Object.keys(t.dataset).find(k => NAMES[k]);
+  }, true);
+  document.addEventListener("keydown", e => {
+    const t = e.target.closest && e.target.closest('#phone .evx-tabs > [role="tab"]'); if (!t) return;
+    const tabs = [...t.parentNode.querySelectorAll(':scope > [role="tab"]')], i = tabs.indexOf(t);
+    const j = { ArrowRight:i + 1, ArrowLeft:i - 1, Home:0, End:tabs.length - 1 }[e.key]; if (j === undefined) return;
+    e.preventDefault();
+    const next = tabs[(j + tabs.length) % tabs.length];
+    tabs.forEach(x => x.tabIndex = x === next ? 0 : -1); next.focus();
+  });
+})();
+
+</script>
+<script>
+/* ==== EVENTS: PEOPLE COUNTS UNDER FIVE (2 Oct, events thread; Kai auditor finding): member surfaces never say how many people are
+   going or went when it's under five (Family hides its own counts the same way). An event card drops "3 going" and keeps
+   "1 to meet"; the event page's going row reads "See who's going" over its faces, without "and N others"; the who's-going page is
+   titled "Who's going" without "+N more"; a calendar's past events drop "3 went", and its "Rahul, Maya and 4 more you know follow"
+   reads "and others you know follow". The host's Manage, door, insights and sheets keep their counts (organizer only).
+   Load after events.js. ==== */
+(function(){
+  const small = n => +n < 5;
+  const _ecStatus = evStatus;
+  evStatus = function(e){ const s = _ecStatus.apply(this, arguments); return e && !e.past && small(e.going) ? s.replace(/^\d+ going(?: · )?/, "") : s; };
+  const _ecDetail = sEventDetail;
+  sEventDetail = function(){
+    return _ecDetail.apply(this, arguments).replace(/(<div class="evt-going"[^>]*>[\s\S]*?<b>)(\d+) (going|went)<\/b>(<span>[^<]*<\/span>)?/,
+      (m, head, n, w) => small(n) ? `${head}${w === "went" ? "See who went" : "See who's going"}</b>` : m);
+  };
+  const _ecGuests = evGuestList;
+  evGuestList = function(id){
+    const h = _ecGuests.apply(this, arguments), e = evE(id); if (!e || !small(e.going)) return h;
+    return h.replace(/<div class="t">\d+ (going|went)<\/div>/, (m, w) => `<div class="t">${w === "went" ? "Who went" : "Who's going"}</div>`).replace(/<div class="evt-more-n">\+\d+ more<\/div>/, "");
+  };
+  const _ecPast = evCalPast;
+  evCalPast = function(){ return _ecPast.apply(this, arguments).replace(/ · (\d+) went<\/span>/g, (m, n) => small(n) ? "</span>" : m); };
+  const _ecFolk = evCalFolk;
+  evCalFolk = function(){ return _ecFolk.apply(this, arguments).replace(/ and (\d+) more you know/, (m, n) => small(n) ? " and others you know" : m); };
+})();
+
+</script>
+<style>
+/* Opportunity IA drop (2 Oct): the deciding facts sit right under the head; a receipt row without its kind keeps the row's height and lead */
+#phone.hf-mis .sc > .st + .mh-jf { margin:8px 0 4px; }
+#phone.hf-mis .sc .fr.mh-wr .m:not(:has(.k)) { justify-content:center; min-height:32px; }
+#phone.hf-mis .sc .fr.mh-wr.oi-row .mh-fi { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; line-height:0; }
+#phone.hf-mis .sc .who.big .avatar.oi-face { border:0; padding:0; font-family:inherit; cursor:pointer; }
+#phone.hf-mis .sc .who.big .avatar.oi-face:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; }
+#phone.hf-mis .sc > .nn + .mh-jf { margin:12px 0 8px; }
+
+</style>
+<script>
+/* ==== OPPORTUNITY IA (2 Oct, Apoorv 03:29: "audit the information architecture and priority mapping of information for every type of
+   opportunity to make sure the order we're presenting them in is the actually info arch pattern that matters to the user").
+   Loaded after every module. Same data, same handlers, same rows: this only reorders the opportunity sheet and page (scPathBody) so the
+   first screen carries what the member decides on, in order, and reference detail sits under it. Per kind:
+     role      what it is (title, company, pay, where, level) -> the way in (who vouches) -> the role itself -> where it came from -> apply
+     person    who they are -> what they want right now (the reason to act) -> how you reach them -> what you share
+     resource  what it is and how much -> who it's for -> how to get it -> where it came from
+     offer     what it is -> what's left -> why you -> where it came from
+   Cut on a new pick: the stage track ("Surfaced 1 of 5" says nothing before you act), History (one line, "nothing sent"), the route
+   sentence when a row already says it, the two-face route (no one in between), Equity "Included" and Fit when it restates the title.
+   Receipt rows lose their uppercase kind and the "Why Kai picked this" eyebrow: the sentence says it (his 03:21: plain words, no eyebrow
+   labels unless they earn it). A row says only what the title and subtitle don't (Kai auditor, 2 Oct). ==== */
+const oiOn = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
+/* the order of Kai's reasons, by what the member decides on first; anything unlisted keeps its place after the listed rows */
+const OI_ORDER = {
+  role:     ["Vouched","About the role","Shared","Source","Fit","Apply"],
+  person:   ["Open","Role","Connected","Vouched","Presence","Shared","Asked","Outside Key"],
+  resource: ["What","How","Why you","Source","Programme form"],
+  offer:    ["What","Left","Why you","Source"],
+  deal:     ["Posted","Why"],
+  ask:      ["Posted","Why"],
+  post:     ["Posted","Why"],
+};
+const OI_FACTS = ["Pay","Where","Level"];
+const OI_ICON = { Open:"handshake", Asked:"message-circle" };
+const oiKind = o => o.kind || (o.roleTitle ? "role" : "person");
+function oiRowKind(r){ const k = r.querySelector(".k"); if (k) return k.textContent.trim(); const f = r.querySelector("[data-fold]"); return f ? f.dataset.fold.split("|")[1] : ""; }
+/* a receipt row in the hi-fi's own markup (KeyFactRow lead=icon), for a reason the base filtered out */
+function oiRow(kind, text){
+  const ic = (typeof MH_WHY!=="undefined" && MH_WHY[kind]) || OI_ICON[kind] || "info";
+  return `<div class="fr mh-fr mh-wr oi-row" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI(ic,16)}</span><span class="m"><span class="b">${text}</span></span></div>`;
+}
+const _oiPathBody = scPathBody; scPathBody = function(id, asSheet){
+  const h = _oiPathBody(id, asSheet), o = DB.opps.find(x=>x.id===id);
+  if (!oiOn() || !o) return h;
+  const d = document.createElement("template"); d.innerHTML = h; const root = d.content.querySelector(".sc"); if (!root) return h;
+  const kind = oiKind(o), fresh = isNewOf(o) && ownerOf(o)==="you", t = targetOf(o), c = viaOf(o);
+  const j = typeof mhJob==="function" ? mhJob(o) : null, closed = !!(j && j.closed);
+  const head = root.querySelector(":scope > .who.big"), st = root.querySelector(":scope > .st");
+  const route = root.querySelector(":scope > .mh-route"), words = root.querySelector(":scope > .mh-rw");
+  const facts = root.querySelector(":scope > .mh-jf"), label = [...root.querySelectorAll(":scope > .sl")].find(l=>/Why Kai/.test(l.textContent));
+  let rows = label && label.nextElementSibling && label.nextElementSibling.classList.contains("rows") ? label.nextElementSibling : null;
+  /* 1. a new pick has no stage to track and no history to read: both appear once you act */
+  if (fresh) {
+    root.querySelectorAll(":scope > .stp").forEach(s=>{ const n = s.nextElementSibling; if (n && n.classList.contains("st")) n.remove(); s.remove(); });
+    root.querySelectorAll(':scope > .row[data-sctog^="hist:"]').forEach(r=>{ const n = r.nextElementSibling; if (n && n.classList.contains("rows") && !n.classList.contains("mh-why-rows")) n.remove(); r.remove(); });
+  }
+  /* 2. a person offering something is the face on the sheet, not the first letter of their own name */
+  if ((kind==="offer") && head && t && o.roleCompany===t.name) {
+    const av0 = head.querySelector(":scope > .avatar"); if (av0) av0.outerHTML = `<button type="button" class="avatar lg oi-face" data-profile="${t.id}" aria-label="Open ${t.name}'s profile">${t.initials}</button>`;
+    const sub = head.querySelector(".m12"); if (sub) sub.textContent = `${t.name} · ${t.title}, ${t.company}`;
+  }
+  /* 3. the posting's deciding facts (pay, where, level) sit under the head, before the route; equity "Included" and the date are reference */
+  if (facts) {
+    [...facts.children].forEach(cell=>{ const k = cell.querySelector(".k"); if (!k || !OI_FACTS.includes(k.textContent.trim())) cell.remove(); });
+    facts.setAttribute("data-kv", `layout=grid, cells=${facts.children.length}`);
+    const nn = root.querySelector(":scope > .nn");
+    if (facts.children.length < 2) facts.remove();
+    else if (!fresh && nn) nn.insertAdjacentElement("afterend", facts);
+    else if (st) st.insertAdjacentElement("afterend", facts); else if (head) head.insertAdjacentElement("afterend", facts);
+  }
+  /* 4. the route graph earns its place only when someone stands between you and the pick */
+  if (route) {
+    const hops = route.querySelectorAll(".mh-rn").length;
+    if (!c || kind==="resource" || kind==="offer" || hops < 3) route.remove();
+    else route.querySelectorAll(".mh-rn > b").forEach(b=>{ if (o.roleCompany && b.textContent.trim()===o.roleCompany) b.remove(); });
+  }
+  /* 5. the receipts: reorder by what you decide on, add what the base dropped, cut what restates the head, lose the uppercase kinds */
+  if (rows) {
+    const list = [...rows.children];
+    const kinds = list.map(oiRowKind);
+    /* a person's "Open to" line is the reason to act; the base filtered it out of the sheet */
+    const open = (o.receipts||[]).find(r=>r[0]==="Open");
+    if (open && kind==="person" && !kinds.includes("Open") && typeof mhFoldRow==="function") {
+      const line = `Open to ${open[1].charAt(0).toLowerCase()}${open[1].slice(1)}`;
+      const row = `<span class="mh-fi">${LI(OI_ICON.Open,16)}</span><span class="m"><span class="b">${line}</span></span>`;
+      const src = `<p class="mh-rd">Read from ${f1(t)}'s openness settings, which share openness and capacity only.</p>` + (typeof mhTellRow==="function" ? mhTellRow(line) : "");
+      rows.insertAdjacentHTML("afterbegin", mhFoldRow(`${id}|Open`, row, src)); list.unshift(rows.firstElementChild); kinds.unshift("Open");
+    }
+    const order = OI_ORDER[kind] || [];
+    const rank = i => { const k = order.indexOf(kinds[i]); return k < 0 ? order.length + i : k; };
+    list.map((el,i)=>[el,i]).sort((a,b)=>rank(a[1])-rank(b[1]) || a[1]-b[1]).forEach(([el])=>rows.appendChild(el));
+    [...rows.children].forEach(r=>{
+      const k = oiRowKind(r), b = r.querySelector(".b"); r.dataset.oiKind = k;
+      /* Fit restates the title on a role; the title is the fit */
+      if (kind==="role" && k==="Fit" && b && /Matches your (mission|mission)/.test(b.textContent)) { r.remove(); return; }
+      /* a closed role keeps only where it came from */
+      if (closed && k!=="Source") { r.remove(); return; }
+      /* what it is: only the part the title doesn't already say */
+      if (b && k==="What" && o.roleTitle) {
+        const tt = o.roleTitle.toLowerCase(); let v = b.textContent.trim();
+        if (v.toLowerCase().startsWith(tt)) v = v.slice(o.roleTitle.length).replace(/^\s*(for\s+)?/i, "");
+        else { const m = v.match(/^(.+?) for ([^.]+)\.\s*(.*)$/); if (m && m[1].toLowerCase().split(/\s+/).every(w=>tt.includes(w))) v = `${m[2]}. ${m[3]}`; }
+        b.textContent = v.charAt(0).toUpperCase() + v.slice(1);
+      }
+      /* no gendered pronouns in copy: the person's name, or none */
+      if (b) b.textContent = b.textContent.replace(/^Told Daniel he's hiring a PM lead$/, "Hiring a PM lead. Told Daniel").replace(/^Posted in #jobs: hiring senior PMs for a new product line$/, "Hiring senior PMs for a new product line, posted in #jobs").replace(/^You're starting a company and haven't raised$/, "You're starting a company").replace(/^Daniel recommended her in/, `Daniel recommended ${f1(t)} in`).replace(/ and posted it herself$/, " and posted it").replace(/^Daniel worked with him on/, `Daniel worked with ${f1(t)} on`).replace(/, her call$/, `, ${f1(t)}'s call`);
+      /* the Why you fold says which mission the reason comes from; the base cited the Senior PM intake line on every pick */
+      if (k==="Why you") { const m = DB.missions.find(x=>x.id===o.missionId), rd = r.querySelector(".mh-rx .mh-rd"); if (m && rd) rd.textContent = `From your ${m.name} mission${m.brief && !/^Kai is looking/.test(m.brief) ? `. ${m.brief.replace(/^Standing\.\s*/, "").split(/(?<=\.)\s/)[0]}` : ""}`; }
+      /* counts under five stay off member surfaces */
+      if (b && /^\d other Xooglers/.test(b.textContent)) b.textContent = b.textContent.replace(/^\d other/, "Other");
+      /* the sentence says the kind; the icon carries it. Named rows that open something keep their name */
+      if (!/^(About the role|Apply|Programme form)$/.test(k)) r.querySelectorAll(".mh-rf > .m > .k, :scope > .m > .k").forEach(e=>e.remove());
+    });
+    if (label) label.remove();
+    if (!rows.children.length) { rows.remove(); rows = null; }
+  }
+  /* 6. the route sentence stays only when no row says how you reach them */
+  if (words) { const said = rows && [...rows.children].some(r=>/^(Vouched|Connected|Presence|Source|What)$/.test(r.dataset.oiKind||"")); if (said || !route || !route.parentNode) words.remove(); }
+  /* 7. a closed role: what closed, what it was, and the way out. The facts grid is reference now */
+  if (closed) { if (facts && facts.parentNode) facts.remove(); if (route && route.parentNode) route.remove(); if (words && words.parentNode) words.remove(); }
+  return d.innerHTML;
+};
+/* the ask sheets name the person, never a pronoun (no gendered pronouns in copy) */
+const _oiAsk = askSheet; askSheet = function(id){
+  let h = _oiAsk(id); const o = DB.opps.find(x=>x.id===id); if (!oiOn() || !o) return h;
+  const t = targetOf(o), c = viaOf(o);
+  /* the draft to the connector carried Kai's own "Not on Key" note as the reason; the reason is what the person wants */
+  h = h.replace(/\? Not on Key\. [^.]*\. /, `? I heard ${f1(t)} is hiring a PM lead, and that's exactly what I'm looking for. `).replace(/ her infra work is exactly the shape I need/g, ` ${f1(t)}'s infra work is exactly the shape I need`);
+  return h.replace(/ forwards it if he says yes/g, ` forwards it on a yes`).replace(/ · he forwards it over WhatsApp/g, " · forwards it over WhatsApp").replace(/ sends your note from his own phone, so nothing lands here until he or you tell Kai\. Kai asks him on day 7\./g, ` sends your note from ${f1(c||t)}'s own phone, so nothing lands here until ${f1(c||t)} or you tell Kai. Kai checks with ${f1(c||t)} on day 7.`).replace(/Informal: her call, no form/g, `No form. ${f1(t)} decides`).replace(/A programme with a form: Kai fills/g, "A programme with a form. Kai fills");
+};
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-fa99";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
