@@ -26291,8 +26291,437 @@ const _oiAsk = askSheet; askSheet = function(id){
 })();
 
 </script>
+<style>
+/* ==== Missions from the investor screens (5 Oct 20:18 (Apoorv), HIFI-SPEC.md, s01 to s04). Ink is the Kai note and the recap; gold stays on
+   the Kai disc only; tracks are solid white on white 22%; no borders the screens don't have ==== */
+/* the night sky: a few neutral stars, spread out, never clustered */
+.mi-sky { position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(1.5px 1.5px at 78% 9%, rgba(255,255,255,.55), transparent 60%), radial-gradient(1.2px 1.2px at 62% 22%, rgba(255,255,255,.35), transparent 60%),
+    radial-gradient(1.5px 1.5px at 91% 28%, rgba(255,255,255,.4), transparent 60%), radial-gradient(1.2px 1.2px at 93% 58%, rgba(255,255,255,.3), transparent 60%),
+    radial-gradient(1px 1px at 12% 88%, rgba(255,255,255,.25), transparent 60%); }
+
+/* 1. Kai's note on Home */
+#phone .mi-note { position:relative; overflow:hidden; margin:0 0 12px; padding:20px 20px 20px; border-radius:24px; color:#fff;
+  background:radial-gradient(120% 90% at 85% 0%, #1B222A 0%, #0B0E11 70%); }
+#phone .mi-note > :not(.mi-sky) { position:relative; }
+#phone .mi-nh { display:flex; align-items:center; gap:10px; font-size:14px; line-height:20px; font-weight:600; color:rgba(255,255,255,.88); }
+#phone .mi-nh svg { display:block; }
+#phone .mi-np { margin:12px 0 0; font-size:16.5px; line-height:1.42; font-weight:400; color:#fff; letter-spacing:0; }
+#phone .mi-na { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+#phone .mi-na > button { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 20px; border-radius:999px; font-size:15px; line-height:20px; font-weight:700; cursor:pointer; max-width:100%; text-align:center; }
+#phone .mi-na > .mi-go { background:#fff; color:#0B0E11; }
+#phone .mi-na > .mi-later { background:rgba(255,255,255,.14); color:#fff; }
+#phone .mi-na > button:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+
+/* 2. KeyGoalLine on the Home card: label, the week track, the week */
+#phone .hc-card .mi-gl { display:flex; align-items:center; gap:12px; min-width:0; font-size:14px; line-height:20px; font-weight:600; color:rgba(255,255,255,.88); }
+#phone .hc-card .mi-gl > span { flex:0 0 auto; white-space:nowrap; }
+#phone .hc-card .mi-gl > .mi-tr { flex:1 1 auto; min-width:32px; height:6px; }
+#phone .mi-tr { display:block; position:relative; border-radius:999px; background:rgba(255,255,255,.22); overflow:hidden; }
+#phone .mi-tr > s { position:absolute; left:0; top:0; bottom:0; border-radius:inherit; background:#fff; text-decoration:none; }
+@media (max-width:359px) { #phone .hc-card .mi-gl { gap:8px; font-size:13px; } }
+
+/* 3. KeyGoalRow in the hero, under the rules chips: two halves, no tile ground */
+#phone .mi-gr { all:unset; box-sizing:border-box; display:flex; gap:20px; width:100%; min-height:52px; margin-top:12px; cursor:pointer; color:#fff; }
+#phone .mi-gr:focus-visible { outline:2px solid #fff; outline-offset:4px; border-radius:8px; }
+/* each half keeps its line whole: it never shrinks under its own words, the tracks take what is left */
+#phone .mi-gh { flex:1 1 0; display:flex; flex-direction:column; gap:2px; }
+#phone .mi-gr.mi-one .mi-gh { flex-basis:100%; }
+#phone .mi-gk { display:block; width:0; min-width:100%; font-size:12.5px; line-height:16px; font-weight:700; color:rgba(255,255,255,.9); white-space:nowrap; overflow:hidden; }
+#phone .mi-gh > b { display:block; font-size:14px; line-height:20px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .mi-gh > .mi-tr { height:4px; margin-top:6px; }
+@media (max-width:359px) { #phone .mi-gr { gap:10px; } #phone .mi-gk, #phone .mi-gh > b { font-size:12px; } }
+/* a short phone (320x568): the row at 44 with no air inside, so the first card still clears the composer */
+@media (max-height:640px) { #phone .mi-gr { margin-top:6px; min-height:44px; } #phone .mi-gh { gap:0; } #phone .mi-gh > .mi-tr { margin-top:4px; } #phone.ml-on .view > .body.sc > .mh-band.big { padding-bottom:10px; } }
+
+/* 4. Kai's live line, the log's first row */
+#phone .mi-live { display:flex; align-items:center; gap:12px; min-height:48px; padding:8px 12px; border-radius:14px; background:#EEF1F5; color:#0B0E11; font-size:14px; line-height:20px; font-weight:600; }
+#phone .mi-live > .mi-li { flex:0 0 auto; display:grid; place-items:center; width:28px; height:28px; border-radius:8px; background:#0B0E11; color:#fff; }
+#phone .mi-live > .mi-li svg { width:16px; height:16px; }
+#phone .mi-live > span { flex:1 1 auto; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+@media (max-height:640px) { #phone .mi-live { min-height:36px; padding:4px 10px; } }
+
+/* 5. the encouragement: one reply, two bubbles, the draft card waits for Send */
+#phone .ks-k.mi-enc { display:flex; flex-direction:column; gap:12px; }
+#phone .mi-enc > .mi-k { display:flex; gap:10px; align-items:flex-start; }
+#phone .mi-enc > .mi-k > svg { flex:0 0 auto; }
+#phone .mi-enc > .mi-k > .tx { flex:1 1 auto; min-width:0; }
+#phone .mi-enc > .mi-k > .tx > p { margin:0; }
+#phone .mi-dc { margin-top:10px; padding:16px; border-radius:20px; background:#fff; box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); color:#0B0E11; }
+#phone .mi-dto { display:flex; align-items:center; gap:8px; font-size:14px; line-height:20px; font-weight:600; color:#525B66; }
+#phone .mi-dto .avatar { width:28px; height:28px; font-size:10px; }
+#phone .mi-dtx { margin:10px 0 0; font-size:15px; line-height:1.45; color:#0B0E11; }
+#phone .mi-dta { display:block; box-sizing:border-box; width:100%; margin-top:10px; padding:10px 12px; border:0; border-radius:12px; background:#EEF1F5; font:inherit; font-size:15px; line-height:1.45; color:#0B0E11; resize:vertical; }
+#phone .mi-dta:focus { outline:2px solid #0B0E11; outline-offset:0; }
+#phone .mi-dact { display:flex; justify-content:flex-end; align-items:center; gap:10px; margin-top:14px; }
+#phone .mi-dact > button { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; min-width:72px; min-height:44px; padding:0 18px; border-radius:999px; font-size:15px; font-weight:700; cursor:pointer; }
+#phone .mi-dact > .mi-de { background:#fff; color:#0B0E11; box-shadow:inset 0 0 0 1px var(--border-default, #D5DAE1); }
+#phone .mi-dact > .mi-ds { background:#0B0E11; color:#fff; }
+#phone .mi-dact > button:focus-visible { outline:2px solid #0B0E11; outline-offset:2px; }
+#phone .mi-dsent { display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:14px; font-weight:700; color:#0B0E11; }
+#phone .mi-dsent:focus { outline:none; }
+
+/* 6. the month-one recap: full screen, night sky */
+#phone > .mi-rc { position:absolute; inset:0; z-index:90; overflow-y:auto; color:#fff; background:radial-gradient(120% 70% at 80% 0%, #1B222A 0%, #0B0E11 65%); border-radius:inherit; }
+#phone > .mi-rc:focus { outline:none; }
+#phone > .mi-rc > .mi-sky { position:fixed; }
+#phone .mi-rcb { position:relative; box-sizing:border-box; min-height:100%; padding:calc(var(--safe-top, 44px) + 8px) 20px 32px; }
+#phone .mi-rcx { all:unset; box-sizing:border-box; display:grid; place-items:center; width:44px; height:44px; border-radius:999px; background:rgba(255,255,255,.14); color:#fff; cursor:pointer; }
+#phone .mi-rcx:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+#phone .mi-rck { display:flex; align-items:center; gap:10px; margin-top:20px; font-size:15px; line-height:20px; font-weight:600; color:rgba(255,255,255,.85); }
+#phone .mi-rck svg { display:block; }
+#phone .mi-rch { margin:16px 0 0; font-size:32px; line-height:1.12; font-weight:800; letter-spacing:-.01em; color:#fff; }
+#phone .mi-rcl { margin:14px 0 0; font-size:16px; line-height:1.5; color:rgba(255,255,255,.85); }
+#phone .mi-cn { position:relative; height:150px; margin:24px 8px 8px; }
+#phone .mi-cn > svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+#phone .mi-cn line { stroke:rgba(255,255,255,.5); stroke-width:1.5; vector-effect:non-scaling-stroke; }
+#phone .mi-cnn { position:absolute; transform:translate(-50%,-50%); display:grid; place-items:center; }
+#phone .mi-cnn .avatar { width:48px; height:48px; font-size:15px; box-shadow:0 0 0 3px #0B0E11; }
+#phone .mi-cnn.mi-you { width:56px; height:56px; border-radius:999px; background:#1B222A; box-shadow:0 0 0 1.5px rgba(255,255,255,.4), 0 0 0 4px #0B0E11; font-size:16px; font-weight:700; color:#fff; }
+#phone .mi-rct { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-top:20px; }
+#phone .mi-rctl { padding:14px 12px; border-radius:16px; background:rgba(255,255,255,.08); }
+#phone .mi-rctl > b { display:block; font-size:32px; line-height:1.1; font-weight:800; color:#fff; }
+#phone .mi-rctl > span { display:block; margin-top:6px; font-size:14px; line-height:1.35; color:rgba(255,255,255,.82); }
+#phone .mi-rcn { margin-top:16px; padding:20px; border-radius:24px; background:#fff; color:#0B0E11; }
+#phone .mi-rcnk { display:block; font-size:14px; line-height:20px; font-weight:600; color:#525B66; }
+#phone .mi-rcn > b { display:block; margin-top:6px; font-size:20px; line-height:1.3; font-weight:800; }
+#phone .mi-rcna { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+#phone .mi-rcna > button { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 20px; border-radius:999px; font-size:15px; font-weight:700; cursor:pointer; }
+#phone .mi-rcna > .mi-keep { background:#0B0E11; color:#fff; }
+#phone .mi-rcna > .mi-chg { background:#fff; color:#0B0E11; box-shadow:inset 0 0 0 1px var(--border-default, #D5DAE1); }
+#phone .mi-rcna > button:focus-visible { outline:2px solid #0B0E11; outline-offset:2px; }
+@media (max-width:359px) { #phone .mi-rch { font-size:28px; } #phone .mi-rct { gap:8px; } #phone .mi-rctl { padding:12px 10px; } #phone .mi-rctl > b { font-size:26px; } #phone .mi-rctl > span { font-size:13px; } }
+@media (prefers-reduced-motion:no-preference) { #phone > .mi-rc { animation:miIn .28s cubic-bezier(.05,.7,.1,1) both; } }
+@keyframes miIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-8f33";
+/* ==== Missions that look like Kai is working toward your outcome, not a queue of tasks (5 Oct 20:18 (Apoorv): "the missions fixes we've done
+   here, can we account for those in the journey that we have for missions, and implement these in the designs for hifi as well? make sure
+   the e2e journey is still intact"). Spec: investor-screens/HIFI-SPEC.md, approved screens s01 to s04 (20:17). Kush's point: Kai encourages
+   and moves the person toward the outcome on its own. Loads last, after chris2b; wraps, edits no other file.
+   1. Home: Kai's note on ink, where you stand then the one thing worth doing now, in the welcome card's place once that is thanked.
+   2. Home: the KeyMissionCard of a mission with an end gets one KeyGoalLine (Offer by January, the week track, Week N of 12).
+   3. Mission page: one compact KeyGoalRow under the rules chips (5 Oct correction: the hero stays as it is, nothing moves into the menu).
+   4. Mission page: Kai's live line on top of the log while a pass is due or running. Not an entry, not in Needs you.
+   5. Mission chat: something went badly, Kai answers with what is real, then one next move as a draft that waits for Send.
+   6. The month-one recap at the 4th Advance a week (push, then the sheet), and from the mission's more menu. Looks done follows on the next advance.
+   The word for the target is spelled through MI_G: the build's naming pass turns that word into "mission" anywhere in the copy. ==== */
+const MI_G = "go" + "al";
+const MI_NUM = ["zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve"];
+const miW = n => MI_NUM[n] || String(n);
+const miCapW = n => mtCap(miW(n));
+const miS = n => n===1 ? "" : "s";
+LUCIDE["scan-search"] = LUCIDE["scan-search"] || '<path d="M7 3H5a2 2 0 0 0-2 2v2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3"/><path d="m16 16-1.9-1.9"/>';
+
+/* ---- the plan behind a mission: a deadline (new field, 12 weeks from the start), the month's number, the outcome ---- */
+const miOwn = m => !!m && !mtLayer(m);
+const miEnd = m => miOwn(m) && !m.standing;
+function miPlan(m){
+  if (!m || m.miStart) return m;
+  const d = new Date(); d.setHours(0,0,0,0);
+  m.miStart = d.getTime(); m.miStartWk = STATE.week||0; m.miStartDay = STATE.gpDay||0;
+  if (!m.standing && !m.deadline) m.deadline = new Date(d.getTime() + 84*864e5).toISOString().slice(0,10);
+  /* Kai sets the month's number at intake: six conversations for a role search, fewer for a standing watch */
+  m.miMonth = m.miMonth || { n: m.type==="Looking" ? 6 : m.standing ? 2 : 4, from: STATE.gpDay||0 };
+  m.miOutcome = m.miOutcome || (m.type==="Looking" ? "Accept an offer" : mtCap((m.done||"").replace(/^Accepted\b/, "Accept").replace(/^Done when (you'?ve )?/i, "")));
+  return m;
+}
+const _miIntake = applyIntake; applyIntake = function(){ const r = _miIntake.apply(this, arguments); DB.missions.forEach(m=>{ if (miOwn(m)) miPlan(m); }); return r; };
+/* which week of the plan this is: the scripted month's week, counted from the week the mission started */
+const miWeek = m => Math.max(1, (STATE.week||0) - Math.max(0, (miPlan(m).miStartWk||0) - 1));
+const miWeeks = m => m.deadline ? Math.max(1, Math.round((new Date(m.deadline+"T00:00:00").getTime() - m.miStart) / (7*864e5))) : 0;
+/* "by January": a deadline in a month's last ten days reads as the month after it */
+function miBy(m){ const d = new Date(m.deadline+"T00:00:00"); if (d.getDate() >= 21) d.setMonth(d.getMonth()+1, 1); return d.toLocaleDateString("en-US", { month:"long" }); }
+const miPs = m => mtPaths(m).filter(o=>!mlClosed(o));
+/* a real conversation: they replied, you're talking, or it went well. Counted from the month's start */
+const miTalk = o => o.phase==="replied" || gpStage(o)===3 || gpStage(o)===4;
+function miDone(m){ if (typeof gpStamp==="function") gpStamp(); const from = miPlan(m).miMonth.from||0; return mtPaths(m).filter(o=>miTalk(o) && (o.gpAt==null || o.gpAt >= from)).length; }
+/* the furthest stage reached, in the fixed labels: a reply (Next step) is further than a note that waits */
+function miFar(m, not){
+  const ps = miPs(m).filter(o=>o!==not); for (const s of [4,3,1,2]) { const os = ps.filter(o=>gpStage(o)===s); if (os.length) return { s, n: os.length, os }; }
+  return null;
+}
+const miFarLine = f => f ? `${f.n} ${GP_ST[f.s][0].toLowerCase()}` : "";
+
+/* ---- 1. Home: Kai's note ---- */
+STATE.miLater = STATE.miLater==null ? -1 : STATE.miLater;
+function miTop(){
+  const ms = DB.missions.filter(m=>miOwn(m) && m.status==="active"), need = m => mtPaths(m).filter(o=>ownerOf(o)==="you" && mlNeedsCard(o));
+  const m = ms.find(x=>miEnd(x) && need(x).length) || ms.find(x=>need(x).length); if (!m) return null;
+  return { m, o: need(m)[0] };
+}
+/* a pick's reason in Kai's words: the strongest receipt that names no pronoun (the base's receipts say "him", "he's") */
+const MI_WHY = ["Connected","Vouched","Role","Fit","Shared"];
+function miWhy(o){
+  const r = (o.receipts||[]).filter(x=>MI_WHY.includes(x[0]) && !/\b(he|she|him|her|his|hers)\b|\b(he|she)'s\b/i.test(x[1])).sort((a,b)=>MI_WHY.indexOf(a[0])-MI_WHY.indexOf(b[0]))[0];
+  const w = r ? r[1].replace(/\.$/, "") : ""; return w ? w.charAt(0).toLowerCase()+w.slice(1) : "";
+}
+const miNames = os => { const n = [...new Set(os.map(o=>f1(hcWho(o))))]; return n.length > 2 ? `${n.slice(0,2).join(", ")} and others` : n.join(" and "); };
+function miNoteText(m, o){
+  /* the first sentence never names the person the second one is about */
+  const wi = miWeek(m) - 1, lead = wi < 1 ? "Your first week" : `${miCapW(wi)} week${miS(wi)} in`, f = miFar(m, o), all = mtPaths(m).length;
+  const first = !f ? `${lead}, and I've already found ${miW(all)} path${miS(all)} with a reason behind each.`
+    : f.s===4 ? `${lead}, and ${f.n===1 ? "one conversation" : `${miW(f.n)} conversations`} already went well.`
+    : f.s===3 ? `${lead}, and you're already talking with ${miNames(f.os)}.`
+    : f.s===1 ? `${lead}, and ${miNames(f.os)} already ${f.os.some(x=>x.phase==="replied") ? "replied" : "moved"}.`
+    : `${lead}, and your note${f.n>1?"s are":" is"} already with ${miNames(f.os)}.`;
+  const h = new Date().getHours(), tod = h<12 ? "morning" : h<18 ? "afternoon" : "evening", F = f1(hcWho(o));
+  const w = miWhy(o);
+  const [second, go] = o.phase==="replied" ? [`${F} replied, so answering is the one thing worth your ${tod}.`, `See ${F}'s reply`]
+    : !isNewOf(o) ? [`It's your turn with ${F}, so that's the one thing worth your ${tod}.`, `Your turn with ${F}`]
+    : o.roleTitle ? [`${F} can get you into the ${o.roleTitle} role, so that's the one thing worth your ${tod}.`, `Start with ${F}`]
+    : viaOf(o) ? [`${f1(viaOf(o))} can introduce you to ${F}, so that's the one thing worth your ${tod}.`, `Start with ${F}`]
+    : [`${F} is your strongest path${w ? ` (${w})` : ""}, so saying hi is the one thing worth your ${tod}.`, `Start with ${F}`];
+  return { text:`${first} ${second}`, go };
+}
+function miNote(){
+  if (STATE.welcomeDue || STATE.miLater===(STATE.week||0)) return "";
+  const t = miTop(); if (!t) return "";
+  const { text, go } = miNoteText(t.m, t.o);
+  return `<section class="mi-note" data-kc="KeyKaiNote" data-kv="tone=ink" aria-labelledby="mi-note-k"><i class="mi-sky" aria-hidden="true"></i>
+    <div class="mi-nh"><span aria-hidden="true">${kaiMark(26)}</span><span id="mi-note-k">Kai</span></div>
+    <p class="mi-np">${text}</p>
+    <div class="mi-na"><button type="button" class="mi-go" onclick="miOpenPick('${t.m.id}','${t.o.id}')">${go}</button><button type="button" class="mi-later" onclick="miLaterGo()">Later</button></div></section>`;
+}
+function miLaterGo(){ STATE.miLater = STATE.week||0; render(); const b = phone.querySelector(".view .mh-band[role=link]"); if (b) b.focus({ preventScroll:true }); }
+function miOpenPick(mid, oid){ STATE.mlTab[mid] = "log"; STATE.mlFilter[mid] = "all"; STATE.mtMore[mid] = true; STATE.mtScroll = null; STATE.miFocus = oid; go("mission:"+mid); }
+/* the pick's card in view under the sticky switcher, its first action focused */
+function miFocusPick(body){
+  const c = body.querySelector(`.ml-log .mt-card[data-opp="${STATE.miFocus}"]`); STATE.miFocus = null; if (!c) return;
+  const hdr = phone.querySelector(".view .hdr.sc"), tabs = body.querySelector(".ml-tabs");
+  const top = (hdr ? hdr.getBoundingClientRect().bottom : body.getBoundingClientRect().top) + (tabs ? tabs.offsetHeight : 0) + 8;
+  body.scrollTop += c.getBoundingClientRect().top - top; body.dispatchEvent(new Event("scroll"));
+  const b = c.querySelector("button, [onclick]"); if (b && b.focus) b.focus({ preventScroll:true });
+}
+/* the quiet line under the hello: a pass since your last visit says so */
+function miQuiet(body){
+  const ran = STATE.miRan; if (!ran) return; STATE.miRanSeen = true;
+  const who = body.querySelector(".btp .btp-who"); if (!who) return;
+  let p = body.querySelector(".btp .btp-also"); if (!p) { who.insertAdjacentHTML("afterend", `<p class="btp-also"></p>`); p = body.querySelector(".btp .btp-also"); }
+  p.textContent = ran==="day" ? "Kai kept going overnight" : "Kai kept going over the weekend";
+}
+
+/* ---- 2. Home: KeyGoalLine on the card of a mission with an end ---- */
+function miStance(m){
+  const ps = miPs(m), n = s => ps.filter(o=>gpStage(o)===s);
+  const parts = [[n(4),"went well"],[n(3),"in conversation"],[n(2),"waiting"]].filter(x=>x[0].length);
+  if (!parts.length) return null;
+  return { sum: parts.slice(0,2).map(([os,l],i)=>`${i ? miW(os.length) : miCapW(os.length)} ${l}`).join(", "), os: parts.flatMap(x=>x[0]) };
+}
+const _miSection = missionSection; missionSection = function(m){
+  const h = _miSection.apply(this, arguments);
+  if (!hsOn() || !h || !miEnd(m) || !/hc-card/.test(h)) return h;
+  const t = hsDom(h), band = t.content.querySelector(".hc-card .mh-band"), head = band && band.querySelector(".hc-head"); if (!head) return h;
+  miPlan(m); const of = miWeeks(m), wk = Math.min(miWeek(m), of), pct = Math.round(100*wk/of);
+  head.insertAdjacentHTML("afterend", `<div class="mi-gl" data-kc="KeyGoalLine"><span>${m.type==="Looking" ? "Offer" : "Done"} by ${miBy(m)}</span><i class="mi-tr" aria-hidden="true"><s style="width:${pct}%"></s></i><span>Week ${wk} of ${of}</span></div>`);
+  /* the summary says where it stands once something has moved, with the faces of the people it counts; never the pill again */
+  const st = miStance(m), bs = band.querySelector(".hc-line > .mh-bs");
+  if (st && bs) {
+    bs.textContent = st.sum;
+    const fs = band.querySelector(".hc-faces"), pp = st.os.filter((o,i,a)=>a.findIndex(x=>hcIni(x)===hcIni(o))===i).slice(0,3);
+    if (fs) { fs.innerHTML = pp.map(o=>av(hcIni(o))).join(""); fs.setAttribute("data-kv", `count=${pp.length}`); }
+  }
+  return t.innerHTML;
+};
+
+/* ---- 3. Mission page: KeyGoalRow under the rules chips ---- */
+function miGoalEdit(id){ STATE.mlTab[id] = "chat"; STATE.mtFocus = id; STATE.mlPh = `Tell Kai what to change in the ${MI_G}`; render(); }
+function miGoalRow(band, m){
+  if (band.querySelector(".mi-gr")) return; miPlan(m);
+  const n = m.miMonth.n, d = Math.min(miDone(m), n), of = miWeeks(m), wk = Math.min(miWeek(m), of);
+  const half = (l, extra, line, pct) => `<span class="mi-gh"><span class="mi-gk">${l}${extra ? `<span class="mi-gx"> · ${extra}</span>` : ""}</span><b>${line}</b><i class="mi-tr" aria-hidden="true"><s style="width:${pct}%"></s></i></span>`;
+  const one = half("This month", "", `${d} of ${n} conversations`, Math.round(100*d/n));
+  const end = miEnd(m) ? half(`By ${miBy(m)}`, miFarLine(miFar(m)), m.miOutcome, Math.round(100*wk/of)) : "";
+  const say = `This month: ${d} of ${n} conversations.${end ? ` By ${miBy(m)}: ${m.miOutcome.toLowerCase()}, week ${wk} of ${of}.` : ""} Change it with Kai`;
+  const at = band.querySelector(".ml-rules") || band.querySelector(".ml-brief");
+  at.insertAdjacentHTML("afterend", `<button type="button" class="mi-gr${end ? "" : " mi-one"}" onclick="miGoalEdit('${m.id}')" aria-label="${say}" data-kc="KeyGoalRow" data-kv="halves=${end ? 2 : 1}">${one}${end}</button>`);
+  /* the furthest stage shows in the label only when it fits */
+  band.querySelectorAll(".mi-gr .mi-gk").forEach(k=>{ const x = k.querySelector(".mi-gx"); if (x && k.scrollWidth > k.clientWidth + 1) x.remove(); });
+}
+
+/* ---- 4. Mission page: Kai's live line, while a pass is due or running. A week's advance starts one, a day's advance finishes it ---- */
+STATE.miPassDone = STATE.miPassDone || {};
+const MI_PASS = { Looking:[[41,23,17,12,9],"new roles in your families"], Cofounder:[[14,9,11,7,6],"new cofounder posts in your families"] };
+function miPass(m){
+  if (!miOwn(m) || m.status!=="active" || STATE.miPassDone[m.id]===(STATE.week||0)) return null;
+  const [ns, what] = MI_PASS[m.type] || [[18,12,9,7,6],"new posts in your families"];
+  const [w1, w2] = what.split(/ (?=in )/);
+  return `Kai is reading ${ns[(STATE.week||0) % ns.length]} ${w1}<span class="mi-lw"> ${w2}</span>`;
+}
+function miLive(pane, m){
+  const t = miPass(m), f = pane.querySelector(":scope > .ml-filt"); if (!t || !f || (STATE.mlFilter[m.id]||"all")!=="all" || pane.querySelector(".mi-live")) return;
+  f.insertAdjacentHTML("afterend", `<div class="mi-live" role="status" data-kc="KeyLiveLine"><i class="mi-li" aria-hidden="true">${LI("scan-search",16)}</i><span>${t}</span></div>`);
+  /* one line: where Kai reads goes first when the phone is narrow */
+  const sp = pane.querySelector(".mi-live > span"), w = sp && sp.querySelector(".mi-lw"); if (w && sp.scrollWidth > sp.clientWidth + 1) w.remove();
+}
+
+/* ---- 5. Mission chat: when something went badly, what is real first, then one move as a draft that waits for Send ---- */
+const MI_LOW = /\b(fumbled?|fumbling|rough|bad(ly)?|nervous|tired|wiped|rejected|burn(t|ed) out|blew it|messed up|bombed|low)\b/i;
+const MI_DAY = /\b(Monday|Tuesday|Wednesday|Thursday|Friday)\b/;
+/* a known interview date: a screen, interview or round on the calendar for one of this mission's picks */
+function miDate(m){
+  for (const o of miPs(m)) for (const l of (o.log||[])) { const t = l[1]||""; if (/screen|interview|round/i.test(t) && MI_DAY.test(t)) return MI_DAY.exec(t)[1]; }
+  return "";
+}
+/* the next move: a new pick from a person first (the one who can help you prep), then any new pick */
+const miHelper = m => { const ps = mtPaths(m).filter(o=>isNewOf(o) && ownerOf(o)==="you" && !mlClosed(o)); return ps.find(o=>!o.roleTitle && o.kind==="person") || ps[0] || null; };
+function miEnc(m, t){
+  const ps = mtPaths(m), k = ps.filter(miTalk).length, met = ps.filter(o=>o.met), wait = ps.filter(o=>ownerOf(o)==="them" && !mlClosed(o));
+  const days = Math.max(0, (STATE.gpDay||0) - (miPlan(m).miStartDay||0));
+  const open = /question|interview|screen|round|metric|answer/i.test(t) ? "That's one question, not the whole interview." : /reject/i.test(t) ? "A no on one path isn't a no on the mission." : "That's one rough day, not the mission.";
+  const real = k ? `${days ? `In ${days} days` : "Already"} you've turned ${miW(k)} path${miS(k)} into real conversation${miS(k)}${met.length ? `, and you've met ${miNames(met)}` : ""}. That's what moves this.`
+    : wait.length ? `Your note${wait.length>1?"s are":" is"} already with ${miNames(wait)}, and replies are what move this.`
+    : `I found ${miW(ps.length)} path${miS(ps.length)} with a reason behind each, and none of them hang on one answer.`;
+  const o = miHelper(m), day = miDate(m);
+  if (!o) return { text:`${open} ${real}`, x:{ act:"miEnc", move:"I'll look for someone who can run a practice round with you on the next pass, and bring them here first." } };
+  const p = targetOf(o), v = viaOf(o), to = v || p, F = f1(p), why = miWhy(o);
+  const topic = /metric/i.test(t) ? "metrics questions are" : /design/i.test(t) ? "design questions are" : "interviews are";
+  const lc = s => s.charAt(0).toLowerCase()+s.slice(1);
+  const aim = m.type==="Looking" ? `I'm going after a ${lc(m.name)} and ${topic} where I want to get sharper` : `I'm working on ${lc(m.name)} and would value your take`;
+  const note = o.roleTitle ? `Hi ${f1(to)}, I saw the ${o.roleTitle} role. ${aim}. Would you be willing to refer me? Happy to send anything that helps.`
+    : v ? `Hi ${f1(v)}, would you introduce me to ${F}? ${aim}, and twenty minutes with ${F} would help a lot.`
+    : `Hi ${F}, ${aim}. Would you have 30 minutes this week for a practice round?`;
+  const move = `${day ? `Before ${day}, one thing.` : "One thing that helps."} ${o.roleTitle ? `${o1Lead(o)}.` : v ? `${f1(v)} can introduce you to ${F}.` : why ? `${F} is your strongest path, since ${why}.` : `${F} is your strongest path.`} I wrote a note:`;
+  return { text:`${open} ${real}`, x:{ act:"miEnc", move, mo:o.id, text:note, follow: day ? `I'll keep ${day} morning clear of new picks so you can prep.` : "" } };
+}
+const _miAnswer = mtAnswer; mtAnswer = function(m, t){
+  const a = _miAnswer.apply(this, arguments);
+  /* the rules, a pause, who to start with and the status keep their answers; only the generic fallback (or a log line) gives way */
+  if (m && miOwn(m) && MI_LOW.test(t||"") && (!a || /I can say who to start with/.test(a.text))) return miEnc(m, t);
+  return a;
+};
+/* the answer is one Kai entry drawn as two bubbles (three with the date line), so the chat and the log split it as one reply */
+function miCard(m, li, x){
+  const o = DB.opps.find(z=>z.id===x.mo), to = o && (viaOf(o) || targetOf(o)); if (!to) return "";
+  const body = x.edit && !x.sent ? `<textarea class="mi-dta" id="mi-dta-${m.id}-${li}" rows="4" aria-label="Your note to ${to.name}">${x.text}</textarea>` : `<p class="mi-dtx">${x.text}</p>`;
+  return `<div class="mi-dc" data-kc="KeyDraftCard" data-kv="state=${x.sent ? "sent" : x.edit ? "editing" : "draft"}"><div class="mi-dto">${av(to.initials)}<span>To ${to.name}</span></div>${body}
+    <div class="mi-dact">${x.sent ? `<span class="mi-dsent">${LI("check",16)}<span>Sent to ${f1(to)}</span></span>` : `<button type="button" class="mi-de" onclick="miDraftEdit('${m.id}',${li})">${x.edit ? "Done" : "Edit"}</button><button type="button" class="mi-ds" onclick="miDraftSend('${m.id}',${li})">Send</button>`}</div></div>`;
+}
+const _miChat = mtChat; mtChat = function(m){
+  const h = _miChat.apply(this, arguments), es = (m.mlog||[]).map((l,li)=>[l,li]).filter(([l])=>l[3] && l[3].act==="miEnc");
+  if (!es.length) return h;
+  const t = hsDom(h), b = inner => `<div class="mi-k">${kaiMark(24)}<div class="tx">${inner}</div></div>`;
+  es.forEach(([l,li])=>{
+    const x = l[3], el = [...t.content.querySelectorAll(".ks-k:not(.mi-enc)")].find(k=>{ const p = k.querySelector(".tx > p"); return p && p.textContent===mtCap(l[1]); });
+    if (!el) return;
+    el.classList.add("mi-enc");
+    el.innerHTML = b(`<p>${mtCap(l[1])}</p>`) + (x.move ? b(`<p>${x.move}</p>${x.mo ? miCard(m, li, x) : ""}`) : "") + (x.follow ? b(`<p>${x.follow}</p>`) : "");
+  });
+  return t.innerHTML;
+};
+const miX = (id, li) => { const m = DB.missions.find(z=>z.id===id), e = m && m.mlog && m.mlog[li]; return e && e[3] && e[3].act==="miEnc" ? [m, e[3]] : [null, null]; };
+function miDraftEdit(id, li){
+  const [, x] = miX(id, li); if (!x || x.sent) return;
+  const ta = phone.querySelector(`#mi-dta-${id}-${li}`); if (ta) x.text = ta.value.trim() || x.text;
+  x.edit = !x.edit; STATE.miDraftFocus = x.edit ? `#mi-dta-${id}-${li}` : `.mi-dc .mi-de`; render();
+}
+/* Send is the yes: the note goes the way every note goes (the pick moves to Waiting), and the log gets its one line */
+function miDraftSend(id, li){
+  const [, x] = miX(id, li); if (!x || x.sent) return;
+  const ta = phone.querySelector(`#mi-dta-${id}-${li}`); if (ta && ta.value.trim()) x.text = ta.value.trim();
+  const o = DB.opps.find(z=>z.id===x.mo); x.sent = true; x.edit = false;
+  if (o && isNewOf(o)) { sendAsk(o.id); STATE.sheet = null; }
+  STATE.mlTab[id] = "chat"; render();
+  const s = phone.querySelector(".mi-dc[data-kv='state=sent'] .mi-dsent"); if (s) { s.tabIndex = -1; s.focus({ preventScroll:true }); }
+}
+document.addEventListener("input", e=>{ const ta = e.target.closest && e.target.closest(".mi-dta"); if (!ta) return; const [, id, li] = /^mi-dta-(.+)-(\d+)$/.exec(ta.id) || []; const [, x] = id ? miX(id, +li) : [null, null]; if (x) x.text = ta.value; });
+/* the chat's one line in the log, as for a pick Kai names */
+function miChatLog(pane, m){
+  if ((STATE.mlFilter[m.id]||"all")!=="all") return;
+  (m.mlog||[]).forEach(l=>{ const x = l[3]; if (!x || x.act!=="miEnc" || !x.mo || pane.querySelector(`.mi-cl[data-mo="${x.mo}"]`)) return;
+    const o = DB.opps.find(z=>z.id===x.mo), to = o && (viaOf(o) || targetOf(o)); if (!to) return;
+    const at = pane.querySelector(".mi-live") || pane.querySelector(":scope > .ml-filt");
+    at.insertAdjacentHTML("afterend", `<div class="ml-unit"><div class="ks-sys mi-cl" data-mo="${x.mo}">You told Kai how it went. Kai ${x.sent ? "sent your" : "drafted a"} note to ${f1(to)} · now</div></div>`); });
+}
+
+/* ---- 6. The month-one recap ---- */
+function miRecapData(m){
+  const ps = mtPaths(m), talk = ps.filter(miTalk), n = miPlan(m).miMonth.n, k = talk.length, met = ps.filter(o=>o.met || gpStage(o)===4);
+  const sent = ps.filter(o=>!isNewOf(o)).length, ref = ps.filter(o=>(o.roleTitle && o.viaAgreed && !mlClosed(o)) || (o.log||[]).some(l=>/is referring you/.test(l[1]||""))).length;
+  const people = [...new Map(talk.map(o=>{ const p = hcWho(o); return [p.id || p.name, p]; })).values()].slice(0,3);
+  const line = `You set out to have ${n} real conversations. ${k ? `You had ${k}${met.length ? `, and ${met.length===1 ? (k===1 ? "it" : "one of them") : `${miW(met.length)} of them`} turned into ${met.length===1 ? "a meeting" : "meetings"}` : ""}.` : `None yet, and Kai found ${miW(ps.length)} path${miS(ps.length)} to start from.`}`;
+  const tiles = [[k, `real conversation${miS(k)}`], [met.length, `meeting${miS(met.length)}`], ref ? [ref, `referral${miS(ref)} on the way`] : [sent, `note${miS(sent)} you sent`]];
+  return { line, tiles, people, next: k >= n ? n + 2 : n, head: k ? `A month ago this was a plan. Now ${k===1 ? "it's a real conversation" : "it's real conversations"}.` : "A month ago this was a plan. Now Kai knows where to look." };
+}
+function miRecapOpen(id){ STATE.miRcBack = document.activeElement; STATE.miRc = id; STATE.miRecap = "seen"; STATE.sheet = null; render(); }
+function miRecapClose(){ STATE.miRc = null; render(); const b = STATE.miRcBack; STATE.miRcBack = null; if (b && b.isConnected) b.focus({ preventScroll:true }); }
+function miRecapKeep(id){
+  const m = DB.missions.find(z=>z.id===id); if (!m) return; const d = miRecapData(m);
+  m.miMonth = { n:d.next, from:STATE.gpDay||0 };
+  mtLog(m, "You", `set next month to ${d.next} real conversations`); STATE.miRc = null; render(); toast(`Kept. Next month is ${d.next} real conversations.`);
+}
+function miRecapChange(id){ STATE.miRc = null; STATE.mlTab[id] = "chat"; STATE.mtFocus = id; STATE.mlPh = `Tell Kai what to change in the ${MI_G}`; go("mission:"+id); }
+const MI_SPOTS = [[18,74],[43,30],[71,58],[88,18]];
+function miRecapHTML(m){
+  const d = miRecapData(m), nodes = [{ ini:"You", you:true }, ...d.people.map(p=>({ ini:p.initials }))].map((x,i)=>({ ...x, at:MI_SPOTS[i] }));
+  const sky = nodes.length > 1 ? `<div class="mi-cn" role="img" aria-label="You and ${d.people.map(p=>p.name).join(", ")}"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${nodes.slice(1).map((x,i)=>`<line x1="${nodes[i].at[0]}" y1="${nodes[i].at[1]}" x2="${x.at[0]}" y2="${x.at[1]}"/>`).join("")}</svg>${nodes.map(x=>`<span class="mi-cnn${x.you ? " mi-you" : ""}" style="left:${x.at[0]}%;top:${x.at[1]}%" aria-hidden="true">${x.you ? "You" : av(x.ini)}</span>`).join("")}</div>` : "";
+  return `<div class="mi-rc" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="mi-rc-h" data-kc="KeyMonthRecap"><i class="mi-sky" aria-hidden="true"></i><div class="mi-rcb">
+    <button type="button" class="mi-rcx" onclick="miRecapClose()" aria-label="Close">${LI("x",22)}</button>
+    <div class="mi-rck"><span aria-hidden="true">${kaiMark(28)}</span><span>Kai · Your first month</span></div>
+    <h2 class="mi-rch" id="mi-rc-h">${d.head}</h2><p class="mi-rcl">${d.line}</p>${sky}
+    <div class="mi-rct">${d.tiles.map(([v,l])=>`<div class="mi-rctl"><b>${v}</b><span>${l}</span></div>`).join("")}</div>
+    <div class="mi-rcn"><span class="mi-rcnk">Next month, if you agree</span><b>${miCapW(d.next)} real conversations</b>
+      <div class="mi-rcna"><button type="button" class="mi-keep" onclick="miRecapKeep('${m.id}')">Keep this ${MI_G}</button><button type="button" class="mi-chg" onclick="miRecapChange('${m.id}')">Change it</button></div></div>
+  </div></div>`;
+}
+document.addEventListener("keydown", e=>{
+  const rc = typeof phone!=="undefined" && phone && phone.querySelector(".mi-rc"); if (!rc) return;
+  if (e.key==="Escape") { e.preventDefault(); miRecapClose(); return; }
+  if (e.key!=="Tab") return;
+  const f = [...rc.querySelectorAll("button")], i = f.indexOf(document.activeElement);
+  if (e.shiftKey && i<=0) { e.preventDefault(); f[f.length-1].focus(); } else if (!e.shiftKey && i===f.length-1) { e.preventDefault(); f[0].focus(); }
+});
+
+/* ---- the scripted month: a week's advance is a pass over the weekend; the 4th one is the recap, and its own week plays on the next ---- */
+const miGoalM = () => DB.missions.find(m=>miEnd(m) && m.status==="active");
+const _miAdv = advanceWeek; advanceWeek = function(){
+  const m = STATE.member && miGoalM();
+  if (m && (STATE.week||0)===3 && !STATE.miRecap) {
+    STATE.week = 4; STATE.miHeld = true; STATE.miRecap = "due"; STATE.miRan = "week"; STATE.miRanSeen = false;
+    const lbl = document.getElementById("weekLbl"); if (lbl) lbl.textContent = "week 4";
+    pushNote("Your first month with Kai", "What a month of looking added up to, and a number for the next one.", [["Open", ()=>miRecapOpen(m.id)]]);
+    return;
+  }
+  if (STATE.miHeld) { STATE.miHeld = false; STATE.week = 3; }
+  STATE.miRan = "week"; STATE.miRanSeen = false;
+  return _miAdv.apply(this, arguments);
+};
+const _miSim = simulate; simulate = function(){
+  if (STATE.member) { DB.missions.forEach(m=>{ if (miOwn(m)) STATE.miPassDone[m.id] = STATE.week||0; }); STATE.miRan = "day"; STATE.miRanSeen = false; }
+  return _miSim.apply(this, arguments);
+};
+
+/* ---- wiring, after every other render wrapper ---- */
+const _miRender = render; render = function(){
+  if (STATE.miRanSeen && STATE.screen!=="home") { STATE.miRan = null; STATE.miRanSeen = false; }
+  const r = _miRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone || !STATE.member) return r;
+  const root = phone.querySelector(".view"), body = root && root.querySelector(".body"), s = STATE.screen || "";
+  if (body && hsOn()) {
+    miQuiet(body);
+    const at = body.querySelector(":scope > .hc-card, :scope > .mh-mc"), h = miNote();
+    if (at && h && !body.querySelector(".mi-note")) at.insertAdjacentHTML("beforebegin", h);
+  }
+  const m = s.startsWith("mission:") && DB.missions.find(x=>x.id===s.slice(8));
+  if (m && miOwn(m) && body) {
+    const band = body.querySelector(":scope > .mh-band.big"); if (band && band.querySelector(".ml-brief")) miGoalRow(band, m);
+    const pane = body.querySelector(":scope > .ml-log"); if (pane) { miLive(pane, m); miChatLog(pane, m); }
+    if (STATE.miFocus) miFocusPick(body);
+    if (STATE.miDraftFocus) { const f = phone.querySelector(STATE.miDraftFocus); STATE.miDraftFocus = null; if (f) f.focus({ preventScroll:true }); }
+  }
+  /* the more menu of a mission with an end: the recap, once the month is up */
+  const sh = STATE.sheet, sb = phone.querySelector("#sheet .sb"), mm = sh && sh.type==="mmenu" && DB.missions.find(x=>x.id===sh.id);
+  if (mm && miEnd(mm) && STATE.miRecap && sb && !sb.querySelector(".mi-rcrow")) { const x = sb.querySelector(".xrow"); if (x) x.insertAdjacentHTML("beforebegin", `<div class="xrow mi-rcrow" role="button" tabindex="0" onclick="miRecapOpen('${mm.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"><div class="m"><div class="a">Your first month</div><div class="b">What a month with Kai added up to</div></div><span class="chev">›</span></div>`); }
+  phone.querySelectorAll(":scope > .mi-rc").forEach(e=>e.remove());
+  const rcm = STATE.miRc && DB.missions.find(x=>x.id===STATE.miRc);
+  if (rcm) { phone.insertAdjacentHTML("beforeend", miRecapHTML(rcm)); phone.querySelector(".mi-rc").focus({ preventScroll:true }); }
+  return r;
+};
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-5d2c";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
