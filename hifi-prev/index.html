@@ -25995,9 +25995,6 @@ const _oiAsk = askSheet; askSheet = function(id){
 /* 5 Oct (Two-chevron cb06): a jump inside the page never scrolls the phone or the page itself */
 #phone, #phone > .screen { overflow:clip; }
 
-/* 5 Oct 19:35: onboarding text is not selectable on a phone, so a long-press on it opens Controls instead of the loupe */
-@media (max-width:500px) { #phone.hf-ob :not(input, textarea, [contenteditable]) { -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; } }
-
 </style>
 <script>
 /* 2 Oct 22:38 (Apoorv): on a phone, a long-press (500ms) on your photo in the header opens or closes Controls; the tap that ends the press doesn't also open your profile.
@@ -26014,12 +26011,7 @@ const _oiAsk = askSheet; askSheet = function(id){
       if (cs.cursor === "pointer" || cs.backgroundImage !== "none" || cs.boxShadow !== "none" || parseFloat(cs.borderTopLeftRadius) > 0
         || (cs.backgroundColor !== "transparent" && !/,\s*0\)$/.test(cs.backgroundColor))) return false; }
     return true; };
-  /* 5 Oct 19:35 (Apoorv: "i still dont know how to bring out controls from the onboarding screens"): onboarding has almost no bare
-     page, so there a long-press anywhere that is not a button, link or field opens Controls, text included (onboarding text is not
-     selectable on a phone, so the iPhone loupe does not fire with it). */
-  const TAP = "a,button,input,textarea,select,label,summary,[onclick],[contenteditable],[role=button],[role=link],[role=switch],[role=tab],[role=option],[role=checkbox],[role=radio],[role=slider]";
-  const onb = el => { const ph = document.getElementById("phone"); return !!ph && /\bhf-ob/.test(ph.className) && ph.contains(el) && !el.closest(TAP); };
-  const spot = el => !!el.closest && (!!el.closest("#phone .hdr.top .me-av") || ground(el) || onb(el));
+  const spot = el => !!el.closest && (!!el.closest("#phone .hdr.top .me-av") || ground(el));
   let t = null, x0 = 0, y0 = 0, fired = false;
   const cancel = () => { clearTimeout(t); t = null; };
   document.addEventListener("pointerdown", e => {
@@ -26045,7 +26037,7 @@ const _oiAsk = askSheet; askSheet = function(id){
 
 </style>
 <script>
-window.KEY_BUILD = "2.hifi-6040";
+window.KEY_BUILD = "2.hifi-0aec";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
