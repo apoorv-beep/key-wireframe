@@ -4303,6 +4303,24 @@ p,
 .cm-osjob { position:relative; } .cm-osjob::before { content:""; position:absolute; inset:-3px 0; }
 .cmhi .cm-osjob::before { inset:-5px -1px; }
 
+.cm-pj .cover.cm-cover { position:relative; }
+.cm-pjbar { position:absolute; top:var(--space-absolute-12, 12px); left:var(--space-absolute-12, 12px); right:var(--space-absolute-12, 12px); z-index:2; display:flex; align-items:center; justify-content:space-between; gap:var(--space-absolute-8, 8px); }
+.cm-pjib { width:44px; height:44px; flex:0 0 auto; display:grid; place-items:center; border:0; border-radius:var(--radius-absolute-12, 12px); background:rgba(255,255,255,.9); color:#12161A; cursor:pointer; }
+.cm-pjib .li, .cm-pjib svg { width:20px; height:20px; }
+.cm-pjlbl { display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 12px; border-radius:var(--radius-absolute-infinite, 999px); background:rgba(255,255,255,.9); color:#12161A; font-size:11px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.cm-pjlbl .li, .cm-pjlbl svg { width:16px; height:16px; flex:0 0 auto; }
+.cm-pjib:focus-visible, .cm-pjmore:focus-visible { outline:2px solid var(--text-primary, #12161A); outline-offset:2px; }
+.cm-pjstats { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-absolute-10, 10px); margin:var(--space-absolute-16, 16px) 0 0; }
+.cm-pjst { padding:var(--space-absolute-14, 14px); border-radius:var(--radius-absolute-16, 16px); background:var(--bg-surface-default, #fff); box-shadow:0 0 0 1px var(--border-default, #E2E7ED) inset; }
+.cm-pjst b { display:block; font-size:26px; font-weight:800; letter-spacing:-.02em; line-height:1.2; font-variant-numeric:tabular-nums; color:var(--text-primary, var(--ink)); }
+.cm-pjst span { display:block; font-size:12px; font-weight:600; color:var(--text-secondary, #525B66); }
+.cm-pjoffers { overflow:hidden; border-radius:var(--radius-absolute-16, 16px); background:var(--bg-surface-default, #fff); box-shadow:0 0 0 1px var(--border-default, #E2E7ED) inset; }
+.cm-pjof { display:flex; align-items:baseline; gap:var(--space-absolute-10, 10px); padding:11px 14px; border-bottom:1px solid var(--border-default, #E2E7ED); font-size:14px; font-weight:600; color:var(--text-primary, var(--ink)); }
+.cm-pjof span { min-width:0; }
+.cm-pjof i { margin-left:auto; font-style:normal; font-size:11px; font-weight:600; white-space:nowrap; color:var(--text-tertiary, #606974); }
+.cm-pjmore { display:block; width:100%; min-height:44px; border:0; background:none; font:inherit; font-size:12px; font-weight:700; color:var(--text-secondary, #525B66); cursor:pointer; }
+.cm-pjoffers > .cm-pjof:last-child { border-bottom:0; }
+
 
 .edu { display:none !important; }
 .nav .kai.coach .ic { animation:none; }
@@ -7609,9 +7627,9 @@ const DB = {
   missions: [],
   opps: [],
   recommendedFamilies: [
-    { id:"michigan", name:"Michigan Alumni Network", initial:"M", members:1240, kind:"open", why:"From your LinkedIn: UMSI, 2025", proof:"12 intros last quarter" },
+    { id:"michigan", name:"Michigan Product Alumni", initial:"M", members:188, kind:"open", why:"From your LinkedIn: UMSI, 2025", proof:"12 intros last quarter" },
     { id:"aipm", name:"AI PM Circle", initial:"A", members:180, kind:"vetted", why:"Two people you know are members", proof:"Runs a monthly hiring thread" },
-    { id:"desi", name:"Desi Founders", initial:"D", members:900, kind:"vetted", why:"Daniel is also a member", proof:"4 cofounder matches this year" }
+    { id:"desi", name:"Desi Founders", initial:"D", members:236, kind:"vetted", why:"Daniel is also a member", proof:"4 cofounder matches this year" }
   ],
   families: [
     { id:"xoogler", name:"Xoogler", initial:"X", members:412, role:"member", proof:"38 intros and 6 hires last quarter", pinned:{ who:"Daniel Reyes", text:"Thursday dinner is on. 34 in so far. If you're new, say hi in #introductions and I'll find you a table." } },
@@ -8268,7 +8286,7 @@ function sDoorway() {
   const mine = STATE.member ? DB.families.map(f=>({...f, status:"member"})) : [];
   const pending = (!STATE.member && STATE.applied) ? [{...inv, status:"pending", why:"Applied "+STATE.appliedAt}] : [];
   const recs = DB.recommendedFamilies.filter(r=>!mine.some(m=>m.id===r.id));
-  const all = [ {id:"exmeta", name:"Ex-Meta Alumni", initial:"M", members:2100, kind:"vetted", why:"For people who worked at Meta"}, {id:"seedfounders", name:"Seed Founders Bay Area", initial:"S", members:340, kind:"vetted", why:"Founders raising or just raised"}, {id:"umich", name:"Michigan Product Alumni", initial:"P", members:188, kind:"open", why:"Open to Michigan alumni"} ];
+  const all = [ {id:"exmeta", name:"Ex-Meta Alumni", initial:"E", members:2100, kind:"vetted", why:"For people who worked at Meta"}, {id:"seedfounders", name:"Seed Founders Bay Area", initial:"S", members:340, kind:"vetted", why:"Founders raising or just raised"}, {id:"umich", name:"UMich Product Guild", initial:"U", members:188, kind:"open", why:"Open to Michigan alumni"} ];
   const sec = (title, sub, arr, compact) => arr.length ? `<div class="lbl" style="margin-top:20px">${title}${sub?` <span class="faint" style="font-weight:400">${sub}</span>`:''}</div>${arr.map(f=>famCard(f, compact)).join("")}` : "";
   return `<div class="hdr"><div class="back" onclick="goBack()">‹</div><div class="t">Families</div></div>
   <div class="body">
@@ -15600,7 +15618,7 @@ const C_PHOTO = { xoogler:["data:image/webp;base64,UklGRgyYAQBXRUJQVlA4WAoAAAAgA
    while a finger is on it and stays on the first photo under reduced motion. A photo that hasn't loaded is skipped. One pass, then it rests on the family photo (WCAG 2.2.2); only the photo showing is read out. */
 const C_COVER_EV = { xoogler:[[6954471,"Xoogler dinner"],[8761540,"A talk at the product teardown"],[6955659,"Xoogler dinner"],[6950142,"AI PM roundtable"],[5638730,"Summer dinner"]] };
 let cCycI = 0, cCycT = 0, cCycDone = false;
-const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"], ph = C_PHOTO[f.id];
+const cCoverArt = (f, art) => { const c = C_COVER[f.id] || ["mixer","graphite"], ph = !art && C_PHOTO[f.id];
   const evs = typeof phUrl==="function" ? (C_COVER_EV[f.id]||[]).map(([id,alt])=>[phUrl(id, 1200, 600), alt]) : [];
   if (cHiFi() && ph && evs.length) { const all = [ph, ...evs], on = cCycI % all.length;
     return `<div class="cv cm-photo cm-cyc" data-ccyc="1">${all.map(([src,alt],i)=>`<img src="${src}" alt="${alt}" decoding="async"${i?' loading="lazy"':''}${i===on?' class="on"':' aria-hidden="true"'}>`).join("")}</div>`; }
@@ -15610,7 +15628,7 @@ const cCoverArt = f => { const c = C_COVER[f.id] || ["mixer","graphite"], ph = C
    This list is the section-to-component map Design system builds from. */
 const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flogo.big, .cm-sq:has(.cm-mark)","KeyFamilyLogo"],[".cm-ibtn, .cm-fbtn, .cm-view, .hdr .icon, .hdr .back","KeyIconButton"],
   [".cm-tabs","KeyTabs"],[".cm-brief","KeyBrief"],[".cm-bnums","KeyStatBlock"],[".cm-osbar","KeyProgressBar"],[".cm-osjob, .cm-chip","KeyChip"],
-  [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn, .cm-askbtns > button, .cm-osbtn","KeyButton"],[".cm-rit, .cm-row.cm-kairow, .cm-ask","KeyRow"],[".cm-lp","KeyPostRow"],
+  [".cm-sec, .cm-newm","KeyListSection"],[".cm-btn, .cm-form .btn, .cm-askbtns > button, .cm-osbtn, .cm-pjmore","KeyButton"],[".cm-rit, .cm-row.cm-kairow, .cm-ask, .cm-pjof","KeyRow"],[".cm-pjstats","KeyStatBlock"],[".cm-pjib","KeyIconButton"],[".cm-lp","KeyPostRow"],
   [".evx-card","KeyEventCard"],[".ch.slim, .cm-talk","KeyChannelRow"],[".cm-ksum","KeyCard"],[".cm-search","KeySearchField"],[".cm-mgr, .cm-form .cm-row, .cm-swrow","KeyActionRow"],
   [".cm-cell","KeyPersonTile"],[".cm-pr, .cm-picks .cm-row","KeyMemberRow"],[".cm-done","KeyStateLabel"],[".cm-on","KeyLiveDot"],[".cm-osfs:not(:has(.li)), .cm-faces","KeyFaceStack"],
   [".cm-count","KeyUnreadBadge"],[".cm-form","KeyBottomSheet"],[".cm-proof","KeyPromiseBlock"],[".cmroom .bub","KeyChatBubble"],[".cmroom .dsep","KeyDateSeparator"],[".cmroom .kaiact .chip","KeyKaiChip"],[".cmroom .rchip","KeyReactionChip"],[".cmroom .thchip","KeyThreadCount"],[".cmroom .hfaces","KeyFaceStack"],[".cm-steps","KeyJoinSteps"],[".cm-chtiles > span","KeyChip"]];
@@ -15618,9 +15636,9 @@ const C_KC = [[".cm-hdr, .cm-fname","KeyHeader"],[".cm-cover","KeyCover"],[".flo
 const cKaiMarks = root => { if (typeof kaiMark!=="function") return; root.querySelectorAll(".cm-kt, .cm-osk").forEach(el => { if (!el.dataset.kn) { el.innerHTML = kaiMark(el.classList.contains("cm-osk")?28:40); el.dataset.kn = 1; } }); };
 /* data-kv is the Figma variant string, as Figma writes it (Design system, 20:46) */
 const cKv = (el, n) => { const c = el.classList;
-  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-form .btn:not(.sec):not(.ghost), .cm-askbtns > button:first-child")?"primary":c.contains("ghost")?"ghost":"secondary"}`
+  return n==="KeyButton" ? `variant=${c.contains("q")?"tonal":el.matches(".cm-form .btn:not(.sec):not(.ghost), .cm-askbtns > button:first-child")?"primary":c.contains("ghost")||c.contains("cm-pjmore")?"ghost":"secondary"}`
     : n==="KeyChip" ? `variant=${c.contains("cm-osjob")?"deep":el.parentElement.classList.contains("cm-chtiles")?"channel":"default"}, state=${c.contains("on")?"selected":"default"}`
-    : n==="KeyRow" ? `type=${c.contains("cm-rit")?"ritual":c.contains("cm-ask")?"ask":"kai"}`
+    : n==="KeyRow" ? `type=${c.contains("cm-rit")?"ritual":c.contains("cm-ask")?"ask":c.contains("cm-pjof")?"offer":"kai"}`
     : n==="KeyMemberRow" ? `state=${el.querySelector(".cm-done")?"new":"default"}`
     : n==="KeyPersonTile" ? "type=grid"
     : n==="KeyPostRow" ? `type=${c.contains("cm-pinnote")?"note":"post"}`
@@ -16507,37 +16525,40 @@ const C_PREV = {
   desi:{ promise:"South Asian founders backing each other, from idea to Series A.", since:2022, forWho:"Founders of South Asian heritage, at any stage.", run:[["NR","Neha Rao","Partner, Lattice Ventures"]], cadence:"every Friday", decide:"about a week", out:[["4","cofounder matches"],["11","intros"]], rhythm:[["Mondays","Where are you this week"],["Weekly","Office hours with Neha"]], chans:["d-raising","d-hiring","d-cities"], rules:"Be specific when you ask. No cold pitches to investors." },
   michigan:{ promise:"Michigan alumni in product and tech, looking out for each other.", since:2021, forWho:"University of Michigan alumni. Open: you join straight away.", run:[["KL","Kate Lin","Organizer"]], out:[["12","intros"]], rhythm:[["Tuesdays","Asks"]], chans:["m-jobs","m-annarbor"], rules:"Help first. Keep referrals honest." },
   aipm:{ promise:"PMs building AI products, comparing notes.", since:2024, forWho:"Product managers who ship AI features.", run:[["SI","Sana Iqbal","Organizer"]], cadence:"weekly", decide:"about 4 days", out:[["9","intros"],["3","hires"]], rhythm:[["Monthly","Hiring thread"]], chanNames:[["💼","hiring",140],["🤖","evals",96],["📚","reading",88]], rules:"No recruiting spam. Share what you learned." },
-  exmeta:{ name:"Ex-Meta Alumni", initial:"M", members:2100, kind:"vetted", why:"For people who worked at Meta", promise:"People who worked at Meta, staying useful to each other.", since:2020, forWho:"Anyone who worked at Meta or Facebook.", run:[["JL","Jess Liu","Organizer"]], cadence:"weekly", decide:"about 5 days", out:[["60","intros"]], rhythm:[["Fridays","Wins"]], chanNames:[["💼","jobs",1400],["🧑‍💼","hiring-managers",320]], rules:"No cold asks." },
+  exmeta:{ name:"Ex-Meta Alumni", initial:"E", members:2100, kind:"vetted", why:"For people who worked at Meta", promise:"People who worked at Meta, staying useful to each other.", since:2020, forWho:"Anyone who worked at Meta or Facebook.", run:[["JL","Jess Liu","Organizer"]], cadence:"weekly", decide:"about 5 days", out:[["60","intros"]], rhythm:[["Fridays","Wins"]], chanNames:[["💼","jobs",1400],["🧑‍💼","hiring-managers",320]], rules:"No cold asks." },
   seedfounders:{ name:"Seed Founders Bay Area", initial:"S", members:340, kind:"vetted", why:"Founders raising or just raised", promise:"Founders who are raising or just raised.", since:2024, forWho:"Bay Area founders at pre-seed or seed.", run:[["OW","Owen Wu","Organizer"]], cadence:"weekly", decide:"about 3 days", out:[["14","intros"]], rhythm:[["Mondays","Fundraising check-in"]], chanNames:[["💰","fundraising",300],["🤝","cofounders",120]], rules:"Numbers stay in the room." },
-  umich:{ name:"Michigan Product Alumni", initial:"P", members:188, kind:"open", why:"Open to Michigan alumni", promise:"Michigan alumni in product.", since:2023, forWho:"University of Michigan alumni in product roles. Open: you join straight away.", run:[["KL","Kate Lin","Organizer"]], out:[["5","intros"]], rhythm:[], chanNames:[["💬","general",188]], rules:"Help first." }
+  umich:{ name:"UMich Product Guild", initial:"U", members:188, kind:"open", why:"Open to Michigan alumni", promise:"Michigan alumni in product.", since:2023, forWho:"University of Michigan alumni in product roles. Open: you join straight away.", run:[["KL","Kate Lin","Organizer"]], out:[["5","intros"]], rhythm:[], chanNames:[["💬","general",188]], rules:"Help first." }
 };
 const cFamAny = id => DB.families.find(x=>x.id===id) || DB.recommendedFamilies.find(x=>x.id===id) || (C_PREV[id]&&C_PREV[id].name ? { id, ...C_PREV[id] } : null) || DB.families[0];
+/* Before you join, as approved (Apoorv 2 Oct 22:52, "family page before joining looks perfect"; chris-feedback/prototype
+   chris-call-2.html, checked in audits/chris-call-2-prototype.md). Four parts: who it is, four counts (any under 5 hidden, no names),
+   next events, what members offer (no names, companies or titles; only offers a member allows outside the family). The cover is
+   the family's art, never a photo with faces, so nobody is shown to a non-member without consent. */
+const C_PJ = {
+  xoogler:{ stats:[64,41,12,180], offers:[["Mock PM interviews, 45 minutes","Product"],["A read on your seed deck","Founders"],["Intros to Bay Area angels","Investing"],["Help moving from Google to a startup","Careers"],["Pricing review for an AI product","Product"],["Coffee for anyone new to Singapore","Moving"],["A second opinion on an offer letter","Careers"],["Office hours on hiring your first engineers","Hiring"],["Notes from three years in Search ads","Ads"],["A warm intro to climate funds","Climate"]] },
+  desi:{ stats:[22,9,8,46], offers:[["A read on your pitch before a partner meeting","Investing"],["Intros to angels backing South Asian founders","Investing"],["Hiring your first ten, what worked","Hiring"],["Coffee in Bangalore for anyone visiting","Moving"],["A second look at your cap table","Founders"]] },
+  michigan:{ stats:[31,18,4,27], offers:[["Referrals for PM roles in Detroit and Chicago","Careers"],["Resume reviews for new grads","Careers"],["Coffee in Ann Arbor","Moving"],["Mock interviews for APM loops","Product"],["Notes on moving from consulting to product","Careers"]] },
+  aipm:{ stats:[19,44,6,52], offers:[["A review of your eval plan","Product"],["Mock AI PM interviews","Careers"],["Notes on pricing an LLM feature","Product"],["Intros to applied research leads","Hiring"],["A read on your agent roadmap","Product"]] }
+};
+const C_PJ_LBL = ["near you","in product","events this quarter","talking this week"];
+const cMyCity = () => { const c = STATE.persona && STATE.persona!=="priya" ? C_CITY[STATE.persona] : typeof ob3City==="function" ? ob3City() : ""; return c && c!=="Remote" ? c.replace("San Francisco Bay Area","SF Bay Area") : ""; };
+/* the event card as the prototype has it: cover, name, time and place; no faces, counts or RSVP for someone who isn't in yet */
+const cPjEv = e => { const h = evCard(e,"row",{fam:false}), i = h.indexOf('<div class="evx-s2">'); return i<0 ? h : h.slice(0,i)+'</div></div>'; };
 sPublicPage = function(){
-  const f = cFamAny(STATE.pubFamily||"xoogler"); const d = C_PREV[f.id] || C_PREV.xoogler;
+  const f = cFamAny(STATE.pubFamily||"xoogler"); const d = C_PREV[f.id] || C_PREV.xoogler, pj = C_PJ[f.id] || {};
   /* a member reaching their own family's page (Share, See as a guest) sees exactly what guests see, and says so */
   const guest = STATE.member && DB.families.some(x=>x.id===f.id);
   const open = f.kind==="open";
-  const known = ["rahul","maya","ana"].map(id=>DB.people[id]).filter(p=>p && p.families.includes(f.name));
-  const why = DB.user.invitedBy && f.id==="xoogler" ? `<b>${DB.user.invitedBy}</b> invited you to apply` : STATE.entry==="event" ? `You're registered for <b>Xoogler dinner, Thursday</b>` : `Kai: ${f.why||"fits your background"}`;
-  const evs = DB.fevents.filter(e=>e.family===f.id && !e.past && e.vis==="public").sort((a,b)=>(a.sort||0)-(b.sort||0)).slice(0,2);
-  const chans = d.chanNames || (d.chans||[]).map(id=>{ const c=(DB.channels[f.id]||[]).find(x=>x.id===id)||{name:id,members:0}; return [CH_EMO[id]||"#", c.name.replace(/^#/,""), c.members]; });
-  const nCh = (DB.channels[f.id]||[]).length;
-  const who = d.run.map(r=>r[1]).join(" and ");
-  const step = (n, a, b) => `<div class="cm-row cm-step" style="cursor:default"><div class="cm-num">${n}</div><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:''}</div></div>`;
-  return `<div class="hdr"><div class="back" onclick="goBack()">‹</div>${guest?`<div class="cm-guest">${LI("eye",16)}<span>Seeing ${f.name} as a guest</span></div>`:'<div style="flex:1"></div>'}<span class="chip" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')">Share</span></div>
-  <div class="body cm-page cm-hi" style="padding-top:0">
-    <div class="cover cm-cover" style="margin-top:-10px">${cCoverArt(f)}<div class="flogo big">${cMark(f)}</div></div>
+  const evs = DB.fevents.filter(e=>e.family===f.id && !e.past && e.vis==="public" && +evDate(e) + evEndH(e)*36e5 > Date.now()).sort((a,b)=>(a.sort||0)-(b.sort||0)).slice(0,2);
+  const city = cMyCity(), stats = (pj.stats||[]).map((n,i)=>[n, i===0&&city ? `near ${city}` : C_PJ_LBL[i]]).filter(([n])=>n>=5);
+  const offers = (pj.offers||[]).slice(0, STATE.cPjMore===f.id ? 10 : 5);
+  return `<div class="body cm-page cm-hi cm-pj" style="padding-top:0">
+    <div class="cover cm-cover">${cCoverArt(f, true)}<div class="cm-pjbar"><button type="button" class="cm-pjib" onclick="goBack()" aria-label="Back">${LI("chevron-left",20)}</button>${guest?`<span class="cm-pjlbl">${LI("eye",16)}Seeing ${f.name} as a guest</span>`:''}<button type="button" class="cm-pjib" onclick="toast('Link copied: ${f.name.toLowerCase().replace(/ /g,'')}.key.ai')" aria-label="Share ${f.name}">${LI("share",20)}</button></div><div class="flogo big">${cMark(f)}</div></div>
     <div class="famname cm-pubhd"><div class="t">${f.name}</div><div class="cm-promise">${d.promise}</div>
-      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members.toLocaleString()} members</span><span>Since ${d.since}</span></div></div>
-    ${known.length?`<div class="cm-row cm-known" style="cursor:default"><div class="cm-faces">${known.map(p=>av(p.initials,"sm")).join("")}</div><div class="m"><div class="a">${known.map(p=>p.name.split(" ")[0]).join(", ").replace(/, ([^,]*)$/," and $1")} ${known.length>1?"are":"is"} here</div></div></div>`:''}
-    ${d.out.length?`<div class="cm-sec cm-proof"><div class="cm-stats">${d.out.map(([n,l])=>`<div><b>${n}</b><span>${l}</span></div>`).join("")}</div><div class="cm-meta">Last quarter, from what members reported</div></div>`:''}
-    ${evs.length?`<div class="cm-sec">${cHead("Open events")}<div class="cm-evstrip">${evs.map(e=>evCard(e,"row",{fam:false})).join("")}</div></div>`:''}
-    <div class="cm-sec cm-rhythm">${cHead("Every week and month")}${d.rhythm.map(([w,t])=>`<div class="cm-row" style="cursor:default"><div class="cm-day">${LI("repeat",18)}</div><div class="m"><div class="a">${t}</div><div class="b">${w}</div></div></div>`).join("")}</div>
-    ${chans.length?`<div class="cm-sec">${cHead(`Channels <i>${nCh||chans.length}</i>`)}<div class="cm-chtiles">${chans.map(([e,n])=>`<span><i>${e}</i>${n}</span>`).join("")}</div></div>`:''}
-    <div class="cm-sec cm-runsec">${cHead("Run by")}<div class="cm-runby"><div class="cm-faces">${d.run.map(r=>av(r[0],"sm")).join("")}</div><span>${who}</span></div></div>
-    <div class="cm-sec">${cHead("House rules")}<div class="cm-rules">${d.rules.split(/\.\s*/).filter(Boolean).map(r=>`<span>${r}</span>`).join("")}</div></div>
-    <div class="cm-sec">${cHead("How joining works")}<div class="cm-steps">${(open?[["Join","straight away"],["Say hi","Kai suggests who"]]:[["Apply","about 8 min"],[`${d.run[0][1].split(" ")[0]} reviews`,d.decide],["You're in",""]]).map(([a,b],i)=>`<div><b>${i+1}</b><span>${a}</span>${b?`<i>${b}</i>`:''}</div>`).join("")}</div></div>
-    ${d.link?`<div class="cm-sec"><span class="cm-link" onclick="toast('Opens ${d.link} in the browser')">${d.link}${C_EXT_SVG}</span></div>`:''}
+      <div class="cm-badges"><span>${open?"Open":"Vetted"}</span><span>${f.members<50?"Under 50 members":`${f.members.toLocaleString()} members`}</span><span>Since ${d.since}</span></div></div>
+    ${stats.length?`<div class="cm-pjstats">${stats.map(([n,l])=>`<div class="cm-pjst"><b>${n}</b><span>${l}</span></div>`).join("")}</div>`:''}
+    ${evs.length?`<div class="cm-sec">${cHead("Next events")}<div class="cm-evstrip">${evs.map(cPjEv).join("")}</div></div>`:''}
+    ${offers.length?`<div class="cm-sec">${cHead("What members offer")}<div class="cm-pjoffers">${offers.map(([o,t])=>`<div class="cm-pjof"><span>${o}</span><i>${t}</i></div>`).join("")}${STATE.cPjMore!==f.id&&(pj.offers||[]).length>5?`<button type="button" class="cm-pjmore" data-cpjmore="${f.id}">See more</button>`:''}</div></div>`:''}
   </div>
   <div class="foot">${guest?`<button class="btn" onclick="toast('Guests ${open?"join":"apply"} here. You\'re already in.')">${open?"Join "+f.name:"Apply · about 8 min"}</button>`
     : (STATE.cDeclined&&STATE.cDeclined.fam===f.id) ? `<button class="btn sec" disabled>You can apply again ${STATE.cDeclined.again}</button>`
@@ -16996,6 +17017,7 @@ portWire = function(){
   q("[data-ccmt]", el=>{ const i=phone.querySelector("#ccmt"); const v=(i&&i.value||"").trim(); if (!v) return; const p=DB.posts.find(x=>x.id===el.dataset.ccmt); STATE.cMyCmts=STATE.cMyCmts||{}; (STATE.cMyCmts[p.id]=STATE.cMyCmts[p.id]||[]).unshift(v); p.cm++; render(); toast("Comment posted"); });
   q("[data-cnoteadd]", ()=>{ const i=phone.querySelector("#cnote"); const v=(i&&i.value||"").trim(); if (!v) return; const m=cMMOne(STATE.mmFor); cMMSet(m.id, {notes:[[DB.user.name,"Now",v], ...m.notes]}); render(); });
   q("[data-crep]", el=>{ STATE.cRepDone=true; render(); toast(el.dataset.crep==="keep"?"Kept. The reporters aren't told who decided.":"Message removed. Tom is told why."); });
+  q("[data-cpjmore]", el=>{ STATE.cPjMore=el.dataset.cpjmore; render(); });
   q("[data-cinsr]", el=>{ if (el.dataset.cinsr==="custom") return openSheet("cinsrange"); STATE.cInsR=el.dataset.cinsr; render(); });
   q("[data-caskpost]", el=>{ const text=(STATE.cAskDraft||"").trim(); if (text.length<8) { phone.querySelector("#caskt").focus(); return toast("Say in one line what you're after."); }
     const a = { id:"m"+Date.now(), fam:cF().id, k:el.dataset.caskpost, pid:"me", tag:cAskGuess(text), text, when:"Now", n:0, st:cOrg()?"live":"pending" };
@@ -17294,11 +17316,11 @@ const P2 = {
   maya: { now:"Building infra for agents",
     needs:[{t:"A product partner", s:"Someone who has shipped AI features", fit:"You shipped two AI features at Google Cloud", a:"offer"},
            {t:"Seed investors in agent infra", s:"Raising this quarter", a:"suggest"},
-           {t:"Her first two engineers", s:"Backend, Go or Rust", a:"suggest"}],
+           {t:"Two founding engineers", s:"Backend, Go or Rust", a:"suggest"}],
     work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Stripe","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
     school:[["M","#00274C","U of Michigan","MS CS · 2014","Michigan, like you"]],
     note:"Wants a PM who has shipped agents. Ask about her Stripe years.",
-    kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for her first two engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
+    kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for two founding engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
   rahul: { now:"Building the eng team for a new product line",
     needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google Cloud", a:"offer"}],
     work:[["A","#C96442","Anthropic","Eng Director · now"],["G","#1A73E8","Google Search","2012 – 2021","Google, like you"]],
@@ -17332,7 +17354,7 @@ const P2_OPEN = {
   "Office hours":["clock","Book a slot",f=>`Hi ${f}, could I take one of your office hours slots this week? I'd like your read on AI PM roles.`],
   "Investing":["sprout","Ask what they back",f=>`Hi ${f}, I'm not raising, but I'd love to know what you look for at seed in AI products.`]
 };
-function p2KaiPre(pid, p){ const o=p2Opp(pid), via=o&&viaOf(o), sh=(p.shared||[]).find(x=>/^(Both|Met)/.test(x));
+function p2KaiPre(pid, p){ const o=p2Opp(pid), via=o&&viaOf(o), sh=p2Ties(p).find(x=>/^(Both|Met)/.test(x));
   return via ? `${firstName(via)} is your warmest way in` : sh ? `${sh}. Direct is fine` : `How to reach ${firstName(p)}`; }
 const p2OpenList = p => (p.openTo||[]).filter(k=>P2_OPEN[k]);
 function p2Opp(pid){ return DB.opps.find(x=>x.personId===pid && x.state!=="dropped"); }
@@ -17358,13 +17380,16 @@ function p2MutualLine(pid){ const fs=p2Shared(pid); if (!fs.length || pid==="pri
 const p2H = (ic, t) => `<div class="p2sh p2hd">${LI(ic,20)}<span>${t}</span></div>`;
 
 /* ---- 1. Between you ---- */
+/* shared history minus events: "Xoogler dinner, August" would name who went (privacy) */
+const p2Ties = p => (p.shared||[]).filter(s=>!/,\s*(January|February|March|April|May|June|July|August|September|October|November|December)$/.test(s));
+/* only real past contact counts as history; "Both in Michigan" or "Runs the family" is not */
+const p2Hist = p => p2Ties(p).filter(s=>typeof s==="string"&&/^(Met|Greeted|Nominated)\b/.test(s));
 function p2Between(pid){
-  const p=DB.people[pid], f=firstName(p), o=p2Opp(pid), via=o&&viaOf(o), ev=sharedEventsFor(pid)[0];
+  const p=DB.people[pid], f=firstName(p), o=p2Opp(pid), via=o&&viaOf(o);
   if (STATE.p2done["msg"+pid]) return { tone:"", ico:"send", b:`Your note${via?" via "+firstName(via):""}`, s:"Waiting · sent just now" };
   if (o && ownerOf(o)==="you" && !isNewOf(o)) return { tone:"you", ico:"message-circle", b:`${f} replied`, s:"Waiting on you" };
   if (o && ownerOf(o)==="them") return { tone:"", ico:"clock", b:via&&!o.viaAgreed?`Your ask via ${firstName(via)}`:`Your note to ${f}`, s:"Waiting on them" };
-  if (ev) return { tone:"", ico:"calendar", b:`Both going to the ${ev.name}`, s:ev.day };
-  if ((p.shared||[])[0]) return { tone:"", ico:"history", b:`Last: ${p.shared[0]}`, s:"From your calendar and Key" };
+  const tie=p2Ties(p)[0]; if (tie) return { tone:"", ico:"history", b:`Last: ${tie}`, s:"From your calendar and Key" };
   return null;
 }
 function p2BetweenLine(pid){ const x=p2Between(pid); if(!x) return "";
@@ -17372,7 +17397,7 @@ function p2BetweenLine(pid){ const x=p2Between(pid); if(!x) return "";
 
 /* ---- body shared by the sheet and the full page ---- */
 function p2Body(pid){
-  const p=DB.people[pid], f=firstName(p), d=p2d(pid), fams=DB.families.filter(fm=>(p.families||[]).some(n=>fm.name===n||fm.name.startsWith(n))), evs=sharedEventsFor(pid);
+  const p=DB.people[pid], f=firstName(p), d=p2d(pid), fams=DB.families.filter(fm=>(p.families||[]).some(n=>fm.name===n||fm.name.startsWith(n)));
   const need=(n,i)=>{ const done=STATE.p2done["need"+pid+i]; const lbl=n.fit?"Offer yourself":n.a==="share"?"Share what worked":"Suggest";
     return `<div class="p2nd ${n.fit?'hit':''}"><span>${n.fit?`<span class="p2fit">${LI("badge-check",13)}You fit this</span>`:''}<b>${n.t}</b>${n.s?`<small>${n.s}</small>`:''}${n.fit?`<small class="p2why">${n.fit}</small>`:''}</span><button class="p2x ${done?'done':''}" onclick="event.stopPropagation();openSheet('p2need','${pid}|${i}')">${done?(n.fit?"Offered":"Suggested"):lbl}</button></div>`; };
   const links=(typeof profileLinks==="function"?profileLinks(pid):[]);
@@ -17386,7 +17411,6 @@ function p2Body(pid){
     ${(p.help||[]).length?`<div class="p2sec">${p2H("handshake",`${f} can help with`)}<div class="p2chips">${p.help.map(h=>{ const k="ask"+pid+h; return `<button class="p2chip ${STATE.p2done[k]?'asked':''}" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${h.replace(/'/g,"")}')">${LI(STATE.p2done[k]?"check":"message-circle-question",14)}${h.charAt(0).toUpperCase()+h.slice(1)}</button>`; }).join("")}</div></div>`:''}
     ${d.work.length?`<div class="p2sec">${p2H("briefcase","Work")}<div class="p2rail">${d.work.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|working at ${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
     ${d.school.length?`<div class="p2sec">${p2H("graduation-cap","School")}<div class="p2rail">${d.school.map(([l,c,n,s,you])=>`<button class="p2wk" onclick="event.stopPropagation();openSheet('p2ask','${pid}|${n}')">${p2Logo(l,c)}<b>${n}</b><small>${s}</small>${you?`<small class="p2you">${you}</small>`:''}</button>`).join("")}</div></div>`:''}
-    ${evs.length?`<div class="p2sec">${p2H("calendar","You're both going")}${evs.map(e=>`<div onclick="event.stopPropagation();STATE.sheet=null;go('eventd:${e.id}')">${evCard(e,"row",{fam:false})}</div>`).join("")}</div>`:''}
     ${links.length?`<div class="p2sec">${p2H("link","Links")}${links.map(([k,l])=>`<button class="p2lk" onclick="event.stopPropagation();toast('Opens ${l} in your browser')">${p2Brand(k)}<b>${l}</b>${LI("external-link",16)}</button>`).join("")}</div>`:''}
   </div>`;
 }
@@ -17431,13 +17455,14 @@ function p2Send(kind, pid, msg){ STATE.p2done[kind]=1; if (kind.startsWith("need
 function p2Composer(draft, send, ph){ return `<div class="p2kd">${kaiMark(14)}Kai drafted · edit anything</div>${keyComposer({ id:"p2ci", wrap:false, draft, placeholder:ph||"Message", attach:false, mic:true, micAttr:`onclick="toast('Hold to talk. Kai writes it down.')"`, sendAttr:`onclick="${send}"` })}`; }
 
 /* ---- Ask Kai: the app's own Kai sheet, scoped to the person; answers end in action pills ---- */
-function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2Opp(pid), via=o&&viaOf(o), fit=d.needs.filter(n=>n.fit), fams=(p.families||[]).join(" and "), ev=sharedEventsFor(pid)[0];
+function p2KaiQs(pid){ const p=DB.people[pid], f=firstName(p), d=p2d(pid), o=p2Opp(pid), v=o&&viaOf(o), via=v&&v!==p&&v!==pid&&v.id!==pid?v:null, fit=d.needs.filter(n=>n.fit), fams=(p.families||[]).join(" and ");
     const A = {
-      common:["What do we have in common?", `You're both in ${fams||"Xoogler"}${ev?`, and you're both going to the ${ev.name}`:""}${(d.work.find(w=>w[4]))?". "+d.work.find(w=>w[4])[4].replace(", like you"," for both of you"):""}.`, [["Families"],["Events"],["Work"]], ev?[["See the event",`STATE.sheet=null;go('eventd:${ev.id}')`]]:[]],
-      how:[`How should I reach ${f}?`, via?`${firstName(via)} knows you both and can vouch for you. ${f} prefers intros through people they trust.`:`Direct is fine. ${(p.shared||[])[0]?"You have history: "+p.shared[0]+".":""}`, [["Routes"]], [[via?`Message via ${firstName(via)}`:`Message ${f}`,`openSheet('p2msg','${pid}')`]]],
+      common:["What do we have in common?", `You're both in ${fams||"Xoogler"}${(d.work.find(w=>w[4]))?". "+d.work.find(w=>w[4])[4].replace(", like you"," for both of you"):""}.`, [["Families"],["Work"]], []],
+      how:[`How should I reach ${f}?`, via?`${firstName(via)} is connected to you both, so an intro through ${firstName(via)} is the warmest route.`:`Direct is fine.${p2Hist(p)[0]?" You have history: "+p2Hist(p)[0]+".":""}`, [["Routes"]], [[via?`Message via ${firstName(via)}`:`Message ${f}`,`openSheet('p2msg','${pid}')`]]],
       give:[`What could I offer ${f}?`, fit.length?`${fit.map(n=>`${f} is looking for ${n.t.charAt(0).toLowerCase()+n.t.slice(1)}, and ${n.fit.charAt(0).toLowerCase()+n.fit.slice(1)}`).join(". ")}. Only you see this.`:`Nothing you've shared matches what ${f} has asked for. You could suggest someone who does.`, [["What they're looking for"],["Your profile"]], fit.length?[["Offer yourself",`openSheet('p2need','${pid}|${d.needs.indexOf(fit[0])}')`]]:(d.needs.length?[["Suggest someone",`openSheet('p2need','${pid}|0')`]]:[])],
       now:[`What is ${f} working on?`, `${d.now||p.line}.${d.needs.length?" Looking for "+d.needs.map(n=>n.t.charAt(0).toLowerCase()+n.t.slice(1)).join(", ")+".":""}`, [["Their profile"]], (p.help||[])[0]?[[`Ask about ${p.help[0]}`,`openSheet('p2ask','${pid}|${p.help[0]}')`]]:[]]
     };
+  for (const k in A) A[k][1]=A[k][1].replace(/\.{2,}/g,".");   // interpolated lines can already end in a period
   return A; }
 function p2KaiScope(pid){ const p=DB.people[pid]; return { kind:"profile", id:pid, label:p.name, sugg:Object.values(p2KaiQs(pid)).map(a=>a[0]) }; }
 function p2AskKai(pid){ STATE.kaiMsgs=[]; openSheet("kai"); STATE.kaiScope=p2KaiScope(pid); render(); }   // openSheet("kai") clears kaiScope, so scope after it
@@ -17466,8 +17491,8 @@ portSheet = function(type, id){
   const [pid, arg] = String(id||"").split("|"); const p=DB.people[pid]||DB.people.maya, f=firstName(p), d=p2d(p.id), o=p2Opp(p.id), via=o&&viaOf(o);
   const head = t => `<div class="p2shd">${av(p.initials)}<h2>${t}</h2></div>`;
   const sendTo = via&&!o.viaAgreed ? `Send via ${firstName(via)}` : "Send";
-  if (type==="p2between") { const x=p2Between(p.id), ev=sharedEventsFor(p.id)[0], k=STATE.p2keep[p.id];
-    const tl=[...(STATE.p2done["msg"+p.id]?[["Now",`Your note${via?" via "+firstName(via):""}, waiting`]]:[]), ...(ev?[[ev.day,`Both going to the ${ev.name}`]]:[]), ...(p.shared||[]).map(s=>{ const m=s.match(/(.*?),\s*(\w+)$/); return m?[m[2],m[1]]:["Before",s]; })];
+  if (type==="p2between") { const x=p2Between(p.id), k=STATE.p2keep[p.id];
+    const tl=[...(STATE.p2done["msg"+p.id]?[["Now",`Your note${via?" via "+firstName(via):""}, waiting`]]:[]), ...p2Ties(p).map(s=>["Before",s])];
     return `${head(`You and ${f}`)}
       <div class="p2note"><small>${LI("lock",12)}Your note · only you see it</small><textarea rows="2" placeholder="Add a note only you can see" oninput="STATE.p2notes['${p.id}']=this.value">${d.note}</textarea></div>
       ${tl.length?`<div class="p2tl">${tl.map(([w,t])=>`<div><span>${w}</span><span>${t}</span></div>`).join("")}</div>`:''}
@@ -23201,7 +23226,7 @@ if (typeof KEY_HIFI !== "undefined" && !!KEY_HIFI) {
     const mine = STATE.member ? DB.families.map(f=>({...f, status:"member"})) : [];
     const pending = (!STATE.member && STATE.applied) ? [{...inv, status:"pending", why:"Applied "+STATE.appliedAt}] : [];
     const recs = DB.recommendedFamilies.filter(r=>!mine.some(m=>m.id===r.id));
-    const all = [ {id:"exmeta", name:"Ex-Meta Alumni", initial:"M", members:2100, kind:"vetted", why:"For people who worked at Meta"}, {id:"seedfounders", name:"Seed Founders Bay Area", initial:"S", members:340, kind:"vetted", why:"Founders raising or just raised"}, {id:"umich", name:"Michigan Product Alumni", initial:"P", members:188, kind:"open", why:"Open to Michigan alumni"} ];
+    const all = [ {id:"exmeta", name:"Ex-Meta Alumni", initial:"E", members:2100, kind:"vetted", why:"For people who worked at Meta"}, {id:"seedfounders", name:"Seed Founders Bay Area", initial:"S", members:340, kind:"vetted", why:"Founders raising or just raised"}, {id:"umich", name:"UMich Product Guild", initial:"U", members:188, kind:"open", why:"Open to Michigan alumni"} ];
     const forYou = (!STATE.member&&!STATE.applied?[{...inv, why:"Ex-Google, from your LinkedIn", best:true}]:[]).concat(recs);
     const sec = (title, sub, arr, feat) => arr.length ? `<div class="obk-ov">${title}${sub?` <span>${sub}</span>`:""}</div>${feat ? `<div class="obk-feats">${arr.map(obkFeatFam).join("")}</div>` : arr.map(obkRowFam).join("")}` : "";
     return `<div class="hdr obk-hdr">${obkBack("goBack()")}<div class="t">Families</div></div>
@@ -24635,6 +24660,244 @@ if (typeof evmF==="function") { const _mtEvmF = evmF; evmF = function(act, pid){
 
 </script>
 <style>
+/* ==== One mission, log first (Mission page IA thread, 2 Oct). Pairs with mission-log.js; load after mission-thread.css and overrides it in place. Today's tokens only. ==== */
+/* the hero is the header: full width, no card, the brief and the rules in it */
+#phone.ml-on .view > .body.sc > .mh-band.big { margin:-8px -16px 0; border-radius:0 0 24px 24px; padding:8px 20px 16px; box-shadow:none; }
+#phone.ml-on .mh-band.big .mh-bt { align-items:center; }
+#phone .ml-brief { all:unset; box-sizing:border-box; display:flex; gap:6px; align-items:center; width:100%; min-height:44px; margin-top:8px; cursor:pointer; color:inherit; text-align:left; }
+#phone .ml-brief:focus-visible { outline:2px solid var(--text-on-deep-default); outline-offset:4px; border-radius:8px; }
+#phone .ml-brief > p { flex:1 1 auto; min-width:0; margin:0; font:var(--type-body-m, 400 15px/1.45 Manrope, system-ui, sans-serif); color:var(--text-on-deep-default); opacity:.94; }
+#phone .ml-brief > .ml-pen { flex:0 0 auto; width:44px; height:44px; margin:0 -14px 0 0; display:grid; place-items:center; color:var(--text-on-deep-default); opacity:.85; }
+#phone .ml-rules { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+#phone .ml-rule { position:relative; flex:0 0 auto; white-space:nowrap; display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 12px 0 10px; border:0; border-radius:var(--radius-absolute-infinite, 999px); background:color-mix(in srgb, var(--text-on-deep-default) 16%, transparent); color:var(--text-on-deep-default); font:var(--type-label-strong, 600 13px/1.2 Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .ml-rule::after { content:""; position:absolute; inset:-4px 0; }
+#phone .ml-rule:focus-visible { outline:2px solid var(--text-on-deep-default); outline-offset:2px; }
+#phone .ml-rule svg { width:14px; height:14px; flex:0 0 auto; opacity:.9; }
+#phone .ml-rule.ml-more { display:none; min-width:44px; justify-content:center; padding:0 10px; background:color-mix(in srgb, var(--text-on-deep-default) 8%, transparent); }
+#phone .ml-rule.ml-more .ml-m2 { display:none; }
+@media (max-width:359px) { #phone .ml-rule { height:44px; padding:0 10px 0 8px; font-size:12px; } #phone .ml-rules { gap:6px; } #phone .ml-rule.r3, #phone .ml-rule.r4, #phone .ml-rule.r5, #phone .ml-rule.r6 { display:none; } #phone .ml-rule.ml-more { display:inline-flex; } #phone .ml-rule.ml-more .ml-m3 { display:none; } #phone .ml-rule.ml-more .ml-m2 { display:inline; } }
+/* Log | Chat, joined to the header: sticks under the app header once the hero is gone */
+#phone .ml-tabs { position:sticky; top:0; z-index:2; margin:0 -16px; padding:10px 16px; background:var(--bg-canvas, var(--bg-surface-default)); }
+#phone .ml-seg { display:flex; height:50px; padding:3px; border-radius:12px; background:var(--bg-fill-default); }
+#phone .ml-seg > button { position:relative; flex:1; display:flex; align-items:center; justify-content:center; gap:6px; border:0; border-radius:9px; background:none; font:var(--type-label-strong, 700 14px/1 Manrope, system-ui, sans-serif); color:var(--text-tertiary); cursor:pointer; }
+#phone .ml-seg > button.on { background:var(--bg-surface-default); color:var(--text-primary); box-shadow:var(--elevation-1); }
+#phone .ml-seg > button:focus-visible { outline:2px solid var(--text-primary); outline-offset:-2px; }
+#phone .ml-seg > button > .ml-n { font-weight:800; color:var(--text-primary); }
+/* the log: filters, then units newest first */
+#phone .ml-filt { display:flex; gap:8px; margin:2px 0 12px; overflow-x:auto; scrollbar-width:none; }
+#phone .ml-filt::-webkit-scrollbar { display:none; }
+#phone .ml-filt > button { flex:0 0 auto; height:44px; padding:0 14px; border:0; border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-surface-default); box-shadow:inset 0 0 0 1px var(--border-default); font:var(--type-label-strong, 600 13px/1 Manrope, system-ui, sans-serif); color:var(--text-secondary); white-space:nowrap; cursor:pointer; }
+#phone .ml-filt > button.on { background:var(--text-primary); color:var(--bg-surface-default); box-shadow:none; }
+#phone .ml-filt > button:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .ml-filt > button > b { font-weight:800; margin-left:4px; }
+#phone .ml-log { display:flex; flex-direction:column; gap:14px; padding-top:8px; }
+#phone .ml-unit { display:flex; flex-direction:column; gap:12px; }
+#phone .ml-unit > .ks-sys { align-self:flex-start; text-align:left; font:var(--type-label-strong, 600 13px/1.3 Manrope, system-ui, sans-serif); color:var(--text-tertiary); min-height:32px; display:flex; align-items:center; }
+#phone .ml-unit > .mt-lr { min-height:44px; }
+#phone .ml-pass .mt-opps { margin-top:0; margin-left:34px; }
+#phone .ml-pass .mt-card[hidden] { display:none; }
+#phone .ml-unit .mt-chips { margin-left:34px; }
+#phone .ml-unit > .ks-k .mt-chips { margin-left:0; }
+#phone .ml-empty { padding:24px 0; text-align:center; font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-tertiary); }
+/* the chat: bottom-anchored under the sticky switcher */
+#phone .ml-chat { display:flex; flex-direction:column; justify-content:flex-end; min-height:calc(100% - 70px); }
+#phone .ml-chat .mt-thread { padding-bottom:8px; }
+@media (max-width:359px) { #phone.ml-on .mh-band.big .mh-bn { font-size:20px; } #phone .ml-brief > p { font-size:14px; } }
+/* a short phone (320x568): the ask on two lines, the rules on one row, so the filters and the first card are above the composer on open */
+@media (max-height:640px) {
+  #phone.ml-on .view > .body.sc > .mh-band.big { padding:4px 20px 12px; }
+  #phone .ml-brief { margin-top:4px; }
+  #phone .ml-brief > p { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+  #phone .ml-rules { flex-wrap:nowrap; overflow:hidden; margin-top:6px; }
+  #phone .ml-rule.r4, #phone .ml-rule.r5, #phone .ml-rule.r6 { display:none; }
+  #phone .ml-rule.ml-more { display:inline-flex; }
+  #phone .ml-tabs { padding:6px 16px 4px; }
+  #phone .ml-seg { height:44px; padding:0; }
+  #phone .ml-filt { margin:0 0 4px; }
+  #phone .ml-log { padding-top:0; gap:8px; }
+  #phone .ml-unit { gap:8px; }
+  /* the composer on a short phone: the scope chip goes (the mission is the page, the field's label still names it) and the
+     plus, the field, the mic and send share one row, so the first card is above the composer on open */
+  #phone.ml-on .mt-comp .mt-ctxrow { display:none; }
+  #phone.ml-on .mt-comp .ks-box { display:flex; align-items:center; gap:4px; }
+  #phone.ml-on .mt-comp .ks-box > textarea { flex:1 1 auto; min-width:0; order:2; }
+  #phone.ml-on .mt-comp .ks-crow { display:contents; }
+  #phone.ml-on .mt-comp .ks-crow > .grow { display:none; }
+  #phone.ml-on .mt-comp .mt-plus { order:1; } #phone.ml-on .mt-comp .ks-crow > .ks-ci:not(.mt-plus) { order:3; } #phone.ml-on .mt-comp .ks-go { order:4; }
+}
+@media (prefers-reduced-motion: reduce) { #phone .ml-seg > button { transition:none; } }
+
+</style>
+<script>
+/* ==== One mission, log first (Mission page IA thread, 2 Oct; Apoorv 21:42 "the logs become the main surface, instead of the chat",
+   22:37 "okay better ... users can quickly see whats surfaced and where there is an update for me, and take quick actions").
+   Loads after mission-thread.js and mission-thread.css and overrides them in place: the chat layer (KeyChatLayer) and its Chat peek go,
+   the Opportunities and Brief tabs go. Keeps mission-thread's composer, its answers (mtAnswer, mtSend, mtDo), its cards (mtOpps),
+   its app-header collapse (mtHeader) and the series drafts. Edits no other file.
+   - The hero is the header: the ask in your words with a pencil, then the rules as chips (must-haves, where Kai looks, checks in).
+     Full width, no card, like a family page.
+   - Under it a Log | Chat switcher (KeyTabs segmented) that sticks under the app header.
+   - Log, the default, newest first by each entry's time: Kai's pass with its picks as the same KeyOpportunityCards, replies, bookings,
+     what you logged, Kai's check-ins with their chips. Filters: All, Needs you (a count of what it shows), Waiting (picks with the other person).
+   - Chat: this mission's conversation with Kai, bottom-anchored. A pick Kai names in chat is the same card there; the log gets one line for it.
+   - One composer, docked. A statement is logged and stays on Log; a question switches to Chat with the answer; the pencil opens Chat with
+     the brief placeholder. Nothing is sent without your tap. Audit 2 Oct (audits/mission-log-2026-10-02.md): the state line is the
+     opportunity sheet's ("Kai asks you on day 7"), recorded events only; a closed role is Closed, not open. ==== */
+STATE.mlTab = STATE.mlTab || {}; STATE.mlFilter = STATE.mlFilter || {};
+const ML_ASK = { m1:"You're looking for a senior PM role at an AI company in the Bay Area.", m2:"You want a technical cofounder who wants a product partner." };
+const mlJob = o => typeof MH_JOB!=="undefined" && MH_JOB[o.id] || null;
+const mlClosed = o => { const j = mlJob(o); return !!(j && j.closed) || gpStage(o)===5; };
+const mlNeedsCard = o => !mlClosed(o) && gpStage(o)<=1;
+const mlWaitCard = o => !mlClosed(o) && ownerOf(o)==="them";
+const mlTk = w => { if (!w||w==="now"||w==="today") return 0; const d = /^([+-])(\d+)d$/.exec(w); if (d) return (d[1]==="-"?-1:1)*+d[2]; return -10; };
+function mlTabGo(id, t){ STATE.mlTab[id] = t; STATE.mtScroll = null; render(); }
+function mlFilterGo(id, f){ STATE.mlFilter[id] = f; STATE.mtScroll = null; render(); }
+function mlBriefEdit(id){ STATE.mlTab[id] = "chat"; STATE.mtFocus = id; STATE.mlPh = "Tell Kai what to change in the brief"; render(); }
+function mlRules(id){ if (typeof bBriefSheet==="function") openSheet("bsheet", id); else mlBriefEdit(id); }
+/* "Change it with Kai", the series drafts and anything that opened the layer now open the Chat tab */
+mtOpen = function(id, on){ if (on) { STATE.mlTab[id] = "chat"; STATE.mtFocus = id; render(); } };
+/* a question goes to Chat with its answer; a log line stays on Log */
+const _mlSend = mtSend; mtSend = function(id){
+  const ta = phone.querySelector(".mt-comp #mupd"), m = DB.missions.find(x=>x.id===id), v = ta ? ta.value.trim() : "";
+  if (m && v) STATE.mlTab[id] = mtAnswer(m, mtCap(v)) ? "chat" : "log";
+  return _mlSend.apply(this, arguments);
+};
+
+/* the hero: the ask and the rules, as on the approved prototype (12ZxuuCGkkY218H97AApVu) */
+function mlHero(band, m){
+  if (band.querySelector(".ml-brief")) return;
+  band.querySelectorAll(":scope > .mh-bf").forEach(e=>e.remove());
+  const fams = (DB.families||[]).filter(f=>f.joined!==false && new RegExp(`\\b${f.name.split(" ")[0]}\\b`).test(m.brief||"")).map(f=>f.name);
+  const where = fams.length ? fams.join(", ") : m.series ? "Everyone who came to a date" : m.ev ? "This event's guests" : "Your families";
+  const chips = [...(m.constraints||[]).map(c=>[`${LI("check",14)}<span>${c}</span>`, "Must have"]), [`${LI("users",14)}<span>Where Kai looks</span>`, where], [`${LI("clock",14)}<span>Every week</span>`, "Kai checks in"]];
+  /* the header carries the ask and, when the brief states one, the finish line; the search notes stay in the brief sheet */
+  const sents = ((m.brief||"").match(/[^.!?]+[.!?]+/g) || []).map(s=>s.trim()).filter(s=>!/^(Standing|No end date|Kai is looking|Not set)/.test(s));
+  const ask = ML_ASK[m.id] || sents[0] || `You want ${m.name.charAt(0).toLowerCase()+m.name.slice(1)}.`, done = sents.find(s=>/^Done when/i.test(s));
+  const brief = done && done!==ask ? `${ask} ${done}` : ask;
+  band.insertAdjacentHTML("beforeend", `<button type="button" class="ml-brief" onclick="mlBriefEdit('${m.id}')" aria-label="Refine the brief with Kai" data-kc="KeyBriefLine" data-kv="editable=true"><p>${brief}</p><span class="ml-pen" aria-hidden="true">${LI("pencil",18)}</span></button>
+    <div class="ml-rules" data-kc="KeyChipRow" data-kv="kind=rules">${chips.map(([h,t],i)=>`<button type="button" class="ml-rule r${i+1}" title="${t}" onclick="mlRules('${m.id}')">${h}</button>`).join("")}${chips.length>2?`<button type="button" class="ml-rule ml-more" onclick="mlRules('${m.id}')" aria-label="All rules"><span class="ml-m3">+${chips.length-3}</span><span class="ml-m2">+${chips.length-2}</span></button>`:""}</div>`);
+}
+function mlSeg(id, tab, dot){
+  return `<div class="ml-tabs" data-kc="KeyTabs" data-kv="count=2, style=segmented"><div class="ml-seg" role="tablist">${[["log","Log"],["chat","Chat"]].map(([k,l])=>`<button type="button" role="tab" aria-selected="${k===tab}" class="${k===tab?"on":""}" onclick="mlTabGo('${id}','${k}')">${l}${dot===k?`<b class="ml-n" aria-label="1 new">1</b>`:""}</button>`).join("")}</div></div>`;
+}
+/* every entry gets a sequence number the first time it is drawn, so same-day entries keep the order they happened in */
+STATE.mlTick = STATE.mlTick || 0;
+function mlStamp(){ DB.missions.forEach(m=>(m.mlog||[]).forEach(e=>{ if (!e.tick) e.tick = ++STATE.mlTick; })); DB.opps.forEach(o=>(o.log||[]).forEach(e=>{ if (!e.tick) e.tick = ++STATE.mlTick; })); }
+/* the rows mtChat draws, in the order it draws them, each with its entry */
+function mlRows(m){
+  const os = DB.opps.filter(o=>o.missionId===m.id && o.state!=="dropped");
+  const own = m.mlog ? m.mlog.map(l=>({ who:l[0], text:l[1], when:l[2], e:l })) : mtLayer(m) ? [] : [{ who:"You", text:"started this at sign-up", when:"Tue" }, { who:"Kai", text:"first pass", when:"Tue" }];
+  const st = own.find(r=>r.who==="You" && /^started this/.test(r.text)), fp = own.findIndex(r=>r.who==="Kai" && /^first pass/i.test(r.text));
+  if (st && fp>=0) own.splice(fp, 1);
+  const rows = own.concat(os.flatMap(o=>(o.log||[]).slice(1).map(l=>({ when:l[2], e:l }))));
+  return rows.map((r,i)=>Object.assign(r,{ i })).sort((a,b)=>(mlTk(a.when)-mlTk(b.when))||(a.i-b.i));
+}
+/* when an entry happened, from its own time mark */
+function mlWhen(el){
+  const w = el.querySelector(".when"); if (w) return mlTk(w.textContent.trim());
+  const parts = el.textContent.split("·").map(s=>s.trim()).slice(1), t = parts.find(p=>/^(now|today|[+-]\d+d|[A-Z][a-z]{2}( \d+)?)$/.test(p));
+  return t ? mlTk(t) : 0;
+}
+/* the thread mission-thread builds, split into timed units: what you typed and Kai's reply to it are the chat; everything else is the log */
+function mlSplit(m){
+  const t = document.createElement("template"); t.innerHTML = mtChat(m);
+  const th = t.content.querySelector(".mt-thread"), log = [], chat = []; if (!th) return { log, chat };
+  const rows = mlRows(m); let unit = null;
+  [...th.children].forEach((el,i)=>{
+    const you = el.matches(".ks-u"), kai = el.matches(".ks-k"), r = rows[i], seq = r && r.e && r.e.tick || i, at = r ? mlTk(r.when) : mlWhen(el);
+    /* a promise about a delivery is not a recorded event: the sheet's state line says what Kai does next */
+    if (el.matches(".mt-lr") && /will deliver it as an ask/.test(el.textContent)) return;
+    /* what you typed that was not a question is a log line (missionSend filed it): your row, with Kai's "Noted" under it */
+    if (you && !mtAnswer(m, el.textContent.trim())) { const d = document.createElement("div"); d.className = "mt-lr ml-you"; d.setAttribute("data-kc", "KeyLogRow"); d.setAttribute("data-kv", "kind=face"); d.innerHTML = `${av(me().initials)}<span class="m">${el.textContent.trim()}</span><span class="when">now</span>`; unit = { els:[d], t:at, seq, you:true }; log.push(unit); return; }
+    if (you) { unit = { els:[el], t:at, seq, chat:true }; chat.push(unit); return; }
+    if (kai && unit && unit.els.length===1 && (unit.you || unit.chat)) { unit.els.push(el); return; }
+    unit = { els:[el], t:at, seq }; log.push(unit);
+  });
+  return { log, chat };
+}
+const mlNeeds = u => u.els.some(el=>el.querySelector(".mt-chips"));
+/* the words the opportunity sheet settled on (Opportunity IA, 2 Oct): what happened and when Kai asks, no pronoun for a person, no "Kai read it" */
+function mlWords(root){
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const s = n.nodeValue; if (!/Kai|recommended her/.test(s)) continue;
+    n.nodeValue = s.replace(/Kai drafts a nudge on day 7 if it's quiet\.?/g, "Kai asks you on day 7.").replace(/\. Kai drafts a nudge Friday/g, ". Kai asks you on day 7")
+      .replace(/Daniel recommended her/g, "Daniel recommended Maya").replace(/\.? Kai read it there(, nothing else)?/g, "");
+  }
+}
+function mlFrame(id){
+  const m = DB.missions.find(x=>x.id===id), root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
+  const band = body && body.querySelector(":scope > .mh-band.big"), bar = body && body.querySelector(":scope > .mh-tabs"), pane = body && body.querySelector(":scope > .mh-pane");
+  if (!m || !band || !pane || body.querySelector(".ml-tabs")) return;
+  phone.classList.add("ml-on");
+  const ps = mtPaths(m), open = ps.filter(o=>!mlClosed(o)), tab = STATE.mlTab[id] || "log", f = STATE.mlFilter[id] || "all";
+  root.querySelectorAll(".mt-layer, .mt-peek").forEach(e=>e.remove()); mtHold(false);
+  mlHero(band, m);
+  /* the chat, and the log it feeds */
+  const { log, chat } = mlSplit(m);
+  const list = pane.querySelector(".mt-opps"), rows = list ? null : [...pane.children];
+  /* the cards: a closed role says so and counts for nothing; under a filter, every card that fits shows */
+  const want = o => f==="needs" ? mlNeedsCard(o) : f==="waiting" ? mlWaitCard(o) : true;
+  let shown = 0;
+  if (list) list.querySelectorAll(".mt-card").forEach(c=>{
+    const o = DB.opps.find(x=>x.id===c.dataset.opp); if (!o) return;
+    if (mlClosed(o)) { c.querySelectorAll(".mt-lab").forEach(l=>l.remove()); c.setAttribute("data-kv", "stage=Closed"); }
+    if (f!=="all") c.hidden = !want(o);
+    if (!c.hidden) shown++;
+  });
+  if (list && f!=="all") list.querySelectorAll(".mt-more").forEach(e=>e.remove());
+  /* the pass: one Kai line over the cards (what it found, what is still open, the first move), then the cards. It sits in the timeline by its newest card */
+  const best = open.filter(o=>ownerOf(o)==="you")[0], n = open.length, found = ps.length;
+  const move = !best ? "" : best.roleTitle || best.kind!=="person" ? (best.action ? ` ${best.action.replace(/\.?$/, ".")}` : "") : ` Start with ${scName(best)}.`;
+  const pass = document.createElement("div"); pass.className = "ml-unit ml-pass";
+  const si = log.findIndex(u=>u.els[0].matches(".ks-sys") && /^You started this mission/.test(u.els[0].textContent)), started = si>=0 ? log.splice(si, 1)[0] : null;
+  if (f==="all") pass.insertAdjacentHTML("beforeend", found ? `<div class="ks-k mt-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>Found ${found} path${found===1?"":"s"}${n<found ? `, ${n} still open` : ""}.${move}</p></div></div>` : "");
+  if (list) pass.appendChild(list); else rows.forEach(e=>pass.appendChild(e));
+  const passT = Math.max(started ? started.t : -10, ...open.map(o=>mlTk(o.log && o.log.length ? o.log[o.log.length-1][2] : "")));
+  /* a pick Kai named in chat: its card is already in the pass, so the log gets one line */
+  chat.forEach(u=>{ const pin = u.els[1] && u.els[1].querySelector(".mt-pin"), o = pin && DB.opps.find(x=>x.id===pin.dataset.pin); if (!o) return;
+    log.push({ els:[Object.assign(document.createElement("div"), { className:"ks-sys", textContent:`You asked Kai. Kai pointed to ${scName(o)} · now` })], t:0, seq:u.seq }); });
+  const units = log.filter(u=>f==="all" || (f==="needs" && mlNeeds(u)));
+  if (f==="all" || shown) units.push({ els:[pass], t:passT, seq:-1, pass:true });
+  units.sort((a,b)=>(b.t-a.t)||(b.seq-a.seq));
+  const nNeeds = open.filter(mlNeedsCard).length + log.filter(mlNeeds).length;
+  const filt = `<div class="ml-filt" data-kc="KeyChipRow" data-kv="kind=filter">${[["all","All"],["needs","Needs you",nNeeds],["waiting","Waiting"]].map(([k,l,c])=>`<button type="button" class="${f===k?"on":""}" aria-pressed="${f===k}" onclick="mlFilterGo('${id}','${k}')">${l}${c?`<b>${c}</b>`:""}</button>`).join("")}</div>`;
+  const logPane = document.createElement("div"); logPane.className = "mh-pane mt-out ml-log"; logPane.setAttribute("data-tab", "log");
+  logPane.insertAdjacentHTML("beforeend", filt);
+  units.forEach(u=>{ if (u.pass) { logPane.appendChild(pass); return; } const d = document.createElement("div"); d.className = "ml-unit"; u.els.forEach(el=>d.appendChild(el)); logPane.appendChild(d); });
+  if (logPane.children.length===1) logPane.insertAdjacentHTML("beforeend", `<div class="ml-empty">${f==="needs" ? "Nothing waiting on you." : f==="waiting" ? "Nothing waiting on anyone else." : "Nothing here yet."}</div>`);
+  const chatPane = document.createElement("div"); chatPane.className = "mh-pane mt-out ml-chat"; chatPane.setAttribute("data-tab", "chat");
+  const thread = document.createElement("div"); thread.className = "ks-thread mt-thread";
+  if (chat.length) chat.forEach(u=>u.els.forEach(el=>thread.appendChild(el))); else thread.innerHTML = `<div class="mt-empty">${kaiMark(24)}<span>Ask Kai anything about this mission, or tell it what to change in the brief.</span></div>`;
+  chatPane.appendChild(thread);
+  if (bar) bar.remove(); pane.replaceWith(tab==="log" ? logPane : chatPane);
+  band.insertAdjacentHTML("afterend", mlSeg(id, tab, STATE.mlDot===id ? (tab==="log" ? "chat" : "log") : null));
+  /* the card Kai names in chat: the same card, cloned from the list, its taps the original's */
+  const srcList = list || pane.querySelector(".mt-opps");
+  root.querySelectorAll(".mt-pin").forEach(sl=>{ if (srcList && !sl.firstChild) mtPin(sl, srcList); if (!sl.firstChild) sl.remove(); });
+  mlWords(logPane); mlWords(chatPane);
+  /* the composer: its scope chip says where you are once, the title is already on screen; its words follow the view */
+  const ctx = root.querySelector(".mt-comp .mt-ctx > span"); if (ctx) ctx.textContent = "This mission";
+  const ta = root.querySelector(".mt-comp #mupd");
+  const narrow = phone.clientWidth < 360;
+  if (ta) { ta.placeholder = STATE.mlPh || (tab==="chat" ? (narrow ? "Message Kai" : "Message Kai about this mission") : (narrow ? "Log or ask Kai" : "Log an update or ask Kai")); STATE.mlPh = null; }
+  if (tab==="chat") { body.scrollTop = body.scrollHeight; body.dispatchEvent(new Event("scroll")); }
+  else if (STATE.mtScroll && STATE.mtScroll[0]===id+"|paths") { body.scrollTop = STATE.mtScroll[1]; body.dispatchEvent(new Event("scroll")); }
+}
+const _mlRender = render; render = function(){
+  const s = STATE.screen || "", on = typeof KEY_HIFI!=="undefined" && KEY_HIFI && STATE.member && s.startsWith("mission:"), id = on ? s.slice(8) : "";
+  /* the layer never opens: what a send would have opened the layer for, the Chat tab shows */
+  if (on && STATE.mtEnd===id) { STATE.mtEnd = null; STATE.mlDot = STATE.mlTab[id]==="log" ? null : id; }
+  STATE.mtOpen = null; mlStamp();
+  const r = _mlRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  phone.classList.remove("ml-on");
+  if (on && DB.missions.find(x=>x.id===id)) { mlFrame(id); STATE.mlDot = null; }
+  return r;
+};
+
+</script>
+<style>
 /* KeyBriefTop: the brief leads Home as a welcome (his 2 Oct 00:28, 01:33, 02:49). Type carries the hierarchy: a small date line,
    the hello as the big line, who needs you with their faces, a quiet line of what else is there, Start. Key's own surface, so it
    stays calm (visual direction 3 and 7): ink on the page, Manrope, members' faces, the foil K once. No cross. */
@@ -25121,141 +25384,552 @@ portWire = function() { _kbPortWire.apply(this, arguments); kbPlace(); requestAn
 
 </script>
 <style>
-/* Opportunity IA drop (2 Oct): the deciding facts sit right under the head; a receipt row without its kind keeps the row's height and lead */
-#phone.hf-mis .sc > .st + .mh-jf { margin:8px 0 4px; }
-#phone.hf-mis .sc .fr.mh-wr .m:not(:has(.k)) { justify-content:center; min-height:32px; }
-#phone.hf-mis .sc .fr.mh-wr.oi-row .mh-fi { width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); color:var(--icon-secondary); display:flex; align-items:center; justify-content:center; line-height:0; }
-#phone.hf-mis .sc .who.big .avatar.oi-face { border:0; padding:0; font-family:inherit; cursor:pointer; }
-#phone.hf-mis .sc .who.big .avatar.oi-face:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; }
-#phone.hf-mis .sc > .nn + .mh-jf { margin:12px 0 8px; }
+/* Chris call 2 screens (events-chris2.js): the host's one guest list with check-in, Invite guests, and the After you publish rows.
+   Built from events.css's own rows, door count, search and switches; buttons lose native chrome and every control is at least 44 */
+
+/* secondary text on the event canvas: events.css's --ink2 is the theme ink at .78, which falls to 4.4:1 where the twilight theme is
+   lightest; these screens' lines, hints and the count's words use the same ink at .9 */
+#phone .evt-screen { --evc2-ink2:rgb(var(--ev-ink-rgb) / .9); }
+
+/* header: the list's name over the event's time and place */
+#phone .evt-hdr .t.evc2-ht { display:grid; min-width:0; flex:1; }
+#phone .evt-hdr .t.evc2-ht > span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .evt-hdr .t.evc2-ht > small { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--evc2-ink2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* one guest list: the person block is one button that opens the profile; check-in sits at the right of the row */
+#phone .evc2-g { flex-wrap:wrap; row-gap:var(--space-absolute-4); }
+#phone .evc2-g .evc2-who { -webkit-appearance:none; appearance:none; background:none; border:0; padding:0; margin:0; min-height:44px; text-align:left; font:inherit; color:inherit; cursor:pointer; align-content:center; }
+#phone .evc2-g .evc2-who > span { white-space:normal; color:var(--evc2-ink2); }
+#phone .evc2-door small { color:var(--evc2-ink2); }
+#phone .evc2-find input::placeholder { color:var(--evc2-ink2); }
+#phone .evt-grow .btn.sm.evc2-go { min-height:44px; padding:0 var(--space-absolute-14); border-radius:var(--radius-absolute-infinite); }
+#phone .evt-grow .btn.sm.evc2-go.in { background:var(--ev-ink); border-color:var(--ev-ink); color:var(--ev-ink-inverse); }
+#phone .evc2-plus, #phone .evc2-pone { flex:0 0 100%; min-width:0; box-sizing:border-box; padding-left:44px; display:flex; align-items:center; gap:var(--space-absolute-8); }
+#phone .evc2-pone { font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--ev-ink); min-height:32px; }
+#phone .evc2-plusopen { -webkit-appearance:none; appearance:none; background:none; border:0; padding:0 var(--space-absolute-4); margin-left:calc(var(--space-absolute-4) * -1); min-height:44px; display:inline-flex; align-items:center; gap:var(--space-absolute-6); font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--ev-ink); cursor:pointer; }
+#phone .evc2-plus input { flex:1; width:0; min-width:0; height:44px; box-sizing:border-box; padding:0 var(--space-absolute-12); border-radius:var(--radius-absolute-12); border:0; background:var(--evt-glass); color:var(--ev-ink); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); outline:none; }
+#phone .evc2-plus input::placeholder { color:var(--evc2-ink2); }
+#phone .evc2-plus input:focus-visible { outline:var(--border-width-focus) solid var(--ev-ink); outline-offset:2px; }
+#phone .evt-grow .evc2-plus .btn.sm { min-height:44px; min-width:44px; justify-content:center; }
+#phone .evt-grow .btn.sm.evc2-meet { min-height:44px; }
+#phone .evc2-more, #phone .evc2-seen .evt-grow .m span { color:var(--evc2-ink2); }
+#phone .evc2-tools { margin:var(--space-absolute-14) 0; }
+#phone .evc2-g .evc2-who:focus-visible, #phone .evc2-plusopen:focus-visible { outline:var(--border-width-focus) solid var(--ev-ink); outline-offset:2px; border-radius:var(--radius-absolute-4); }
+
+/* Invite guests: checkbox rows, Kai's picks under Kai's mark, the share tiles, and the send button kept in view */
+#phone .evx-sh .evc2-q { background:var(--bg-fill-default); border-color:transparent; margin-top:var(--space-absolute-4); }
+#phone .evx-sh .evc2-q span { color:var(--text-tertiary); opacity:1; }
+#phone .evx-sh .evc2-q input { flex:1; min-width:0; height:100%; background:none; border:0; outline:none; font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-primary); }
+#phone .evx-sh .evc2-q input::placeholder { color:var(--text-tertiary); }
+#phone .evx-sh .evc2-q:focus-within { outline:var(--border-width-focus) solid var(--focus-ring); outline-offset:2px; }
+#phone .evx-sh .evc2-pr { -webkit-appearance:none; appearance:none; width:100%; background:none; border:0; border-bottom:1px solid var(--line); border-radius:0; margin:0; padding:var(--space-absolute-10) 0; min-height:56px; gap:var(--space-absolute-12); text-align:left; font:inherit; color:inherit; }
+#phone .evx-sh .evc2-pr .m { display:grid; }
+#phone .evx-sh .evc2-pr .avatar { width:40px; height:40px; color:var(--text-primary); }
+#phone .evx-sh .evc2-addr { overflow-wrap:anywhere; }
+#phone .evx-sh .evc2-mail { color:var(--text-primary); }
+#phone .evx-sh .evc2-pr:focus-visible, #phone .evx-sh .evc2-share button:focus-visible { outline:var(--border-width-focus) solid var(--focus-ring); outline-offset:2px; border-radius:var(--radius-absolute-8); }
+#phone .evc2-box { width:24px; height:24px; flex:0 0 auto; box-sizing:border-box; border-radius:var(--radius-absolute-8); border:2px solid var(--text-tertiary); display:flex; align-items:center; justify-content:center; color:var(--text-inverse); }
+#phone .evc2-box.on { background:var(--bg-inverse-default); border-color:var(--bg-inverse-default); }
+#phone .evc2-ksec { display:flex; align-items:center; gap:var(--space-absolute-8); margin-top:var(--space-absolute-20); }
+#phone .evc2-ksec svg { flex:0 0 auto; }
+#phone .evc2-ksec b { font:var(--type-body-m-strong); letter-spacing:var(--type-body-m-strong-tracking); color:var(--text-primary); }
+#phone .evc2-lead { margin:var(--space-absolute-4) 0 var(--space-absolute-4); font:var(--type-body-s); letter-spacing:var(--type-body-s-tracking); color:var(--text-secondary); }
+#phone .evx-sh .evc2-sec { margin:var(--space-absolute-24) 0 var(--space-absolute-2); }
+#phone .evc2-share { display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-absolute-10); margin-top:var(--space-absolute-10); }
+#phone .evc2-share button { -webkit-appearance:none; appearance:none; border:0; min-height:64px; border-radius:var(--radius-absolute-16); background:var(--bg-fill-default); display:grid; place-items:center; align-content:center; gap:var(--space-absolute-4); font:var(--type-label); letter-spacing:var(--type-label-tracking); color:var(--text-secondary); cursor:pointer; }
+#phone .evc2-share button svg { color:var(--text-primary); }
+#phone .evc2-foot { position:sticky; bottom:-20px; margin:var(--space-absolute-16) calc(var(--space-absolute-16) * -1) -20px; padding:var(--space-absolute-12) var(--space-absolute-16) var(--space-absolute-20); background:linear-gradient(transparent, var(--bg-surface-default) 30%); }
+#phone .evc2-foot .btn { width:100%; margin:0; }
+#phone .evc2-foot .btn:disabled { opacity:.4; }
+#phone .evc2-gap { margin-top:var(--space-absolute-14); }
+#phone .evc2-walk .btn:disabled { opacity:.4; }
+
+/* After you publish: the fill block carries the one Invite guests button; the rows are switches with events.css's row look */
+#phone .evt-rows.evc2-fill { display:grid; gap:var(--space-absolute-12); padding:var(--space-absolute-16); }
+#phone .evc2-fill b { display:block; font:var(--type-body-l); letter-spacing:var(--type-body-l-tracking); color:var(--ev-ink); }
+#phone .evc2-fill span { display:block; margin-top:var(--space-absolute-2); font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--evc2-ink2); }
+#phone .evc2-fill .btn { width:100%; margin:0; }
+#phone .evt-frow.evc2-row { -webkit-appearance:none; appearance:none; width:100%; box-sizing:border-box; background:none; border:0; border-radius:0; margin:0; text-align:left; font:inherit; color:inherit; }
+#phone .evt-rows > .evt-frow.evc2-row + .evt-frow.evc2-row { border-top:1px solid var(--evt-edge); }
+#phone .evt-frow.evc2-row b, #phone .evt-frow b.evc2-wrap { white-space:normal; }
+#phone .evt-frow.evc2-row > div > span, #phone .evt-frow.evc2-row > em { color:var(--evc2-ink2); }
+#phone .evt-frow.evc2-row:focus-visible { outline:var(--border-width-focus) solid var(--ev-ink); outline-offset:-2px; }
 
 </style>
 <script>
-/* ==== OPPORTUNITY IA (2 Oct, Apoorv 03:29: "audit the information architecture and priority mapping of information for every type of
-   opportunity to make sure the order we're presenting them in is the actually info arch pattern that matters to the user").
-   Loaded after every module. Same data, same handlers, same rows: this only reorders the opportunity sheet and page (scPathBody) so the
-   first screen carries what the member decides on, in order, and reference detail sits under it. Per kind:
-     role      what it is (title, company, pay, where, level) -> the way in (who vouches) -> the role itself -> where it came from -> apply
-     person    who they are -> what they want right now (the reason to act) -> how you reach them -> what you share
-     resource  what it is and how much -> who it's for -> how to get it -> where it came from
-     offer     what it is -> what's left -> why you -> where it came from
-   Cut on a new pick: the stage track ("Surfaced 1 of 5" says nothing before you act), History (one line, "nothing sent"), the route
-   sentence when a row already says it, the two-face route (no one in between), Equity "Included" and Fit when it restates the title.
-   Receipt rows lose their uppercase kind and the "Why Kai picked this" eyebrow: the sentence says it (his 03:21: plain words, no eyebrow
-   labels unless they earn it). A row says only what the title and subtitle don't (Kai auditor, 2 Oct). ==== */
+/* ==== EVENTS: CHRIS CALL 2 SCREENS (2 Oct, events thread). Apoorv's 22:52 yes on the Chris call 2 prototype
+   (https://claude.ai/artifact/Dv6BpjzR1MhZcW19bwT7GD): "guests and check in looks perfect showing invite and walk in is the right
+   process", "after you publish is just about language fix", "invite guests works". Ported as he saw them, nothing added.
+   1. Guests and check-in are one list. Manage's Check in (eventd:door.<id>) no longer opens a separate door screen: it opens the
+      host's Guests list on the night, "N of M checked in" with a bar on top, Scan tickets and Walk-in under it, then Host and
+      Guests, each guest checking in where they are (Check in / In). A checked-in guest gets "Add a plus one", name only, and the
+      count takes them. Walk-in asks for a name only. Before the night the host's Guests page (eventd:guests.<id>) is the same
+      list as Host, You know and Everyone. Rows show the person's own line, not the title; the name opens the profile. Manage's
+      Checked in number and Insights count the same people. A walk-in gets their own row (name, then In). "You know" means
+      connected (met or messaged, as Family counts it), not the same family. Only the host sees the named list: members
+      see the host, the people they know, and how many others (under five, no number).
+   2. Invite guests: one search for a name or an email, Kai's picks (Kai's mark and one line, nobody ticked), people who came to
+      your last event, people from the family, then Copy link / Share / QR code. Rows are checkboxes. The button reads "Choose
+      who to invite" until someone is picked, then "Send N invites"; the invites go from the host.
+   3. After you publish: the You're live screen's rows say what happens in plain words (call B). Fill it with the right people
+      carries the one Invite guests button; Ask guests to confirm two days before; Kai pairs guests who should meet (Kai named
+      where it judges). The confirm ask is a setting, so it reads the same without Kai wherever it shows: Manage's Updates,
+      its Guests item and sheet, the toasts, the activity log, and the hosting mission's line.
+   Load after events-counts.js. ==== */
+(function(){
+  const line = p => p.line || [p.title, p.company].filter(Boolean).join(", ");
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+  const hosting = e => e && (e.reg === "hosting" || e.host === EV_ME);
+  const plusOf = e => e.plusOnes = e.plusOnes || {};
+  /* people you know: met or messaged (Family's test, plus a DM), never someone you blocked */
+  const knows = pid => { if (typeof seedChats === "function") seedChats();
+    return !(typeof fxBlocked === "function" && fxBlocked(pid)) && ((DB.people[pid].shared||[]).some(x => /Met|Talked|Nominated|Greeted/.test(x)) || (DB.dms||[]).some(d => d.with === pid)); };
+  /* one list: the same people, sections and order before the night and at the door */
+  function crowd(e){ evHostData(e);
+    const hosts = [e.host].concat(e.cohosts).filter((x, i, a) => DB.people[x] && a.indexOf(x) === i);
+    const gl = (e.goingList||[]).concat(e.meet||[]).filter((x, i, a) => DB.people[x] && x !== EV_ME && !hosts.includes(x) && a.indexOf(x) === i);
+    const fill = Object.keys(DB.people).filter(x => x !== EV_ME && !hosts.includes(x) && !gl.includes(x)).slice(0, Math.max(0, Math.min(14, e.going - gl.length - hosts.length)));
+    const all = gl.concat(fill), know = all.filter(knows);
+    return { hosts, know, rest:all.filter(x => !know.includes(x)), more:e.going - hosts.length - all.length };
+  }
+  const walks = e => e.walkIns = e.walkIns || [];
+  const checkedIn = e => Object.keys(e.checked||{}).filter(p => e.checked[p]).length + Object.keys(plusOf(e)).length + walks(e).filter(w => w.in).length;
+  const total = e => e.going + Object.keys(plusOf(e)).length + walks(e).length;
+  const meet = (e, pid) => (e.booped||{})[pid] ? `<em>${evIc("check",15)} Sent</em>` : `<button class="btn sm sec evc2-meet" data-evboop="${e.id}|${pid}" onclick="event.stopPropagation()">${evIc("coffee",15)} Meet?</button>`;
+  function who(e, pid, sub){ const p = DB.people[pid];
+    return pid === EV_ME ? `${av(p.initials)}<div class="m evc2-who" data-profile="${pid}"><b>You</b><span>${sub}</span></div>`
+      : `${av(p.initials)}<button type="button" class="m evc2-who" data-profile="${pid}"><b>${p.name}</b><span>${sub || line(p)}</span></button>`; }
+  function row(e, pid, door, sub){ const p = DB.people[pid], on = (e.checked||{})[pid], plus = plusOf(e)[pid];
+    let right = "", extra = "";
+    if (door && pid !== EV_ME) {
+      right = on ? `<button type="button" class="btn sm evc2-go in" data-evdoor="${e.id}|${pid}" aria-pressed="true">${evIc("check",15)} In</button>`
+                 : `<button type="button" class="btn sm sec evc2-go" data-evdoor="${e.id}|${pid}" aria-pressed="false">Check in</button>`;
+      if (on) extra = plus ? `<div class="evc2-pone">${evIc("user-plus",15)} ${esc(plus)}, with ${evFirst(pid)}</div>`
+        : STATE.evc2Plus === pid ? `<form class="evc2-plus" data-evc2plusform="${e.id}|${pid}"><input id="evc2plus" placeholder="Their name" aria-label="Plus one's name" autocomplete="off"><button type="submit" class="btn sm">Add</button></form>`
+        : `<div class="evc2-plus"><button type="button" class="evc2-plusopen" data-evc2plus="${e.id}|${pid}">${evIc("plus",15)} Add a plus one</button></div>`;
+    } else if (!door && !e.past && !sub) right = meet(e, pid);
+    return `<div class="evt-grow evc2-g">${who(e, pid, sub)}${right}${extra}</div>`; }
+  /* a walk-in is only a name: their own row, checked in where they are */
+  const walkRow = (e, w, i) => `<div class="evt-grow evc2-g">${av(esc(w.name.split(/\s+/).map(x => x[0]).join("").slice(0, 2).toUpperCase()))}<div class="m evc2-who"><b>${esc(w.name)}</b><span>Walk-in</span></div>${w.in
+    ? `<button type="button" class="btn sm evc2-go in" data-evc2wi="${e.id}|${i}" aria-pressed="true">${evIc("check",15)} In</button>`
+    : `<button type="button" class="btn sm sec evc2-go" data-evc2wi="${e.id}|${i}" aria-pressed="false">Check in</button>`}</div>`;
+  function guests(id, door){ const e = evE(id), c = crowd(e), sub = `${e.when} · ${e.where}`;
+    const hostRows = c.hosts.map(pid => row(e, pid, door, pid === e.host ? "Host" : "Cohost")).join("");
+    const head = `<div class="evt-sec">${c.hosts.length > 1 ? "Hosts" : "Host"}</div>${hostRows}`;
+    const more = c.more > 0 ? `<div class="evt-more-n">+${c.more} more</div>` : "";
+    if (door) { const n = checkedIn(e), t = total(e);
+      return evScreen({ ...e, fx:"none" }, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:manage.${id}')">‹</div><div class="t evc2-ht"><span>Guests</span><small>${sub}</small></div></div>
+      <div class="body evt-body evt-mbody">
+        <div class="evt-door evc2-door"><b>${n}<small> of ${t} checked in</small></b><div class="evt-doorbar"><i style="width:${Math.round(n / Math.max(1, t) * 100)}%"></i></div></div>
+        <div class="evt-rsvp evc2-tools"><button class="btn" onclick="toast('Camera opens. It reads app tickets and Wallet passes.')">${evIc("scan-line")} Scan tickets</button><button class="btn sec" data-evsheet="evwalkin|${id}">${evIc("user-plus")} Walk-in</button></div>
+        <div class="evt-search evc2-find"><span>${evIc("search",17)}</span><input placeholder="Find a guest" aria-label="Find a guest" oninput="evGuestSearch(this.value)"></div>
+        <div class="evt-glist">${head}${walks(e).length + c.know.length + c.rest.length ? `<div class="evt-sec">Guests</div>${walks(e).map((w, i) => walkRow(e, w, i)).join("")}${c.know.concat(c.rest).map(pid => row(e, pid, true)).join("")}` : ""}${more}</div>
+      </div>`); }
+    return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t evc2-ht"><span>${e.going} ${e.past ? "went" : "going"}</span><small>${sub}</small></div></div>
+    <div class="body evt-body">
+      <div class="evt-search evc2-find"><span>${evIc("search",17)}</span><input placeholder="Search guests" aria-label="Search guests" oninput="evGuestSearch(this.value)"></div>
+      <div class="evt-glist">${head}${c.know.length ? `<div class="evt-sec">You know</div>${c.know.map(pid => row(e, pid, false)).join("")}` : ""}${c.rest.length ? `<div class="evt-sec">Everyone</div>${c.rest.map(pid => row(e, pid, false)).join("")}` : ""}${more}</div>
+    </div>`); }
+  /* who's going, as a member sees it: the host, the people you know, and how many others. Rows as the hi-fi had them */
+  function seen(id){ const e = evE(id), c = crowd(e), w = e.past ? "went" : "going";
+    const others = e.going - c.hosts.length - c.know.length - (e.reg === "going" ? 1 : 0);
+    const prow = (pid, sub) => { const p = DB.people[pid];
+      return `<div class="evt-grow" data-profile="${pid}">${av(p.initials)}<div class="m"><b>${pid === EV_ME ? "You" : p.name}</b><span>${sub || [p.title, p.company].filter(Boolean).join(", ")}</span></div>${sub || e.past ? "" : meet(e, pid)}</div>`; };
+    return evScreen(e, `<div class="hdr evt-hdr"><div class="back" onclick="evGoBack('eventd:${id}')">‹</div><div class="t">${e.going < 5 ? (e.past ? "Who went" : "Who's going") : `${e.going} ${w}`}</div></div>
+    <div class="body evt-body">
+      <div class="evt-search"><span>${evIc("search",17)}</span><input placeholder="Search guests" aria-label="Search guests" oninput="evGuestSearch(this.value)"></div>
+      <div class="evt-glist evc2-seen"><div class="evt-sec">${c.hosts.length > 1 ? "Hosts" : "Host"}</div>${c.hosts.map(pid => prow(pid, pid === e.host ? "Host" : "Cohost")).join("")}
+        ${c.know.length ? `<div class="evt-sec">You know</div>${c.know.map(pid => prow(pid)).join("")}` : ""}
+        ${others >= 5 ? `<div class="evt-more-n evc2-more">${others} others ${w}</div>` : ""}</div>
+    </div>`); }
+  evDoor = function(id){ return guests(id, true); };
+  const _c2Guests = evGuestList;
+  evGuestList = function(id){ const e = evE(id); if (hosting(e)) return guests(id, false); evHostData(e);
+    const open = ["going","hosting"].includes(e.reg) || e.past || (STATE.eventDay && e.id === "e1") || e.priv.guests === "Everyone";
+    return open ? seen(id) : _c2Guests.apply(this, arguments); };
+  const _c2Manage = evManage;
+  evManage = function(id){ const e = evE(id); return _c2Manage.apply(this, arguments).replace(/(<b>)\d+(<\/b><span>Checked in<\/span>)/g, `$1${checkedIn(e)}$2`)
+    .replace(/<b>(?:2 days before|Day before)<\/b><span>Kai asks each guest to confirm\. A no frees the spot<\/span>/, `<b class="evc2-wrap">${rcName(e)}</b><span>${RC_SUB}</span>`)
+    .replace(/Kai re-confirms on /g, "Asking guests to confirm on "); };
+
+  /* the confirm ask is a setting, not Kai's judgement (call B): one wording wherever it shows */
+  function rcWhen(e){ evHostData(e); const r = e.reminders.find(x => x.id === "reconfirm"); return r && r.when === "Day before" ? "the day before" : "two days before"; }
+  const rcName = e => `Ask guests to confirm ${rcWhen(e)}`;
+  const RC_SUB = "Anyone who doesn't confirm frees their seat";
+  const _c2Kinds = evMissionKinds;
+  evMissionKinds = function(e){ const out = _c2Kinds.apply(this, arguments);
+    out.forEach(m => { if (m.kind === "b" && e.rcSent !== "now") Object.assign(m, { label:`Ask ${m.count} guest${m.count === 1 ? "" : "s"} to confirm`, sub:`${e.rcSent ? `Asking on ${evRcDay(e)}` : rcWhen(e).replace(/^./, x => x.toUpperCase())}. ${RC_SUB}` }); });
+    return out; };
+  const _c2MsSheet = evMsSheet;
+  evMsSheet = function(type, id){ const h = _c2MsSheet.apply(this, arguments);
+    return h === null || type !== "evms" || !/^b\|/.test(id) ? h : h.replace(/<h2>Fewer no-shows<\/h2><p class="sm muted">Kai asks each guest to confirm\. A no frees the seat, and you decide who gets it\.<\/p>/, `<h2>Ask guests to confirm</h2><p class="sm muted">${RC_SUB}, and you decide who gets it.</p>`)
+      .replace("Kai's message, sent as you", "The message, sent as you").replace("Kai asks on ", "Asking on "); };
+  const _c2Toast = toast;
+  toast = function(t, undo){ return _c2Toast(typeof t === "string" ? t.replace(/ Kai re-confirms two days before\./, " Guests are asked to confirm two days before.").replace(/^Scheduled\. Kai asks each guest on /, "Scheduled. Asking guests to confirm on ") : t, undo); };
+  /* the hosting mission (decisions.js) says the same */
+  if (typeof dHostStatus === "function") { const _c2HS = dHostStatus; dHostStatus = function(){ const r = _c2HS.apply(this, arguments); r[2] = r[2].replace(" · Kai re-confirms two days before", " · Guests are asked to confirm two days before"); return r; }; }
+  if (typeof dHostPage === "function") { const _c2HP = dHostPage; dHostPage = function(){ return _c2HP.apply(this, arguments).replace("Kai re-confirms two days before and asks who met whom after", "Guests are asked to confirm two days before. Kai asks who met whom after"); }; }
+  if (typeof missionLogAdd === "function") { const _c2Log = missionLogAdd; missionLogAdd = function(m, who, text){ return _c2Log.apply(this, [m, who, typeof text === "string" ? text.replace(" Kai re-confirms two days before", " Guests are asked to confirm two days before") : text].concat([].slice.call(arguments, 3))); }; }
+
+  /* Invite guests and Walk-in */
+  function invite(id){ const e = evE(id); evHostData(e); const taken = evGuests(e).map(g => g.pid).concat([e.host]), pick = STATE.evPick||[];
+    const q = (STATE.evc2Q||"").trim(), mail = q.includes("@"), ql = q.toLowerCase();
+    const pool = k => EV_INVITE_POOL[k].filter(x => DB.people[x] && !taken.includes(x) && (!q || DB.people[x].name.toLowerCase().includes(ql)));
+    const box = on => `<span class="evc2-box ${on ? "on" : ""}" aria-hidden="true">${on ? evIc("check",16) : ""}</span>`;
+    const pr = pid => { const p = DB.people[pid], on = pick.includes(pid);
+      return `<button type="button" class="rowitem evc2-pr" data-evpick="${pid}" aria-pressed="${on}">${av(p.initials)}<span class="m"><span class="a">${p.name}</span><span class="b">${line(p)}</span></span>${box(on)}</button>`; };
+    const kai = pool("suggested"), past = pool("past"), fam = pool("family"), f = DB.families.find(x => x.id === e.family), n = pick.length;
+    const email = mail ? (on => `<button type="button" class="rowitem evc2-pr" data-evpick="@${esc(q)}" aria-pressed="${on}"><span class="avatar evc2-mail">${evIc("mail",18)}</span><span class="m"><span class="a evc2-addr">Invite ${esc(q)}</span><span class="b">They get an email from you with the event link</span></span>${box(on)}</button>`)(pick.includes("@" + q)) : "";
+    return `<h2>Invite guests</h2>
+    <div class="evt-search evc2-q"><span>${evIc("search",17)}</span><input id="evc2q" placeholder="Search by name or add an email" aria-label="Search by name or add an email" autocomplete="off" value="${esc(q)}"></div>
+    ${email}${mail ? "" : `${kai.length ? `<div class="evc2-ksec">${typeof kaiMark === "function" ? kaiMark(24) : ""}<b>Kai's picks</b></div><p class="evc2-lead">Kai picked members who fit this event. Choose who gets an invite.</p>${kai.map(pr).join("")}` : ""}
+    ${past.length ? `<div class="lbl evc2-sec">Came to your last event</div>${past.map(pr).join("")}` : ""}
+    ${fam.length ? `<div class="lbl evc2-sec">From ${f ? f.name : "your families"}</div>${fam.map(pr).join("")}` : ""}
+    ${q && !kai.length && !past.length && !fam.length ? `<p class="evc2-lead">No member called “${esc(q)}”. Add their email instead.</p>` : ""}
+    <div class="lbl evc2-sec">Or share the link</div>
+    <div class="evc2-share">${[["link","Copy link",`data-evcopy="${evSlug(e)}"`],["share","Share",`data-evsheet="evshare|${id}"`],["qr-code","QR code",`onclick="toast('QR code saved to Photos. Print it for the door.')"`]].map(([i,l,a]) => `<button type="button" ${a}>${evIc(i,20)}<span>${l}</span></button>`).join("")}</div>`}
+    <div class="evc2-foot"><button class="btn" data-evsendinv="${id}" ${n ? "" : "disabled"}>${n ? `Send ${n} invite${n > 1 ? "s" : ""}` : "Choose who to invite"}</button></div>`; }
+  const _c2Sheet = evSheet;
+  evSheet = function(type, id){
+    if (type === "evinvite") return invite(id);
+    if (type === "evwalkin") return `<h2>Walk-in</h2><form class="evc2-walk" data-evc2walk="${id}"><input class="input" id="evc2walk" placeholder="Name" aria-label="Name" autocomplete="off"><button type="submit" class="btn evc2-gap" disabled>Check them in</button></form>`;
+    return _c2Sheet.apply(this, arguments); };
+  const _c2Open = openSheet;
+  openSheet = function(type){ if (type === "evinvite") STATE.evc2Q = ""; return _c2Open.apply(this, arguments); };
+
+  /* After you publish */
+  evMsStarters = function(e){ evHostData(e); const on = e.kaiOn = e.kaiOn||{}, rc = e.reminders.find(r => r.id === "reconfirm");
+    const rows = [["b","calendar-check",rcName(e),RC_SUB,rc && rc.on],["c","handshake","Kai pairs guests who should meet","You approve each pair before anyone sees it",on.c]];
+    return `<div class="evt-rows evc2-fill"><div><b>Fill it with the right people</b><span>Search members, add emails, or share a link.</span></div><button type="button" class="btn" data-evsheet="evinvite|${e.id}">${evIc("user-plus")} Invite guests</button></div>
+    <div class="evt-sec2 evm-sec">After you publish</div><div class="evt-rows">${rows.map(([k,i,a,b,v]) => `<button type="button" class="evt-frow evc2-row" role="switch" aria-checked="${!!v}" data-evmson="${e.id}|${k}"><i>${evIc(i,20)}</i><div><b>${a}</b><span>${b}</span></div><span class="evt-tog ${v ? "on" : ""}" aria-hidden="true"></span></button>`).join("")}</div>`; };
+
+  const _c2Live = evLive;
+  evLive = function(id){ return _c2Live.apply(this, arguments).replace(/<div class="evx-cta evt-rsvp">(<button class="btn sec" data-evgo="eventd:manage\.[^"]*">[\s\S]*?Manage<\/button>)<button class="btn" data-evsheet="evinvite\|[^"]*">[\s\S]*?Invite guests<\/button><\/div>/, `<div class="evx-cta">$1</div>`); };
+
+  /* wiring, after events.js binds its own; a keyboard tap keeps focus on the control it pressed */
+  let refocus = null;
+  const _c2Wire = portWire;
+  portWire = function(){
+    _c2Wire.apply(this, arguments);
+    const q = (sel, fn) => phone.querySelectorAll(sel).forEach(el => el.onclick = ev => { ev.stopPropagation(); fn(el, ev); });
+    q("[data-evdoor]", el => { const [eid, pid] = el.dataset.evdoor.split("|"), e = evE(eid); e.checked = e.checked||{}; e.checked[pid] = !e.checked[pid];
+      if (!e.checked[pid]) { delete plusOf(e)[pid]; if (STATE.evc2Plus === pid) STATE.evc2Plus = null; } render(); });
+    q("[data-evc2plus]", el => { STATE.evc2Plus = el.dataset.evc2plus.split("|")[1]; refocus = "#evc2plus"; render(); });
+    phone.querySelectorAll("[data-evc2plusform]").forEach(f => f.onsubmit = ev => { ev.preventDefault(); const [eid, pid] = f.dataset.evc2plusform.split("|"), v = f.querySelector("input").value.trim();
+      if (v) { plusOf(evE(eid))[pid] = v; STATE.evc2Plus = null; refocus = `[data-evdoor="${eid}|${pid}"]`; render(); } });
+    const qi = phone.querySelector("#evc2q");
+    if (qi) qi.oninput = () => { STATE.evc2Q = qi.value; refocus = "#evc2q"; render(); };
+    q("[data-evsendinv]", el => { const e = evE(el.dataset.evsendinv), l = STATE.evPick||[], n = l.length; if (!n) return; evHostData(e);
+      l.forEach(pid => { if (pid[0] !== "@") evInvite(e.id, pid, { kai:EV_INVITE_POOL.suggested.includes(pid), log:false }); });
+      e.log.unshift(["mail", `You invited ${n}`, "Just now"]); STATE.evPick = []; STATE.evc2Q = ""; STATE.sheet = null; render();
+      toast(`${n} invite${n === 1 ? "" : "s"} sent from you. You'll see who says yes in Guests.`); });
+    q("[data-evc2wi]", el => { const [eid, i] = el.dataset.evc2wi.split("|"), w = walks(evE(eid))[+i]; w.in = !w.in; render(); });
+    phone.querySelectorAll("[data-evc2walk]").forEach(f => { const inp = f.querySelector("input"), b = f.querySelector("button");
+      inp.oninput = () => { b.disabled = !inp.value.trim(); };
+      f.onsubmit = ev => { ev.preventDefault(); const v = inp.value.trim(); if (!v) return;
+        walks(evE(f.dataset.evc2walk)).unshift({ name:v, in:true }); STATE.sheet = null; render(); toast(`${v} is checked in.`); }; });
+    if (refocus) { const t = phone.querySelector(refocus); refocus = null;
+      if (t) { t.focus({ preventScroll:true }); if (t.id === "evc2q") t.setSelectionRange(t.value.length, t.value.length); } }
+  };
+  document.addEventListener("click", ev => {
+    const t = ev.target.closest && ev.target.closest("#phone [data-evpick], #phone [data-evdoor], #phone [data-evc2wi], #phone [data-evmson]");
+    if (t && ev.detail === 0) { const a = ["data-evpick", "data-evdoor", "data-evc2wi", "data-evmson"].find(x => t.hasAttribute(x)); refocus = `[${a}="${t.getAttribute(a)}"]`; }
+  }, true);
+})();
+
+</script>
+<style>
+/* Events small fixes (3 Oct, events/drop-small): Manage's small controls at 44 (was events/drop-manage44, Two-chevron), the event page's
+   small controls at 44 (Kai auditor's smoke check of 2.hifi-bdd3), and secondary text, past date tiles and Cancel event at AA as rendered.
+   Every rule is scoped to the event canvas (.evt-screen) or Manage's tab content (.evt-mbody .evx-pane). */
+
+/* Manage's small controls: every tap target in Manage's tabs is at least 44, with the look kept; the tabs sit 16 apart so Details is
+   not a sliver at 320, and each tab's hit area stays 8 either side of its label */
+#phone .evt-mbody .evx-pane .evt-grow .btn.sm { display:inline-flex; align-items:center; justify-content:center; min-height:44px; min-width:44px; }
+#phone .evt-mbody .evx-pane .evt-links span { min-height:44px; }
+#phone .evt-mbody .evx-pane .evt-fxrow .chip { display:flex; align-items:center; min-height:44px; }
+#phone .evt-mbody .evx-pane .seg > div { display:flex; align-items:center; justify-content:center; min-height:44px; }
+#phone .evt-mbody .evx-pane .evt-search input { align-self:stretch; }
+#phone .evt-screen .evt-mtabs { gap:var(--space-absolute-16); }
+#phone .evt-screen .evt-mtabs > button[role="tab"] { min-width:44px; }
+#phone .evt-screen .evt-mtabs > button[role="tab"]::after { inset:0 calc(var(--space-absolute-8) * -1); }
+
+/* The event page's small controls at 44. Reactions and Meet? grow; when the row can't fit "Say hi…" beside the four reactions (320),
+   it takes its own line under them instead of wrapping inside its pill. Text links keep their look and get a 44 hit area */
+#phone .evt-screen .evt-react { flex-wrap:wrap; }
+#phone .evt-screen .evt-react button { width:44px; height:44px; }
+#phone .evt-screen .evt-say { flex:1 1 var(--space-absolute-96); height:44px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .evt-screen .evt-person .btn.sm { min-height:44px; }
+#phone .evt-screen .evt-foot span { display:inline-flex; align-items:center; min-height:44px; }
+#phone .evt-screen .evt-note span { display:inline-flex; align-items:center; justify-content:center; min-height:44px; min-width:44px; margin-block:calc(var(--space-absolute-12) * -1); }
+#phone .evt-screen .evs-h span { min-height:44px; }
+#phone .evt-screen .evs-th { min-height:44px; margin:calc(var(--space-absolute-10) * -1) 0 var(--space-absolute-4); }
+#phone .evt-screen .evt-chl { display:flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; margin:calc(var(--space-absolute-2) * -1); }
+
+/* AA as rendered. Secondary and tertiary text use the canvas's ink at .9, or the theme's muted ink + .08 where that is higher: the
+   engine solves the muted ink for the bare canvas, and on glass events.css's .78 measured 3.9 to 4.5. Past date tiles stay full strength
+   and read as past by dropping their fill instead of fading to .6 (2.9). Cancel event (dark red on twilight was 1.07): on a light ground
+   its red is mixed into the ink; on a dark ground no saturated red reaches 4.5 on the canvas, so its row takes a deep red fill (the danger
+   red into the ground's opposite ink, as the DS's dark danger fill) and its words the danger hue at .7 lightness. The photo roll's "+N"
+   tile uses the DS cover scrim (it was 3.3 on light themes). On a tight canvas "Say hi…" takes the full ink; on a tight dark ground
+   others' bubbles darken toward the ground instead of lightening it; on a tight light ground the glass frosts toward white, as the date
+   and icon tiles already do, and the art tiles' shadow stops darkening the titles under them */
+#phone .evt-screen { --ink2:rgb(var(--ev-ink-rgb) / max(.9, min(1, calc(var(--ev-ink-mute) + .08)))); --ink3:var(--ink2); --danger:color-mix(in srgb, var(--state-danger-default) 50%, var(--ev-ink)); }
+#phone .evt-screen[data-ev-ink="light"] { --danger:oklch(from var(--state-danger-default) .7 c h); }
+#phone .evt-screen[data-ev-ink="light"] .evt-frow[data-evsheet^="evcancel"] { background:color-mix(in srgb, var(--state-danger-default) 20%, var(--ev-ink-inverse)); }
+#phone .evt-screen .evt-roll i:nth-child(3)::after { background:var(--component-cover-scrim); }
+#phone .evt-screen .evt-cht > span { color:rgb(var(--ev-ink-rgb) / min(1, calc(var(--ev-ink-mute) + .08))); }
+#phone .evt-screen .evs-d.past:not(.on) { opacity:1; background:none; }
+#phone .evt-screen[data-ev-tight="true"] .evt-say { color:var(--ink); }
+#phone .evt-screen[data-ev-tight="true"][data-ev-ink="light"] .evt-b:not(.me) .evt-bt { background:rgb(var(--ev-ink-inverse-rgb) / .2); }
+#phone .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] { --evt-glass:rgb(var(--ev-ink-inverse-rgb) / .2); --evt-glass-2:rgb(var(--ev-ink-inverse-rgb) / .3); }
+#phone .evt-screen[data-ev-tight="true"][data-ev-ink="dark"] .evt-mini-p { box-shadow:var(--elevation-1); margin-bottom:var(--space-absolute-8); }
+
+</style>
+<style>
+/* Opportunity IA drop (2 Oct, round 2): one shape for every kind, nothing folded on the first screen */
+#phone.hf-mis .sc > .st + .mh-jf, #phone.hf-mis .sc > .oi-state + .mh-jf { margin:8px 0 4px; }
+#phone.hf-mis .sc .oi-state { margin:6px 0 0; font:var(--type-body-m); color:var(--text-secondary); }
+#phone.hf-mis .sc .oi-why { margin:12px 0 4px; padding:10px 12px; border-radius:var(--radius-absolute-12); background:var(--bg-fill-default); display:flex; flex-direction:column; gap:4px; }
+#phone.hf-mis .sc .oi-why p { margin:0; font:var(--type-body-m); color:var(--text-primary); }
+#phone.hf-mis .sc .oi-why .oi-src { font:var(--type-caption); color:var(--text-tertiary); }
+#phone.hf-mis .sc .fr.mh-wr.oi-plain { cursor:default; }
+#phone.hf-mis .sc .fr.mh-wr .m:not(:has(.k)) { justify-content:center; min-height:32px; }
+#phone.hf-mis .sc .fr.mh-wr .oi-note { margin:0; font:var(--type-body-s); color:var(--text-tertiary); }
+#phone.hf-mis .sc .fr.mh-wr .mh-does { margin-top:6px; }
+#phone.hf-mis .sc .sl.oi-sl { text-transform:none; letter-spacing:0; font:var(--type-title-s, 600 15px/1.3 inherit); color:var(--text-primary); margin:20px 0 2px; }
+#phone.hf-mis .sc .rows.oi-open + .sl.oi-sl, #phone.hf-mis .sc .oi-why + .sl.oi-sl { margin-top:22px; }
+#phone.hf-mis .sc .rows.oi-open .mh-words { margin:4px 0 6px; }
+#phone.hf-mis .sc .sl.oi-sl + .rows > .fr:first-child, #phone.hf-mis .sc .sl.oi-sl + .rows > .mh-words:first-child { border-top:0; }
+#phone.hf-mis .sc .rows.oi-more .mh-words { margin:4px 0 6px; }
+#phone.hf-mis .sc .who.big .avatar.oi-face { border:0; padding:0; font-family:inherit; cursor:pointer; }
+#phone.hf-mis .sc .who.big .avatar.oi-face:focus-visible { outline:var(--border-width-focus) solid var(--border-focus, var(--text-primary)); outline-offset:2px; }
+#phone.hf-mis .sc .fr.mh-wr.oi-plain .b { display:block; -webkit-line-clamp:unset; overflow:visible; }
+/* the state label is the fixed label, in sentence case ("New pick", "Waiting"), not an eyebrow */
+#phone.hf-mis .sc > .st > .k { text-transform:none; letter-spacing:0; }
+
+</style>
+<script>
+/* ==== OPPORTUNITY IA (2 Oct). Round 1, Apoorv 03:29: "audit the information architecture and priority mapping of information for every
+   type of opportunity to make sure the order we're presenting them in is the actually info arch pattern that matters to the user".
+   Round 2, Apoorv 20:53: "everything is behind an accordion... recommended Maya, but why am I seeing this?... a tracker for something
+   that we really can't track properly... how are we defining this timeline?" and 21:33 "show me these in the prototype".
+   Loaded after every module. Same data, same handlers: this only reshapes the opportunity sheet and page (scPathBody).
+   One shape for every kind, nothing folded on the first screen:
+     the thing (title, and pay / where / level when it is a role)
+     one because line, your mission in your words plus what the pick is, with where both came from under it
+     the way in, when someone stands between you and it
+     the action (the bottom bar the base already has)
+     under it, a plain "More" section with the description, the source and the link, and once you have acted, "What happened"
+   Cut: the route graph (production stores no person in between), the stage track and Now / Next (a pick is in one state, named by
+   the label; the sentence under it says what we know and when Kai asks), the fold chevrons and "Not right? Tell Kai" buttons
+   (the composer is for that), Fit when it restates the title, Equity "Included", the posted date cell (it is in the source row).
+   See the page "Opportunity data and tracker" for the data behind each line. ==== */
 const oiOn = () => typeof KEY_HIFI!=="undefined" && !!KEY_HIFI;
-/* the order of Kai's reasons, by what the member decides on first; anything unlisted keeps its place after the listed rows */
-const OI_ORDER = {
-  role:     ["Vouched","About the role","Shared","Source","Fit","Apply"],
-  person:   ["Open","Role","Connected","Vouched","Presence","Shared","Asked","Outside Key"],
-  resource: ["What","How","Why you","Source","Programme form"],
-  offer:    ["What","Left","Why you","Source"],
-  deal:     ["Posted","Why"],
-  ask:      ["Posted","Why"],
-  post:     ["Posted","Why"],
+/* which receipt becomes the because line, which rows stay in the open (the way in), the rest go under More, in this order */
+const OI_SHAPE = {
+  role:     { because:["Fit","Source"],      open:["Vouched"],                              more:["About the role","Source","Shared","Apply"] },
+  person:   { because:["Open","Role"],       open:["Vouched","Connected","Outside Key"],     more:["Role","Presence","Shared","Asked"] },
+  resource: { because:["What"],              open:["How"],                                  more:["Source","Programme form"] },
+  offer:    { because:["What"],              open:["Left"],                                 more:["Source"] },
+  deal:     { because:["Why"],               open:["Posted"],                               more:[] },
+  ask:      { because:["Why"],               open:["Posted"],                               more:[] },
+  post:     { because:["Why"],               open:["Posted"],                               more:[] },
 };
 const OI_FACTS = ["Pay","Where","Level"];
-const OI_ICON = { Open:"handshake", Asked:"message-circle" };
+/* your mission, said back to you. Production would build this from the intent brief the pick matched */
+const OI_YOU = { m1:"You're looking for a senior PM role at an AI company in the Bay Area.", m2:"You want a technical cofounder who wants a product partner." };
+/* what the pick is, in one sentence, from the posting. Production would build this from the posting type, title and company */
+const OI_HOOK = {
+  o3:"Perplexity is hiring a senior PM for the agents team, posted in #jobs.",
+  o5:"OpenAI is hiring a senior PM for applied AI, posted in #jobs.",
+  o1:"Rahul is hiring senior PMs for a new product line, posted in #jobs.",
+  o2:"Maya is open to cofounder conversations, 2 slots left this month.",
+  o6:"Ravi is hiring a PM lead, and told Daniel.",
+  o7:"Xoogler members building a startup get $5k in cloud credits for 12 months.",
+  o8:"Neha runs office hours for first-time founders, Wednesdays, 30 minutes.",
+};
+const OI_SRC = { mission:"", rules:"%s's openness settings", calendar:"your calendar", slack:"the Xoogler Slack", whatsapp:"WhatsApp", people:"member profiles", events:"events you both went to", program:"the programme page", Neha:"Neha's post", "off-Key":"Daniel" };
+const OI_MORE = { role:"More about the role" };
 const oiKind = o => o.kind || (o.roleTitle ? "role" : "person");
 function oiRowKind(r){ const k = r.querySelector(".k"); if (k) return k.textContent.trim(); const f = r.querySelector("[data-fold]"); return f ? f.dataset.fold.split("|")[1] : ""; }
-/* a receipt row in the hi-fi's own markup (KeyFactRow lead=icon), for a reason the base filtered out */
-function oiRow(kind, text){
-  const ic = (typeof MH_WHY!=="undefined" && MH_WHY[kind]) || OI_ICON[kind] || "info";
-  return `<div class="fr mh-fr mh-wr oi-row" data-kc="KeyFactRow" data-kv="lead=icon"><span class="mh-fi">${LI(ic,16)}</span><span class="m"><span class="b">${text}</span></span></div>`;
+/* no gendered pronouns in copy: the person's name, or none */
+function oiNeutral(s, t){ const n = f1(t); return s.replace(/^Told Daniel he's hiring a PM lead$/, "Hiring a PM lead. Told Daniel").replace(/^Posted in #jobs: hiring senior PMs for a new product line$/, "Hiring senior PMs for a new product line, posted in #jobs").replace(/^Daniel recommended her in/, `Daniel recommended ${n} in`).replace(/ and posted it herself$/, " and posted it").replace(/^Daniel worked with him on/, `Daniel worked with ${n} on`).replace(/\. Informal, no form, her call$/, `. No form. ${n} decides`).replace(/, her call$/, `, ${n}'s call`).replace(/^\d other Xooglers/, "Other Xooglers"); }
+/* a fold row becomes a plain row: the text stays, the chevron and the handlers go, the panel's note and list come up under the text */
+function oiFlatten(fx){
+  const row = fx.querySelector(":scope > .mh-rf"), panel = fx.querySelector(":scope > .mh-rx");
+  if (!row) return { parts:[fx], extra:[] };
+  row.classList.remove("mh-rf"); row.classList.add("oi-plain");
+  ["role","tabindex","aria-expanded","data-fold","onclick","onkeydown"].forEach(a=>row.removeAttribute(a));
+  row.querySelectorAll(":scope > .chev").forEach(e=>e.remove());
+  const m = row.querySelector(":scope > .m"); const extra = [];
+  if (panel && m) {
+    const note = panel.querySelector(":scope > .mh-rd"); if (note) { note.className = "oi-note"; m.appendChild(note); }
+    const does = panel.querySelector(".mh-does"); if (does) m.appendChild(does);
+    const words = panel.querySelector(".mh-words"); if (words) extra.push(words);
+    panel.querySelectorAll(":scope > .mh-link").forEach(l=>extra.push(l));
+  }
+  return { parts:[row], extra };
 }
 const _oiPathBody = scPathBody; scPathBody = function(id, asSheet){
   const h = _oiPathBody(id, asSheet), o = DB.opps.find(x=>x.id===id);
   if (!oiOn() || !o) return h;
   const d = document.createElement("template"); d.innerHTML = h; const root = d.content.querySelector(".sc"); if (!root) return h;
-  const kind = oiKind(o), fresh = isNewOf(o) && ownerOf(o)==="you", t = targetOf(o), c = viaOf(o);
+  const kind = oiKind(o), fresh = isNewOf(o) && ownerOf(o)==="you", t = targetOf(o), c = viaOf(o), own = ownerOf(o);
   const j = typeof mhJob==="function" ? mhJob(o) : null, closed = !!(j && j.closed);
+  const shape = OI_SHAPE[kind] || OI_SHAPE.person, m = DB.missions.find(x=>x.id===o.missionId);
   const head = root.querySelector(":scope > .who.big"), st = root.querySelector(":scope > .st");
-  const route = root.querySelector(":scope > .mh-route"), words = root.querySelector(":scope > .mh-rw");
   const facts = root.querySelector(":scope > .mh-jf"), label = [...root.querySelectorAll(":scope > .sl")].find(l=>/Why Kai/.test(l.textContent));
-  let rows = label && label.nextElementSibling && label.nextElementSibling.classList.contains("rows") ? label.nextElementSibling : null;
-  /* 1. a new pick has no stage to track and no history to read: both appear once you act */
-  if (fresh) {
-    root.querySelectorAll(":scope > .stp").forEach(s=>{ const n = s.nextElementSibling; if (n && n.classList.contains("st")) n.remove(); s.remove(); });
-    root.querySelectorAll(':scope > .row[data-sctog^="hist:"]').forEach(r=>{ const n = r.nextElementSibling; if (n && n.classList.contains("rows") && !n.classList.contains("mh-why-rows")) n.remove(); r.remove(); });
-  }
+  const rows = label && label.nextElementSibling && label.nextElementSibling.classList.contains("rows") ? label.nextElementSibling : null;
+  /* 1. no graph (nothing in production names a person in between), no stage track, no Now / Next. The state is the label line */
+  root.querySelectorAll(":scope > .mh-route, :scope > .mh-rw, :scope > .stp, :scope > .nn").forEach(e=>e.remove());
+  root.querySelectorAll(":scope > .st").forEach(s=>{ if (s!==st) s.remove(); });
   /* 2. a person offering something is the face on the sheet, not the first letter of their own name */
-  if ((kind==="offer") && head && t && o.roleCompany===t.name) {
+  if (kind==="offer" && head && t && o.roleCompany===t.name) {
     const av0 = head.querySelector(":scope > .avatar"); if (av0) av0.outerHTML = `<button type="button" class="avatar lg oi-face" data-profile="${t.id}" aria-label="Open ${t.name}'s profile">${t.initials}</button>`;
     const sub = head.querySelector(".m12"); if (sub) sub.textContent = `${t.name} · ${t.title}, ${t.company}`;
   }
-  /* 3. the posting's deciding facts (pay, where, level) sit under the head, before the route; equity "Included" and the date are reference */
+  /* 3. once you have acted, one sentence under the label says what we know and when Kai asks. Nothing is projected past that */
+  if (!fresh && st && !closed) {
+    const who = f1(c||t), ch = o.offKey ? `${f1(c)} forwards it to ${f1(t)} on WhatsApp on a yes.` : c ? `${f1(c)} forwards it on a yes.` : "Sent on Key.";
+    const since = (typeof scSince==="function" && scSince(o)) || "today";
+    let line = "";
+    if (own==="them") line = `Asked ${who} ${since}. ${ch} ${o.quiet ? "" : "Kai asks you on day 7."}`;
+    else if (own==="you" && o.phase==="replied") line = `${f1(t)} replied ${since}. Your turn.`;
+    else if (own==="kai") line = `Kai is with ${f1(t)} now.`;
+    else if (own==="done") line = o.outcome==="good" ? "You said this went well." : o.outcome==="nofit" ? "You said this wasn't a fit." : "Closed.";
+    else line = typeof scStatus==="function" ? scStatus(o) : "";
+    if (line) st.insertAdjacentHTML("afterend", `<p class="oi-state">${line.trim()}</p>`);
+  }
+  /* 4. the posting's deciding facts (pay, where, level) sit under the state; equity "Included" and the date are reference */
   if (facts) {
     [...facts.children].forEach(cell=>{ const k = cell.querySelector(".k"); if (!k || !OI_FACTS.includes(k.textContent.trim())) cell.remove(); });
     facts.setAttribute("data-kv", `layout=grid, cells=${facts.children.length}`);
-    const nn = root.querySelector(":scope > .nn");
-    if (facts.children.length < 2) facts.remove();
-    else if (!fresh && nn) nn.insertAdjacentElement("afterend", facts);
-    else if (st) st.insertAdjacentElement("afterend", facts); else if (head) head.insertAdjacentElement("afterend", facts);
+    const after = root.querySelector(":scope > .oi-state") || st || head;
+    if (facts.children.length < 2 || closed) facts.remove(); else if (after) after.insertAdjacentElement("afterend", facts);
   }
-  /* 4. the route graph earns its place only when someone stands between you and the pick */
-  if (route) {
-    const hops = route.querySelectorAll(".mh-rn").length;
-    if (!c || kind==="resource" || kind==="offer" || hops < 3) route.remove();
-    else route.querySelectorAll(".mh-rn > b").forEach(b=>{ if (o.roleCompany && b.textContent.trim()===o.roleCompany) b.remove(); });
-  }
-  /* 5. the receipts: reorder by what you decide on, add what the base dropped, cut what restates the head, lose the uppercase kinds */
-  if (rows) {
-    const list = [...rows.children];
-    const kinds = list.map(oiRowKind);
-    /* a person's "Open to" line is the reason to act; the base filtered it out of the sheet */
-    const open = (o.receipts||[]).find(r=>r[0]==="Open");
-    if (open && kind==="person" && !kinds.includes("Open") && typeof mhFoldRow==="function") {
-      const line = `Open to ${open[1].charAt(0).toLowerCase()}${open[1].slice(1)}`;
-      const row = `<span class="mh-fi">${LI(OI_ICON.Open,16)}</span><span class="m"><span class="b">${line}</span></span>`;
-      const src = `<p class="mh-rd">Read from ${f1(t)}'s openness settings, which share openness and capacity only.</p>` + (typeof mhTellRow==="function" ? mhTellRow(line) : "");
-      rows.insertAdjacentHTML("afterbegin", mhFoldRow(`${id}|Open`, row, src)); list.unshift(rows.firstElementChild); kinds.unshift("Open");
-    }
-    const order = OI_ORDER[kind] || [];
-    const rank = i => { const k = order.indexOf(kinds[i]); return k < 0 ? order.length + i : k; };
-    list.map((el,i)=>[el,i]).sort((a,b)=>rank(a[1])-rank(b[1]) || a[1]-b[1]).forEach(([el])=>rows.appendChild(el));
-    [...rows.children].forEach(r=>{
-      const k = oiRowKind(r), b = r.querySelector(".b"); r.dataset.oiKind = k;
-      /* Fit restates the title on a role; the title is the fit */
-      if (kind==="role" && k==="Fit" && b && /Matches your (mission|mission)/.test(b.textContent)) { r.remove(); return; }
-      /* a closed role keeps only where it came from */
-      if (closed && k!=="Source") { r.remove(); return; }
+  /* 5. the receipts: one becomes the because line, the way in stays in the open, the rest go under More as plain rows */
+  if (rows && !closed) {
+    const list = [...rows.children].map(el=>({ el, k: oiRowKind(el) }));
+    const take = k => { const i = list.findIndex(x=>x.k===k); return i < 0 ? null : list.splice(i,1)[0]; };
+    /* a shared-events row reads from the other person's check-ins, which they never shared (no named attendance) */
+    if (((o.receipts||[]).find(x=>x[0]==="Shared")||[])[2]==="events") take("Shared");
+    /* Fit restates the title on a role; the title is the fit. The because line says what matched instead */
+    const fit = take("Fit"); if (fit && !/Matches your (mission|mission)/.test(fit.el.textContent)) list.push(fit);
+    let because = null, src = "";
+    for (const k of shape.because) { const r = take(k), rc = (o.receipts||[]).find(x=>x[0]===k); if (r || rc) { because = r || { k, el:null }; src = (rc||[])[2] || ""; if (r && k==="Source") list.push(r); break; } }
+    const you = OI_YOU[o.missionId] || "";
+    const rtext = because && because.el ? oiNeutral(because.el.querySelector(".b")?.textContent.trim()||"", t).replace(/\.?$/, ".") : because ? oiNeutral(((o.receipts||[]).find(x=>x[0]===because.k)||[])[1]||"", t).replace(/\.?$/, ".") : "";
+    const hook = OI_HOOK[id] || (because && !/^(Source|Why)/.test(because.k) ? rtext : "");
+    const text = `${you} ${hook}`.trim();
+    let srcName = o.offKey && c ? f1(c) : OI_SRC[src]===undefined ? src : OI_SRC[src].replace("%s", f1(t));
+    /* a mission match still came from somewhere: the channel the posting was read in */
+    if (!srcName) { const ch = (o.receipts||[]).map(r=>r[2]||"").find(x=>/^#\w+/.test(x)); if (ch) srcName = ch.split(",")[0]; }
+    const from = [m ? "your mission" : "", srcName].filter(Boolean).join(" and ");
+    const why = text ? `<div class="oi-why" data-kc="KeyCallout" data-kv="tone=quiet"><p>${text}</p>${from ? `<span class="oi-src">From ${from}</span>` : ""}</div>` : "";
+    const open = [], more = [];
+    shape.open.forEach(k=>{ const r = take(k); if (r) open.push(r); });
+    shape.more.forEach(k=>{ const r = take(k); if (r) more.push(r); });
+    /* "Why you" was Kai's filler ("Credits stretch the first months"); the because line says why now */
+    take("Why you");
+    list.forEach(r=>more.push(r));
+    const hasAbout = more.some(x=>x.k==="About the role");
+    const flat = (group, wayIn) => { const out = document.createDocumentFragment(); group.forEach(({el,k})=>{ const f = el.classList.contains("mh-fx") ? oiFlatten(el) : { parts:[el], extra:[] }; let extra = f.extra; if (hasAbout && (k==="Source" || wayIn)) extra = extra.filter(e=>!e.classList.contains("mh-words")); if (wayIn && hasAbout) extra = []; if (k==="Source" && extra.some(e=>e.classList.contains("mh-words"))) f.parts = []; f.parts.push(...extra); f.parts.forEach(p=>{ const b = p.querySelector(".b"); if (b) b.textContent = oiNeutral(b.textContent.trim(), t).replace(/\. Kai read it there(, nothing else)?$/, "");
       /* what it is: only the part the title doesn't already say */
-      if (b && k==="What" && o.roleTitle) {
-        const tt = o.roleTitle.toLowerCase(); let v = b.textContent.trim();
-        if (v.toLowerCase().startsWith(tt)) v = v.slice(o.roleTitle.length).replace(/^\s*(for\s+)?/i, "");
-        else { const m = v.match(/^(.+?) for ([^.]+)\.\s*(.*)$/); if (m && m[1].toLowerCase().split(/\s+/).every(w=>tt.includes(w))) v = `${m[2]}. ${m[3]}`; }
-        b.textContent = v.charAt(0).toUpperCase() + v.slice(1);
-      }
-      /* no gendered pronouns in copy: the person's name, or none */
-      if (b) b.textContent = b.textContent.replace(/^Told Daniel he's hiring a PM lead$/, "Hiring a PM lead. Told Daniel").replace(/^Posted in #jobs: hiring senior PMs for a new product line$/, "Hiring senior PMs for a new product line, posted in #jobs").replace(/^You're starting a company and haven't raised$/, "You're starting a company").replace(/^Daniel recommended her in/, `Daniel recommended ${f1(t)} in`).replace(/ and posted it herself$/, " and posted it").replace(/^Daniel worked with him on/, `Daniel worked with ${f1(t)} on`).replace(/, her call$/, `, ${f1(t)}'s call`);
-      /* the Why you fold says which mission the reason comes from; the base cited the Senior PM intake line on every pick */
-      if (k==="Why you") { const m = DB.missions.find(x=>x.id===o.missionId), rd = r.querySelector(".mh-rx .mh-rd"); if (m && rd) rd.textContent = `From your ${m.name} mission${m.brief && !/^Kai is looking/.test(m.brief) ? `. ${m.brief.replace(/^Standing\.\s*/, "").split(/(?<=\.)\s/)[0]}` : ""}`; }
-      /* counts under five stay off member surfaces */
-      if (b && /^\d other Xooglers/.test(b.textContent)) b.textContent = b.textContent.replace(/^\d other/, "Other");
-      /* the sentence says the kind; the icon carries it. Named rows that open something keep their name */
-      if (!/^(About the role|Apply|Programme form)$/.test(k)) r.querySelectorAll(".mh-rf > .m > .k, :scope > .m > .k").forEach(e=>e.remove());
-    });
-    if (label) label.remove();
-    if (!rows.children.length) { rows.remove(); rows = null; }
+      if (b && k==="What" && o.roleTitle) { const tt = o.roleTitle.toLowerCase(); let v = b.textContent.trim(); if (v.toLowerCase().startsWith(tt)) v = v.slice(o.roleTitle.length).replace(/^\s*(for\s+)?/i, ""); b.textContent = v.charAt(0).toUpperCase() + v.slice(1); }
+      /* the sentence says the kind; named rows that open something keep their name */
+      if (!/^(Apply|Programme form)$/.test(k) && !p.classList.contains("mh-link")) p.querySelectorAll(":scope > .m > .k").forEach(e=>e.remove());
+      p.dataset.oiKind = k; out.appendChild(p); }); }); return out; };
+    const openWrap = document.createElement("div"); openWrap.className = "rows oi-open"; openWrap.appendChild(flat(open, true));
+    const moreWrap = document.createElement("div"); moreWrap.className = "rows oi-more"; moreWrap.appendChild(flat(more, false));
+    /* one link per place: the way in and the source often point at the same post */
+    const seen = new Set(); moreWrap.querySelectorAll(":scope > .mh-link").forEach(l=>{ const k = l.textContent.trim(); if (seen.has(k)) l.remove(); else seen.add(k); });
+    rows.insertAdjacentHTML("beforebegin", why);
+    if (openWrap.children.length) rows.insertAdjacentElement("beforebegin", openWrap);
+    const moreLabel = kind==="role" ? "More about the role" : kind==="person" ? `More about ${f1(t)}` : /credit/i.test(o.roleTitle||"") ? "More about the credits" : /office hours/i.test(o.roleTitle||"") ? "More about the office hours" : `More about ${o.roleTitle||f1(t)}`;
+    if (moreWrap.children.length) { rows.insertAdjacentHTML("beforebegin", `<div class="sl oi-sl">${moreLabel}</div>`); rows.insertAdjacentElement("beforebegin", moreWrap); }
+    label.remove(); rows.remove();
   }
-  /* 6. the route sentence stays only when no row says how you reach them */
-  if (words) { const said = rows && [...rows.children].some(r=>/^(Vouched|Connected|Presence|Source|What)$/.test(r.dataset.oiKind||"")); if (said || !route || !route.parentNode) words.remove(); }
-  /* 7. a closed role: what closed, what it was, and the way out. The facts grid is reference now */
-  if (closed) { if (facts && facts.parentNode) facts.remove(); if (route && route.parentNode) route.remove(); if (words && words.parentNode) words.remove(); }
-  return d.innerHTML;
+  /* 6. a closed role keeps what closed and where it came from; nothing else to decide */
+  if (closed && rows) { const keep = [...rows.children].filter(r=>oiRowKind(r)==="Source"); rows.innerHTML = ""; keep.forEach(r=>{ const f = oiFlatten(r); const parts = f.extra.some(e=>e.classList.contains("mh-words")) ? f.extra : f.parts.concat(f.extra); parts.forEach(p=>{ if (!p.classList.contains("mh-link")) p.querySelectorAll(":scope > .m > .k").forEach(e=>e.remove()); rows.appendChild(p); }); }); if (label) label.remove(); }
+  /* 7. history: nothing on a new pick; once you have acted, "What happened" is the events in order, open on the page */
+  root.querySelectorAll(':scope > .row[data-sctog^="hist:"]').forEach(r=>{
+    const n = r.nextElementSibling; if (n && n.classList.contains("rows") && !n.classList.contains("oi-open") && !n.classList.contains("oi-more")) n.remove();
+    if (fresh) { r.remove(); return; }
+    const log = (o.log||[]).slice().reverse().filter(l=>!(/^Kai/.test(l[0]) && /^(checked rules|will |drafts |asks |reminds )/.test(l[1])));
+    const said = l => l[1]==="asked" ? `asked ${f1(c||t)}` : l[1];
+    if (log.length) r.outerHTML = `<div class="sl oi-sl">What happened</div><div class="rows oi-log">${log.map(l=>`<div class="lrow"><span class="when">${l[2]}</span><span><b>${l[0].split(",")[0]}</b> ${said(l)}</span></div>`).join("")}</div>`; else r.remove();
+  });
+  /* 8. More sits last, after What happened */
+  const more = root.querySelector(":scope > .oi-more"), moreSl = root.querySelector(":scope > .oi-sl:not(:has(+ .oi-log))");
+  const logEl = root.querySelector(":scope > .oi-log");
+  if (more && logEl) { const sl = more.previousElementSibling; root.appendChild(sl); root.appendChild(more); }
+  /* base strings on the sheet: Kai's name where nothing was judged, and a note that named Maya's attendance */
+  return oiBase(d.innerHTML);
 };
+function oiBase(h){
+  return h.replace(/ Kai stopped showing it\./g, "").replace(/Xoogler dinner \(Aug\) and AI meetup \(Jul\)\. Both checked in at both\./g, "You were both at the Xoogler dinner in August and the AI meetup in July.");
+}
 /* the ask sheets name the person, never a pronoun (no gendered pronouns in copy) */
 const _oiAsk = askSheet; askSheet = function(id){
   let h = _oiAsk(id); const o = DB.opps.find(x=>x.id===id); if (!oiOn() || !o) return h;
   const t = targetOf(o), c = viaOf(o);
   /* the draft to the connector carried Kai's own "Not on Key" note as the reason; the reason is what the person wants */
   h = h.replace(/\? Not on Key\. [^.]*\. /, `? I heard ${f1(t)} is hiring a PM lead, and that's exactly what I'm looking for. `).replace(/ her infra work is exactly the shape I need/g, ` ${f1(t)}'s infra work is exactly the shape I need`);
-  return h.replace(/ forwards it if he says yes/g, ` forwards it on a yes`).replace(/ · he forwards it over WhatsApp/g, " · forwards it over WhatsApp").replace(/ sends your note from his own phone, so nothing lands here until he or you tell Kai\. Kai asks him on day 7\./g, ` sends your note from ${f1(c||t)}'s own phone, so nothing lands here until ${f1(c||t)} or you tell Kai. Kai checks with ${f1(c||t)} on day 7.`).replace(/Informal: her call, no form/g, `No form. ${f1(t)} decides`).replace(/A programme with a form: Kai fills/g, "A programme with a form. Kai fills");
+  return h.replace(/ forwards it if he says yes/g, ` forwards it on a yes`).replace(/ · he forwards it over WhatsApp/g, " · forwards it over WhatsApp").replace(/ sends your note from his own phone, so nothing lands here until he or you tell Kai\. Kai asks him on day 7\./g, ` sends your note from ${f1(c||t)}'s own phone, so nothing lands here until ${f1(c||t)} or you tell Kai. Kai asks you on day 7.`).replace(/Informal: her call, no form/g, `No form. ${f1(t)} decides`).replace(/A programme with a form: Kai fills what it can after the yes/g, "A programme with a form, linked in the Slack post")
+    /* drafts: the cofounder mission is still open, so no "two of us"; Neha's slots are 30 minutes; the dinner was Aug 21 */
+    .replace(/We're pre-seed, two of us, building agents for ops teams\./g, "I'm pre-seed, building agents for ops teams.").replace(/, two of us and a working prototype\./g, ".").replace(/Twenty minutes on how to think about a first raise\./g, "Thirty minutes on how to think about a first raise.").replace(/good to see you at the dinner last month\./g, "good to see you at the Xoogler dinner in August.");
 };
 
 </script>
+<style>
+/* 2 Oct 22:38 (Apoorv): on a phone the Controls pill no longer takes a strip at the top. Long-press your photo in the header to open Controls; the button stays for screen readers and keyboards, visually hidden. The 54px status strip shrinks to 8px (the page root already pads by the safe area). */
+@media (max-width:500px) {
+  #phone { --sb:8px; } #phone.hf-prof { --sb:0px; }
+  #phone .ios-status { height:var(--sb); padding:0; }
+  #phone .screen { padding-top:var(--sb); }
+  #phone .phero { top:calc(-1 * var(--sb)); }
+  #phone .pbar { top:calc(-1 * var(--sb)); padding-top:calc(var(--sb) + 8px); }
+  #phone .cm-viewer { padding-top:var(--sb); }
+  #phone.hf-prof .pbody { padding-top:calc(var(--p2w, 375px) - var(--sb) + var(--space-absolute-20)); background:linear-gradient(to bottom, transparent calc(var(--p2w, 375px) - var(--sb)), var(--bg-page) calc(var(--p2w, 375px) - var(--sb))) local; }
+  .ctlbtn { position:fixed; top:0; left:0; transform:none; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; }
+  .ctlbtn:focus-visible { width:auto; height:auto; margin:0; padding:7px 14px; clip:auto; clip-path:none; top:8px; left:8px; outline:2px solid #fff; }
+  #phone .hdr.top .me-av { -webkit-touch-callout:none; -webkit-user-select:none; user-select:none; }
+  body:has(.ctlbtn) .push { top:calc(env(safe-area-inset-top,0px) + 8px); }
+}
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-fa99";
+/* 2 Oct 22:38 (Apoorv): on a phone, a long-press (500ms) on your photo in the header opens or closes Controls; the tap that ends the press doesn't also open your profile. */
+(function(){ const st = document.querySelector(".stage"); if (!st) return;
+  const phoneW = () => matchMedia("(max-width:500px)").matches;
+  let t = null, x0 = 0, y0 = 0, fired = false;
+  const cancel = () => { clearTimeout(t); t = null; };
+  document.addEventListener("pointerdown", e => {
+    const av = e.target.closest && e.target.closest("#phone .hdr.top .me-av");
+    fired = false; if (!av || !phoneW()) return;
+    x0 = e.clientX; y0 = e.clientY;
+    t = setTimeout(() => { t = null; fired = true; st.classList.toggle("ctl"); if (navigator.vibrate) navigator.vibrate(10); }, 500);
+  }, true);
+  document.addEventListener("pointermove", e => { if (t && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) cancel(); }, true);
+  ["pointerup", "pointercancel"].forEach(n => document.addEventListener(n, cancel, true));
+  document.addEventListener("click", e => { if (fired) { fired = false; e.preventDefault(); e.stopPropagation(); } }, true);
+  document.addEventListener("contextmenu", e => { if (e.target.closest && e.target.closest("#phone .hdr.top .me-av") && phoneW()) e.preventDefault(); }, true);
+})();
+
+</script>
+<style>
+/* 3 Oct (Two-chevron, events-chris2 sweep): over an event page's colour canvas the nav glass lets the canvas through and the labels fall to 2.76-4.5. Here only, the glass is the .92 default and the labels use --sec, so every label clears 4.5 over any canvas. */
+#phone .screen:has(.ev-canvas) .nav.knav.look-glass { --kn-bg:rgba(232,236,241,.92); --kn-mute:#525B66; }
+
+</style>
+<style>
+/* 3 Oct (Two-chevron, 4f1f check): off event pages the .74 glass let Home, the Events tab and Families content through and labels fell to 3.1-3.8. The glass nav now uses the .92 default everywhere with --sec labels, the same values nav-ev gives event pages, so every label clears 4.5. */
+#phone .nav.knav.look-glass { --kn-bg:rgba(232,236,241,.92); --kn-mute:#525B66; }
+
+</style>
+<script>
+window.KEY_BUILD = "2.hifi-c838";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
