@@ -25566,6 +25566,7 @@ portWire = function() { _kbPortWire.apply(this, arguments); kbPlace(); requestAn
   /* people you know: met or messaged (Family's test, plus a DM), never someone you blocked */
   const knows = pid => { if (typeof seedChats === "function") seedChats();
     return !(typeof fxBlocked === "function" && fxBlocked(pid)) && ((DB.people[pid].shared||[]).some(x => /Met|Talked|Nominated|Greeted/.test(x)) || (DB.dms||[]).some(d => d.with === pid)); };
+  window.evKnows = knows;  // 5 Oct 19:35 (Apoorv/Chris): chris2b.js's why-go line and People you know use the same test
   /* one list: the same people, sections and order before the night and at the door */
   function crowd(e){ evHostData(e);
     const hosts = [e.host].concat(e.cohosts).filter((x, i, a) => DB.people[x] && a.indexOf(x) === i);
@@ -26018,7 +26019,7 @@ const _oiAsk = askSheet; askSheet = function(id){
      page, so there a long-press anywhere that is not a button, link or field opens Controls, text included (onboarding text is not
      selectable on a phone, so the iPhone loupe does not fire with it). */
   const TAP = "a,button,input,textarea,select,label,summary,[onclick],[contenteditable],[role=button],[role=link],[role=switch],[role=tab],[role=option],[role=checkbox],[role=radio],[role=slider]";
-  const onb = el => { const ph = document.getElementById("phone"); return !!ph && /\bhf-ob/.test(ph.className) && ph.contains(el) && !el.closest(TAP); };
+  const onb = el => { const ph = document.getElementById("phone"); return !!ph && (/\bhf-ob/.test(ph.className) || /^(invite|door)/.test(STATE.screen || "")) && ph.contains(el) && !el.closest(TAP); };
   const spot = el => !!el.closest && (!!el.closest("#phone .hdr.top .me-av") || ground(el) || onb(el));
   let t = null, x0 = 0, y0 = 0, fired = false;
   const cancel = () => { clearTimeout(t); t = null; };
@@ -26030,6 +26031,7 @@ const _oiAsk = askSheet; askSheet = function(id){
   document.addEventListener("pointermove", e => { if (t && Math.hypot(e.clientX - x0, e.clientY - y0) > 10) cancel(); }, true);
   ["pointerup", "pointercancel"].forEach(n => document.addEventListener(n, cancel, true));
   document.addEventListener("click", e => { if (fired) { fired = false; e.preventDefault(); e.stopPropagation(); } }, true);
+  document.addEventListener("selectstart", e => { const el = e.target.nodeType === 3 ? e.target.parentElement : e.target; if (phoneW() && el && el.closest && onb(el)) e.preventDefault(); }, true);
   document.addEventListener("contextmenu", e => { if (phoneW() && spot(e.target)) e.preventDefault(); }, true);
 })();
 
@@ -26044,8 +26046,253 @@ const _oiAsk = askSheet; askSheet = function(id){
 #phone .nav.knav.look-glass { --kn-bg:rgba(232,236,241,.92); --kn-mute:#525B66; }
 
 </style>
+<style>
+/* Chris call 2, part B (5 Oct 19:35 (Apoorv/Chris)): Events' Calendars heading and filter rail, the Filters sheet, the why-go line,
+   Sync to my calendar, the host's megaphone and the line under a name in the event chat. Load last. */
+#phone .evx-hi .lbl.c2b-h { display:flex; align-items:center; justify-content:space-between; margin:var(--space-absolute-4) 0 0; }
+#phone .c2b-see { -webkit-appearance:none; appearance:none; background:none; border:0; padding:0 var(--space-absolute-4); margin-right:calc(var(--space-absolute-4) * -1); min-height:44px; min-width:44px; font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); text-transform:none; color:var(--text-secondary); cursor:pointer; }
+#phone .c2b-see:focus-visible, #phone .c2b-p:focus-visible, #phone .c2b-row:focus-visible, #phone .c2b-sw:focus-visible, #phone .c2b-mega:focus-visible { outline:var(--border-width-focus, 2px) solid var(--text-primary); outline-offset:2px; }
+
+/* the rail: My events' pills, scrolling to the screen edge; each a 44 hit area over a 36 pill */
+#phone .c2b-rail { margin:var(--space-absolute-12) calc(var(--space-absolute-16) * -1) 0; padding:var(--space-absolute-4) var(--space-absolute-16) var(--space-absolute-8); }
+#phone .c2b-p { -webkit-appearance:none; appearance:none; font:var(--type-label); letter-spacing:var(--type-label-tracking); position:relative; flex:none; gap:var(--space-absolute-6); white-space:nowrap; cursor:pointer; }
+#phone .c2b-p::after { content:""; position:absolute; inset:-4px 0; }
+#phone .c2b-p svg.li { flex:none; }
+#phone .c2b-empty { margin-top:var(--space-absolute-16); }
+
+/* why go: one line under the card's status, its faces beside the status */
+#phone .evx-card .c2b-why { font:var(--type-caption-strong, var(--type-caption)); letter-spacing:var(--type-caption-tracking); color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+
+/* the Filters sheet */
+#phone .evx-sh .c2b-p { display:inline-flex; align-items:center; min-height:calc(var(--space-absolute-32) + var(--space-absolute-4)); padding-top:0; padding-bottom:0; }
+#phone .evx-sh .c2b-pills { flex-wrap:wrap; overflow:visible; padding:var(--space-absolute-4) 0 0; row-gap:var(--space-absolute-8); }
+#phone .evx-sh .lbl { margin:var(--space-absolute-16) 0 var(--space-absolute-4); }
+#phone .c2b-sws { margin-top:var(--space-absolute-12); }
+#phone .toggle.c2b-sw { -webkit-appearance:none; appearance:none; width:100%; min-height:52px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:var(--space-absolute-16); padding:var(--space-absolute-8) 0; background:none; border:0; border-radius:0; font:var(--type-body-m); letter-spacing:var(--type-body-m-tracking); color:var(--text-primary); text-align:left; cursor:pointer; }
+#phone .toggle.c2b-sw .sw { flex:none; background:var(--bg-fill-strong); border:0; }
+#phone .toggle.c2b-sw.on .sw { background:var(--bg-inverse-default); }
+#phone .toggle.c2b-sw.on .sw::after { background:var(--bg-page); }
+#phone .c2b-foot { position:sticky; bottom:0; display:flex; gap:var(--space-absolute-8); margin-top:var(--space-absolute-16); padding:var(--space-absolute-12) 0 var(--space-absolute-4); background:var(--bg-surface-default); }
+#phone .c2b-foot .btn { width:auto; margin:0; min-height:48px; padding-top:0; padding-bottom:0; }
+#phone .c2b-foot .btn.sec { flex:0 0 auto; padding-left:var(--space-absolute-16); padding-right:var(--space-absolute-16); }
+#phone .c2b-foot .btn:not(.sec) { flex:1; }
+
+/* picker and sync rows are buttons */
+#phone .rowitem.c2b-row { -webkit-appearance:none; appearance:none; width:100%; min-height:52px; background:none; border-left:0; border-right:0; border-top:0; text-align:left; font:inherit; color:var(--text-primary); cursor:pointer; }
+#phone .rowitem.c2b-row .m { display:grid; flex:1; min-width:0; }
+#phone .rowitem.c2b-row > svg.li { flex:none; }
+#phone .c2b-note { margin-top:var(--space-absolute-8); }
+#phone .btn.c2b-stop { margin-top:var(--space-absolute-8); color:var(--state-danger-default, var(--danger)); }
+
+/* Sync to my calendar: the short label under 360 */
+/* "In your Google Calendar" takes two balanced lines where the half-width button can't hold it on one */
+#phone .btn.c2b-sync { min-width:0; min-height:48px; padding-top:var(--space-absolute-4); padding-bottom:var(--space-absolute-4); }
+#phone .btn.c2b-sync .c2b-sl { white-space:normal; text-wrap:balance; line-height:1.15; }
+#phone .btn.c2b-sync .c2b-ss { display:none; }
+@media (max-width: 359px) { #phone .btn.c2b-sync .c2b-sl { display:none; } #phone .btn.c2b-sync .c2b-ss { display:inline; } }
+
+/* the host's megaphone sits with the room's header icons */
+#phone .hdr.chdr button.icon.c2b-mega { -webkit-appearance:none; appearance:none; font:inherit; cursor:pointer; }
+#phone .evt-screen.evx-room .hdr.chdr .icon.c2b-mega.on { background:rgb(var(--ev-ink-rgb) / .12); }
+
+/* one line under a name in the event chat */
+/* the bubble's own ink at .78, above the .7 its time uses, which evRoomTone keeps at AA on dark themes */
+#phone .bub .c2b-now { font:var(--type-caption); letter-spacing:var(--type-caption-tracking); color:inherit; opacity:.78; margin:-1px 0 var(--space-absolute-4); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-6040";
+/* ==== EVENTS: CHRIS CALL 2, PART B (5 Oct 19:35 (Apoorv/Chris)). On the Events tab, the calendar page and the event chat.
+   1. "Calendars" over the strip, with See all; the strip's trailing All tile goes.
+   2. For you gets a filter rail (Filters, city, day, People you know) and a Filters sheet (sort, when, time of day, kind, from,
+      two switches, Clear all, Show N). Soonest keeps the date headers; For you and Most going are one ranked list.
+   3. One "why go" line on For you cards and calendar-page list cards: people you know going, someone you know hosting, filling up,
+      popular with a family. The face stack shows only the people the line names. Never names a non-connection, never a count under 5.
+   4. The calendar page's Add to calendar becomes Sync to my calendar: the whole calendar, Google / Apple / Outlook / Copy link.
+   5. The host's event chat: Post an update moves from the chip above the composer to a megaphone in the header.
+   6. In the event chat, the first message of each run carries one line under the name: what they're doing or after, never a title.
+   Load last. ==== */
+(function(){
+  const C = { fy:false, why:false, flat:false, feed:[] };
+  const F = () => STATE.c2b = STATE.c2b || { city:"Palo Alto", when:"any", known:false, open:false, sort:"foryou", tod:[], kind:[], from:[] };
+  /* "know" is events-chris2.js's test: met or messaged, never blocked */
+  const knows = pid => !!DB.people[pid] && pid !== EV_ME && evKnows(pid);
+  const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  /* 1. Calendars heading; See all replaces the All tile */
+  const _c2bStrip = evStrip;
+  evStrip = function(){
+    return `<div class="lbl c2b-h"><span>Calendars</span><button type="button" class="c2b-see" data-evgo="calendars">See all</button></div>`
+      + _c2bStrip.apply(this, arguments).replace(/<div class="evx-si" data-evgo="calendars">[\s\S]*?<span>Calendars<\/span><\/div>(?=<\/div>$)/, "");
+  };
+
+  /* 3. why go: (a) people you know going, (b) someone you know hosting, (c) filling up, (d) popular with a family */
+  function why(e){
+    if (e.past || e.draft || e.reg === "hosting") return null;
+    const pool = (e.goingList||[]).concat(e.meet||[]).filter((x, i, a) => a.indexOf(x) === i && x !== e.host && knows(x));
+    if (pool.length) { const n = pool.map(evFirst), more = pool.length - 2;
+      return { tier:0, k:pool.length, ids:pool.slice(0, 2), text: pool.length === 1 ? `${n[0]} is going` : pool.length === 2 ? `${n[0]} and ${n[1]} are going`
+        : `${n[0]}, ${n[1]} and ${more >= 5 ? `${more} others` : "others"} you know are going` }; }
+    if (knows(e.host)) return { tier:1, ids:[e.host], text:`${evFirst(e.host)} is hosting` };
+    const left = e.cap ? e.cap - e.going : 0;
+    if (left > 0 && left <= Math.max(5, e.cap * .15)) return { tier:2, ids:[], text: left === 1 ? "1 seat left" : "Filling up" };
+    const c = evC(e.cal), f = c && c.family && DB.families.find(x => x.id === c.family);
+    if (e.going >= 20 && f) return { tier:3, ids:[], text:`Popular with ${f.name}` };
+    return null;
+  }
+  const faces = ids => ids.length ? `<span class="evx-faces" data-kc="KeyFaceStack" data-kv="layout=row, size=24">${ids.map(id => `<i>${DB.people[id].initials}</i>`).join("")}</span>` : "";
+  const _c2bCard = evCard;
+  evCard = function(e){
+    let h = _c2bCard.apply(this, arguments);
+    if (C.flat) h = h.replace(/<div class="evx-s">((?:<svg[\s\S]*?<\/svg>)?(?:<span class="evx-cad">[^<]*<\/span> )?)/, (m, a) => `<div class="evx-s">${a}${evDayLabel(e)}, `);
+    const w = C.why && why(e); if (!w) return h;
+    return h.replace(/(<div class="evx-s2">)(?:<span class="evx-faces"[^>]*>(?:<i>[^<]*<\/i>)*<\/span>)?([\s\S]*?<\/div>)/, (m, a, b) => `${a}${faces(w.ids)}${b}<div class="c2b-why">${w.text}</div>`);
+  };
+
+  /* 2. For you: filters over the feed the Events tab already builds */
+  const CITIES = { "Palo Alto":/Palo Alto|Mountain View|Menlo Park|Stanford|Atherton|Los Altos|Redwood City/, "San Francisco":/\bSF\b|San Francisco/, "Ann Arbor":/Ann Arbor/, "London":/London/, "New York":/New York|NYC|Brooklyn/ };
+  const WHEN = { any:"Any time", week:"This week", weekend:"This weekend", next:"Next week" };
+  const DAY = { any:"Any day", week:"This week", weekend:"Weekend", next:"Next week" };
+  const TOD = { morning:"Morning", afternoon:"Afternoon", evening:"Evening" };
+  const SORT = { foryou:"For you", soonest:"Soonest", most:"Most going" };
+  const online = e => e.fmt === "online" || e.where === "Online";
+  const inCity = (e, city) => online(e) || CITIES[city].test(e.where);
+  const tod = e => { const h = evStartH(e); return h < 12 ? "morning" : h < 17 ? "afternoon" : "evening"; };
+  const onCal = (e, c) => e.cal === c.id || c.events.includes(e.id) || (e.listed||[]).includes(c.id);
+  function inWhen(e, w){ if (w === "any") return true; const m = evMon0(EV_TODAY), t = evDate(e).getTime(), [a, b] = { week:[0, 6], weekend:[5, 6], next:[7, 13] }[w];
+    return t >= Math.max(EV_TODAY.getTime(), evAddDays(m, a).getTime()) && t <= evAddDays(m, b).getTime(); }
+  const known = e => (e.goingList||[]).concat(e.meet||[]).some(knows);
+  const froms = () => DB.calendars.filter(evFollows);
+  function pick(list){ const f = F();
+    return evOnePerSeries(list).filter(e => inCity(e, f.city) && inWhen(e, f.when) && (!f.known || known(e)) && (!f.open || !evLocked(e))
+      && (!f.tod.length || f.tod.includes(tod(e))) && (!f.kind.length || f.kind.includes(evCv(e).kind))
+      && (!f.from.length || froms().some(c => f.from.includes(c.id) && onCal(e, c)))); }
+  const rank = e => { const w = why(e); return w ? w.tier * 100 - (w.k||0) : 400; };
+  function ranked(list){ const s = F().sort, l = pick(list).sort((a, b) => a.sort - b.sort);
+    return s === "soonest" ? l : l.sort((a, b) => (s === "most" ? b.going - a.going : rank(a) - rank(b)) || a.sort - b.sort); }
+  const sheetN = f => f.tod.length + f.kind.length + f.from.length + (f.open ? 1 : 0) + (f.sort !== "foryou" ? 1 : 0);
+  function rail(){ const f = F(), n = sheetN(f);
+    const b = (on, attr, inner, label) => `<button type="button" class="pill c2b-p ${on ? "on" : ""}" ${attr}${label ? ` aria-label="${label}"` : ""}>${inner}</button>`;
+    return `<div class="pills evx-chips c2b-rail" role="group" aria-label="Filter events" data-kc="KeyFilterRail">${
+      b(n, 'data-evsheet="evc2bf|x"', `${evIc("sliders-horizontal",16)}Filters${n ? ` · ${n}` : ""}`)}${
+      b(false, 'data-evsheet="evc2bcity|x"', `${evIc("map-pin",16)}${f.city}${evIc("chevron-down",16)}`, `City, ${f.city}`)}${
+      b(f.when !== "any", 'data-evsheet="evc2bday|x"', `${DAY[f.when]}${evIc("chevron-down",16)}`, `Day, ${DAY[f.when]}`)}${
+      b(f.known, `data-c2b="known" aria-pressed="${f.known}"`, `${evIc("users",16)}People you know`)}</div>`; }
+  function feed(list, empty){
+    C.feed = list; if (!list.length) return evByDate(list, empty.replace("Tap All", "Tap See all"));
+    const l = ranked(list), f = F();
+    if (!l.length) return `<div class="empty c2b-empty">${list.some(e => inCity(e, f.city)) ? "Nothing matches these filters." : `No events in ${f.city} yet.`}</div>`;
+    C.why = true; C.flat = f.sort !== "soonest";
+    const h = C.flat ? l.map(e => evCard(e, "row", {})).join("") : evByDate(l, "");
+    C.why = C.flat = false; return h;
+  }
+  const _c2bByDate = evByDate;
+  evByDate = function(list, empty){ if (C.fy) { C.fy = false; return feed(list, empty); } return _c2bByDate.apply(this, arguments); };
+  const _c2bEvents = sEvents;
+  sEvents = function(){
+    const fy = STATE.member && !(STATE.evSeg === "going" || STATE.evSeg === "mine");
+    C.fy = fy; const h = _c2bEvents.apply(this, arguments); C.fy = false;
+    return fy ? h.replace('<div class="evx-pane">', `<div class="evx-pane">${rail()}`) : h; };
+
+  /* 4. Sync to my calendar: the whole calendar, on the calendar page */
+  const SYNC = { google:"Google Calendar", apple:"Apple Calendar", outlook:"Outlook" };
+  const synced = id => (STATE.c2bSync||{})[id];
+  function syncBtn(c, attrs){ const on = synced(c.id), long = on ? `In your ${SYNC[on]}` : "Sync to my calendar";
+    return `<button class="btn sec evx-sync c2b-sync ${on ? "on" : ""}"${attrs} aria-label="${long}">${evIc(on ? "calendar-check" : "calendar-sync",18)}<span class="c2b-sl">${long}</span><span class="c2b-ss">${on ? SYNC[on].split(" ")[0] : "Sync"}</span></button>`; }
+  const syncRow = id => synced(id) ? `In your ${SYNC[synced(id)]}` : "Sync to my calendar";
+  const _c2bCal = sCalendar;
+  sCalendar = function(id){ C.why = !id.endsWith(".manage"); const h = _c2bCal.apply(this, arguments); C.why = false;
+    const c = evC(id); if (!c) return h;
+    return h.replace(/<button class="btn sec evx-sync"([^>]*) aria-label="Add to calendar">[\s\S]*?<\/span><\/span><\/button>/, (m, a) => syncBtn(c, a))
+      .replace(/(<div class="a">)Add to your phone's calendar(<\/div><div class="b">)Apple, Google or a link/, (m, a, b) => `${a}${syncRow(id)}${b}${synced(id) ? "New events show up there on their own" : "Google, Apple, Outlook or a link"}`); };
+  function syncSheet(c){ const on = synced(c.id);
+    const row = k => `<button type="button" class="rowitem c2b-row" data-c2bsync="${c.id}|${k}" aria-pressed="${on === k}"><i class="evx-aic">${evIc("calendar",18)}</i><span class="m"><span class="a">${SYNC[k]}</span>${on === k ? `<span class="b">Syncing</span>` : ""}</span>${on === k ? evIc("check",18) : ""}</button>`;
+    return `<h2>Sync ${c.name} to your calendar</h2><p class="sm muted">The whole calendar, not one event. New and changed events show up there on their own.</p>
+      ${row("google")}${row("apple")}${row("outlook")}
+      <button type="button" class="rowitem c2b-row" data-c2bsync="${c.id}|copy"><i class="evx-aic">${evIc("link",18)}</i><span class="m"><span class="a">Copy calendar link</span><span class="b">For any other calendar app</span></span></button>
+      ${on ? `<button type="button" class="btn ghost c2b-stop" data-c2bsync="${c.id}|stop">Stop syncing</button>` : ""}`; }
+
+  /* sheets: Filters, city, day, and the calendar's sync */
+  function filters(){ const f = F(), n = pick(C.feed).length;
+    const pills = (key, opts, multi) => `<div class="pills c2b-pills">${Object.entries(opts).map(([k, l]) => { const on = multi ? f[key].includes(k) : f[key] === k;
+      return `<button type="button" class="pill c2b-p ${on ? "on" : ""}" data-c2b="${key}|${k}" aria-pressed="${on}">${l}</button>`; }).join("")}</div>`;
+    const kinds = {}; evOnePerSeries(C.feed).forEach(e => { const k = evCv(e).kind; if (k) kinds[k] = cap1(k); });
+    const cals = {}; froms().forEach(c => cals[c.id] = c.kind === "personal" && evIsAdmin(c) ? "Your calendar" : c.name);
+    const sw = (key, label) => `<button type="button" class="toggle c2b-sw ${f[key] ? "on" : ""}" role="switch" aria-checked="${f[key]}" data-c2b="${key}"><span>${label}</span><span class="sw" aria-hidden="true"></span></button>`;
+    return `<h2>Filters</h2>
+      <div class="lbl">Sort</div>${pills("sort", SORT)}
+      <div class="lbl">When</div>${pills("when", WHEN)}
+      <div class="lbl">Time of day</div>${pills("tod", TOD, true)}
+      ${Object.keys(kinds).length ? `<div class="lbl">Kind</div>${pills("kind", kinds, true)}` : ""}
+      <div class="lbl">From</div>${pills("from", cals, true)}
+      <div class="c2b-sws">${sw("known", "Only events people I know are going to")}${sw("open", "Only open events")}</div>
+      <div class="c2b-foot"><button type="button" class="btn sec" data-c2b="clear">Clear all</button><button type="button" class="btn" data-c2b="show">Show ${n} event${n === 1 ? "" : "s"}</button></div>`; }
+  const choose = (title, key, opts) => `<h2>${title}</h2>${Object.entries(opts).map(([k, l]) => `<button type="button" class="rowitem c2b-row" data-c2b="${key}|${k}|close" aria-pressed="${F()[key] === k}"><span class="m"><span class="a">${l}</span></span>${F()[key] === k ? evIc("check",18) : ""}</button>`).join("")}`;
+  const _c2bSheet = evSheet;
+  evSheet = function(type, id){
+    if (type === "evc2bf") return filters();
+    if (type === "evc2bcity") return choose("City", "city", Object.fromEntries(Object.keys(CITIES).map(k => [k, k]))) + `<p class="xs faint c2b-note">Online events show in every city.</p>`;
+    if (type === "evc2bday") return choose("Day", "when", { any:"Any day", week:"This week", weekend:"Weekend" });
+    if (type === "evsync" && id !== "me" && evC(id)) return syncSheet(evC(id));
+    const h = _c2bSheet.apply(this, arguments);
+    return type === "evbell" && h ? h.replace("<div class=\"a\">Add to your phone's calendar</div>", `<div class="a">${syncRow(id)}</div>`) : h; };
+
+  /* 5. the host's chat header: Post an update as a megaphone, which turns on the composer's update mode */
+  const _c2bChat = chatScreen;
+  chatScreen = function(id){
+    const h = _c2bChat.apply(this, arguments), c = convOf(id), e = c && c.kind === "event" && evE(c.ev || (id === "g-dinner" ? "e1" : ""));
+    if (!e || e.reg !== "hosting" || e.host !== EV_ME || STATE.editMsg) return h;
+    const closed = e.past && e.id !== "e1", up = evRoomPost(c) === "update";
+    return h.replace(/<span class="chip" data-evmode="[^"]*\|update">[\s\S]*?Post an update<\/span>/, "").replace('<div class="evx-cchips"></div>', "")
+      .replace(/(<div class="hdr chdr">[\s\S]*?)(<div class="icon" data-evsheet="evroomnotif)/, (m, a, b) => closed ? m
+        : `${a}<button type="button" class="icon c2b-mega ${up ? "on" : ""}" data-evmode="${id}|${up ? "" : "update"}" aria-label="Post an update" aria-pressed="${up}">${evIc("megaphone",20)}</button>${b}`); };
+
+  /* 6. one line under a name: what they're doing now or what they're after, from their profile; never a title */
+  const ACT = /^(Building|Hiring|Looking|Raising|Running|Starting|Launching|Exploring|Scouting|Writing|Moving|Learning|Scaling|Shipping|Planning|Recruiting|Fundraising|Leaving|On the)\b/;
+  function hook(pid){ const p = DB.people[pid]; if (!p) return "";
+    const now = (typeof P2 !== "undefined" && P2[pid] || {}).now; if (now) return now;
+    if (p.lookingFor) return `Looking for ${p.lookingFor.charAt(0).toLowerCase() + p.lookingFor.slice(1)}`;
+    return ((p.line||"").split(/(?<=\.)\s+/).find(s => ACT.test(s)) || "").replace(/\.$/, ""); }
+  const _c2bMsgs = evRoomMsgs;
+  evRoomMsgs = function(c, e, list){
+    let h = _c2bMsgs.apply(this, arguments), prev = null, day = null;
+    list.forEach(m => { if (m.day !== day) { day = m.day; prev = null; } if (m.sys) { prev = null; return; }
+      const first = prev !== m.from; prev = m.from; const t = first && m.from !== EV_ME && hook(m.from); if (!t) return;
+      const i = h.indexOf(`data-lp="${c.id}|${m.id}|`); if (i < 0) return;
+      const r = /<div class="bn"[^>]*>[^<]*<\/div>(?:<span class="evx-kind">[\s\S]*?<\/span><\/div>)?/g; r.lastIndex = i; const x = r.exec(h), nx = h.indexOf('data-lp="', i + 9);
+      if (!x || (nx > 0 && x.index > nx)) return;
+      const at = x.index + x[0].length; h = h.slice(0, at) + `<div class="c2b-now">${t}</div>` + h.slice(at); });
+    return h; };
+
+  /* wiring; a re-render keeps the page's and the sheet's scroll, and a keyboard tap keeps focus on its control */
+  let refocus = null;
+  function keep(fn){ const b = phone.querySelector(".body"), y = b ? b.scrollTop : 0, s = [...document.querySelectorAll("#sheet, #sheet *")].map(x => x.scrollTop);
+    fn(); render(); const nb = phone.querySelector(".body"); if (nb) nb.scrollTop = y;
+    [...document.querySelectorAll("#sheet, #sheet *")].forEach((x, i) => { if (s[i]) x.scrollTop = s[i]; }); }
+  const _c2bWire = portWire;
+  portWire = function(){
+    _c2bWire.apply(this, arguments);
+    const q = (sel, fn) => document.querySelectorAll(sel).forEach(el => el.onclick = ev => { ev.stopPropagation(); fn(el, ev); });
+    q("[data-c2b]", el => { const [k, v, close] = el.dataset.c2b.split("|"), f = F();
+      if (k === "show") { closeSheet(); return; }
+      if (close) { f[k] = v; STATE.sheet = null; keep(() => {}); return; }
+      keep(() => { if (k === "clear") Object.assign(f, { when:"any", known:false, open:false, sort:"foryou", tod:[], kind:[], from:[] });
+        else if (v === undefined) f[k] = !f[k];
+        else if (Array.isArray(f[k])) f[k] = f[k].includes(v) ? f[k].filter(x => x !== v) : f[k].concat(v);
+        else f[k] = v; }); });
+    q("[data-c2bsync]", el => { const [cid, k] = el.dataset.c2bsync.split("|"), c = evC(cid), s = STATE.c2bSync = STATE.c2bSync || {};
+      if (k === "copy") { toast("Calendar link copied. Paste it into any calendar app."); return; }
+      STATE.sheet = null;
+      if (k === "stop") { delete s[cid]; render(); toast(`Stopped syncing ${c.name}.`); return; }
+      s[cid] = k; render(); toast(`${c.name} is syncing to ${SYNC[k]}. New events show up there on their own.`); });
+    if (refocus) { const t = document.querySelector(refocus); refocus = null; if (t) t.focus({ preventScroll:true }); }
+  };
+  document.addEventListener("click", ev => { const t = ev.target.closest && ev.target.closest("[data-c2b], .c2b-mega");
+    if (t && ev.detail === 0) refocus = t.dataset.c2b ? `[data-c2b="${t.dataset.c2b}"]` : ".c2b-mega"; }, true);
+})();
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-8f33";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
