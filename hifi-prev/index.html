@@ -7886,6 +7886,7 @@ function firstName(p){ return p.name.split(" ")[0]; }
 /* ---- Simulation: plays the other side of every path, in order ---- */
 function advanceWeek() {
   STATE.week = (STATE.week||0)+1; const wk = STATE.week; const lbl=document.getElementById("weekLbl"); if(lbl) lbl.textContent = "week "+wk;
+  if (STATE.member && (wk>=2 || STATE.dayOne) && typeof rsWeek==="function") return rsWeek(wk);
   if (wk===1) { if (!STATE.member) { if(!STATE.applied) submitApp(); if(!STATE.intakeDone){ STATE.callAnswers=INTAKE.map(i=>i.a[0]); applyIntake(); } approveMe(); } else if (!STATE.intakeDone) { STATE.callAnswers=INTAKE.map(i=>i.a[0]); applyIntake(); } go("home"); pushNote("First pass done", `${DB.opps.length} paths across your missions. Names and why on each.`, [["See", ()=>go("home")]]); return; }
   if (wk===2) { const o1=DB.opps.find(o=>o.id==="o1"); const o2=DB.opps.find(o=>o.id==="o2"); const o3=DB.opps.find(o=>o.id==="o3");
     if (o1&&isNewOf(o1)) { o1.state="waiting"; lit(o1,"Asked","-6d"); o1.log.push(["You","said hi to Rahul","-6d"]); }
@@ -7912,20 +7913,20 @@ function simulate() {
   const e1 = DB.fevents.find(x=>x.id==="e1");
   if (e1 && e1.rsvp && !STATE.eventDay && !e1.past && !e1.checkedIn) { STATE.eventDay=true; pushNote("Tonight: Xoogler dinner", "Check in at the door. Rahul and Maya are going.", [["Open", ()=>go("eventd:e1")]]); return; }
   if (e1 && STATE.eventDay && e1.checkedIn && !e1.past) { pushNote("Who did you talk to?", "Last night at Xoogler dinner. Tap faces, twenty seconds.", [["Answer", ()=>openSheet("debrief","e1")]]); return; }
-  const waiting = DB.opps.filter(o=>o.state==="waiting");
+  const waiting = DB.opps.filter(o=>o.state==="waiting" && !o.rsQuiet && !o.later);
   const replied = DB.opps.filter(o=>o.state==="yourmove" && o.phase==="replied");
   const conv = DB.opps.filter(o=>o.state==="conversation");
   const met = DB.opps.filter(o=>o.state==="conversation" && o.met);
   const done = DB.opps.filter(o=>o.state==="done");
-  const closable = DB.missions.filter(m=>m.status==="active" && !m.standing && DB.opps.some(o=>o.missionId===m.id&&o.state==="done"&&o.outcome==="good"));
-  if (closable.length && !STATE.closeProposed) { const m=closable[0]; STATE.closeProposed=m.id; pushNote("Looks done", `${m.name}: the done condition may be met.`, [["Review", ()=>{ go("mission:"+m.id); }]]); return; }
+  const closable = DB.missions.filter(m=>m.status==="active" && !m.standing && (typeof rsDoneMet==="function" ? rsDoneMet(m) : DB.opps.some(o=>o.missionId===m.id&&o.state==="done"&&o.outcome==="good")));
+  if (closable.length && !STATE.closeProposed) { const m=closable[0]; if (typeof rsPropose==="function") { rsPropose(m); return; } STATE.closeProposed=m.id; pushNote("Looks done", `${m.name}: the done condition may be met.`, [["Review", ()=>{ go("mission:"+m.id); }]]); return; }
   if (met.length && !met[0].journalDue) { const o=met[0]; o.journalDue=true; o.log.push(["Kai","seven days since you met. Asking how it went.","+7d"]); pushNote("Quick one", `Did you and ${firstName(targetOf(o))} talk?`, [["Answer", ()=>openSheet("journal",o.id)]]); return; }
   if (conv.length && !conv[0].meetProposed) { const o=conv[0]; o.meetProposed=true; o.log.push(["Kai, for you","saw a calendar invite with "+targetOf(o).name+" Thursday 3pm. Proposing, not assuming.","+2d"]); pushNote("Looks like a meeting", `${targetOf(o).name}, Thursday 3pm. Right?`, [["Yes", ()=>{ o.met=true; o.meetProposed=true; lit(o,"In conversation","Thu"); o.log.push(["You","confirmed the meeting.","Thu"]); render(); toast("Marked as met. Kai stays quiet until next week."); }],["No", ()=>{ o.meetProposed=true; render(); }]]); return; }
   if (waiting.length) {
     const o = waiting[0]; const via=viaOf(o), t=targetOf(o);
-    if (via && !o.viaAgreed) { o.viaAgreed=true; lit(o, !!o.roleTitle?"Referred":(o.timeline[2][0]), "+1d"); o.log.push([`Kai, for ${firstName(via)}`,"delivered the ask under their rules (1 of 3 this week).","+1d"]); o.log.push([firstName(via),`said yes and forwarded your note to ${firstName(t)}.`,"+1d"]); pushNote(`${firstName(via)} said yes`, !!o.roleTitle?`Referred you for ${o.roleTitle} at ${o.roleCompany}.`:`Forwarded your note to ${firstName(t)}.`, [["See path", ()=>openSheet("opp",o.id)]]); return; }
+    if (via && !o.viaAgreed) { o.viaAgreed=true; lit(o, !!o.roleTitle?"Referred":(o.timeline[2][0]), "+1d"); o.log.push([`Kai, for ${firstName(via)}`,"delivered the ask under their rules.","+1d"]); o.log.push([firstName(via),`said yes and forwarded your note to ${firstName(t)}.`,"+1d"]); pushNote(`${firstName(via)} said yes`, !!o.roleTitle?`Referred you for ${o.roleTitle} at ${o.roleCompany}.`:`Forwarded your note to ${firstName(t)}.`, [["See path", ()=>openSheet("opp",o.id)]]); return; }
     // target replies
-    o.state="yourmove"; o.phase="replied"; o.action=`Reply to ${firstName(t)}`; lit(o, !!o.roleTitle?"Screen":(via?o.timeline[3][0]:"Replied"), "+3d"); o.log.push([firstName(t), !!o.roleTitle?"recruiter scheduled a screen for Monday.":"replied: happy to chat, does Thursday work?","+3d"]); o.replyText = !!o.roleTitle?`${firstName(t)}: "Passed your note to our recruiter, she'll reach out about a screen."`:`${firstName(t)}: "Happy to chat. Does Thursday afternoon work?"`;
+    o.state="yourmove"; o.phase="replied"; o.action=`Reply to ${firstName(t)}`; lit(o, !!o.roleTitle?"Screen":(via?o.timeline[3][0]:"Replied"), "+3d"); o.log.push([firstName(t), !!o.roleTitle?"recruiter scheduled a screen for Monday.":"replied: happy to chat, does Thursday work?","+3d"]); o.replyText = !!o.roleTitle?`${firstName(t)}: "Passed your note to our recruiter. They'll reach out about a screen."`:`${firstName(t)}: "Happy to chat. Does Thursday afternoon work?"`;
     pushNote(`${firstName(t)} replied`, o.replyText.replace(/^[^:]+: /,""), [["Reply", ()=>openSheet("reply",o.id)]]); return;
   }
   if (done.length && DB.missions.every(m=>m.status!=="active"||m.standing||!DB.opps.some(o=>o.missionId===m.id&&o.state==="done"))) { toast("Nothing left to simulate. Start another ask."); return; }
@@ -8036,7 +8037,7 @@ function toast(t, undo) { STATE.toast = t; STATE.toastUndo = undo||null; render(
 const GEAR_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>';
 function famHdr() { const f=fam(); return topHdr(f.name, "", `<div class="icon" onclick="go('fsettings')">${GEAR_SVG}</div>`); }
 function topHdr(title, extra="", trailing="") {
-  const unreadYou = STATE.persona==="priya" ? notifUnread() + (STATE.member?todayItems().length:0) : 0;
+  const unreadYou = STATE.persona==="priya" ? notifUnread() + (STATE.member && !STATE.dayOne?todayItems().length:0) : 0;
   return `<div class="hdr top">${av(me().initials)}<div class="t"><span class="tfade">${title}</span></div>${extra}<div class="icon" onclick="STATE.back=STATE.screen;STATE.searchFam=null;go('explore')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div><div class="icon" onclick="go('notifications')"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21a2 2 0 004 0"/></svg>${unreadYou?`<span class="badge">${unreadYou}</span>`:''}</div>${trailing}</div>`;
 }
 function av(initials, cls="") { return `<div class="avatar ${cls}" ${initials===me().initials&&cls===""?'data-you="1"':''}>${initials}</div>`; }
@@ -8640,7 +8641,7 @@ function sHome() {
     ${firstRun}
 
     ${shown.length?(STATE.missionsOrderedAt==="sign-up"&&!STATE.intakeDone?`<div class="xs faint" style="margin:4px 0 6px">You started these at sign-up. The call makes them specific.</div>`:''):`<div class="empty" style="margin-top:8px">No missions yet. Tap what you're here for and Kai starts looking.</div><div class="chips" style="margin-top:8px">${verbs}</div>`}
-    ${STATE.welcomeDue?`<div class="card" style="border-color:var(--ink);margin-bottom:12px"><div class="row" style="gap:10px;align-items:center"><span class="stdot"></span><div style="flex:1"><div class="name" style="font-size:16px">You're in. Welcome to Key.</div><div class="xs muted">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Kai hasn't started yet. Talk with Kai and it starts looking."}</div></div>${STATE.intakeDone?`<span class="chip" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="chip" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
+    ${STATE.welcomeDue?`<div class="card" style="border-color:var(--ink);margin-bottom:12px"><div class="row" style="gap:10px;align-items:center"><span class="stdot"></span><div style="flex:1"><div class="name" style="font-size:16px">You're in. Welcome to Key.</div><div class="xs muted">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Talk to Kai for 5 minutes and the first pass runs today."}</div></div>${STATE.intakeDone?`<span class="chip" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="chip" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
     ${shown.length?coach("paths","These are paths: people and roles Kai found for each mission, with why. One tap opens everything about one. Nothing is sent without your yes."):''}
     ${shown.map(missionSection).join("")}
     ${tailRow}
@@ -9761,6 +9762,9 @@ function sSentThread(oid) {
 // Hi-fi copy only (27 Sep): feature modules gate their hi-fi layer on this flag; the wireframe never defines it.
 const KEY_HIFI = true;
 
+// Real simulation (Apoorv 6 Oct 01:00, "cut slide for now, but i wanna come to it"): KeySlideConfirm is parked. true restores every slider exactly as before.
+const KEY_SLIDE = false;
+
 /* ==== PORTED FROM PRODUCTION, 25 Sep 2026 ====
    Messages list, the conversation screen (DM, group, event chat, channel), threads, chat details,
    the message and conversation sheets, new chat, and the bell notifications screen.
@@ -10226,7 +10230,7 @@ function chatsListHTML() {
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
   const cap = STATE.persona==="chris"?"5 of 8 this week":`${queueAsks().filter(a=>a.state!=="passed"&&a.state!=="open"&&a.state!=="pending").length} of 3 this week`;
   const reqRow = `<div class="reqrow" data-reqs="1"><div class="rfaces">${open.slice(0,3).map(a=>av(DB.people[a.from].initials,"sm")).join("")||av("·","sm")}</div><div class="m"><div class="a">Requests${open.length?` · ${open.length}`:''}</div><div class="b">${top?`${topFrom.name.split(" ")[0]} ${top.what}`:"Nothing needs a decision"}</div></div><div class="rcap"><div class="xs faint">${cap}</div><div class="s">›</div></div></div>`;
-  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : ["No messages","Send first message & Start conversation"];
+  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : ["No messages yet","When someone replies to you, it lands here."];
   return `<div class="toolrow" style="padding-top:0"><div class="search" onclick="go('msearch')">Search</div><div class="icon" onclick="openSheet('newchat')">+</div></div>
     ${f==="Archived"?'':reqRow}
     <div class="pills" style="margin-top:-2px">${["All","Unread","Groups","Events chat","Archived"].map(x=>`<div class="pill ${f===x?'on':''}" style="font-size:12px;padding:6px 11px" data-cf="${x}">${x}${x==="Unread"&&unreadN?` <span class="pc">${unreadN}</span>`:''}</div>`).join("")}</div>
@@ -11173,7 +11177,7 @@ sHome = function(){
   <div class="body sc">
     ${firstRun}
     ${active.length?(STATE.missionsOrderedAt==="sign-up"&&!STATE.intakeDone?`<div class="m12" style="margin:4px 0 6px">You started these at sign-up. The call makes them specific.</div>`:''):`<div class="empty" style="margin-top:8px">No missions yet. Tap what you're here for and Kai starts looking.</div><div class="chips" style="margin-top:8px">${verbs}</div>`}
-    ${STATE.welcomeDue?`<div class="lift" style="margin-bottom:12px"><div class="row first" style="padding:0"><span class="stdot"></span><div class="m"><div class="a">You're in. Welcome to Key.</div><div class="b">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Kai hasn't started yet. Talk with Kai and it starts looking."}</div></div>${STATE.intakeDone?`<span class="mini sec" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="mini sec" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
+    ${STATE.welcomeDue?`<div class="lift" style="margin-bottom:12px"><div class="row first" style="padding:0"><span class="stdot"></span><div class="m"><div class="a">You're in. Welcome to Key.</div><div class="b">${STATE.intakeDone?`Kai ran its first pass. ${DB.opps.length} paths, each with why.`:"Talk to Kai for 5 minutes and the first pass runs today."}</div></div>${STATE.intakeDone?`<span class="mini sec" onclick="STATE.welcomeDue=false;render()">Thanks</span>`:`<span class="mini sec" onclick="STATE.welcomeDue=false;startCall()">Talk with Kai</span>`}</div></div>`:''}
     ${active.length?coach("paths","These are paths: people and roles Kai found for each mission, with why. One tap opens everything about one. Nothing is sent without your yes."):''}
     ${now.length?`<div class="sl">Now<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${now.length}</span></div><div class="rows">${now.join("")}</div>`:''}
     ${active.map(missionSection).join("")}
@@ -17233,7 +17237,7 @@ const _fxJump = jump; jump = function(s){
   if ((s==="home"||s==="family") && STATE.intakeDone && !DB.opps.some(o=>o.missionId==="m1")) { applyIntake(); STATE.push=null; STATE.sheet=null; render(); }
 };
 /* Daniel's pass is Monday (organizer mission, v49); the member copy says Friday. */
-function fxPass(h){ return STATE.persona==="chris" ? h.replace(/Kai's next pass is Friday/g, "Kai's next pass is Monday") : h; }
+function fxPass(h){ return STATE.persona==="chris" ? h.replace(/Kai's next pass is Friday/g, "Kai's next pass is Monday").replace(/Next pass Friday\./g, "Next pass Monday.") : h; }
 const _fxPassHome = sHome; sHome = function(){ return fxPass(_fxPassHome.apply(this, arguments)); };
 const _fxPassMission = sMission; sMission = function(){ return fxPass(_fxPassMission.apply(this, arguments)); };
 /* "Who can intro me to someone at Anthropic?" drafts a path ask instead of "Noted". Privacy rule: Kai never reveals who is on
@@ -18666,7 +18670,7 @@ MORE_POOL.forEach((x,i)=>{ x.id="mp"+i; if (x.kind==="person"||x.kind==="ask") x
    Slots refill when you advance a week. Paths the cycle plays by hand (o2, the connector and Maya's phones) are left to whoever plays them.
    Off in test runs (navigator.webdriver) unless the URL has ?live; "Simulate next" still uses the rules there. ==== */
 const RULE_TOPIC = { Looking:["Hiring conversations","Referrals"], Hiring:["Hiring conversations"], Cofounder:["Cofounder conversations"], Raising:["Investing","Office hours"], Investing:["Investing"], Learning:["Product advice","Advice","Office hours"], "The people":["Intros","Advice","Product advice"] };
-const RULE_YES = { Hiring:"Happy to chat about the team. Does Thursday afternoon work?", Cofounder:"Yes, I'd like to hear what you're building. Coffee next week?", Referrals:"Passed your note to our recruiter, she'll reach out about a screen.", Investing:"Send me the deck and let's find 30 minutes.", Office:"Grab a slot in my office hours this week.", Advice:"Sure, happy to help. Send me a couple of times?" };
+const RULE_YES = { Hiring:"Happy to chat about the team. Does Thursday afternoon work?", Cofounder:"Yes, I'd like to hear what you're building. Coffee next week?", Referrals:"Passed your note to our recruiter. They'll reach out about a screen.", Investing:"Send me the deck and let's find 30 minutes.", Office:"Grab a slot in my office hours this week.", Advice:"Sure, happy to help. Send me a couple of times?" };
 const RULE_LIVE = (()=>{ try { return new URLSearchParams(location.search).has("live") || !navigator.webdriver; } catch(e) { return true; } })();
 
 const ruleWord = s => s.toLowerCase().split(" ")[0];
@@ -19502,10 +19506,10 @@ const ksSecs = ms => `${(ms/1000).toFixed(1)}s`;
 // The steps are the real work on this answer, in his frame's words: what Kai read, checked, filtered and ranked.
 function ksPlan(m, q) {
   if (!(m.mini||[]).length) return { idle:true, steps:[], ms:900 };
-  const pool = Object.values(DB.people).filter(p => p.id!==meId() && ksShares(p)), fams = ksFams(), found = Math.max(ksNamed(m).length, m.mini.length);
+  const pool = Object.values(DB.people).filter(p => p.id!==meId() && ksShares(p)), fams = ksFams(), found = ksNamed(m).length + m.mini.filter(x => !ksPerson(x)).length;  /* 6 Oct (real-simulation 4): found equals the cards the answer renders */
   const ch = (/#([a-z0-9-]+)/i.exec(q + " " + ksStrip(m.text))||[])[1];
   const topic = q.replace(/[?.!]+$/, "").replace(/^(who(?:'s| is| are)?|which|what|any(?:one)?|show me|find(?: me)?)\s+/i, "").replace(new RegExp(`\\s+(in|at|from)\\s+(${fams.map(f => f.split(" ")[0]).join("|")||"x^"})\\b.*$`, "i"), "").trim() || "what you asked";
-  const posts = DB.pool.length * 12 + 4;
+  const posts = typeof rsPool==="function" ? rsPool().length : DB.pool.length;  /* 6 Oct: the posts actually seeded in your families */
   return { idle:false, found, steps:[
     { l:`Reading the ${fams.length===1?"family":`${fams.length} families`} you're in`, d:fams.join(" · "), n:pool.length, ms:400 },
     { l:ch ? `Checking ${posts} posts in #${ch} from the last 30 days` : `Checking ${posts} posts and asks from the last 30 days`, d:"Roles, asks and who replied", n:pool.length + posts, ms:650 },
@@ -19938,7 +19942,7 @@ chatsListHTML = function() {
   const top = open[0]; const topFrom = top?DB.people[top.from]:null;
   const cap = STATE.persona==="chris"?"5 of 8 this week":`${queueAsks().filter(a=>a.state!=="passed"&&a.state!=="open"&&a.state!=="pending").length} of 3 this week`;
   const reqRow = `<div class="reqrow" data-reqs="1"><div class="rfaces">${open.slice(0,3).map(a=>av(DB.people[a.from].initials,"sm")).join("")||av("·","sm")}</div><div class="m"><div class="a">Requests${open.length?` · ${open.length}`:''}</div><div class="b">${top?`${topFrom.name.split(" ")[0]} ${top.what}`:"Nothing needs a decision"}</div></div><div class="rcap"><div class="xs faint">${cap}</div><div class="s">›</div></div></div>`;
-  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : f==="Events" ? ["No event chats","Register for an event and its chat shows up here."] : f==="Groups" ? ["No groups","Start one with the + button."] : ["No messages","Send first message & Start conversation"];
+  const empty = f==="Archived" ? ["Nothing archived","Archive a conversation from its menu to tuck it away. New messages bring it back."] : f==="Unread" ? ["You're all caught up","No unread conversations."] : f==="Events" ? ["No event chats","Register for an event and its chat shows up here."] : f==="Groups" ? ["No groups","Start one with the + button."] : ["No messages yet","When someone replies to you, it lands here."];
   return `<div class="toolrow" style="padding-top:0"><div class="search" onclick="go('msearch')">Search</div><div class="icon" onclick="openSheet('newchat')">+</div></div>
     ${f==="Archived"?'':reqRow}
     <div class="pills" style="margin-top:-2px">${MX_FILTERS.map(([k,l])=>`<div class="pill ${f===k?'on':''}" style="font-size:12px;padding:6px 11px" data-cf="${k}">${l}${k==="Unread"&&unreadN?` <span class="pc">${unreadN}</span>`:''}</div>`).join("")}</div>
@@ -20274,7 +20278,7 @@ function mhBand(m, ps, big, cap, ctl){
   return `<div class="mh-band${big?" big":""}" style="background:${mhPlate(l.theme)}" ${big?"":`data-mission="${m.id}"`} data-kc="KeyMissionHero" data-kv="size=${big?"page":"card"}, theme=${l.theme}">
     ${/^(users|compass)$/.test(l.icon)?"":`<i class="mh-ghost">${LI(l.icon, 120)}</i>`}
     <div class="mh-bt">${mhMark(m, big?44:32)}<div class="mh-bn">${m.name}</div>${big?"":`<span class="mh-go">${LI("chevron-right",20)}</span>`}</div>
-    <div class="mh-bf"><div class="mh-bs">${c || (STATE.intakeDone ? "No paths yet. Kai's next pass is Friday" : "The call makes this specific")}</div>${ctl && typeof bPause==="function" ? mhCtl(m) : ""}</div></div>`;
+    <div class="mh-bf"><div class="mh-bs">${c || "No paths yet. Kai is looking. Next pass Friday."}</div>${ctl && typeof bPause==="function" ? mhCtl(m) : ""}</div></div>`;
 }
 /* KeyMoveCard (avatar layout): the one pick in focus, the next peeking so the rail says there is more */
 function mhPick(o){
@@ -22849,9 +22853,9 @@ sYou = function() {
     <div class="hg-acts two"><span class="hg-btn l" data-kc="KeyButton" data-kv="variant=primary, size=l" data-profile="${meId()}">Your profile</span><span class="hg-btn sec l" data-kc="KeyButton" data-kv="variant=secondary, size=l" onclick="openSheet('p2viewas','')">${LI("eye",18)}Who sees what</span></div>
     ${hgLbl("What Kai knows and does")}
     <div class="hg-list">
-      ${hgRow("brain","Context",`${nLines} things true now · ${C.inferred.length} waiting for your yes`,`onclick="go('you:context')"`)}
+      ${hgRow("brain","Context",STATE.dayOne ? (STATE.intakeDone ? "From your Kai call today" : "Nothing yet. Talk to Kai to start") : `${nLines} things true now · ${C.inferred.length} waiting for your yes`,`onclick="go('you:context')"`)}
       ${hgRow("scale","Rules",`Intros via connector · ${R.capacity} a week${R.quiet?` · quiet until ${R.quiet}`:""}`,`onclick="go('you:rules')"`)}
-      ${hgRow("users","Connectors","4 can vouch for you · 2 going quiet",`onclick="go('you:people')"`)}
+      ${hgRow("users","Connectors",STATE.dayOne ? "Nobody yet. It builds as you meet people" : "4 can vouch for you · 2 going quiet",`onclick="go('you:people')"`)}
       ${hgRow("database","Sources","Contacts, calendar, LinkedIn",`onclick="go('you:sources')"`)}
     </div>
     ${hgLbl("App")}
@@ -24111,6 +24115,7 @@ document.addEventListener("click", e => { const b = e.target.closest && e.target
    Upgrades existing buttons after every render; their own handlers run unchanged on commit.
    Tap path (WCAG 2.2 2.5.7): tap the knob, then tap again within 3 seconds. */
 (function(){
+  if (typeof KEY_SLIDE==="undefined" || !KEY_SLIDE) return;  /* parked behind KEY_SLIDE (hifi.js); plain one-tap buttons while it is false */
   const KSL_TARGETS = [
     ["button[data-send]", b => "Slide to " + kslLower(kslText(b))],
     ["button[onclick^=\"dReach(\"]", b => "Slide to " + kslLower(kslText(b))],
@@ -25039,7 +25044,7 @@ sheetHTML = function(){
 };
 brSheet3 = function(){
   const R = brRunNow(), n = R.L.length, i = Math.min(R.at, n), c = R.L[R.at], E = brEntry();
-  const say = i===0 ? `Hey ${firstName(me())}, here's what you missed. ${E.line}.` : c ? `${n-i} left. ${E.line}.` : "";
+  const say = "";  /* 6 Oct (real-simulation 5.3): no Kai bubble in the brief */
   return `<div class="bk-hd" data-kc="KeySheetHeader" data-kv="lead=mark"><span class="bk-t">${kaiMark(28)}<b>Your ${brPart()} brief</b><span class="bk-step" id="br3Step">${i < n ? `${i+1} of ${n}` : "Done"}</span></span>
       <button type="button" class="bk-ib" data-kaihist="1" aria-label="All chats">${LI("history",22)}</button></div>
     ${i < n ? brProg(n, i, k => k < i || R.done[R.L[k].id]) : ""}
@@ -27186,7 +27191,7 @@ new MutationObserver(() => { if (typeof cHiFi!=="function" || !cHiFi() || typeof
    3. The mission page: Paths | Chat as the app's underline tabs, the header's last row, docking into the glass header on scroll.
       Paths groups the picks under the fixed labels; Chat is one stream (the old Log merged in) where the mission speaks with its own mark.
    4. Edit mission: one page for the ask and the rules, rows that open in place, a proposal with Apply, Pause and End at the foot.
-   5. KeyMissionSuggestion: after an event is created, in the brief, and in the Missions "+" sheet ("Kai has ideas").
+   5. KeyMissionSuggestion: after an event is created, in the brief, and in the Missions "+" sheet ("Ideas").
    Nothing sends or starts without the person's tap. ==== */
 STATE.m2 = STATE.m2 || { cfg:{}, story:{}, ui:{}, deck:null, ed:null, evd:null, sc:"normal", deckDone:false, scroll:{}, n:0, last:"" };
 const M2_FIX = ["New pick","Next step","Waiting","In conversation","Went well","Set aside"];
@@ -27257,8 +27262,8 @@ function m2SeedM1(m){
     { t:"chips", opts:["Yes, one page","Fine as is"], kind:"prep" }
   ];
   const sc = STATE.m2.sc;
-  if (sc==="normal") chat.push({ t:"bot", x:"Overnight pass. 3 new picks from 41 roles. Rahul first. Rahul can refer you at Anthropic and the role closes Friday." }, { t:"turn", cards:["rahul"], more:["sana","ravi"] });
-  if (sc==="quiet") chat.push({ t:"bot", x:"Nothing cleared the bar this week. 41 roles read, none fit both must-haves. Priti is quiet for 5 days. Widen to remote roles?" }, { t:"chips", opts:["Widen it","Keep as is"], kind:"widen" });
+  if (sc==="normal") chat.push({ t:"bot", x:typeof rsPassLine==="function" ? rsPassLine(m, paths) : "Overnight pass. 3 new picks from 41 roles. Rahul first. Rahul can refer you at Anthropic and the role closes Friday." }, { t:"turn", cards:["rahul"], more:paths.filter(p=>p.stage==="New pick" && p.id!=="rahul").map(p=>p.id) });
+  if (sc==="quiet") chat.push({ t:"bot", x:`Nothing cleared the bar this week. ${typeof rsRead==="function" ? rsRead(m).n+" "+rsRead(m).what : "41 roles"} read, none fit both must-haves. Priti is quiet for 5 days. Widen to remote roles?` }, { t:"chips", opts:["Widen it","Keep as is"], kind:"widen" });
   if (sc==="checkin") chat.push({ t:"sys", who:"rahul", x:"Rahul, quiet for 5 days", time:"Now" }, { t:"bot", x:"Anything from Rahul, or should I ask Sana for a second way in?" }, { t:"chips", opts:["Rahul replied","Nothing yet","Find another way"], kind:"rahul" });
   STATE.m2.story[m.id] = { paths, chat };
 }
@@ -27341,7 +27346,7 @@ function m2DeckAsk(c){
 }
 function m2Opening(){
   const sc = STATE.m2.sc;
-  if (sc==="quiet") return ["Nobody is waiting on you.", "Three weeks in, <b>two final rounds</b>. Priti has been quiet for five days, so I'll find a second way in if nothing comes by Thursday. I'm reading 41 new roles in your families tonight.", "See what came back"];
+  if (sc==="quiet") return ["Nobody is waiting on you.", `Three weeks in, <b>two final rounds</b>. Priti has been quiet for five days, so I'll find a second way in if nothing comes by Thursday. I'm reading ${typeof rsRead==="function" ? rsRead(m2DeckM()).n+" new "+rsRead(m2DeckM()).what : "41 new roles"} in your families tonight.`, "See what came back"];
   if (sc==="checkin") return ["Rahul went quiet.", "You said hi on Thursday and nothing came back. That happens. I have a question for you, then <b>Jordan</b> and <b>Dev</b> are waiting with replies.", "Start"];
   return ["Three weeks in, two final rounds.", "That's fast for a senior role. <b>Jordan</b> and <b>Dev</b> replied, and <b>Rahul</b> can refer you at Anthropic today. Three things, about four minutes.", "Start"];
 }
@@ -27349,40 +27354,39 @@ function m2DeckHTML(){
   const D = STATE.m2.deck, m = m2DeckM(); if (!D || !m) return "";
   const its = m2DeckItems(), n = its.length, i = Math.min(D.i, n-1), it = its[i];
   const day = new Date().toLocaleDateString("en-US", { weekday:"long" });
-  const kai = (t) => `<div class="m2-dk"><span class="m2-dkd" aria-hidden="true">${kaiMark(24)}</span><span>${t}</span></div>`;
   const from = `<span class="m2-dfrom">${m2Mark(m, 24)}<span>${m.name}</span></span>`;
   const people = its.filter(x=>x.t==="item").map(x=>x.pid);
   const count = withFaces => `<div class="m2-dn"><span>${i+1} of ${n}</span>${withFaces ? `<span aria-hidden="true">·</span><span class="m2-fs">${people.map(p=>m2Face(p,"m2-a24")).join("")}</span>` : ""}</div>`;
   let h = "";
-  if (it.t==="open") { const [hd, p, b] = m2Opening(); h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">${hd}</h2><p class="m2-dp">${p}</p><div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckGo(1)">${b}</button></div>`; }
+  if (it.t==="open") { const [hd, p, b] = m2Opening(); h = `<h2 class="m2-dh" id="m2-dh">${hd}</h2><p class="m2-dp">${p}</p><div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckGo(1)">${b}</button></div>`; }
   else if (it.t==="item") {
     const p = DB.people[it.pid], F = m2F(it.pid), sent = D.sent[it.pid], path = m2Path(m.id, it.pid), draft = D.drafts[it.pid] != null ? D.drafts[it.pid] : (path ? path.draft : "");
-    h = `<div class="m2-dk">${m2Face(it.pid,"m2-a32")}<span>${p.name}</span></div><h2 class="m2-dh" id="m2-dh">${sent ? `Sent to ${F}` : it.open ? `${F} can refer you` : `${F} is waiting on you`}</h2><p class="m2-dp">${it.why}</p>${from}
+    h = `<div class="m2-dk">${m2Mark(m, 24)}${m2Face(it.pid,"m2-a32")}<span>${p.name}</span></div><h2 class="m2-dh" id="m2-dh">${sent ? `Sent to ${F}` : it.open ? `${F} can refer you` : `${F} is waiting on you`}</h2><p class="m2-dp">${it.why}</p>${from}
       ${sent ? `<div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckGo(1)">Next</button></div>`
-      : `<div class="m2-dd"><label class="m2-ddl" for="m2-dta">${LI("pencil",16)}<span>Kai's draft · you can edit it</span></label><textarea id="m2-dta" class="m2-dta" rows="3" data-m2draft="${it.pid}">${m2Esc(draft)}</textarea></div>
+      : `<div class="m2-dd"><label class="m2-ddl" for="m2-dta">${LI("pencil",16)}<span>Draft · you can edit it</span></label><textarea id="m2-dta" class="m2-dta" rows="3" data-m2draft="${it.pid}">${m2Esc(draft)}</textarea></div>
         <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckSend('${it.pid}')">${it.open ? "Say hi" : "Send"}</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Not now</button></div>`}${count(true)}`;
   }
-  else if (it.t==="prep") h = `<div class="m2-dk">${m2Face("maya","m2-a32")}<span>Maya Chen</span></div><h2 class="m2-dh" id="m2-dh">Maya, tomorrow 10am</h2>
+  else if (it.t==="prep") h = `<div class="m2-dk">${m2Mark(m, 24)}${m2Face("maya","m2-a32")}<span>Maya Chen</span></div><h2 class="m2-dh" id="m2-dh">Maya, tomorrow 10am</h2>
       <p class="m2-dp">From your calendar. Maya's team is hiring its first PM, and Maya asked for a call after Daniel's intro. Two things worth raising: the agents launch you shipped in May, and the platform questions from Ana's final round last week.</p>${from}
       <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckPrep()">Open the prep</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Got it</button></div>${count(false)}`;
-  else if (it.t==="suggest") h = `${kai("Kai suggests a mission")}<h2 class="m2-dh" id="m2-dh">People to meet at Thursday's dinner</h2>
+  else if (it.t==="suggest") h = `<div class="m2-dk"><span class="m2-sgm m2-dsg" aria-hidden="true">${LI("utensils",14)}</span><span>A mission to start</span></div><h2 class="m2-dh" id="m2-dh">People to meet at Thursday's dinner</h2>
       <p class="m2-dp">You're going to the AI builders dinner on Thursday. Some of the people going hire PMs. I'd introduce you to them before Thursday so it isn't cold.</p>
       <span class="m2-dfrom"><span class="m2-dfm" aria-hidden="true">${LI("utensils",14)}</span><span>From your RSVP</span></span>
       <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckStart()">Start it</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Not this</button></div>${count(false)}`;
-  else if (it.t==="ask") h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">Anything from Rahul?</h2><p class="m2-dp">If Rahul replied outside Key, tell me and I'll move the path along. If not, I can ask Sana for a second way in.</p>${from}
+  else if (it.t==="ask") h = `<div class="m2-dk">${m2Mark(m, 24)}<span>${m2Esc(m.name)}</span></div><h2 class="m2-dh" id="m2-dh">Anything from Rahul?</h2><p class="m2-dp">If Rahul replied outside Key, tell me and I'll move the path along. If not, I can ask Sana for a second way in.</p>${from}
       <div class="m2-da">${["Rahul replied","Nothing yet","Find another way"].map((c,k)=>`<button type="button" class="${k ? "m2-bg" : "m2-bw"}" onclick="m2DeckAsk('${c}')">${c}</button>`).join("")}</div>${count(false)}`;
   else {
     const k = Object.keys(D.sent).length, word = ["","One","Two","Three","Four"][k] || String(k);
     const pts = [[50,58],[22,26],[80,22],[72,88]], who = ["maya","jordan","ana"].filter(p=>DB.people[p]).slice(0,3);
-    h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">${k ? `${word} sent. ` : ""}Nothing else needs you.</h2><p class="m2-dp">What came back while you were away.</p>
+    h = `<div class="m2-dk">${m2Mark(m, 24)}<span>${m2Esc(m.name)}</span></div><h2 class="m2-dh" id="m2-dh">${k ? `${word} sent. ` : ""}Nothing else needs you.</h2><p class="m2-dp">${typeof rsEndLead==="function" ? rsEndLead() : "What came back while you were away."}</p>
       <div class="m2-cn" role="img" aria-label="You, ${who.map(p=>DB.people[p].name).join(", ")}"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${who.map((p,j)=>`<line x1="50" y1="58" x2="${pts[j+1][0]}" y2="${pts[j+1][1]}"/>`).join("")}</svg>
         <span class="m2-cnn m2-cny" style="left:50%;top:58%" aria-hidden="true">You</span>${who.map((p,j)=>`<span class="m2-cnn" style="left:${pts[j+1][0]}%;top:${pts[j+1][1]}%" aria-hidden="true">${m2Face(p,"m2-a40")}</span>`).join("")}</div>
-      <div class="m2-dr">${[[m2Face("maya","m2-a32"),"Maya said yes to a call","Yesterday"],[m2Face("ana","m2-a32"),"Ana's final round went well","Friday"],[`<span class="m2-dkd" aria-hidden="true">${kaiMark(32)}</span>`,"Kai read 41 roles, kept 3","Overnight"]].map(([f,t,w])=>`<div class="m2-drw">${f}<span>${t}</span><small>${w}</small></div>`).join("")}</div>
+      <div class="m2-dr">${[[m2Face("maya","m2-a32"),"Maya said yes to a call","Yesterday"],[m2Face("ana","m2-a32"),"Ana's final round went well","Friday"],[m2Mark(m, 32),typeof rsReadLine==="function" ? rsReadLine(m) : "Read 41 roles, kept 3","Overnight"]].map(([f,t,w])=>`<div class="m2-drw">${f}<span>${t}</span><small>${w}</small></div>`).join("")}</div>
       <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckDone()">Done</button></div>`;
   }
   return `<div class="m2-deck" role="dialog" aria-modal="true" aria-label="Your brief" data-kc="KeyStoryViewer" data-kv="cards=${n}, at=${i+1}">
     <div class="m2-bars" aria-hidden="true">${its.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
-    <div class="m2-dhd"><span class="m2-dkd" aria-hidden="true">${kaiMark(28)}</span><span class="m2-dht">Your brief · ${day}</span><button type="button" class="m2-x" onclick="m2DeckClose()" aria-label="Close the brief">${LI("x",24)}</button></div>
+    <div class="m2-dhd"><span class="m2-dht">Your brief · ${day}</span><button type="button" class="m2-x" onclick="m2DeckClose()" aria-label="Close the brief">${LI("x",24)}</button></div>
     <div class="m2-dsky" aria-hidden="true"></div>
     <div class="m2-db m2-scroll" data-m2s="deck"><div class="m2-dc" data-kind="${it.t}" data-kc="KeyStoryCard" data-kv="kind=${it.t}">${h}</div></div></div>`;
 }
@@ -27716,7 +27720,7 @@ function m2EvStart(){
     paths:[inv("sana", `Uses ${b.topic} at Perplexity. Asked for PM intros`), inv("omar", `Founder, moved the team to ${b.topic} in May`), inv("lena", `Staff engineer. Hasn't met the other ${b.topic} users`), inv("grace", "Came to the last two teardowns"),
       m2P("daniel","chris","Went well","Said yes when you created it","","")],
     chat:[{ t:"day", x:"Today" }, { t:"sys", who:"you", x:`You created the ${b.label}`, time:b.day },
-      { t:"bot", x:`Here's who I'd invite. 7 ${b.pl} use ${b.topic} and haven't met each other; 3 of them asked for PM intros. Sana first.` }, { t:"turn", cards:["sana"], more:["omar","lena","grace"] },
+      { t:"bot", x:`Here's who I'd invite. 4 ${b.pl} use ${b.topic} and haven't met each other; 3 of them asked for PM intros. Sana first.` }, { t:"turn", cards:["sana"], more:["omar","lena","grace"] },
       { t:"bot", x:"Two days before, I'll ask everyone who said yes to confirm, and the day after I'll ask who met whom. Both can be turned off under Edit mission." }],
     home:{ pill:"4 to invite", goal:[`1 of ${b.cap} said yes`, Math.round(100/b.cap), b.day], face:"sana", sum:"Invite Sana first" } });
   m2Ui(m.id).tab = "paths"; STATE.m2.last = "mission:"+m.id; go("mission:"+m.id); toast("Started. It's on Home too.");
@@ -27731,18 +27735,18 @@ function m2EvHTML(){
     <div class="m2-evb m2-scroll" data-m2s="evd">
       <div class="m2-evc"><div class="m2-evcv">${art}<span class="m2-evdt" aria-hidden="true"><b>${dn}</b><small>${mon}</small></span></div><div class="m2-evct"><b>${m2Esc(e.name)}</b><span>${m2Esc(e.when)} · ${b.famName} · ${b.cap} seats</span></div></div>
       <div class="m2-kl"><span aria-hidden="true">${kaiMark(32)}</span><b>Want me to fill it?</b></div>
-      ${already ? `<p class="m2-empty">Started. It's on Home as a mission.</p>` : m2Sug({ icon:"users", title:"Fill this with the right people", why:`7 ${b.pl} use ${b.topic} and haven't met each other. 3 of them asked for PM intros this month.`, faces:["sana","omar","lena"], who:"Sana, Omar and 5 more fit", start:"Start the mission", go:"m2EvStart()", no:"toast('Gone. Kai asks why once, then shows the next idea.')" })}
+      ${already ? `<p class="m2-empty">Started. It's on Home as a mission.</p>` : m2Sug({ icon:"users", title:"Fill this with the right people", why:`4 ${b.pl} use ${b.topic} and haven't met each other. 3 of them asked for PM intros this month.`, faces:["sana","omar","lena"], who:"Sana, Omar and 2 more fit", start:"Start the mission", go:"m2EvStart()", no:"toast('Gone. Kai asks why once, then shows the next idea.')" })}
       <div class="m2-irs">${m2IdeaRow("check","Cut no-shows","Kai asks everyone to confirm two days before","toast('It starts the same way: Kai asks, you say yes.')")}${m2IdeaRow("users","Who did you meet","One tap the day after, so intros don't go cold","toast('It starts the same way: Kai asks, you say yes.')")}</div>
       <div class="m2-foot"><button type="button" class="btn sec m2-b" onclick="toast('Link copied.')">Share the link</button><button type="button" class="btn sec m2-b" onclick="m2EvClose()">Done</button></div>
     </div></section>`;
 }
 
-/* ---- 5.3 Missions "+": Kai has ideas ---- */
+/* ---- 5.3 Missions "+": Ideas ---- */
 const _m2Open = openSheet;
 openSheet = function(type, id){ if (type==="newmission" && m2On() && STATE.intakeDone) { STATE.sheet = { type:"m2ideas" }; STATE.sheetFull = false; render(); return; } return _m2Open.apply(this, arguments); };
 function m2IdeasHTML(){
   const started = DB.missions.some(x=>x.m2 && x.name==="Stay close to the people you've worked with");
-  return `<h2>Kai has ideas</h2><p class="m2-shl">From what you said and did this week. Nothing starts until you say so.</p>
+  return `<h2>Ideas</h2><p class="m2-shl">From what you said and did this week. Nothing starts until you say so.</p>
     ${started ? `<p class="m2-empty">Started. It's on Home as a mission.</p>` : m2Sug({ icon:"users", title:"Stay close to the people you've worked with", why:"You haven't talked to Priti in seven months, and Priti just started hiring for a new team.", faces:["priti","ana","dev"], who:"Priti, Ana and Dev to start with", go:"m2IdeaStart()", no:"STATE.sheet=null;toast('Gone. Kai asks why once, then shows the next idea.')" })}
     <div class="m2-irs">${m2IdeaRow("sparkles","Get known for agent evals","From your Kai chat on Tuesday","toast('Kai opens the draft filled in. Nothing starts until you approve.')")}${m2IdeaRow("utensils","Host a Xoogler dinner","You've been to four. 9 members asked for one in SF","toast('Kai opens the draft filled in. Nothing starts until you approve.')")}</div>
     <button type="button" class="m2-desc" onclick="STATE.sheet=null;mcStart()">${LI("pencil",20)}<span>Describe one to Kai instead</span></button>`;
@@ -27751,7 +27755,7 @@ function m2IdeaStart(){ m2StartClose(); STATE.sheet = null; toast("Started. It's
 const _m2Sheet = sheetHTML;
 sheetHTML = function(){
   const sh = STATE.sheet;
-  if (sh && sh.type==="m2ideas") return `<div class="scrim" onclick="closeSheet()"></div><div class="sheet m2-ideas" id="sheet" role="dialog" aria-modal="true" aria-label="Kai has ideas" data-kc="KeySheet"><div class="grab" id="grab"></div><div class="sb">${m2IdeasHTML()}</div></div>`;
+  if (sh && sh.type==="m2ideas") return `<div class="scrim" onclick="closeSheet()"></div><div class="sheet m2-ideas" id="sheet" role="dialog" aria-modal="true" aria-label="Ideas" data-kc="KeySheet"><div class="grab" id="grab"></div><div class="sb">${m2IdeasHTML()}</div></div>`;
   const h = _m2Sheet.apply(this, arguments);
   /* the mission's ⋯: Edit mission, the recap once it's due, Pause, End mission. Nothing else */
   if (sh && sh.type==="mmenu" && m2On()) { const m = m2Mis(sh.id); if (!m) return h;
@@ -27841,8 +27845,584 @@ render = function(){
 };
 
 </script>
+<style>
+/* Real simulation (6 Oct): the mission's mark as the brief card's kicker, the suggestion's own mark, the Next reply picker in Controls */
+#phone .m2-dk .mh-mark.s24 { width:24px; height:24px; border-radius:7px; display:grid; place-items:center; color:#fff; flex:0 0 auto; }
+#phone .m2-dk .mh-mark.s24 svg { width:14px; height:14px; }
+#phone .m2-dk .m2-dsg { width:24px; height:24px; border-radius:7px; }
+#phone .m2-dk .m2-dsg svg { width:14px; height:14px; }
+#phone .m2-drw > .mh-mark { width:32px; height:32px; border-radius:9px; display:grid; place-items:center; color:#fff; flex:0 0 auto; }
+#phone .m2-drw > .mh-mark svg { width:18px; height:18px; }
+.stagebar .rs-nx { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:inherit; }
+.stagebar .rs-nx select { font:inherit; min-height:28px; border-radius:8px; padding:2px 6px; }
+
+/* day one: the welcome row says the whole offer (Talk to Kai for 5 minutes...) */
+.lift > .row.first > .m > .b { white-space:normal; overflow:visible; text-overflow:clip; }
+/* a short phone hides the live line; with nothing open it is the only news, so it stays */
+#phone.m2-tight .m2-paths:has(> .m2-empty) > .m2-live { display:flex !important; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-eb1c";
+/* ==== Real simulation (6 Oct 01:00, Apoorv in Whole-app review: "this needs to be very real and feasibly broken, not completely ideal
+   scenarios ... engineers will follow real directions, not ideas"). Spec: real-simulation/HIFI-SPEC.md, behaviour per the missions PRD.
+   Loads after MBRIEF and wraps; the base hooks it needs are three reps in inject.py (rsWeek, rsDoneMet, rsPropose).
+   1. Two worlds: STATE.dayOne (approveMe, the Day one button) and the three weeks in world (Skip to home / family). Day one gates off
+      hosting, seeded chats and asks, travel, calendar items; picks come only from the member's own data, or none if the call was skipped.
+   2. Replies play real outcomes through replies.js rules: yes, not now, later, quiet, at capacity, not a fit. Silence runs on the clock
+      (day 7 nudge, day 14 set aside, day 21 Expired). Controls: Day one, Thin family, Next reply.
+   3. The done condition proposes only on a match; Not yet holds until the next match.
+   4. Every read / found / kept number comes from the seeded pool the member can see.
+   5. Call credits and plans are gone; slide is parked behind KEY_SLIDE; Kai is out of the brief (missions-brief2.js).
+   Kai never sends: every send stays the person's tap. ==== */
+
+/* ---- seeded rules (2.1): the always-yes people get real limits ---- */
+(function(){ const P = DB.people;
+  if (P.jordan) P.jordan.slots = "1 slot left this week";
+  if (P.kate) P.kate.notNow = ["Hiring conversations"];
+  if (P.chris) P.chris.slots = "3 slots left this week";
+})();
+const RS_DONE = /\b(offer|accepted|signed|hired)\b/i;
+const RS_PICKS = ["auto","yes","no","later","quiet","capacity"];
+const RS_PICK_L = { auto:"As people would", yes:"Yes", no:"Not now", later:"Later", quiet:"Quiet", capacity:"At capacity" };
+const rsF = o => { const t = typeof targetOf==="function" && targetOf(o); return t ? firstName(t) : m2Cap(String(o.personId||"them")); };
+const rsDay = () => STATE.gpDay||0;
+
+/* ---- snapshots: the pristine world (for Day one and Skip from day one) and the world before Thin family ---- */
+function rsStateObj(){ const o = {}; Object.keys(STATE).forEach(k=>{ if (!/^(push|quick|sheet|toast)$/.test(k)) o[k] = STATE[k]; }); return o; }
+function rsSnap(){ return JSON.stringify({ db:DB, state:rsStateObj(), mseq:MSEQ }, (k,v)=>typeof v==="function" ? undefined : v); }
+function rsLoad(j){ const s = JSON.parse(j); Object.keys(DB).forEach(k=>delete DB[k]); Object.assign(DB, s.db); Object.keys(STATE).forEach(k=>delete STATE[k]); Object.assign(STATE, s.state); MSEQ = s.mseq; STATE.push = null; STATE.sheet = null; STATE.quick = null; if (typeof KS_RUN!=="undefined" && KS_RUN) { KS_RUN.timers.forEach(clearTimeout); KS_RUN = null; } }
+/* a save from an earlier visit is not a fresh world; then Day one starts from a reload instead */
+const RS_SAVED = (()=>{ try { const s = JSON.parse(localStorage.getItem(DATA_KEY)||"null"); return !!(DATA_ON && s && s.seed===DATA_SEED); } catch(e) { return false; } })();
+const RS_PRISTINE = RS_SAVED || STATE.member || STATE.applied ? null : rsSnap();
+let RS_THIN_SNAP = null;
+
+/* ---- 1. Day one ---- */
+function rsDayOne(){
+  if (RS_PRISTINE) rsLoad(RS_PRISTINE);
+  else { try { sessionStorage.setItem("keyRs", "dayone"); } catch(e) {} dataReset(); return; }
+  STATE.authIntent = "signup"; STATE.signinWith = "linkedin"; STATE.lookupReady = true; submitApp(); STATE.micAsked = true; startCall();
+  for (let i = 0; i < 6 && i < INTAKE.length; i++) answer(INTAKE[i].a[0]);
+  approveMe(); STATE.push = null; STATE.callActive = false; STATE.overlaySeen = true; go("home");
+}
+function rsSkip(s){ if (RS_PRISTINE) { rsLoad(RS_PRISTINE); return true; } try { sessionStorage.setItem("keyRs", "skip:"+s); } catch(e) {} dataReset(); return false; }
+(function(){ let k = null; try { k = sessionStorage.getItem("keyRs"); sessionStorage.removeItem("keyRs"); } catch(e) {}
+  if (k==="dayone") setTimeout(rsDayOne, 0); else if (k && k.startsWith("skip:")) setTimeout(()=>jump(k.slice(5)), 0); })();
+
+const _rsJump = jump; jump = function(s){
+  if (s==="home" || s==="family") { if ((STATE.dayOne || STATE.rsThin) && !rsSkip(s)) return; STATE.dayOne = false; STATE.rsThin = false; RS_THIN_SNAP = null; }
+  return _rsJump.apply(this, arguments);
+};
+const _rsApprove = approveMe; approveMe = function(){
+  STATE.dayOne = true; STATE.rsThin = false;
+  const r = _rsApprove.apply(this, arguments);
+  rsScrub(true); render(); return r;
+};
+/* the first pass after approval: at most three picks, each with a receipt from the member's own data [11.2, 18.1] */
+function rsDayOnePicks(){
+  const m1 = DB.missions.find(m=>m.type==="Looking");
+  DB.opps.splice(0, DB.opps.length);
+  if (!STATE.intakeDone || !STATE.member || !m1) return;
+  DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", [["Role","Posted in #jobs: hiring senior PMs for a new product line","#jobs, Sep 9"], ["Shared","Both worked at Google Cloud","your profile"]], "Say hi to Rahul", "new"));
+  DB.opps.push(opp("o3", m1.id, "role", "sana", "connector", [["Role","Posted in #jobs: Senior PM, agents, at Perplexity","#jobs, Sep 12"], ["Fit","Senior PM, agents team. Matches your mission","mission"]], "Ask Sana to refer you", "new",
+    { via:"sana", roleTitle:"Senior PM, agents", roleCompany:"Perplexity", timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
+}
+/* the three weeks in world: Tom is the wrong pick (2.4), Sana stays silent (2.1) */
+function rsDemoSeeds(){
+  const o5 = DB.opps.find(o=>o.id==="o5");
+  if (o5 && !o5.rsSeeded) { o5.rsSeeded = true; o5.kind = "person"; delete o5.roleTitle; delete o5.roleCompany; delete o5.source; o5.receipts = [["Shared","Both in Xoogler","xoogler"]]; o5.action = o5.next = "Say hi to Tom"; o5.rsPlan = ["notfit"]; }
+  const o3 = DB.opps.find(o=>o.id==="o3"); if (o3 && !o3.rsSeeded) { o3.rsSeeded = true; o3.rsPlan = ["quiet"]; }
+}
+const _rsIntake = applyIntake; applyIntake = function(){
+  const r = _rsIntake.apply(this, arguments);
+  if (STATE.dayOne) { rsDayOnePicks(); rsScrub(); } else rsDemoSeeds();
+  return r;
+};
+if (typeof evmEnsure==="function") { const _rsEvm = evmEnsure; evmEnsure = function(){ if (STATE.dayOne) return; return _rsEvm.apply(this, arguments); }; }
+/* day one gates: hosting, seeded chats and asks, other families, a calendar that was never connected, picks without a call */
+function rsScrub(first){
+  if (!STATE.dayOne) return;
+  for (let i = DB.missions.length-1; i >= 0; i--) { const m = DB.missions[i]; if (m.id==="m3" || m.evKind || m.series || (m.type==="Hosting" && !m.m2)) DB.missions.splice(i, 1); }
+  if (!STATE.intakeDone) for (let i = DB.opps.length-1; i >= 0; i--) if (isNewOf(DB.opps[i])) DB.opps.splice(i, 1);
+  if (!STATE.rsD1) {
+    STATE.rsD1 = true;
+    DB.fevents = DB.fevents.filter(e=>e.family==="xoogler" && !e.past && e.bucket!=="past" && e.host!==EV_ME);
+    DB.fevents.forEach(e=>{ e.rsvp = false; e.checkedIn = false; if (/^(going|hosting|invited|waitlist|pending)$/.test(e.reg||"")) e.reg = "none"; e.pairs = []; });
+    if (DB.series) DB.series.splice(0, DB.series.length);
+    DB.asks = DB.asks.filter(a=>!/^a[1-5]$/.test(a.id) && a.to!==meId() && a.from!==meId());
+    DB.dms.splice(0, DB.dms.length); STATE.mxSeeded = true;
+    if (DB.chat) Object.keys(DB.chat).forEach(k=>{ if (DB.chat[k].kind!=="channel") delete DB.chat[k]; });
+    (DB.families||[]).forEach(f=>{ if (f.id!=="xoogler") f.joined = false; });
+    const me0 = DB.people[meId()]; if (me0) me0.families = ["Xoogler"];
+    DB.user.family = "Xoogler"; STATE.family = "xoogler";
+    DB.activity = (DB.activity||[]).filter(a=>/approved your application/.test(a.text||""));
+    if (typeof laterSeed==="function") laterSeed(); if (DB.saved) DB.saved.splice(0); if (DB.scheduled) DB.scheduled.splice(0); DB.notifs = []; STATE.drafts = {};
+    (DB.calendars||[]).forEach(c=>{ if (c.family!=="xoogler" && c.kind!=="personal" && c.kind!=="city") c.subscribed = false; if (c.kind!=="personal") c.admins = (c.admins||[]).filter(a=>a!==meId()); });
+    STATE.persona = "priya";
+  }
+}
+const _rsSeedChats = seedChats; seedChats = function(){
+  const fresh = !DB.chat, r = _rsSeedChats.apply(this, arguments);
+  if (fresh && STATE.dayOne) { Object.keys(DB.chat).forEach(k=>{ if (DB.chat[k].kind!=="channel") delete DB.chat[k]; }); DB.dms.splice(0, DB.dms.length); }
+  return r;
+};
+/* Lars shared a trip with Xoogler members of the three weeks in world */
+if (typeof TV_TRIP!=="undefined") Object.defineProperty(TV_TRIP, "shared", { get(){ return !STATE.dayOne && !STATE.rsThin; }, configurable:true });
+
+/* ---- 2.5 Thin family: the member's only family is 40 people, no matching people, nothing posted in 30 days ---- */
+const RS_THIN = { id:"baypms", name:"Bay PMs", members:40, posts:12 };
+function rsThinToggle(){
+  if (!STATE.rsThin) {
+    if (!STATE.member) rsDayOne();
+    RS_THIN_SNAP = rsSnap();
+    const x = (DB.families||[]).find(f=>f.id==="xoogler") || {};
+    (DB.families||[]).forEach(f=>{ f.joined = false; });
+    DB.families.push(Object.assign({}, x, { id:RS_THIN.id, name:RS_THIN.name, members:RS_THIN.members, role:"member", joined:true, rsThin:true }));
+    DB.channels[RS_THIN.id] = [Object.assign({}, (DB.channels.xoogler||[])[0]||{}, { id:"bp-general", name:"#general", members:RS_THIN.members, unread:0 })];
+    DB.messages["bp-general"] = [];
+    DB.user.family = RS_THIN.name; STATE.family = RS_THIN.id;
+    const me0 = DB.people[meId()]; if (me0) me0.families = [RS_THIN.name];
+    DB.opps.splice(0, DB.opps.length);
+    STATE.m2.story = {}; STATE.m2.home = {}; STATE.m2.deck = null; STATE.m2.deckDone = false; STATE.brRun = null; STATE.closeProposed = null;
+    STATE.rsThin = true; STATE.push = null; go("home");
+  } else {
+    if (RS_THIN_SNAP) rsLoad(RS_THIN_SNAP); STATE.rsThin = false; RS_THIN_SNAP = null; go("home");
+  }
+  rsControls();
+}
+
+/* ---- 4. the pool the member can see, and what a pass read and kept ---- */
+const rsFams = () => (DB.families||[]).filter(f=>f.joined!==false);
+const rsPool = () => { const n = rsFams().map(f=>f.name); return (DB.pool||[]).filter(x=>n.includes(x.fam)); };
+function rsRead(m){
+  const fs = rsFams(), where = fs.length===1 ? fs[0].name : "your families";
+  if (STATE.rsThin) return { n:RS_THIN.posts, what:"posts", where, thin:true };
+  const all = rsPool(); let xs = all, what = "posts";
+  if (m && m.type==="Looking") { const r = all.filter(x=>x.kind==="role"); if (r.length) { xs = r; what = "roles"; } }
+  else if (m && m.type==="Cofounder") { const r = all.filter(x=>/^(person|post|ask)$/.test(x.kind)); if (r.length) xs = r; }
+  return { n:xs.length, what, where };
+}
+const rsKeptN = m => { const s = m && STATE.m2.story[m.id]; return s ? s.paths.filter(p=>p.stage==="New pick").length : DB.opps.filter(o=>m && o.missionId===m.id && isNewOf(o)).length; };
+function rsReadLine(m){ const R = rsRead(m), k = rsKeptN(m); return R.thin ? `Read ${R.n} posts in ${R.where}, none fit both must-haves` : `Read ${R.n} ${R.what}, kept ${k ? k : "none"}`; }
+function rsEndLead(){ return STATE.rsThin ? "Nothing came back. The mission keeps reading." : STATE.dayOne ? "Your first pass." : "What came back while you were away."; }
+function rsPassLine(m, paths){ const R = rsRead(m), k = paths.filter(p=>p.stage==="New pick").length;
+  return `Overnight pass. ${k} new pick${k===1?"":"s"} from ${R.n} ${R.what}. Rahul first. Rahul can refer you at Anthropic and the role closes Friday.`; }
+/* the live line reads what is there, every week */
+miPass = function(m){
+  if (!miOwn(m) || m.status!=="active") return null;
+  const R = rsRead(m);
+  if (R.thin) return `Read ${R.n} posts<span class="mi-lw"> in ${R.where}, none fit both must-haves</span>`;
+  if (STATE.miPassDone[m.id]===(STATE.week||0)) return null;
+  return `Kai is reading ${R.n} ${R.what === "roles" ? "roles" : "posts"}<span class="mi-lw"> in ${R.where}</span>`;
+};
+/* the thinking trace: kai-chat.js ksPlan reads rsPool() (its block keeps ksPlan local, so it is edited there) */
+
+/* ---- the brief and the mission's own story on day one and in a thin family ---- */
+const rsFresh = () => STATE.dayOne || STATE.rsThin;
+function rsSeedFresh(m){
+  const c = m2Cfg(m.id); if (c) { c.week0 = 1; c.monthDone = 0; }
+  const os = DB.opps.filter(o=>o.missionId===m.id && isNewOf(o));
+  const paths = os.map(o=>{ const F = rsF(o), sub = o.roleTitle ? `${o.roleCompany} · ${F} posted it in ${((o.receipts||[])[0]||[])[2]||"#jobs"}` : (o.receipts||[]).map(r=>r[1]).join(". ");
+    return o.roleTitle ? m2P(o.personId, o.personId, "New pick", sub, `Ask ${F} to refer`, `Hi ${F}, I saw the ${o.roleTitle} role you posted in #jobs. Would you be willing to refer me? Happy to send anything that helps.`, { name:o.roleTitle, ini:(o.roleCompany||"?").charAt(0), sq:true, opp:o.id, to:o.via||o.personId })
+      : m2P(o.personId, o.personId, "New pick", sub, "Say hi", `Hi ${F}, I saw your post in #jobs about the senior PM role on your team. We both worked at Google Cloud. Would you have 20 minutes before I apply?`, { opp:o.id }); });
+  const R = rsRead(m), chat = [{ t:"day", x:"Today" }, { t:"sys", who:"you", x:"You started this mission", time:"Today" }, { t:"bot", x:"Here's the mission. Change any of it under Edit mission, or tell me here." }];
+  if (paths.length) chat.push({ t:"bot", x:`First pass. Read ${R.n} ${R.what} in ${R.where}, kept ${paths.length}. ${paths[0].sq ? paths[0].name : m2F(paths[0].pid)} first.` }, { t:"turn", cards:[paths[0].id], more:paths.slice(1).map(p=>p.id) });
+  else chat.push({ t:"bot", x:R.thin ? `Read ${R.n} posts in ${R.where}, none fit both must-haves. Nothing open yet. Next pass Friday.` : `Read ${R.n} ${R.what} in ${R.where}. Nothing fit yet. Next pass Friday.` });
+  STATE.m2.story[m.id] = { paths, chat };
+}
+const _rsStory = m2Story; m2Story = function(id){
+  const S = STATE.m2.story; if (S[id]) return S[id];
+  if (rsFresh()) { const m = m2Mis(id); if (m && id==="m1" && m.type==="Looking") { rsSeedFresh(m); return S[id]; } return null; }
+  const s = _rsStory.apply(this, arguments);
+  if (s && id==="m1" && !s.rsTom) { s.rsTom = true; const k = s.paths.findIndex(p=>p.id==="openai");
+    if (k >= 0) { s.paths[k] = m2P("tom","tom","New pick","Both in Xoogler. Nothing else to go on yet","Say hi","Hi Tom, I'm looking at senior PM roles in applied AI. Would you have 15 minutes this week?", { opp:"o5" });
+      const turn = s.chat.find(e=>e.t==="turn"); if (turn && !turn.more.includes("tom")) turn.more.push("tom");
+      const pass = s.chat.find(e=>e.t==="bot" && /^Overnight pass\./.test(e.x||"")); if (pass) pass.x = rsPassLine(m2Mis(id), s.paths); } }
+  return s;
+};
+const _rsDeckItems = m2DeckItems; m2DeckItems = function(){
+  const m = m2DeckM(), s = m && m2Story(m.id), qs = rsDeckQs();
+  if (rsFresh()) { const its = [{ t:"open" }].concat(qs);
+    if (s && !STATE.rsThin) s.paths.filter(p=>p.stage==="New pick").forEach(p=>its.push({ t:"item", pid:p.id, open:true, why:p.sub+"." }));
+    return its.concat([{ t:"end" }]); }
+  const its = _rsDeckItems.apply(this, arguments).filter(it=>{ if (it.t!=="item" || !s) return true; const p = s.paths.find(x=>x.id===it.pid); return !p || ((STATE.m2.deck||{}).sent||{})[it.pid] || (it.open ? p.stage==="New pick" : /In conversation|Next step/.test(p.stage)); });
+  its.splice(1, 0, ...qs); return its;
+};
+const _rsOpening = m2Opening; m2Opening = function(){
+  if (!rsFresh()) return _rsOpening.apply(this, arguments);
+  const m = m2DeckM(), s = m && m2Story(m.id), ps = s ? s.paths.filter(p=>p.stage==="New pick") : [], R = rsRead(m), q = rsDeckQs().length;
+  if (STATE.rsThin || !ps.length) return ["Nothing needs you right now.", `Read ${R.n} ${R.what} in ${R.where}${R.thin ? ", none fit both must-haves" : ""}. Widening the mission is the one thing that would help.`, "Update the mission"];
+  const N = ["","One","Two","Three"][ps.length] || String(ps.length), first = ps[0];
+  return [`${N} new pick${ps.length===1?"":"s"}.`, `<b>${first.sq ? m2F(first.to) : m2F(first.pid)}</b> ${first.sq ? `posted the ${first.name} role` : "posted a senior PM role on the team"}${ps[1] ? `, and <b>${ps[1].sq ? m2F(ps[1].to) : m2F(ps[1].pid)}</b> ${ps[1].sq ? `posted the ${ps[1].name} role` : "is hiring"}` : ""}. Read ${R.n} ${R.what} in ${R.where} to find ${ps.length===1 ? "it" : "them"}.${q ? ` ${q} question${q===1?"":"s"} first.` : ""}`, "Start"];
+};
+function rsThinEdit(){ STATE.m2.deck = null; m2Edit("m1", "must"); }
+/* the questions the clock or a reply raised, as brief cards under the mission's mark */
+function rsDeckQs(){
+  const m = m2DeckM(), s = m && STATE.m2.story[m.id]; if (!s) return [];
+  return s.chat.map((e, li)=>({ e, li })).filter(x=>x.e.t==="chips" && /^rs-/.test(x.e.kind||"") && !x.e.done).map(x=>({ t:"rsq", li:x.li, q:(s.chat[x.li-1]||{}).rsq || { h:"One question", p:"" } }));
+}
+const _rsDeckHTML = m2DeckHTML; m2DeckHTML = function(){
+  let h = _rsDeckHTML.apply(this, arguments); const D = STATE.m2.deck, m = m2DeckM(); if (!D || !m || !h) return h;
+  const its = m2DeckItems(), it = its[Math.min(D.i, its.length-1)];
+  if (it.t==="rsq") { const s = m2Story(m.id), e = s.chat[it.li];
+    const card = `<div class="m2-dk">${m2Mark(m, 24)}<span>${m2Esc(m.name)}</span></div><h2 class="m2-dh" id="m2-dh">${it.q.h}</h2><p class="m2-dp">${it.q.p}</p>
+      <div class="m2-da">${e.opts.map((c,k)=>`<button type="button" class="${k ? "m2-bg" : "m2-bw"}" onclick="rsDeckChip('${m.id}',${it.li},'${c.replace(/'/g,"\\'")}')">${c}</button>`).join("")}</div>`;
+    h = h.replace(/<div class="m2-dc"[\s\S]*$/, `<div class="m2-dc" data-kind="rsq" data-kc="KeyStoryCard" data-kv="kind=rsq">${card}</div></div></div>`); }
+  if (it.t==="open" && rsFresh() && /Update the mission<\/button>/.test(h)) h = h.replace(/onclick="m2DeckGo\(1\)">Update the mission<\/button>/, `onclick="rsThinEdit()">Update the mission</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Not now</button>`);
+  if (it.t==="end" && rsFresh()) { h = h.replace(/<div class="m2-cn"[\s\S]*?<\/div>\s*<div class="m2-dr">/, `<div class="m2-dr">`);
+    h = h.replace(/<div class="m2-dr">[\s\S]*?<\/div><\/div>\s*<div class="m2-da">/, `<div class="m2-dr"><div class="m2-drw">${m2Mark(m, 32)}<span>${rsReadLine(m)}</span><small>Today</small></div></div>\n      <div class="m2-da">`); }
+  return h;
+};
+function rsDeckChip(mid, li, c){ m2Chip(mid, li, c); if (STATE.m2.deck) { STATE.m2.dfocus = true; render(); } }
+/* Home's brief top follows the deck in a fresh world: what is in it, or nothing */
+const _rsBtTop = btTop; btTop = function(){
+  if (!rsFresh()) return _rsBtTop.apply(this, arguments);
+  const day = new Date().toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric" }), lead = `<p class="btp-day">${day}</p><h2 class="btp-h" id="btH">${brGreeting()}</h2>`;
+  const m = m2DeckM(), s = m && m2Story(m.id), ps = s ? s.paths.filter(p=>p.stage==="New pick") : [], q = rsDeckQs().length;
+  if (!m || (!ps.length && !q && STATE.m2.deckDone)) return `<section class="btp" data-kc="KeyBriefTop" data-kv="state=empty" aria-labelledby="btH">${lead}<div class="btp-who"><b>Nothing needs you right now</b></div></section>`;
+  const faces = ps.filter(p=>!p.sq).slice(0, 2).map(p=>DB.people[p.pid]).filter(Boolean);
+  const who = q ? `${q} question${q===1?"":"s"} on ${m.name}` : ps.length ? `${ps.length} new pick${ps.length===1?"":"s"}` : "Nothing needs you right now";
+  return `<section class="btp" data-kc="KeyBriefTop" data-kv="state=${STATE.m2.deckDone ? "done" : "new"};cards=${m2DeckItems().length}" aria-labelledby="btH">${lead}<div class="btp-who">${faces.length && typeof btFaces==="function" ? btFaces(faces) : ""}<b>${who}</b></div>
+    <div class="btp-act"><button type="button" class="btp-go${STATE.m2.deckDone ? " btp-quiet" : ""}" id="brEntry">${STATE.m2.deckDone ? "See your brief" : "Start your brief"}</button></div></section>`;
+};
+
+/* ---- 2. replies: the person's rules decide, the presenter can pick the next one ---- */
+ruleDecide = (function(orig){ return function(pid, topics){ if (!pid || !DB.people[pid]) return "quiet"; return orig.apply(this, arguments); }; })(ruleDecide);
+ruleOwned = function(o){ return o.state==="waiting" && !o.later && !o.rsQuiet && !pathAsks(o).c; };
+function rsSlots(pid){ const p = DB.people[pid], n = /(\d+) slots? left/.exec((p && p.slots)||""); return n ? ` (${(DB.ruleUsed||{})[pid]||0} of ${n[1]} this week)` : ""; }
+function rsNextRoute(o){ if (o.via==="chris") return "sana"; return ["chris","sana","rahul"].find(x=>x!==o.via && x!==o.personId && DB.people[x]); }
+function rsDecide(o){
+  const via = viaOf(o), conn = !!(via && !o.viaAgreed), who = conn ? "via" : "target";
+  const pick = STATE.rsNext && STATE.rsNext!=="auto" ? STATE.rsNext : null;
+  if (pick) { STATE.rsNext = "auto"; if (pick==="yes" && conn) { DB.ruleUsed = DB.ruleUsed||{}; DB.ruleUsed[via.id] = (DB.ruleUsed[via.id]||0)+1; } return { who, d:pick }; }
+  if (o.rsPlan && o.rsPlan.length) return { who, d:o.rsPlan.shift() };
+  if (conn) { const r = ruleDecide(via.id, o.roleTitle ? ["Referrals"] : ["Intros"]); return { who, d: r==="later" ? "capacity" : r }; }
+  return { who, d:ruleDecide(o.personId, ruleTopics(o)) };
+}
+ruleStep = function(o){ o.ruleAt = null; const x = rsDecide(o); rsApply(o, x.who, x.d); };
+/* the story path a reply moves, on the mission page and in its chat */
+function rsLink(o){
+  const S = (STATE.m2||{}).story||{};
+  for (const mid in S) { const p = (S[mid].paths||[]).find(x=>x.opp===o.id); if (p) return { mid, p }; }
+  const s = o.missionId && m2Story(o.missionId); if (!s) return null;
+  let p = s.paths.find(x=>x.id===o.personId && !x.opp);
+  if (!p) { p = m2P(o.personId, o.personId, "Waiting", "", "", "", o.roleTitle ? { name:o.roleTitle, ini:(o.roleCompany||"?").charAt(0), sq:true, to:o.via||o.personId } : {}); s.paths.push(p); }
+  p.opp = o.id; return { mid:o.missionId, p };
+}
+function rsPath(o, stage, sub, act, draft){ const L = rsLink(o); if (!L) return; L.p.stage = stage; L.p.sub = sub; L.p.act = act||""; if (draft!=null) L.p.draft = draft; }
+function rsSay(o, e){ const L = rsLink(o); if (L) m2Say(L.mid, e); }
+function rsQ(o, kind, h, p, opts){
+  o.rsQ = kind; const L = rsLink(o);
+  if (L) { m2Say(L.mid, { t:"bot", x:`${h} ${p}`, rsq:{ h, p } }); m2Say(L.mid, { t:"chips", opts, kind:"rs-"+kind, opp:o.id }); }
+  else pushNote(h, p, opts.slice(0, 2).map(c=>[c, ()=>{ const r = rsAnswer(o.id, kind, c); if (r) toast(r); render(); }]));
+  o.log.push(["Kai", `${h} ${p}`, "now"]);
+}
+function rsCloseQs(o){ const L = rsLink(o); if (!L) return; m2Story(L.mid).chat.forEach(e=>{ if (e.t==="chips" && e.opp===o.id) e.done = true; }); }
+function rsApply(o, who, d){
+  const t = targetOf(o), via = viaOf(o), F = rsF(o), V = via ? firstName(via) : "", tell = typeof ruleTell==="function" ? ruleTell : ()=>{};
+  if (who==="via") {
+    if (d==="yes") { o.viaAgreed = true; lit(o, o.roleTitle ? "Referred" : o.timeline[2][0], "now"); o.log.push([`Kai, for ${V}`, `delivered the ask under their rules${rsSlots(via.id)}.`, "now"]); o.log.push([V, o.roleTitle ? "referred you." : `said yes and forwarded your note to ${F}.`, "now"]);
+      rsPath(o, "Waiting", o.roleTitle ? `${V} referred you. Waiting on the screen` : `${V} forwarded your note. Waiting on ${F}`); rsSay(o, { t:"sys", who:via.id, x:o.roleTitle ? `${V} referred you` : `${V} forwarded your note to ${F}`, time:"Now" });
+      tell(`${V} said yes`, o.roleTitle ? `Referred you for ${o.roleTitle} at ${o.roleCompany}.` : `Forwarded your note to ${F}.`, o.id); return; }
+    if (d==="later") { o.later = true; o.log.push([V, `said later. Kai asks again next week; nothing else is sent.`, "now"]);
+      rsPath(o, "Waiting", `${V} said later. Kai asks again next week`); rsSay(o, { t:"sys", who:via.id, x:`${V} said later. Kai asks again next week`, time:"Now" });
+      tell(`${V} said later`, "Full this week. Kai asks again next week.", o.id); return; }
+    if (d==="capacity") { const n = rsNextRoute(o), N = n ? firstName(DB.people[n]) : "";
+      o.state = "yourmove"; o.phase = "capacity"; o.rsCap = true; o.log.push([`Kai, for ${V}`, `${V} is at capacity this week${rsSlots(via.id)}. Nothing went to ${F}.`, "now"]);
+      rsPath(o, "Next step", `${V} is at capacity this week.${N ? ` Next route: through ${N}` : ""}`, "Decide");
+      rsQ(o, "cap", `${V} is at capacity this week.`, `Nothing went to ${F}.${N ? ` Next route: through ${N}, or wait for ${V} next week.` : ` Wait for ${V} next week.`}`, N ? [`Ask ${N} instead`, `Wait for ${V}`] : [`Wait for ${V}`]);
+      tell(`${V} is at capacity this week`, `Nothing went to ${F}.${N ? ` Next route: through ${N}.` : ""}`, o.id); return; }
+    if (d==="quiet") { o.rsQuiet = true; if (o.gpAsked==null) o.gpAsked = rsDay(); if (!STATE.rsScripted) toast(`Nothing came back from ${V}. It stays Waiting; day 7 brings a nudge.`); return; }
+    o.state = "yourmove"; o.phase = "blocked"; o.log.push([V, "can't take this one. No reason is shown to you.", "now"]);
+    rsPath(o, "Next step", `${V} can't take this one. No reason is shown`, "Decide");
+    rsQ(o, "decl", `${V} can't take this one.`, "No reason is shown. Try another route or close it.", ["Another route", "Close"]);
+    tell(`${V} can't take this one`, "No reason is given. The path is still yours: another route, go direct, or close.", o.id); return;
+  }
+  if (d==="yes") { o.state = "yourmove"; o.phase = "replied"; o.action = `Reply to ${F}`; lit(o, o.roleTitle ? "Screen" : (via ? o.timeline[3][0] : "Replied"), "now");
+    o.replyText = t ? ruleYesText(t, ruleTopics(o)) : `${F}: "Happy to talk."`; o.log.push([F, "replied.", "now"]);
+    const said = o.replyText.replace(/^[^:]+: /, "").replace(/^"|"$/g, "");
+    rsPath(o, "Next step", `Replied: ${said}`, "Reply", `Thanks, ${F}. Thursday afternoon works for me. 3pm?`); rsSay(o, { t:"sys", who:o.personId, x:`${F} replied: ${said}`, time:"Now" });
+    tell(`${F} replied`, said, o.id); return; }
+  if (d==="no") { o.state = "yourmove"; o.phase = "declined"; o.log.push([F, "isn't available right now. That's all you're shown.", "now"]);
+    rsPath(o, "Next step", "Not available right now. That's all you're shown", "Decide");
+    rsQ(o, "decl", `${F} isn't available right now.`, "That's all you're shown. Close it, try another route, or ask again in a month.", ["Close", "Another route", "Ask in a month"]);
+    tell(`${F} isn't available right now`, "No reason is given. Close the path, try another route, or ask again in a month.", o.id); return; }
+  if (d==="later" || d==="capacity") { o.later = true; o.log.push([F, `said later${d==="capacity" ? ": at capacity this week" : ""}. Kai asks again next week; nothing else is sent.`, "now"]);
+    rsPath(o, "Waiting", `Said later${d==="capacity" ? ", at capacity this week" : ""}. Kai asks again next week`); rsSay(o, { t:"sys", who:o.personId, x:`${F} said later. Kai asks again next week`, time:"Now" });
+    tell(`${F} said later`, "No slots left this week. Kai asks again next week.", o.id); return; }
+  if (d==="quiet") { o.rsQuiet = true; if (o.gpAsked==null) o.gpAsked = rsDay(); if (!STATE.rsScripted) toast(`Nothing came back from ${F}. It stays Waiting; day 7 brings a nudge.`); return; }
+  if (d==="notfit") { o.state = "yourmove"; o.phase = "notfit"; o.replyText = `${F}: "Not really my area, sorry."`; o.log.push([F, "replied: not really my area, sorry.", "now"]);
+    rsPath(o, "Next step", "Replied: Not really my area, sorry", "Not a fit?");
+    rsQ(o, "fit", "Not a fit?", `${F} replied: "Not really my area, sorry."`, ["Not a fit", "Ask someone else"]);
+    tell(`${F} replied`, "Not really my area, sorry.", o.id); return; }
+}
+/* what the person answers, from the mission chat, the brief or a push */
+function rsRoute(o){
+  const n = rsNextRoute(o); if (!n) return "No other route yet. The next pass looks for one.";
+  const N = firstName(DB.people[n]), F = rsF(o);
+  o.via = n; o.route = "connector"; o.viaAgreed = false; o.phase = null; o.rsCap = false; o.later = false; o.rsQuiet = false; o.rsQ = null; o.state = "new"; o.gpAsked = null; o.rsD7 = o.rsD14 = false; o.nudgeDraft = false; o.stale = false;
+  o.action = o.next = `Ask ${N} to intro you`; o.log.push(["You", `switched the route to ${N}. Nothing sent yet.`, "now"]);
+  const L = rsLink(o); if (L) { L.p.to = n; }
+  rsPath(o, "New pick", `via ${N}, a new route. Nothing sent yet`, `Ask ${N}`, `Hi ${N}, would you introduce me to ${F}? Happy to send a short note you can forward.`);
+  return `Next route: through ${N}. The note waits for you to send it.`;
+}
+function rsAnswer(id, kind, c){
+  const o = DB.opps.find(x=>x.id===id); if (!o) return ""; const F = rsF(o), V = viaOf(o) ? firstName(viaOf(o)) : F; o.rsQ = null;
+  const close = (sub, line) => { o.state = "done"; o.outcome = "closed"; o.log.push(["You", line, "now"]); rsPath(o, "Set aside", sub); };
+  if (kind==="nudge") { if (c==="Preview") { o.rsNudged = true; setTimeout(()=>cycleExit(o.id, "nudge"), 0); return "Here's the nudge in your voice. It goes when you send it."; }
+    rsPath(o, "Waiting", "Seven days, no reply. You let it be"); return "Okay. Nothing goes. At day 14 I'll ask once whether to keep waiting."; }
+  if (kind==="aside") { if (c==="Set aside") { close(`You set it aside. ${F} sees Closed, no words`, `set it aside after two weeks quiet. ${F} sees: Closed. No words.`); return `Set aside. ${F} sees Closed. No words.`; }
+    if (c==="Keep waiting") { rsPath(o, "Waiting", "Two weeks, no reply. You kept waiting"); return "Okay. If nothing comes by day 21 it closes quietly."; }
+    return rsRoute(o); }
+  if (kind==="decl") { if (c==="Close") { close("Closed. Not available right now", "closed it."); return "Closed. It stays in this chat."; }
+    if (c==="Ask in a month") { o.rsMonth = rsDay() + 30; rsPath(o, "Waiting", "Asks again in a month. Nothing goes before then"); return "Okay. I'll ask again in a month. Nothing goes before then."; }
+    return rsRoute(o); }
+  if (kind==="cap") { if (/^Wait/.test(c)) { o.state = "waiting"; o.phase = null; o.rsCap = false; o.later = true; o.log.push(["You", `waiting for ${V} next week.`, "now"]); rsPath(o, "Waiting", `Waiting for ${V}. Kai asks again next week`); return `Okay. Kai asks ${V} again next week; nothing else is sent.`; }
+    return rsRoute(o); }
+  if (kind==="fit") { if (c==="Not a fit") { o.state = "done"; o.outcome = "nofit"; o.log.push(["You", "logged: not a fit. Kai will show fewer like this.", "now"]); rsPath(o, "Set aside", "Not a fit. Fewer like this from the next pick");
+      rsFewer(o, `${F} wasn't a fit`); toast("Logged. Kai will show fewer like this."); return "Logged. The next pick says so."; }
+    return rsRoute(o); }
+  return "";
+}
+/* "fewer like this" is wired: the next pick on the mission carries the reason in its receipts [5.5, 11.8] */
+function rsFewer(o, why){
+  STATE.rsFewer = { mid:o.missionId, line:`Fewer like this because ${why}` };
+  rsFewerApply();
+}
+function rsFewerApply(){
+  const f = STATE.rsFewer; if (!f) return;
+  const nx = DB.opps.find(x=>x.missionId===f.mid && isNewOf(x) && !(x.receipts||[]).some(r=>r[0]==="Fewer")); if (!nx) return;
+  nx.receipts = [["Fewer", f.line, "your pass"]].concat(nx.receipts||[]); STATE.rsFewer = null;
+  const L = rsLink(nx); if (L && L.p.stage==="New pick") L.p.sub = `${f.line}. ${L.p.sub}`;
+}
+dropOpp = function(id){
+  const o = DB.opps.find(x=>x.id===id); if (!o) return; const prev = o.state, F = rsF(o);
+  o.state = "dropped"; STATE.sheet = null; STATE.metrics.decisions++; rsPath(o, "closed", "");
+  rsFewer(o, `you passed on ${F}`);
+  toast(`Set aside. Fewer like ${F}; the next pick says so.`, ()=>{ o.state = prev; }); render();
+};
+const _rsChip = m2Chip; m2Chip = function(id, li, c){
+  const s = m2Story(id), e = s && s.chat[li];
+  if (!e || !/^rs-/.test(e.kind||"")) return _rsChip.apply(this, arguments);
+  if (e.done) return; e.on = c; e.done = true;
+  const r = e.kind==="rs-done" ? rsDoneAnswer(id, c) : rsAnswer(e.opp, e.kind.slice(3), c);
+  if (r) s.chat.push({ t:"bot", x:r }); m2Ui(id).toEnd = true; render();
+};
+const _rsAct = m2Act; m2Act = function(id, pid){
+  const p = m2Path(id, pid), o = p && p.opp && DB.opps.find(x=>x.id===p.opp);
+  if (o && o.rsQ) { const u = m2Ui(id); u.tab = "chat"; u.dot = false; u.toEnd = true; render(); return; }
+  return _rsAct.apply(this, arguments);
+};
+/* a send from the mission or the brief is a real ask on the clock */
+function rsSent(mid, p, nudge){
+  let o = p.opp && DB.opps.find(x=>x.id===p.opp);
+  if (nudge) { if (o) { o.quiet = true; o.rsNudged = true; o.log.push(["You", "sent the nudge.", "now"]); } return; }
+  if (p.stage!=="Waiting" || (o && o.state==="waiting")) return;
+  if (!o) { const conn = p.to && p.to!==p.pid; o = opp(`s-${mid}-${p.id}`, mid, p.sq ? "role" : "person", p.pid, conn ? "connector" : "direct", [], p.act||"Say hi", "new", conn ? { via:p.to } : {}); DB.opps.push(o); p.opp = o.id; }
+  o.state = "waiting"; lit(o, "Asked", "today"); o.log.push(["You", `sent the note to ${firstName(viaOf(o)||targetOf(o)||{ name:m2Cap(o.personId) })}.`, "today"]); o.gpAsked = rsDay(); o.ruleAt = null;
+  p.sub = "Sent today. No reply yet";
+}
+const _rsDraftSend = m2DraftSend; m2DraftSend = function(id, li){
+  const s = m2Story(id), e = s && s.chat[li], was = e && e.sent, r = _rsDraftSend.apply(this, arguments);
+  if (e && !was && e.sent) { const p = m2Path(id, e.path); if (p) rsSent(id, p, e.nudge); }
+  return r;
+};
+const _rsDeckSend = m2DeckSend; m2DeckSend = function(pid){ const m = m2DeckM(), r = _rsDeckSend.apply(this, arguments); const p = m && m2Path(m.id, pid); if (p) rsSent(m.id, p, false); return r; };
+const _rsSendAsk = sendAsk; sendAsk = function(id){ const r = _rsSendAsk.apply(this, arguments); const o = DB.opps.find(x=>x.id===id); if (o && o.state==="waiting") { o.gpAsked = rsDay(); rsPath(o, "Waiting", "Sent today. No reply yet"); } return r; };
+/* the old path rows say what the rules said */
+const _rsStatus = scStatus; scStatus = function(o){
+  const F = rsF(o), V = viaOf(o) ? firstName(viaOf(o)) : "";
+  if (o.rsExpired) return `Expired. ${F} sees Expired, no words`;
+  if (o.phase==="capacity") { const n = rsNextRoute(o); return `${V} is at capacity this week${n ? `. Next route: through ${firstName(DB.people[n])}` : ""}`; }
+  if (o.phase==="notfit" && o.state==="yourmove") return "Not really my area, sorry";
+  if (o.later && ownerOf(o)==="them") return `${f1(scHolder(o))} said later. Kai asks again next week`;
+  if (o.rsQuiet && ownerOf(o)==="them") { const a = gpWaited(o); return `No reply in ${a} day${a===1?"":"s"}${o.quiet ? ". Nudged once" : a>=7 ? ". Nudge drafted for you" : ". Kai drafts a nudge on day 7"}`; }
+  return _rsStatus.apply(this, arguments).replace("Kai drafts a nudge Friday", "Kai drafts a nudge on day 7").replace("Kai asks again in a month", "Kai asks again next week");
+};
+
+/* ---- 2.3 silence on the clock, every quiet path, timed from its own send ---- */
+function rsClock(news){
+  if (typeof gpStamp==="function") gpStamp();
+  const d = rsDay();
+  DB.opps.forEach(o=>{
+    if (o.rsMonth && d >= o.rsMonth && o.state==="yourmove") { o.rsMonth = null; o.state = "waiting"; o.phase = null; o.gpAsked = d; o.log.push(["Kai", "asked again: a month on.", "now"]); rsPath(o, "Waiting", "Asked again after a month. No reply yet"); }
+    if (!o.rsQuiet || o.state!=="waiting") return;
+    const age = gpWaited(o), F = rsF(o);
+    if (age >= 21 && !o.rsD21) { o.rsD21 = o.rsD14 = o.rsD7 = true; o.state = "done"; o.outcome = "closed"; o.rsExpired = true; o.rsQ = null; rsCloseQs(o);
+      o.log.push(["Kai", `day 21, no decision from ${F}. Expired. ${F} sees: Expired. No words.`, "now"]);
+      rsPath(o, "Set aside", `Expired after 21 days. ${F} sees: Expired. No words`); rsSay(o, { t:"sys", who:o.roleTitle ? "mark" : o.personId, x:`Expired after 21 days. ${F} sees: Expired. No words`, time:"Now" });
+      news.push(`${F}'s path expired after 21 days`); return; }
+    if (age >= 14 && !o.rsD14) { o.rsD14 = o.rsD7 = true; o.stale = true; rsCloseQs(o);
+      rsQ(o, "aside", `Set aside ${F}?`, `Two weeks, no reply, ${o.quiet ? "nudged once" : "no nudge sent"}.`, ["Set aside", "Keep waiting", "Another route"]);
+      rsPath(o, "Next step", `Two weeks, no reply${o.quiet ? ", nudged once" : ""}`, "Decide"); news.push(`${F} has been quiet two weeks`); return; }
+    if (age >= 7 && !o.rsD7) { o.rsD7 = true; o.nudgeDraft = true;
+      rsQ(o, "nudge", `Nudge ${F}?`, "Seven days, no reply. A one-line nudge is drafted in your voice. Nothing goes without you.", ["Preview", "Let it be"]);
+      rsPath(o, "Next step", "Seven days, no reply. A nudge is drafted", "Decide"); news.push(`${F} hasn't answered in seven days`); }
+  });
+}
+/* ---- the week: the seeded month in the three weeks in world, the rules and the clock everywhere ---- */
+function rsNewOpp(id, mid, pid, kind, route, receipts, action, extra){ let o = DB.opps.find(x=>x.id===id); if (!o) { o = opp(id, mid, kind, pid, route, receipts, action, "new", extra); DB.opps.push(o); } return o; }
+function rsScript(wk, news){
+  const O = id => DB.opps.find(o=>o.id===id), m1 = DB.missions.find(m=>m.id==="m1" && m.type==="Looking"), d = rsDay();
+  const ask = (o, ago, line) => { if (!o || !isNewOf(o)) return false; o.state = "waiting"; lit(o, "Asked", `-${ago}d`); o.log.push(["You", line, `-${ago}d`]); o.gpAsked = d - ago; o.ruleAt = null; rsPath(o, "Waiting", `Asked ${ago} days ago. No reply yet`); return true; };
+  if (wk===2) {
+    const o1 = O("o1"); if (ask(o1, 6, "said hi to Rahul")) { ruleStep(o1); if (o1.phase==="replied") news.push("Rahul replied"); }
+    const o3 = O("o3"); if (ask(o3, 8, "asked Sana to refer you")) ruleStep(o3);
+    /* Ravi via Daniel on the role mission (its story carries the question): three forwards for other members already this week, and Daniel's rules count them */
+    const o6 = O("o6"); if (o6 && STATE.persona==="priya" && ask(o6, 5, `asked ${firstName(DB.people.chris)} to intro you to Ravi`)) {
+      DB.ruleUsed = DB.ruleUsed||{}; DB.ruleUsed.chris = Math.max(DB.ruleUsed.chris||0, 3); ruleStep(o6); if (o6.rsCap) news.push(`${firstName(DB.people.chris)} is at capacity this week`); }
+    if (m1 && DB.people.kate) { const k = rsNewOpp("o9", m1.id, "kate", "person", "direct", [["Shared","Both in Michigan Product Alumni","michigan"], ["Role","Duolingo is hiring senior PMs","#m-jobs, Sep 10"]], "Ask Kate about Duolingo");
+      if (ask(k, 4, "asked Kate about the senior PM role at Duolingo")) { ruleStep(k); if (k.phase==="declined") news.push("Kate isn't available right now"); } }
+  }
+  if (wk===3) {
+    const o1 = O("o1"); if (o1 && o1.phase==="replied") { o1.state = "conversation"; o1.met = true; o1.phase = null; lit(o1, "In conversation", "-4d"); o1.log.push(["You", "met Rahul Thursday", "-4d"]); o1.journalDue = true;
+      rsPath(o1, "In conversation", "Met Thursday. Offered to refer you for the role"); rsSay(o1, { t:"sys", who:"rahul", x:"You met Rahul on Thursday", time:"Thu" }); news.push("You met Rahul"); }
+    if (m1 && DB.people.jordan) { const j = rsNewOpp("o10", m1.id, "jordan", "person", "direct", [["Shared","Both in Xoogler","xoogler"], ["Intro","Daniel introduced you","#introductions"]], "Ask Jordan for 20 minutes");
+      if (ask(j, 2, "sent Jordan the deck and asked for 20 minutes")) { DB.ruleUsed = DB.ruleUsed||{}; DB.ruleUsed.jordan = Math.max(DB.ruleUsed.jordan||0, 1); ruleStep(j); if (j.later) news.push("Jordan said later"); } }
+    const o5 = O("o5"); if (ask(o5, 5, "said hi to Tom")) { ruleStep(o5); if (o5.phase==="notfit") news.push("Tom replied: not a fit"); }
+  }
+  if (wk===4) {
+    const o1 = O("o1"); if (o1 && o1.state==="conversation") { o1.state = "done"; o1.outcome = "good"; o1.journalDue = false; lit(o1, "Resolved", "-3d"); o1.log.push(["You", "logged: went well. Rahul is referring you.", "-3d"]);
+      rsPath(o1, "Went well", "Referring you for the role. Logged"); rsSay(o1, { t:"sys", who:"rahul", x:"Rahul's referral went well", time:"Mon" }); news.push("Rahul's referral went well"); }
+  }
+}
+function rsWeek(wk){
+  const news = []; STATE.rsScripted = true;
+  try {
+    if (!STATE.dayOne && !STATE.rsThin) rsScript(wk, news);
+    DB.opps.filter(o=>ruleOwned(o)).forEach(o=>{ const F = rsF(o); ruleStep(o); if (o.phase==="replied") news.push(`${F} replied`); else if (o.later) news.push(`${F} said later`); else if (o.phase==="declined") news.push(`${F} isn't available right now`); else if (o.rsCap) news.push(`${firstName(viaOf(o))} is at capacity this week`); else if (o.phase==="notfit") news.push(`${F} replied: not a fit`); });
+    rsClock(news);
+  } finally { STATE.rsScripted = false; }
+  STATE.push = null; go("home");
+  if (news.length) pushNote("This week", `${news.slice(0, 3).join(". ")}.${news.length > 3 ? ` ${news.length-3} more on your missions.` : ""}`, [["Open", ()=>go(DB.missions.some(m=>m.id==="m1") ? "mission:m1" : "home")]]);
+  else toast(STATE.rsThin || !DB.opps.length ? "A week passed. No paths yet, so nothing came back." : "A week passed. Nothing came back.");
+}
+/* Simulate: nothing to play without paths; every simulate is two days on the clock */
+const _rsSim = simulate; simulate = function(){
+  if (STATE.member && (STATE.rsThin || !DB.opps.some(o=>o.state!=="dropped" && o.state!=="done"))) { toast("Nothing to simulate. No paths yet."); return; }
+  const r = _rsSim.apply(this, arguments);
+  if (STATE.member) { const news = []; rsClock(news); if (news.length) { render(); toast(news[news.length-1]+"."); } }
+  return r;
+};
+
+/* ---- 3. the done condition proposes only on a match [M5, 8.6]; Not yet holds until the next match [18.4] ---- */
+function rsDoneCount(m){
+  const os = DB.opps.filter(o=>o.missionId===m.id), s = STATE.m2 && STATE.m2.story[m.id];
+  return os.reduce((n, o)=>n + (o.log||[]).filter(l=>/^You/.test(l[0]) && RS_DONE.test(l[1])).length + (o.roleTitle && o.outcome==="good" && (o.timeline||[]).some(t=>t[0]==="Decision" && t[2]) ? 1 : 0), 0)
+    + (m.mlog||[]).filter(l=>RS_DONE.test(l[1]||"")).length + (s ? s.chat.filter(e=>e.t==="me" && RS_DONE.test(e.x||"")).length : 0);
+}
+function rsDoneMet(m){
+  if (!m || m.standing || m.status!=="active") return false;
+  const c = STATE.m2 && STATE.m2.cfg[m.id];
+  if (c && c.kind==="Standing") return false;
+  if ((c && c.kind==="Event") || m.type==="Hosting") return !!(c && c.month && m2Done(m.id, c) >= c.month && !(STATE.rsDoneSeen||{})[m.id]);
+  return rsDoneCount(m) > ((STATE.rsDoneSeen||{})[m.id]||0);
+}
+function rsPropose(m){
+  STATE.rsDoneSeen = STATE.rsDoneSeen||{}; STATE.rsDoneSeen[m.id] = rsDoneCount(m) || 1; STATE.closeProposed = m.id;
+  const c = STATE.m2.cfg[m.id], ev = (c && c.kind==="Event") || m.type==="Hosting";
+  const h = ev ? `Looks done: ${c ? c.month : "everyone"} said yes.` : "Looks done: you logged an offer.", p = "Close it and log what came of it? Reopen any time.";
+  const s = STATE.m2.story[m.id];
+  if (s) { s.chat.forEach(e=>{ if (e.kind==="rs-done") e.done = true; }); m2Say(m.id, { t:"bot", x:`${h} ${p}`, rsq:{ h, p } }); m2Say(m.id, { t:"chips", opts:["Close it", "Not yet"], kind:"rs-done" }); }
+  pushNote("Looks done", `${h} ${p}`, [["Close it", ()=>openSheet("close", m.id)], ["Not yet", ()=>{ rsDoneAnswer(m.id, "Not yet"); render(); }]]);
+}
+function rsDoneAnswer(mid, c){
+  if (c==="Close it") { setTimeout(()=>openSheet("close", mid), 0); return ""; }
+  STATE.closeProposed = null; const s = STATE.m2.story[mid]; if (s) s.chat.forEach(e=>{ if (e.kind==="rs-done") e.done = true; });
+  return "Okay, it stays open. I'll only ask again if something else matches.";
+}
+const _rsMtSend = mtSend; mtSend = function(id){
+  const r = _rsMtSend.apply(this, arguments), m = m2Mis(id);
+  if (m && rsDoneMet(m)) rsPropose(m);
+  return r;
+};
+
+/* ---- Kai-suggested profile updates: only from sources this world has ---- */
+const RS_UPD0 = typeof P2_UPD!=="undefined" ? P2_UPD.slice() : [];
+const RS_UPD_LI = { id:"li", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Senior PM, Vertex AI · Google Cloud", src:"From your LinkedIn headline", why:"from your LinkedIn headline", apply:(o,v)=>{ o.work[0][1] = v.split(" · ")[0].trim(); } };
+function rsProfileUpd(){
+  if (typeof P2_UPD==="undefined") return;
+  const call = STATE.intakeDone, hasM = n => DB.missions.some(m=>m.name===n && m.status!=="closed"), journal = (DB.episodes||[]).some(e=>e.t==="journal") || DB.opps.some(o=>o.journal);
+  const want = STATE.dayOne
+    ? [call ? Object.assign({}, RS_UPD0.find(u=>u.id==="now"), { src:"From your Kai call · today" }) : null, STATE.signinWith==="linkedin" ? RS_UPD_LI : null]
+    : RS_UPD0.map(u=>u.id==="role" ? null : u.id==="now" ? (call ? u : null) : u.id==="need" ? (hasM("Hire two PMs") ? u : null) : u.id==="help" ? (journal ? u : null) : u);
+  P2_UPD.splice(0, P2_UPD.length, ...want.filter(Boolean));
+}
+
+/* ---- 5.1 call credits and plans are cut (event tickets and paid membership stay) ---- */
+const RS_KY_OFF = /^(kygift|kyout|kyplan|kyplans|kylimit|kywelcome|kycall|kyup)/;
+const _rsOpenSheet = openSheet; openSheet = function(type, id){ if (typeof type==="string" && RS_KY_OFF.test(type)) return; return _rsOpenSheet.apply(this, arguments); };
+const _rsGo = go; go = function(s){ if (typeof s==="string" && /^you:plans?$/.test(s)) s = "you"; return _rsGo.apply(this, [s].concat([].slice.call(arguments, 1))); };
+function rsNoPlan(root){
+  root.querySelectorAll(".ky-wk, .ky-soft, .ky-softb, [data-kc='KeyUpsellRow'], [data-kc='KeyCallNote'], [data-kc='KeyPlanCard'], [onclick*=\"you:plan\"]").forEach(e=>e.remove());
+  root.querySelectorAll(".view .body *").forEach(e=>{ if (e.children.length < 4 && /\bKai calls left\b|of Kai calls\b/.test(e.textContent)) { const c = e.closest(".hg-list > *, .card, .vcard, section") || e; c.remove(); } });
+}
+
+/* ---- 5.2 slide parked: destructive actions keep a second tap ---- */
+const RS_TWO = [["button[data-evcancelok]", ()=>"Tap again to cancel event"], ["button[data-cleave]", b=>"Tap again to leave " + (((b.closest(".sheet,[class*=sheet]")||document).querySelector("h2")||{ textContent:"" }).textContent.replace(/^Leave |\?$/g, "") || "")]];
+let RS_ARM = null;
+document.addEventListener("click", e=>{
+  if (typeof KEY_SLIDE!=="undefined" && KEY_SLIDE) return;
+  for (const [sel, lab] of RS_TWO) { const b = e.target.closest && e.target.closest(sel); if (!b) continue;
+    const key = sel + "|" + (b.getAttribute(sel.match(/data-[\w-]+/)[0])||"");
+    if (RS_ARM && RS_ARM.key===key && Date.now() - RS_ARM.t < 3000) { RS_ARM = null; return; }
+    e.preventDefault(); e.stopImmediatePropagation(); RS_ARM = { key, t:Date.now(), label:lab(b).trim() };
+    b.dataset.rsArmed = "1"; b.textContent = RS_ARM.label; b.setAttribute("aria-live", "polite");
+    setTimeout(()=>{ if (RS_ARM && RS_ARM.key===key && Date.now() - RS_ARM.t >= 2900) { RS_ARM = null; render(); } }, 3000);
+    return; }
+}, true);
+
+/* ---- Controls: Day one, Thin family, Next reply; the plan groups go ---- */
+function rsControls(){
+  const bar = document.querySelector(".stagebar"); if (!bar) return;
+  const sk = bar.querySelector('button[onclick="jump(\'home\')"]');
+  if (sk && !document.getElementById("rsDayBtn")) sk.insertAdjacentHTML("afterend", `<button id="rsDayBtn" onclick="rsDayOne()">Day one</button>`);
+  const grp = sk && sk.closest(".sgrp");
+  if (grp && !document.getElementById("rsThinBtn")) grp.insertAdjacentHTML("beforeend", `<button id="rsThinBtn" onclick="rsThinToggle()" aria-pressed="false">Thin family: off</button>`);
+  const tb = document.getElementById("rsThinBtn"); if (tb) { tb.textContent = `Thin family: ${STATE.rsThin ? "on" : "off"}`; tb.setAttribute("aria-pressed", String(!!STATE.rsThin)); tb.classList.toggle("on", !!STATE.rsThin); }
+  const sim = document.getElementById("simBtn");
+  if (sim && !document.getElementById("rsNext")) sim.insertAdjacentHTML("afterend", `<label class="rs-nx" for="rsNext"><span>Next reply</span><select id="rsNext" onchange="STATE.rsNext=this.value">${RS_PICKS.map(v=>`<option value="${v}">${RS_PICK_L[v]}</option>`).join("")}</select></label>`);
+  const sel = document.getElementById("rsNext"); if (sel && sel.value!==(STATE.rsNext||"auto")) sel.value = STATE.rsNext||"auto";
+  bar.querySelectorAll(".ky-sgrp").forEach(g=>{ const l = g.querySelector(".sgl"); if (l && /Key plan/.test(l.textContent)) g.remove(); else g.querySelectorAll('[data-kyjump="1"],[data-kyjump="2"],[data-kyjump="3"],[data-kyjump="4"]').forEach(b=>b.remove()); });
+}
+
+/* ---- wiring: last render wrapper ---- */
+const _rsRender = render; render = function(){
+  if (STATE.dayOne) rsScrub();
+  rsProfileUpd(); rsFewerApply();
+  /* a proposal set elsewhere (the log sheet, End mission) is asked in the mission's chat too */
+  const cp = STATE.closeProposed, cs = cp && STATE.m2 && STATE.m2.story[cp];
+  if (cs && STATE.rsPropShown!==cp && !cs.chat.some(e=>e.kind==="rs-done" && !e.done)) { STATE.rsPropShown = cp; const m = m2Mis(cp);
+    if (m) { const p = "Close it and log what came of it? Reopen any time."; cs.chat.push({ t:"bot", x:`${rsDoneCount(m) ? "Looks done: you logged an offer." : "Close this mission?"} ${p}`, rsq:{ h:"Close this mission?", p } }, { t:"chips", opts:["Close it", "Not yet"], kind:"rs-done" }); } }
+  if (!cp) STATE.rsPropShown = null;
+  const r = _rsRender.apply(this, arguments);
+  if (typeof phone!=="undefined" && phone) {
+    rsNoPlan(phone);
+    if (RS_ARM) { const [sel] = RS_TWO.find(x=>RS_ARM.key.startsWith(x[0]))||[]; const b = sel && [...phone.querySelectorAll(sel)].find(x=>RS_ARM.key===sel+"|"+(x.getAttribute(sel.match(/data-[\w-]+/)[0])||"")); if (b) { b.textContent = RS_ARM.label; b.dataset.rsArmed = "1"; } }
+  }
+  rsControls();
+  return r;
+};
+/* the Home card says when a mission has nothing yet */
+const _rsSignal = hcSignal; hcSignal = function(m, ps){
+  if (m.status!=="paused" && !ps.length && !m.evKind && !m.series && m.type!=="Hosting") return { sum:"No paths yet. Kai is looking. Next pass Friday.", fs:[] };
+  return _rsSignal.apply(this, arguments);
+};
+rsControls();
+
+/* audit n26 #4: on day one the canned "who's hiring" answer claims only the posts, no meetings */
+const RS_HIRE = (typeof KAI_COMPOSER!=="undefined" ? KAI_COMPOSER : []).find(x=>/^Who's hiring PMs/.test(x.t||""));
+const RS_HIRE_DEMO = RS_HIRE && { r:RS_HIRE.r, mini:RS_HIRE.mini };
+const RS_HIRE_D1 = { r:"Two roles in #jobs this month: Rahul's team at Anthropic, posted Sep 9, and Sana's at Perplexity, posted Sep 12. Both are already in your role mission.",
+  mini:["Rahul Mehta, Anthropic. Posted a senior PM role in #jobs, Sep 9.", "Sana Iqbal, Perplexity. Posted Senior PM, agents in #jobs, Sep 12."] };
+const _rsKaiAsk = kaiAsk; kaiAsk = function(){
+  if (RS_HIRE) Object.assign(RS_HIRE, STATE.dayOne ? RS_HIRE_D1 : RS_HIRE_DEMO);
+  return _rsKaiAsk.apply(this, arguments);
+};
+
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-66b4";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
