@@ -25187,6 +25187,25 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
 #phone .kh-glass.kh-tint::after { background:var(--kh-bgi, var(--kh-bg)); }
 #phone [data-kh] { overflow-anchor:none; }
 
+/* 5 Oct 23:26 (Apoorv, iPhone): no glow under the status bar (translucent-header.js khTint draws a solid bar in the header's colour) */
+#kh-sbar { display:none; }
+@media (max-width:500px) { #kh-sbar:not([hidden]) { display:block; position:fixed; top:0; left:0; right:0; height:env(safe-area-inset-top, 0px); z-index:7; pointer-events:none; } }
+/* the mission header is clear while the band fills it, the band's own colour once it has scrolled away */
+#phone .kh-glass.kh-tint:not(.kh-solid)::after { background:transparent; }
+#phone .kh-glass.kh-tint.kh-solid::after { background:var(--kh-bg); }
+/* family tabs: a docked Channels / People / Events / Posts bar keeps the header's frosted glass behind its tab row (the row's own
+   near-opaque fill is dropped, as on Overview); the search field and chips are controls and keep theirs */
+#phone .kh-glass > .kh-cl :is(.cm-tabs, .cm-bar) { background:transparent !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; box-shadow:none !important; }
+/* Log | Chat: the same underline tabs as every other tab row in the app (family tabs, Events), not a segmented control */
+#phone .ml-tabs { padding:4px 16px 0 !important; background:transparent; }
+#phone .ml-tabs .ml-seg { height:auto; padding:0; gap:var(--space-absolute-20, 20px); border-radius:0; background:none; border-bottom:var(--border-width-hairline, 1px) solid var(--border-default); }
+#phone .ml-tabs .ml-seg > button { flex:0 0 auto; min-height:44px; padding:var(--space-absolute-10, 10px) 0 var(--space-absolute-12, 12px); border-radius:0; background:none; box-shadow:none; font:600 14px/1.2 Manrope, system-ui, sans-serif; color:var(--text-tertiary); border-bottom:var(--border-width-focus, 2px) solid transparent; margin-bottom:calc(-1 * var(--border-width-hairline, 1px)); }
+#phone .ml-tabs .ml-seg > button.on { background:none; box-shadow:none; color:var(--text-primary); border-bottom-color:var(--text-primary); }
+#phone .kh-glass.kh-tint > .kh-cl .ml-seg { border-bottom-color:rgb(255 255 255 / .28); }
+#phone .kh-glass.kh-tint > .kh-cl .ml-seg > button { color:rgb(255 255 255 / .8); }
+#phone .kh-glass.kh-tint > .kh-cl .ml-seg > button.on { color:#fff; border-bottom-color:#fff; }
+#phone .kh-glass.kh-tint > .kh-cl .ml-seg > button > .ml-n { color:#fff; }
+
 </style>
 <script>
 /* Translucent header (Apoorv 2 Oct 01:47), with translucent-header.css. The header (plus any filter row under it) stays where it is;
@@ -25284,6 +25303,14 @@ function khStick(h, sc){
   });
   h.querySelectorAll(":scope > .kh-cl").forEach(c => { if (!live.has(c)) c.remove(); });
   h.classList.toggle("kh-has-stuck", !!sb);
+  /* 5 Oct 23:26 (Apoorv: "the header for missions splits on load"): while the mission's band still fills the header area the header
+     itself is clear, so band and header read as one plate; once the band has scrolled past, the header takes the plate's colour. */
+  if (h.classList.contains("kh-tint")) {
+    const bd = sc.querySelector(":scope > .mh-band"); h.classList.toggle("kh-solid", !!sb || !bd || bd.getBoundingClientRect().bottom <= hr.bottom + 0.5);
+    /* the status bar shows the band's own gradient where the band sits under it, so there is no line at the status bar's edge */
+    const s = document.getElementById("kh-sbar");
+    if (s) { if (bd && !h.classList.contains("kh-solid")) { s.style.backgroundImage = h.style.getPropertyValue("--kh-bgi"); s.style.backgroundRepeat = "no-repeat"; s.style.backgroundSize = `100% ${bd.offsetHeight}px`; s.style.backgroundPosition = `0 ${Math.round(bd.getBoundingClientRect().top - top)}px`; } else s.style.backgroundImage = "none"; }
+  }
   if (sb) { h.style.setProperty("--kh-sb", `${sb}px`); h.style.setProperty("--kh-sext", `${sb - Math.round(hr.bottom - top)}px`); }
 }
 /* 5 Oct 18:05 (Apoorv): the status bar takes the colour of what is under it. Safari tints its bars from the page background (and
@@ -25292,11 +25319,20 @@ function khTint(){
   if (!matchMedia("(max-width:500px)").matches) return;
   const ph = document.getElementById("phone"); if (!ph) return;
   const h = ph.querySelector(".kh-glass"); let c = h ? h.style.getPropertyValue("--kh-bg").trim() : "";
-  if (!c) { const r = ph.getBoundingClientRect(), el = document.elementFromPoint(r.left + r.width / 2, r.top + 2); c = el ? khBg(el) : ""; }
+  let paint = !!c;
+  if (!c) { const r = ph.getBoundingClientRect(), el = document.elementFromPoint(r.left + r.width / 2, r.top + 2); c = el ? khBg(el) : "";
+    paint = !!c; for (let e = el; e && e !== document.documentElement; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.backgroundImage !== "none" || e.tagName === "IMG" || e.tagName === "VIDEO") { paint = false; break; } const k = cs.backgroundColor; if (k !== "transparent" && !/,\s*0\)$/.test(k)) break; } }
+  let sb = document.getElementById("kh-sbar"); if (!sb) { sb = document.createElement("div"); sb.id = "kh-sbar"; sb.setAttribute("aria-hidden", "true"); document.body.append(sb); }
+  /* no solid colour at the top (an event's gradient canvas, a photo): no bar, the screen runs under the status bar as before */
+  sb.hidden = !paint; if (!h || !h.classList.contains("kh-tint")) sb.style.backgroundImage = "none";
   if (!c) return;
   let m = document.querySelector('meta[name="theme-color"]'); if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.append(m); }
   if (m.content !== c) m.content = c;
   document.documentElement.style.backgroundColor = c; document.body.style.backgroundColor = c;
+  /* 5 Oct 23:26 (Apoorv: "a weird glow/gradient from the status header onto the app header"): Safari on iOS 26 draws a soft fade under
+     the status bar unless a fixed bar sits at the top edge, and takes that bar's colour. A solid bar exactly the safe area's height, in
+     the header's colour, so the status area and the header read as one surface with a clean edge. */
+  if (sb.style.backgroundColor !== c) sb.style.backgroundColor = c;
 }
 const _khRender = render;
 render = function(){ const r = _khRender.apply(this, arguments); khGlass(); khTint(); requestAnimationFrame(() => { khGlass(); khTint(); }); return r; };
@@ -26720,8 +26756,76 @@ const _miRender = render; render = function(){
 };
 
 </script>
+<style>
+/* 5 Oct 23:26 (Apoorv): People tab member card, 2 per row everywhere (member-cards.js) */
+#phone .mc-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; padding:4px 0 8px; }
+#phone .mc { display:flex; flex-direction:column; align-items:center; min-width:0; padding:16px 12px 12px; border-radius:var(--radius-absolute-20, 20px); background:var(--bg-surface-default, #fff); box-shadow:var(--elevation-1); text-align:center; cursor:pointer; }
+#phone .mc-ph { width:88px; height:88px; flex:0 0 auto; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--bg-fill-default); background-size:cover; background-position:center; font:700 24px/1 Manrope, system-ui, sans-serif; color:var(--text-secondary); overflow:hidden; }
+#phone .mc-ph.ph-face { color:transparent; }
+#phone .mc-n { display:block; max-width:100%; margin-top:12px; font:700 15px/1.3 Manrope, system-ui, sans-serif; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .mc-r { display:block; max-width:100%; margin-top:2px; font:500 13px/1.35 Manrope, system-ui, sans-serif; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .mc-y { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; max-width:100%; min-height:34px; margin-top:6px; font:500 12px/17px Manrope, system-ui, sans-serif; color:var(--text-tertiary); }
+#phone .mc-k { display:inline-flex; width:14px; height:14px; margin-right:4px; vertical-align:-2px; color:var(--text-primary); }
+#phone .mc-k svg { width:14px; height:14px; }
+#phone .mc-btn, #phone .mc-done { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; margin-top:auto; border-radius:12px; font:700 14px/1 Manrope, system-ui, sans-serif; }
+#phone .mc-y + :is(.mc-btn, .mc-done) { margin-top:12px; }
+#phone .mc-btn { border:0; background:var(--bg-inverse, #12161A); color:var(--text-on-inverse, #fff); cursor:pointer; }
+#phone .mc-btn.sec { background:transparent; color:var(--text-primary); box-shadow:inset 0 0 0 1px var(--border-strong, var(--border-default)); }
+#phone .mc-btn:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .mc-done { color:var(--text-secondary); }
+#phone .mc-done svg { width:14px; height:14px; }
+#phone .mc-all { display:block; margin:4px 0 0 auto; min-height:44px; padding:0 4px; border:0; background:none; font:600 14px Manrope, system-ui, sans-serif; color:var(--text-secondary); cursor:pointer; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-5d2c";
+/* 5 Oct 23:26 (Apoorv: "the grid members cards are unfinished and untidy, why are they in 3 row grids? Make these cards consistent
+   across, and have them as 2 row grids"; spec community-audit/rework-1005/SPEC-member-cards-and-tabs.md). People tab: one member card
+   (KeyPersonTile type=card) for every tier and for Joined this week, 2 per row at every phone width. Circle photo, name, role, one
+   reason, one action. List view keeps its rows. */
+function mcMission(){
+  const m = (DB.missions||[]).find(x=>x.status==="active" && (typeof miOwn!=="function" || miOwn(x)));
+  return m ? m.name.replace(/\s+role\b.*$|\s+at\s.*$|,.*$/i, "") : "";
+}
+function mcVia(p){
+  const o = DB.opps.find(x=>x.personId===p.id && x.via && x.via!==p.id), v = o && DB.people[o.via];
+  if (v) return v;
+  const w = (typeof C_PICK_WHY!=="undefined" && C_PICK_WHY[p.id] || [""])[0].match(/^(\w+) vouched/);
+  return w ? Object.values(DB.people).find(x=>x.name.split(" ")[0]===w[1]) : null;
+}
+function mcCard(p, f){
+  const tier = cTier(p), pick = cPicks(f, cFamPeople(f)).includes(p), via = tier===1 ? mcVia(p) : null, met = p.shared.find(x=>/^Met\b/.test(x));
+  const ms = mcMission(), first = s => s.charAt(0).toLowerCase()+s.slice(1);
+  const why = pick ? `<span class="mc-k">${C_SPARK}</span>${ms ? `For your ${ms} mission` : "Kai's pick for you"}`
+    : cIsNew(p) ? "New this week"
+    : met ? `You've ${first(met).replace(/^met/, "met")}`
+    : tier===0 ? p.shared.find(x=>!x.includes(f.name)) || ""
+    : via ? `Through ${via.name.split(" ")[0]}`
+    : p.shared.find(x=>!x.includes(f.name)) || C_CITY[p.id] || "";
+  const greeted = (STATE.cGreeted||{})[p.id];
+  const act = greeted ? `<span class="mc-done">${C_CHECK_SVG}Greeted</span>`
+    : tier===0 && !cIsNew(p) ? `<button class="mc-btn sec" onclick="event.stopPropagation();ncPick('dm','${p.id}')">Message</button>`
+    : via ? `<button class="mc-btn" onclick="event.stopPropagation();ncPick('dm','${via.id}');toast('Ask ${via.name.split(" ")[0]} to introduce you to ${p.name.split(" ")[0]}.')">Ask ${via.name.split(" ")[0]}</button>`
+    : `<button class="mc-btn" data-cgreet="${p.id}">Say hi</button>`;
+  return `<div class="mc" data-profile="${p.id}" data-kc="KeyPersonTile" data-kv="type=card"><div class="mc-ph" data-kp="${p.id}" role="img" aria-label="${p.name}">${p.initials}</div><b class="mc-n">${p.name}</b><span class="mc-r">${p.title} · ${p.company.split(",")[0]}</span><span class="mc-y">${why}</span>${act}</div>`;
+}
+const _mcPeople = sPeople;
+sPeople = function(){
+  const html = _mcPeople.apply(this, arguments);
+  if (!STATE.member) return html;
+  const f = cF(), t = document.createElement("template"); t.innerHTML = html;
+  if (STATE.peopleView==="grid") t.content.querySelectorAll(".cm-grid").forEach(g => { g.className = "mc-grid"; g.innerHTML = [...g.querySelectorAll(".cm-cell")].map(c => DB.people[c.dataset.profile] ? mcCard(DB.people[c.dataset.profile], f) : "").join(""); });
+  t.content.querySelectorAll(".cm-newm .kp-rail").forEach(r => { const ids = [...r.querySelectorAll("[data-profile]")].map(c=>c.dataset.profile);
+    r.outerHTML = `<div class="mc-grid">${ids.slice(0,2).map(id=>mcCard(DB.people[id], f)).join("")}</div>${ids.length>2?`<button class="mc-all" data-cpf="New">See all ${ids.length}</button>`:""}`; });
+  return t.innerHTML;
+};
+/* the photo layer paints avatars up to 80px; the card's 88px circle asks for its own size */
+new MutationObserver(() => { if (typeof cHiFi!=="function" || !cHiFi() || typeof phPaint!=="function" || typeof PH_FACE==="undefined") return;
+  document.querySelectorAll("#phone .mc-ph:not(.ph-face)").forEach(el => { const id = PH_FACE[el.dataset.kp]; if (id) phPaint(el, phUrl(id, 240, 240), "ph-face"); });
+}).observe(document.getElementById("phone"), { childList:true, subtree:true });
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-1d29";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
