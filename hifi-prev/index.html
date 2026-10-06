@@ -11892,7 +11892,7 @@ function oPage(){
     <div class="sl">This week<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${oTotal()}</span></div>
     <div class="rows">${oJobs().map(jobRow).join("")}</div>
     <div class="sl">This month</div>
-    <div class="rows"><div class="row first" onclick="go('manage:insights')">${av("K")}<div class="m"><div class="a">September for Xoogler so far</div><div class="b">${O_MONTH.why}</div></div><span class="chev">›</span></div></div>
+    <div class="rows"><div class="row first" onclick="go('manage:insights')">${av("K")}<div class="m"><div class="a">September for Xoogler</div><div class="b">${O_MONTH.why}</div></div><span class="chev">›</span></div></div>
     <div class="sl">Brief</div>
     <div class="row first" data-kaibrief="morg"><div class="m"><div class="a plain">${m?m.brief:""}</div><div class="b">Standing, no end date · Kai sends nothing · eight asks a week is your cap</div></div><span class="chev">›</span></div>
     <div class="sl">Log<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${s.log.length}</span></div>
@@ -15575,7 +15575,7 @@ function evCta(e, live, locked){
 
 const C_DECLINE = [["fit","Not the right fit for this family right now"],["full","The family is full for this round"],["info","We couldn't confirm your background"],["timing","Try again when you've been in the field longer"],["none","No reason given"]];
 const cF = () => fam();
-const cOrg = () => !!STATE.asOrganizer;
+const cOrg = () => !!STATE.asOrganizer || STATE.persona==="chris";
 const cIni = n => n.split(" ").map(x=>x[0]).join("").slice(0,2);
 const cPl = (n, w) => `${n} ${w}${n===1?"":"s"}`;
 const C_INVITE_SVG = LI("user-plus", 16);
@@ -16287,7 +16287,7 @@ function cInsights(){
   const card = (title, body, src, meta) => `<div class="cm-sec cm-ins">${cHead(title)}${meta?`<div class="cm-meta cm-cmeta">${meta}</div>`:''}${body}${src?cSrc(src):''}</div>`;
   const use = ["Messages","Channels","Events","People","Kai"].map((l,i)=>[l,R.use[i]]);
   const fun = ["Invited","Applied","Approved","Sent a first message"].map((l,i)=>[l,R.fun[i]]);
-  const coh = [["June",58],["July",61],["August",47],["September",52,"so far"]];
+  const coh = [["June",58],["July",61],["August",47],["September",52]];
   const chans = [["introductions",86,"+14"],["jobs",64,"+3"],["sf-this-week",51,"+22"],["general",38,"−5"],["cofounders",22,"−9"]];
   const evs = [["Summer picnic","Jun",60,41],["Product teardown","Jul",28,19],["AI PM roundtable","Jul",20,15],["Xoogler dinner","Aug",42,34]];
   /* Q5 (Apoorv 08:00): organizers see who connects others, as counts only, never who they messaged; by name, so it never reads as a ranking */
@@ -26760,29 +26760,70 @@ const _miRender = render; render = function(){
 <style>
 /* 5 Oct 23:26 (Apoorv): People tab member card, 2 per row everywhere (member-cards.js) */
 #phone .mc-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; padding:4px 0 8px; }
-#phone .mc { display:flex; flex-direction:column; align-items:center; min-width:0; padding:16px 12px 12px; border-radius:var(--radius-absolute-20, 20px); background:var(--bg-surface-default, #fff); box-shadow:var(--elevation-1); text-align:center; cursor:pointer; }
+#phone .mc { display:flex; flex-direction:column; align-items:center; min-width:0; padding:16px 12px 12px; border-radius:var(--radius-absolute-20, 20px); background:var(--bg-surface-default); box-shadow:var(--elevation-1); text-align:center; cursor:pointer; }
 #phone .mc-ph { width:88px; height:88px; flex:0 0 auto; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--bg-fill-default); background-size:cover; background-position:center; font:700 24px/1 Manrope, system-ui, sans-serif; color:var(--text-secondary); overflow:hidden; }
 #phone .mc-ph.ph-face { color:transparent; }
 #phone .mc-n { display:block; max-width:100%; margin-top:12px; font:700 15px/1.3 Manrope, system-ui, sans-serif; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 #phone .mc-r { display:block; max-width:100%; margin-top:2px; font:500 13px/1.35 Manrope, system-ui, sans-serif; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 #phone .mc-y { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; max-width:100%; min-height:34px; margin-top:6px; font:500 12px/17px Manrope, system-ui, sans-serif; color:var(--text-tertiary); }
-#phone .mc-k { display:inline-flex; width:14px; height:14px; margin-right:4px; vertical-align:-2px; color:var(--text-primary); }
-#phone .mc-k svg { width:14px; height:14px; }
+#phone .mc-k { display:inline-flex; width:14px; height:14px; margin-right:4px; vertical-align:-2px; }
+#phone .mc-k svg { width:100%; height:100%; }
 #phone .mc-btn, #phone .mc-done { display:flex; align-items:center; justify-content:center; gap:6px; width:100%; height:44px; margin-top:auto; border-radius:12px; font:700 14px/1 Manrope, system-ui, sans-serif; }
 #phone .mc-y + :is(.mc-btn, .mc-done) { margin-top:12px; }
-#phone .mc-btn { border:0; background:var(--bg-inverse, #12161A); color:var(--text-on-inverse, #fff); cursor:pointer; }
+#phone .mc-btn { border:0; background:var(--component-button-primary-bg-default); color:var(--component-button-primary-ink); cursor:pointer; }
 #phone .mc-btn.sec { background:transparent; color:var(--text-primary); box-shadow:inset 0 0 0 1px var(--border-strong, var(--border-default)); }
-#phone .mc-btn:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .mc-btn:focus-visible { outline:2px solid var(--focus-ring, var(--text-primary)); outline-offset:2px; }
 #phone .mc-done { color:var(--text-secondary); }
 #phone .mc-done svg { width:14px; height:14px; }
-#phone .mc-all { display:block; margin:4px 0 0 auto; min-height:44px; padding:0 4px; border:0; background:none; font:600 14px Manrope, system-ui, sans-serif; color:var(--text-secondary); cursor:pointer; }
+
+/* 6 Oct 01:04 (Apoorv: "people is good, push that to hifi"; SPEC-people-tab.md): tool row, chips, sort row, groups */
+#phone .cm-search.mc-tools { position:relative; gap:8px; }
+#phone .mc-tools .mc-sic { position:absolute; left:30px; top:calc(10px + 13px); width:18px; height:18px; display:flex; color:var(--icon-secondary, var(--text-secondary)); pointer-events:none; }
+#phone .mc-tools .mc-sic svg { width:18px; height:18px; }
+#phone .mc-tools .search { min-width:0; height:44px; border-radius:var(--radius-absolute-infinite, 999px); background:var(--bg-surface-default); border:var(--border-width-hairline, 1px) solid var(--border-default); padding:0 16px 0 40px; font:500 15px Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .mc-tools .search::placeholder { color:var(--component-input-placeholder, var(--text-tertiary)); }
+#phone .mc-tools .search:focus-visible { outline:2px solid var(--focus-ring, var(--text-primary)); outline-offset:1px; }
+#phone .mc-fbtn { width:44px; height:44px; padding:0; border-radius:50%; background:var(--bg-surface-default); border:var(--border-width-hairline, 1px) solid var(--border-default); color:var(--icon-primary, var(--text-primary)); font:inherit; }
+#phone .mc-fbtn svg { width:20px; height:20px; }
+#phone .mc-fbtn.on { border-color:var(--text-primary); }
+#phone .mc-fbtn:focus-visible, #phone .mc-sort:focus-visible, #phone .mc-view:focus-visible, #phone .mc-menu button:focus-visible, #phone .mc-more:focus-visible { outline:2px solid var(--focus-ring, var(--text-primary)); outline-offset:2px; }
+#phone .mcp-chips .cm-chip { gap:6px; }
+#phone .mcp-chips .mc-k { width:16px; height:16px; margin:0; vertical-align:0; }
+#phone .mc-sortrow { display:flex; align-items:center; justify-content:space-between; margin:4px 0 4px; }
+#phone .mc-sortwrap { position:relative; }
+#phone .mc-sort { display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:0 4px 0 0; border:0; background:none; font:600 14px Manrope, system-ui, sans-serif; color:var(--text-secondary); cursor:pointer; }
+#phone .mc-sort svg { width:16px; height:16px; }
+#phone .mc-sort[aria-expanded="true"] svg { transform:rotate(180deg); }
+#phone .mc-menu { position:absolute; left:0; top:calc(100% + 2px); z-index:5; min-width:200px; padding:6px; border-radius:16px; background:var(--bg-surface-raised, var(--bg-surface-default)); box-shadow:var(--elevation-2, var(--elevation-1)), 0 0 0 1px var(--border-default); }
+#phone .mc-menu button { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:44px; padding:0 12px; border:0; border-radius:10px; background:none; font:600 15px Manrope, system-ui, sans-serif; color:var(--text-primary); text-align:left; cursor:pointer; }
+#phone .mc-menu button[aria-checked="true"] { background:var(--bg-fill-default); }
+#phone .mc-menu button svg { width:16px; height:16px; }
+#phone .mc-view { width:44px; height:44px; margin-right:-10px; display:flex; align-items:center; justify-content:center; border:0; border-radius:12px; background:none; color:var(--icon-primary, var(--text-primary)); cursor:pointer; }
+#phone .mc-view svg { width:20px; height:20px; }
+#phone .mc-sec { margin-top:16px; }
+#phone .mc-sec + .mc-sec { margin-top:24px; }
+#phone .mc-gh { display:flex; align-items:baseline; gap:8px; margin:0 0 8px; font:800 18px/1.3 Manrope, system-ui, sans-serif; letter-spacing:-.01em; color:var(--text-primary); }
+#phone .mc-gc { font:600 14px/1.3 Manrope, system-ui, sans-serif; letter-spacing:0; color:var(--text-tertiary); }
+#phone .mc-rows .cm-pr:last-child { border-bottom:0; }
+#phone .mc-more { display:flex; align-items:center; justify-content:center; width:100%; height:44px; margin-top:8px; border:0; border-radius:12px; background:transparent; box-shadow:inset 0 0 0 1px var(--border-default); font:700 14px/1 Manrope, system-ui, sans-serif; color:var(--component-button-ghost-ink, var(--text-secondary)); cursor:pointer; }
 
 </style>
 <script>
 /* 5 Oct 23:26 (Apoorv: "the grid members cards are unfinished and untidy, why are they in 3 row grids? Make these cards consistent
    across, and have them as 2 row grids"; spec community-audit/rework-1005/SPEC-member-cards-and-tabs.md). People tab: one member card
-   (KeyPersonTile type=card) for every tier and for Joined this week, 2 per row at every phone width. Circle photo, name, role, one
-   reason, one action. List view keeps its rows. */
+   (KeyPersonTile type=card) for every group, 2 per row at every phone width. Circle photo, name, role, one reason, one action.
+   6 Oct 01:04 (Apoorv: "people is good, push that to hifi"; SPEC-people-tab.md): the tab is one list. Tool row, one row of chips
+   (All, For your missions, New, Hiring, Cofounder, Advice) in place of the Joined this week rail and the missions section, a sort
+   row that opens in place, then groups of the same card. List view keeps the member rows, without online dots. */
+
+/* demo relations (mock people): one more person met, one more through someone and one more pick, so the demo's groups fill even rows */
+/* Reason fallback when nothing is shared outside this family: their city, else what they're open to */
+const MC_CITY_DEMO = { omar:"San Francisco", grace:"New York", tom:"San Francisco", ines:"Mountain View", kofi:"Palo Alto", priti:"London", lena:"Seattle", hana:"San Francisco", felix:"Berlin" };
+const mcSide = p => MC_CITY_DEMO[p.id] || (p.openTo && p.openTo[0] ? `Open to ${p.openTo[0].charAt(0).toLowerCase()+p.openTo[0].slice(1)}` : "");
+const MC_MET_DEMO = { hana:"Met at the AI meetup, July" };
+const MC_VIA_DEMO = { jordan:"rahul", lena:"rahul" };   /* jordan as family.js cVia has it */
+const MC_PICK_DEMO = { felix:"Technical cofounder" };
+const MC_MONTH = /,\s(January|February|March|April|May|June|July|August|September|October|November|December)$/;
 function mcMission(){
   const m = (DB.missions||[]).find(x=>x.status==="active" && (typeof miOwn!=="function" || miOwn(x)));
   return m ? m.name.replace(/\s+role\b.*$|\s+at\s.*$|,.*$/i, "") : "";
@@ -26791,42 +26832,1017 @@ function mcVia(p){
   const o = DB.opps.find(x=>x.personId===p.id && x.via && x.via!==p.id), v = o && DB.people[o.via];
   if (v) return v;
   const w = (typeof C_PICK_WHY!=="undefined" && C_PICK_WHY[p.id] || [""])[0].match(/^(\w+) vouched/);
-  return w ? Object.values(DB.people).find(x=>x.name.split(" ")[0]===w[1]) : null;
+  return w ? Object.values(DB.people).find(x=>x.name.split(" ")[0]===w[1]) : DB.people[MC_VIA_DEMO[p.id]] || null;
 }
+/* where you stand with someone: 0 met (a message between you, or the same event), 1 through someone you know, 2 everyone else */
+function mcRel(p){
+  if (cTier(p)===0 || MC_MET_DEMO[p.id] || (DB.dms||[]).some(d=>d.with===p.id) || p.shared.some(x=>MC_MONTH.test(x))) return 0;
+  return mcVia(p) ? 1 : 2;
+}
+function mcPicks(f, pool){ return [...cPicks(f, pool), ...Object.keys(MC_PICK_DEMO).map(id=>DB.people[id]).filter(p=>p && pool.includes(p))]; }
+function mcFor(p){
+  const w = (typeof C_PICK_WHY!=="undefined" && C_PICK_WHY[p.id] || [])[1] || MC_PICK_DEMO[p.id] || mcMission();
+  if (!w) return "Picked for your missions";
+  return `For your ${w.replace(/\s+role$/i, "")} mission`;
+}
+const mcKai = s => `<span class="mc-k" aria-hidden="true">${typeof kaiMark==="function" ? kaiMark(s) : C_SPARK}</span>`;
 function mcCard(p, f){
-  const tier = cTier(p), pick = cPicks(f, cFamPeople(f)).includes(p), via = tier===1 ? mcVia(p) : null, met = p.shared.find(x=>/^Met\b/.test(x));
-  const ms = mcMission(), first = s => s.charAt(0).toLowerCase()+s.slice(1);
-  const why = pick ? `<span class="mc-k">${C_SPARK}</span>${ms ? `For your ${ms} mission` : "Kai's pick for you"}`
+  const rel = mcRel(p), pick = mcPicks(f, cFamPeople(f)).includes(p), via = rel===1 ? mcVia(p) : null;
+  const met = p.shared.find(x=>/^Met\b/.test(x)) || MC_MET_DEMO[p.id];
+  const first = s => s.charAt(0).toLowerCase()+s.slice(1), side = () => p.shared.find(x=>!x.includes(f.name)) || C_CITY[p.id] || mcSide(p);
+  const why = pick ? `${mcKai(14)}${mcFor(p)}`
     : cIsNew(p) ? "New this week"
-    : met ? `You've ${first(met).replace(/^met/, "met")}`
-    : tier===0 ? p.shared.find(x=>!x.includes(f.name)) || ""
+    : met ? `You've ${first(met)}`
+    : rel===0 ? (cTier(p)===0 ? side() : "You've met")
     : via ? `Through ${via.name.split(" ")[0]}`
-    : p.shared.find(x=>!x.includes(f.name)) || C_CITY[p.id] || "";
+    : side();
   const greeted = (STATE.cGreeted||{})[p.id];
   const act = greeted ? `<span class="mc-done">${C_CHECK_SVG}Greeted</span>`
-    : tier===0 && !cIsNew(p) ? `<button class="mc-btn sec" onclick="event.stopPropagation();ncPick('dm','${p.id}')">Message</button>`
+    : cIsNew(p) ? `<button class="mc-btn" data-cgreet="${p.id}">Say hi</button>`
+    : rel===0 ? `<button class="mc-btn sec" onclick="event.stopPropagation();ncPick('dm','${p.id}')">Message</button>`
     : via ? `<button class="mc-btn" onclick="event.stopPropagation();ncPick('dm','${via.id}');toast('Ask ${via.name.split(" ")[0]} to introduce you to ${p.name.split(" ")[0]}.')">Ask ${via.name.split(" ")[0]}</button>`
     : `<button class="mc-btn" data-cgreet="${p.id}">Say hi</button>`;
   return `<div class="mc" data-profile="${p.id}" data-kc="KeyPersonTile" data-kv="type=card"><div class="mc-ph" data-kp="${p.id}" role="img" aria-label="${p.name}">${p.initials}</div><b class="mc-n">${p.name}</b><span class="mc-r">${p.title} · ${p.company.split(",")[0]}</span><span class="mc-y">${why}</span>${act}</div>`;
+}
+/* the member row for list view: the existing row, no online dot */
+const mcRow = p => `<div class="cm-row cm-pr" data-profile="${p.id}"><div class="cm-av">${av(p.initials)}</div><div class="m"><div class="a">${p.name}</div><div class="b">${p.title} · ${p.company.split(",")[0]}</div></div>${cIsNew(p)?'<span class="cm-done">New</span>':''}</div>`;
+
+const MC_CHIPS = [["All","All"],["Kai","For your missions"],["New","New"],["Hiring","Hiring"],["Cofounder","Cofounder"],["Advice","Advice"]];
+const MC_SORT = [["close","Closest first"],["new","Newest"],["az","A to Z"]];
+const MC_TAG = { Hiring:/^Hiring\b/, Cofounder:/^Cofounder\b/, Advice:/^(Product )?advice$/i };
+const MC_PAGE = 8;
+const mcPeopleChip = () => MC_CHIPS.some(c=>c[0]===STATE.peopleFilter) ? STATE.peopleFilter : "All";
+function mcViewSet(v){ STATE.mcView = v; cFilter(()=>{}); }
+function mcSortToggle(){ STATE.mcSortOpen = !STATE.mcSortOpen; cFilter(()=>{}); }
+function mcSortSet(k){ STATE.mcSortOpen = false; STATE.mcSort = k; STATE.mcMore = {}; cFilter(()=>{}); }
+function mcShowMore(k, end){ if (end) { toast("Loads the next 20"); return; } STATE.mcMore = Object.assign({}, STATE.mcMore, { [k]:((STATE.mcMore||{})[k]||0)+1 }); cFilter(()=>{}); }
+/* one group: heading with a plain count (none under 5), then cards in even numbers so no card sits alone on a row. extra = members
+   beyond the demo's people (the family's full count), loaded 20 at a time */
+function mcGroup(k, title, arr, f, extra){
+  const n = arr.length, total = n + (extra||0), taps = (STATE.mcMore||{})[k]||0, lim = MC_PAGE + 20*taps, grid = STATE.mcView!=="list";
+  let show = Math.min(n, lim);
+  if (show % 2 && show > 1 && (extra || !taps)) show--;
+  const rest = total - show;
+  const more = rest > 0 ? `<button type="button" class="mc-more" onclick="mcShowMore('${k}', ${!!extra && n <= lim})">${rest >= 20 || extra ? "Show 20 more" : `Show all ${total}`}</button>` : "";
+  const items = arr.slice(0, show);
+  return `<section class="mc-sec"><h2 class="mc-gh">${title}${total>=5?` <span class="mc-gc">${total}</span>`:""}</h2>${grid ? `<div class="mc-grid">${items.map(p=>mcCard(p, f)).join("")}</div>` : `<div class="mc-rows">${items.map(mcRow).join("")}</div>`}${more}</section>`;
+}
+function mcBody(f, q){
+  const chip = mcPeopleChip(), sort = STATE.mcSort||"close";
+  const all = cFamPeople(f).filter(p=>p.name!==me().name), list = all.filter(p=>!q || (p.name+p.title+p.company).toLowerCase().includes(q));
+  const order = { close:(a,b)=>mcRel(a)-mcRel(b), new:(a,b)=>(cIsNew(b)-cIsNew(a)) || all.indexOf(b)-all.indexOf(a), az:(a,b)=>a.name.localeCompare(b.name) }[sort];
+  const sorted = arr => arr.slice().sort(order);
+  const rest = q ? 0 : Math.max(0, f.members - all.length - 1);
+  if (chip==="All") {
+    if (sort!=="close") return list.length ? mcGroup("all", "All members", sorted(list), f, rest) : "";
+    return [["met","You've met",0],["via","Through someone you know",1],["else","Everyone else",2]].map(([k,t,r])=>{
+      const arr = list.filter(p=>mcRel(p)===r);
+      return arr.length ? mcGroup(k, t, arr, f, r===2 ? rest : 0) : "";
+    }).join("");
+  }
+  const pool = chip==="Kai" ? mcPicks(f, all) : chip==="New" ? all.filter(cIsNew) : all.filter(p=>p.openTo.some(o=>MC_TAG[chip].test(o)));
+  const arr = sorted(pool.filter(p=>list.includes(p)));
+  return arr.length ? mcGroup(chip, { Kai:"Kai's picks", New:"Joined this week" }[chip] || chip, arr, f) : "";
 }
 const _mcPeople = sPeople;
 sPeople = function(){
   const html = _mcPeople.apply(this, arguments);
   if (!STATE.member) return html;
-  const f = cF(), t = document.createElement("template"); t.innerHTML = html;
-  if (STATE.peopleView==="grid") t.content.querySelectorAll(".cm-grid").forEach(g => { g.className = "mc-grid"; g.innerHTML = [...g.querySelectorAll(".cm-cell")].map(c => DB.people[c.dataset.profile] ? mcCard(DB.people[c.dataset.profile], f) : "").join(""); });
-  t.content.querySelectorAll(".cm-newm .kp-rail").forEach(r => { const ids = [...r.querySelectorAll("[data-profile]")].map(c=>c.dataset.profile);
-    r.outerHTML = `<div class="mc-grid">${ids.slice(0,2).map(id=>mcCard(DB.people[id], f)).join("")}</div>${ids.length>2?`<button class="mc-all" data-cpf="New">See all ${ids.length}</button>`:""}`; });
+  const t = document.createElement("template"); t.innerHTML = html;
+  const bar = t.content.querySelector(".cm-bar"), body = bar && bar.parentElement;
+  if (!bar) return html;
+  const f = cF(), q = (STATE.peopleQuery||"").toLowerCase(), chip = mcPeopleChip(), sort = STATE.mcSort||"close", grid = STATE.mcView!=="list";
+  /* tool row: pill search and a 44 filter button */
+  const srch = bar.querySelector(".cm-search"), fb = srch && srch.querySelector(".cm-fbtn"), inp = srch && srch.querySelector("#pq");
+  if (srch) {
+    srch.classList.add("mc-tools");
+    srch.insertAdjacentHTML("afterbegin", `<span class="mc-sic" aria-hidden="true">${LI("search", 18)}</span>`);
+    if (inp) inp.setAttribute("aria-label", inp.getAttribute("placeholder"));
+    if (fb) fb.outerHTML = `<button type="button" class="cm-fbtn mc-fbtn ${fb.classList.contains("on")?"on":""}" data-csheet="cpfilter" aria-label="Filter">${LI("sliders-horizontal", 20)}${fb.querySelector("b")?fb.querySelector("b").outerHTML:""}</button>`;
+  }
+  /* one row of single-select chips */
+  const chips = bar.querySelector(".cm-chips");
+  const chipsHTML = `<div class="cm-chips mcp-chips" role="group" aria-label="Show">${MC_CHIPS.map(([k,l])=>`<button type="button" class="cm-chip ${chip===k?"on":""}" aria-pressed="${chip===k}" data-pfilter="${k}">${k==="Kai"?mcKai(16):""}${l}</button>`).join("")}</div>`;
+  if (chips) chips.outerHTML = chipsHTML; else bar.insertAdjacentHTML("beforeend", chipsHTML);
+  /* the rail, the missions section, the old sort row and everything after it give way to the one list */
+  t.content.querySelectorAll(".cm-newm, .cm-picks").forEach(el=>el.remove());
+  const cnt = body.querySelector(":scope > .cm-cnt");
+  if (cnt) { while (cnt.nextSibling) cnt.nextSibling.remove(); cnt.remove(); }
+  const cur = MC_SORT.find(s=>s[0]===sort) || MC_SORT[0];
+  body.insertAdjacentHTML("beforeend", `<div class="mc-sortrow">
+      <div class="mc-sortwrap"><button type="button" class="mc-sort" aria-haspopup="menu" aria-expanded="${!!STATE.mcSortOpen}" onclick="mcSortToggle()">${cur[1]}${LI("chevron-down", 16)}</button>
+      ${STATE.mcSortOpen ? `<div class="mc-menu" role="menu" aria-label="Sort">${MC_SORT.map(([k,l])=>`<button type="button" role="menuitemradio" aria-checked="${k===sort}" onclick="mcSortSet('${k}')">${l}${k===sort?LI("check", 16):""}</button>`).join("")}</div>` : ""}</div>
+      <button type="button" class="mc-view" onclick="mcViewSet('${grid?"list":"grid"}')" aria-label="${grid?"Show as a list":"Show as a grid"}">${LI(grid?"list":"layout-grid", 20)}</button>
+    </div>
+    ${mcBody(f, q) || `<div class="empty">${q ? "Nobody matches that search." : "Nobody here yet."}</div>`}`);
   return t.innerHTML;
 };
+/* the sort options close on a tap anywhere else */
+document.addEventListener("click", e => { if (STATE.mcSortOpen && !e.target.closest(".mc-sortwrap")) { STATE.mcSortOpen = false; setTimeout(() => { if (!STATE.mcSortOpen && document.querySelector("#phone .mc-menu")) cFilter(()=>{}); }); } }, true);
 /* the photo layer paints avatars up to 80px; the card's 88px circle asks for its own size */
 new MutationObserver(() => { if (typeof cHiFi!=="function" || !cHiFi() || typeof phPaint!=="function" || typeof PH_FACE==="undefined") return;
   document.querySelectorAll("#phone .mc-ph:not(.ph-face)").forEach(el => { const id = PH_FACE[el.dataset.kp]; if (id) phPaint(el, phUrl(id, 240, 240), "ph-face"); });
 }).observe(document.getElementById("phone"), { childList:true, subtree:true });
 
 </script>
+<style>
+/* ==== Missions and the brief (6 Oct 00:50, missions-brief/HIFI-SPEC.md and its 01:05 amendment). With missions-brief2.js; loads last.
+   Gold stays on the Kai disc; plates carry white ink; no borders the prototype doesn't have; 44 targets; Manrope. ==== */
+
+/* ---- the mission header: the tabs are its last row, on the plate, white ink; they dock into the glass header like every tab row ---- */
+#phone .ml-tabs.m2-tabs { padding:0 8px !important; margin:0 -16px !important; background-color:transparent; background-repeat:no-repeat; }
+#phone .ml-tabs.m2-tabs .ml-seg { gap:4px; border-bottom:0; }
+#phone .ml-tabs.m2-tabs .ml-seg > button { position:relative; display:inline-flex; align-items:center; gap:6px; min-height:48px; padding:0 12px; margin:0; border:0; font:700 16px/1.2 Manrope, system-ui, sans-serif; color:var(--m2-dim, rgb(255 255 255 / .9)); }
+#phone .ml-tabs.m2-tabs .ml-seg > button.on { color:#fff; }
+#phone .ml-tabs.m2-tabs .ml-seg > button::after { content:""; position:absolute; left:12px; right:12px; bottom:0; height:3px; border-radius:2px 2px 0 0; background:transparent; }
+#phone .ml-tabs.m2-tabs .ml-seg > button.on::after { background:#fff; }
+#phone .ml-tabs.m2-tabs .ml-seg > button:focus-visible { outline:2px solid #fff; outline-offset:-4px; border-radius:8px; }
+#phone .m2-dot { display:inline-block; width:7px; height:7px; border-radius:999px; background:currentColor; }
+/* docked: the copy inside the header takes the plate behind it */
+#phone .kh-glass.kh-tint > .kh-cl.ml-tabs.m2-tabs { background:transparent !important; margin:0 !important; }
+#phone .kh-glass.kh-tint > .kh-cl.m2-tabs .ml-seg > button { color:rgb(255 255 255 / .82); border-bottom:0; }
+#phone .kh-glass.kh-tint > .kh-cl.m2-tabs .ml-seg > button.on { color:#fff; }
+#phone .kh-glass.kh-tint > .kh-cl.m2-tabs .ml-seg { border-bottom:0; }
+/* the band runs straight into the tabs: no rounded foot, no gap */
+#phone.m2-on .view > .body.sc > .mh-band.big { border-bottom-left-radius:0 !important; border-bottom-right-radius:0 !important; }
+#phone.m2-on .view > .body.sc > .ml-tabs.m2-tabs + .body-gap { display:none; }
+/* mission row: each half opens its row on Edit mission */
+#phone .mi-gr.m2-gr { cursor:default; }
+#phone .mi-gr.m2-gr > .m2-gh { all:unset; box-sizing:border-box; flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:2px; min-height:44px; cursor:pointer; color:#fff; }
+#phone .mi-gr.m2-gr > .m2-gh:focus-visible { outline:2px solid #fff; outline-offset:4px; border-radius:8px; }
+#phone .mi-gr.m2-gr .mi-gk { color:rgb(255 255 255 / .92); }
+#phone .mi-gr.m2-gr b { color:#fff; }
+/* where Kai looks: the families as small rounded squares */
+#phone .m2-fms { display:inline-flex; }
+#phone .m2-fm { display:inline-grid; place-items:center; width:20px; height:20px; border-radius:30%; background:#2F3A4A; color:#fff; font:800 10px/1 Manrope, system-ui, sans-serif; font-style:normal; box-shadow:0 0 0 1.5px rgb(255 255 255 / .35); }
+#phone .m2-fm + .m2-fm { margin-left:-5px; }
+#phone .m2-fm:nth-child(2) { background:#2E4A44; } #phone .m2-fm:nth-child(3) { background:#4A3A2E; }
+/* tight phones (under 360 wide or 700 tall): the ask in two lines, the must-haves only, no live line, so the first card shows */
+#phone.m2-tight .ml-brief p { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.m2-tight .ml-rule.m2-rw, #phone.m2-tight .ml-rule.m2-rc, #phone.m2-tight .m2-live { display:none !important; }
+
+/* ---- Paths ---- */
+#phone .m2-pane { padding-top:4px; }
+#phone .m2-pane > .m2-live { margin:14px 0 6px; }
+#phone .m2-grp { display:flex; flex-direction:column; gap:10px; }
+#phone .m2-gh { display:flex; align-items:baseline; gap:8px; margin:18px 2px 0; font:800 17px/1.2 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-pane > .m2-grp:first-child .m2-gh { margin-top:14px; }
+#phone .m2-gh > b { font:700 14px/1 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-pane .mt-lab.m2-lab, #phone .m2-grp .mt-lab { font:700 13px/1 Manrope, system-ui, sans-serif !important; color:var(--text-secondary) !important; background:var(--bg-fill-default, #EEF1F5); border-radius:999px; padding:7px 10px; }
+#phone .m2-empty { margin:28px 2px; text-align:center; font:500 14px/1.4 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+
+/* ---- Chat: one stream, the mission's own mark on its lines ---- */
+#phone .m2-thread { display:flex; flex-direction:column; padding:6px 0 8px; }
+#phone .m2-day { display:flex; align-items:center; gap:10px; margin:14px 2px; font:700 11px/1 Manrope, system-ui, sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--text-secondary); }
+#phone .m2-day::before, #phone .m2-day::after { content:""; flex:1; height:1px; background:var(--border-default, #E2E7ED); }
+#phone .m2-sys { display:flex; align-items:center; gap:10px; min-height:32px; margin:0 2px 12px; font:600 13px/1.3 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-sys .m2-sx { flex:1 1 auto; min-width:0; }
+#phone .m2-sys .m2-st { flex:0 0 auto; font-weight:500; }
+#phone .m2-bot { display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; margin:0 2px 12px; align-items:start; }
+#phone .m2-bot > p { margin:0; font:500 15.5px/1.45 var(--font-family-kai, "DM Sans"), Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-pane .mh-mark.s24, #phone .m2-prop .mh-mark.s24 { width:28px; height:28px; border-radius:8px; display:grid; place-items:center; color:#fff; flex:0 0 auto; }
+#phone .m2-pane .mh-mark.s24 svg, #phone .m2-prop .mh-mark.s24 svg { width:16px; height:16px; }
+#phone .m2-sys > .mh-mark.s24 { width:32px; height:32px; border-radius:10px; }
+#phone .avatar.m2-a32 { width:32px !important; height:32px !important; min-width:32px; font-size:12px !important; }
+#phone .avatar.m2-a24 { width:24px !important; height:24px !important; min-width:24px; font-size:9px !important; }
+#phone .avatar.m2-a40 { width:40px !important; height:40px !important; min-width:40px; font-size:13px !important; }
+#phone .m2-me { align-self:flex-end; margin:0 2px 12px; max-width:80%; }
+#phone .m2-chips { display:flex; flex-wrap:wrap; gap:8px; margin:-2px 0 14px 40px; }
+#phone .m2-chips > button { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; min-height:44px; padding:0 14px; border-radius:12px; background:var(--bg-surface-default, #fff); box-shadow:inset 0 0 0 1.5px var(--border-default, #E2E7ED); font:700 14px/1 Manrope, system-ui, sans-serif; color:var(--text-primary); cursor:pointer; }
+#phone .m2-chips > button.on { background:var(--text-primary); color:var(--bg-page, #fff); box-shadow:none; }
+#phone .m2-chips > button:disabled { cursor:default; }
+#phone .m2-chips > button:disabled:not(.on) { color:var(--text-secondary); }
+#phone .m2-chips > button:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .m2-turn { display:flex; flex-direction:column; gap:10px; margin:0 0 12px; }
+#phone .mt-card.m2-in { margin-left:40px; }
+#phone .m2-chat > .m2-thread > .mt-card.m2-in { margin-bottom:12px; }
+#phone .m2-fold { all:unset; box-sizing:border-box; display:flex; align-items:center; gap:10px; min-height:44px; margin-left:40px; padding:0 4px; font:600 14px/1 Manrope, system-ui, sans-serif; color:var(--text-secondary); cursor:pointer; }
+#phone .m2-fold > svg { margin-left:auto; }
+#phone .m2-fold:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:8px; }
+#phone .m2-dte { display:block; box-sizing:border-box; width:100%; margin-top:6px; padding:10px 12px; border:0; border-radius:12px; background:var(--bg-fill-default, #EEF1F5); font:500 15px/1.45 Manrope, system-ui, sans-serif; color:var(--text-primary); resize:vertical; }
+#phone .m2-dte:focus { outline:2px solid var(--text-primary); }
+/* hi-fi chat rows inside the merged stream (missions the build already had) */
+#phone .m2-chat .m2-thread > * + * { margin-top:10px; }
+
+/* ---- 2. The brief deck ---- */
+#phone > .m2-deck { position:absolute; inset:0; z-index:45; display:flex; flex-direction:column; padding-top:var(--m2-top, 0px); color:#F9FAFC; background:radial-gradient(130% 70% at 70% 0%, #1B222A 0%, #0B0E11 62%); border-radius:inherit; overflow:hidden; touch-action:pan-y; }
+#phone .m2-bars { display:flex; gap:4px; padding:14px 16px 0; }
+#phone .m2-bars > i { flex:1; height:3px; border-radius:2px; background:rgb(255 255 255 / .22); }
+#phone .m2-bars > i.on { background:#fff; }
+#phone .m2-dhd { display:flex; align-items:center; gap:12px; padding:8px 8px 0 20px; }
+#phone .m2-dht { flex:1; font:700 14px/1.2 Manrope, system-ui, sans-serif; color:#C3CAD3; }
+#phone .m2-dkd { display:inline-grid; place-items:center; flex:0 0 auto; }
+#phone .m2-dkd svg { display:block; }
+#phone .m2-x, #phone .m2-ib { all:unset; box-sizing:border-box; display:grid; place-items:center; width:44px; height:44px; border-radius:999px; cursor:pointer; flex:0 0 auto; }
+#phone .m2-x { color:#fff; }
+#phone .m2-x:focus-visible { outline:2px solid #fff; outline-offset:-2px; }
+#phone .m2-dsky { flex:1 1 40px; min-height:16px; }
+#phone .m2-db { flex:0 1 auto; overflow-y:auto; overscroll-behavior:contain; padding:0 20px calc(24px + env(safe-area-inset-bottom, 0px)); }
+#phone .m2-dc { display:flex; flex-direction:column; }
+#phone .m2-dk { display:flex; align-items:center; gap:10px; margin-bottom:12px; font:700 14px/1.2 Manrope, system-ui, sans-serif; color:#C3CAD3; }
+#phone .m2-dk .avatar { box-shadow:0 0 0 2px rgb(255 255 255 / .25); }
+#phone .m2-dh { margin:0; font:800 30px/1.14 Manrope, system-ui, sans-serif; letter-spacing:-.02em; color:#fff; text-wrap:balance; }
+#phone .m2-dh:focus { outline:none; }
+#phone .m2-dp { margin:12px 0 0; font:500 17px/1.48 var(--font-family-kai, "DM Sans"), Manrope, system-ui, sans-serif; color:#D9DEE5; }
+#phone .m2-dp b { color:#fff; font-weight:700; }
+#phone .m2-dfrom { align-self:flex-start; display:inline-flex; align-items:center; gap:8px; max-width:100%; margin-top:14px; min-height:34px; padding:0 14px 0 6px; border-radius:999px; background:rgb(255 255 255 / .1); font:700 13px/1.2 Manrope, system-ui, sans-serif; color:#fff; }
+#phone .m2-dfrom > span:last-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone .m2-dfrom .mh-mark.s24 { width:24px; height:24px; border-radius:7px; display:grid; place-items:center; color:#fff; flex:0 0 auto; }
+#phone .m2-dfrom .mh-mark.s24 svg, #phone .m2-dfm svg { width:14px; height:14px; }
+#phone .m2-dfm { display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:#5E4D86; color:#fff; flex:0 0 auto; }
+#phone .m2-dd { margin-top:16px; padding:14px; border-radius:16px; background:rgb(255 255 255 / .08); }
+#phone .m2-ddl { display:flex; align-items:center; gap:8px; font:700 13px/1.2 Manrope, system-ui, sans-serif; color:#C3CAD3; }
+#phone .m2-dta { display:block; box-sizing:border-box; width:100%; margin-top:8px; padding:0; border:0; background:none; resize:none; font:500 15px/1.45 var(--font-family-kai, "DM Sans"), Manrope, system-ui, sans-serif; color:#F4F6F9; }
+#phone .m2-dta:focus { outline:2px solid rgb(255 255 255 / .7); outline-offset:6px; border-radius:6px; }
+#phone .m2-da { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+#phone .m2-bw, #phone .m2-bg { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:0 20px; border-radius:999px; font:700 16px/1.2 Manrope, system-ui, sans-serif; cursor:pointer; text-align:center; }
+#phone .m2-bw { background:#fff; color:#0B0E11; }
+#phone .m2-bg { background:rgb(255 255 255 / .12); color:#fff; }
+#phone .m2-grow { flex:1 1 auto; }
+#phone .m2-bw:focus-visible, #phone .m2-bg:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+#phone .m2-dn { display:flex; align-items:center; gap:8px; margin-top:20px; font:600 13px/1 Manrope, system-ui, sans-serif; color:#C3CAD3; }
+#phone .m2-fs { display:inline-flex; }
+#phone .m2-fs > .avatar + .avatar { margin-left:-8px; }
+#phone .m2-deck .m2-fs > .avatar { box-shadow:0 0 0 2px #0B0E11; }
+#phone .m2-cn { position:relative; height:120px; margin:16px 0 4px; }
+#phone .m2-cn > svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+#phone .m2-cn line { stroke:rgb(255 255 255 / .38); stroke-width:1.5; vector-effect:non-scaling-stroke; }
+#phone .m2-cnn { position:absolute; transform:translate(-50%,-50%); display:grid; place-items:center; }
+#phone .m2-cnn .avatar { box-shadow:0 0 0 3px #0B0E11; }
+#phone .m2-cny { width:44px; height:44px; border-radius:999px; background:#3B3F55; box-shadow:0 0 0 3px #0B0E11; font:700 13px/1 Manrope, system-ui, sans-serif; color:#fff; }
+#phone .m2-dr { display:flex; flex-direction:column; margin-top:12px; }
+#phone .m2-drw { display:flex; align-items:center; gap:12px; min-height:56px; font:600 15px/1.3 Manrope, system-ui, sans-serif; color:#fff; }
+#phone .m2-drw + .m2-drw { box-shadow:inset 0 1px 0 rgb(255 255 255 / .12); }
+#phone .m2-drw > span:not(.m2-dkd) { flex:1 1 auto; min-width:0; }
+#phone .m2-drw > small { flex:0 0 auto; font:500 13px/1 Manrope, system-ui, sans-serif; color:#C3CAD3; }
+@media (prefers-reduced-motion:no-preference) { #phone .m2-dc { animation:m2In .26s cubic-bezier(.2,.8,.2,1) both; } }
+@keyframes m2In { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+@media (max-width:359px), (max-height:700px) { #phone .m2-dh { font-size:25px; } #phone .m2-dp { font-size:15.5px; margin-top:8px; } #phone .m2-dd { margin-top:12px; padding:12px; } #phone .m2-dn { margin-top:12px; } #phone .m2-cn { height:96px; margin-top:8px; } #phone .m2-drw { min-height:48px; } }
+
+/* ---- 4. Edit mission ---- */
+#phone > .m2-ed { position:absolute; inset:0; z-index:39; display:flex; flex-direction:column; background:var(--bg-page, #F9FAFC); border-radius:inherit; overflow:hidden; }
+#phone .m2-edh { flex:0 0 auto; display:flex; align-items:center; gap:4px; min-height:56px; padding:var(--m2-top, 0px) 8px 0; background-color:var(--m2-p1); color:#fff; }
+#phone .m2-edh .m2-ib { color:#fff; }
+#phone .m2-edh .m2-ib:focus-visible { outline:2px solid #fff; outline-offset:-2px; }
+#phone .m2-edt { min-width:0; display:flex; flex-direction:column; gap:2px; padding:8px 0; }
+#phone .m2-edt > h2 { margin:0; font:800 17px/1.2 Manrope, system-ui, sans-serif; color:#fff; }
+#phone .m2-edt > span { font:600 12.5px/1.2 Manrope, system-ui, sans-serif; color:rgb(255 255 255 / .9); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .m2-edb { flex:1 1 auto; overflow-y:auto; overscroll-behavior:contain; padding:4px 20px 20px; }
+#phone .m2-row + .m2-row { box-shadow:inset 0 1px 0 var(--border-default, #E2E7ED); }
+#phone .m2-rh { all:unset; box-sizing:border-box; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 12px; align-items:center; width:100%; min-height:48px; padding:16px 0; cursor:pointer; }
+#phone .m2-rh:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:8px; }
+#phone .m2-rk { font:700 12.5px/1.2 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-chev { display:grid; place-items:center; color:var(--text-secondary); transition:transform .2s; }
+#phone .m2-row.on .m2-chev { transform:rotate(180deg); }
+#phone .m2-rv { grid-column:1 / -1; margin-top:4px; font:600 16px/1.35 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-rv.q { color:var(--text-secondary); font-weight:500; }
+#phone .m2-fn { display:block; margin-top:6px; font:500 15px/1.35 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-fml .m2-fm { width:32px; height:32px; font-size:13px; box-shadow:0 0 0 2px var(--bg-page, #F9FAFC); }
+#phone .m2-re { padding:0 0 16px; }
+#phone .m2-ta { display:block; box-sizing:border-box; width:100%; min-height:88px; padding:12px; border:0; border-radius:12px; background:var(--bg-fill-default, #EEF1F5); font:500 15px/1.45 Manrope, system-ui, sans-serif; color:var(--text-primary); resize:vertical; }
+#phone .m2-ta:focus { outline:2px solid var(--text-primary); }
+#phone .m2-opts, #phone .m2-pills { display:flex; flex-wrap:wrap; gap:8px; }
+#phone .m2-opt { all:unset; box-sizing:border-box; display:inline-flex; align-items:center; min-height:44px; padding:0 14px; border-radius:12px; background:var(--bg-surface-default, #fff); box-shadow:inset 0 0 0 1.5px var(--border-default, #E2E7ED); font:700 14px/1.2 Manrope, system-ui, sans-serif; color:var(--text-primary); cursor:pointer; }
+#phone .m2-opt.on { background:var(--text-primary); color:var(--bg-page, #fff); box-shadow:none; }
+#phone .m2-pills .m2-opt { cursor:default; min-height:40px; }
+#phone .m2-opt:focus-visible, #phone .m2-kopt:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .m2-kinds { display:flex; flex-direction:column; gap:8px; }
+#phone .m2-kopt { all:unset; box-sizing:border-box; display:flex; align-items:center; min-height:48px; padding:10px 14px; border-radius:12px; background:var(--bg-surface-default, #fff); box-shadow:inset 0 0 0 1.5px var(--border-default, #E2E7ED); font:600 15px/1.3 Manrope, system-ui, sans-serif; color:var(--text-primary); cursor:pointer; }
+#phone .m2-kopt.on { background:var(--text-primary); color:var(--bg-page, #fff); box-shadow:none; }
+#phone .m2-prop { margin:12px 0 0; padding:14px; border-radius:16px; background:var(--bg-surface-default, #fff); box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); display:grid; gap:12px; }
+#phone .m2-prop:focus { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .m2-ph { display:grid; grid-template-columns:28px minmax(0,1fr); gap:10px; align-items:start; }
+#phone .m2-ph > p { margin:0; font:500 15px/1.4 var(--font-family-kai, "DM Sans"), Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-ph > p b { color:var(--text-primary); font-weight:700; }
+#phone .m2-pa, #phone .m2-foot { display:flex; gap:8px; flex-wrap:wrap; }
+#phone .m2-foot { margin-top:20px; }
+#phone .m2-foot > .m2-b { flex:1 1 0; }
+#phone .btn.m2-b { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; width:auto; margin:0; }
+#phone .m2-ed > .m2-ecomp { flex:0 0 auto; position:relative; z-index:3; padding:8px 12px calc(12px + env(safe-area-inset-bottom, 0px)); background:var(--bg-page, #F9FAFC); }
+#phone .m2-ed .mt-ctx { min-width:0; max-width:none; }
+
+/* ---- 5. KeyMissionSuggestion, Event created, Kai has ideas ---- */
+#phone .m2-sug { padding:16px; border-radius:20px; background:var(--bg-surface-default, #fff); box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); }
+#phone .m2-sgt { display:flex; align-items:flex-start; gap:12px; }
+#phone .m2-sgm { flex:0 0 auto; display:grid; place-items:center; width:40px; height:40px; border-radius:12px; background:var(--bg-fill-default, #EEF1F5); color:var(--text-primary); }
+#phone .m2-sgt > h3 { margin:0; font:800 18px/1.25 Manrope, system-ui, sans-serif; color:var(--text-primary); text-wrap:balance; }
+#phone .m2-sgw { margin:10px 0 0; font:500 15px/1.45 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-sgf { display:flex; align-items:center; gap:10px; margin-top:12px; }
+#phone .m2-sgf > b { font:700 15px/1.3 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-sgf .m2-fs > .avatar { box-shadow:0 0 0 2px var(--bg-surface-default, #fff); }
+#phone .m2-sga { display:flex; gap:8px; margin-top:14px; }
+#phone .m2-sga > .m2-b:first-child { flex:1 1 auto; }
+#phone .m2-irs { display:flex; flex-direction:column; margin-top:12px; }
+#phone .m2-ir { all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; min-height:60px; padding:8px 0; cursor:pointer; }
+#phone .m2-ir + .m2-ir { box-shadow:inset 0 1px 0 var(--border-default, #E2E7ED); }
+#phone .m2-ir:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:8px; }
+#phone .m2-irm { flex:0 0 auto; display:grid; place-items:center; width:44px; height:44px; border-radius:12px; background:var(--bg-fill-default, #EEF1F5); color:var(--text-primary); }
+#phone .m2-irt { flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .m2-irt > b { font:800 16px/1.25 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-irt > span { font:500 14px/1.35 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-irc { flex:0 0 auto; color:var(--text-secondary); }
+#phone > .m2-evd { position:absolute; inset:0; z-index:39; display:flex; flex-direction:column; padding-top:var(--m2-top, 0px); background:var(--bg-page, #F9FAFC); border-radius:inherit; overflow:hidden; }
+#phone .m2-evhd { position:relative; flex:0 0 auto; display:flex; align-items:center; justify-content:center; min-height:56px; padding:0 8px; }
+#phone .m2-evhd > h2 { margin:0; font:800 17px/1.2 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-evhd > .m2-ib { position:absolute; right:8px; top:50%; transform:translateY(-50%); color:var(--text-primary); }
+#phone .m2-evhd > .m2-ib:focus-visible, #phone .m2-ed .m2-ib:focus-visible { outline:2px solid currentColor; outline-offset:-2px; }
+#phone .m2-evb { flex:1 1 auto; overflow-y:auto; overscroll-behavior:contain; padding:4px 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+#phone .m2-evc { display:flex; align-items:center; gap:14px; padding:14px; border-radius:20px; background:var(--bg-surface-default, #fff); box-shadow:var(--elevation-1, 0 1px 3px rgba(11,14,17,.08)); }
+#phone .m2-evcv { position:relative; flex:0 0 auto; width:72px; height:72px; border-radius:16px; overflow:hidden; background:linear-gradient(170deg, #584A8E, #7E4F78); }
+#phone .m2-evth, #phone .m2-evth > * { position:absolute; inset:0; width:100%; height:100%; border-radius:inherit; }
+#phone .m2-evdt { position:absolute; left:6px; top:6px; display:flex; flex-direction:column; align-items:center; min-width:30px; padding:3px 4px; border-radius:8px; background:#fff; color:#0B0E11; }
+#phone .m2-evdt > b { font:800 13px/1 Manrope, system-ui, sans-serif; }
+#phone .m2-evdt > small { font:800 9px/1.1 Manrope, system-ui, sans-serif; }
+#phone .m2-evct { min-width:0; display:flex; flex-direction:column; gap:4px; }
+#phone .m2-evct > b { font:800 18px/1.25 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-evct > span { font:500 14px/1.35 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .m2-kl { display:flex; align-items:center; gap:12px; margin:18px 4px 12px; }
+#phone .m2-kl > b { font:800 20px/1.2 Manrope, system-ui, sans-serif; color:var(--text-primary); }
+#phone .m2-kl svg { display:block; }
+#phone .m2-evb > .m2-irs { padding:0 4px; }
+#phone .m2-evb > .m2-foot > .m2-b { flex:1 1 0; }
+#phone .sheet.m2-ideas .m2-shl { margin:-4px 0 12px; font:500 14px/1.4 Manrope, system-ui, sans-serif; color:var(--text-secondary); }
+#phone .sheet.m2-ideas .m2-sug { box-shadow:inset 0 0 0 1px var(--border-default, #E2E7ED); }
+#phone .m2-desc { all:unset; box-sizing:border-box; display:flex; align-items:center; gap:12px; min-height:52px; margin-top:8px; padding:0 4px; font:700 16px/1.2 Manrope, system-ui, sans-serif; color:var(--text-secondary); cursor:pointer; }
+#phone .m2-desc:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; border-radius:8px; }
+/* the mission's ⋯ */
+#phone .xrow.m2-mrow { display:flex; align-items:center; gap:14px; min-height:52px; cursor:pointer; }
+#phone .m2-mri { display:grid; place-items:center; color:var(--text-primary); }
+#phone .m2-mh { margin:0 0 6px; }
+/* the home card a new mission lands as */
+#phone .mi-gl.m2-gl { display:flex; align-items:center; gap:12px; min-width:0; font-size:14px; line-height:20px; font-weight:600; color:rgba(255,255,255,.9); }
+#phone .mi-gl.m2-gl > span { flex:0 0 auto; white-space:nowrap; }
+#phone .mi-gl.m2-gl > .mi-tr { flex:1 1 auto; min-width:32px; height:6px; }
+@media (prefers-reduced-transparency: reduce) { #phone > .m2-deck { background:#0B0E11; } }
+@media (max-width:359px), (max-height:700px) { #phone .m2-dn, #phone .m2-dc[data-kind="end"] .m2-cn { display:none; } #phone .m2-dsky { min-height:0; } #phone .m2-db { padding-bottom:calc(12px + env(safe-area-inset-bottom, 0px)); } #phone .m2-dk { margin-bottom:8px; } #phone .m2-dfrom { margin-top:10px; } #phone .m2-da { margin-top:12px; } #phone .m2-dh { font-size:24px; } #phone .m2-bars { padding-top:8px; } #phone .m2-dta { height:calc(2 * 1.45em); } }
+#phone .view > .mt-comp #mupd::placeholder, #phone .m2-ecomp #m2-eta::placeholder { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-2bb4";
+/* ==== Missions and the brief (6 Oct 00:50, Apoorv: "okay push this into hifi ... this is something for now"). Spec: missions-brief/HIFI-SPEC.md
+   with its 01:05 amendment ("mission is the surface im talking to there now, not kai"). Loads last; wraps, edits no other file.
+   1. Home: the Kai ink card goes; its line opens the brief.
+   2. The brief: one story deck. Kai's opening, a card per person waiting (Kai's draft, Send), the calendar prep, one suggested mission, the end.
+   3. The mission page: Paths | Chat as the app's underline tabs, the header's last row, docking into the glass header on scroll.
+      Paths groups the picks under the fixed labels; Chat is one stream (the old Log merged in) where the mission speaks with its own mark.
+   4. Edit mission: one page for the ask and the rules, rows that open in place, a proposal with Apply, Pause and End at the foot.
+   5. KeyMissionSuggestion: after an event is created, in the brief, and in the Missions "+" sheet ("Kai has ideas").
+   Nothing sends or starts without the person's tap. ==== */
+STATE.m2 = STATE.m2 || { cfg:{}, story:{}, ui:{}, deck:null, ed:null, evd:null, sc:"normal", deckDone:false, scroll:{}, n:0, last:"" };
+const M2_FIX = ["New pick","Next step","Waiting","In conversation","Went well","Set aside"];
+const M2_GROUPS = [["Needs you",["New pick","Next step"]],["Waiting",["Waiting"]],["In conversation",["In conversation"]],["Went well",["Went well"]],["Set aside",["Set aside"]]];
+const M2_PLATE = { harbour:["#3A5E96","#4F6FA8"], dusk:["#584A8E","#7E4F78"], ink:["#1E2638","#353F5C"], sage:["#2A4F66","#2C5F6C"] };
+const m2Cap = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : "";
+const m2Lc = s => s ? s.charAt(0).toLowerCase()+s.slice(1) : "";
+const m2F = pid => { const p = DB.people[pid]; return p ? p.name.split(" ")[0] : ""; };
+const m2Esc = s => String(s==null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const m2Mis = id => DB.missions.find(x=>x.id===id);
+const m2On = () => typeof KEY_HIFI!=="undefined" && KEY_HIFI && STATE.member;
+const m2Tight = () => !!phone && (phone.clientWidth < 360 || phone.clientHeight <= 700);
+const m2Theme = m => (typeof mhLook==="function" ? mhLook(m).theme : "harbour");
+const m2Face = (pid, cls) => { const p = DB.people[pid]; if (!p) return ""; return `<div class="avatar ${cls||""}" data-phi="${p.initials}" aria-hidden="true">${p.initials}</div>`; };
+const m2You = cls => `<div class="avatar ${cls||""}" aria-hidden="true">${me().initials}</div>`;
+const m2Mark = (m, s) => typeof mhMark==="function" ? mhMark(m, s||24).replace('class="mh-mark', 'aria-hidden="true" class="mh-mark') : "";
+
+/* ---- the mission's rules (one config per mission; Edit mission writes it, the header reads it) ---- */
+function m2MonthName(iso){ const d = new Date(iso+"T00:00:00"); if (d.getDate() >= 21) d.setMonth(d.getMonth()+1, 1); return d.toLocaleDateString("en-US", { month:"long", year:"numeric" }); }
+function m2Cfg(id){
+  const C = STATE.m2.cfg; if (C[id]) return C[id];
+  const m = m2Mis(id); if (!m) return null;
+  const sents = ((m.brief||"").match(/[^.!?]+[.!?]+/g) || []).map(s=>s.trim()).filter(s=>!/^(Standing|No end date|Kai |Not set|Searching|Next search|Done when)/.test(s));
+  const doneS = ((m.brief||"").match(/Done when ([^.]+)\./) || [])[1];
+  const ask = (typeof ML_ASK!=="undefined" && ML_ASK[id] ? ML_ASK[id].replace(/^You're looking for/, "Looking for").replace(/^You want/, "Looking for") : sents[0]) || `${m.name}.`;
+  const ev = typeof mtLayer==="function" && mtLayer(m) || m.type==="Hosting";
+  const own = typeof miOwn==="function" && miOwn(m);
+  if (own && typeof miPlan==="function") miPlan(m);
+  const fams = (DB.families||[]).filter(f=>f.joined!==false && new RegExp(`\\b${f.name.split(" ")[0]}\\b`).test(m.brief||"")).map(f=>f.id);
+  C[id] = { ask, kind: m.standing ? "Standing" : ev ? "Event" : "Looking", done: m2Cap(doneS || m.done || ""), by: own && m.deadline ? m2MonthName(m.deadline) : null,
+    weeks: own && m.deadline ? miWeeks(m) : 0, week0: 0, month: own ? m.miMonth.n : 0, monthDone: 0, live: own,
+    must: (m.constraints||[]).slice(), mustOpts: [...new Set((m.constraints||[]).concat(["Remote OK","Senior or above"]))],
+    where: fams.length ? fams : ["xoogler"], checkin: ev ? "Two days before" : "Every Monday morning" };
+  return C[id];
+}
+const m2Week = (id, c) => c.week0 ? Math.min(c.weeks, c.week0 + (STATE.week||0)) : Math.min(miWeek(m2Mis(id)), c.weeks||1);
+const m2Done = (id, c) => c.week0 ? c.monthDone : (typeof miDone==="function" && m2Mis(id) ? Math.min(miDone(m2Mis(id)), c.month) : c.monthDone);
+const m2Outcome = c => c.kind==="Event" ? c.done : m2Cap(c.done.replace(/^You've /, ""));
+function m2Sync(id){ const m = m2Mis(id), c = m2Cfg(id); if (m && c) m.constraints = c.must.slice(); }
+
+/* ---- the story behind a mission: its paths and its one chat stream. A mission has one once the brief, an event or a suggestion started it ---- */
+const m2P = (id, pid, stage, sub, act, draft, x) => Object.assign({ id, pid, name: DB.people[pid] ? DB.people[pid].name : pid, ini: DB.people[pid] ? DB.people[pid].initials : "", stage, sub, act, draft }, x||{});
+function m2SeedM1(m){
+  const c = STATE.m2.cfg[m.id] = { ask:"Looking for a senior PM role at an AI company in the Bay Area.", kind:"Looking", done:"You've accepted an offer", by:"January 2027", weeks:12, week0:4,
+    month:6, monthDone:5, live:true, must:["Bay Area","AI company"], mustOpts:["Bay Area","AI company","Remote OK","Senior or above","Series B+"], where:["xoogler","michigan"], checkin:"Every Monday morning" };
+  m2Sync(m.id);
+  const paths = [
+    m2P("rahul","rahul","New pick","You've met 3 times this year. Can refer you at Anthropic","Say hi","Hi Rahul, hope the quarter's going well. I'm looking at the senior PM role on your team and I'd love your read on it before I apply.", { opp:"o1" }),
+    m2P("sana","sana","New pick","via Sana, who can vouch · Perplexity, agents team","Ask Sana to refer","Hi Sana, I saw the Senior PM, agents role on your team. Would you be willing to refer me? Happy to send anything that helps.", { name:"Senior PM, agents", ini:"P", sq:true, opp:"o3", to:"sana" }),
+    m2P("ravi","ravi","New pick","via Daniel · Not on Key. Daniel sends your note over","Ask Daniel","Hi Daniel, would you introduce me to Ravi? I'm going after a senior PM role at an AI company, and twenty minutes with Ravi would help a lot.", { opp:"o6", to:"chris" }),
+    m2P("maya","maya","In conversation","Said yes. Wants a call this week","Reply","Thursday 3pm or Friday 2pm works for me. Which suits you?"),
+    m2P("jordan","jordan","In conversation","Replied to your intro. Asked for your deck","Reply","Hi Jordan, great to hear from you. Here's the deck. Would Thursday or Friday work for a 20-minute call?"),
+    m2P("dev","dev","In conversation","Replied. Free Thursday for a coffee","Reply","Thursday works. 10am at Coupa on Ramona?"),
+    m2P("priti","priti","Waiting","Said hi on Tuesday. No reply yet","",""),
+    m2P("openai","tom","Set aside","Role closed Sep 28. OpenAI filled it","","", { name:"Senior PM, applied AI", ini:"O", sq:true, opp:"o5" }),
+    m2P("ana","ana","Went well","Final round done. Decision next week","","")
+  ];
+  const chat = [
+    { t:"day", x:"Three weeks ago" }, { t:"sys", who:"you", x:"You started this mission", time:"Sep 14" },
+    { t:"bot", x:"Here's the mission. Change any of it under Edit mission, or tell me here." },
+    { t:"day", x:"Last week" }, { t:"bot", x:"Week 3 check-in. You aimed for 6 real conversations this month and you're at 5. Two of them are final rounds." },
+    { t:"sys", who:"ana", x:"Ana's final round went well", time:"Fri" },
+    { t:"day", x:"Yesterday" }, { t:"sys", who:"maya", x:"Maya said yes. Wants a call this week", time:"Sun" },
+    { t:"bot", x:"Want me to draft a reply with two times?" }, { t:"chips", opts:["Draft it","Not now"], on:"Draft it", done:true, kind:"draft" },
+    { t:"draft", path:"maya", text:"Thursday 3pm or Friday 2pm works for me. Which suits you?" },
+    { t:"day", x:"Today" }, { t:"sys", who:"maya", x:"Call with Maya, tomorrow 10am · from your calendar", time:"9:00" },
+    { t:"bot", k:"prep", x:"Prep for tomorrow: Maya's team is hiring its first PM, and Ana's final round last week was with a platform team. Worth raising the agents launch you shipped in May. Want a one-page version?" },
+    { t:"chips", opts:["Yes, one page","Fine as is"], kind:"prep" }
+  ];
+  const sc = STATE.m2.sc;
+  if (sc==="normal") chat.push({ t:"bot", x:"Overnight pass. 3 new picks from 41 roles. Rahul first. Rahul can refer you at Anthropic and the role closes Friday." }, { t:"turn", cards:["rahul"], more:["sana","ravi"] });
+  if (sc==="quiet") chat.push({ t:"bot", x:"Nothing cleared the bar this week. 41 roles read, none fit both must-haves. Priti is quiet for 5 days. Widen to remote roles?" }, { t:"chips", opts:["Widen it","Keep as is"], kind:"widen" });
+  if (sc==="checkin") chat.push({ t:"sys", who:"rahul", x:"Rahul, quiet for 5 days", time:"Now" }, { t:"bot", x:"Anything from Rahul, or should I ask Sana for a second way in?" }, { t:"chips", opts:["Rahul replied","Nothing yet","Find another way"], kind:"rahul" });
+  STATE.m2.story[m.id] = { paths, chat };
+}
+function m2Story(id){
+  const S = STATE.m2.story; if (S[id]) return S[id];
+  const m = m2Mis(id); if (m && m.id==="m1" && m.type==="Looking" && DB.people.jordan) { m2SeedM1(m); return S[id]; }
+  return null;
+}
+const m2Path = (id, pid) => { const s = m2Story(id); return s && s.paths.find(p=>p.id===pid); };
+const m2Ui = id => STATE.m2.ui[id] = STATE.m2.ui[id] || { tab:"paths", dot:false };
+function m2Say(id, e){ const s = m2Story(id), u = m2Ui(id); if (!s) return; s.chat.push(e); if (u.tab!=="chat" || STATE.screen!=="mission:"+id) u.dot = true; }
+const m2Group = st => (M2_GROUPS.find(g=>g[1].includes(st))||[])[0];
+
+/* ---- 1. Home: Kai's ink card goes; the welcome card logic before it stays ---- */
+if (typeof miNote==="function") miNote = function(){ return ""; };
+
+/* ---- KeyMissionSuggestion: one component wherever a mission can start ---- */
+function m2Sug(o){
+  return `<div class="m2-sug" data-kc="KeyMissionSuggestion" data-kv="surface=neutral"><div class="m2-sgt"><span class="m2-sgm" aria-hidden="true">${LI(o.icon||"users",22)}</span><h3>${o.title}</h3></div>
+    <p class="m2-sgw">${o.why}</p>${o.faces ? `<div class="m2-sgf"><span class="m2-fs">${o.faces.map(p=>m2Face(p,"m2-a32")).join("")}</span><b>${o.who}</b></div>` : ""}
+    <div class="m2-sga"><button type="button" class="btn m2-b" onclick="${o.go}">${o.start||"Start"}</button><button type="button" class="btn sec m2-b" onclick="${o.no}">Not this</button></div></div>`;
+}
+const m2IdeaRow = (icon, a, b, go) => `<button type="button" class="m2-ir" onclick="${go}"><span class="m2-irm" aria-hidden="true">${LI(icon,20)}</span><span class="m2-irt"><b>${a}</b><span>${b}</span></span><span class="m2-irc" aria-hidden="true">${LI("chevron-right",18)}</span></button>`;
+
+/* a new mission: its plate, its card on Home, its own story */
+function m2NewMission(o){
+  const id = "mx" + (++STATE.m2.n);
+  const m = { id, type:o.type, name:o.name, brief:`${o.cfg.ask} Done when ${m2Lc(o.cfg.done)}.`, done:o.cfg.done, standing:o.cfg.kind==="Standing", status:"active", constraints:o.cfg.must.slice(), mhTheme:o.theme, mhIcon:o.icon, m2:true, started:true };
+  const at = DB.missions.findIndex(x=>x.status==="active"); DB.missions.splice(at < 0 ? 0 : at+1, 0, m);
+  STATE.m2.cfg[id] = Object.assign({ week0:1, weeks:0, monthDone:0, live:false, mustOpts:o.cfg.must.slice() }, o.cfg);
+  STATE.m2.story[id] = { paths:o.paths||[], chat:o.chat||[{ t:"day", x:"Today" }, { t:"sys", who:"you", x:"You started this mission", time:"Now" }, { t:"bot", x:"Here's the mission. Change any of it under Edit mission, or tell me here." }] };
+  STATE.m2.home = STATE.m2.home || {}; STATE.m2.home[id] = o.home || null;
+  return m;
+}
+function m2StartDinner(){
+  if (DB.missions.some(x=>x.m2 && x.name==="People to meet at Thursday's dinner")) return;
+  m2NewMission({ type:"Hosting", theme:"dusk", icon:"utensils", name:"People to meet at Thursday's dinner", home:{ pill:"New", goal:["0 of 3 met", 0, "Thursday"], face:null, sum:"Kai drafts the intros" },
+    cfg:{ ask:"Meet the people at the AI builders dinner on Thursday who hire PMs, before the dinner.", kind:"Event", done:"You've met the people worth meeting", by:"Thursday", month:3, must:["Hires PMs"], where:["xoogler"], checkin:"The day before" } });
+}
+function m2StartClose(){
+  if (DB.missions.some(x=>x.m2 && x.name==="Stay close to the people you've worked with")) return;
+  const P = (pid, sub, d) => m2P(pid, pid, "New pick", sub, "Say hi", d);
+  m2NewMission({ type:"Network", theme:"harbour", icon:"users", name:"Stay close to the people you've worked with", home:{ pill:"3 new", goal:["0 of 3", 0, "This month"], face:"priti", sum:"Start with Priti" },
+    cfg:{ ask:"Stay close to the people you've worked with.", kind:"Standing", done:"It keeps going until you stop it", by:null, month:3, must:["Worked together"], where:["xoogler"], checkin:"Every two weeks" },
+    paths:[P("priti","Seven months since you talked. Just started hiring","Hi Priti, it's been too long. Saw you're hiring, how's the new team?"), P("ana","Worked together at Google. Met twice this year","Hi Ana, good to see you at the dinner. Coffee soon?"), P("dev","Greeted together in #introductions","Hi Dev, how's the new company going?")] });
+}
+
+/* ---- 2. The brief: one story deck ---- */
+function m2DeckItems(){
+  const sc = STATE.m2.sc, its = [{ t:"open" }];
+  if (sc!=="quiet") its.push({ t:"item", pid:"jordan", why:"Replied to your intro and asked for your deck." }, { t:"item", pid:"dev", why:"Replied. Free Thursday for a coffee near Palo Alto." });
+  if (sc==="checkin") its.push({ t:"ask" });
+  if (sc!=="quiet") its.push({ t:"prep" });
+  if (sc==="normal") its.push({ t:"suggest" }, { t:"item", pid:"rahul", open:true, why:"You've met 3 times this year. Rahul can refer you at Anthropic, and the role closes Friday." });
+  its.push({ t:"end" });
+  return its;
+}
+const m2DeckM = () => DB.missions.find(x=>x.id==="m1" && m2Story("m1"));
+function m2DeckOpen(from){
+  const m = m2DeckM(); if (!m) return;
+  STATE.m2.deck = { i:0, sent:{}, drafts:{}, back: from || null }; STATE.sheet = null; render();
+}
+function m2DeckClose(){ const D = STATE.m2.deck; STATE.m2.deck = null; render(); const b = phone.querySelector("#brEntry"); if (b) b.focus({ preventScroll:true }); return D; }
+function m2DeckGo(d){ const D = STATE.m2.deck; if (!D) return; const n = m2DeckItems().length; D.i = Math.max(0, Math.min(n-1, D.i + d)); STATE.m2.dfocus = true; render(); }
+function m2DeckSend(pid){
+  const D = STATE.m2.deck, m = m2DeckM(); if (!D || !m) return;
+  const p = m2Path(m.id, pid); D.sent[pid] = true;
+  if (p) p.stage = "Waiting";
+  m2Say(m.id, { t:"sys", who:pid, x:`Sent to ${m2F(pid)} from your brief`, time:"Now" });
+  STATE.m2.dfocus = true; render();
+}
+function m2DeckPrep(){ const m = m2DeckM(); STATE.m2.deck = null; STATE.m2.deckDone = true; const u = m2Ui(m.id); u.tab = "chat"; u.dot = false; u.focus = "prep"; STATE.m2.last = "mission:"+m.id; go("mission:"+m.id); }
+function m2DeckStart(){ m2StartDinner(); toast("Started. It's on Home as a mission."); m2DeckGo(1); }
+function m2DeckAsk(c){
+  const m = m2DeckM(), p = m && m2Path(m.id, "rahul");
+  if (c==="Rahul replied" && p) { p.stage = "In conversation"; m2Say(m.id, { t:"bot", x:"Good. Moved Rahul to In conversation. Tell me what Rahul said when you can." }); }
+  else if (c==="Nothing yet") m2Say(m.id, { t:"bot", x:"I'll give it till Thursday, then ask Sana for a second way in." });
+  else m2Say(m.id, { t:"bot", x:"I'll draft a note to Sana for a second way in. It goes when you send it." });
+  m2DeckGo(1);
+}
+function m2Opening(){
+  const sc = STATE.m2.sc;
+  if (sc==="quiet") return ["Nobody is waiting on you.", "Three weeks in, <b>two final rounds</b>. Priti has been quiet for five days, so I'll find a second way in if nothing comes by Thursday. I'm reading 41 new roles in your families tonight.", "See what came back"];
+  if (sc==="checkin") return ["Rahul went quiet.", "You said hi on Thursday and nothing came back. That happens. I have a question for you, then <b>Jordan</b> and <b>Dev</b> are waiting with replies.", "Start"];
+  return ["Three weeks in, two final rounds.", "That's fast for a senior role. <b>Jordan</b> and <b>Dev</b> replied, and <b>Rahul</b> can refer you at Anthropic today. Three things, about four minutes.", "Start"];
+}
+function m2DeckHTML(){
+  const D = STATE.m2.deck, m = m2DeckM(); if (!D || !m) return "";
+  const its = m2DeckItems(), n = its.length, i = Math.min(D.i, n-1), it = its[i];
+  const day = new Date().toLocaleDateString("en-US", { weekday:"long" });
+  const kai = (t) => `<div class="m2-dk"><span class="m2-dkd" aria-hidden="true">${kaiMark(24)}</span><span>${t}</span></div>`;
+  const from = `<span class="m2-dfrom">${m2Mark(m, 24)}<span>${m.name}</span></span>`;
+  const people = its.filter(x=>x.t==="item").map(x=>x.pid);
+  const count = withFaces => `<div class="m2-dn"><span>${i+1} of ${n}</span>${withFaces ? `<span aria-hidden="true">·</span><span class="m2-fs">${people.map(p=>m2Face(p,"m2-a24")).join("")}</span>` : ""}</div>`;
+  let h = "";
+  if (it.t==="open") { const [hd, p, b] = m2Opening(); h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">${hd}</h2><p class="m2-dp">${p}</p><div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckGo(1)">${b}</button></div>`; }
+  else if (it.t==="item") {
+    const p = DB.people[it.pid], F = m2F(it.pid), sent = D.sent[it.pid], path = m2Path(m.id, it.pid), draft = D.drafts[it.pid] != null ? D.drafts[it.pid] : (path ? path.draft : "");
+    h = `<div class="m2-dk">${m2Face(it.pid,"m2-a32")}<span>${p.name}</span></div><h2 class="m2-dh" id="m2-dh">${sent ? `Sent to ${F}` : it.open ? `${F} can refer you` : `${F} is waiting on you`}</h2><p class="m2-dp">${it.why}</p>${from}
+      ${sent ? `<div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckGo(1)">Next</button></div>`
+      : `<div class="m2-dd"><label class="m2-ddl" for="m2-dta">${LI("pencil",16)}<span>Kai's draft · you can edit it</span></label><textarea id="m2-dta" class="m2-dta" rows="3" data-m2draft="${it.pid}">${m2Esc(draft)}</textarea></div>
+        <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckSend('${it.pid}')">${it.open ? "Say hi" : "Send"}</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Not now</button></div>`}${count(true)}`;
+  }
+  else if (it.t==="prep") h = `<div class="m2-dk">${m2Face("maya","m2-a32")}<span>Maya Chen</span></div><h2 class="m2-dh" id="m2-dh">Maya, tomorrow 10am</h2>
+      <p class="m2-dp">From your calendar. Maya's team is hiring its first PM, and Maya asked for a call after Daniel's intro. Two things worth raising: the agents launch you shipped in May, and the platform questions from Ana's final round last week.</p>${from}
+      <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckPrep()">Open the prep</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Got it</button></div>${count(false)}`;
+  else if (it.t==="suggest") h = `${kai("Kai suggests a mission")}<h2 class="m2-dh" id="m2-dh">People to meet at Thursday's dinner</h2>
+      <p class="m2-dp">You're going to the AI builders dinner on Thursday. Some of the people going hire PMs. I'd introduce you to them before Thursday so it isn't cold.</p>
+      <span class="m2-dfrom"><span class="m2-dfm" aria-hidden="true">${LI("utensils",14)}</span><span>From your RSVP</span></span>
+      <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckStart()">Start it</button><button type="button" class="m2-bg" onclick="m2DeckGo(1)">Not this</button></div>${count(false)}`;
+  else if (it.t==="ask") h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">Anything from Rahul?</h2><p class="m2-dp">If Rahul replied outside Key, tell me and I'll move the path along. If not, I can ask Sana for a second way in.</p>${from}
+      <div class="m2-da">${["Rahul replied","Nothing yet","Find another way"].map((c,k)=>`<button type="button" class="${k ? "m2-bg" : "m2-bw"}" onclick="m2DeckAsk('${c}')">${c}</button>`).join("")}</div>${count(false)}`;
+  else {
+    const k = Object.keys(D.sent).length, word = ["","One","Two","Three","Four"][k] || String(k);
+    const pts = [[50,58],[22,26],[80,22],[72,88]], who = ["maya","jordan","ana"].filter(p=>DB.people[p]).slice(0,3);
+    h = `${kai("Kai")}<h2 class="m2-dh" id="m2-dh">${k ? `${word} sent. ` : ""}Nothing else needs you.</h2><p class="m2-dp">What came back while you were away.</p>
+      <div class="m2-cn" role="img" aria-label="You, ${who.map(p=>DB.people[p].name).join(", ")}"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${who.map((p,j)=>`<line x1="50" y1="58" x2="${pts[j+1][0]}" y2="${pts[j+1][1]}"/>`).join("")}</svg>
+        <span class="m2-cnn m2-cny" style="left:50%;top:58%" aria-hidden="true">You</span>${who.map((p,j)=>`<span class="m2-cnn" style="left:${pts[j+1][0]}%;top:${pts[j+1][1]}%" aria-hidden="true">${m2Face(p,"m2-a40")}</span>`).join("")}</div>
+      <div class="m2-dr">${[[m2Face("maya","m2-a32"),"Maya said yes to a call","Yesterday"],[m2Face("ana","m2-a32"),"Ana's final round went well","Friday"],[`<span class="m2-dkd" aria-hidden="true">${kaiMark(32)}</span>`,"Kai read 41 roles, kept 3","Overnight"]].map(([f,t,w])=>`<div class="m2-drw">${f}<span>${t}</span><small>${w}</small></div>`).join("")}</div>
+      <div class="m2-da"><button type="button" class="m2-bw m2-grow" onclick="m2DeckDone()">Done</button></div>`;
+  }
+  return `<div class="m2-deck" role="dialog" aria-modal="true" aria-label="Your brief" data-kc="KeyStoryViewer" data-kv="cards=${n}, at=${i+1}">
+    <div class="m2-bars" aria-hidden="true">${its.map((_,k)=>`<i class="${k<=i?"on":""}"></i>`).join("")}</div>
+    <div class="m2-dhd"><span class="m2-dkd" aria-hidden="true">${kaiMark(28)}</span><span class="m2-dht">Your brief · ${day}</span><button type="button" class="m2-x" onclick="m2DeckClose()" aria-label="Close the brief">${LI("x",24)}</button></div>
+    <div class="m2-dsky" aria-hidden="true"></div>
+    <div class="m2-db m2-scroll" data-m2s="deck"><div class="m2-dc" data-kind="${it.t}" data-kc="KeyStoryCard" data-kv="kind=${it.t}">${h}</div></div></div>`;
+}
+function m2DeckDone(){ STATE.m2.deckDone = true; STATE.m2.deck = null; if (STATE.screen!=="home") go("home"); else render(); }
+/* the brief opens from Home's Start your brief, and anywhere the old brief opened */
+brOpen = function(from){ m2DeckOpen(from); };
+document.addEventListener("input", e=>{ const t = e.target; if (!t || !t.dataset) return;
+  if (t.dataset.m2draft && STATE.m2.deck) STATE.m2.deck.drafts[t.dataset.m2draft] = t.value;
+  if (t.dataset.m2f) { const c = STATE.m2.ed && m2Cfg(STATE.m2.ed.id); if (c) c[t.dataset.m2f] = t.dataset.m2f==="done" ? m2Cap(t.value) : t.value; }
+  if (t.dataset.m2dt) { const [id, k] = t.dataset.m2dt.split("|"), s = m2Story(id), e2 = s && s.chat[+k]; if (e2) e2.text = t.value; }
+});
+/* swipe or tap the sky to move through the deck; arrows and Escape on a keyboard */
+(function(){
+  let x0 = null, y0 = 0;
+  document.addEventListener("pointerdown", e=>{ if (!e.target.closest || !e.target.closest(".m2-deck") || e.target.closest("button, textarea, a")) { x0 = null; return; } x0 = e.clientX; y0 = e.clientY; }, true);
+  document.addEventListener("pointerup", e=>{ if (x0==null || !STATE.m2.deck) return; const dx = e.clientX - x0, dy = e.clientY - y0; const t = e.target; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { m2DeckGo(dx < 0 ? 1 : -1); return; }
+    if (Math.abs(dx) < 8 && Math.abs(dy) < 8 && t.closest && t.closest(".m2-dsky")) { const r = phone.getBoundingClientRect(); m2DeckGo(e.clientX - r.left < r.width/3 ? -1 : 1); } }, true);
+  document.addEventListener("keydown", e=>{
+    if (STATE.m2.deck && phone.querySelector(".m2-deck")) {
+      if (e.key==="Escape") { e.preventDefault(); m2DeckClose(); return; }
+      if (e.target.matches && e.target.matches("textarea")) return;
+      if (e.key==="ArrowRight") { e.preventDefault(); m2DeckGo(1); } else if (e.key==="ArrowLeft") { e.preventDefault(); m2DeckGo(-1); }
+      else if (e.key==="Tab") { const f = [...phone.querySelectorAll(".m2-deck button, .m2-deck textarea")], k = f.indexOf(document.activeElement);
+        if (e.shiftKey && k<=0) { e.preventDefault(); f[f.length-1].focus(); } else if (!e.shiftKey && k===f.length-1) { e.preventDefault(); f[0].focus(); } }
+      return;
+    }
+    if (e.key==="Escape" && STATE.m2.evd && phone.querySelector(".m2-evd")) { e.preventDefault(); m2EvClose(); }
+    else if (e.key==="Escape" && STATE.m2.ed && phone.querySelector(".m2-ed") && !(e.target.matches && e.target.matches("textarea"))) { e.preventDefault(); m2EdBack(); }
+  });
+})();
+
+/* ---- 3. The mission page ---- */
+function m2Tab(id, t){ const u = m2Ui(id); if (u.tab===t) { u.toEnd = t==="chat"; u.toTop = t==="paths"; render(); return; } u.tab = t; if (t==="chat") u.dot = false; u.toEnd = t==="chat"; u.toTop = t==="paths"; render(); }
+function m2TabsHTML(id){
+  const u = m2Ui(id), tab = u.tab;
+  return `<div class="ml-seg m2-seg" role="tablist" aria-label="Mission">${[["paths","Paths"],["chat","Chat"]].map(([k,l])=>`<button type="button" role="tab" id="m2t-${k}" aria-selected="${k===tab}" class="${k===tab?"on":""}" onclick="m2Tab('${id}','${k}')">${l}${k==="chat" && u.dot && tab!=="chat" ? `<i class="m2-dot" aria-label="New"></i>` : ""}</button>`).join("")}</div>`;
+}
+/* the live line, while a pass is due or running; the mission speaks, so it starts with the verb */
+function m2LiveHTML(m){
+  if (typeof miPass!=="function") return ""; const t = miPass(m); if (!t) return "";
+  return `<div class="mi-live m2-live" role="status" data-kc="KeyLiveLine"><i class="mi-li" aria-hidden="true">${LI("scan-search",16)}</i><span>${t.replace(/^Kai is reading/, "Reading").replace(/<span class="mi-lw">/, "<span>")}</span></div>`;
+}
+function m2CardHTML(m, p, o){
+  o = o || {}; const lab = o.lab || p.stage, now = /New pick|Next step|Draft/.test(lab);
+  const a = p.sq ? `<div class="avatar gp-44 mh-sq" aria-hidden="true">${p.ini}</div>` : `<div class="avatar gp-44" data-phi="${p.ini}" aria-hidden="true">${p.ini}</div>`;
+  let b = "";
+  if (o.draft) b = o.sent ? "" : `<button type="button" class="mini" onclick="m2DraftSend('${m.id}',${o.li})">Send</button><button type="button" class="mini sec" onclick="m2DraftEdit('${m.id}',${o.li})">${o.edit ? "Done" : "Edit"}</button>`;
+  else if (p.stage==="In conversation") b = `<button type="button" class="mini" onclick="m2Act('${m.id}','${p.id}')">Reply</button>`;
+  else if (p.stage==="Waiting") b = `<button type="button" class="mini sec" onclick="m2Act('${m.id}','${p.id}')">Draft a nudge</button>`;
+  else if (p.stage==="Set aside") b = `<button type="button" class="mini sec" onclick="m2Close('${m.id}','${p.id}')">Close path</button>`;
+  else if (m2Group(p.stage)==="Needs you" && p.act) b = `<button type="button" class="mini" onclick="m2Act('${m.id}','${p.id}')">${p.act}</button>`;
+  const sub = o.draft && o.edit ? `<textarea class="m2-dte" rows="3" data-m2dt="${m.id}|${o.li}" aria-label="Your note to ${m2Esc(p.name)}">${m2Esc(o.text)}</textarea>` : m2Esc(o.draft ? o.text : p.sub);
+  return `<div class="mt-card m2-card${o.inset ? " m2-in" : ""}" data-m2p="${p.id}" data-kc="KeyOpportunityCard" data-kv="stage=${lab}"><div class="row rowitem mt-row">${a}<div class="m"><div class="a">${m2Esc(p.name)}</div><div class="b">${sub}</div></div>${b ? `<div class="r">${b}</div>` : ""}<span class="mt-lab m2-lab${now ? " now" : ""}">${lab}</span></div></div>`;
+}
+function m2PathsHTML(m){
+  const s = m2Story(m.id), ps = s.paths.filter(p=>M2_FIX.includes(p.stage));
+  let h = m2LiveHTML(m);
+  M2_GROUPS.forEach(([g, sts])=>{ const l = ps.filter(p=>sts.includes(p.stage)); if (!l.length) return;
+    h += `<section class="m2-grp" aria-label="${g}"><h3 class="m2-gh">${g}<b>${l.length}</b></h3>${l.map(p=>m2CardHTML(m, p)).join("")}</section>`; });
+  if (!ps.length) h += `<p class="m2-empty">Nothing open yet.</p>`;
+  return `<div class="mh-pane mt-out m2-pane m2-paths" data-tab="paths" role="tabpanel" aria-labelledby="m2t-paths">${h}</div>`;
+}
+function m2ChatHTML(m){
+  const s = m2Story(m.id), whoFace = w => w==="you" ? m2You("m2-a32") : w==="mark" ? m2Mark(m, 24) : m2Face(w, "m2-a32");
+  const rows = s.chat.map((e, li)=>{
+    if (e.t==="day") return `<div class="m2-day"><span>${e.x}</span></div>`;
+    if (e.t==="sys") return `<div class="m2-sys">${whoFace(e.who)}<span class="m2-sx">${e.x}</span>${e.time ? `<span class="m2-st">${e.time}</span>` : ""}</div>`;
+    if (e.t==="bot") return `<div class="m2-bot"${e.k ? ` data-k="${e.k}"` : ""} data-kc="KeyMessageBubble" data-kv="from=mission">${m2Mark(m, 24)}<p>${e.x}</p></div>`;
+    if (e.t==="me") return `<div class="ks-u mt-u m2-me" data-kc="KeyMessageBubble" data-kv="from=you">${m2Esc(e.x)}</div>`;
+    if (e.t==="chips") return `<div class="m2-chips" role="group">${e.opts.map(c=>`<button type="button" class="${e.on===c ? "on" : ""}" aria-pressed="${e.on===c}" ${e.done ? "disabled" : ""} onclick="m2Chip('${m.id}',${li},'${c}')">${c}</button>`).join("")}</div>`;
+    if (e.t==="turn") { const c = id => s.paths.find(p=>p.id===id && M2_FIX.includes(p.stage)); const first = e.cards.map(c).filter(Boolean), more = e.more.map(c).filter(Boolean);
+      return `<div class="m2-turn">${first.map(p=>m2CardHTML(m, p, { inset:true })).join("")}${e.open ? more.map(p=>m2CardHTML(m, p, { inset:true })).join("") : more.length ? `<button type="button" class="m2-fold" aria-expanded="false" onclick="m2Fold('${m.id}',${li})"><span>See ${more.length} more</span>${LI("chevron-down",18)}</button>` : ""}</div>`; }
+    if (e.t==="draft") { const p = s.paths.find(x=>x.id===e.path); if (!p) return "";
+      return e.sent ? `<div class="m2-sys">${p.sq ? m2Mark(m, 24) : m2Face(p.pid, "m2-a32")}<span class="m2-sx">${e.sentx || `Sent to ${m2F(p.to || p.pid)}`}</span><span class="m2-st">Now</span></div>`
+        : m2CardHTML(m, p, { inset:true, draft:true, text:e.text, edit:e.edit, li, lab:"Draft" }); }
+    return "";
+  }).join("");
+  return `<div class="mh-pane mt-out m2-pane m2-chat" data-tab="chat" role="tabpanel" aria-labelledby="m2t-chat"><div class="m2-thread" aria-live="polite">${rows}</div></div>`;
+}
+/* a pick's action puts the note in Chat as a draft card; it goes on Send */
+function m2Act(id, pid){
+  const s = m2Story(id), p = m2Path(id, pid); if (!s || !p) return;
+  let k = s.chat.findIndex(e=>e.t==="draft" && e.path===pid && !e.sent);
+  if (k < 0) { const nudge = p.stage==="Waiting", F = m2F(p.to || p.pid);
+    s.chat.push({ t:"draft", path:pid, text: nudge ? `Hi ${F}, just floating this back up in case it slipped. No rush at all.` : p.draft || `Hi ${F}, `, nudge, invite: p.act==="Invite" }); }
+  const u = m2Ui(id); u.tab = "chat"; u.dot = false; u.toEnd = true; render();
+}
+function m2DraftEdit(id, li){ const s = m2Story(id), e = s && s.chat[li]; if (!e || e.sent) return; const ta = phone.querySelector(`[data-m2dt="${id}|${li}"]`); if (ta) e.text = ta.value; e.edit = !e.edit; STATE.m2.refocus = e.edit ? `[data-m2dt="${id}|${li}"]` : null; render(); }
+function m2DraftSend(id, li){
+  const s = m2Story(id), e = s && s.chat[li]; if (!e || e.sent) return; const ta = phone.querySelector(`[data-m2dt="${id}|${li}"]`); if (ta && ta.value.trim()) e.text = ta.value.trim();
+  const p = m2Path(id, e.path), F = p ? m2F(p.to || p.pid) : ""; e.sent = true; e.edit = false;
+  if (p) { p.stage = "Waiting"; if (e.invite) p.sub = "Invited just now. No answer yet"; }
+  if (e.invite) e.sentx = `You invited ${F}`; else if (e.nudge) e.sentx = `You nudged ${F}`;
+  m2Ui(id).toEnd = true; toast(e.invite ? `Invited. ${F} moved to Waiting.` : `Sent to ${F}.`);
+}
+function m2Close(id, pid){ const p = m2Path(id, pid); if (!p) return; p.stage = "closed"; m2Say(id, { t:"sys", who: p.sq ? "mark" : p.pid, x:`You closed ${p.name}`, time:"Now" }); toast("Closed. It stays in the chat."); }
+function m2Fold(id, li){ const s = m2Story(id), e = s && s.chat[li]; if (e) { e.open = true; render(); } }
+function m2Chip(id, li, c){
+  const s = m2Story(id), e = s && s.chat[li]; if (!e || e.done) return; e.on = c; e.done = true;
+  const say = x => s.chat.push({ t:"bot", x });
+  if (e.kind==="prep") say(c==="Yes, one page" ? "Done. The one page is here an hour before the call." : "Okay. I'll ask how it went tomorrow afternoon.");
+  else if (e.kind==="widen") { if (c==="Widen it") { const cf = m2Cfg(id); cf.must = cf.must.filter(x=>x!=="Bay Area"); if (!cf.must.includes("Remote OK")) cf.must.push("Remote OK"); m2Sync(id); say("Done. Remote roles are in. Edit mission shows the change, and I'll run a pass tonight."); } else say("Keeping it as is. I'll check again Thursday."); }
+  else if (e.kind==="rahul") { const p = m2Path(id, "rahul"); if (c==="Rahul replied") { if (p) p.stage = "In conversation"; say("Good. Moved Rahul to In conversation. Tell me what Rahul said when you can."); } else if (c==="Nothing yet") say("I'll give it till Thursday, then ask Sana for a second way in."); else say("I'll draft a note to Sana for a second way in. It goes when you send it."); }
+  else say("Noted.");
+  m2Ui(id).toEnd = true; render();
+}
+/* what you type: a rule goes to Edit mission as a proposal; a low moment gets the encouragement as built (miEnc) with its draft; the rest is logged here */
+const M2_RULE = /\b(only|never|skip|remote|no more|stop looking|exclude|don't want)\b/i;
+function m2Prop(id, v){
+  const c = m2Cfg(id);
+  if (/march|till|until|more time|extend|later/i.test(v)) return { h:`<b>By when</b> moves from ${c.by || "no deadline"} to <b>March 2027</b>, 20 weeks. This month stays at ${c.month} conversations.`, k:"by", v:"March 2027" };
+  if (/remote/i.test(v)) return { h:"Add <b>Remote OK</b> to must-haves and drop <b>Bay Area</b>? Remote roles come in from the next pass.", k:"remote" };
+  if (/no deadline|open.?ended|standing/i.test(v)) return { h:"Remove the deadline. The mission keeps going until it's done or you stop it. The Home card shows this month instead of the week.", k:"by", v:"No deadline" };
+  if (M2_RULE.test(v)) return { h:`Add <b>${m2Esc(m2Cap(v.replace(/[.!?]+$/, "")))}</b> to must-haves? It changes what clears the bar from the next pass.`, k:"must", v:m2Cap(v.replace(/[.!?]+$/, "")) };
+  return { h:`I read that as a change to the ask: "<b>${m2Esc(v)}</b>". Replace the current ask with it?`, k:"ask", v };
+}
+const _m2Send = mtSend;
+mtSend = function(id){
+  const ta = phone.querySelector(".mt-comp #mupd"), v = ta ? ta.value.trim() : "", s = m2Story(id), u = m2Ui(id), m = m2Mis(id);
+  if (!v) return;
+  if (!s) { u.tab = "chat"; u.toEnd = true; return _m2Send.apply(this, arguments); }
+  ta.value = ""; if (STATE.mtDraft) delete STATE.mtDraft[id];
+  s.chat.push({ t:"me", x:v });
+  const t = m2Cap(v), enc = typeof mtAnswer==="function" && miOwn(m) && MI_LOW.test(t) ? mtAnswer(m, t) : null;
+  if (M2_RULE.test(v) && !(enc && enc.x && enc.x.act==="miEnc")) { STATE.m2.cfg[id] && (STATE.m2.prop = Object.assign({ id }, m2Prop(id, v))); s.chat.push({ t:"bot", x:"That's a change to the mission. I've put it under Edit mission for you to apply." }); }
+  else if (enc && enc.x && enc.x.act==="miEnc") {
+    s.chat.push({ t:"bot", x:enc.text }); if (enc.x.move) s.chat.push({ t:"bot", x:enc.x.move.replace(/\s*I wrote a note:$/, " Here's a note, it goes when you send it.") });
+    const p = enc.x.mo && s.paths.find(q=>q.opp===enc.x.mo && M2_FIX.includes(q.stage));
+    if (p && enc.x.text) s.chat.push({ t:"draft", path:p.id, text:enc.x.text });
+    if (enc.x.follow) s.chat.push({ t:"bot", x:enc.x.follow });
+  }
+  else if (/\b(who|first|start|next|should i)\b/i.test(v)) { const p = s.paths.find(q=>m2Group(q.stage)==="Needs you"); s.chat.push({ t:"bot", x: p ? `${p.sq ? p.name : m2F(p.pid)} first. ${p.sub}.` : "Nobody needs you right now. I'll bring the next pick here." }); }
+  else s.chat.push({ t:"bot", x:"Logged. It's in this chat, and the card will show it." });
+  u.tab = "chat"; u.dot = false; u.toEnd = true; render();
+};
+/* the hero's pencil, the ask, every chip and the mission row open Edit mission at the matching row; the rest of the old ways in do too */
+mlBriefEdit = function(id){ m2Edit(id, "ask"); };
+mlRules = function(id){ m2Edit(id, null); };
+if (typeof miGoalEdit==="function") miGoalEdit = function(id){ m2Edit(id, "month"); };
+if (typeof miRecapChange==="function") miRecapChange = function(id){ STATE.miRc = null; STATE.m2.last = "mission:"+id; go("mission:"+id); m2Edit(id, "month"); };
+mtOpen = function(id, on){ if (on) { const u = m2Ui(id); u.tab = "chat"; u.dot = false; u.toEnd = true; STATE.mtFocus = id; render(); } };
+function m2Hero(band, m){
+  const c = m2Cfg(m.id); if (!c) return;
+  const brief = band.querySelector(".ml-brief");
+  if (brief) { const t = `${c.ask} ${c.done ? `Done when ${m2Lc(c.done)}.` : ""}`.trim(); brief.querySelector("p").textContent = t; brief.setAttribute("onclick", `m2Edit('${m.id}','ask')`); brief.setAttribute("aria-label", `${t} Edit mission`); }
+  const rules = band.querySelector(".ml-rules");
+  if (rules) {
+    const fams = c.where.map(f=>(DB.families||[]).find(x=>x.id===f)).filter(Boolean);
+    rules.innerHTML = c.must.map(x=>`<button type="button" class="ml-rule m2-r" onclick="m2Edit('${m.id}','must')" aria-label="Must have: ${m2Esc(x)}">${LI("check",14)}<span>${m2Esc(x)}</span></button>`).join("")
+      + `<button type="button" class="ml-rule m2-r m2-rw" onclick="m2Edit('${m.id}','where')" aria-label="Where Kai looks: ${fams.map(f=>f.name).join(", ")}"><span class="m2-fms" aria-hidden="true">${fams.map(f=>`<i class="m2-fm">${f.name.charAt(0)}</i>`).join("")}</span><span>Where Kai looks</span></button>`
+      + `<button type="button" class="ml-rule m2-r m2-rc" onclick="m2Edit('${m.id}','checkin')" aria-label="Check-ins: ${c.checkin}">${LI("calendar",14)}<span>${c.checkin.split(" ").slice(0,2).join(" ")}</span></button>`;
+  }
+  const gr = band.querySelector(".mi-gr");
+  if ((gr || STATE.m2.story[m.id]) && c.month) {
+    const done = m2Done(m.id, c), wk = c.weeks ? m2Week(m.id, c) : 0, ev = c.kind==="Event", tight = m2Tight();
+    const half = (key, k, v, pct, say) => `<button type="button" class="mi-gh m2-gh" onclick="m2Edit('${m.id}','${key}')" aria-label="${say}. Edit mission"><span class="mi-gk">${k}</span><b>${v}</b>${pct==null ? "" : `<i class="mi-tr" aria-hidden="true"><s style="width:${pct}%"></s></i>`}</button>`;
+    const left = ev ? half("month", "Said yes", `${done} of ${c.month}`, Math.round(100*done/c.month), `Said yes: ${done} of ${c.month}`)
+      : half("month", "This month", `${done} of ${c.month}${tight ? "" : " conversations"}`, Math.round(100*done/c.month), `This month: ${done} of ${c.month} conversations`);
+    const right = c.by ? half("by", `By ${ev ? c.by : c.by.split(" ")[0]}`, m2Outcome(c), ev ? 50 : Math.round(100*wk/c.weeks), `By ${c.by}: ${m2Lc(m2Outcome(c))}`)
+      : half("by", "No deadline", m2Outcome(c), null, `No deadline: ${m2Lc(m2Outcome(c))}`);
+    const row = `<div class="mi-gr m2-gr" data-kc="KeyGoalRow" data-kv="halves=2">${left}${right}</div>`;
+    if (gr) gr.outerHTML = row; else (rules || brief || band.lastElementChild).insertAdjacentHTML("afterend", row);
+  }
+}
+/* a mission without a story of its own (the event and family missions the build already had): the same tabs, its picks regrouped under
+   the fixed labels on Paths, and everything its old Log held merged into Chat in time order, in the mission's own voice */
+function m2HifiPanes(m, body, pane, tab){
+  if (tab==="paths") {
+    pane.querySelectorAll(".ml-filt").forEach(e=>e.remove());
+    const units = [...pane.querySelectorAll(":scope > .ml-unit:not(.ml-pass)")]; units.forEach(e=>e.remove());
+    pane.querySelectorAll(".ml-pass > .ks-k").forEach(e=>e.remove());
+    const list = pane.querySelector(".mt-opps");
+    if (list) {
+      list.querySelectorAll(".mt-more").forEach(e=>e.remove());
+      const cards = [...list.querySelectorAll(".mt-card")]; cards.forEach(c=>{ c.hidden = false; });
+      const lab = c => { const l = c.querySelector(".mt-lab"); const t = l ? l.textContent.trim() : (c.getAttribute("data-kv")||"").replace("stage=",""); return t==="Closed" ? "Set aside" : t; };
+      let h = ""; const frag = document.createElement("div");
+      M2_GROUPS.forEach(([g, sts])=>{ const l = cards.filter(c=>sts.includes(lab(c))); if (!l.length) return;
+        const sec = document.createElement("section"); sec.className = "m2-grp"; sec.setAttribute("aria-label", g); sec.innerHTML = `<h3 class="m2-gh">${g}<b>${l.length}</b></h3>`;
+        l.forEach(c=>{ c.querySelectorAll(".mt-lab").forEach(x=>x.classList.add("m2-lab")); if (lab(c)==="Set aside" && !c.querySelector(".mt-lab")) c.querySelector(".mt-row").insertAdjacentHTML("beforeend", `<span class="mt-lab m2-lab">Set aside</span>`); sec.appendChild(c); });
+        frag.appendChild(sec); });
+      list.replaceWith(...frag.children);
+    }
+    const live = pane.querySelector(".mi-live"); if (live) live.outerHTML = m2LiveHTML(m);
+    if (!pane.querySelector(".m2-grp, .row, .gp-groups, .mlist, .evm, [class*='ev']")) pane.insertAdjacentHTML("beforeend", `<p class="m2-empty">Nothing open yet.</p>`);
+  } else {
+    let sp = null; try { sp = mlSplit(m); } catch (e) { sp = { log:[], chat:[] }; }
+    const units = sp.log.concat(sp.chat).sort((a,b)=>(a.t-b.t)||(a.seq-b.seq));
+    const th = document.createElement("div"); th.className = "m2-thread"; th.setAttribute("aria-live", "polite");
+    units.forEach(u=>u.els.forEach(el=>th.appendChild(el)));
+    th.querySelectorAll(".mt-pin").forEach(e=>e.remove());
+    th.querySelectorAll("svg.kn-disc").forEach(s=>{ s.outerHTML = m2Mark(m, 24); });
+    th.querySelectorAll(".mt-lr b").forEach(b=>{ if (b.textContent.trim()==="Kai") b.remove(); });
+    if (!th.children.length) th.innerHTML = `<p class="m2-empty">Nothing here yet. Ask about this mission, or log what moved.</p>`;
+    pane.className = "mh-pane mt-out m2-pane m2-chat"; pane.setAttribute("data-tab", "chat"); pane.innerHTML = ""; pane.appendChild(th);
+  }
+  pane.classList.add("m2-pane"); pane.setAttribute("role", "tabpanel"); pane.setAttribute("aria-labelledby", `m2t-${tab}`);
+}
+function m2Frame(id){
+  const m = m2Mis(id), root = phone.querySelector(".view"), body = root && root.querySelector(".body.sc");
+  const band = body && body.querySelector(":scope > .mh-band.big"), tabs = body && body.querySelector(":scope > .ml-tabs"), pane = body && body.querySelector(":scope > .mh-pane");
+  if (!m || !band || !tabs || !pane) return;
+  const u = m2Ui(id), s = m2Story(id), tab = u.tab;
+  phone.classList.add("m2-on"); phone.classList.toggle("m2-tight", m2Tight());
+  m2Hero(band, m);
+  tabs.classList.add("m2-tabs"); tabs.setAttribute("data-kv", "count=2, style=underline"); tabs.innerHTML = m2TabsHTML(id);
+  /* the tabs are the header's last row: the plate runs on behind them, one piece with the band */
+  const bh = band.offsetHeight, th = tabs.offsetHeight, bg = getComputedStyle(band).backgroundImage;
+  tabs.style.backgroundImage = bg; tabs.style.backgroundSize = `100% ${bh + th}px`; tabs.style.backgroundPosition = `0 ${-bh}px`;
+  band.style.borderBottomLeftRadius = band.style.borderBottomRightRadius = "0"; band.style.marginBottom = "0";
+  const end = (getComputedStyle(band).backgroundImage.match(/rgba?\([^)]*\)/g) || []).pop();
+  if (end) { const [r,g,b] = end.match(/\d+(\.\d+)?/g).map(Number), L = x => { x /= 255; return x <= .03928 ? x/12.92 : Math.pow((x+.055)/1.055, 2.4); }, lum = .2126*L(r)+.7152*L(g)+.0722*L(b);
+    let a = .72; for (; a < 1; a += .02) { const mix = k => 255*a + k*(1-a), l2 = .2126*L(mix(r))+.7152*L(mix(g))+.0722*L(mix(b)); if ((l2+.05)/(lum+.05) >= 4.6) break; }
+    tabs.style.setProperty("--m2-dim", `rgb(255 255 255 / ${Math.min(1, a).toFixed(2)})`); }
+  if (s) {
+    const np = document.createElement("div"); np.innerHTML = tab==="chat" ? m2ChatHTML(m) : m2PathsHTML(m); pane.replaceWith(np.firstElementChild);
+  } else m2HifiPanes(m, body, pane, tab);
+  const p2 = body.querySelector(":scope > .m2-pane");
+  /* Chat compacts the header fully: the stream is at least a screen tall under the docked tabs */
+  if (p2 && tab==="chat") p2.style.minHeight = `${Math.max(0, body.clientHeight - (+body.dataset.kh || 0) - th + 1)}px`;
+  /* the composer: the context chip stays "This mission"; the words follow the tab */
+  const ta = root.querySelector(".mt-comp #mupd"), narrow = phone.clientWidth < 360;
+  if (ta) { ta.placeholder = tab==="chat" ? "Message this mission" : (narrow ? "Log or ask about this mission" : "Log an update or ask about this mission"); ta.setAttribute("aria-label", tab==="chat" ? "Message this mission" : "Log an update or ask about this mission"); STATE.mlPh = null; }
+  const ctx = root.querySelector(".mt-comp .mt-ctx > span"); if (ctx) ctx.textContent = "This mission";
+  if (typeof khGlass==="function") khGlass();
+  const key = id+"|"+tab;
+  if (u.focus==="prep") { u.focus = null; const k = body.querySelector('.m2-bot[data-k="prep"]'); if (k) { body.scrollTop = body.scrollHeight; const hb = root.querySelector(".hdr.sc"), extra = (hb ? hb.getBoundingClientRect().bottom : 0) + 8; body.scrollTop += k.getBoundingClientRect().top - extra; } }
+  else if (u.toEnd) { body.scrollTop = body.scrollHeight; }
+  else if (u.toTop) { body.scrollTop = 0; }
+  else if (STATE.m2.scroll[key] != null) body.scrollTop = STATE.m2.scroll[key];
+  u.toEnd = u.toTop = false;
+  body.dispatchEvent(new Event("scroll"));
+  body.addEventListener("scroll", ()=>{ STATE.m2.scroll[key] = body.scrollTop; }, { passive:true });
+  STATE.m2.scroll[key] = body.scrollTop;
+}
+
+/* ---- 4. Edit mission ---- */
+function m2Edit(id, row){
+  const m = m2Mis(id); if (!m) return; m2Cfg(id);
+  STATE.m2.ed = { id, open: row || null, at: row || null }; STATE.sheet = null; render();
+}
+function m2EdBack(){ const id = STATE.m2.ed && STATE.m2.ed.id; STATE.m2.ed = null; render(); const b = phone.querySelector(".view .ml-brief .ml-pen"); if (b && b.parentElement) b.parentElement.focus({ preventScroll:true }); }
+function m2EdToggle(k){ const E = STATE.m2.ed; if (!E) return; E.open = E.open===k ? null : k; E.at = k; render(); }
+function m2EdSet(k, v){
+  const E = STATE.m2.ed, c = E && m2Cfg(E.id); if (!c) return;
+  if (k==="by") { if (v==="No deadline") { c.by = null; } else { c.by = v; c.weeks = /^March/.test(v) ? 20 : 12; } }
+  else if (k==="month") c.month = parseInt(v, 10);
+  else if (k==="kind") c.kind = v;
+  else if (k==="checkin") c.checkin = v;
+  E.open = null; E.at = k; m2Sync(E.id); render(); toast("Changed. It applies from the next pass.");
+}
+function m2EdToggleOpt(k, v){
+  const E = STATE.m2.ed, c = E && m2Cfg(E.id); if (!c) return;
+  const L = k==="must" ? c.must : c.where; const i = L.indexOf(v); if (i >= 0) { if (L.length > 1 || k==="must") L.splice(i, 1); } else L.push(v);
+  E.at = k; m2Sync(E.id); STATE.m2.refocus = `.m2-ed [data-m2o="${k}|${v}"]`; render();
+}
+function m2EdSend(){
+  const E = STATE.m2.ed, ta = phone.querySelector(".m2-ed #m2-eta"), v = ta ? ta.value.trim() : ""; if (!E || !v) return;
+  ta.value = ""; STATE.m2.edDraft = ""; STATE.m2.prop = Object.assign({ id:E.id }, m2Prop(E.id, v)); E.toProp = true; render();
+}
+function m2Apply(yes){
+  const P = STATE.m2.prop, c = P && m2Cfg(P.id); STATE.m2.prop = null;
+  if (yes && c) {
+    if (P.k==="by") { if (P.v==="No deadline") c.by = null; else { c.by = P.v; c.weeks = 20; } }
+    else if (P.k==="remote") { c.must = c.must.filter(x=>x!=="Bay Area"); if (!c.must.includes("Remote OK")) c.must.push("Remote OK"); }
+    else if (P.k==="must") { if (!c.must.includes(P.v)) c.must.push(P.v); if (!c.mustOpts.includes(P.v)) c.mustOpts.push(P.v); }
+    else if (P.k==="ask") c.ask = /[.!?]$/.test(P.v) ? m2Cap(P.v) : m2Cap(P.v)+".";
+    m2Sync(P.id); toast("Applied.");
+  } else render();
+}
+function m2EdPause(){
+  const E = STATE.m2.ed, m = E && m2Mis(E.id); if (!m) return;
+  if (m.status==="paused") { m.status = "active"; toast("Resumed. Paths pick up on the next pass."); } else { m.status = "paused"; toast("Paused. Paths stay where they are until you resume."); }
+}
+function m2EdEnd(){ const E = STATE.m2.ed; if (!E) return; STATE.m2.ed = null; STATE.closeProposed = E.id; go("mission:"+E.id); }
+function m2EdHTML(){
+  const E = STATE.m2.ed, m = E && m2Mis(E.id), c = m && m2Cfg(E.id); if (!c) return "";
+  const ev = c.kind==="Event", plate = M2_PLATE[m2Theme(m)] || M2_PLATE.harbour;
+  const opts = (k, list, cur) => `<div class="m2-opts" role="group">${list.map(o=>`<button type="button" class="m2-opt${o===cur ? " on" : ""}" aria-pressed="${o===cur}" onclick="m2EdSet('${k}','${o}')">${o}</button>`).join("")}</div>`;
+  const tog = (k, list, on, label) => `<div class="m2-opts" role="group">${list.map(o=>`<button type="button" class="m2-opt${on.includes(o) ? " on" : ""}" aria-pressed="${on.includes(o)}" data-m2o="${k}|${o}" onclick="m2EdToggleOpt('${k}','${o}')">${label ? label(o) : o}</button>`).join("")}</div>`;
+  const row = (k, lab, val, ed, muted) => { const open = E.open===k;
+    return `<div class="m2-row${open ? " on" : ""}" data-row="${k}"><button type="button" class="m2-rh" aria-expanded="${open}" aria-controls="m2-re-${k}" onclick="m2EdToggle('${k}')"><span class="m2-rk">${lab}</span><span class="m2-chev" aria-hidden="true">${LI("chevron-down",20)}</span>${open ? "" : `<span class="m2-rv${muted ? " q" : ""}">${val}</span>`}</button>${open ? `<div class="m2-re" id="m2-re-${k}">${ed}</div>` : ""}</div>`; };
+  const famOf = f => (DB.families||[]).find(x=>x.id===f);
+  const allFams = (DB.families||[]).filter(f=>f.joined!==false).map(f=>f.id);
+  const wk = c.weeks ? m2Week(E.id, c) : 0, done = m2Done(E.id, c);
+  const KIND = { Looking:"Looking for something · ends when you find it", Standing:"Standing · keeps going until you stop it", Event:"Event · ends on the day" };
+  const rows = [
+    row("ask", "The ask", m2Esc(c.ask), `<textarea class="m2-ta" rows="3" data-m2f="ask" aria-label="The ask">${m2Esc(c.ask)}</textarea>`),
+    row("kind", "Kind of mission", KIND[c.kind], `<div class="m2-kinds" role="group">${Object.keys(KIND).map(k=>`<button type="button" class="m2-kopt${k===c.kind ? " on" : ""}" aria-pressed="${k===c.kind}" onclick="m2EdSet('kind','${k}')">${KIND[k]}</button>`).join("")}</div>`),
+    row("done", "Done when", m2Esc(c.done), `<textarea class="m2-ta" rows="2" data-m2f="done" aria-label="Done when">${m2Esc(c.done)}</textarea>`),
+    row("by", "By when", c.by ? (ev ? c.by : `${c.by} · ${c.weeks} weeks, week ${wk} now`) : "No deadline", opts("by", ev ? [c.by || "Oct 15", "No deadline"].filter((x,i,a)=>a.indexOf(x)===i) : ["January 2027","March 2027","No deadline"], c.by || "No deadline"), !c.by),
+    c.month ? row("month", ev ? "Said yes" : "This month", ev ? `${done} of ${c.month}` : `${c.month} real conversations · ${done} so far`, opts("month", ev ? ["8 say yes","12 say yes","16 say yes"] : ["4 real conversations","6 real conversations","8 real conversations"], ev ? `${c.month} say yes` : `${c.month} real conversations`)) : "",
+    row("must", "Must haves", c.must.length ? `<span class="m2-pills">${c.must.map(x=>`<span class="m2-opt on">${m2Esc(x)}</span>`).join("")}</span>` : "None yet", tog("must", c.mustOpts, c.must), !c.must.length),
+    row("where", "Where Kai looks", `<span class="m2-fms m2-fml" aria-hidden="true">${c.where.map(f=>`<i class="m2-fm">${(famOf(f)||{name:"?"}).name.charAt(0)}</i>`).join("")}</span><span class="m2-fn">${c.where.map(f=>(famOf(f)||{}).name).filter(Boolean).join(", ")}</span>`, tog("where", allFams, c.where, f=>(famOf(f)||{}).name)),
+    row("checkin", "Check-ins", c.checkin, opts("checkin", ev ? ["Two days before","The day before","Only when something moves"] : ["Every Monday morning","Every two weeks","Only when something moves"], c.checkin))
+  ].join("");
+  const P = STATE.m2.prop && STATE.m2.prop.id===E.id ? STATE.m2.prop : null;
+  const prop = P ? `<div class="m2-prop" data-kc="KeyProposal"><div class="m2-ph">${m2Mark(m, 24)}<p>${P.h}</p></div><div class="m2-pa"><button type="button" class="btn m2-b" onclick="m2Apply(true)">Apply</button><button type="button" class="btn sec m2-b" onclick="m2Apply(false)">Not that</button></div></div>` : "";
+  return `<section class="m2-ed" aria-labelledby="m2-edt" data-kc="KeyEditMission" style="--m2-p1:${plate[0]};--m2-p2:${plate[1]}">
+    <div class="m2-edh"><button type="button" class="m2-ib" onclick="m2EdBack()" aria-label="Back to the mission">${LI("chevron-left",24)}</button><div class="m2-edt"><h2 id="m2-edt">Edit mission</h2><span>${m2Esc(m.name)}</span></div></div>
+    <div class="m2-edb m2-scroll" data-m2s="ed">${rows}${prop}
+      <div class="m2-foot"><button type="button" class="btn sec m2-b" onclick="m2EdPause()">${LI(m.status==="paused" ? "play" : "pause",18)}<span>${m.status==="paused" ? "Resume" : "Pause"}</span></button><button type="button" class="btn sec m2-b" onclick="m2EdEnd()">${LI("flag",18)}<span>End mission</span></button></div></div>
+    <div class="ks-comp mt-comp m2-ecomp" data-kc="KeyComposer" data-kv="variant=chat"><div class="ks-box"><div class="mt-ctxrow"><span class="ks-scope on mt-ctx" data-kc="KeyChip" data-kv="state=on, kind=context">${LI("pencil",14)}<span>Changing the mission</span></span></div>
+      <textarea class="kin" id="m2-eta" rows="1" placeholder="Say what to change" aria-label="Say what to change"></textarea>
+      <div class="ks-crow"><button type="button" class="ks-ci" onclick="toast('Add a photo, a file or context')" aria-label="Add">${LI("plus",20)}</button><span class="grow"></span><button type="button" class="ks-ci" onclick="toast('Hold to talk.')" aria-label="Hold to talk">${LI("mic",20)}</button><button type="button" class="ks-go" onclick="m2EdSend()" aria-label="Send">${LI("arrow-up",18)}</button></div></div></div>
+  </section>`;
+}
+document.addEventListener("keydown", e=>{ if (e.key==="Enter" && !e.shiftKey && e.target && e.target.id==="m2-eta") { e.preventDefault(); m2EdSend(); } });
+document.addEventListener("input", e=>{ if (e.target && e.target.id==="m2-eta") { STATE.m2.edDraft = e.target.value; e.target.style.height = "auto"; e.target.style.height = Math.min(e.target.scrollHeight, 110)+"px"; } });
+
+/* ---- 5. Event created: fill it with the right people ---- */
+const _m2Publish = evPublish;
+evPublish = function(){ const n = DB.fevents.length, r = _m2Publish.apply(this, arguments); const e = DB.fevents[DB.fevents.length-1];
+  if (m2On() && e && DB.fevents.length > n && e.host===EV_ME) { STATE.m2.evd = e.id; render(); } return r; };
+function m2EvBits(e){
+  const cal = typeof evC==="function" && e.cal ? evC(e.cal) : null, fid = e.family || (cal && cal.family) || null;
+  const fam = (DB.families||[]).find(f=>f.id===fid || f.name===fid) || (DB.families||[]).find(f=>f.name===me().family) || null, famName = fam ? fam.name : "Your calendar";
+  const pl = fam && fam.id==="xoogler" ? "Xooglers" : `${famName} members`, topic = e.name.replace(/^Product teardown:\s*/i, "").replace(/\s+teardown$/i, "");
+  const day = (e.day || "").replace(/^(\w{3})\w*, /, "") || "the day", cap = e.cap || 12;
+  const label = /teardown/i.test(e.name) ? `${topic} teardown` : e.name.replace(/:\s*/g, " ");
+  return { fam, famName, pl, topic, day, cap, label };
+}
+function m2EvClose(){ STATE.m2.evd = null; render(); }
+function m2EvStart(){
+  const e = DB.fevents.find(x=>x.id===STATE.m2.evd); if (!e) return; const b = m2EvBits(e); STATE.m2.evd = null;
+  const inv = (pid, sub) => m2P(pid, pid, "New pick", sub, "Invite", `Hi ${m2F(pid)}, I'm hosting the ${b.label} on ${b.day}. A small room of ${b.pl} who use ${b.topic}. Want to come?`);
+  const m = m2NewMission({ type:"Hosting", theme:"dusk", icon:"users", name:`Fill the ${b.label}`,
+    cfg:{ ask:`Get the right ${b.cap} people to the ${b.label} on ${b.day}, ${b.pl} who use ${b.topic} and haven't met each other.`, kind:"Event", done:`${b.cap} have said yes`, by:b.day,
+      month:b.cap, monthDone:1, must:[`Uses ${b.topic}`, b.fam ? b.fam.name : "Invited"], where:[b.fam ? b.fam.id : "xoogler"], checkin:"Two days before" },
+    paths:[inv("sana", `Uses ${b.topic} at Perplexity. Asked for PM intros`), inv("omar", `Founder, moved the team to ${b.topic} in May`), inv("lena", `Staff engineer. Hasn't met the other ${b.topic} users`), inv("grace", "Came to the last two teardowns"),
+      m2P("daniel","chris","Went well","Said yes when you created it","","")],
+    chat:[{ t:"day", x:"Today" }, { t:"sys", who:"you", x:`You created the ${b.label}`, time:b.day },
+      { t:"bot", x:`Here's who I'd invite. 7 ${b.pl} use ${b.topic} and haven't met each other; 3 of them asked for PM intros. Sana first.` }, { t:"turn", cards:["sana"], more:["omar","lena","grace"] },
+      { t:"bot", x:"Two days before, I'll ask everyone who said yes to confirm, and the day after I'll ask who met whom. Both can be turned off under Edit mission." }],
+    home:{ pill:"4 to invite", goal:[`1 of ${b.cap} said yes`, Math.round(100/b.cap), b.day], face:"sana", sum:"Invite Sana first" } });
+  m2Ui(m.id).tab = "paths"; STATE.m2.last = "mission:"+m.id; go("mission:"+m.id); toast("Started. It's on Home too.");
+}
+function m2EvHTML(){
+  const e = STATE.m2.evd && DB.fevents.find(x=>x.id===STATE.m2.evd); if (!e) return "";
+  const b = m2EvBits(e), [dn] = (b.day.match(/\d+/) || ["?"]), mon = (b.day.match(/[A-Z][a-z]{2}/) || ["Oct"])[0].toUpperCase();
+  const art = typeof evCvArt==="function" ? `<div class="cv-th m2-evth" aria-hidden="true">${evCvArt(e)}</div>` : `<div class="m2-evth" aria-hidden="true"></div>`;
+  const already = DB.missions.some(m=>m.m2 && m.name===`Fill the ${b.label}`);
+  return `<section class="m2-evd" role="dialog" aria-modal="true" aria-labelledby="m2-evh" data-kc="KeyEventCreated">
+    <div class="m2-evhd"><h2 id="m2-evh">Event created</h2><button type="button" class="m2-ib" onclick="m2EvClose()" aria-label="Close">${LI("x",24)}</button></div>
+    <div class="m2-evb m2-scroll" data-m2s="evd">
+      <div class="m2-evc"><div class="m2-evcv">${art}<span class="m2-evdt" aria-hidden="true"><b>${dn}</b><small>${mon}</small></span></div><div class="m2-evct"><b>${m2Esc(e.name)}</b><span>${m2Esc(e.when)} · ${b.famName} · ${b.cap} seats</span></div></div>
+      <div class="m2-kl"><span aria-hidden="true">${kaiMark(32)}</span><b>Want me to fill it?</b></div>
+      ${already ? `<p class="m2-empty">Started. It's on Home as a mission.</p>` : m2Sug({ icon:"users", title:"Fill this with the right people", why:`7 ${b.pl} use ${b.topic} and haven't met each other. 3 of them asked for PM intros this month.`, faces:["sana","omar","lena"], who:"Sana, Omar and 5 more fit", start:"Start the mission", go:"m2EvStart()", no:"toast('Gone. Kai asks why once, then shows the next idea.')" })}
+      <div class="m2-irs">${m2IdeaRow("check","Cut no-shows","Kai asks everyone to confirm two days before","toast('It starts the same way: Kai asks, you say yes.')")}${m2IdeaRow("users","Who did you meet","One tap the day after, so intros don't go cold","toast('It starts the same way: Kai asks, you say yes.')")}</div>
+      <div class="m2-foot"><button type="button" class="btn sec m2-b" onclick="toast('Link copied.')">Share the link</button><button type="button" class="btn sec m2-b" onclick="m2EvClose()">Done</button></div>
+    </div></section>`;
+}
+
+/* ---- 5.3 Missions "+": Kai has ideas ---- */
+const _m2Open = openSheet;
+openSheet = function(type, id){ if (type==="newmission" && m2On() && STATE.intakeDone) { STATE.sheet = { type:"m2ideas" }; STATE.sheetFull = false; render(); return; } return _m2Open.apply(this, arguments); };
+function m2IdeasHTML(){
+  const started = DB.missions.some(x=>x.m2 && x.name==="Stay close to the people you've worked with");
+  return `<h2>Kai has ideas</h2><p class="m2-shl">From what you said and did this week. Nothing starts until you say so.</p>
+    ${started ? `<p class="m2-empty">Started. It's on Home as a mission.</p>` : m2Sug({ icon:"users", title:"Stay close to the people you've worked with", why:"You haven't talked to Priti in seven months, and Priti just started hiring for a new team.", faces:["priti","ana","dev"], who:"Priti, Ana and Dev to start with", go:"m2IdeaStart()", no:"STATE.sheet=null;toast('Gone. Kai asks why once, then shows the next idea.')" })}
+    <div class="m2-irs">${m2IdeaRow("sparkles","Get known for agent evals","From your Kai chat on Tuesday","toast('Kai opens the draft filled in. Nothing starts until you approve.')")}${m2IdeaRow("utensils","Host a Xoogler dinner","You've been to four. 9 members asked for one in SF","toast('Kai opens the draft filled in. Nothing starts until you approve.')")}</div>
+    <button type="button" class="m2-desc" onclick="STATE.sheet=null;mcStart()">${LI("pencil",20)}<span>Describe one to Kai instead</span></button>`;
+}
+function m2IdeaStart(){ m2StartClose(); STATE.sheet = null; toast("Started. It's on Home as a mission."); }
+const _m2Sheet = sheetHTML;
+sheetHTML = function(){
+  const sh = STATE.sheet;
+  if (sh && sh.type==="m2ideas") return `<div class="scrim" onclick="closeSheet()"></div><div class="sheet m2-ideas" id="sheet" role="dialog" aria-modal="true" aria-label="Kai has ideas" data-kc="KeySheet"><div class="grab" id="grab"></div><div class="sb">${m2IdeasHTML()}</div></div>`;
+  const h = _m2Sheet.apply(this, arguments);
+  /* the mission's ⋯: Edit mission, the recap once it's due, Pause, End mission. Nothing else */
+  if (sh && sh.type==="mmenu" && m2On()) { const m = m2Mis(sh.id); if (!m) return h;
+    const r = (ic, a, go, cls) => `<div class="xrow m2-mrow${cls ? " "+cls : ""}" role="button" tabindex="0" onclick="${go}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}"><span class="m2-mri" aria-hidden="true">${LI(ic,20)}</span><div class="m"><div class="a">${a}</div></div></div>`;
+    const rows = r("pencil", "Edit mission", `STATE.sheet=null;m2Edit('${m.id}',null)`)
+      + (typeof miEnd==="function" && miEnd(m) && STATE.miRecap ? r("sparkle", "Your first month", `miRecapOpen('${m.id}')`, "mi-rcrow") : "")
+      + (m.status==="paused" ? r("play", "Resume", `(function(){m2Mis('${m.id}').status='active';})();STATE.sheet=null;toast('Resumed.')`) : r("pause", "Pause", `(function(){m2Mis('${m.id}').status='paused';})();STATE.sheet=null;toast('Paused. Paths stay where they are until you resume.')`))
+      + r("flag", "End mission", `STATE.closeProposed='${m.id}';STATE.sheet=null;go('mission:${m.id}')`);
+    return h.replace(/<div class="sb">[\s\S]*<\/div><\/div>$/, `<div class="sb"><h2 class="m2-mh">${m2Esc(m.name)}</h2>${rows}</div></div>`);
+  }
+  return h;
+};
+LUCIDE.play = LUCIDE.play || '<polygon points="6 3 20 12 6 21 6 3"/>';
+
+/* ---- Home: the cards of missions this build started, the week line from the mission's rules ---- */
+function m2Home(body){
+  const cards = [...body.querySelectorAll(".hc-card, .mh-mc")];
+  cards.forEach(card=>{
+    const band = card.querySelector(".mh-band[data-mission]"); if (!band) return;
+    const id = band.dataset.mission, m = m2Mis(id), c = STATE.m2.cfg[id]; if (!m || !c) return;
+    const gl = band.querySelector(".mi-gl"), H = (STATE.m2.home||{})[id];
+    if (H) {
+      const pill = band.querySelector(".hc-pill"); if (pill) pill.textContent = H.pill;
+      const mission = H.goal ? `<div class="mi-gl m2-gl" data-kc="KeyGoalLine"><span>${H.goal[0]}</span><i class="mi-tr" aria-hidden="true"><s style="width:${H.goal[1]}%"></s></i><span>${H.goal[2]}</span></div>` : "";
+      if (gl) gl.outerHTML = mission; else { const head = band.querySelector(".hc-head"); if (head && mission) head.insertAdjacentHTML("afterend", mission); }
+      let line = band.querySelector(".hc-line"); if (!line) { band.insertAdjacentHTML("beforeend", `<div class="hc-line"><span class="hc-faces"></span><span class="mh-bs"></span></div>`); line = band.querySelector(".hc-line"); }
+      const bs = line.querySelector(".mh-bs"); if (bs) bs.textContent = H.sum;
+      const fs = line.querySelector(".hc-faces"); if (fs) { if (H.face) fs.innerHTML = m2Face(H.face, ""); else fs.remove(); }
+      band.setAttribute("aria-label", `Open mission, ${m.name}. ${H.pill}`);
+      return;
+    }
+    if (!gl || c.kind==="Event") return;
+    if (c.by) { const wk = m2Week(id, c); gl.innerHTML = `<span>${m.type==="Looking" ? "Offer" : "Done"} by ${c.by.split(" ")[0]}</span><i class="mi-tr" aria-hidden="true"><s style="width:${Math.round(100*wk/c.weeks)}%"></s></i><span>Week ${wk} of ${c.weeks}</span>`; }
+    else { const d = m2Done(id, c); gl.innerHTML = `<span>${d} of ${c.month}</span><i class="mi-tr" aria-hidden="true"><s style="width:${Math.round(100*d/c.month)}%"></s></i><span>This month</span>`; }
+    const s = STATE.m2.story[id], pill = band.querySelector(".hc-pill");
+    if (s && pill && /new$/.test(pill.textContent.trim())) { const n = s.paths.filter(p=>p.stage==="New pick").length; pill.textContent = n ? `${n} new` : "Waiting"; }
+  });
+  const b = body.querySelector(".btp #brEntry"); if (b && STATE.m2.deckDone) b.textContent = "See your brief";
+}
+
+/* ---- wiring: after every other render wrapper. Overlays are drawn again on each render with their scroll, focus and typing kept ---- */
+const _m2Render = render;
+render = function(){
+  const s0 = STATE.screen || "";
+  if (m2On()) m2Story("m1");
+  if (s0.startsWith("mission:")) STATE.mtScroll = null;
+  if (s0.startsWith("mission:") && STATE.mlTab) { const id = s0.slice(8); STATE.mlTab[id] = "log"; if (STATE.mlFilter) STATE.mlFilter[id] = "all"; STATE.mtMore[id] = true; }
+  if (s0!==STATE.m2.last) { if (s0.startsWith("mission:") && STATE.m2.last!==s0) { const u = m2Ui(s0.slice(8)); if (!u.focus) { u.tab = "paths"; u.toTop = true; } } STATE.m2.last = s0; }
+  if (STATE.m2.ed && s0!=="mission:"+STATE.m2.ed.id) STATE.m2.ed = null;
+  const keep = {}; if (typeof phone!=="undefined" && phone) phone.querySelectorAll(".m2-scroll[data-m2s]").forEach(e=>{ keep[e.dataset.m2s] = e.scrollTop; });
+  const ae = document.activeElement, af = ae && phone && phone.contains(ae) && ae.closest(".m2-deck, .m2-ed, .m2-evd") ? (ae.id ? "#"+ae.id : ae.getAttribute("onclick") ? `[onclick="${ae.getAttribute("onclick").replace(/"/g,'\\"')}"]` : null) : null;
+  const sel = ae && ae.id==="m2-eta" ? [ae.selectionStart, ae.selectionEnd] : null;
+  const r = _m2Render.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  phone.classList.remove("m2-on", "m2-tight", "m2-over");
+  if (!m2On() || !STATE.intakeDone) return r;
+  const s = STATE.screen || "", body = phone.querySelector(".view .body");
+  if (s==="home" && body) m2Home(body);
+  if (s.startsWith("mission:")) { try { m2Frame(s.slice(8)); } catch (e) { console.warn("m2Frame", e); } }
+  /* toasts sit above the composer, never over it */
+  const t = phone.querySelector(".toast"), comp = phone.querySelector(".m2-ed .m2-ecomp") || phone.querySelector(".view > .mt-comp");
+  if (t && comp) t.style.bottom = `${Math.round(phone.getBoundingClientRect().bottom - comp.getBoundingClientRect().top + 8)}px`;
+  /* overlays: the deck, Edit mission, Event created */
+  const top = (()=>{ const st = phone.querySelector(".ios-status"), sc = phone.querySelector(":scope > .screen"); const a = st && st.offsetHeight && getComputedStyle(st).display!=="none" ? st.offsetHeight : 0; return Math.max(a, sc ? parseFloat(getComputedStyle(sc).paddingTop) || 0 : 0); })();
+  const add = h => { if (!h) return null; phone.insertAdjacentHTML("beforeend", h); const el = phone.lastElementChild; el.style.setProperty("--m2-top", `${top}px`); return el; };
+  const deck = add(m2DeckHTML()), ed = add(m2EdHTML()), evd = add(m2EvHTML());
+  if (deck || ed || evd) phone.classList.add("m2-over");
+  if (t && evd) t.style.bottom = "";
+  if (t && deck) { const c = deck.querySelector(".m2-dc"), hd = deck.querySelector(".m2-dhd"), pb = phone.getBoundingClientRect().bottom; if (c && hd) { t.style.bottom = `${Math.round(pb - c.getBoundingClientRect().top + 8)}px`; const lo = hd.getBoundingClientRect().bottom + 4; if (t.getBoundingClientRect().top < lo) t.style.bottom = `${Math.round(pb - lo - t.offsetHeight)}px`; } }
+  phone.querySelectorAll(".m2-scroll[data-m2s]").forEach(e=>{ if (keep[e.dataset.m2s] != null) e.scrollTop = keep[e.dataset.m2s]; });
+  if (ed) {
+    const E = STATE.m2.ed, eta = ed.querySelector("#m2-eta"); if (STATE.m2.edDraft) eta.value = STATE.m2.edDraft;
+    const b = ed.querySelector(".m2-edb");
+    if (E.toProp) { E.toProp = false; const p = ed.querySelector(".m2-prop"); if (p) { b.scrollTop = b.scrollHeight; p.setAttribute("tabindex", "-1"); p.focus({ preventScroll:true }); } }
+    else if (E.at) { const row = ed.querySelector(`.m2-row[data-row="${E.at}"]`); if (row && keep.ed == null) b.scrollTop = Math.max(0, row.offsetTop - 8); if (!af && row) row.querySelector(".m2-rh").focus({ preventScroll:true }); E.at = null; }
+    else if (!af) ed.querySelector(".m2-ib").focus({ preventScroll:true });
+    const t2 = phone.querySelector(".toast"); if (t2) t2.style.bottom = `${Math.round(phone.getBoundingClientRect().bottom - ed.querySelector(".m2-ecomp").getBoundingClientRect().top + 8)}px`;
+  }
+  if (deck && STATE.m2.dfocus) { STATE.m2.dfocus = false; const h = deck.querySelector(".m2-dc button, .m2-dc textarea"); const hd = deck.querySelector("#m2-dh"); if (hd) { hd.tabIndex = -1; hd.focus({ preventScroll:true }); } else if (h) h.focus({ preventScroll:true }); }
+  else if (deck && !af) { const x = deck.querySelector(".m2-x"); if (x) x.focus({ preventScroll:true }); }
+  if (evd && !af) evd.querySelector(".m2-ib").focus({ preventScroll:true });
+  if (af) { let f = null; try { f = phone.querySelector(af); } catch (e) {} if (f) { f.focus({ preventScroll:true }); if (sel && f.setSelectionRange) f.setSelectionRange(sel[0], sel[1]); } }
+  if (STATE.m2.refocus) { const f = phone.querySelector(STATE.m2.refocus); STATE.m2.refocus = null; if (f) { f.focus({ preventScroll:true }); if (f.setSelectionRange) f.setSelectionRange(f.value.length, f.value.length); } }
+  const sb = STATE.sheet && STATE.sheet.type==="mmenu" && phone.querySelector("#sheet .sb"); if (sb) sb.querySelectorAll(".xrow:not(.m2-mrow)").forEach(x=>x.remove());
+  if (typeof khTint==="function") khTint();
+  return r;
+};
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-eb1c";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
