@@ -20,7 +20,7 @@
   Explore: the pool lives behind the header search only. Empty state shows the shape (counts), a name is plain search, a sentence asks Kai.
 -->
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Key"><meta name="theme-color" content="#FFFFFF"><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png">
+<head><meta name="robots" content="noindex, nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Key"><meta name="theme-color" content="#FFFFFF"><link rel="manifest" href="site.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -8092,6 +8092,7 @@ function render() {
   else if (S==="kaihistory") html = sKaiHistory();
   else if (S==="kimthread") html = kimThread();
   else if (S==="goalideas") html = g7IdeasPage();
+  else if (S==="chatgate") html = cgPage();
   else if (S.startsWith("gpreview:")) html = g7PreviewPage(S.slice(9));
   else if (S==="messages") { STATE.inboxView=null; html = sInbox(); }
   else if (S==="notifications") html = sNotifications();
@@ -31127,6 +31128,233 @@ render = function(){
 };
 
 </script>
+<style>
+/* n36: one lane of plate tiles, the goal header as the Home card grown up, the standard detail header, the brief as one card */
+#phone .g9-tile { flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:12px; background:color-mix(in srgb, var(--p) 14%, transparent); color:var(--p); }
+#phone .g9-tile svg { stroke-width:2; }
+#phone .g9-tile.g9-t24 { width:24px; height:24px; border-radius:7px; }
+#phone .g9-tile.g9-t32 { width:32px; height:32px; border-radius:9px; }
+.dark #phone .g9-tile { background:color-mix(in srgb, var(--p) 30%, transparent); color:color-mix(in srgb, var(--p) 45%, #fff); }
+#phone .g9-tile.g9-own { --p:var(--text-primary); background:var(--sf-inset); color:var(--text-primary); }
+#phone .g9-gt { display:flex; align-items:center; gap:10px; }
+#phone .m2-sgt > .g9-tile { margin-right:2px; }
+/* Goal ideas: the same 56 header as Opportunities, on the ground */
+#phone .g9-ideas > .g9-dh { position:relative; display:flex; align-items:center; height:56px; min-height:56px; padding:0 8px; background:var(--kh-bg, transparent); }
+#phone .g9-ideas > .g9-dh .back, #phone .g9-ideas > .g9-dh .icon { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:0; background:none; color:var(--text-primary); cursor:pointer; padding:0; }
+#phone .g9-ideas > .g9-dh .t { flex:1; min-width:0; color:var(--text-primary); }
+#phone .g9-sub { margin-top:4px; }
+/* the goal header and the preview header: row 1 tile and title, row 2 under the title, row 3 the progress row */
+#phone .g9-r1 { display:flex; align-items:center; gap:12px; }
+#phone .g9-mt { flex:0 0 40px; width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:rgb(255 255 255 / .16); color:#fff; }
+#phone .g9-mt svg { width:22px; height:22px; stroke-width:2; }
+#phone.g7-gp .g8-bh { width:100% !important; display:block; text-align:left; }
+#phone.g7-gp .g8-bh .g8-bt, #phone .g9-bt { margin:0; color:#fff; font:800 22px/1.18 var(--type-family, Manrope, system-ui, sans-serif); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone.g7-gp .g8-bh .g8-bd, #phone .g9-bd { display:block; margin:12px 0 0 52px; color:rgb(255 255 255 / .85); font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone.g7-gp .mh-band.g7-band .g7-pr { display:flex !important; align-items:center; gap:10px; margin-top:14px !important; width:100% !important; }
+#phone.g7-gp .mh-band.g7-band .g7-pr > span { flex:0 0 auto; }
+#phone.g7-gp .mh-band.g7-band .g7-pr > .mi-tr { flex:1 1 auto; position:relative !important; height:4px !important; top:auto !important; left:auto !important; width:auto !important; margin:0 !important; }
+#phone.g7-gp .mh-band.g7-band .g7-pr > .g7-wk { margin-left:0 !important; }
+/* the watermark: the Home card's (ink at 16%, the icon's own stroke), placed by g9Ghost, cut by the header's edge */
+#phone.g7-gp .mh-band.big.g7-band, #phone.g7-gp .ml-tabs, #phone .g9-ph { overflow:hidden; }
+#phone.g7-gp .ml-tabs > :not(.g9-ghost) { position:relative; z-index:1; }
+#phone .g9-ghost { position:absolute !important; z-index:0; pointer-events:none; transform:rotate(-12deg); color:rgb(18 22 26); opacity:.16 !important; right:auto !important; bottom:auto !important; display:block; }
+#phone .g9-ghost svg { display:block; stroke-width:1.5; }
+#phone.g7-gp .mh-band.g7-band > :not(.mh-ghost):not(.g9-ghost) { position:relative; z-index:1; }
+/* Goal preview: the goal header with Not started as line 2 */
+#phone .g9-ph { position:relative; overflow:hidden; flex:0 0 auto !important; padding-bottom:20px !important; }
+#phone .g9-ph .g9-band { position:relative; z-index:1; padding:8px 16px 0; }
+#phone .g9-ph .g9-bd { margin-top:12px; }
+/* the brief: one card, rows with hairlines, one verb each */
+#phone .g9-brief { margin:4px 0 16px; }
+#phone .g9-card { background:var(--sf-card); border-radius:16px; overflow:hidden; }
+#phone .g9-row { display:flex; align-items:center; gap:8px; padding:0 12px 0 0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); transition:opacity .2s, max-height .22s; max-height:120px; }
+#phone .g9-row:first-child { border-top:0; }
+#phone .g9-row.g9-out { opacity:0; max-height:0; }
+#phone .g9-row.g9-hi { animation:g9hi 1.2s ease-out; }
+@keyframes g9hi { 0% { background:color-mix(in srgb, var(--text-primary) 8%, transparent); } 100% { background:transparent; } }
+#phone .g9-rb { flex:1; min-width:0; display:flex; align-items:center; gap:12px; min-height:64px; padding:10px 0 10px 12px; border:0; background:none; text-align:left; cursor:pointer; color:var(--text-primary); }
+#phone .g9-rb > .avatar { flex:0 0 32px; }
+#phone .g9-rt { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .g9-rt b { font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .g9-rt span { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone .g9-vb { flex:0 0 auto; min-width:64px; min-height:44px; padding:0 14px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .g9-done { flex:0 0 auto; display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:0 6px; color:var(--text-primary); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g9-more { display:block; width:100%; min-height:48px; border:0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); background:none; color:var(--text-primary); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone.g7-gp .mh-band.g7-band .g7-pr { padding-right:0 !important; }
+/* n36 check 10 and 12: tile icons a step darker on light grounds; brief headlines at most two lines */
+#phone .g9-tile { color:color-mix(in srgb, var(--p) 78%, #000); }
+.dark #phone .g9-tile { color:color-mix(in srgb, var(--p) 45%, #fff); }
+#phone .g9-rt b { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* the preview has no theme-color meta, so sbar.js hides its strip; on the plate it shows, in the plate's colour */
+body.g9-pvs #kh-sbar { background-color:var(--g9-sb) !important; }
+@media (max-width:500px) { body.g9-pvs #kh-sbar[hidden] { display:block; } }
+
+</style>
+<script>
+/* ==== n36 (7 Oct, Apoorv 19:25; goals-mentor/how-goals-changes/HIFI-SPEC-n36-ideas-header-brief-2026-10-07.md). Loads after goals8.
+   1 one lane: an idea is an unstarted goal, so it wears its kind's plate tile, never an emoji. 2 the goal header is the Home goal card
+   grown up. 3 Goal ideas uses the standard detail header. 4 the brief is one card of rows, one verb each. ==== */
+Object.keys(G7_EMO).forEach(k=>delete G7_EMO[k]);
+/* plates keep VISUAL-DIRECTION's meanings (harbour people, sage money, dusk events, ink learn); the idea wears the plate and icon of the
+   goal it starts, so G7_KINDS and G7_IDEAS carry them into g7Start (n36 check 2) */
+const G9_KIND = { "Your next role":["harbour","briefcase"], "Building a team":["harbour","users"], "Raising and selling":["sage","trending-up"],
+  "Learning and advice":["ink","graduation-cap"], "Giving back and staying close":["harbour", null] };
+const G9_OWN = { close:["harbour","handshake"], evals:["ink","graduation-cap"], dinner:["harbour","utensils"], "k-help":["harbour","hand-heart"] };
+if (!LUCIDE.handshake) LUCIDE.handshake = '<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>';
+if (!LUCIDE["hand-heart"]) LUCIDE["hand-heart"] = '<path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/>';
+function g9Kind(id){
+  if (G9_OWN[id]) return G9_OWN[id];
+  const g = G7_GROUPS.find(x=>x[1].some(i=>i.id===id)); if (!g) return ["harbour","sparkles"];
+  const k = G9_KIND[g[0]]; return [k[0], k[1] || g[1].find(i=>i.id===id).icon];
+}
+/* the Stay close goal wears the idea's handshake, wherever it is started from */
+const _g9New = m2NewMission; m2NewMission = function(o){ if (o && o.name==="Stay close to the people you've worked with") o.icon = G9_OWN.close[1]; return _g9New.apply(this, arguments); };
+G7_GROUPS.forEach(([, l])=>l.forEach(i=>{ const [t, ic] = g9Kind(i.id); i.theme = t; i.icon = ic; }));
+Object.keys(G7_IDEAS).forEach(id=>{ const [t, ic] = g9Kind(id); G7_IDEAS[id].theme = t; G7_IDEAS[id].icon = ic; });
+const g9Tile = (theme, icon, sz) => `<span class="g9-tile${sz ? " g9-t"+sz : ""}" style="--p:${g7Plate(theme)[1]}" aria-hidden="true">${LI(icon, sz===24 ? 14 : sz===32 ? 18 : 22)}</span>`;
+const g9IdeaRow = (i, desc, rc) => { const [t, ic] = g9Kind(i.id);
+  return `<button type="button" class="g7-ir" onclick="g7Go('gpreview:${i.id}')">${g9Tile(t, ic)}<span class="g7-it"><b>${g7Esc(i.title)}</b><span class="g7-id">${g7Esc(desc)}</span>${rc ? `<span class="g7-irc">${LI("info",14)}<span>${g7Esc(rc)}</span></span>` : ""}</span></button>`; };
+/* ---- 1 and 3. Goal ideas: the standard 56 header, the intro line first, tiles by kind ---- */
+g7IdeasPage = function(){
+  const mine = (typeof vocIdeasLeft==="function" ? vocIdeasLeft() : []).slice(0, 3).map(i=>g7Idea(i.id)).filter(Boolean);
+  const forYou = mine.length ? `<h2 class="g7-gt">For you</h2><div class="g7-card g7-irs">${mine.map(i=>g9IdeaRow(i, i.why, i.rc)).join("")}</div>`
+    : `<p class="g7-none">Nothing from your week yet. Pick one below or start your own.</p>`;
+  const groups = G7_GROUPS.map(([t, l])=>{ const k = G9_KIND[t]; return `<h2 class="g7-gt g9-gt">${g9Tile(k[0], k[1] || "hand-heart", 24)}<span>${t}</span></h2><div class="g7-card g7-irs">${l.map(i=>g9IdeaRow(i, i.line)).join("")}</div>`; }).join("");
+  const own = `<div class="g7-card g7-irs g7-ownc"><button type="button" class="g7-ir" onclick="g7Own()"><span class="g9-tile g9-own" aria-hidden="true">${LI("plus",22)}</span><span class="g7-it"><b>Something else in mind?</b><span class="g7-id">Describe it in your words.</span></span></button></div>`;
+  return `<div class="ks-page g7-page g7-ideas g9-ideas"><div class="hdr g9-dh" data-kc="KeyDetailHeader"><div class="back" role="button" tabindex="0" aria-label="Back" onclick="STATE.backNav=true;goBack()">${LI("chevron-left",22)}</div><div class="t">Goal ideas</div><button type="button" class="icon g9-new" onclick="g7Own()" aria-label="Start your own goal">${LI("plus",22)}</button></div>
+    <div class="body ks-pbody g7-body"><p class="g7-sub g9-sub">A goal keeps working while you don't.</p>${forYou}${groups}${own}</div></div>`;
+};
+/* Home's idea card wears the same tile as its row */
+const _g9VocIdeas = vocIdeasHTML;
+vocIdeasHTML = function(){ const i = vocIdeasLeft()[0], h = _g9VocIdeas.apply(this, arguments); if (!i) return h; const [t, ic] = g9Kind(i.id);
+  return h.replace(/<span class="m2-sgm[^"]*" aria-hidden="true">[\s\S]*?<\/span>(?=<h3>)/, g9Tile(t, ic)); };
+
+/* ---- 2. the goal header: row 1 tile and title, row 2 done-when under the title, row 3 the progress row, the kind's icon as the watermark ---- */
+const g9Head = (theme, icon, title, line, extra) => `<div class="g9-band"><div class="g9-r1"><span class="g9-mt" aria-hidden="true">${LI(icon,22)}</span><h1 class="g9-bt">${g7Esc(title)}</h1></div>${line ? `<span class="g9-bd">${g7Esc(line)}</span>` : ""}${extra||""}</div><i class="g9-ghost" aria-hidden="true">${LI(icon,24)}</i>`;
+const _g9Prev = g7PreviewPage;
+g7PreviewPage = function(id){
+  const h = _g9Prev.apply(this, arguments), i = g7Idea(id); if (!i) return h; const [t, ic] = g9Kind(id), pl = g7Plate(t);
+  return h.replace(/<div class="g7-ph"[^>]*>([\s\S]*?<\/div>)[\s\S]*?<p class="g7-l1">Not started<\/p><\/div>/, (m, nav)=>
+    `<div class="g7-ph g9-ph" style="--g7-p1:${pl[0]};--g7-p2:${pl[1]}" data-kc="KeyGoalHeader" data-kv="state=not-started">${nav.replace(/<b>[\s\S]*?<\/b>/, "")}${g9Head(t, ic, i.title, "Not started")}</div>`);
+};
+function g9GoalHead(){
+  const band = phone.querySelector(".view .body.sc > .mh-band.g7-band"), bh = band && band.querySelector(".g8-bh"); if (!bh || bh.querySelector(".g9-r1")) return;
+  const mk = phone.querySelector(".view > .hdr .mt-ht .mh-mark svg"), bt = bh.querySelector(".g8-bt"); if (!mk || !bt) return;
+  bt.insertAdjacentHTML("beforebegin", `<span class="g9-r1"><span class="g9-mt" aria-hidden="true"></span></span>`);
+  const r1 = bh.querySelector(".g9-r1"); r1.querySelector(".g9-mt").appendChild(mk.cloneNode(true)); r1.appendChild(bt);
+  /* row 3 is the Home card's goal line, word for word (n36 check 5) */
+  const pr = band.querySelector(".g7-pr"), id = STATE.screen.slice(8), m = m2Mis(id), c = m && m2Cfg(id), H = (STATE.m2.home||{})[id];
+  if (pr && H && H.goal) pr.innerHTML = `<span>${H.goal[0]}</span><i class="mi-tr" aria-hidden="true"><s style="width:${H.goal[1]}%"></s></i><span class="g7-wk">${H.goal[2]}</span>`;
+  else if (pr && c && c.kind!=="Event") { const wk = c.by ? m2Week(id, c) : 0, d = c.by ? 0 : m2Done(id, c);
+    pr.innerHTML = c.by ? `<span>${m.type==="Looking" ? "Job offer" : "Done"} by ${c.by.split(" ")[0]}</span><i class="mi-tr" aria-hidden="true"><s style="width:${Math.round(100*wk/c.weeks)}%"></s></i><span class="g7-wk">Week ${wk} of ${c.weeks}</span>`
+      : `<span>${d} of ${c.month}</span><i class="mi-tr" aria-hidden="true"><s style="width:${Math.round(100*d/c.month)}%"></s></i><span class="g7-wk">This month</span>`; }
+  else { const wk = pr && pr.querySelector(".g7-wk"), tr = pr && pr.querySelector(".mi-tr"); if (wk && tr) pr.insertBefore(tr, wk); }
+  const tabs = band.parentElement.querySelector(":scope > .ml-tabs"); if (tabs) { const h = band.offsetHeight, th = tabs.offsetHeight; tabs.style.backgroundSize = `100% ${h + th}px`; tabs.style.backgroundPosition = `0 ${-h}px`; }
+}
+/* the watermark, as on the Home card (ink at 16%, the icon's own stroke, -12deg, cut by the edge): it sits under the title in rows 2 and 3,
+   about a third past the header's bottom edge and a fifth past its right edge. On a goal page the header is the band plus the tabs, so
+   the tabs carry the rest of the same glyph and the cut is the header's edge (n36 check 6) */
+function g9Ghost(box, title, tabs){
+  if (!box || !title) return;
+  box.querySelectorAll(":scope > .g9-ghost, :scope > .mh-ghost").forEach(g=>g.remove()); if (tabs) tabs.querySelectorAll(":scope > .g9-ghost").forEach(g=>g.remove());
+  const svg = (box.querySelector(".g9-mt svg") || {}).cloneNode ? box.querySelector(".g9-mt svg") : null; if (!svg) return;
+  const b = box.getBoundingClientRect(), W = b.width, bottom = b.height + (tabs ? tabs.offsetHeight : 0);
+  /* the biggest glyph whose box stays 8px clear of the title's words */
+  const rg = document.createRange(); rg.selectNodeContents(title); const tr = [...rg.getClientRects()].map(r=>({ l:r.left - b.left - 8, r:r.right - b.left + 8, t:r.top - b.top - 8, b:r.bottom - b.top + 8 }));
+  const fit = h => { const l = W - 0.3 * h - h / 2, t = bottom - 2 * h / 3; return !tr.some(r=>r.r > l && r.b > t); };
+  let h = 208; while (h > 64 && !fit(h)) h -= 8;
+  const sz = h / 1.186, cx = W - 0.3 * h, cy = bottom - 2 * h / 3 + h / 2;
+  const put = (host, dy) => { const g = document.createElement("i"); g.className = "g9-ghost"; g.setAttribute("aria-hidden", "true");
+    const c = svg.cloneNode(true); c.setAttribute("width", sz); c.setAttribute("height", sz); g.appendChild(c);
+    Object.assign(g.style, { left:`${cx - sz/2}px`, top:`${cy - sz/2 - dy}px`, width:`${sz}px`, height:`${sz}px` }); host.prepend(g); };
+  put(box, 0); if (!tabs) return; put(tabs, b.height);
+  /* once the tabs stick under the compact header they leave the band, so their piece of the glyph goes */
+  const sc = box.parentElement; g9Cut(sc); if (!sc.g9Cut) { sc.g9Cut = 1; sc.addEventListener("scroll", ()=>g9Cut(sc), { passive:true }); }
+}
+function g9Cut(sc){ const g = sc.querySelector(":scope > .ml-tabs > .g9-ghost"), bd = sc.querySelector(":scope > .mh-band"), tb = sc.querySelector(":scope > .ml-tabs");
+  if (g && bd && tb) g.style.visibility = tb.getBoundingClientRect().top - bd.getBoundingClientRect().bottom > 1 ? "hidden" : ""; }
+function g9GhostNow(){
+  const s = STATE.screen || "";
+  if (/^mission:/.test(s)) { const band = phone.querySelector(".view .body.sc > .mh-band.g7-band"); if (band) g9Ghost(band, band.querySelector(".g8-bt, .g9-bt"), band.parentElement.querySelector(":scope > .ml-tabs")); }
+  else if (/^gpreview:/.test(s)) { const ph = phone.querySelector(".g9-ph"); if (ph) g9Ghost(ph, ph.querySelector(".g9-bt"), null); }
+}
+
+/* ---- 4. the brief: the hero and one card of rows. One verb per row; the row itself opens the item's place; no Not now ---- */
+const G9_VERB = { "Draft it":"Draft", "Say hi":"Draft", "Review":"Open", "Open":"Open", "See it":"Open", "Open the prep":"Open" };
+const G9_DONE = { Draft:"Drafted", Reply:"Reply drafted", RSVP:"Going", Start:"Started" };
+const _g9Items = g7DeckItems;
+g7DeckItems = function(){ return _g9Items.apply(this, arguments).filter(x=>x.key!=="welcome"); };
+function g9Mid(it){ const m = it.mid ? m2Mis(it.mid) : m2DeckM(); return m && m.id; }
+/* a person's row opens that person in the goal's picks */
+function g9Pick(mid, pid){ STATE.sheet = null; m2Ui(mid).tab = "paths"; go("mission:"+mid);
+  setTimeout(()=>{ const n = (DB.people[pid] || {}).name, c = n && [...phone.querySelectorAll(".m2-paths .m2-grp > *")].find(e=>e.textContent.includes(n)); if (c) { c.scrollIntoView({ behavior:"smooth", block:"center" }); c.classList.add("g9-hi"); } }, 80); }
+function g9Place(it){
+  if (/^[up]:/.test(it.key) || it.key==="b:prep") return it.acts[0][1].replace(/^g7DeckDo\('[^']*',"([\s\S]*)"\)$/, "$1");
+  if (it.key==="b:dinner") return "g7Visit('eventd:e1')";
+  if (it.scr && !/^mission:/.test(it.scr)) return `g7Visit('${it.scr}')`;
+  const mid = g9Mid(it);
+  if (mid && it.pid && /^b:/.test(it.key)) return `g9Pick('${mid}','${it.pid}')`;
+  return mid ? `g7Chat('${mid}')` : "go('home')";
+}
+/* [verb, its js, wait for the done state, the row runs the verb too] */
+function g9Verb(it){
+  const [l, js] = it.acts[0] || [], mid = g9Mid(it);
+  if (it.key==="b:dinner") return ["Start", js, true, false];
+  /* a reply from a pick: Reply drafts the answer into the goal's Chat, the same way Draft does */
+  if (l==="Reply" && it.pid && mid && /^b:/.test(it.key)) return ["Reply", `g7DeckDo('${it.key}',"m2Act('${mid}','${it.pid}');toast('Drafted in Chat. Nothing goes until you send it.')")`, true, false];
+  if (G9_VERB[l]==="Draft") return ["Draft", js, true, false];
+  if (G9_VERB[l]==="Open") return ["Open", js, false, true];
+  /* a question for you: it opens where it's answered and stays until it is */
+  return ["Open", g9Place(it), false, true];
+}
+function g9Row(it){
+  const [v, js, wait, same] = g9Verb(it), place = same ? js : g9Place(it), lead = it.pid ? m2Face(it.pid, "m2-a32") : (()=>{ const m = it.mid && m2Mis(it.mid); return g9Tile(m ? m2Theme(m) : it.key==="b:dinner" ? "dusk" : "harbour", it.key==="b:dinner" ? "utensils" : "sparkles", 32); })();
+  return `<div class="g9-row" data-key="${it.key}" data-kc="KeyBriefRow"><button type="button" class="g9-rb" onclick="${g7Esc(place)}">${lead}<span class="g9-rt"><b>${g7Esc(it.h)}</b>${it.rc ? `<span>${g7Esc(it.rc)}</span>` : ""}</span></button><button type="button" class="g9-vb" onclick="g9Do('${it.key}','${v}',${wait})" data-js="${g7Esc(js)}">${v}</button></div>`;
+}
+g7DeckHTML = function(){
+  const its = g7DeckItems(), n = its.length; if (!n) return "";
+  const open = g7K().g9more, cut = n > 5 && !open, rows = cut ? its.slice(0, 4) : its;
+  return `<section class="g7-deck g9-brief" aria-label="Your brief" data-kc="KeyBriefList" data-kv="rows=${n}"><div class="g9-card">${rows.map(g9Row).join("")}${cut ? `<button type="button" class="g9-more" onclick="g7K().g9more=1;render()">${n - 4} more</button>` : ""}</div></section>`;
+};
+function g9Do(key, v, wait){
+  const row = phone.querySelector(`.g9-row[data-key="${key}"]`), b = row && row.querySelector(".g9-vb"); if (!b) return;
+  /* a note drafted from the brief waits in the goal's Chat; it doesn't come back as a new row */
+  const js = b.dataset.js, run = () => { const had = new Set(_g9Items().map(x=>x.key)); (new Function(js))();
+    if (v==="Draft" || v==="Reply") { const K = g7K(); _g9Items().filter(x=>/^d:/.test(x.key) && !had.has(x.key)).forEach(x=>{ K.deck[x.key] = 1; }); render(); } };
+  if (!wait) return run();
+  b.outerHTML = `<span class="g9-done" role="status">${LI("check",16)}${G9_DONE[v]}</span>`;
+  setTimeout(()=>{ row.classList.add("g9-out"); setTimeout(run, 220); }, 1500);
+}
+function g9ToBrief(){ STATE.sheet = null; if (STATE.screen!=="home") go("home"); else render(); setTimeout(()=>{ const c = phone.querySelector(".g9-brief") || phone.querySelector(".g8-hl"); if (c) c.scrollIntoView({ behavior:"smooth", block:"center" }); }, 60); }
+g8Story = function(){ g9ToBrief(); };
+g8DeckTo = function(key){
+  if (!phone.querySelector(`.g9-row[data-key="${key}"]`) && g7DeckItems().some(x=>x.key===key)) { g7K().g9more = 1; render(); }
+  const r = phone.querySelector(`.g9-row[data-key="${key}"]`); if (!r) return;
+  r.scrollIntoView({ behavior:"smooth", block:"center" }); r.classList.remove("g9-hi"); void r.offsetWidth; r.classList.add("g9-hi"); };
+/* the story viewer is gone: with nothing left the Kai brief row lands on Home's caught-up line */
+m2DeckOpen = function(){ STATE.sheet = null; if (STATE.member && STATE.intakeDone) return g9ToBrief(); return _g8DeckOpen.apply(this, arguments); };
+const _g9Hero = g8Hero;
+g8Hero = function(its){ return its.length ? _g9Hero.apply(this, arguments) : `<p class="g8-hl">You're caught up. More tomorrow morning.</p>`; };
+
+const _g9Render = render;
+render = function(){
+  const r = _g9Render.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  if (/^mission:/.test(STATE.screen||"")) { try { g9GoalHead(); } catch (e) { console.warn("g9GoalHead", e); } }
+  try { g9GhostNow(); } catch (e) { console.warn("g9Ghost", e); }
+  return r;
+};
+
+/* the status-bar strip takes the Goal preview's plate, as it does the goal header's (n36 check 7); sbar.js repaints the strip inline on
+   every render and head change, so the plate rides a body class that outranks it */
+const _g9RenderS = render;
+render = function(){ const r = _g9RenderS.apply(this, arguments);
+  const ph = /^gpreview:/.test(STATE.screen||"") && phone.querySelector(".g9-ph"), p1 = ph && getComputedStyle(ph).getPropertyValue("--g7-p1").trim();
+  document.body.classList.toggle("g9-pvs", !!p1); if (p1) document.body.style.setProperty("--g9-sb", p1); return r; };
+window.addEventListener("resize", ()=>{ try { g9GhostNow(); } catch (e) {} });
+
+</script>
 <script>
 /* ==== CONTROLS, UP TO DATE (7 Oct 08:47, Apoorv: "if any of the control screens are unnecessary, remove them. If it still holds value,
    then update them and make sure that they're up to date with how we are thinking about the product"). Loads last.
@@ -31156,6 +31384,281 @@ render = function(){ const r = _ctlRender.apply(this, arguments); ctlTidy(); ret
 ctlTidy();
 
 </script>
+<style>
+/* B6: locked chat rows, the three questions, the organizer's chat queue */
+#phone .ch.slim.cg-lk { cursor:pointer; min-height:56px; }
+#phone .ch.slim.cg-lk .chn { display:block; min-width:0; flex:1; font-weight:500; color:var(--text-primary); }
+#phone .cg-sub { display:block; margin-top:2px; font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cg-lock { flex:0 0 auto; margin-left:auto; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; color:var(--text-secondary); }
+#phone .cg-card { margin:8px 0 12px; }
+#phone.cg-lkd .cm-tab[data-ctab="chat"] .cm-dot { display:none; }
+/* the answer page */
+#phone .cg-h { display:flex; align-items:center; height:56px; min-height:56px; padding:0 8px; }
+#phone .cg-h .back { width:44px; height:44px; display:flex; align-items:center; justify-content:center; color:var(--text-primary); cursor:pointer; }
+#phone .cg-h .t { flex:1; min-width:0; color:var(--text-primary); }
+#phone .cg-body { background:var(--sf-ground); padding:0 16px 120px; }
+#phone .cg-intro { margin:8px 0 16px; font:500 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cg-form { padding:4px 16px; }
+#phone .cg-q { display:block; padding:16px 0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .cg-q:first-child { border-top:0; }
+#phone .cg-ql { display:block; font:600 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cg-cap { display:block; margin-top:4px; font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cg-ta { display:block; width:100%; box-sizing:border-box; margin-top:10px; min-height:72px; padding:10px 12px; border:1px solid var(--border-default, rgb(0 0 0 / .12)); border-radius:12px; background:var(--sf-inset, transparent); color:var(--text-primary); font:500 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); resize:vertical; }
+#phone .cg-ta::placeholder { color:var(--text-secondary); }
+#phone .cg-ta:focus { outline:2px solid var(--text-primary); outline-offset:1px; }
+/* organizer: Waiting for chat access, the rule, the questions */
+#phone .cg-wait { margin:12px 0 8px; }
+#phone .cg-wh { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; }
+#phone .cg-wt { margin:0; font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cg-all { min-height:44px; padding:0 4px; border:0; background:none; color:var(--text-primary); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .cg-list { margin-bottom:12px; }
+#phone .cg-sq { width:40px; height:40px; flex:0 0 40px; border-radius:50%; background:var(--sf-inset); color:var(--text-primary); }
+#phone .cg-ans { margin:0; padding:0 16px 14px 64px; }
+#phone .cg-ans dt { margin-top:10px; font:600 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cg-ans dd { margin:2px 0 0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cg-rules { padding:0 16px; }
+#phone .cg-rule { display:flex; align-items:center; gap:12px; width:100%; min-height:56px; padding:10px 0; border:0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); background:none; text-align:left; cursor:pointer; color:var(--text-primary); }
+#phone .cg-rule:first-child { border-top:0; }
+#phone .cg-rl { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; font:600 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cg-rl span { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cg-rule .g7-sw { flex:0 0 44px; }
+#phone .cg-ch { flex:0 0 auto; color:var(--text-secondary); display:inline-flex; }
+#phone .cg-qs { margin:0; padding:0 0 14px 20px; font:500 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cg-qs li + li { margin-top:6px; }
+#phone .cg-foot { background:var(--sf-ground); border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .cg-foot .btn { background:var(--text-primary); color:var(--sf-card, #fff); border:0; }
+/* the Members header title is an inline-styled div that kept a fixed ink in dark */
+#phone .view > .hdr > div[style*="font-size:18px;font-weight:700"] { color:var(--text-primary); }
+/* the role is what an organizer reads before Approve: it wraps, never cut */
+#phone .cg-wr .g9-rt span { white-space:normal; overflow:visible; text-overflow:clip; }
+#phone .ch.slim.cg-lk:focus-visible { outline:2px solid var(--text-primary); outline-offset:-2px; }
+
+</style>
+<script>
+/* ==== B6 (v2-change-plan/hifi-specs/SPEC-B6-instant-admit-locked-chat.md; Apoorv 19:22 "yes to all", Kai distribution 19:29).
+   Joining Xoogler admits at once after the readback's "That's me". Events, members and posts open then; chat channels stay locked
+   until three answers, prefilled from what sign-up already captured. The organizer side is Manage > Members "Waiting for chat access"
+   with one rule. Loads after controls.js. ---- */
+const cg = () => STATE.cg || (STATE.cg = { access:"open", auto:false, ans:null, draft:null, ok:{}, open:null, qs:false, fk:false });
+const CG_QS = ["When were you at Google, and on which team?", "What are you working on right now?", "What can you help members with?"];
+const cgLocked = () => !!STATE.member && !cOrg() && cg().access!=="open";
+const cgXChan = id => ((DB.channels || {}).xoogler || []).some(c=>c.id===id);
+/* seeded queue: people who joined this week and answered; the old pending applicants */
+const CG_SEED = { jordan:["Product, ML ranking", ["Six years in product at Google, the last two on ML ranking.", "Moving into AI product.", "ML ranking and search quality."]],
+  mira:["Staff engineer, Search infra", ["Search infra, as a staff engineer.", "Starting something in agents.", "Infra reviews for agent products."]],
+  leo:["Ex-Google, consumer growth", ["Consumer apps, on growth.", "Angel investing in consumer AI.", "Growth plans and early fundraising."]] };
+C_MM.forEach(m=>{ if (m.st==="pending") { m.sub = m.id==="priya" ? null : "Joined this week · answered 3 of 3"; } });
+{ const j = C_MM.find(m=>m.id==="jordan"), l = C_MM.find(m=>m.id==="leo");
+  if (j) j.atm = "Six years in product at Google, two on ML ranking. Moving into AI PM."; if (l) l.atm = "Ex-Google, consumer growth. Angel investing in consumer AI."; }
+/* demo data: no real company domains or product names, no gendered pronouns, on the screens B6 touches */
+C_MM.forEach(m=>{ if (m.e) m.e = m.e.replace(/@(sierra\.ai|figma\.com|notion\.so|anthropic\.com|perplexity\.ai)$/, "@mail.com");
+  if (m.atm) m.atm = m.atm.replace("ex-Android", "ex-Google").replace("PM at Notion, ex-Docs", "PM at a docs startup, ex-Google")
+    .replace("Ex-Waymo", "Ex-Google, self-driving").replace("Ex-YouTube growth", "Ex-Google, consumer growth").replace("Product, Google Pay. Now at Wise.", "Product, payments at Google. Now at a fintech."); });
+if (typeof EVM_B!=="undefined" && EVM_B.e4) EVM_B.e4.excluded = "Not asked: Ana co-hosts; Marco already said no.";
+/* the organizer's settings describe the new gate: no join approval, no join queue, the questions live on Members */
+C_SETTILE.join[1] = C_SETTILE.join[1].filter(r=>r[1]!=="Onboarding questions" && r[1]!=="Require approval").map(r=>r[1]==="Welcome and Start screens" ? ["t", r[1], "What people see after they join"] : r);
+C_SETTILE.join[1].splice(1, 0, ["t", "Chat access questions", "3 questions, on Members"]);
+C_SETTILE.info[1] = C_SETTILE.info[1].filter(r=>r[1]!=="Require approval to join");
+C_SETTILE.nom[1][0][1] = "Trusted members' nominees get chat right away";
+C_FSET.forEach(r=>{ if (r[0]==="Joining") r[1] = "Invite only · chat opens after 3 questions"; if (r[0]==="Nominations") r[1] = "Trusted members' nominees get chat right away"; });
+
+/* ---- prefill: only what the member's profile already holds (DB.people[me]); empty where Key has nothing ---- */
+function cgPrefill(){
+  const p = DB.people[STATE.persona || "priya"] || {}, at = [p.title, p.company].filter(Boolean).join(" at ");
+  return [/Google/.test(p.company || "") ? p.company : "", at ? at + "." : "", (p.help || []).join(", ")].map(v=>({ v, src:!!v }));
+}
+function cgPage(){
+  const A = cg().draft || (cg().draft = cgPrefill());
+  const f = (q, i) => `<label class="cg-q" for="cgq${i}"><span class="cg-ql">${q}</span>${A[i].src ? `<span class="cg-cap">From your profile</span>` : ""}<textarea id="cgq${i}" class="cg-ta" rows="3" data-cgq="${i}" placeholder="Your answer">${g7Esc(A[i].v)}</textarea></label>`;
+  return `<div class="hdr cg-h"><div class="back" role="button" tabindex="0" aria-label="Back" onclick="STATE.backNav=true;goBack()">${LI("chevron-left",22)}</div><div class="t">Open chat in Xoogler</div></div>
+  <div class="body cg-body"><p class="cg-intro">Three questions, then chat opens. Organizers see your answers. Members don't.</p>
+    <div class="g9-card cg-form">${CG_QS.map(f).join("")}</div></div>
+  <div class="foot cg-foot"><button type="button" class="btn" onclick="cgSend()">Send answers</button></div>`;
+}
+document.addEventListener("input", e=>{ const i = e.target && e.target.dataset && e.target.dataset.cgq; if (i!==undefined && cg().draft) cg().draft[+i].v = e.target.value; });
+function cgSend(){
+  const A = cg().draft || [], miss = A.findIndex(a=>!a.v.trim());
+  if (miss >= 0) { toast("Answer all three to send."); const t = phone.querySelector(`[data-cgq="${miss}"]`); if (t) t.focus(); return; }
+  cg().ans = A.map(a=>a.v.trim()); STATE.family = "xoogler";
+  if (cg().auto) { cg().access = "open"; go("fchannels"); toast("Chat is open."); }
+  else { cg().access = "waiting"; go("fchannels"); toast("Sent. An organizer opens chat."); }
+}
+
+/* ---- join: "Join Xoogler" replaces the 22-question application; "That's me" admits ---- */
+function cgJoin(){ STATE.metrics.applications++; STATE.applied = true; STATE.appliedAt = "today"; go("home"); }
+function cgAdmit(){
+  const pn = pushNote; pushNote = function(){};
+  try { approveMe(); } finally { pushNote = pn; }
+  for (let i = DB.activity.length - 1; i >= 0; i--) if (/approved your application/.test(DB.activity[i].text || "")) DB.activity.splice(i, 1);
+  if (DB.notifs) DB.notifs = DB.notifs.filter(n=>!/approved your application/.test(n.title || ""));
+  Object.assign(cg(), { access:"locked", ans:null, draft:null, fk:false, fresh:true });
+  STATE.rbStep = 1; STATE.push = null; STATE.family = "xoogler"; go("family"); toast("You're in Xoogler.");
+}
+const _cgPend = pendingBanner; pendingBanner = function(){ return STATE.applied && !STATE.member ? "" : _cgPend.apply(this, arguments); };
+const _cgAsk = notifAsk; notifAsk = function(){ return STATE.applied && !STATE.member ? "" : _cgAsk.apply(this, arguments); };
+/* the bell: no channel content while chat is locked; someone who just joined has only what happened since, and the welcome is now */
+const cgChanNote = n => n.fam==="xoogler" && (/^(mention|thread|reaction)$/.test(n.type) || /^(channel|thread|chatinfo):/.test(n.to || ""));
+const _cgNotifs = notifs;
+notifs = function(){ const r = _cgNotifs.apply(this, arguments); if (cgOrgView()) return r;
+  const fresh = cg().fresh, w = fresh && r.find(n=>n.id==="n14"); if (w) Object.assign(w, { when:"now", unread:true });
+  return r.filter(n=>!(cgLocked() && cgChanNote(n)) && !(fresh && /^n\d+$/.test(n.id) && n.id!=="n14") && !/approved your application/.test(n.title || "")); };
+const _cgToast = toast; toast = function(t){ return _cgToast.apply(this, [typeof t==="string" ? t.replace("Apply later from Families", "Join later from Families") : t].concat([].slice.call(arguments, 1))); };
+const CG_TEXT = [
+  ["Nice, that's sent.", "You're joining Xoogler."], ["While Xoogler decides, let's get Kai ready for you.", "Talk with Kai and you're in."],
+  ["Applied to Xoogler. You'll hear the moment they decide", "Joining Xoogler. You're in after your talk with Kai"],
+  ["Daniel reviews applications about twice a week. Until you're in, Kai can prepare. Nothing reaches members.", "You're in after a short talk with Kai. Chat opens after 3 quick questions."],
+  ["Daniel reviews applications about twice a week. Until you're in, you can get ready and Kai can prepare. Nothing reaches members.", "You're in after a short talk with Kai. Chat opens after 3 quick questions."],
+  [", president, invited you to apply", ", president, invited you"], ["Apply · about 8 minutes", "Join Xoogler"], ["Xoogler, pending", ""],
+  ["Applied today. You'll hear the moment they decide", "Talk with Kai to finish joining"],
+  ["Applied today", "Talk with Kai to finish joining"], ["Opens on approval", "Opens after your talk with Kai"],
+  ["You'll hear the moment they decide", "You're in after your talk with Kai"],
+  /* organizer copy: the old applicant queue is now the chat queue */
+  ["Waiting to join", "Waiting for chat access"], ["want to join", "waiting for chat"], ["Requests, roles, tags and notes", "Chat access, roles, tags and notes"],
+  ["Applied this week", "Answered this week"], ["waiting to join", "waiting for chat"]
+];
+function cgText(){
+  const w = document.createTreeWalker(phone, NodeFilter.SHOW_TEXT); let n; const hit = [];
+  while ((n = w.nextNode())) { const t = n.nodeValue; if (!t || !t.trim()) continue; for (const [a, b] of CG_TEXT) if (t.includes(a)) hit.push([n, a, b]); }
+  hit.forEach(([n, a, b])=>{ n.nodeValue = n.nodeValue.split(a).join(b); if (!b && !n.nodeValue.trim() && n.parentElement && !n.parentElement.textContent.trim()) n.parentElement.remove(); });
+  phone.querySelectorAll("[onclick*=\"go('application')\"]").forEach(e=>e.setAttribute("onclick", "cgJoin()"));
+  if (!STATE.member) phone.querySelectorAll("[onclick*=\"go('family-step')\"]").forEach(e=>{
+    if (e.textContent.trim()==="Apply") e.textContent = "Join";
+    if (e.textContent.trim()==="Review your application") { e.textContent = "Talk with Kai"; e.setAttribute("onclick", "startCall()"); } });
+  if (STATE.applied && !STATE.member) phone.querySelectorAll(".vcard .kicker").forEach(k=>{ if (k.lastChild && k.lastChild.nodeValue==="Pending") k.lastChild.nodeValue = "Joining"; });
+  /* an organizer's view of someone waiting for chat: the chat queue, not an applicant */
+  phone.querySelectorAll(".cm-pill.pending").forEach(e=>{ e.classList.remove("pending"); e.classList.add("cg-wp"); e.textContent = "Waiting for chat"; });
+  phone.querySelectorAll('[data-mmgo^="answers|"]').forEach(r=>{ const a = cgAnsOf(r.dataset.mmgo.split("|")[1]);
+    if (!a.length) return r.remove(); const l = r.querySelector(".a"), c = r.querySelector(".cm-done"); if (l) l.textContent = "Chat access answers"; if (c) c.textContent = a.length; });
+  if (STATE.screen==="doorway") phone.querySelectorAll(".obk-ov, .obk-tag").forEach(e=>{ if (e.textContent.trim()==="Pending") e.textContent = "Joining"; });
+  if (STATE.screen==="readback" && (STATE.rbStep||1)===1 && !STATE.member && STATE.applied) phone.querySelectorAll(".foot button").forEach(b=>{ if (b.textContent.trim()==="That's me") b.setAttribute("onclick", "cgAdmit()"); });
+}
+
+/* ---- member: the Channels list while chat is locked or waiting ---- */
+function cgChannels(){
+  const waiting = cg().access==="waiting";
+  phone.querySelectorAll(".ch.slim[data-channel]").forEach(r=>{
+    if (r.classList.contains("cg-lk")) return; r.classList.add("cg-lk"); r.classList.remove("u", "off");
+    r.querySelectorAll(".unread, .join, [data-join]").forEach(e=>e.remove());
+    const n = r.querySelector(".chn"); if (n) n.insertAdjacentHTML("beforeend", `<span class="cg-sub">${waiting ? "Waiting for an organizer" : "Answer 3 questions to open chat"}</span>`);
+    r.insertAdjacentHTML("beforeend", `<span class="cg-lock" aria-hidden="true">${LI("lock",18)}</span>`);
+    r.setAttribute("role", "button"); r.tabIndex = 0; r.setAttribute("aria-label", `${(n ? n.firstChild.textContent : "").trim()}, locked. ${waiting ? "Waiting for an organizer" : "Answer 3 questions to open chat"}`);
+  });
+  phone.querySelectorAll(".cm-kairow").forEach(e=>{
+    if (!waiting && !g7K().not["cg:ask"] && !phone.querySelector(".cg-card")) e.insertAdjacentHTML("beforebegin", g7Card({ key:"cg:ask", h:"Answer 3 questions to open chat.", rc:"I filled in what I know from your profile.", acts:[["Answer", "go('chatgate')"]] }, "g7-in cg-card"));
+    e.remove();
+  });
+  /* nothing unread shows while the messages are hidden */
+  phone.querySelectorAll(".view .body button, .view .body .chip, .view .body [class*=chip]").forEach(c=>{ if (/^Unread/.test(c.textContent.trim())) c.remove(); });
+}
+document.addEventListener("click", e=>{ const b = e.target.closest && e.target.closest('#phone [data-ovstart="hi"]'); if (!b || !cgLocked()) return;
+  e.stopPropagation(); e.preventDefault(); if (cg().access==="waiting") toast("Waiting for an organizer. Chat opens when they approve."); else go("chatgate"); }, true);
+const cgLkTap = e=>{
+  const r = e.target.closest && e.target.closest("#phone .ch.slim.cg-lk"); if (!r || !cgLocked()) return;
+  if (e.type==="keydown" && e.key!=="Enter" && e.key!==" ") return;
+  e.stopPropagation(); e.preventDefault(); if (cg().access==="waiting") toast("Waiting for an organizer. Chat opens when they approve."); else go("chatgate");
+};
+document.addEventListener("click", cgLkTap, true); document.addEventListener("keydown", cgLkTap, true);
+const _cgGo = go;
+go = function(s){
+  if (s==="profile" && STATE.profileId==="me") STATE.profileId = "priya";
+  if (typeof s==="string" && /^(channel|thread|chatinfo):/.test(s) && cgLocked() && cgXChan(s.split(":")[1])) {
+    if (cg().access==="waiting") { toast("Waiting for an organizer. Chat opens when they approve."); return; }
+    s = "chatgate";
+  }
+  return _cgGo.call(this, s, ...[].slice.call(arguments, 1));
+};
+/* the member hears once, from Kai, when an organizer opens chat */
+const _cgFromKai = g7FromKai;
+g7FromKai = function(){ const r = _cgFromKai.apply(this, arguments);
+  return cg().fk && !g7K().not["cg:open"] && STATE.persona!=="chris" ? [{ key:"cg:open", h:"Chat in Xoogler is open.", rc:"An organizer read your answers.", acts:[["Open", "cg().fk=false;STATE.family='xoogler';g7Visit('fchannels')"]] }].concat(r).slice(0, 3) : r; };
+
+/* ---- organizer: Manage > Members ---- */
+function cgSync(){ const me = C_MM.find(m=>m.id==="priya"); if (!me) return; const p = DB.people.priya || {};
+  Object.assign(me, { st:cg().access==="waiting" ? "pending" : "active", role:"member", n:DB.user.name, e:DB.user.email || "", atm:[p.title, p.company].filter(Boolean).join(" at ") });
+  me.joined = me.joined || "Today"; me.sub = me.st==="pending" ? "Joined today · answered 3 of 3" : null; }
+const cgAnsOf = id => (id==="priya" ? cg().ans : (CG_SEED[id] || [, null])[1]) || [];
+const cgOrgView = () => cOrg() || STATE.persona==="chris";
+cAnswers = function(){ const m = cMMOne(STATE.mmFor), a = cgAnsOf(m.id);
+  return `${famHeader("Chat access answers","manage")}<div class="body" style="padding-top:4px"><div class="cm-meta" style="margin:0 0 6px">${m.n} · ${a.length} answers</div>
+    ${CG_QS.map((q, i)=>`<div class="cm-row" style="display:block;cursor:default"><div class="b">${q}</div><div class="cm-text" style="margin-top:2px">${g7Esc(a[i] || "")}</div></div>`).join("")}</div>${navHTML("families")}`; };
+function cgWait(){
+  cgSync();
+  return cMM().filter(m=>m.st==="pending").map(m=>m.id==="priya"
+    ? { id:m.id, n:DB.user.name, role:[DB.user.title, DB.user.company].filter(Boolean).join(" at "), ans:cg().ans || [] }
+    : { id:m.id, n:m.n, role:(CG_SEED[m.id] || [""])[0], ans:(CG_SEED[m.id] || [, []])[1] });
+}
+function cgApprove(id, quiet){
+  const m = cMMOne(id); if (!m) return;
+  if (id==="priya") { cg().access = "open"; cg().fk = true; cgSync(); }
+  else cMMSet(id, { st:"active", role:"member", joined:"This week", sub:null });
+  if (cg().open===id) cg().open = null;
+  if (!quiet) { toast(`Chat is open for ${(id==="priya" ? DB.user.name : m.n).split(" ")[0]}.`); render(); }
+}
+function cgApproveAll(){ const w = cgWait(); w.forEach(m=>cgApprove(m.id, true)); toast(`Chat is open for ${w.length} people.`); render(); }
+function cgOpenRow(id){ cg().open = cg().open===id ? null : id; render(); }
+function cgWaitHTML(){
+  const w = cgWait(), n = w.length, C = cg();
+  const row = m => { const open = C.open===m.id;
+    return `<div class="g9-row cg-wr" data-kc="KeyMemberRow" data-kv="state=waiting-chat"><button type="button" class="g9-rb" aria-expanded="${open}" onclick="cgOpenRow('${m.id}')"><span class="cm-sq cg-sq" aria-hidden="true">${cIni(m.n)}</span><span class="g9-rt"><b>${g7Esc(m.n)}</b>${m.role ? `<span>${g7Esc(m.role)}</span>` : ""}<span>Answered ${m.ans.filter(Boolean).length} of 3</span></span></button><button type="button" class="g9-vb" onclick="cgApprove('${m.id}')">Approve</button></div>
+      ${open ? `<dl class="cg-ans">${CG_QS.map((q, i)=>`<dt>${q}</dt><dd>${g7Esc(m.ans[i] || "")}</dd>`).join("")}</dl>` : ""}`; };
+  const group = n ? `<div class="cg-wh"><h3 class="cg-wt">Waiting for chat access (${n})</h3>${n >= 2 ? `<button type="button" class="cg-all" onclick="cgApproveAll()">Approve all</button>` : ""}</div><div class="g9-card cg-list">${w.map(row).join("")}</div>` : "";
+  return `<section class="cg-wait" aria-label="Chat access" data-kc="KeyChatAccess">${group}
+    <div class="g9-card cg-rules"><button type="button" class="cg-rule" role="switch" aria-checked="${C.auto}" onclick="cg().auto=!cg().auto;render()"><span class="cg-rl">Open chat automatically when answers are complete</span><span class="g7-sw${C.auto ? " on" : ""}" aria-hidden="true"><i></i></span></button>
+      <button type="button" class="cg-rule" aria-expanded="${C.qs}" onclick="cg().qs=!cg().qs;render()"><span class="cg-rl">Chat access questions<span>3 questions</span></span><span class="cg-ch" aria-hidden="true">${LI(C.qs ? "chevron-up" : "chevron-down",20)}</span></button>
+      ${C.qs ? `<ol class="cg-qs">${CG_QS.map(q=>`<li>${q}</li>`).join("")}</ol>` : ""}</div></section>`;
+}
+const _cgMembers = cMembers;
+cMembers = function(tab){
+  if (STATE.mmSel) return _cgMembers.apply(this, arguments);
+  STATE.mmTab = "all"; STATE.mmStale = false; cgSync();
+  return _cgMembers.call(this, "all")
+    .replace(/<div class="cm-tabs sticky" role="tablist">[\s\S]*?<\/div><\/div>/, "")
+    .replace('<div class="body" style="padding-top:0">', '<div class="body" style="padding-top:0">' + cgWaitHTML());
+};
+/* approving a chat-waiting person anywhere (their detail page, the row sheet) opens chat, nothing else */
+document.addEventListener("click", e=>{ const b = e.target.closest && e.target.closest("#phone [data-mmok]"); if (!b) return; e.stopPropagation(); e.preventDefault(); STATE.sheet = null; cgApprove(b.dataset.mmok); }, true);
+
+const _cgRender = render;
+render = function(){
+  if (typeof C_MM!=="undefined") cgSync();
+  const r = _cgRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  try {
+    cgText();
+    phone.classList.toggle("cg-lkd", cgLocked() && STATE.family==="xoogler");
+    if (STATE.screen==="fchannels" && cgLocked() && STATE.family==="xoogler") cgChannels();
+    if (STATE.screen==="manage:members" && !STATE.mmSel) { const ids = cgWait().map(m=>m.id); phone.querySelectorAll(".cm-mm[data-mm]").forEach(e=>{ if (ids.includes(e.dataset.mm)) e.remove(); }); }
+  } catch (e) { console.warn("chatgate", e); }
+  return r;
+};
+
+/* ---- controls: Screens group ---- */
+/* the real path from a pristine world: Join, the talk with Kai, That's me */
+function cgFresh(){
+  STATE.authIntent = "signup"; STATE.signinWith = "linkedin"; STATE.lookupReady = true; cgJoin(); STATE.micAsked = true; startCall();
+  for (let i = 0; i < 6 && i < INTAKE.length; i++) answer(INTAKE[i].a[0]);
+  STATE.callActive = false; STATE.overlaySeen = true; cgAdmit(); STATE.push = null;
+}
+function cgReset(){
+  if (RS_PRISTINE) { rsLoad(RS_PRISTINE); return cgFresh(); }
+  try { sessionStorage.setItem("keyCg", "fresh"); } catch(e) {} dataReset();
+}
+(function(){ let k = null; try { k = sessionStorage.getItem("keyCg"); sessionStorage.removeItem("keyCg"); } catch(e) {} if (k==="fresh") setTimeout(cgFresh, 0); })();
+/* the seeded worlds are established members: chat is open there */
+const _cgJump = jump; jump = function(){ STATE.cg = null; return _cgJump.apply(this, arguments); };
+function cgOrgApproves(){
+  if (cg().access!=="waiting") { toast(cg().access==="open" ? "Chat is already open." : "Nothing waiting yet. Send the answers first."); return; }
+  cgApprove("priya", true); toast("An organizer opened chat."); render();
+}
+function cgCtl(){
+  const g = [...document.querySelectorAll(".stagebar .sgrp")].find(x=>{ const l = x.querySelector(".sgl"); return l && l.textContent==="Screens"; });
+  if (!g || g.querySelector("[data-cgctl]")) return;
+  g.insertAdjacentHTML("beforeend", `<button type="button" data-cgctl="1" onclick="cgReset()">B6: reset join</button><button type="button" data-cgctl="2" onclick="cgOrgApproves()">B6: organizer approves</button>`);
+}
+const _cgCtlRender = render; render = function(){ const r = _cgCtlRender.apply(this, arguments); cgCtl(); return r; };
+cgCtl();
+
+</script>
 <script>
 /* ==== STATUS BAR, NO BLUR (7 Oct 09:01, Apoorv: "the weird blurry gradient coming from the status bar onto the app header ... on every
    screen"). None of our layers blur there any more (6 Oct 00:39 took the glass blur off phones). What is left is iOS 26 Safari's own
@@ -31182,7 +31685,7 @@ ctlTidy();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-673c";
+window.KEY_BUILD = "2.hifi-260a";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
