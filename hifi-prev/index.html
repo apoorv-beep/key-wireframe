@@ -21916,7 +21916,7 @@ function mcWire(){
    Everything a person does is saved on this device and comes back on reload, so stakeholders can leave and return to their own results.
    Restart clears it. Starts clean when the page is driven by a test (navigator.webdriver) unless the URL has ?keep, and always with ?fresh.
    A save made against an older build (any change to the page's script) is dropped, so a republish never loads stale state. Must be the last module. ==== */
-const DATA_KEY = "key-wireframe-hifi-save";
+const DATA_KEY = "key-wireframe-save";
 const DATA_SKIP = /^(push|quick|sheet|listening|callActive|callMin|callSeconds)$|Timer$|Dismiss$/;
 const DATA_SEED = (()=>{ const t=Array.from(document.scripts).map(x=>x.text).join(""); let h=0; for (let i=0;i<t.length;i++) h=(h*31+t.charCodeAt(i))|0; return h+":"+t.length; })();
 const DATA_ON = (()=>{ try { const q=new URLSearchParams(location.search); if (q.has("fresh")) { localStorage.removeItem(DATA_KEY); return false; } return q.has("keep") || !navigator.webdriver; } catch(e) { return false; } })();
@@ -29760,7 +29760,8 @@ render = function(){
 
 </script>
 <style>
-#phone .voc-ideas { margin:var(--space-absolute-16, 16px) 16px 0; }
+/* n29a (Apoorv 7 Oct 00:51): same width as the cards around it; the Home column already carries the 16px gutter */
+#phone .voc-ideas { margin:var(--space-absolute-16, 16px) 0; }
 #phone .voc-ihd { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
 #phone .voc-ihd h2 { display:flex; align-items:center; gap:8px; margin:0; font:800 20px/1.2 Manrope, system-ui, sans-serif; color:var(--text-primary); }
 #phone .voc-ihd h2 svg { color:var(--text-secondary); }
@@ -29915,7 +29916,7 @@ m2IdeasHTML = function(){ return _vocIdeasSheet.apply(this, arguments).replace(/
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-91fd";
+window.KEY_BUILD = "2.hifi-ed06";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

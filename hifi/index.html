@@ -8090,6 +8090,7 @@ function render() {
   else if (S==="calendars") html = sCalendars();
   else if (S.startsWith("kaithread:")) html = sKaiThread(S.split(":")[1]);
   else if (S==="kaihistory") html = sKaiHistory();
+  else if (S==="kimthread") html = kimThread();
   else if (S==="messages") { STATE.inboxView=null; html = sInbox(); }
   else if (S==="notifications") html = sNotifications();
   else if (S==="later") html = sLater();
@@ -29915,8 +29916,252 @@ const _vocIdeasSheet = m2IdeasHTML;
 m2IdeasHTML = function(){ return _vocIdeasSheet.apply(this, arguments).replace(/(<span class="m2-sgm" aria-hidden="true">)[\s\S]*?(<\/span>)/, `$1${LI("lightbulb",22)}$2`).replace(/(<span class="m2-irm" aria-hidden="true">)[\s\S]*?(<\/span>)/g, `$1${LI("lightbulb",20)}$2`); };
 
 </script>
+<style>
+/* n29 Kai in Messages, app side (kim.js). Tokens only; hg- rows and buttons are reused as they are. */
+#phone .kim-body { padding-bottom:16px; }
+#phone .kim-body .dsep { margin-top:8px; }
+#phone .kim-body .dsep::before, #phone .kim-body .dsep::after { display:none; }
+#phone .kim-body .dsep span { background:var(--bg-surface-default); border:0; box-shadow:0 1px 2px var(--shadow-elev-1-contact); color:var(--text-secondary); font:var(--type-label-strong); letter-spacing:var(--type-label-strong-tracking); padding:var(--space-absolute-2) var(--space-absolute-10); border-radius:var(--radius-absolute-infinite); }
+#phone .kim-why { display:flex; gap:6px; align-items:center; margin-top:6px; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kim-why svg { flex:0 0 auto; }
+#phone .kim-rp { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+#phone .kim-chip { min-height:44px; padding:0 16px; border-radius:999px; border:1px solid var(--border-default); background:var(--surface-card, #fff); color:var(--text-primary); font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .kim-chip:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
+#phone .kim-foot { padding:8px 4px 0; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); text-align:center; }
+#phone .kim-seg > span { min-height:44px; display:flex; align-items:center; justify-content:center; padding:0 10px; white-space:nowrap; }
+#phone .kim-empty { display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px; padding:48px 16px; }
+#phone .kim-empty .a { font:var(--type-title, 600 20px/1.3 Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .kim-empty .b { font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-secondary); max-width:280px; }
+#phone .kim-empty .hg-btn { margin-top:8px; }
+#phone .kim-w { flex:0 0 auto; min-width:64px; font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .kim-rcpt { position:relative; margin:4px 0 16px; padding:14px 44px 14px 14px; border-radius:var(--radius-absolute-16, 16px); background:var(--surface-card, #fff); box-shadow:var(--elevation-1); }
+#phone .kim-rh { display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:var(--text-primary); font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); }
+#phone .kim-rh span { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kim-rb { margin-top:4px; font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kim-rx { position:absolute; top:4px; right:4px; width:44px; height:44px; border:0; background:none; color:var(--text-secondary); display:grid; place-items:center; cursor:pointer; }
+.kim-row .kim-rt { flex:0 0 40px; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:var(--surface-sunken, #F2F4F7); color:var(--text-primary, #0B0E11); }
+.kim-row .kim-dot { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--text-primary, #0B0E11); }
+/* n29 layout fixes from the 8d36 check (both were in n28): the goal line fits at 360 with Manrope (smaller gap and size up to 380,
+   the goal text truncates before anything clips), and Goal ideas faces overlap 4px so both initials stay whole */
+@media (max-width:380px) { #phone .mi-gl.m2-gl, #phone .hc-card .mi-gl { gap:8px; font-size:13px; } }
+#phone .mi-gl.m2-gl > span:first-child, #phone .hc-card .mi-gl > span:first-child { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+#phone .m2-sgf .m2-fs > .avatar + .avatar { margin-left:-4px; }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-ed06";
+/* ==== KAI IN MESSAGES, THE APP SIDE (n29; Apoorv 7 Oct 00:51, "get the hifi prototype up to date with the new direction").
+   Sources: the refinement plan (G4ggDXK9fjnQJWQvKisPfe, sections 3 to 5) and the Messages walkthrough (Rsd8oAj8dQhp4hfKYpr3Fe).
+   The thread is where Kai talks, the app is where it is seen, managed and undone. This file adds only the app's half:
+   Settings > Texts with Kai, Messages on Connected apps with a deletion receipt on revoke, the texts as one conversation in Kai
+   (row on Kai's greeting and in Kai chats, unread dot on the Kai button), lines learned by text in What we know, and "Joined by
+   text" on the organizer's Insights. Goal screens are untouched until How Goals changes is agreed. Every text is built from the
+   goal's own opportunities and receipts; nothing names anyone who hasn't opted in beyond what the app already shows. ==== */
+const KIM_NUM = "+1 415 555 0142";
+Object.assign(LUCIDE, { "messages-square":'<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
+  "message-square-off":'<path d="M21 15V5a2 2 0 0 0-2-2H9"/><path d="m2 2 20 20"/><path d="M3.6 3.6c-.4.3-.6.8-.6 1.4v16l4-4h10"/>' });
+function kim(){ return STATE.kim = STATE.kim || { on:false, ch:"iMessage", often:"2 a week", quiet:true, unread:0, msgs:[] }; }
+const kimEsc = t => String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const kimFirst = pid => ((DB.people[pid]||{}).name||"").split(" ")[0];
+function kimGoal(){ const P = (STATE.kim&&STATE.kim.pausedGoals)||{}; return DB.missions.find(m=>m.status==="active" && !P[m.id] && DB.opps.some(o=>o.missionId===m.id && o.state==="new")) || DB.missions.find(m=>m.status==="active" && !P[m.id]); }
+function kimShort(m){ return m.name.replace(/ at an AI company$/,""); }
+function kimNow(){ const d = new Date(); return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}); }
+function kimSay(text, o){ kim().msgs.push(Object.assign({ who:"k", text, at:kimNow() }, o||{})); }
+function kimYou(text){ kim().msgs.push({ who:"u", text, at:kimNow() }); }
+
+/* the first exchange: one line about the channel, then the goal's best open opportunity, with its receipt */
+function kimStart(){
+  const k = kim(), back = k.msgs.length; k.on = true; k.unread = 0;
+  if (back) { kimSay("Back on. I'll text when something moves."); k.unread = 1; return; }
+  kimSay(`Hi, I'm Kai, Key's AI. I'll say so whenever I message anyone for you. I'll text here when something moves on your goals, ${k.often==="When I text"?"only when you text me first":k.often.replace(/^2/,"twice").replace(/^1/,"once")+" at most"}. Reply Status, Pause or Stop any time.`);
+  kimNext(); k.unread = 1;
+}
+/* goal-states N1: a person is named before their yes only if they made themselves visible to you in a family you're in */
+const kimVis = o => (o.receipts||[]).some(r=>/^#/.test(r[2]||""));
+const kimWho = o => kimVis(o) ? kimFirst(o.via||o.personId) : `someone in ${fam().name}`;
+function kimNext(){
+  const m = kimGoal(); if (!m) return kimSay("Nothing new on your goals right now. I'll text when something moves.");
+  const fresh = DB.opps.filter(o=>o.missionId===m.id && o.state==="new" && !(kim().skip||{})[o.id]);
+  const o = fresh[0];
+  if (!o) return kimSay(`${kimShort(m)}: nothing new since we last talked. I'll text when someone replies.`);
+  const who = kimWho(o), r = (o.receipts||[])[0], v = kimVis(o);
+  kimSay(`${kimShort(m)}: ${fresh.length>1?fresh.length+" new opportunities. ":""}${v ? `${who} looks like the best way in. ${o.action}?` : `${who.charAt(0).toUpperCase()+who.slice(1)} looks like the best way in. Want me to check if they're open to it?`}`,
+    { opp:o.id, why:r ? `${r[0]}: ${r[2]}` : "", replies:[o.route==="connector"||!v?"Yes, check with them":"Yes, draft it","Not now",v ? "Why "+who+"?" : "Why this one?"] });
+}
+const kimClean = t => String(t).replace(/Both worked at Google Cloud/g,"You both worked at the same company").replace(/ at (Google Cloud|Perplexity|Anthropic|OpenAI|Google)\b/g,"");
+function kimDraft(o){
+  const who = kimFirst(o.via||o.personId), r = (o.receipts||[])[0], m = DB.missions.find(x=>x.id===o.missionId);
+  const ch = r && (r[2].match(/^#[\w-]+/)||[])[0], topic = r && r[1].includes(":") ? kimClean(r[1].split(":").slice(1).join(":").trim()).replace(/[,\s]+$/,"") : "";
+  return `Hi ${who}, ${ch ? `saw your post in ${ch}${topic?` about ${topic.charAt(0).toLowerCase()+topic.slice(1)}`:""}. ` : m ? `I'm looking for a ${m.name.charAt(0).toLowerCase()+m.name.slice(1)}. ` : ""}Could I ask you two quick questions? Happy to work around your week.`;
+}
+/* goal-states N3/row 2: an ask through a connector goes out nameless first; it reveals only the goal kind, the family and this line */
+function kimPre(o){ const m = DB.missions.find(x=>x.id===o.missionId); return `Hi, this is Kai, Key's AI, asking for a member. Someone in ${fam().name} working toward a ${m ? m.name.charAt(0).toLowerCase()+m.name.slice(1) : "goal like yours"} would value a referral. Open to hearing more?`; }
+const KIM_DAY = d => { const x = new Date(); x.setDate(x.getDate()+d); return x.toLocaleDateString("en-US",{month:"short",day:"numeric"}); };
+const kimPaused = m => !!(kim().pausedGoals||{})[m.id];
+function kimStatus(){
+  const goals = DB.missions.filter(m=>m.status==="active");
+  if (!goals.length) return kimSay("No goals yet. Start one in the app, or tell me here what you're working on.");
+  const n = (m, f) => DB.opps.filter(x=>x.missionId===m.id && f(x)).length;
+  kimSay(goals.map(m=>`${kimShort(m)}${kimPaused(m)?` (paused until ${kim().pausedGoals[m.id]})`:""}\nNew pick: ${n(m,x=>x.state==="new")} · Next step: ${n(m,x=>x.state==="yourmove")} · Waiting: ${n(m,x=>x.state==="waiting")} · In conversation: ${n(m,x=>x.state==="conversation")} · Went well: ${n(m,x=>x.state==="done"&&x.outcome==="good")}`).join("\n\n"));
+}
+/* greetings and acknowledgements never become goal facts */
+const KIM_CHAT = /\b(hi|hey|hello|yo|kai|ok|okay|k|cool|nice|great|perfect|awesome|sure|thanks|thank|you|thx|ty|sounds|good|got|it|morning|afternoon|evening|night|whats|what's|up|sup|lol|haha|all|right|alright|will|do|noted|np|no|problem)\b/g;
+const kimChat = w => w.replace(/[^\w\s']/g," ").replace(KIM_CHAT,"").trim().split(/\s+/).filter(Boolean).length < 2;
+function kimPreSent(o){
+  o.kimPre = true;
+  rsPath(o, "Waiting", "Checking first. No name until they say yes.");
+  o.log = o.log.filter(l=>!/approved and sent the note|will deliver it as an ask/.test(l[1]));
+  o.log.push(["Kai", `asked ${kimWho(o)} first, without your name. Your name goes only if they say yes.`, "today"]);
+}
+function kimReply(t){
+  const k = kim(), last = [...k.msgs].reverse().find(x=>x.who==="k" && x.replies), o = last && last.opp && DB.opps.find(x=>x.id===last.opp);
+  if (last) last.replies = null;
+  kimYou(t);
+  const w = t.trim().toLowerCase(), g = kimGoal();
+  if (w==="status") kimStatus();
+  else if (w==="pause") { if (!g) kimSay(DB.missions.some(m=>m.status==="active") ? "Your goals are already paused. Text Resume to restart one, or Stop to turn off every text." : "No goals to pause yet."); else { (k.pausedGoals = k.pausedGoals||{})[g.id] = KIM_DAY(7); kimSay(`${kimShort(g)} is paused until ${k.pausedGoals[g.id]}. Nothing goes out on it until then. Text Resume to restart it, or Stop to turn off every text.`); } }
+  else if (w==="resume") { const id = Object.keys(k.pausedGoals||{})[0], m = id && DB.missions.find(x=>x.id===id); if (!m) kimSay("Nothing is paused."); else { delete k.pausedGoals[id]; kimSay(`${kimShort(m)} is back on. I'll text when something moves.`); } }
+  else if (w==="stop") { kimSay("Stopped. No more texts from Kai on any goal. Text Start, or turn it back on in Settings, whenever you like."); k.on = false; }
+  else if (w==="start") { k.on = true; kimSay("Back on. I'll text when something moves."); }
+  else if (o && /^yes, (draft|check)/i.test(t) && (o.route==="connector" || !kimVis(o))) kimSay(`I'll ask ${kimWho(o)} first, without your name:\n"${kimPre(o)}"\nYour name goes only if they say yes. Reply Send to ask.`, { opp:o.id, pre:true, replies:["Send","Not now"] });
+  else if (o && /^yes, draft/i.test(t)) kimSay(`Here's the note, from you:\n"${kimDraft(o)}"\nReply Send and it goes exactly like this, or change it in the app.`, { opp:o.id, replies:["Send","Change it in the app"] });
+  else if (o && t==="Send" && last.pre) { STATE.kimSending = true; try { sendAsk(o.id); } finally { STATE.kimSending = false; } STATE.sheet = null; kimPreSent(o); kimSay(`Asked ${kimWho(o)}, without your name. I'll tell you when they answer.`, { why:"You said Send · "+kimNow() }); }
+  else if (o && t==="Send") { STATE.kimSending = true; try { sendAsk(o.id); } finally { STATE.kimSending = false; } STATE.sheet = null; kimSay(`Sent to ${kimWho(o)}. I'll tell you when there's a reply.`, { why:"You said Send · "+kimNow() }); }
+  else if (o && /^change it/i.test(t)) { render(); return go("path:"+o.id); }
+  else if (o && t==="Not now") { (k.skip = k.skip||{})[o.id] = 1; kimSay(`Okay. It stays on your goal as a New pick.`); kimNext(); }
+  else if (o && /^why /i.test(t)) kimSay((o.receipts||[]).map(r=>{ const ch = (r[2].match(/^#[\w-]+/)||[])[0], t = kimClean(r[1]).replace(/[,\s]+$/,"").replace(/\bmission\b/g,"goal");
+    return r[2]==="mission" ? "It fits your goal" : ch && r[1].includes(ch) ? `${t} (${r[2].replace(ch+", ","")})` : `${t} (${r[2]})`; }).filter((t,i,a)=>a.indexOf(t)===i).join(". ").replace(/^$/,"It fits your goal")+".", { opp:o.id, replies:[o.route==="connector"||!kimVis(o)?"Yes, check with them":"Yes, draft it","Not now"] });
+  else if (last && last.keep && t==="Yes") { const C = DB.contextV2; if (C && C.after) C.after.push([last.keep, "Texts with Kai", "today", "paths, mutual reveal"]); kimSay("Added, in your words. It's in What we know and shapes who I look for.", { why:"Saved from your text · remove it any time in What we know" }); }
+  else if (last && last.keep && t==="No") kimSay("Okay, left out.");
+  else if (/^why\b/i.test(w)) kimSay("Ask about anyone I've mentioned and I'll show you where it came from.");
+  /* PRD: facts enter What we know only by confirming; a loose guess costs one No */
+  else if (kimChat(w)) kimSay(/^(hi|hey|hello|yo|good (morning|afternoon|evening)|what'?s up|sup)\b/.test(w) ? "Hi. Reply Status to see where your goals stand, or tell me something about one." : "Anytime. I'll text when something moves.");
+  else if (DB.missions.some(m=>m.status==="active") && t.trim().split(/\s+/).length >= 2 && !/\?\s*$/.test(t) && !/^(what|how|when|where|who|can|could|is|are|do|does|will)\b/i.test(w)) kimSay(`Add "${t.trim()}" to your goal?`, { keep:t.trim(), replies:["Yes","No"] });
+  else kimSay("I'm here for your goals: who to meet, what's next, how it went. Reply Status to see where each one stands.");
+  render();
+}
+
+/* ---- the conversation in the app: same thread as Messages, Kai as mark plus plain text, your lines as black bubbles ---- */
+function kimThread(){
+  const k = kim(); k.unread = 0;
+  const msgs = k.msgs.map(x=>x.who==="u"
+      ? `<div class="ks-u" data-kc="KeyMessageBubble" data-kv="from=you">${kimEsc(x.text)}</div>`
+      : `<div class="ks-k" data-kc="KeyMessageBubble" data-kv="from=kai">${kaiMark(24)}<div class="tx"><p>${kimEsc(x.text).replace(/\n/g,"<br>")}</p>${x.why?`<div class="kim-why" data-kc="KeyReceipt">${LI("info",14)}<span>${kimEsc(x.why)}</span></div>`:""}${x.replies?`<div class="kim-rp">${x.replies.map(r=>`<button type="button" class="kim-chip" data-kimr="${kimEsc(r)}">${kimEsc(r)}</button>`).join("")}</div>`:""}</div></div>`).join("");
+  const body = !k.msgs.length
+    ? `<div class="kim-empty"><span class="hg-tile xl">${LI("message-square-text",24)}</span><div class="a">No texts yet</div><div class="b">Text Kai on iMessage or WhatsApp and the conversation shows up here too.</div><span class="hg-btn l" onclick="go('you:set-texts')">Text Kai</span></div>`
+    : `<div class="dsep"><span>Today</span></div><div class="ks-thread">${msgs}</div>`;
+  return `<div class="ks-page kim-page"><div class="ks-phd"><button class="ks-ib" onclick="STATE.backNav=true;goBack()" aria-label="Back">${LI("chevron-left",22)}</button><div class="t"><b>Texts with Kai</b><span>${k.on ? `${k.ch} · ${KIM_NUM}` : "Off"}</span></div></div>
+  <div class="body ks-pbody kim-body">${body}</div>
+  ${k.msgs.length?`<div class="ks-comp" data-kc="KeyComposer" data-kv="variant=chat, state=empty"><div class="ks-box"><textarea class="kin" id="kimIn" rows="1" aria-label="Reply to Kai" placeholder="${k.on?`Reply here or in ${k.ch}`:"Text Start to turn texts back on"}"></textarea>
+    <div class="ks-crow"><span class="grow"></span><button class="ks-go" data-kimsend="1" aria-label="Send">${LI("arrow-up",18)}</button></div></div><div class="kim-foot">Same conversation as in ${k.ch}. Status, Pause and&nbsp;Stop work in&nbsp;both.</div></div>`:""}</div>`;
+}
+/* ---- Settings > Texts with Kai ---- */
+function kimSetPage(){
+  const k = kim();
+  const seg = (key, opts) => `<div class="hg-seg kim-seg" data-kc="KeySegmented">${opts.map(o=>`<span class="${k[key]===o?"on":""}" data-kimset="${key}|${o}">${o}</span>`).join("")}</div>`;
+  if (!k.on) return `${hgHdr("Texts with Kai")}<div class="body">
+    <div class="hg-hero" data-kc="KeyTextsHero" data-kv="state=off"><span class="hg-tile xl">${LI("message-square-text",24)}</span><div class="m"><div class="a">Text Kai like a person</div><div class="b">Start a goal, hear the next step and answer with one word, from iMessage or WhatsApp. No app needed for any of it.</div></div></div>
+    ${hgLbl("Where")}<div class="hg-row fam" data-kc="KeyRow" data-kv="lead=icon"><span class="hg-tile">${LI("smartphone",24)}</span><div class="m"><div class="a">Your phone</div>${seg("ch",["iMessage","WhatsApp"])}</div></div>
+    <div class="hg-acts"><span class="hg-btn l" data-kc="KeyButton" data-kv="variant=primary, size=l" data-kimgo="1">Text Kai</span></div>
+    <div class="hg-note">Opens ${k.ch} with a first line ready. Kai answers from ${KIM_NUM} and only ever writes to people who texted it first.</div>
+  </div>`;
+  const tog = (ic, a, b, on, key) => `<div class="hg-row" data-kc="KeySettingRow" data-kv="lead=tile, trail=switch" data-kimtog="${key}"><span class="hg-tile">${LI(ic,24)}</span><div class="m"><div class="a">${a}</div>${b?`<div class="b">${b}</div>`:""}</div>${hgSw(on)}</div>`;
+  const word = (w, b) => `<div class="hg-row" data-kc="KeyRow" data-kv="lead=word"><span class="kim-w">${w}</span><div class="m"><div class="b">${b}</div></div></div>`;
+  return `${hgHdr("Texts with Kai")}<div class="body">
+    <div class="hg-hero" data-kc="KeyTextsHero" data-kv="state=on"><span class="hg-tile xl">${LI("message-square-text",24)}</span><div class="m"><div class="a">${"Kai texts you on "+k.ch}</div><div class="b">${KIM_NUM}. Save it as Kai (Key).</div></div></div>
+    <div class="hg-list">${hgRow("messages-square","Open the conversation",k.unread?"1 new":`The same thread as in ${k.ch}`,`onclick="go('kimthread')"`)}</div>
+    ${hgLbl("When Kai texts first")}
+    <div class="hg-row fam" data-kc="KeyRow" data-kv="lead=icon"><span class="hg-tile">${LI("bell",24)}</span><div class="m"><div class="a">At most</div>${seg("often",["2 a week","1 a week","When I text"])}</div></div>
+    <div class="hg-list">${tog("moon","Quiet hours","9pm to 8am. Texts wait until morning", k.quiet, "quiet")}</div>
+    <div class="hg-note">Only when something happened: a yes, a reply, a meeting tomorrow, a week of silence. Never a text with nothing behind it.</div>
+    ${hgLbl("Words that work any time")}
+    <div class="hg-list">${word("Status","Where each goal stands, in a few lines")}${word("Pause","The goal you're texting about, for a week. Nothing goes out on it")}${word("Resume","Restarts a paused goal")}${word("Stop","Every text off, on every goal. Start brings them back")}</div>
+    <div class="hg-note">Whenever Kai messages anyone for you, it says it's an AI acting for you.</div>
+    <div class="hg-list">${hgRow("message-square-off","Stop all texts","",`data-kimstop="1"`,"","danger")}</div>
+  </div>`;
+}
+const _kimSettings = hgSettings;
+hgSettings = function(){
+  const h = _kimSettings.apply(this, arguments), k = kim(), i = h.indexOf(`onclick="go('you:set-privacy')"`); if (i<0) return h;
+  const j = h.lastIndexOf('<div class="hg-row', i);
+  return h.slice(0,j) + hgRow("message-square-text","Texts with Kai", k.on ? `${k.ch} · ${k.often==="When I text"?"only when you text":k.often+" at most"}` : "Off. Text Kai on iMessage or WhatsApp", `onclick="go('you:set-texts')"`) + h.slice(j);
+};
+
+/* ---- Connected apps: Messages joins the list; revoking leaves a receipt in place of a toast ---- */
+const KIM_SRC = [["smartphone","Contacts","412 people, 38 in your families","Revoke","412 contacts and the 38 matches with your families"],["calendar","Phone calendar","61 meetings read, briefs on","Revoke","61 meetings read and the briefs built from them"],["link","LinkedIn","Name, photo, work history","Disconnect","Your work history from LinkedIn"],["message-square","Xoogler channels","#jobs, #introductions, #cofounders, #general","Choose"],["message-circle","Desi Founders on WhatsApp","#general, #cities, #hiring","Choose"],["pencil","Your drafts","How Kai writes as you, 6 samples","Reset"]];
+function kimSources(){
+  const k = kim(), gone = STATE.kimGone || {}, R = STATE.kimRcpt;
+  const on = KIM_SRC.filter(x=>!gone[x[1]]), off = [...KIM_SRC.filter(x=>gone[x[1]]).map(x=>[x[0],x[1],"Disconnected today"]), ["calendar-check","Google Calendar","Adds Outlook and shared calendars"],["mic","TwinMind or Granola","Read-only. You approve each import"]];
+  const btn = (a, act) => act==="Choose" ? `<span class="hg-btn sec" onclick="event.stopPropagation();toast('Pick the channels Kai reads.')">Choose</span>`
+    : act==="Reset" ? `<span class="hg-btn sec" onclick="event.stopPropagation();toast('Your drafts: reset. Kai learns your voice again.')">Reset</span>`
+    : `<span class="hg-btn sec" data-kimrev="${kimEsc(a)}">${act}</span>`;
+  const msgs = k.on ? hgRow("message-square-text",`Texts with Kai`,`${k.ch} · ${KIM_NUM}`,"",`<span class="hg-btn sec" onclick="event.stopPropagation();go('you:set-texts')">Manage</span>`) : "";
+  return `${hgHdr("Sources")}<div class="body">
+    ${R ? `<div class="kim-rcpt" data-kc="KeyDeletionReceipt" role="status"><div class="kim-rh">${LI("check",18)}<b>${kimEsc(R.name)} disconnected</b><span>Today, ${R.at}</span></div><div class="kim-rb">Deleted: ${kimEsc(R.what)}, and every line it added to What we know. Nothing from it is kept. A copy of this receipt is in your email.</div><button type="button" class="kim-rx" data-kimrx="1" aria-label="Dismiss">${LI("x",18)}</button></div>` : ""}
+    <div class="hg-note top">What feeds Context. Revoke one and every line it produced leaves with it.</div>
+    ${hgLbl("Connected")}<div class="hg-list">${msgs}${on.map(([ic,a,b,act])=>hgRow(ic,a,b,"",btn(a,act))).join("")}</div>
+    ${hgLbl("Not connected")}<div class="hg-list">${k.on ? "" : hgRow("message-square-text","Texts with Kai","Text Kai on iMessage or WhatsApp","",`<span class="hg-btn" onclick="event.stopPropagation();go('you:set-texts')">Set up</span>`)}${off.map(([ic,a,b])=>hgRow(ic,a,b,"",`<span class="hg-btn" onclick="event.stopPropagation();${gone[a]?`delete STATE.kimGone['${a}'];STATE.kimRcpt=null;render();toast('${a} connected again.')`:`toast('Connect ${a}.')`}">Connect</span>`)).join("")}</div>
+  </div>`;
+}
+const _kimYou = sYouSection;
+sYouSection = function(id){
+  if (id==="set-texts") return kimSetPage();
+  if (id==="sources" && typeof hgOn==="function" && hgOn()) return kimSources();
+  return _kimYou.apply(this, arguments);
+};
+{
+  const _kimGo = go;
+  go = function(s){ if (s!=="you:sources") STATE.kimRcpt = null; return _kimGo.apply(this, arguments); };
+}
+
+/* ---- Kai: the texts as a conversation row on the greeting and in Kai chats; the Kai button's dot counts unread texts ---- */
+const kimRow = () => { const k = kim(), last = [...k.msgs].reverse().find(x=>x.who==="k");
+  return `<button type="button" class="bk-row kim-row" data-kimopen="1" data-kc="KeyConversationRow" data-kv="kind=texts"><span class="kim-rt">${LI("message-square-text",22)}</span><span class="bk-rm"><b>Texts with Kai</b><span>${last?kimEsc(last.text.split("\n")[0]):""}</span></span><span class="bk-rw">${k.unread?`<i class="kim-dot" aria-label="Unread"></i>`:"Today"}</span></button>`; };
+const _kimNudge = kaiHasNudge;
+kaiHasNudge = function(){ return _kimNudge.apply(this, arguments) || !!(STATE.kim && STATE.kim.unread); };
+const _kimRender = render;
+render = function(){
+  const r = _kimRender.apply(this, arguments), k = STATE.kim;
+  const kb = phone.querySelector("#kaiBtn"); if (kb && k && k.unread && !kb.querySelector(".knudge")) kb.insertAdjacentHTML("beforeend", '<span class="knudge"></span>');
+  if (k && k.msgs.length) {
+    const sh = STATE.sheet && STATE.sheet.type==="kai" && !(STATE.kaiMsgs||[]).length && phone.querySelector("#sheet");
+    if (sh && !sh.querySelector(".kim-row")) { const a = sh.querySelector(".bk-row") || sh.querySelector(".ks-hello"); if (a) a.insertAdjacentHTML("afterend", kimRow()); }
+    if (STATE.screen==="kaihistory") { const scr = phone.querySelector(".screen"); if (scr && !scr.querySelector(".kim-row")) { const a = scr.querySelector(".bk-row"); if (a) a.insertAdjacentHTML("afterend", kimRow()); } }
+  }
+  if (STATE.screen==="kimthread") { const b = phone.querySelector(".kim-body"); if (b) b.scrollTop = b.scrollHeight; if (STATE.kimFocus) { const i = document.getElementById("kimIn"); if (i) i.focus(); STATE.kimFocus = false; } }
+  /* goal-states row 2 on the opportunity page: a pre-check is waiting on a yes, and an unnamed person stays unnamed */
+  const kpo = /^path:/.test(STATE.screen||"") && DB.opps.find(x=>x.id===STATE.screen.slice(5)), ks = kpo && kpo.kimPre && kpo.state==="waiting" && phone.querySelector(".oi-state");
+  if (ks) { ks.textContent = "Checking first. No name until they say yes."; const st = ks.previousElementSibling, nm = kimFirst(kpo.via||kpo.personId);
+    if (st && !kimVis(kpo)) st.querySelectorAll("*").forEach(e=>{ if (e.children.length===0 && e.textContent.includes(nm)) e.textContent = e.textContent.replace(nm, `someone in ${fam().name}`); }); }
+  if (STATE.kimRcptNew) { const c = phone.querySelector(".kim-rcpt"); if (c) c.scrollIntoView({ block:"nearest" }); STATE.kimRcptNew = false; }
+  phone.querySelectorAll(".p2c").forEach(el => { if (/Texts with Kai/.test(el.textContent)) { const t = el.querySelector(".p2ct"); if (t && !t.dataset.kim) { t.innerHTML = LI("message-square-text",18); t.dataset.kim = 1; } } });
+  return r;
+};
+
+/* ---- Insights: say which new members came in by text (their goal stays private: looking-for is never shown to organizers) ---- */
+if (typeof insNew==="function") {
+  const _kimInsNew = insNew;
+  insNew = function(r){ let n = 0; return _kimInsNew.apply(this, arguments).replace(/(<div class="b">)Joined ([A-Z][a-z]{2} \d+)[^<]*/g, (m,a,d)=> n++ < 2 ? `${a}Joined by text · ${d}` : m); };
+}
+
+/* ---- wiring ---- */
+document.addEventListener("click", e => {
+  const t = e.target.closest && e.target.closest("[data-kimr],[data-kimsend],[data-kimgo],[data-kimset],[data-kimtog],[data-kimstop],[data-kimrev],[data-kimrx],[data-kimopen]"); if (!t) return;
+  e.stopPropagation(); e.preventDefault(); const k = kim(), d = t.dataset;
+  if (d.kimr) return kimReply(d.kimr);
+  if (d.kimsend) { const i = document.getElementById("kimIn"); if (i && i.value.trim()) { STATE.kimFocus = true; kimReply(i.value.trim()); } return; }
+  if (d.kimgo) { kimStart(); toast(`${k.ch} opens with "Hi Kai" ready. Kai answers from ${KIM_NUM}.`); return render(); }
+  if (d.kimset) { const [key, v] = d.kimset.split("|"); k[key] = v; return render(); }
+  if (d.kimtog) { k[d.kimtog] = !k[d.kimtog]; return render(); }
+  if (d.kimstop) { k.on = false; kimSay("Stopped. No more texts from Kai. Text Start, or turn it back on in Settings, whenever you like."); toast("All texts from Kai are off."); return render(); }
+  if (d.kimrev) { const s = KIM_SRC.find(x=>x[1]===d.kimrev); (STATE.kimGone = STATE.kimGone||{})[s[1]] = 1; STATE.kimRcpt = { name:s[1], what:s[4], at:kimNow() }; STATE.kimRcptNew = true; return render(); }
+  if (d.kimrx) { STATE.kimRcpt = null; return render(); }
+  if (d.kimopen) { STATE.sheet = null; return go("kimthread"); }
+}, true);
+document.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && e.target && e.target.id==="kimIn") { e.preventDefault(); if (e.target.value.trim()) { STATE.kimFocus = true; kimReply(e.target.value.trim()); } } });
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-bcf3";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
