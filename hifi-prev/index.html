@@ -8091,6 +8091,8 @@ function render() {
   else if (S.startsWith("kaithread:")) html = sKaiThread(S.split(":")[1]);
   else if (S==="kaihistory") html = sKaiHistory();
   else if (S==="kimthread") html = kimThread();
+  else if (S==="goalideas") html = g7IdeasPage();
+  else if (S.startsWith("gpreview:")) html = g7PreviewPage(S.slice(9));
   else if (S==="messages") { STATE.inboxView=null; html = sInbox(); }
   else if (S==="notifications") html = sNotifications();
   else if (S==="later") html = sLater();
@@ -30160,8 +30162,546 @@ document.addEventListener("click", e => {
 document.addEventListener("keydown", e => { if (e.key==="Enter" && !e.shiftKey && e.target && e.target.id==="kimIn") { e.preventDefault(); if (e.target.value.trim()) { STATE.kimFocus = true; kimReply(e.target.value.trim()); } } });
 
 </script>
+<style>
+/* Goals pass (goals7.js). Three surface levels, used the same way on Home, the goal page, Goal ideas, Goal preview, Edit goal and the Kai sheet. */
+:root { --sf-ground:#F2F3F5; --sf-card:#FFFFFF; --sf-inset:#F2F3F5; --sf-shadow:0 1px 2px rgba(16,24,40,.06); }
+.dark { --sf-ground:#0E1013; --sf-card:#1A1D21; --sf-inset:#22262B; --sf-shadow:none; }
+
+/* 1. ground under everything, white only as a card */
+#phone.g7-g { --bg-page:var(--sf-ground); }
+#phone.g7-g > .screen, #phone.g7-g .view, #phone.g7-g .ks-page, #phone.g7-g .ks-pbody { background:var(--sf-ground); }
+.g7-card { background:var(--sf-card); border:0; border-radius:16px; box-shadow:var(--sf-shadow); }
+#phone .g7-inset { background:var(--sf-inset); border-radius:12px; padding:10px 12px; }
+.g7-sl { margin:24px 4px 8px; font:700 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); letter-spacing:0; text-transform:none; }
+.g7-rc { display:flex; gap:6px; align-items:center; margin-top:6px; font:500 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+.g7-rc svg { flex:0 0 auto; }
+#phone .g7-tile { flex:0 0 auto; width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:var(--sf-inset); color:var(--text-primary); }
+#phone .g7-tile.s { width:40px; height:40px; }
+/* Home: the idea card and the rows below the goals are cards on the ground */
+#phone.g7-g .m2-sug, #phone.g7-g .mt-card, #phone.g7-g .m2-card { background:var(--sf-card); border:0; border-radius:16px; box-shadow:var(--sf-shadow); }
+#phone.g7-g .m2-card.m2-in { box-shadow:var(--sf-shadow); }
+#phone.g7-g .body > .g7-wrap { margin-left:16px; margin-right:16px; margin-top:12px; padding-left:16px; padding-right:16px; }
+#phone.g7-g .voc-ihd h2 { font:700 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+
+/* 2. the goal header: nav 56 with the plate icon and title, one band with the done line and one progress row, then the tabs */
+#phone.g7-gp .view > .hdr.sc > .mt-ht { opacity:1; transform:none; cursor:pointer; }
+#phone.g7-gp .view > .hdr.sc > .mt-ht .mh-mark { width:28px; height:28px; }
+#phone.g7-gp .view > .hdr.sc > .mt-ht > span { color:var(--text-on-deep-default, #fff); }
+#phone.g7-gp .mh-band.big.g7-band { min-height:0 !important; height:auto !important; padding:56px 16px 10px !important; display:block; overflow:hidden; }
+#phone.g7-gp .mh-band.big.g7-band .mh-ghost { transform:scale(.4); transform-origin:100% 100%; right:8px !important; bottom:4px !important; top:auto !important; left:auto !important; opacity:.5; pointer-events:none; }
+#phone .g7-l1 { display:block; width:100%; position:relative; z-index:1; min-height:44px; padding:8px 48px 2px 0; border:0; background:none; text-align:left; cursor:pointer; color:var(--text-on-deep-default, #fff); font:600 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-pr { position:relative; z-index:1; display:grid; grid-template-columns:1fr auto; align-items:center; gap:6px 12px; padding:2px 48px 0 0; color:var(--text-on-deep-default, #fff); font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-pr .g7-wk { opacity:.86; }
+#phone .g7-pr .mi-tr { grid-column:1 / -1; display:block; height:4px; border-radius:2px; background:rgb(255 255 255 / .28); overflow:hidden; }
+#phone .g7-pr .mi-tr s { display:block; height:100%; min-width:4px; background:#fff; border-radius:2px; }
+/* the reading strip becomes one muted line under the tabs */
+#phone.g7-gp .m2-live { background:none !important; box-shadow:none !important; border:0 !important; padding:4px 4px 0 !important; margin:8px 0 0 !important; min-height:0; color:var(--text-secondary); font:500 13px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone.g7-gp .m2-live .mi-li { display:none; }
+#phone.g7-gp .m2-pane { background:var(--sf-ground); }
+#phone.g7-gp .m2-gh { font:700 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); margin:24px 4px 8px; }
+
+/* 3. goal Chat in the Kai chat format */
+#phone .m2-chat .g7-k { display:flex; gap:10px; align-items:flex-start; margin:12px 0; }
+#phone .m2-chat .g7-k .tx { flex:1; min-width:0; }
+#phone .m2-chat .g7-k .tx p { margin:0; color:var(--text-primary); font:400 16px/1.5 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-via { display:block; margin-top:4px; font:500 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .g7-viau { margin:-4px 0 8px; text-align:right; font:500 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .dsep.g7-dsep { margin:16px 0 4px; }
+#phone .dsep.g7-dsep::before, #phone .dsep.g7-dsep::after { display:none; }
+#phone .dsep.g7-dsep span { background:var(--sf-card); border:0; box-shadow:var(--sf-shadow); color:var(--text-secondary); font:var(--type-label-strong); padding:4px 10px; border-radius:999px; }
+
+/* 4. Edit goal: a standard detail page */
+#phone .m2-ed.g7-ed { background:var(--sf-ground); }
+#phone .g7-edh { display:flex; align-items:center; gap:4px; height:56px; padding:0 8px; background:var(--sf-card) !important; color:var(--text-primary) !important; box-shadow:0 1px 0 var(--border-default, rgba(0,0,0,.06)); }
+#phone .g7-edh h2 { flex:1; margin:0; font:700 17px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .g7-edh .m2-ib { width:44px; height:44px; border:0 !important; box-shadow:none !important; background:none; color:var(--text-primary); display:grid; place-items:center; border-radius:50%; }
+#phone .g7-done { min-height:44px; padding:0 12px; border:0; background:none; color:var(--text-primary); font:700 15px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .g7-ed .m2-edb { background:var(--sf-ground); padding:0 16px 176px; }
+#phone .g7-ed .g7-grp { padding:0 16px; }
+#phone .g7-ed .g7-grp .m2-row { border-bottom:1px solid var(--border-default, rgba(0,0,0,.08)); background:none; }
+#phone .g7-ed .g7-grp .m2-row:last-child { border-bottom:0; }
+#phone .g7-ed .g7-end { margin-top:24px; padding:0; }
+#phone .g7-endb { width:100%; min-height:52px; border:0; background:none; color:var(--text-danger, #C0262D); font:600 15px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; border-radius:16px; }
+#phone .g7-pause { display:grid !important; grid-template-columns:1fr auto; align-items:center; }
+#phone .g7-pause .m2-rv { grid-column:1; }
+#phone .g7-sw { grid-row:1 / span 2; grid-column:2; width:44px; height:26px; border-radius:13px; background:var(--sf-inset); position:relative; box-shadow:inset 0 0 0 1px var(--border-default, rgba(0,0,0,.12)); }
+#phone .g7-sw i { position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%; background:var(--sf-card); box-shadow:0 1px 2px rgba(0,0,0,.2); transition:left .2s; }
+#phone .g7-sw.on { background:var(--text-primary); }
+#phone .g7-sw.on i { left:21px; }
+#phone .g7-diff { display:flex; gap:10px; align-items:flex-start; margin:0 0 12px; }
+#phone .g7-diff .g7-dt { flex:1; min-width:0; }
+#phone .g7-diff p { margin:0 0 6px; color:var(--text-primary); font:400 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-dv s { color:var(--text-secondary); margin-right:8px; }
+#phone .g7-dv b { font-weight:700; }
+@media (prefers-reduced-motion: reduce) { #phone .g7-sw i { transition:none; } }
+
+/* 5. Goal ideas and Goal preview */
+#phone .g7-body { padding:0 16px 32px; }
+#phone .g7-intro { margin:8px 4px 0; color:var(--text-primary); font:500 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-big { padding:16px; }
+#phone .g7-bt { display:flex; align-items:center; gap:12px; width:100%; padding:0; border:0; background:none; text-align:left; cursor:pointer; min-height:44px; }
+#phone .g7-bt h3 { margin:0; color:var(--text-primary); font:700 18px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-big .g7-inset { margin-top:12px; }
+#phone .g7-big .g7-inset p { margin:0; color:var(--text-primary); font:400 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-big .m2-sgf { margin-top:12px; }
+#phone .g7-big .m2-sga { margin-top:14px; }
+#phone .g7-rows { margin-top:12px; padding:0 16px; }
+#phone .g7-row { display:flex; align-items:center; gap:12px; width:100%; min-height:64px; padding:10px 0; border:0; border-bottom:1px solid var(--border-default, rgba(0,0,0,.08)); background:none; text-align:left; color:var(--text-secondary); cursor:pointer; }
+#phone .g7-row:last-child { border-bottom:0; }
+#phone .g7-row.g7-st { cursor:default; min-height:56px; }
+#phone .g7-rt { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .g7-rt b { color:var(--text-primary); font:600 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-rt span { color:var(--text-secondary); font:400 13px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+#phone .g7-kind { display:flex; flex-direction:column; align-items:flex-start; gap:6px; min-height:132px; padding:14px; text-align:left; cursor:pointer; color:var(--text-secondary); font:400 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-kind b { color:var(--text-primary); font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); margin-top:4px; }
+#phone .g7-own { display:flex; align-items:center; gap:12px; width:100%; min-height:56px; padding:0 8px 0 16px; text-align:left; cursor:pointer; }
+#phone .g7-ownp { flex:1; color:var(--text-secondary); font:400 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-mic { width:44px; height:44px; display:grid; place-items:center; color:var(--text-primary); }
+#phone .g7-none { margin:16px 4px 0; color:var(--text-secondary); font:400 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-pad { padding:14px 16px; }
+#phone .g7-p { margin:0; color:var(--text-primary); font:400 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-pad .g7-inset.g7-rc { margin-top:10px; }
+#phone .g7-brief { padding:0 16px; }
+#phone .g7-brief .m2-row { border-bottom:1px solid var(--border-default, rgba(0,0,0,.08)); background:none; }
+#phone .g7-brief .m2-row:last-child { border-bottom:0; }
+#phone .g7-words { margin-top:12px; padding:14px 16px; }
+#phone .g7-wl { display:block; margin-bottom:8px; color:var(--text-primary); font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-ph { background:linear-gradient(135deg, var(--g7-p1), var(--g7-p2)); color:#fff; padding:var(--m2-top, 0) 16px 12px; }
+#phone .g7-pn { display:flex; align-items:center; gap:8px; height:56px; margin:0 -8px; }
+#phone .g7-pn .ks-ib { color:#fff; }
+#phone .g7-pm { flex:0 0 auto; width:28px; height:28px; border-radius:6px; display:grid; place-items:center; background:rgb(255 255 255 / .18); }
+#phone .g7-pn b { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 18px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .g7-ph .g7-l1 { min-height:0; padding:0 0 4px; cursor:default; }
+#phone .g7-pv .g7-body { padding-bottom:96px; }
+#phone .g7-sticky { position:absolute; left:0; right:0; bottom:0; z-index:5; display:flex; align-items:center; gap:8px; padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background:var(--sf-card); box-shadow:0 -1px 0 var(--border-default, rgba(0,0,0,.08)); }
+#phone .g7-sticky .btn { flex:1; min-height:48px; }
+#phone .g7-tb { min-height:48px; padding:0 14px; border:0; background:none; color:var(--text-primary); font:600 15px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .g7-page { position:relative; }
+
+/* 6. From Kai */
+.g7-fk { padding:14px 16px; margin-bottom:12px; }
+.g7-fkh { display:flex; align-items:flex-start; gap:10px; }
+.g7-fkh b { flex:1; color:var(--text-primary); font:600 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+.g7-fki { flex:0 0 auto; width:28px; height:28px; border-radius:8px; display:grid; place-items:center; background:var(--sf-inset); color:var(--text-primary); }
+.g7-fk .g7-rc { margin-left:38px; }
+.g7-fka { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 0 38px; }
+#phone .g7-fka .kim-chip.g7-pri, .g7-fka .kim-chip.g7-pri { background:var(--text-primary); color:var(--bg-surface-default, #fff); border-color:var(--text-primary); }
+.g7-fe { margin:0 4px; color:var(--text-secondary); font:400 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+.g7-from { margin:4px 0 8px; }
+.g7-from .g7-sl { margin-top:16px; }
+.sheet.ks.g7-ks, .sheet.ks.g7-ks .ks-body, .sheet.ks.g7-ks .ks-hd { background:var(--sf-ground); }
+.sheet.ks.g7-ks .ks-try { background:var(--sf-card); border-radius:16px; box-shadow:var(--sf-shadow); padding:0 12px; margin-top:12px; }
+.sheet.ks.g7-ks .ks-comp { background:var(--sf-ground); }
+.g7-add { margin-top:8px; }
+.sheet.ks.g7-ks .bk-pin { background:var(--sf-card); border-radius:16px; box-shadow:var(--sf-shadow); padding-left:12px; padding-right:12px; border:0; }
+#phone .g7-fka .kim-chip:not(.g7-pri), .g7-fka .kim-chip:not(.g7-pri) { background:var(--sf-card); color:var(--text-primary); border-color:var(--border-default, rgba(0,0,0,.12)); }
+#phone .g7-fka .kim-chip.g7-pri, .g7-fka .kim-chip.g7-pri { color:var(--sf-card); }
+#phone .g7-page .ks-phd .t b { color:var(--text-primary); }
+@media (max-width:380px) { #phone .g7-l1 { font-size:14px; } #phone .g7-pr { padding-right:56px; font-size:12px; } }
+
+/* the one Kai card */
+.g7-kc { padding:14px 16px; margin:12px 0; }
+.g7-kch { display:flex; align-items:flex-start; gap:10px; }
+.g7-kch > :first-child { flex:0 0 auto; margin-top:1px; }
+.g7-kch b { flex:1; min-width:0; color:var(--text-primary); font:600 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+.g7-kc .g7-rc { margin-left:30px; }
+.g7-kc .g7-fka { margin-left:30px; }
+.g7-kc .kim-chip { min-height:44px; }
+.g7-kce { box-shadow:none; background:var(--sf-inset); }
+.g7-kce .g7-kch b { font-weight:500; color:var(--text-secondary); }
+#phone .g7-in { margin:12px 16px; }
+#phone .cm-pane > .g7-in { margin:0 0 12px; }
+
+/* Home: the Start your brief deck */
+.g7-deck { margin:4px 0 16px; }
+.g7-dh { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 16px; }
+.g7-dh b { color:var(--text-primary); font:700 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+.g7-dmore { min-height:44px; padding:0; border:0; background:none; color:var(--text-primary); font:600 13px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.g7-dtrack { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain; }
+.g7-dtrack::-webkit-scrollbar { display:none; }
+.g7-dslot { flex:0 0 100%; box-sizing:border-box; padding:0 16px; scroll-snap-align:start; display:flex; }
+.g7-dslot > .g7-kc { flex:1; margin:4px 0; }
+.g7-dbar { position:relative; height:3px; margin:8px auto 0; width:48px; border-radius:2px; background:var(--border-default, rgba(0,0,0,.12)); overflow:hidden; }
+.g7-dbar i { position:absolute; left:0; top:0; bottom:0; border-radius:2px; background:var(--text-primary); transition:transform .2s; }
+.g7-dnone { margin:0 16px; padding:14px 16px; border-radius:16px; background:var(--sf-inset); color:var(--text-secondary); font:500 14px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+@media (prefers-reduced-motion:reduce) { .g7-dbar i { transition:none; } }
+.dark #phone .hc-pill:not(.hc-q) { color:#0B0E11; }
+
+/* n30 recheck: one width (the screen's own card width), visible empty state, AA */
+#phone .g7-in { margin:12px 0; }
+.g7-dtrack { margin:0 -16px; }
+.g7-dh { padding:0; }
+.g7-kce { background:var(--sf-card); }
+.g7-fmore { display:block; min-height:44px; margin:-4px 0 4px; padding:0 4px; border:0; background:none; color:var(--text-primary); font:600 14px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .ks-hello .g7-fe { font:400 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .g7-pr .g7-wk { opacity:1; }
+.dark #phone .g7-endb { color:#FF8A8A; }
+.dark #phone .g7-wrap .a.plain { color:var(--text-secondary) !important; }
+.dark #phone .g7-page .btn.m2-b:not(.sec) { background:#F9FAFC; color:#0B0E11; border-color:#F9FAFC; }
+.dark #phone .g7-page .btn.sec.m2-b { background:transparent; color:#F9FAFC; border:1px solid rgb(255 255 255 / .5); }
+
+</style>
 <script>
-window.KEY_BUILD = "2.hifi-bcf3";
+/* ==== GOALS PASS (7 Oct, Apoorv 06:19 and 06:20; goals-mentor/how-goals-changes/HIFI-SPEC-goals-2026-10-07.md). Loads last.
+   1 surfaces: ground, card, inset. 2 a compact goal header. 3 goal Chat in the Kai chat format, texts mirrored in with their channel.
+   4 Edit goal as a standard detail page, every brief sheet routed to it. 5 Goal ideas and Goal preview as full screens.
+   6 Kai stays Kai, with "From Kai" on top and a dot on the Kai button. ==== */
+const g7Esc = s => String(s==null ? "" : s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const G7_GROUND = s => s==="home" || /^mission:/.test(s) || s==="goalideas" || /^gpreview:/.test(s);
+const g7Fams = () => (DB.families||[]).filter(f=>f.joined!==false);
+const g7And = l => l.length < 2 ? (l[0]||"") : l.slice(0,-1).join(", ")+" and "+l[l.length-1];
+const g7Plate = theme => M2_PLATE[theme] || M2_PLATE.harbour;
+
+/* ---- 5. Goal ideas and Goal preview ---- */
+const G7_KINDS = [
+  { id:"k-role", icon:"briefcase", title:"Find a role", line:"Referrals through people one step from you", ask:"Find a role through people one step from me.", done:"You've accepted an offer", must:[] },
+  { id:"k-hire", icon:"user-plus", title:"Hire", line:"People who've built teams like yours", ask:"Hire for my team through people who've built teams like it.", done:"You've made the hire", must:[] },
+  { id:"k-raise", icon:"trending-up", title:"Raise", line:"Founders who've raised at your stage", ask:"Raise my next round with help from founders at my stage.", done:"The round is closed", must:[] },
+  { id:"k-learn", icon:"graduation-cap", title:"Learn or meet", line:"Events and people around one topic", ask:"Learn about one topic through events and the people around it.", done:"You've met the people worth meeting", must:[] },
+];
+const G7_IDEAS = {
+  close:{ icon:"users", theme:"harbour", rc:"Your calendar and #jobs · this week", ask:"Stay close to the people you've worked with.", done:"It keeps going until you stop it", must:["Worked together"], kind:"Standing" },
+  evals:{ icon:"sparkles", theme:"dusk", rc:"Your Kai chat · Tuesday", ask:"Get known for agent evals in Xoogler.", done:"People come to you about evals", must:["Agent evals"], kind:"Standing" },
+  dinner:{ icon:"utensils", theme:"dusk", rc:"Xoogler events · this year", ask:"Host a Xoogler dinner in SF.", done:"The dinner happens", must:["In SF"], kind:"Looking" },
+};
+const g7Idea = id => { const v = (typeof VOC_IDEAS!=="undefined" ? VOC_IDEAS : []).find(x=>x.id===id); if (v) return Object.assign({ id, title:v.title, why:v.why, faces:v.faces, who:v.who }, G7_IDEAS[id]||{});
+  const k = G7_KINDS.find(x=>x.id===id); return k ? Object.assign({ theme:"harbour", kind:"Looking" }, k, { why:k.line }) : null; };
+function g7Go(s){ STATE.sheet = null; go(s); }
+function g7IdeasPage(){
+  const left = typeof vocIdeasLeft==="function" ? vocIdeasLeft() : [], top = left[0] && g7Idea(left[0].id), rest = left.slice(1, 5).map(i=>g7Idea(i.id));
+  const intro = `<p class="g7-intro">A goal keeps working while you don't. It finds the right people, drafts the ask, follows up and tells you what's next.</p>`;
+  const big = top ? `<h2 class="g7-sl">For you this week</h2>
+    <div class="g7-card g7-big" data-kc="KeyGoalIdea" data-kv="size=large"><button type="button" class="g7-bt" onclick="g7Go('gpreview:${top.id}')" aria-label="Preview: ${g7Esc(top.title)}"><span class="g7-tile" aria-hidden="true">${LI("lightbulb",22)}</span><h3>${g7Esc(top.title)}</h3></button>
+      <div class="g7-inset"><p>${g7Esc(top.why)}</p><span class="g7-rc">${LI("info",14)}<span>${g7Esc(top.rc||"")}</span></span></div>
+      ${top.faces ? `<div class="m2-sgf"><span class="m2-fs">${top.faces.map(p=>m2Face(p,"m2-a32")).join("")}</span><b>${g7Esc(top.who)}</b></div>` : ""}
+      <div class="m2-sga"><button type="button" class="btn m2-b" onclick="g7Start('${top.id}')">Start</button><button type="button" class="btn sec m2-b" onclick="g7Not('${top.id}')">Not this</button></div></div>
+    ${rest.length ? `<div class="g7-card g7-rows">${rest.map(i=>`<button type="button" class="g7-row" onclick="g7Go('gpreview:${i.id}')"><span class="g7-tile s" aria-hidden="true">${LI("lightbulb",20)}</span><span class="g7-rt"><b>${g7Esc(i.title)}</b><span>${g7Esc(i.why)}</span></span>${LI("chevron-right",18)}</button>`).join("")}</div>` : ""}`
+    : `<p class="g7-none">Nothing new from your week yet. Start one from what you're working on.</p>`;
+  const grid = `<h2 class="g7-sl">What a goal can do</h2><div class="g7-grid">${G7_KINDS.map(k=>`<button type="button" class="g7-card g7-kind" onclick="g7Go('gpreview:${k.id}')"><span class="g7-tile s" aria-hidden="true">${LI(k.icon,20)}</span><b>${k.title}</b><span>${k.line}</span></button>`).join("")}</div>`;
+  const own = `<h2 class="g7-sl">Describe your own</h2><button type="button" class="g7-card g7-own" onclick="g7Own()"><span class="g7-ownp">What are you working on?</span><span class="g7-mic" aria-hidden="true">${LI("mic",20)}</span></button>`;
+  return `<div class="ks-page g7-page"><div class="ks-phd"><button class="ks-ib" onclick="STATE.backNav=true;goBack()" aria-label="Back">${LI("chevron-left",22)}</button><div class="t"><b>Goal ideas</b></div></div>
+    <div class="body ks-pbody g7-body">${intro}${big}${grid}${own}</div></div>`;
+}
+function g7Own(){ STATE.sheet = null; if (typeof mcStart==="function") mcStart(); else openSheet("kai"); }
+function g7Not(id){ if (typeof vocIdeaDone==="function") vocIdeaDone(id); toast("Gone. Here's the next one."); render(); }
+function g7Pv(id){
+  const P = STATE.g7pv; if (P && P.id===id) return P;
+  const i = g7Idea(id); if (!i) return null;
+  return STATE.g7pv = { id, ask:i.ask, done:i.done, by:"No deadline", must:(i.must||[]).slice(), open:null, kind:/^k-/.test(id) };
+}
+function g7PvToggle(k){ const P = STATE.g7pv; if (!P) return; P.open = P.open===k ? null : k; render(); }
+function g7PvSet(k, v){ const P = STATE.g7pv; if (!P) return; if (k==="must") { const i = P.must.indexOf(v); if (i>=0) P.must.splice(i,1); else P.must.push(v); } else { P[k] = v; P.open = null; } render(); }
+document.addEventListener("input", e=>{ const f = e.target && e.target.dataset && e.target.dataset.g7f; if (f && STATE.g7pv) STATE.g7pv[f] = e.target.value; });
+function g7PreviewPage(id){
+  const i = g7Idea(id), P = g7Pv(id); if (!i || !P) return g7IdeasPage();
+  const pl = g7Plate(i.theme), fams = g7Fams().map(f=>f.name);
+  const row = (k, lab, val, ed) => { const open = P.open===k;
+    return `<div class="m2-row${open ? " on" : ""}" data-row="${k}"><button type="button" class="m2-rh" aria-expanded="${open}" onclick="g7PvToggle('${k}')"><span class="m2-rk">${lab}</span><span class="m2-chev" aria-hidden="true">${LI("chevron-down",20)}</span>${open ? "" : `<span class="m2-rv${val ? "" : " q"}">${val || "Not set"}</span>`}</button>${open ? `<div class="m2-re">${ed}</div>` : ""}</div>`; };
+  const opt = (k, list, cur) => `<div class="m2-opts" role="group">${list.map(o=>`<button type="button" class="m2-opt${o===cur ? " on" : ""}" aria-pressed="${o===cur}" onclick="g7PvSet('${k}','${o}')">${o}</button>`).join("")}</div>`;
+  const mustOpts = [...new Set(P.must.concat(i.must||[], ["Remote OK","In SF","Senior or above"]))];
+  const brief = row("ask","The ask", g7Esc(P.ask), `<textarea class="m2-ta" rows="3" data-g7f="ask" aria-label="The ask" placeholder="Describe it in your words">${g7Esc(P.ask)}</textarea>`)
+    + row("done","Done when", g7Esc(P.done), `<textarea class="m2-ta" rows="2" data-g7f="done" aria-label="Done when">${g7Esc(P.done)}</textarea>`)
+    + row("by","By when", P.by, opt("by", ["January 2027","March 2027","No deadline"], P.by))
+    + row("must","Must haves", P.must.length ? `<span class="m2-pills">${P.must.map(x=>`<span class="m2-opt on">${g7Esc(x)}</span>`).join("")}</span>` : "", `<div class="m2-opts" role="group">${mustOpts.map(o=>`<button type="button" class="m2-opt${P.must.includes(o) ? " on" : ""}" aria-pressed="${P.must.includes(o)}" onclick="g7PvSet('must','${o}')">${o}</button>`).join("")}</div>`);
+  const words = P.kind ? `<div class="g7-card g7-words"><label class="g7-wl" for="g7w">Describe it in your words</label><textarea class="m2-ta" id="g7w" rows="2" data-g7f="ask" placeholder="${g7Esc(i.line)}">${g7Esc(P.ask)}</textarea></div>` : "";
+  const why = P.kind ? "" : `<h2 class="g7-sl">Why this</h2><div class="g7-card g7-pad"><p class="g7-p">${g7Esc(i.why)}</p><div class="g7-inset g7-rc">${LI("info",14)}<span>${g7Esc(i.rc||"")}</span></div></div>`;
+  const next = [["search", `Key looks across ${g7And(fams)}`], ["check", "You approve every ask before it goes"], ["calendar", "Check-ins every Monday, only if nothing moved"]];
+  return `<div class="ks-page g7-page g7-pv"><div class="g7-ph" style="--g7-p1:${pl[0]};--g7-p2:${pl[1]}" data-kc="KeyGoalHeader" data-kv="size=compact">
+      <div class="g7-pn"><button class="ks-ib" onclick="STATE.backNav=true;goBack()" aria-label="Back">${LI("chevron-left",22)}</button><span class="g7-pm" aria-hidden="true">${LI(i.icon||"lightbulb",16)}</span><b>${g7Esc(i.title)}</b></div>
+      <p class="g7-l1">Not started</p></div>
+    <div class="body ks-pbody g7-body">${words}${why}
+      <h2 class="g7-sl">The brief Key would work from</h2><div class="g7-card g7-brief">${brief}</div>
+      <h2 class="g7-sl">What happens next</h2><div class="g7-card g7-rows">${next.map(([ic, t])=>`<div class="g7-row g7-st"><span class="g7-tile s" aria-hidden="true">${LI(ic,18)}</span><span class="g7-rt"><b>${t}</b></span></div>`).join("")}</div></div>
+    <div class="g7-sticky"><button type="button" class="btn m2-b" onclick="g7Start('${id}')">Start this goal</button><button type="button" class="g7-tb" onclick="g7Not('${id}');STATE.backNav=true;goBack()">Not this</button></div></div>`;
+}
+function g7Start(id){
+  const i = g7Idea(id), P = STATE.g7pv && STATE.g7pv.id===id ? STATE.g7pv : g7Pv(id); if (!i) return;
+  const by = P.by==="No deadline" ? null : P.by, ask = (P.ask||"").trim() || i.ask || `${i.title}.`;
+  let m = null;
+  if (id==="close") { m2StartClose(); m = DB.missions.find(x=>x.m2 && x.name==="Stay close to the people you've worked with"); }
+  else { const name = P.kind && P.ask.trim() ? m2Cap(P.ask.trim().replace(/[.!?]+$/,"")).slice(0, 48) : i.title;
+    m = DB.missions.find(x=>x.m2 && x.name===name) || m2NewMission({ type: i.kind==="Standing" ? "Network" : "Looking", theme:i.theme, icon:i.icon, name, home:{ pill:"New", goal:null, face:null, sum:"First pass running" },
+      cfg:{ ask, kind:i.kind, done:P.done, by, weeks: by ? (/^March/.test(by) ? 20 : 12) : 0, month:4, must:P.must.slice(), where:g7Fams().map(f=>f.id), checkin:"Every Monday morning" } }); }
+  if (!m) return;
+  const c = m2Cfg(m.id); if (c) { c.ask = /[.!?]$/.test(ask) ? ask : ask+"."; c.done = P.done; c.by = by; if (by) c.weeks = /^March/.test(by) ? 20 : 12; c.must = P.must.slice(); m2Sync(m.id); }
+  if (typeof vocIdeaDone==="function" && !/^k-/.test(id)) vocIdeaDone(id);
+  STATE.g7pv = null; STATE.sheet = null; m2Ui(m.id).tab = "paths"; go("mission:"+m.id); toast("Started. The first pass is running.");
+}
+/* every way into ideas is the screen now: Home "See all", the header +, Kai's "Start a goal" */
+const _g7Open = openSheet;
+openSheet = function(type, id){
+  if (type==="newmission" && STATE.member && STATE.intakeDone) { STATE.sheet = null; go("goalideas"); return; }
+  if (type==="bsheet" && id && typeof m2Edit==="function") { STATE.sheet = null; if (STATE.screen!=="mission:"+id) go("mission:"+id); m2Edit(id, null); return; }
+  return _g7Open.apply(this, arguments);
+};
+document.addEventListener("click", e=>{
+  const b = e.target.closest && e.target.closest('#phone [data-kai="Start a mission"], #phone [data-kai="Start a goal"]');
+  if (b && STATE.member && STATE.intakeDone) { e.preventDefault(); e.stopPropagation(); STATE.sheet = null; go("goalideas"); }
+}, true);
+
+/* ---- 3. goal Chat: the Kai chat components; texts from Messages carry their channel ---- */
+m2ChatHTML = function(m){
+  const s = m2Story(m.id), whoFace = w => w==="you" ? m2You("m2-a32") : w==="mark" ? m2Mark(m, 24) : m2Face(w, "m2-a32");
+  const via = e => e.via ? `<span class="g7-via">${e.via}</span>` : "";
+  const rows = s.chat.map((e, li)=>{
+    if (e.t==="day") return `<div class="dsep g7-dsep"><span>${e.x}</span></div>`;
+    if (e.t==="sys") return `<div class="m2-sys">${whoFace(e.who)}<span class="m2-sx">${e.x}</span>${e.time ? `<span class="m2-st">${e.time}</span>` : ""}</div>`;
+    if (e.t==="bot") return `<div class="ks-k g7-k m2-bot"${e.k ? ` data-k="${e.k}"` : ""} data-kc="KeyMessageBubble" data-kv="from=goal">${m2Mark(m, 24)}<div class="tx"><p>${e.x}</p>${via(e)}</div></div>`;
+    if (e.t==="me") return `<div class="ks-u mt-u m2-me" data-kc="KeyMessageBubble" data-kv="from=you">${m2Esc(e.x)}</div>${e.via ? `<div class="g7-viau">${e.via}</div>` : ""}`;
+    if (e.t==="chips") return `<div class="m2-chips" role="group">${e.opts.map(c=>`<button type="button" class="${e.on===c ? "on" : ""}" aria-pressed="${e.on===c}" ${e.done ? "disabled" : ""} onclick="m2Chip('${m.id}',${li},'${c}')">${c}</button>`).join("")}</div>`;
+    if (e.t==="turn") { const c = id => s.paths.find(p=>p.id===id && M2_FIX.includes(p.stage)); const first = e.cards.map(c).filter(Boolean), more = e.more.map(c).filter(Boolean);
+      return `<div class="m2-turn">${first.map(p=>m2CardHTML(m, p, { inset:true })).join("")}${e.open ? more.map(p=>m2CardHTML(m, p, { inset:true })).join("") : more.length ? `<button type="button" class="m2-fold" aria-expanded="false" onclick="m2Fold('${m.id}',${li})"><span>See ${more.length} more</span>${LI("chevron-down",18)}</button>` : ""}</div>`; }
+    if (e.t==="draft") { const p = s.paths.find(x=>x.id===e.path); if (!p) return "";
+      return e.sent ? `<div class="m2-sys">${p.sq ? m2Mark(m, 24) : m2Face(p.pid, "m2-a32")}<span class="m2-sx">${e.sentx || `Sent to ${m2F(p.to || p.pid)}`}</span><span class="m2-st">Now</span></div>`
+        : m2CardHTML(m, p, { inset:true, draft:true, text:e.text, edit:e.edit, li, lab:"Draft" }); }
+    return "";
+  }).join("");
+  return `<div class="mh-pane mt-out m2-pane m2-chat" data-tab="chat" role="tabpanel" aria-labelledby="m2t-chat"><div class="m2-thread ks-thread" aria-live="polite">${rows}</div></div>`;
+};
+/* one conversation: what Kai and the member say by text about a goal's pick shows in that goal's Chat too */
+let G7_KCTX = null;
+const g7KimMirror = (who, text, id) => { const s = id && STATE.m2 && STATE.m2.story[id]; if (!s) return;
+  const ch = kim().ch || "iMessage", x = String(text);
+  m2Say(id, who==="u" ? { t:"me", x, via:ch } : { t:"bot", x:g7Esc(x).replace(/\n/g,"<br>"), via:ch }); };
+const _g7KimSay = kimSay;
+kimSay = function(text, o){ const r = _g7KimSay.apply(this, arguments), op = o && o.opp && DB.opps.find(x=>x.id===o.opp);
+  g7KimMirror("k", text, op ? op.missionId : G7_KCTX); return r; };
+const _g7KimReply = kimReply;
+kimReply = function(t){
+  const last = [...kim().msgs].reverse().find(x=>x.who==="k" && x.replies), op = last && last.opp && DB.opps.find(x=>x.id===last.opp);
+  G7_KCTX = op ? op.missionId : null; g7KimMirror("u", t, G7_KCTX);
+  try { return _g7KimReply.apply(this, arguments); } finally { G7_KCTX = null; }
+};
+
+/* ---- 4. Edit goal: a standard detail page, grouped ---- */
+const _g7EdSet = m2EdSet;
+m2EdSet = function(k, v){
+  if (k==="channel") { const E = STATE.m2.ed, c = E && m2Cfg(E.id); if (!c) return; c.channel = v; E.open = null; E.at = k; render(); toast("Changed. It applies from the next check-in."); return; }
+  return _g7EdSet.apply(this, arguments);
+};
+function g7EdPause(){ m2EdPause(); render(); }
+m2EdHTML = function(){
+  const E = STATE.m2.ed, m = E && m2Mis(E.id), c = m && m2Cfg(E.id); if (!c) return "";
+  const ev = c.kind==="Event";
+  const opts = (k, list, cur) => `<div class="m2-opts" role="group">${list.map(o=>`<button type="button" class="m2-opt${o===cur ? " on" : ""}" aria-pressed="${o===cur}" onclick="m2EdSet('${k}','${o}')">${o}</button>`).join("")}</div>`;
+  const tog = (k, list, on, label) => `<div class="m2-opts" role="group">${list.map(o=>`<button type="button" class="m2-opt${on.includes(o) ? " on" : ""}" aria-pressed="${on.includes(o)}" data-m2o="${k}|${o}" onclick="m2EdToggleOpt('${k}','${o}')">${label ? label(o) : o}</button>`).join("")}</div>`;
+  const P = STATE.m2.prop && STATE.m2.prop.id===E.id ? STATE.m2.prop : null, pk = P && ({ remote:"must" }[P.k] || (["ask","by","must"].includes(P.k) ? P.k : "ask"));
+  const was = { ask:c.ask, by:c.by || "No deadline", must:c.must.join(", ") || "None yet" };
+  const now = P && (P.k==="remote" ? c.must.filter(x=>x!=="Bay Area").concat(c.must.includes("Remote OK") ? [] : ["Remote OK"]).join(", ") : P.k==="must" ? c.must.concat(c.must.includes(P.v) ? [] : [P.v]).join(", ") : P.v);
+  const prop = P ? `<div class="g7-inset g7-diff" data-kc="KeyProposal">${m2Mark(m, 24)}<div class="g7-dt"><p>${P.h}</p>${now ? `<p class="g7-dv"><s>${m2Esc(was[pk])}</s><b>${m2Esc(now)}</b></p>` : ""}<div class="m2-pa"><button type="button" class="btn m2-b" onclick="m2Apply(true)">Apply</button><button type="button" class="btn sec m2-b" onclick="m2Apply(false)">Not that</button></div></div></div>` : "";
+  const row = (k, lab, val, ed, muted) => { const open = E.open===k;
+    return `<div class="m2-row${open ? " on" : ""}" data-row="${k}"><button type="button" class="m2-rh" aria-expanded="${open}" aria-controls="m2-re-${k}" onclick="m2EdToggle('${k}')"><span class="m2-rk">${lab}</span><span class="m2-chev" aria-hidden="true">${LI("chevron-down",20)}</span>${open ? "" : `<span class="m2-rv${muted ? " q" : ""}">${val}</span>`}</button>${open ? `<div class="m2-re" id="m2-re-${k}">${ed}</div>` : ""}${pk===k ? prop : ""}</div>`; };
+  const famOf = f => (DB.families||[]).find(x=>x.id===f), allFams = g7Fams().map(f=>f.id);
+  const wk = c.weeks ? m2Week(E.id, c) : 0, done = m2Done(E.id, c);
+  const KIND = { Looking:"Looking for something · ends when you find it", Standing:"Standing · keeps going until you stop it", Event:"Event · ends on the day" };
+  const ch = c.channel || (typeof kim==="function" && kim().on ? kim().ch : "App only");
+  const g1 = [
+    row("ask", "The ask", m2Esc(c.ask), `<textarea class="m2-ta" rows="3" data-m2f="ask" aria-label="The ask">${m2Esc(c.ask)}</textarea>`),
+    row("kind", "Kind", KIND[c.kind], `<div class="m2-kinds" role="group">${Object.keys(KIND).map(k=>`<button type="button" class="m2-kopt${k===c.kind ? " on" : ""}" aria-pressed="${k===c.kind}" onclick="m2EdSet('kind','${k}')">${KIND[k]}</button>`).join("")}</div>`),
+    row("done", "Done when", m2Esc(c.done), `<textarea class="m2-ta" rows="2" data-m2f="done" aria-label="Done when">${m2Esc(c.done)}</textarea>`),
+    row("by", "By when", c.by ? (ev ? c.by : `${c.by} · ${c.weeks} weeks, week ${wk} now`) : "No deadline", opts("by", ev ? [c.by || "Oct 15", "No deadline"].filter((x,i,a)=>a.indexOf(x)===i) : ["January 2027","March 2027","No deadline"], c.by || "No deadline"), !c.by),
+    c.month ? row("month", ev ? "Said yes" : "This month", ev ? `${done} of ${c.month}` : `${c.month} real conversations · ${done} so far`, opts("month", ev ? ["8 say yes","12 say yes","16 say yes"] : ["4 real conversations","6 real conversations","8 real conversations"], ev ? `${c.month} say yes` : `${c.month} real conversations`)) : ""
+  ].join("");
+  const g2 = row("must", "Must haves", c.must.length ? `<span class="m2-pills">${c.must.map(x=>`<span class="m2-opt on">${m2Esc(x)}</span>`).join("")}</span>` : "None yet", tog("must", c.mustOpts, c.must), !c.must.length)
+    + row("where", "Where Kai looks", `<span class="m2-fms m2-fml" aria-hidden="true">${c.where.map(f=>`<i class="m2-fm">${(famOf(f)||{name:"?"}).name.charAt(0)}</i>`).join("")}</span><span class="m2-fn">${c.where.map(f=>(famOf(f)||{}).name).filter(Boolean).join(", ")}</span>`, tog("where", allFams, c.where, f=>(famOf(f)||{}).name));
+  const g3 = row("checkin", "Check-ins", `${c.checkin}${/only/i.test(c.checkin) ? "" : ", only if nothing moved"}`, opts("checkin", ev ? ["Two days before","The day before","Only when something moves"] : ["Every Monday morning","Every two weeks","Only when something moves"], c.checkin))
+    + row("channel", "Channel", ch, opts("channel", ["iMessage","WhatsApp","App only"], ch))
+    + `<div class="m2-row"><button type="button" class="m2-rh g7-pause" onclick="g7EdPause()" aria-pressed="${m.status==="paused"}"><span class="m2-rk">Pause this goal</span><span class="m2-rv">${m.status==="paused" ? "Paused. Tap to resume" : "Running"}</span><span class="g7-sw${m.status==="paused" ? " on" : ""}" aria-hidden="true"><i></i></span></button></div>`;
+  const grp = (t, h) => `<h3 class="g7-sl">${t}</h3><div class="g7-card g7-grp">${h}</div>`;
+  return `<section class="m2-ed g7-ed" aria-labelledby="m2-edt" data-kc="KeyEditMission">
+    <div class="m2-edh g7-edh"><button type="button" class="m2-ib" onclick="m2EdBack()" aria-label="Back to the goal">${LI("chevron-left",24)}</button><h2 id="m2-edt">Edit goal</h2><button type="button" class="g7-done" onclick="m2EdBack()">Done</button></div>
+    <div class="m2-edb m2-scroll" data-m2s="ed">${grp("The goal", g1)}${grp("What matters", g2)}${grp("How it keeps in touch", g3)}
+      <div class="g7-card g7-grp g7-end"><button type="button" class="g7-endb" onclick="m2EdEnd()">End this goal</button></div></div>
+    <div class="ks-comp mt-comp m2-ecomp" data-kc="KeyComposer" data-kv="variant=chat"><div class="ks-box"><div class="mt-ctxrow"><span class="ks-scope on mt-ctx" data-kc="KeyChip" data-kv="state=on, kind=context">${LI("pencil",14)}<span>Changing the goal</span></span></div>
+      <textarea class="kin" id="m2-eta" rows="1" placeholder="Say what to change" aria-label="Say what to change"></textarea>
+      <div class="ks-crow"><button type="button" class="ks-ci" onclick="toast('Add a photo, a file or context')" aria-label="Add">${LI("plus",20)}</button><span class="grow"></span><button type="button" class="ks-ci" onclick="toast('Hold to talk.')" aria-label="Hold to talk">${LI("mic",20)}</button><button type="button" class="ks-go" onclick="m2EdSend()" aria-label="Send">${LI("arrow-up",18)}</button></div></div></div>
+  </section>`;
+};
+/* the proposal lands in the row it changes: open that row's scroll position, not the bottom */
+document.addEventListener("input", e=>{ const f = e.target && e.target.dataset && e.target.dataset.m2f, E = STATE.m2 && STATE.m2.ed, c = E && m2Cfg(E.id); if (f && c) { c[f] = e.target.value; m2Sync(E.id); } });
+
+/* ---- 6 and the Kai layer (Whole app review SPEC-kai-layer, his yes 06:21; spec section 9): one Kai card everywhere: Kai mark and one
+   sentence, a receipt, one action and Not now (outcome questions: three buttons). One card per screen; the same person is never the card
+   on two screens at once. From Kai in the Kai sheet lists what Kai started and any card not yet seen on its screen ---- */
+const g7K = () => STATE.g7 || (STATE.g7 = { not:{}, seen:{}, deck:{} });
+const g7Short = m => m.name.replace(/ at an AI company$/,"");
+const g7Cut = (t, n) => { t = String(t).replace(/\s+/g," ").trim(); return t.length <= (n||90) ? t : t.slice(0, (n||90)-1).replace(/[\s,.;:]+\S*$/,"")+"…"; };
+function g7GoalItems(){
+  const out = [];
+  Object.keys((STATE.m2 && STATE.m2.story) || {}).forEach(id=>{
+    const m = m2Mis(id), s = STATE.m2.story[id]; if (!m || m.status==="done" || !s) return;
+    const g = g7Short(m), scr = "mission:"+id;
+    s.chat.forEach((e, li)=>{
+      if (e.t==="chips" && !e.done && /^rs-/.test(e.kind||"")) { const q = [...s.chat.slice(0, li)].reverse().find(x=>x.rsq);
+        if (q) out.push({ key:`q:${id}:${li}`, scr, mid:id, pid:(DB.opps.find(o=>o.id===e.opp)||{}).personId, k:"question", out:true, h:q.rsq.h, rc:`${g} · now`, acts:e.opts.map(c=>[c, `g7Chip('${id}',${li},'${c.replace(/'/g,"\\'")}')`]) }); }
+      if (e.t==="draft" && !e.sent) { const p = s.paths.find(x=>x.id===e.path); if (p) out.push({ key:`d:${id}:${li}`, scr, mid:id, pid:p.pid, k:"draft", h:`Your note to ${m2F(p.to || p.pid) || p.name} is ready to send`, rc:`${g} · now`, acts:[["Review", `g7Chat('${id}')`]] }); }
+    });
+    s.paths.forEach(p=>{
+      if (/^Replied:/.test(p.sub||"") && !p.g7seen) out.push({ key:`n:${id}:${p.id}`, scr, mid:id, pid:p.pid, k:"notice", h:`${p.name.split(" ")[0]} replied about ${g}`, rc:`${g} · today`, acts:[["Open", `g7Seen('${id}','${p.id}')`]] });
+      if (p.stage==="In conversation" && /^Met\b/.test(p.sub||"") && !p.g7out) out.push({ key:`o:${id}:${p.id}`, scr, mid:id, pid:p.pid, k:"question", out:true, h:`How did it go with ${p.name.split(" ")[0]}?`, rc:`${g} · ${p.sub.split(".")[0]}`, acts:["Went well","Not a fit","Not yet"].map(c=>[c, `g7Out('${id}','${p.id}','${c}')`]) });
+    });
+  });
+  return out.filter(x=>!g7K().not[x.key]);
+}
+/* Home: the brief's cards as a deck of Kai cards; do or Not now; "Read the whole brief" opens the stories */
+function g7DeckItems(){
+  const m = typeof m2DeckM==="function" && m2DeckM(); if (!m) return [];
+  const K = g7K(), D = K.deck, home = K.homeWho || [], goal = g7GoalItems();
+  const brief = m2DeckItems().filter(x=>x.t!=="open" && x.t!=="end").map((it, i)=>{
+    if (it.t==="rsq") return null;
+    if (it.t==="item" && it.open) { const p = m2Path(m.id, it.pid); if (!p || p.stage!=="New pick") return null; }
+    if (it.t==="item") { const F = m2F(it.pid), key = "b:"+it.pid, p = m2Path(m.id, it.pid);
+      return it.open ? { key, pid:p ? p.pid : it.pid, h:g7Cut(p && /refer$/.test(p.act||"") ? `${p.act} you` : `Say hi to ${p ? p.name.split(" ")[0] : F}`), rc:g7Cut(it.why, 70), acts:[[p && p.act==="Say hi" ? "Say hi" : "Draft it", `g7DeckDo('${key}',"m2Act('${m.id}','${it.pid}');toast('Drafted in Chat. Nothing goes until you send it.')")`]] }
+        : { key, pid:it.pid, h:g7Cut(`${F}: ${m2Lc(it.why).replace(/^replied/, "replied")}`), rc:`${g7Short(m)} · today`, acts:[["Reply", `g7DeckDo('${key}',"g7Brief(${i+1})")`]] }; }
+    if (it.t==="prep") return { key:"b:prep", pid:"maya", h:"Get ready for Maya, tomorrow 10am", rc:"From your calendar", acts:[["Open the prep", `g7DeckDo('b:prep',"m2DeckPrep()")`]] };
+    if (it.t==="suggest") return { key:"b:dinner", h:"Start a goal: people to meet at Thursday's dinner", rc:"From your RSVP", acts:[["Start it", `g7DeckDo('b:dinner',"m2StartDinner();toast('Started. The first pass is running.')")`]] };
+    if (it.t==="ask") return { key:"b:ask", pid:"rahul", out:true, h:"Anything from Rahul?", rc:`${g7Short(m)} · you said hi Thursday`, acts:["Rahul replied","Nothing yet","Find another way"].map(c=>[c, `g7DeckDo('b:ask',"m2DeckAsk('${c}')")`]) };
+    return null;
+  }).filter(x=>x && !(x.pid && goal.some(g=>g.pid===x.pid)));
+  return goal.concat(brief).filter(x=>!D[x.key] && !K.not[x.key] && !(x.pid && home.includes(m2F(x.pid))));
+}
+function g7DeckDo(key, js){ g7K().deck[key] = 1; try { (new Function(js))(); } finally { if (STATE.screen==="home") render(); } }
+function g7Brief(i){ m2DeckOpen("home"); if (STATE.m2.deck) { STATE.m2.deck.i = i; render(); } }
+/* one card per screen */
+function g7CardFor(scr){
+  const K = g7K(), not = x => x && !K.not[x.key] ? x : null;
+  if (scr.startsWith("mission:")) {
+    const id = scr.slice(8), m = m2Mis(id), s = STATE.m2 && STATE.m2.story[id]; if (!m || m.status!=="active") return null;
+    const it = g7GoalItems().find(x=>x.mid===id && !x.pid); if (it) return it;
+    const c = m2Cfg(id), fams = (c.where||[]).map(f=>((DB.families||[]).find(x=>x.id===f)||{}).name).filter(Boolean);
+    return { key:`w:${id}`, scr, empty:true, h:`Watching ${g7And(fams) || "your families"}. Next check ${/Monday/.test(c.checkin) ? "Monday" : /two weeks/i.test(c.checkin) ? "in two weeks" : "when something moves"}.`, acts:[] };
+  }
+  if (scr==="eventd:e1") return not({ key:"e:e1", scr, h:"Who to meet before you go", rc:"Xoogler dinner · from the guest list", acts:[["See who", "g7Scroll('.evt-people')"]] });
+  return null;
+}
+function g7ClickText(within, t){ const r = [...phone.querySelectorAll(within)].map(w=>[...w.querySelectorAll("button, [onclick], [data-cgo], .row, .cm-row, li, div")].find(e=>e.children.length < 6 && e.textContent.trim().startsWith(t))).find(Boolean); if (r) r.click(); }
+function g7Scroll(sel){ const e = phone.querySelector(sel); if (e) e.scrollIntoView({ behavior:"smooth", block:"start" }); }
+function g7Visit(scr){ STATE.sheet = null; if (STATE.screen!==scr) go(scr); else render(); }
+function g7NotNow(key){ g7K().not[key] = 1; render(); }
+function g7FromKai(){
+  const K = g7K(), goal = g7GoalItems();
+  const screens = ["eventd:e1"].map(g7CardFor).filter(x=>x && !K.seen[x.key]).map(x=>Object.assign({}, x, { acts:[["Open", `g7Visit('${x.scr}')`]] }));
+  return goal.concat(screens).slice(0, 3);
+}
+function g7Chat(id){ STATE.sheet = null; const u = m2Ui(id); u.tab = "chat"; u.dot = false; u.toEnd = true; STATE.m2.last = "mission:"+id; if (STATE.screen!=="mission:"+id) go("mission:"+id); else render(); }
+function g7Seen(id, pid){ const p = m2Path(id, pid); if (p) p.g7seen = true; g7Chat(id); }
+function g7Chip(id, li, c){ m2Chip(id, li, c); render(); }
+function g7Out(id, pid, c){
+  const p = m2Path(id, pid); if (!p) return; p.g7out = true;
+  if (c==="Went well") { p.stage = "Went well"; p.sub = "You said it went well"; } else if (c==="Not a fit") { p.stage = "Set aside"; p.sub = "Not a fit. Fewer like this from the next pick"; }
+  m2Say(id, { t:"sys", who:"you", x:`How it went with ${p.name.split(" ")[0]}: ${c}`, time:"Now" }); toast("Logged. It's in the goal's Chat."); render();
+}
+const g7Card = (it, cls) => `<div class="g7-card g7-kc${it.empty ? " g7-kce" : ""}${cls ? " "+cls : ""}" data-kc="KeyKaiCard" data-kv="kind=${it.k || (it.empty ? "status" : "next")}"><div class="g7-kch">${kaiMark(20)}<b>${g7Esc(it.h)}</b></div>
+  ${it.rc ? `<div class="g7-rc">${g7Esc(it.rc)}</div>` : ""}${it.acts.length ? `<div class="g7-fka">${it.acts.map(([l, f], i)=>`<button type="button" class="kim-chip${i===0 ? " g7-pri" : ""}" onclick="${g7Esc(f)}">${g7Esc(l)}</button>`).join("")}${it.out ? "" : `<button type="button" class="kim-chip" onclick="g7NotNow('${it.key}')">Not now</button>`}</div>` : ""}</div>`;
+function g7DeckHTML(){
+  const its = g7DeckItems(), n = its.length;
+  if (!n) return "";
+  return `<section class="g7-deck" aria-label="Your brief" data-kc="KeyBriefDeck" data-kv="cards=${n}"><div class="g7-dh"><b>${n} for today</b><button type="button" class="g7-dmore" onclick="m2DeckOpen('home')">Read the whole brief</button></div>
+    <div class="g7-dtrack" tabindex="0" aria-label="Swipe for the next card">${its.map(it=>`<div class="g7-dslot">${g7Card(it)}</div>`).join("")}</div>
+    ${n > 1 ? `<div class="g7-dbar" aria-hidden="true"><i style="width:${100/n}%"></i></div>` : ""}</section>`;
+}
+const _g7Nudge = kaiHasNudge;
+kaiHasNudge = function(){ return _g7Nudge.apply(this, arguments) || (STATE.member && STATE.intakeDone && g7Unread()); };
+const g7Unread = () => { const K = g7K(); K.fk = K.fk || {}; return g7FromKai().some(x=>!K.fk[x.key]); };
+
+/* ---- wiring ---- */
+const G7_DONE = { "You've accepted a job offer":"you accept a job offer", "You've accepted an offer":"you accept an offer", "You've met the people worth meeting":"you meet the people worth meeting", "You've made the hire":"you make the hire" };
+function g7Head(id){
+  const m = m2Mis(id), c = m && m2Cfg(id), view = phone.querySelector(".view"), body = view && view.querySelector(".body.sc");
+  const band = body && body.querySelector(":scope > .mh-band.big"), tabs = body && body.querySelector(":scope > .ml-tabs"), hdr = view && view.querySelector(":scope > .hdr.sc");
+  if (!m || !c || !band) return;
+  phone.classList.add("g7-gp");
+  if (hdr) { hdr.classList.add("mt-named", "g7-nav"); const t = hdr.querySelector(".mt-ht"); if (t) t.setAttribute("onclick", `m2Edit('${id}','done')`); }
+  band.classList.add("g7-band");
+  band.querySelectorAll(":scope > .mh-bt, :scope > .ml-brief, :scope > .ml-rules, :scope > .mi-gr").forEach(e=>e.remove());
+  if (!band.querySelector(".g7-l1")) {
+    const ev = c.kind==="Event", done = m2Done(id, c), wk = c.weeks ? m2Week(id, c) : 0;
+    const d = c.done && !/^standing/i.test(c.done) ? `Done when ${G7_DONE[c.done] || m2Lc(c.done)}` : c.done ? "Ongoing, no end date" : m.name;
+    const by = c.by ? ` · by ${ev ? c.by : c.by.split(" ")[0]}` : "";
+    const left = c.month ? (ev ? `${done} of ${c.month} said yes` : `${done} of ${c.month} conversations this month`) : "";
+    const pct = c.month ? Math.round(100*done/c.month) : 0;
+    band.insertAdjacentHTML("beforeend", `<button type="button" class="g7-l1" onclick="m2Edit('${id}','done')" aria-label="${g7Esc(d+by)}. Edit goal">${g7Esc(d+by)}</button>
+      ${left ? `<div class="g7-pr" data-kc="KeyGoalRow"><span>${left}</span>${wk ? `<span class="g7-wk">Week ${wk} of ${c.weeks}</span>` : ""}<i class="mi-tr" aria-hidden="true"><s style="width:${pct}%"></s></i></div>` : ""}`);
+  }
+  if (tabs) { const bh = band.offsetHeight, th = tabs.offsetHeight; tabs.style.backgroundSize = `100% ${bh + th}px`; tabs.style.backgroundPosition = `0 ${-bh}px`; }
+  /* the goal's one Kai card, under the tabs on Opportunities */
+  const pane = body.querySelector(":scope > .m2-paths");
+  const owned = new Set((m2Story(id) || { chat:[] }).chat.filter(e=>e.rsq).map(e=>e.rsq.h.trim()));
+  const names = (m2Story(id) || { paths:[] }).paths.map(p=>p.name.split(" ")[0]);
+  const kqs = [...body.querySelectorAll(".kq")].filter(k=>{ const a = k.querySelector(".a"), t = a ? a.textContent.trim() : "";
+    if (owned.has(t) || names.some(n=>new RegExp(`\\b${n}\\b`).test(t))) { k.remove(); return false; } return true; });
+  if (pane && !pane.querySelector(".g7-kc")) {
+    const put = h => { const live = pane.querySelector(".m2-live"); if (live) live.insertAdjacentHTML("afterend", h); else pane.insertAdjacentHTML("afterbegin", h); };
+    if (kqs.length) { const k = kqs[0], a = k.querySelector(".a"), b = k.querySelector(".b");
+      put(g7Card({ key:"kq", h:a ? a.textContent.trim() : "", rc:b ? b.textContent.trim() : "", acts:[], out:true }));
+      const fka = document.createElement("div"); fka.className = "g7-fka";
+      [...k.querySelectorAll(".acts > *")].forEach((x, i)=>{ const btn = document.createElement("button"); btn.type = "button"; [...x.attributes].forEach(at=>{ if (at.name!=="class" && at.name!=="style") btn.setAttribute(at.name, at.value); }); btn.className = "kim-chip" + (i===0 ? " g7-pri" : ""); btn.textContent = x.textContent.trim(); fka.appendChild(btn); });
+      pane.querySelector(".g7-kc").appendChild(fka); }
+    else { const it = g7CardFor("mission:"+id); if (it) { put(g7Card(it)); g7K().seen[it.key] = 1; } }
+  }
+  kqs.forEach(k=>k.remove());
+  if (typeof khGlass==="function") khGlass();
+}
+function g7Kai(){
+  const sh = phone.querySelector("#sheet"); if (!sh) return; sh.classList.add("g7-ks");
+  const hello = sh.querySelector(".ks-hello"); if (!hello || sh.querySelector(".g7-from")) return;
+  const items = g7FromKai(), K = g7K(); K.fk = K.fk || {}; items.forEach(x=>{ K.fk[x.key] = 1; }); phone.querySelectorAll('#kaiBtn .knudge').forEach(e=>e.remove());
+  const all = K.fkAll, more = items.length - 1;
+  const sec = `<section class="g7-from" aria-label="From Kai"><h3 class="g7-sl">From Kai</h3>${items.length ? (all ? items : items.slice(0, 1)).map(x=>g7Card(x)).join("") + (more > 0 && !all ? `<button type="button" class="g7-fmore" onclick="g7K().fkAll=1;render()">${more} more from Kai</button>` : "") : `<p class="g7-fe">Nothing new. I'll message you when something moves on your goals.</p>`}</section>`;
+  const p = hello.querySelector(":scope > p"); (p || hello.lastElementChild).insertAdjacentHTML("afterend", sec);
+}
+/* free-form Kai chat stays free; an answer that clearly belongs to a goal gets one chip, never a silent file */
+const G7_FITS = /\b(pm|product manager|role|roles|referral|refer|job|offer|interview|hiring|recruiter)\b/i;
+function g7KaiAdd(){
+  const sh = phone.querySelector("#sheet .ks-thread"); if (!sh) return;
+  const m = DB.missions.find(x=>x.id==="m1" && x.status==="active"); if (!m) return;
+  const us = [...sh.querySelectorAll(":scope > .ks-u")], u = us[us.length-1]; if (!u || !G7_FITS.test(u.textContent)) return;
+  let k = u.nextElementSibling; while (k && !k.classList.contains("ks-k")) k = k.nextElementSibling; if (!k || k.querySelector(".g7-add") || k.matches("[data-kc='KeyKaiThinking']")) return;
+  const key = u.textContent.trim(); STATE.g7add = STATE.g7add || {};
+  const g = m.name.replace(/ at an AI company$/,"");
+  k.insertAdjacentHTML("beforeend", STATE.g7add[key] ? `<div class="g7-rc g7-add">${LI("check",14)}<span>Added to ${g7Esc(g)}</span></div>` : `<div class="g7-add"><button type="button" class="kim-chip" data-g7add="${g7Esc(key)}">Add to ${g7Esc(g)}?</button></div>`);
+}
+document.addEventListener("click", e=>{ const b = e.target.closest && e.target.closest("#phone [data-g7add]"); if (!b) return; e.stopPropagation();
+  const t = b.dataset.g7add; STATE.g7add = STATE.g7add || {}; STATE.g7add[t] = 1; m2Say("m1", { t:"sys", who:"you", x:`From Kai chat: ${m2Esc(t)}`, time:"Now" }); toast("Added to the goal's Chat."); render(); }, true);
+function g7Home(){
+  const body = phone.querySelector(".view .body") || phone.querySelector(".screen .body"); if (!body) return;
+  const btp = body.querySelector(":scope > .btp");
+  const who = [...body.querySelectorAll(".hc-card *")].map(e=>e.children.length ? "" : (/^Start with (\S+)$/.exec(e.textContent.trim()) || [])[1]).filter(Boolean), K = g7K();
+  if (String(who)!==String(K.homeWho || [])) { K.homeWho = who; const d = body.querySelector(".g7-deck"); if (d) d.remove(); }
+  if (btp && !body.querySelector(".g7-deck")) { btp.querySelectorAll(".btp-act").forEach(e=>e.remove()); if (g7DeckItems().length) btp.querySelectorAll(".btp-who").forEach(e=>e.remove()); body.querySelectorAll(":scope > .bk-hero, :scope > .kh-hero").forEach(e=>e.remove()); btp.insertAdjacentHTML("afterend", g7DeckHTML());
+    const tr = body.querySelector(".g7-dtrack"), bar = body.querySelector(".g7-dbar i");
+    if (tr && bar) tr.addEventListener("scroll", ()=>{ bar.style.transform = `translateX(${Math.round(tr.scrollLeft / tr.clientWidth) * 100}%)`; }, { passive:true }); }
+  body.querySelectorAll(":scope > .obk-mini, :scope > .row, :scope > .us-door").forEach(e=>e.classList.add("g7-card", "g7-wrap"));
+}
+function g7Screen(s){
+  const body = phone.querySelector(".view .body") || phone.querySelector(".screen .body"); if (!body || body.querySelector(".g7-kc")) return;
+  const it = g7CardFor(s); if (!it) return;
+  if (s==="family") { const pane = body.querySelector(".cm-pane"); if (!pane || !pane.querySelector(".ov-start")) return; pane.insertAdjacentHTML("afterbegin", g7Card(it, "g7-in")); }
+  else if (s==="manage") { const first = body.querySelector(":scope > .cm-row, :scope > .cm-list"); if (!first) return; first.insertAdjacentHTML("beforebegin", g7Card(it, "g7-in")); }
+  else { const t = body.querySelector(".evt-title"); if (!t) return; const f = body.querySelector(".evt-facts"); if (f) f.insertAdjacentHTML("afterend", g7Card(it, "g7-in")); else t.insertAdjacentHTML("afterend", g7Card(it, "g7-in")); }
+  g7K().seen[it.key] = 1;
+}
+const _g7Render = render;
+render = function(){
+  if (!/^gpreview:/.test(STATE.screen||"") && STATE.g7pv) STATE.g7pv = null;
+  const r = _g7Render.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone) return r;
+  const s = STATE.screen || "";
+  phone.classList.toggle("g7-g", !!(STATE.member && G7_GROUND(s)));
+  phone.classList.remove("g7-gp");
+  if (!STATE.member || !STATE.intakeDone) return r;
+  if (s.startsWith("mission:")) { try { g7Head(s.slice(8)); } catch (e) { console.warn("g7Head", e); } }
+  if (s==="home") g7Home();
+  if (s==="family" || s==="manage" || s.startsWith("eventd:")) g7Screen(s);
+  if (STATE.sheet && STATE.sheet.type==="kai") { g7Kai(); g7KaiAdd(); }
+  const kb = phone.querySelector("#kaiBtn"); if (kb && g7Unread() && !kb.querySelector(".knudge")) kb.insertAdjacentHTML("beforeend", '<span class="knudge"></span>');
+  return r;
+};
+
+</script>
+<script>
+window.KEY_BUILD = "2.hifi-4ba0";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
