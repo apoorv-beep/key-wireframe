@@ -7606,14 +7606,14 @@ html.obc .view.obc-wel .ob4got > *, html.obc .view.obc-wel .ob4more, html.obc .v
    MOCK DATABASE
    ========================= */
 const DB = {
-  user: { name: "Priya Sharma", initials: "PS", title: "Senior Product Manager", company: "Google Cloud", email: "priya@gmail.com", invitedBy: "Daniel Reyes", family: "Xoogler" },
+  user: { name: "Priya Sharma", initials: "PS", title: "Senior Product Manager", company: "Google", email: "priya@gmail.com", invitedBy: "Daniel Reyes", family: "Xoogler" },
   family: { name: "Xoogler", proof: "38 intros and 6 hires last quarter", members: 412 },
   intents: [ "Hiring", "Looking", "Cofounder", "Raising", "Investing", "Learning", "The people" ],
   people: {
     rahul: { id:"rahul", name:"Rahul Mehta", initials:"RM", title:"Engineering Director", company:"Halvern", line:"Building the eng team for a new product line. Ex-Google.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:["Investing"], slots:"2 slots left this week", lookingFor:"Senior PMs who have shipped AI features", help:["Interview prep for AI companies","Eng and PM partnership","Hiring senior ICs"], shared:["Xoogler dinner, August","Met three times this year"] },
     maya:  { id:"maya", name:"Maya Chen", initials:"MC", title:"Head of Engineering", company:"Seed-stage, stealth", line:"Building infra for agents. Looking for a product partner.", families:["Xoogler","Michigan"], openTo:["Cofounder conversations","Product advice"], notNow:["Hiring"], slots:"2 slots left this month", lookingFor:"A product cofounder with AI experience", help:["Infra for agents","Fundraising a seed round","Early hiring"], shared:["Xoogler dinner, August","AI meetup, July"] },
     chris: { id:"chris", name:"Daniel Reyes", initials:"DR", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
-    priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google Cloud", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
+    priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
     dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google legal team. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
     ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Corvana", line:"Runs platform at Corvana. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Corvana"], shared:["Xoogler dinner, August","Met twice this year"] },
     jordan:{ id:"jordan", name:"Jordan Tan", initials:"JT", title:"Product Manager", company:"Ex-Google", line:"Six years at Google. Looking at AI PM roles.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"AI PM roles", help:["Maps org intros"], shared:["Both ex-Google"] },
@@ -7736,23 +7736,23 @@ const DB = {
     { d:"Sep 19", t:"event", what:"Xoogler dinner. You checked in, talked to Rahul and Maya", learned:["You and Rahul have met 4 times","Maya is now a warm tie"], sent:["who",0] },
     { d:"Sep 18", t:"mission", what:"You dropped two big-company roles", learned:["Prefers companies under 200 people"], sent:["after",2], inferred:true },
     { d:"Sep 17", t:"told", what:"You added: can help with getting into Google", learned:["Getting into Google added to what you can offer"], sent:["offer",2] },
-    { d:"Sep 16", t:"call", what:"Intake call with Kai, 9 minutes", learned:["Senior PM at Google Cloud, six years","Looking for a senior PM role at an AI company","Wants a technical cofounder","Can help with product reviews and PM hiring","Three requests a week is fine"], sent:["who",0] },
+    { d:"Sep 16", t:"call", what:"Intake call with Kai, 9 minutes", learned:["Senior PM at Google, six years","Looking for a senior PM role at an AI company","Wants a technical cofounder","Can help with product reviews and PM hiring","Three requests a week is fine"], sent:["who",0] },
     { d:"Sep 15", t:"import", what:"Signed in with LinkedIn. Connected contacts and calendar", learned:["Bay Area","412 contacts, 38 overlap with your families"], sent:["who",2] }
   ],
   contextV2: {
-    summary: "Senior PM at Google Cloud, six years, shipped two AI features. Looking for a senior PM role at an AI company in the Bay Area and a technical cofounder for an agents idea. Can help with product reviews and PM hiring. Fine with three requests a week, via a connector.",
-    who: [["Senior PM at Google Cloud, six years","intake call","Sep 16","routing, drafts"],["Shipped two AI features at Cloud","intake call","Sep 16","help nudges, drafts"],["Bay Area","LinkedIn","Sep 15","routing"]],
+    summary: "Senior PM at Google, six years, shipped two AI features. Looking for a senior PM role at an AI company in the Bay Area and a technical cofounder for an agents idea. Can help with product reviews and PM hiring. Fine with three requests a week, via a connector.",
+    who: [["Senior PM at Google, six years","intake call","Sep 16","routing, drafts"],["Shipped two AI features at Cloud","intake call","Sep 16","help nudges, drafts"],["Bay Area","LinkedIn","Sep 15","routing"]],
     after: [["Senior PM role at an AI company, Bay Area","mission","Sep 16","paths"],["Technical cofounder for an agents idea","mission","Sep 16","paths, mutual reveal"],["Prefers companies under 200 people","you told Kai","Sep 18","paths"]],
     offer: [["Product reviews","intake call","Sep 16","help nudges",true],["PM hiring","intake call","Sep 16","help nudges",true],["Getting into Google","you added","Sep 17","help nudges",false]],
     work: [["Prefers a call over typing for anything long","intake call","Sep 16","how Kai asks"],["Mornings before 10 are off","you told Kai","Sep 17","booking, brief timing"],["Writes short. No exclamation marks.","from your drafts","Sep 18","how Kai writes as you"]],
-    boundaries: [["Never surface anyone at Google Cloud","you told Kai","Sep 16","paths"],["Never contact Sam Ortiz","you added","Sep 17","paths, requests"]],
+    boundaries: [["Never surface anyone at Google","you told Kai","Sep 16","paths"],["Never contact Sam Ortiz","you added","Sep 17","paths, requests"]],
     inferred: [["Most of your calendar overlap is with AI people","calendar","Sep 18","paths"],["Interested in eval tooling","you answered in #cofounders","Sep 19","help nudges"]],
     shared: [["Open to intros via connector, 3 a week",["xoogler","michigan","desi"]],["Can help with: product reviews, PM hiring",["xoogler","desi"]],["Looking for: revealed only on mutual match",[]],["Location: Bay Area",["xoogler","michigan","desi"]]],
     told: [["Daniel's Kai","that you're open to cofounder intros and how you know Maya","Sep 19"],["Dev's Kai","that you're at capacity this week","Sep 20"]],
     stale: ["Three asks a week is fine (said Sep 16)"]
   },
   context: {
-    stated:[ ["Senior PM at Google Cloud, thinking about leaving","intake call"], ["Looking for a senior PM role at an AI company, Bay Area","intake call"], ["Wants a technical cofounder for an agents idea","intake call"], ["Can help with product reviews and PM hiring","intake call"], ["Three asks a week is fine","intake call"] ],
+    stated:[ ["Senior PM at Google, thinking about leaving","intake call"], ["Looking for a senior PM role at an AI company, Bay Area","intake call"], ["Wants a technical cofounder for an agents idea","intake call"], ["Can help with product reviews and PM hiring","intake call"], ["Three asks a week is fine","intake call"] ],
     confirmed:[ ["Knows Rahul Mehta well","calendar, you confirmed"] ],
     inferred:[ ["Prefers companies under 200 people","you dropped two big-company roles"], ["Most of your calendar overlap is with AI people","calendar"] ],
     sources:[ ["Contacts","granted"], ["Device calendar","granted"], ["LinkedIn","sign in"], ["Xoogler channels","#jobs, #introductions, #cofounders, #general. Not #sf-this-week"] ],
@@ -7769,8 +7769,8 @@ const DB = {
     { id:"a2", to:"priya", kind:"direct", from:"ana", what:"wants 20 minutes on PM interview loops", note:"You listed PM hiring as something you can help with. I'm hiring a platform PM at Corvana and want to sanity-check my loop. Happy to return the favor.", receipts:[["Rule","Under your Product advice rule, via connector: Daniel greeted you together","rules"],["Shared","Both at Xoogler dinner in August","events"]], state:"open", when:"1d" },
     { id:"a3", to:"priya", kind:"forwarded", from:"jordan", via:"chris", what:"Daniel introduced Jordan to you", note:"Priya, meet Jordan. Ex-Google PM, just joined Xoogler, thinking about AI PM roles. You're two months ahead of Jordan on exactly this. Jordan, Priya's the one to ask. Over to you both.", receipts:[["Vouched","Daniel made the intro and nominated Jordan last week","#introductions"],["Shared","Both ex-Google, both in Xoogler","xoogler"]], state:"open", when:"3h" },
     { id:"a4", to:"priya", kind:"help", from:"maya", channel:"cofounders", what:"asked about eval tooling for agents in #cofounders", note:"Anyone building eval tooling for agents? Would love to compare notes.", receipts:[["Why you","You shipped eval features at Cloud. Kai flagged this to you and one other member","context"]], state:"open", when:"5h" },
-    { id:"a5", to:"priya", kind:"direct", from:"kate", what:"wants a referral to Google Cloud", note:"Saw you're at Cloud. Any chance of a referral for the PM, Vertex role?", receipts:[["Rule","Cold ask from Michigan. You're at capacity this week","rules"]], state:"passed", when:"2d" },
-    { id:"c1", to:"chris", kind:"connector", from:"priya", target:"maya", what:"wants an intro to Maya Chen through you", note:"Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and Maya's infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.", forward:"Priya Sharma, senior PM at Google Cloud, shipped two AI features, looking for a technical cofounder for an agents product.", receipts:[["Vouched","Your nominee, last week","nomination"],["Standing","New. 0 intros, replies within a day","ledger"]], state:"pending", when:"now" },
+    { id:"a5", to:"priya", kind:"direct", from:"kate", what:"wants a referral to Google", note:"Saw you're at Cloud. Any chance of a referral for the AI platform PM role?", receipts:[["Rule","Cold ask from Michigan. You're at capacity this week","rules"]], state:"passed", when:"2d" },
+    { id:"c1", to:"chris", kind:"connector", from:"priya", target:"maya", what:"wants an intro to Maya Chen through you", note:"Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and Maya's infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.", forward:"Priya Sharma, senior PM at Google, shipped two AI features, looking for a technical cofounder for an agents product.", receipts:[["Vouched","Your nominee, last week","nomination"],["Standing","New. 0 intros, replies within a day","ledger"]], state:"pending", when:"now" },
     { id:"c2", to:"chris", kind:"connector", from:"dev", target:"sana", what:"wants an intro to Sana Iqbal through you", note:"Hey Daniel, could you connect me with Sana? Brightwell's agents team is exactly my area.", forward:"Dev Patel, ex-Google, legal-tech agents.", receipts:[["Shared","You greeted Dev in #introductions","#introductions"],["Standing","2 intros made, replies to asks","ledger"]], state:"open", when:"4h" }
   ],
   activity: [
@@ -7854,7 +7854,7 @@ const STATE = {
 
 /* Scripted Kai content */
 const INTAKE = [
-  { q: "Where do you work right now, and what are you working on?", a: ["Senior PM at Google Cloud, on an AI feature. Thinking about leaving", "Just left Google, taking a few months", "Running a small side project"] },
+  { q: "Where do you work right now, and what are you working on?", a: ["Senior PM at Google, on an AI feature. Thinking about leaving", "Just left Google, taking a few months", "Running a small side project"] },
   { q: "How big is the team, and who do you work with most?", a: ["Eight people. Mostly with eng and design leads", "Two of us, me and a contractor", "Solo, for now"] },
   { q: "What do you need help with that's hard to get inside your company?", a: ["A senior PM role at an AI company, ideally through someone", "A technical cofounder for an agents idea", "Both, the role first"] },
   { q: "How do you meet people today, and what gets in the way?", a: ["Events, mostly. Cold messages feel wrong", "Friends of friends. Slow", "I don't, really. That's why I'm here"] },
@@ -7872,7 +7872,7 @@ function buildMissionsFromIntent() {
   // pre-intake pick: only what calendar or shared data supports
   DB.opps.push(opp("o1","m1","person","rahul", STATE.connect.calendar ? "direct" : "direct", STATE.connect.calendar
     ? [ ["Connected","You've met 3 times this year","calendar"], ["Shared","Both in Xoogler","xoogler"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"] ]
-    : [ ["Shared","Both ex-Google Cloud, 2019 to 2022","LinkedIn"], ["Shared","Both in Xoogler","xoogler"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"] ],
+    : [ ["Shared","Both ex-Google, 2019 to 2022","LinkedIn"], ["Shared","Both in Xoogler","xoogler"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"] ],
     "Say hi to Rahul", "new"));
 }
 function opp(id, missionId, kind, personId, route, receipts, action, state, extra) {
@@ -7978,7 +7978,7 @@ const KAI_COMPOSER = [
 ];
 const START_VERBS = [ ["Find a role","Looking","Find a role"], ["Find a cofounder","Cofounder","Find a cofounder"], ["Hire someone","Hiring","Hire for my team"], ["Raise","Raising","Raise a round"], ["Meet people","The people","Meet people worth knowing"] ];
 function startVerb(i) { const [label,type,name] = START_VERBS[i]; if (DB.missions.some(m=>m.type===type)) { toast(`Already running: ${name}`); return; } const id="m"+(DB.missions.length+1); DB.missions.push({ id, type, name, started:true, brief:"Kai is looking across Xoogler and Michigan. Next pass Friday. Do the call and I'll make this specific.", done:"Not set yet", standing:type==="The people", status:"active", constraints:[] }); if (!STATE.intent.includes(type)) STATE.intent.push(type);
-  if (type==="Looking" && !DB.opps.some(o=>o.id==="o1")) DB.opps.push(opp("o1", id, "person", "rahul", "direct", [ ["Shared","Both ex-Google Cloud, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
+  if (type==="Looking" && !DB.opps.some(o=>o.id==="o1")) DB.opps.push(opp("o1", id, "person", "rahul", "direct", [ ["Shared","Both ex-Google, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
   if (type==="Cofounder" && !DB.opps.some(o=>o.id==="o2")) DB.opps.push(opp("o2", id, "person", "maya", "connector", [ ["Vouched","Daniel recommended Maya in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Daniel to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
   render(); STATE.kaiScope={ kind:"mission", id, label:name, sugg: type==="Looking"?["An AI company, under 200 people","Bay Area or remote","Senior, not staff"]:type==="Cofounder"?["Technical, has shipped","Bay Area","Someone I've worked with before"]:["Tell me what kind","Where","Who you already know"] }; STATE.kaiMsgs=[{who:"k",text:`${name}. Tell me what kind, and I'll make it specific. Or talk it through when you do the conversation.`}]; const sc=STATE.kaiScope; openSheet("kai"); STATE.kaiScope=sc; render(); }
 const NEW_MISSION_CHIPS = [ "Get into Halvern", "Find an advisor who's raised a seed", "Hire a designer for my side project" ];
@@ -8092,7 +8092,9 @@ function render() {
   else if (S==="kaihistory") html = sKaiHistory();
   else if (S==="kimthread") html = kimThread();
   else if (S==="goalideas") html = g7IdeasPage();
+  else if (S==="catchup") html = cuPage();
   else if (S==="chatgate") html = cgPage();
+  else if (S.startsWith("b1picks:")) html = b1Page(S.slice(8));
   else if (S.startsWith("gpreview:")) html = g7PreviewPage(S.slice(9));
   else if (S==="messages") { STATE.inboxView=null; html = sInbox(); }
   else if (S==="notifications") html = sNotifications();
@@ -8191,7 +8193,7 @@ function sWelcome() {
     <div class="card" style="margin-top:14px">
       <div class="top" style="align-items:center">${av(hasName||STATE.nameGiven?DB.user.initials:"?","lg")}<div style="flex:1;min-width:0">${hasName?`<div class="name">${DB.user.name}</div><div class="xs muted">From ${prov==="linkedin"?"LinkedIn":prov==="google"?"Google":"Apple"}</div>`:`<div class="field" style="padding:0;border:0" onclick="STATE.nameGiven=true;render()"><div class="k">Your name</div><div class="v">${STATE.nameGiven?DB.user.name:'<span class="faint">First and last</span>'}</div></div>`}</div></div>
       <div class="stack" style="margin-top:12px">
-        <div class="field" onclick="STATE.workGiven=STATE.workGiven||'Google Cloud';render()"><div class="k">Where you work</div><div class="v">${workVal||'<span class="faint">Company, school, or between roles</span>'}</div>${workVal&&workDomain&&!STATE.workGiven?`<div class="xs faint">From your work email</div>`:''}</div>
+        <div class="field" onclick="STATE.workGiven=STATE.workGiven||'Google';render()"><div class="k">Where you work</div><div class="v">${workVal||'<span class="faint">Company, school, or between roles</span>'}</div>${workVal&&workDomain&&!STATE.workGiven?`<div class="xs faint">From your work email</div>`:''}</div>
       </div>
       <p class="xs faint" style="margin:10px 0 0">Kai uses these to find your work profile and asks you to confirm it next. Nothing is searched by you.</p>
     </div>
@@ -8242,7 +8244,7 @@ function sConsent() {
   <div class="foot"><button class="btn" onclick="goBack()">Done</button><button class="btn ghost" onclick="toast('Kai paused. Paths stop; your profile stays yours.')">Pause Kai</button></div>`;
 }
 const APP_PAGES = [
-  { t:"About you", qs:[["Full name","Priya Sharma",true],["Employment at Google","Verified from LinkedIn · 2019 to present",true],["Years at Google","6",true],["Team at Google","Cloud AI",true],["Current company","Google Cloud",true]] },
+  { t:"About you", qs:[["Full name","Priya Sharma",true],["Employment at Google","Verified from LinkedIn · 2019 to present",true],["Years at Google","6",true],["Team at Google","Cloud AI",true],["Current company","Google",true]] },
   { t:"Why Xoogler", qs:[["Why do you want to join?","",false],["How did you hear about us?","",false],["Who do you already know here?","",false]] },
   { t:"What you're working on", qs:[["What are you working on right now?","",false],["What's next for you?","",false],["Are you hiring, looking, or building?","",false],["Location","Bay Area",true]] },
   { t:"What you can offer", qs:[["What can you help members with?","",false],["Would you host or speak?","",false],["Topics you'd want a dinner on","",false]] },
@@ -8394,7 +8396,7 @@ function startSuggested() {
   DB.missions=[]; DB.opps=[]; STATE.missionsOrderedAt="sign-up";
   (STATE.suggest||[]).filter(x=>x.on).forEach((m,i)=>{ const nm=sugName(m); DB.missions.push({ id:"m"+(i+1), type:m.type, name:nm, brief:`${nm}. ${m.done}. Kai is looking in Xoogler and Michigan. Next pass Friday.`, done:m.done.replace("Default: ",""), standing:/Standing/.test(m.done), status:"active", constraints:Object.values(m.picks).filter(v=>v&&!["Any","Either","Anywhere","Other"].includes(v)) }); });
   const m1 = DB.missions.find(m=>m.type==="Looking"); const m2 = DB.missions.find(m=>m.type==="Cofounder");
-  if (m1) DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", STATE.connect.calendar ? [ ["Connected","You've met 3 times this year","calendar"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ] : [ ["Shared","Both ex-Google Cloud, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
+  if (m1) DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", STATE.connect.calendar ? [ ["Connected","You've met 3 times this year","calendar"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ] : [ ["Shared","Both ex-Google, 2019 to 2022","LinkedIn"], ["Role","Posted in #jobs: hiring senior PMs","#jobs, Sep 9"], ["Shared","Both in Xoogler","xoogler"] ], "Say hi to Rahul", "new"));
   if (m2) DB.opps.push(opp("o2", m2.id, "person", "maya", "connector", [ ["Vouched","Daniel recommended Maya in #cofounders","#cofounders, Aug 21"], ["Shared","Both at 2 events","events"], ["Open","Cofounder conversations, 2 slots left","rules"] ], "Ask Daniel to intro you", "new", { via:"chris", timeline:[["Surfaced","today",true],["Asked Daniel","",false],["Daniel agreed","",false],["Maya replied","",false],["In conversation","",false],["Resolved","",false]] }));
 }
 
@@ -8738,7 +8740,7 @@ function sReadback() {
     <p class="muted">This becomes your profile. It's what Kai knows about you, and the only parts other members' Kai can read are the ones you share. Fix anything.</p>
     ${profileHTML({ initials:DB.user.initials, name:DB.user.name, headline:`${DB.user.title} at ${DB.user.company}`, verified:(STATE.signinWith==="linkedin"||STATE.linkedinConfirmed), families:STATE.applied?["Xoogler, pending"]:[], self:true,
       stats:[["6 yrs","at Google"],["8","on your team"],["3","asks a week"]],
-      facts:[["◎","Senior PM on an AI feature at Google Cloud, working most with the eng and design leads"],["◆","Bay Area, in person preferred, nothing before November"],["✦","Meets people at events; cold messages feel wrong"],["⌘","Already knows Rahul Mehta at Halvern (met three times) and Daniel"]],
+      facts:[["◎","Senior PM on an AI feature at Google, working most with the eng and design leads"],["◆","Bay Area, in person preferred, nothing before November"],["✦","Meets people at events; cold messages feel wrong"],["⌘","Already knows Rahul Mehta at Halvern (met three times) and Daniel"]],
       words:"I've shipped two AI features at Cloud and I'm ready for a smaller company where the product is the company. I want to get there through people who can vouch for the work, not a cold application.",
       prompts:[["What I'm after","A senior PM role at an AI company under two hundred people, ideally through someone I know. A technical cofounder for an agents idea, no rush on that one."],["What I can help with","Product reviews on AI features, PM hiring loops, and getting into Google. Ask me about any of these."]],
       connection:{ lines:[["👁","Members see your name, headline, and what you can help with"],["◔","What you're after shows only on a mutual match"],["✕","Who you know, your boundaries and this page never leave unless you share them"]] } })}
@@ -8865,7 +8867,7 @@ function linkIcons(links) { return `<div class="plinks">${(links||[]).map(([k,la
 function sharedEventsFor(pid) { return DB.fevents.filter(e=>!e.past && (e.meet||[]).includes(pid)).slice(0,2); }
 function profileBody(pid, opts) {
   opts = opts||{}; const self = pid==="priya"; const edit = !!opts.edit;
-  const p = self ? { id:"priya", initials:DB.user.initials, name:DB.user.name, title:DB.user.title, company:DB.user.company, line:(DB.contextV2.who[0]||["On an AI feature at Google Cloud with a team of eight, thinking about a move to a smaller AI company."])[0], help:DB.contextV2.offer.map(x=>x[0]), lookingFor:DB.contextV2.after.map(x=>x[0]).join(". "), families:["Xoogler"], openTo:[], shared:[] } : DB.people[pid];
+  const p = self ? { id:"priya", initials:DB.user.initials, name:DB.user.name, title:DB.user.title, company:DB.user.company, line:(DB.contextV2.who[0]||["On an AI feature at Google with a team of eight, thinking about a move to a smaller AI company."])[0], help:DB.contextV2.offer.map(x=>x[0]), lookingFor:DB.contextV2.after.map(x=>x[0]).join(". "), families:["Xoogler"], openTo:[], shared:[] } : DB.people[pid];
   const o = self ? null : DB.opps.find(x=>x.personId===pid && x.state!=="dropped");
   const via = o&&o.via?DB.people[o.via]:null;
   const fams = DB.families.filter(fm=>(p.families||[]).includes(fm.name));
@@ -9207,7 +9209,7 @@ function sManage() {
 }
 function sManageSection(id) {
   const secs = {
-    applications: ["Applications", `${!STATE.member&&STATE.applied?`<div class="card" style="border-color:var(--ink)"><div class="top">${av("PS")}<div><div class="name">Priya Sharma</div><div class="sub">Senior PM, Google Cloud · invited by you</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Verified</span><span>Employment at Google, 2019 to present, from LinkedIn.</span></div><div class="rc"><span class="ty">Kai</span><span>Cloud AI, six years. Looking for a senior PM role at an AI company and a technical cofounder. Answers are specific. Calendar overlap with 6 members.</span></div><div class="lbl" style="margin-top:8px">Their answers</div><p class="sm muted">Why Xoogler: "${(STATE.appAnswers["1:0"]||"I miss the density of people who've shipped at scale.").replace("(Spoken) ","")}"</p><div class="act"><button class="btn sm" onclick="approveMe();STATE.asOrganizer=false">Approve Priya</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div>`:''}<div class="card"><div class="top">${av("JT")}<div><div class="name">Jordan Tan</div><div class="sub">PM, ex-Google · nominated by Rahul</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Kai</span><span>Six years at Google, two in AI. Wants intros to AI founders. Answers are specific and match the nomination.</span></div><div class="lbl" style="margin-top:8px">Their answers</div><p class="sm muted">Why Xoogler: "I miss the density of people who've shipped at scale."<br>What I can offer: "Maps org intros, PM interview prep."</p><div class="act"><button class="btn sm" onclick="toast('Approved. Jordan gets a push and Kai runs a first pass.')">Approve Jordan</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div><div class="empty">3 more waiting</div>`],
+    applications: ["Applications", `${!STATE.member&&STATE.applied?`<div class="card" style="border-color:var(--ink)"><div class="top">${av("PS")}<div><div class="name">Priya Sharma</div><div class="sub">Senior PM, Google · invited by you</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Verified</span><span>Employment at Google, 2019 to present, from LinkedIn.</span></div><div class="rc"><span class="ty">Kai</span><span>Cloud AI, six years. Looking for a senior PM role at an AI company and a technical cofounder. Answers are specific. Calendar overlap with 6 members.</span></div><div class="lbl" style="margin-top:8px">Their answers</div><p class="sm muted">Why Xoogler: "${(STATE.appAnswers["1:0"]||"I miss the density of people who've shipped at scale.").replace("(Spoken) ","")}"</p><div class="act"><button class="btn sm" onclick="approveMe();STATE.asOrganizer=false">Approve Priya</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div>`:''}<div class="card"><div class="top">${av("JT")}<div><div class="name">Jordan Tan</div><div class="sub">PM, ex-Google · nominated by Rahul</div></div></div><div class="rc" style="margin-top:8px"><span class="ty">Kai</span><span>Six years at Google, two in AI. Wants intros to AI founders. Answers are specific and match the nomination.</span></div><div class="lbl" style="margin-top:8px">Their answers</div><p class="sm muted">Why Xoogler: "I miss the density of people who've shipped at scale."<br>What I can offer: "Maps org intros, PM interview prep."</p><div class="act"><button class="btn sm" onclick="toast('Approved. Jordan gets a push and Kai runs a first pass.')">Approve Jordan</button><span class="no">Waitlist</span><span class="no">Reject</span></div></div><div class="empty">3 more waiting</div>`],
     members: ["Members and roles", `<div class="card" style="padding:4px 14px">${["Daniel Reyes · Owner","Rahul Mehta · Admin","Sana Iqbal · Moderator","Maya Chen · Member","Priya Sharma · Member, new"].map(x=>`<div class="rowitem"><div class="m"><div class="a" style="font-weight:500">${x}</div></div><div class="s">›</div></div>`).join("")}</div>`],
     greeting: ["Greeting queue", `<div class="card" style="padding:4px 14px">${[["Priya Sharma","Joined Tuesday. No first action yet."],["Dev Patel","Posted in #jobs. Not greeted."],["Ana Ruiz","Greeted by Daniel."]].map(([a,b])=>`<div class="rowitem">${av(a.split(" ").map(x=>x[0]).join(""))}<div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><span class="chip" style="font-size:11px" onclick="toast('Reply drafted in your voice')">Say hi</span></div>`).join("")}</div>`],
     rituals: ["Rituals", `<div class="card" style="padding:4px 14px">${[["Where are you","Mondays · #sf-this-week · 14 replies avg"],["New here","As members join · #introductions · 6 replies avg"],["Asks","Tuesdays · #general · 9 replies avg"],["Poll of the week","Fridays · #general · 41 votes avg"]].map(([a,b])=>`<div class="rowitem"><div class="m"><div class="a">${a}</div><div class="b">${b}</div></div><div class="s">on</div></div>`).join("")}</div><div class="card" style="margin-top:10px"><div class="tag new">Kai suggestion</div><div class="name" style="margin-top:6px">Wins on Thursdays</div><p class="sm muted">Families like yours get the most reactions on a wins thread before the weekend. Draft ready in your voice.</p><div class="act"><button class="btn sm" onclick="toast('Ritual on. Kai drafts each Thursday; you approve before it posts.')">Enable</button><span class="no">Not now</span></div></div>`],
@@ -10626,7 +10628,7 @@ forwardSheet = function(id) {
 function vouchSheet(type, id) {
   const a = DB.asks.find(x=>x.id===id); const from=firstName(DB.people[a.from]), to=firstName(DB.people[a.target]);
   if (type==="vpass") return `<h2>Pass along without vouching</h2><p class="sm muted">${to} gets ${from}'s note and sees that you passed it on without vouching. It uses one of your slots.</p>${msgComposer({ id:"vpassline", draft:`${to}, passing this along from ${from}. I don't know them well, so your call entirely.`, sendAttr:`onclick="vouchDo('pass','${id}')"`, disclosure:`${to} sees: passed along by ${firstName(me())}, doesn't know ${from} well.` })}`;
-  if (type==="vcheck") return `<h2>Check with ${to} first</h2><p class="sm muted">Kai asks ${to} without naming ${from}. If ${to} says no, nobody is told anything. Doesn't use a slot.</p>${msgComposer({ id:"vcheckline", draft:`Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.`, sendAttr:`onclick="vouchDo('check','${id}')"`, disclosure:`${to} sees it's from you. ${from}'s name stays out.` })}`;
+  if (type==="vcheck") return `<h2>Check with ${to} first</h2><p class="sm muted">Kai asks ${to} without naming ${from}. If ${to} says no, nobody is told anything. Doesn't use a slot.</p>${msgComposer({ id:"vcheckline", draft:`Quick one: open to a 20-minute cofounder chat with a PM from Google? No names until you say yes.`, sendAttr:`onclick="vouchDo('check','${id}')"`, disclosure:`${to} sees it's from you. ${from}'s name stays out.` })}`;
   return `<h2>Ask ${from} something</h2><p class="sm muted">The request waits while you ask. Doesn't use a slot.</p>${msgComposer({ id:"vaskline", draft:`Happy to help. What are you hoping to get from ${to}, in a line?`, sendAttr:`onclick="vouchDo('ask','${id}')"`, disclosure:`Goes to ${from} only.` })}`;
 }
 /* An ask-back is a chat (Fable round 18): the question lands in a DM on the connector's phone and in the asker's DM with the connector; the request card shows the question and, once it arrives, the reply. */
@@ -10752,8 +10754,8 @@ me = function(){ return STATE.persona==="priya" ? DB.user : PERSONAS[STATE.perso
 
 /* Maya's copy of the request: hidden until Daniel forwards. The nameless pre-check is a separate ask. */
 DB.asks.push(
-  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Daniel introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google Cloud, shipped two AI features, and looking for a technical cofounder for an agents product. We worked together at Google and Priya's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", askerNote:"Hi Maya, Daniel mentioned you when I said I was looking for a technical cofounder. I'm building an agents product for ops teams, two of us and a working prototype. Twenty minutes on your read of the infra choices would help a lot.", receipts:[["Vouched","Daniel forwarded this with a vouch: they worked together at Google","Daniel"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
-  { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", receipts:[["Rule","Daniel is checking before naming anyone. A no here tells nobody anything","Daniel"]], state:"open", when:"now", hidden:true }
+  { id:"t1", to:"maya", kind:"forwarded", from:"priya", via:"chris", what:"Daniel introduced Priya to you", note:"Maya, meet Priya. Senior PM at Google, shipped two AI features, and looking for a technical cofounder for an agents product. We worked together at Google and Priya's the real thing. Priya, Maya's the one I mentioned in #cofounders. Over to you both.", askerNote:"Hi Maya, Daniel mentioned you when I said I was looking for a technical cofounder. I'm building an agents product for ops teams, two of us and a working prototype. Twenty minutes on your read of the infra choices would help a lot.", receipts:[["Vouched","Daniel forwarded this with a vouch: they worked together at Google","Daniel"],["Shared","You were both at Xoogler dinner and the AI meetup","events"],["Open","Cofounder conversations: 2 slots left this month","your rules"]], state:"open", when:"now", hidden:true },
+  { id:"t0", to:"maya", kind:"direct", from:"chris", what:"asked if you're open to a cofounder chat, no names yet", note:"Quick one: open to a 20-minute cofounder chat with a PM from Google? No names until you say yes.", receipts:[["Rule","Daniel is checking before naming anyone. A no here tells nobody anything","Daniel"]], state:"open", when:"now", hidden:true }
 );
 const _myAsks = myAsks; myAsks = function(){ return _myAsks().filter(a=>!a.hidden); };
 const _convRows = convRows; convRows = function(){ return STATE.persona==="priya" ? _convRows() : _convRows().filter(r=>(DB.dms.find(d=>d.id===r.id)||{}).owner===STATE.persona); };
@@ -10789,7 +10791,7 @@ const _forwardSend = forwardSend; forwardSend = function(id){
   if (id==="c1") { const o=o2(); const t=ask("t1"); if (o) { o.checking=false; o.asked=null; if (passed) { o.log.pop(); o.log.push(["Daniel","passed your note to Maya, with a line saying Daniel doesn't know you well.","+1d"]); } }
     if (t) { t.hidden=false; t.state="open"; t.when="now"; t.strength=a.strength; if (passed) { t.what="Daniel passed Priya's note to you"; t.receipts[0]=["Passed along","Daniel passed this along. Doesn't know Priya well","Daniel"]; } }
     queuePush("priya", passed?"Daniel passed your note along":"Daniel said yes", passed?"Daniel passed your note to Maya without a vouch. Maya has it now.":"Daniel passed your note to Maya with a vouch. Maya has it now.", [["See path", ()=>go("path:o2"), "path:o2"]]);
-    queuePush("maya", passed?"Daniel passed a note to you":"Daniel introduced you to Priya", "Priya Sharma, senior PM at Google Cloud, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
+    queuePush("maya", passed?"Daniel passed a note to you":"Daniel introduced you to Priya", "Priya Sharma, senior PM at Google, looking for a technical cofounder.", [["Open", ()=>go("req:t1"), "req:t1"],["Later", ()=>{ targetLater("t1"); }]]); }
 };
 const _askDecline = askDecline; askDecline = function(id, why){
   _askDecline(id, why);
@@ -10804,7 +10806,7 @@ const _askRedirect = askRedirect; askRedirect = function(id, toName){
 const _vouchDo = vouchDo; vouchDo = function(k, id){
   _vouchDo(k, id);
   if (id!=="c1") return; const o=o2(); const t0=ask("t0");
-  if (k==="check") { if (o) { o.checking=true; o.log.push(["Daniel","is checking with Maya first, without your name.","now"]); } if (t0) { t0.hidden=false; t0.state="open"; t0.when="now"; } queuePush("maya","Daniel has a quick question","Open to a 20-minute cofounder chat with a PM from Google Cloud? No names until you say yes.", [["Open", ()=>go("req:t0"), "req:t0"]]); }
+  if (k==="check") { if (o) { o.checking=true; o.log.push(["Daniel","is checking with Maya first, without your name.","now"]); } if (t0) { t0.hidden=false; t0.state="open"; t0.when="now"; } queuePush("maya","Daniel has a quick question","Open to a 20-minute cofounder chat with a PM from Google? No names until you say yes.", [["Open", ()=>go("req:t0"), "req:t0"]]); }
   if (k==="ask") { if (o) { o.asked="What are you hoping to get from Maya, in a line?"; o.log.push(["Daniel","asked you a question before deciding.","now"]); } queuePush("priya","Daniel asked you something","Before Daniel decides: what are you hoping to get from Maya, in a line?", [["Reply", ()=>openSheet("creply","o2"), "path:o2"]]); }
 };
 const _replyAskSend = replyAskSend; replyAskSend = function(id){
@@ -10885,7 +10887,7 @@ function cycleExit(id, k){
   if (k==="thank") { openSheet("thank", id); return; }
   if (k==="direct") { const prevVia=c; o.via=null; o.route="direct"; o.viaAgreed=false; o.phase=null; o.state="waiting"; o.checking=false; o.log.push(["You",`went direct to ${firstName(t)}. ${prevVia?firstName(prevVia)+" sees: Moved.":""}`,"now"]);
     if (holderHas(ca)) setStatus(ca,"Moved","Priya went another way. Your queue is clear");
-    if (ta) { ta.hidden=false; ta.kind="direct"; ta.via=null; ta.state="open"; ta.when="now"; ta.what="wants a cofounder conversation with you"; ta.note="Hi Maya, Daniel mentioned your infra work in #cofounders. I'm a PM at Google Cloud looking for a technical cofounder for an agents idea. Would you be open to twenty minutes? No worries at all if not."; ta.receipts=[["Rule","Under your cofounder rule, direct asks are open. 2 slots left this month","your rules"],["Shared","Both at Xoogler dinner and the AI meetup","events"]]; queuePush("maya","Priya asked you for twenty minutes","A cofounder conversation. Drafted with Kai, Priya approved it.", [["Open", ()=>go("req:t1"), "req:t1"]]); }
+    if (ta) { ta.hidden=false; ta.kind="direct"; ta.via=null; ta.state="open"; ta.when="now"; ta.what="wants a cofounder conversation with you"; ta.note="Hi Maya, Daniel mentioned your infra work in #cofounders. I'm a PM at Google looking for a technical cofounder for an agents idea. Would you be open to twenty minutes? No worries at all if not."; ta.receipts=[["Rule","Under your cofounder rule, direct asks are open. 2 slots left this month","your rules"],["Shared","Both at Xoogler dinner and the AI meetup","events"]]; queuePush("maya","Priya asked you for twenty minutes","A cofounder conversation. Drafted with Kai, Priya approved it.", [["Open", ()=>go("req:t1"), "req:t1"]]); }
     STATE.sheet=null; render(); toast(`Direct. ${firstName(t)} has your note now.${prevVia?" "+firstName(prevVia)+" sees: Moved.":""}`); return; }
   if (k==="other") { if (o.roleTitle) { const prev=c; o.via=null; o.route="cold"; o.viaAgreed=false; o.state="waiting"; o.stale=false; o.log.push(["You",`applied directly. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]); STATE.archiveProposed=(STATE.archiveProposed||[]).filter(i=>i!==id); STATE.sheet=null; render(); toast(`Applied. ${prev?firstName(prev)+" sees: Moved. No words.":""}`); return; }
     const alt = (c&&c.id==="sana") ? DB.people.rushal||DB.people.rahul : DB.people.sana; const prev=c; o.via=alt.id; o.viaAgreed=false; o.phase=null; o.checking=false; o.state="waiting"; o.later=false; renameVia(o, firstName(alt)); o.log.push(["You",`asked ${firstName(alt)} to vouch instead. ${prev?firstName(prev)+" sees: Moved.":""}`,"now"]);
@@ -11309,14 +11311,14 @@ const scDraftMic = (id, spoken) => `<button type="button" class="mic sm" aria-la
 const SC_DRAFTS = {
   o1: "Hi Rahul, good to see you at the dinner last month. I'm starting to look at senior PM roles at AI companies and saw your #jobs post. Could I get twenty minutes before Thursday to hear what you're building?",
   o2: "Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and Maya's infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
-  o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google Cloud and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
+  o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
 };
 askSheet = function(id){
   const o = DB.opps.find(x=>x.id===id); const p = DB.people[o.personId]; const via = viaOf(o); const to = via||p; const f=firstName;
   if (o.phase==="followup") { const t=targetOf(o); return scSheet(`Follow up with ${f(t)}`, "You talked last night. Kai asks how it went in a week", `<div class="draftbox"><textarea id="draft">Great talking last night, ${f(t)}. ${o.personId==="rahul"?"I'd love to hear more about the new product line. Twenty minutes next week?":"Let's keep the conversation going. Coffee next week?"}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice</span></div></div><div class="acts"><button class="btn" data-send="${id}">Send to ${f(t)}</button></div>`); }
-  const draft = o.kaiDraft || SC_DRAFTS[id] || (o.roleTitle ? `Hi ${f(to)}, I saw your post about the ${o.roleTitle} role at ${o.roleCompany}. I've shipped two AI features at Google Cloud and this is exactly the kind of work I'm looking for. Would you be willing to refer me? Happy to send anything that helps.` : via ? `Hi ${f(to)}, would you be up for connecting me with ${f(p)}? ${scWhy(o)}. No worries at all if not.` : `Hi ${f(to)}, ${scWhy(o).charAt(0).toLowerCase()+scWhy(o).slice(1)}. I'd love twenty minutes if you're open to it.`);
+  const draft = o.kaiDraft || SC_DRAFTS[id] || (o.roleTitle ? `Hi ${f(to)}, I saw your post about the ${o.roleTitle} role at ${o.roleCompany}. I've shipped two AI features at Google and this is exactly the kind of work I'm looking for. Would you be willing to refer me? Happy to send anything that helps.` : via ? `Hi ${f(to)}, would you be up for connecting me with ${f(p)}? ${scWhy(o)}. No worries at all if not.` : `Hi ${f(to)}, ${scWhy(o).charAt(0).toLowerCase()+scWhy(o).slice(1)}. I'd love twenty minutes if you're open to it.`);
   const title = o.roleTitle ? `Ask ${f(to)} to refer you` : via ? `Ask ${f(to)} to intro you to ${f(p)}` : `Say hi to ${f(to)}`;
-  const fwd = via&&!o.roleTitle ? `<div class="row" data-sctog="fwd:${id}"><div class="m"><div class="a plain">Note for ${f(p)}</div><div class="b">${f(to)} forwards it on a yes</div></div><span class="chev">${scOn("fwd:"+id)?"▾":"›"}</span></div>${scOn("fwd:"+id)?`<textarea class="input" rows="2">Priya Sharma, senior PM at Google Cloud, shipped two AI features, looking for a technical cofounder for an agents product.</textarea>`:""}` : "";
+  const fwd = via&&!o.roleTitle ? `<div class="row" data-sctog="fwd:${id}"><div class="m"><div class="a plain">Note for ${f(p)}</div><div class="b">${f(to)} forwards it on a yes</div></div><span class="chev">${scOn("fwd:"+id)?"▾":"›"}</span></div>${scOn("fwd:"+id)?`<textarea class="input" rows="2">Priya Sharma, senior PM at Google, shipped two AI features, looking for a technical cofounder for an agents product.</textarea>`:""}` : "";
   return scSheet(title, `To ${to.name}`, `<div class="draftbox"><textarea id="draft">${draft}</textarea><div class="drow"><span class="m12">Kai drafted this in your voice. Edit anything</span><button type="button" class="mini sec" onclick="toast('Kai rewrote it shorter.')">Shorter</button>${scDraftMic("draft", `(Spoken) Hey ${f(to)}, it's Priya. Quick one: `)}</div></div>
     ${fwd}
     <div class="acts"><button class="btn" data-send="${id}">Send to ${f(to)}</button><span class="quiet" onclick="openSheet('opp','${id}')">Back</span></div>`);
@@ -11592,10 +11594,10 @@ function dHostRows(m){ const e = (typeof evE==="function") ? evE(m.ev) : null; i
   const D_HOST = dHostList(); return { e, todo: D_HOST.filter(c=>!inv(c.pid)&&!going(c.pid)), sent: D_HOST.filter(c=>inv(c.pid)||going(c.pid)).map(c=>Object.assign({ going:going(c.pid) }, c)) }; }
 function dHostStatus(m){ const { e, todo, sent } = dHostRows(m); const yes = sent.filter(c=>c.going).length;
   if (todo.length) return ["New pick","green", `${todo.length} to invite${sent.length?`, ${sent.length} invited`:""}`];
-  if (sent.length && yes<sent.length) return ["Waiting","grey", `on ${sent.length-yes} invited${dReconfirm(e)?" · Kai re-confirms two days before":""}`];
+  if (sent.length && yes<sent.length) return ["Waiting","grey", `Waiting on ${sent.length-yes} ${sent.length-yes===1 ? "reply" : "replies"}${dReconfirm(e)?" · Kai re-confirms two days before":""}`];
   return ["Went well","green", `${e?e.going:0} going`]; }
 function dHostSection(m){ const [k,tone,txt] = dHostStatus(m);
-  return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
+  return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b">${txt.startsWith(k) ? "" : `<span class="k ${tone}">${k}</span> `}${txt}</div></div><span class="chev">›</span></div>`; }
 function dReconfirm(e){ return e && typeof evReconfirm==="function" ? evReconfirm(e) : true; }
 function dInvite(mid, pid){ const m = DB.missions.find(x=>x.id===mid); const p = DB.people[pid]; if (!m||!p) return;
   if (!m.invited.includes(pid)) m.invited.push(pid);
@@ -11611,7 +11613,7 @@ function dHostPage(m){ const { e, todo, sent } = dHostRows(m); const [k,tone,txt
   return `<div class="hdr sc"><div class="back" onclick="goBack()">‹</div><div class="mg t3">${LI("calendar",14)}</div><div style="flex:1"></div>${e?`<div class="icon" onclick="go('eventd:manage.${m.ev}')">${LI("settings",18)}</div>`:""}</div>
   <div class="body sc"><div class="t20">${m.name}</div><div class="st"><span class="k ${tone}">${k}</span><span>${txt}</span></div>
     <div class="sl">Brief</div><div class="row first" data-kaibrief="${m.id}"><div class="m"><div class="a plain">${m.brief}</div><div class="b">Change the purpose or the number with Kai</div></div><span class="chev">›</span></div>
-    ${todo.length?`<div class="sl">To invite<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${todo.length}</span></div><div class="rows">${todo.map(c=>row(c, `<button class="mini" onclick="event.stopPropagation();dInvite('${m.id}','${c.pid}')">Invite</button>`)).join("")}</div><div class="m12" style="margin-top:6px">Kai picked these from interest, attendance and asks. Skip anyone and it learns; nobody sees a skip</div>`:""}
+    ${todo.length?`<div class="sl">To invite<span class="m12" style="text-transform:none;letter-spacing:0;font-weight:400">${todo.length}</span></div><div class="rows">${todo.map(c=>row(c, `<button class="mini" onclick="event.stopPropagation();dInvite('${m.id}','${c.pid}')">Invite</button>`)).join("")}</div><div class="m12" style="margin-top:6px">Kai picked these from interests and past events. Nobody sees who you leave out</div>`:""}
     ${sent.length?`<div class="sl">Invited</div><div class="rows">${sent.map(c=>row(c, `<span class="k ${c.going?"green":"grey"}">${c.going?"Going":"Invited"}</span>`)).join("")}</div>`:""}
     <div class="sl">Event</div><div class="rows"><div class="row first" onclick="go('eventd:${m.ev}')"><div class="m"><div class="a">${e?e.name:"Product teardown: Quillo"}</div><div class="b">${e?`${e.when} · ${e.going} going`:"Oct 9"}</div></div><span class="chev">›</span></div>${e?`<div class="row" onclick="go('eventd:manage.${m.ev}')"><div class="m"><div class="a">Guests and reminders</div><div class="b">${dReconfirm(e)?"Kai re-confirms two days before and asks who met whom after":"Kai asks who met whom after"}</div></div><span class="chev">›</span></div>`:""}</div>
     ${(m.mlog||[]).length?`<div class="sl">Activity</div><div class="rows">${(m.mlog||[]).slice().reverse().slice(0,6).map(l=>`<div class="lrow"><span class="when">${l[2]}</span><span><b>${l[0]}</b> ${l[1]}</span></div>`).join("")}</div>`:""}
@@ -11634,7 +11636,7 @@ function dHireStatus(){ const r = D_HIRE; const c = r.cands; const open = c.filt
   return need ? [need===c.filter(x=>x.st==="new").length?"New pick":"Next step","green", `${need} need${need===1?"s":""} you · ${open.length} candidates`] : ["Waiting","grey", `${open.length} candidates · Kai nudges on day 7 if it's quiet`]; }
 function dMayaHome(){ const [k,tone,txt] = dHireStatus();
   return `${topHdr("Missions", `<div class="icon" onclick="openSheet('newmission')">+</div>`)}<div class="body sc">
-    <div class="rows"><div class="row first" onclick="go('mission:h1')"><div class="m"><div class="a">Hire a ${D_HIRE.name.toLowerCase()}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div></div>
+    <div class="rows"><div class="row first" onclick="go('mission:h1')"><div class="m"><div class="a">Hire a ${D_HIRE.name.toLowerCase()}</div><div class="b">${txt.startsWith(k) ? "" : `<span class="k ${tone}">${k}</span> `}${txt}</div></div><span class="chev">›</span></div></div>
     <div class="m12" style="margin-top:10px">Your role is one mission. Candidates arrive from Key, from #jobs on Slack and from referrals; each is a path with a state, the same as an intro.</div>
   </div>${navHTML("missions")}`; }
 function dCandRow(c){ const p = DB.people[c.pid]; const [k,tone] = D_HK[c.st]; const line = c.st==="replied" ? `Replied: “${c.reply}”` : c.st==="talking" ? `${c.when} · ${c.src}` : c.st==="passed" ? `You passed · ${c.why}` : c.st==="waiting" ? `You reached out ${c.when||"today"} · Kai nudges on day 7 if it's quiet` : c.st==="closed" ? "Told: role closed. No names" : c.src;
@@ -11863,7 +11865,7 @@ const O_PEOPLE = {
   welcome:    [ { pid:"ines",  why:"Joined Tuesday. Nobody has greeted Ines yet", draft:"Welcome to Xoogler, Ines. Kestrel to here is a good story; what are you hoping to find?" },
                 { pid:"eli",   why:"Joined Wednesday. Read #jobs twice, posted nothing", draft:"Welcome, Eli. Cloud alumni are the biggest room here. Anyone in particular you want to meet?" } ],
   quiet:      [ { pid:"hana",  why:"Posted most weeks, nothing in three weeks. Missed the last two teardowns", draft:"Hana, missed you at the last two teardowns. Inkwell still keeping you busy? Thursday's is Quillo." },
-                { pid:"jake",  why:"Answered six asks in July, quiet since", draft:"Jake, your Rivian answers in #product were the best thread in July. Anything we can do for you this month?" },
+                { pid:"jake",  why:"Answered six asks in July, quiet since", draft:"Jake, your Velomark answers in #product were the best thread in July. Anything we can do for you this month?" },
                 { pid:"paul",  why:"RSVPd to three events, came to none", draft:"Paul, three RSVPs and life got in the way each time. Want me to hold a seat Thursday, no pressure?" } ],
   unanswered: [ { pid:"farah", why:"Asked in #product two days ago, no reply. Grace could answer it", draft:"Grace, Farah asked about pricing research in #product. Two lines from you would answer it." },
                 { pid:"ben",   why:"Asked for a Larkspur-to-startup story yesterday. Kate has one", draft:"Kate, Ben is asking exactly the move you made. Ten minutes?" } ],
@@ -12185,7 +12187,7 @@ const _evmMission = sMission; sMission = function(id){ const m=DB.missions.find(
    jobs (re-confirm, introductions, how it went, co-host) live on the event's mission page and in Manage, never as their own home rows. */
 const _evmSection = missionSection; missionSection = function(m){
   if (STATE.member && m.evKind && !m.series) return "";
-  if (STATE.member && m.series) { const [k,tone,txt]=evmStatus(m); return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b"><span class="k ${tone}">${k}</span> ${txt}</div></div><span class="chev">›</span></div>`; }
+  if (STATE.member && m.series) { const [k,tone,txt]=evmStatus(m); return `<div class="row" data-mission="${m.id}"><div class="m"><div class="a">${m.name}</div><div class="b">${txt.startsWith(k) ? "" : `<span class="k ${tone}">${k}</span> `}${txt}</div></div><span class="chev">›</span></div>`; }
   return _evmSection(m);
 };
 const _evmHostPage = sMission; sMission = function(id){ let h=_evmHostPage(id); const m=DB.missions.find(x=>x.id===id);
@@ -13760,7 +13762,7 @@ const EV_KAI_PICKS = {
   e4: [["lena","Asked about Quillo's pricing in #product last week"],["grace","VP Product at Plinth. Came to the Plinth teardown"],["ines","New this month. Hasn't been to an event yet"],["hana","Went to three teardowns, missed the last two"],["omar","Hiring a founding PM. This room is Omar's pool"],["kofi","Asked Kai for founders to meet. Two are going"]],
   e13: [["hana","Asked in #design how Plinth plans its roadmap"],["mira","Building Loop on Plinth's plugin API"],["eli","Went to two teardowns this summer"],["zoe","Asked Kai for people who run design reviews"]],
 };
-const evKaiPicks = e => { evHostData(e); const taken = evGuests(e).map(g=>g.pid).concat(e.host, e.kaiSkipped); return (EV_KAI_PICKS[e.id]||[]).filter(([pid])=>DB.people[pid] && !taken.includes(pid)).map(([pid, why])=>({ pid, why })); };
+let evKaiPicks = e => { evHostData(e); const taken = evGuests(e).map(g=>g.pid).concat(e.host, e.kaiSkipped); return (EV_KAI_PICKS[e.id]||[]).filter(([pid])=>DB.people[pid] && !taken.includes(pid)).map(([pid, why])=>({ pid, why })); };
 const evGuestState = (e, pid) => (evGuests(e).find(g=>g.pid===pid)||{}).st || null;
 const evReconfirm = e => { evHostData(e); return e.reminders.some(r=>r.id==="reconfirm" && r.on); };
 /* The one way to invite someone to an event. Returns their guest state (EV_GSTAT key): "invited" when the invite went out,
@@ -14098,7 +14100,7 @@ function evMissionKinds(e){ if (!e || e.draft) return []; const host=e.reg==="ho
   if (host && !e.past) { evHostData(e);
     const open = e.cap ? Math.max(0, e.cap-e.going) : 0, lapsed = evLapsed(e).slice(0, open), picks = evKaiPicks(e);
     if (open && lapsed.length) R("a", { count:open, label:`${open} seat${open===1?"":"s"} open`, sub:`${evNames(lapsed)} came before`, faces:lapsed, verb:`Invite ${lapsed.length===1?"back":lapsed.length}`, act:"invback" });
-    else if (open && picks.length) R("a", { count:open, label:`${open} seat${open===1?"":"s"} open`, sub:`Kai has ${picks.length} people in mind`, faces:picks.map(p=>p.pid), verb:"See picks" });
+    else if (open && picks.length) R("a", { count:open, label:`${open} seat${open===1?"":"s"} open`, sub:`${picks.length} ${picks.length===1 ? "person fits" : "people fit"}`, faces:picks.map(p=>p.pid), verb:"See picks" });
     else if (open && (e.kaiOn||{}).a) R("a", { count:open, label:`${open} seat${open===1?"":"s"} open`, sub:"Kai is looking. Picks land here", verb:"Open" });
     const un = evUnconfirmed(e), yes = Object.keys(e.confirmed||{}).length;
     if (un.length || e.rcSent) R("b", { count:un.length, label:e.rcSent==="now" ? `${yes} confirmed, ${un.length} to go` : `Kai can re-confirm ${un.length} guest${un.length===1?"":"s"}`,
@@ -14248,7 +14250,7 @@ function evSheet(type, id){
   if (type==="evguest") { const [eid,pid]=id.split("|"); const e=evE(eid); const g=evGuests(e).find(x=>x.pid===pid)||{ pid, st:"going" }; const p=DB.people[pid]; const co=e.cohosts.includes(pid);
     const q=e.questions[0]; const ans={ rahul:"Hiring two senior PMs.", maya:"Meet PMs who ship AI features.", dev:"Learn how Quillo plans a quarter.", jordan:"First PM job, want to learn.", sana:"Scouting for Brightwell's panel." }[pid]||"Meet people building good products.";
     return `<div class="evt-gs">${av(p.initials,"lg")}<h2>${p.name}</h2><p class="sm muted">${p.title}${p.company?`, ${p.company}`:""}</p></div>
-    ${e.kaiPicked.includes(pid)?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${evIc("sparkles",13)} Kai's pick</div><div class="a" style="font-weight:600">${((EV_KAI_PICKS[eid]||[]).find(([x])=>x===pid)||[])[1]||"From interests, past events and asks"}</div></div></div>`:""}
+    ${e.kaiPicked.includes(pid)?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${evIc("sparkles",13)} Kai's pick</div><div class="a" style="font-weight:600">${((EV_KAI_PICKS[eid]||[]).find(([x])=>x===pid)||[])[1]||"Fits this event"}</div></div></div>`:""}
     ${q&&g.st!=="invited"?`<div class="rowitem" style="cursor:default"><div class="m"><div class="b">${q.q}</div><div class="a" style="font-weight:600">${ans}</div></div></div>`:""}
     ${g.st==="review"?`<div class="row" style="gap:8px;margin-top:12px"><button class="btn sec" style="flex:1" data-evdecline="${eid}|${pid}">Decline</button><button class="btn" style="flex:1" data-evapprove="${eid}|${pid}">Approve</button></div>`
       : g.st==="invited"?`<button class="btn sec" style="margin-top:12px" data-evreinvite="${eid}|${pid}">Invite again</button>`
@@ -14432,7 +14434,7 @@ portWire = function(){
   q("[data-evanswer]", el=>{ const [cid,mid]=el.dataset.evanswer.split("|"); evThread(cid, mid); const t=phone.querySelector("#ci"); if (t) t.focus(); });
   q("[data-evthr]", el=>{ const [cid,mid]=el.dataset.evthr.split("|"); STATE.sheet=null; evThread(cid, mid); });
   q("[data-evnotif]", el=>{ const [cid,k]=el.dataset.evnotif.split("|"); convOf(cid).evNotif=k; STATE.sheet=null; render(); toast({ key:"Updates and replies to you.", all:"Every message.", off:"Off for this event." }[k]); });
-  q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]=`Hi all, ${P(EV_ME).name.split(" ")[0]} here. PM on Google Cloud, hoping to meet people building AI products.`; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
+  q("[data-evhi]", el=>{ STATE.drafts=STATE.drafts||{}; STATE.drafts[el.dataset.evhi]=`Hi all, ${P(EV_ME).name.split(" ")[0]} here. PM on Google, hoping to meet people building AI products.`; render(); const t=phone.querySelector("#ci"); if (t) t.focus(); });
   q("[data-evphotos]", el=>{ const e=evE(el.dataset.evphotos); const c=evRoom(e); c.msgs.push(M(EV_ME, "", { day:"Today", time:nowTime(), att:[{t:"img",n:4}] })); go("dm:"+c.id); toast("Four photos added. Everyone who went sees them."); });
   if (evtMount) { evtMount.destroy(); evtMount = null; }
   const scr = phone.querySelector(".evt-screen"), screenEl = phone.querySelector(".screen");
@@ -15576,7 +15578,7 @@ function evCta(e, live, locked){
       P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. 28 joined this month: 21 greeted, 7 still waiting for a hello.", read:"1 min read", up:18, cm:3 }),
       P({ id:"p7", cat:"Playbooks", who:"Dev Patel", ini:"DP", sub:"Founder, Legal-tech agents", when:"2h", title:"Shipping tool use in legal agents: what broke", text:"Three months in production. Where the model over-called tools, and the eval that caught it.", read:"7 min read", st:"pending" }),
       P({ id:"p8", cat:"Questions", who:"Jordan Tan", ini:"JT", sub:"Product Manager, Ex-Google", when:"5h", title:"Google PM to AI PM: where would you start?", text:"Six years on Maps, two on ML ranking. Which of that counts in an AI PM loop?", read:"1 min read", st:"pending" }),
-      P({ id:"p9", cat:"Questions", who:"Priya Sharma", ini:"PS", sub:"Senior PM, Google Cloud", when:"Edited 2d ago", title:"Anyone hiring senior PMs for agents?", text:"Looking at AI PM roles in the Bay Area. Happy to trade notes on loops.", read:"1 min read", st:"draft", mine:true })
+      P({ id:"p9", cat:"Questions", who:"Priya Sharma", ini:"PS", sub:"Senior PM, Google", when:"Edited 2d ago", title:"Anyone hiring senior PMs for agents?", text:"Looking at AI PM roles in the Bay Area. Happy to trade notes on loops.", read:"1 min read", st:"draft", mine:true })
     ];
   }
   STATE.chFilter = STATE.chFilter || "All"; STATE.postType = STATE.postType || "All";
@@ -16331,7 +16333,7 @@ function cInsights(){
    I1 "another admin changed something" refresh pill. Prod: approve (default role), decline with reasons, remove, change role, notes,
    bulk approve (50 at a time), export, live refresh. ---- */
 const C_MM = [
-  { id:"priya", n:"Priya Sharma", e:"priya.sharma@gmail.com", st:"pending", sub:"Waiting 6 days · invited by you", city:"San Francisco", wa:true, notes:[], tags:[], atm:"Senior PM at Google Cloud. Looking for an AI PM role and a technical cofounder." },
+  { id:"priya", n:"Priya Sharma", e:"priya.sharma@gmail.com", st:"pending", sub:"Waiting 6 days · invited by you", city:"San Francisco", wa:true, notes:[], tags:[], atm:"Senior PM at Google. Looking for an AI PM role and a technical cofounder." },
   { id:"jordan", n:"Jordan Tan", e:"jordan.tan@gmail.com", st:"pending", sub:"Waiting 3 days · nominated by Rahul Mehta", city:"Mountain View", notes:[["Rahul Mehta","Sep 22","Worked together on ML ranking. Strong."]], tags:[], atm:"Six years in product at Google, two on ML ranking. Moving into AI PM." },
   { id:"mira", n:"Mira Joshi", e:"mira.j@outlook.com", st:"pending", sub:"Waiting 2 days · applied from the family page", city:"Bengaluru", notes:[], tags:[], atm:"Staff engineer, Search infra. Starting something in agents." },
   { id:"leo", n:"Leo Park", e:"leo@parklabs.io", st:"pending", sub:"Waiting 1 day · invited by Sana Iqbal", city:"New York", wa:true, notes:[], tags:[], atm:"Ex-YouTube growth. Angel investing in consumer AI." },
@@ -16347,7 +16349,7 @@ const C_MM = [
   { id:"maya", n:"Maya Chen", e:"maya@stealth.dev", st:"active", role:"member", joined:"Feb 2024", city:"San Francisco", wa:true, notes:[["Daniel Reyes","Aug 21","Looking for a PM cofounder. Vouched in #cofounders."],["Rahul Mehta","Jul 3","Eval tooling. Knows everyone in agents infra."]], tags:["Software Engineer","Speaker"], atm:"Head of Engineering, seed-stage stealth. Agents infra." },
   { id:"ana", n:"Ana Ruiz", e:"ana@mail.com", st:"active", role:"member", joined:"May 2024", city:"San Francisco", notes:[], tags:["Hiring"], atm:"Head of Platform, Corvana. Hiring a platform PM." },
   { id:"dev", n:"Dev Patel", e:"dev@lexagents.com", st:"active", role:"member", joined:"Sep 2026", city:"Palo Alto", notes:[], tags:[], atm:"Founder, legal-tech agents. Joined Monday." },
-  { id:"eli", n:"Eli Brooks", e:"eli.brooks@gmail.com", st:"active", role:"member", joined:"Sep 2026", city:"Oakland", notes:[], tags:[], atm:"Ex-Google Cloud. Joined Wednesday." },
+  { id:"eli", n:"Eli Brooks", e:"eli.brooks@gmail.com", st:"active", role:"member", joined:"Sep 2026", city:"Oakland", notes:[], tags:[], atm:"Ex-Google. Joined Wednesday." },
   { id:"ines", n:"Ines Duarte", e:"ines@duarte.dev", st:"active", role:"member", joined:"Sep 2026", city:"San Francisco", notes:[], tags:[], atm:"PM at Kestrel. Joined Tuesday." },
   { id:"sam-ortiz", n:"Sam Ortiz", e:"sam.ortiz@gmail.com", st:"declined", sub:"Declined 12 Sep by Daniel Reyes", reason:["Criteria not met · admins only","Does not meet membership criteria."], city:"Austin", notes:[["Daniel Reyes","Sep 12","No Google tenure on LinkedIn."]], tags:[], atm:"Student, product design." },
   { id:"tom-becker", n:"Tom Becker", e:"tom@beckerventures.com", st:"removed", sub:"Removed 2 Sep by Rahul Mehta", reason:["Reason · admins only","Pitched members in #jobs after two warnings."], city:"London", notes:[], tags:["At-risk churn"], atm:"Investor." }
@@ -16435,7 +16437,7 @@ function cNotes(){
 }
 function cAnswers(){
   const m = cMMOne(STATE.mmFor);
-  const qa = [["Why Xoogler?","I miss the density of people who've shipped at scale."],["When were you at Google, and on what?","2019 to now. Cloud AI, then Vertex."],["What can you help members with?","PM hiring loops, AI product strategy."],["What are you looking for?","A senior PM role at an AI company, and a technical cofounder."],["LinkedIn","linkedin.com/in/"+m.n.toLowerCase().replace(" ","")]];
+  const qa = [["Why Xoogler?","I miss the density of people who've shipped at scale."],["When were you at Google, and on what?","2019 to now. Cloud AI, then the AI platform."],["What can you help members with?","PM hiring loops, AI product strategy."],["What are you looking for?","A senior PM role at an AI company, and a technical cofounder."],["LinkedIn","linkedin.com/in/"+m.n.toLowerCase().replace(" ","")]];
   return `${famHeader("Registration answers","manage")}<div class="body" style="padding-top:4px"><div class="cm-meta" style="margin:0 0 6px">${m.n} · ${qa.length} answers</div>
     ${qa.map(([q,a])=>`<div class="cm-row" style="display:block;cursor:default"><div class="b">${q}</div><div class="cm-text" style="margin-top:2px">${a}</div></div>`).join("")}</div>${navHTML("families")}`;
 }
@@ -17328,7 +17330,7 @@ STATE.p2letKeep = STATE.p2letKeep !== false;
 
 const P2 = {
   maya: { now:"Building infra for agents",
-    needs:[{t:"A product partner", s:"Someone who has shipped AI features", fit:"You shipped two AI features at Google Cloud", a:"offer"},
+    needs:[{t:"A product partner", s:"Someone who has shipped AI features", fit:"You shipped two AI features at Google", a:"offer"},
            {t:"Seed investors in agent infra", s:"Raising this quarter", a:"suggest"},
            {t:"Two founding engineers", s:"Backend, Go or Rust", a:"suggest"}],
     work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Lumora","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
@@ -17336,7 +17338,7 @@ const P2 = {
     note:"Wants a PM who has shipped agents. Ask about the Lumora years.",
     kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for two founding engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
   rahul: { now:"Building the eng team for a new product line",
-    needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google Cloud", a:"offer"}],
+    needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google", a:"offer"}],
     work:[["A","#C96442","Halvern","Eng Director · now"],["G","#1A73E8","Google","2012 – 2021","Google, like you"]],
     school:[], note:"", kaiPre:"Direct is fine. You've met 3 times", digest:"Rahul now leads Halvern's eval team", digestAct:"Say congrats" },
   chris: { now:"Runs Xoogler and hosts most of its events", needs:[], work:[["X","#121316","Xoogler","President · now"],["G","#1A73E8","Google","2008 – 2016","Google, like you"]],
@@ -17357,8 +17359,8 @@ function p2Work(p){ const cur=p.company&&!/^Ex-/.test(p.company)?[[p.company[0],
   return [...cur, ...past.map(n=>{ const g=/^Google/.test(n); return [n[0], g?P2_GOOGLE:"#121316", n, /^Ex-/.test(p.company||"")?(p.title||"")+" · before":"Before", g?"Google, like you":""]; })]; }
 function p2School(p){ return (p.families||[]).some(n=>/^Michigan/.test(n))||/Michigan alum/i.test(p.line||"") ? [["M","#00274C","U of Michigan","Alum","Michigan, like you"]] : []; }
 const P2_OPEN = {
-  "Hiring conversations":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google Cloud who has shipped two AI features. Is ${p.company} hiring for product? I'd love 20 minutes.`],
-  "PM hiring":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google Cloud who has shipped two AI features. Is ${p.company} hiring PMs? I'd love 20 minutes.`],
+  "Hiring conversations":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google who has shipped two AI features. Is ${p.company} hiring for product? I'd love 20 minutes.`],
+  "PM hiring":["briefcase","Ask about roles",(f,p)=>`Hi ${f}, I'm a PM at Google who has shipped two AI features. Is ${p.company} hiring PMs? I'd love 20 minutes.`],
   "Product advice":["lightbulb","Ask for advice",f=>`Hi ${f}, could I get 20 minutes of product advice? I'm working out how to launch AI features at scale.`],
   "Advice":["lightbulb","Ask for advice",f=>`Hi ${f}, could I get 20 minutes of your advice on what to do next after Google?`],
   "Cofounder conversations":["handshake","Say hi",f=>`Hi ${f}, I'm starting to think about what's next and you're open to cofounder conversations. Coffee this week?`],
@@ -17519,9 +17521,9 @@ portSheet = function(type, id){
       <div class="xrow" onclick="openSheet('p2digest','')"><div class="m"><div class="a">Your people this week</div><div class="s xs faint">Everyone you follow</div></div>${LI("chevron-right",16)}</div>`; }
   if (type==="p2remind") return `<h2>Remind me about ${f}</h2>${[["After the event","The morning after, with what you talked about"],["In a month","Kai checks what's new with them first"],["In 3 months","A nudge to keep in touch"]].map(([b,s])=>`<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Set. Kai reminds you ${b.toLowerCase()}. ${f} isn\\'t told'),200)"><span class="sico">${LI("clock",18)}</span><div class="m"><div class="a">${b}</div><div class="s xs faint">${s}</div></div></div>`).join("")}`;
   if (type==="p2mission") return `<h2>Add ${f} to a mission</h2><div class="xs faint" style="margin-bottom:8px">Kai tracks them as a path and finds the best way in.</div>${(DB.missions.length?DB.missions:[{name:"Technical cofounder"},{name:"Senior PM role"}]).map(m=>{ const has=DB.opps.some(x=>x.personId===p.id&&x.missionId===m.id); return `<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('${has?'Already a path there':'Added to '+(m.name||'').replace(/'/g,'')}'),200)"><span class="sico">${LI("flag",18)}</span><div class="m"><div class="a">${m.name}</div><div class="s xs faint">${has?"Already a path":"Your mission"}</div></div>${has?LI("check",16):LI("plus",16)}</div>`; }).join("")}`;
-  if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google Cloud who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
+  if (type==="p2msg") return `${head(`Message ${f}`)}${via&&!o.viaAgreed?`<div class="xs faint">${kaiMark(14)} Kai picked ${firstName(via)}. ${f} prefers intros through people they trust.</div>`:''}${p2Composer(`Hi ${f}, ${via?firstName(via)+" suggested we talk. ":""}I'm a PM at Google who has shipped two AI features.`, `p2Send('msg${p.id}','${p.id}','${via&&!o.viaAgreed?"Sent to "+firstName(via)+". They pass it on":"Sent"}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2open") { const [ic,act,draft]=P2_OPEN[arg]||P2_OPEN.Advice; return `${head(`${act} · ${f}`)}${arg==="Office hours"&&p.slots?`<div class="xs faint" style="margin-bottom:8px">${LI("clock",12)} ${p.slots}</div>`:''}${p2Composer(draft(f,p), `p2Send('open${p.id}${arg}','${p.id}','Sent. ${f} is open to this')`, sendTo==="Send"?`Message ${f}`:sendTo)}`; }
-  if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google Cloud working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
+  if (type==="p2ask") return `${head(`Ask ${f} about ${arg}`)}${p2Composer(`Hi ${f}, I'd love 20 minutes on ${arg}. I'm a PM at Google working on AI features.`, `p2Send('ask${p.id}${arg}','${p.id}','Asked. It shows on the chip until ${f} replies')`, sendTo==="Send"?`Message ${f}`:sendTo)}`;
   if (type==="p2need") { const n=d.needs[+arg]||{t:""};
     if (!n.fit && n.a!=="share") return `<h2>Who fits “${n.t.charAt(0).toLowerCase()+n.t.slice(1)}”?</h2><div class="xs faint" style="margin-bottom:6px">People you know. Kai drafts a note to both, you send it.</div>${["sana","arjun","ana"].filter(x=>DB.people[x]&&x!==p.id).map(x=>`<div class="xrow" onclick="p2Send('need${p.id}${arg}','${p.id}','Drafted a note to both. Sent when you tap send in Messages')">${av(DB.people[x].initials)}<div class="m"><div class="a">${DB.people[x].name}</div><div class="s xs faint">${DB.people[x].title}, ${DB.people[x].company}</div></div>${LI("chevron-right",16)}</div>`).join("")}<div class="xrow" onclick="closeSheet();setTimeout(()=>toast('Share their name and email'),200)"><span class="sico">${LI("plus",18)}</span><div class="m"><div class="a">Someone not on Key</div></div></div>`;
     return `${head(n.fit?`Offer yourself to ${f}`:n.t)}${p2Composer(n.fit?`Hi ${f}, I saw you're looking for ${n.t.charAt(0).toLowerCase()+n.t.slice(1)}. ${n.fit}. Could we compare notes?`:`Hi ${f}, happy to share what worked for me.`, `p2Send('need${p.id}${arg}','${p.id}','Sent${via&&!o.viaAgreed?" via "+firstName(via):""}')`, sendTo==="Send"?`Message ${f}`:sendTo)}`; }
@@ -17564,13 +17566,13 @@ function p2Own(){
   if (!STATE.p2own) { const C=DB.contextV2;
     STATE.p2own = { bld:(C.who[1]||C.who[0]||[""])[0], needs:C.after.slice(0,2).map((a,i)=>({ t:a[0], m:(DB.missions[i]||{}).name||a[0], on:1 })), recent:[], sug:0,
       links:{ linkedin:1, github:1, site:0 }, done:{},
-      work:[["Google Cloud","Senior PM","2020","now",1],["Google","PM","2018","2020",1]] }; }
+      work:[["Google","Senior PM","2020","now",1],["Google","PM","2018","2020",1]] }; }
   return STATE.p2own; }
 /* Kai asks before anything on your profile changes (Apoorv 23:44): context keeps arriving from calls, the journal, new missions and
    connectors; when a piece of it touches something your profile shows, Kai queues it here as before -> after with its source.
    Nothing changes until you tap Update. Not now drops it and Kai won't ask about it again. */
 const P2_UPD = [
-  { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google Cloud", src:"From Gmail · your new email signature", why:"from your email signature", apply:(o,v)=>{ const t=v.split(" · ")[0].trim(); o.work[0][1]=t; DB.user.title=t==="Group PM"?"Group Product Manager":t; } },
+  { id:"role", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Group PM · Google", src:"From Gmail · your new email signature", why:"from your email signature", apply:(o,v)=>{ const t=v.split(" · ")[0].trim(); o.work[0][1]=t; DB.user.title=t==="Group PM"?"Group Product Manager":t; } },
   { id:"now", lbl:"Right now", ico:"flag", was:o=>o.bld, ch:"Leading the Kestrel agents launch", src:"From your Kai call · 22 Sep", why:"from your Kai call", apply:(o,v)=>{ o.bld=v; } },
   { id:"need", lbl:"Looking for", ico:"users", was:()=>"", ch:"Two PMs for Kestrel agents", src:"From your new mission · Hire two PMs", why:"from your Hire two PMs mission", goal:1, apply:(o,v)=>{ o.needs.unshift({ t:v, m:"Hire two PMs", on:1 }); } },
   { id:"help", lbl:"I can help with", ico:"message-circle-question", was:()=>"", ch:"AI features at scale", src:"From your journal · mentioned twice this month", why:"from your journal", apply:(o,v)=>{ if(!DB.contextV2.offer.some(x=>x[0]===v)) DB.contextV2.offer.push([v,"Kai noticed","Sep 27","help nudges",true]); } }
@@ -18613,15 +18615,15 @@ const MORE_PEOPLE = [
   ["felix","Felix Wagner","CTO","Corlis, Series A","X",["Hiring conversations","Cofounder conversations"],[],"2 slots left this week","A head of product","Scaling eng teams|Agent infra","Building agent orchestration. Looking for a head of product."],
   ["priti","Priti Nair","Group PM","Google","X",["Product advice","Referrals"],["Investing"],"1 slot left this week","","Kestrel APIs|PM to GPM","Still at Google. Runs developer products for Kestrel."],
   ["marco","Marco Rossi","Founder","Stealth, legal agents","X",["Cofounder conversations","Intros"],["Investing"],"3 slots left this month","A product cofounder who has shipped AI","Legal tech|Pre-seed fundraising","Ex-Google. Starting an agents company for law firms."],
-  ["zoe","Zoe Adams","Chief of Staff","Halvern","X",["Intros","Advice"],["Cold pitches"],"2 slots left this week","","Operating cadences|Hiring at Halvern","Ex-Google Cloud strategy."],
+  ["zoe","Zoe Adams","Chief of Staff","Halvern","X",["Intros","Advice"],["Cold pitches"],"2 slots left this week","","Operating cadences|Hiring at Halvern","Ex-Google strategy."],
   ["sam","Sam Okafor","Engineering Manager","Datavane","X",["Hiring conversations","Product advice"],[],"2 slots left this week","PMs for the AI platform team","Data platforms|Eng and PM partnership","Hiring a PM for Vane AI."],
   ["ruth","Ruth Klein","Angel investor","Independent","X",["Investing","Office hours"],["Hiring"],"3 slots left this month","Consumer AI at pre-seed","First cheques|Consumer growth","Former Google consumer apps lead. Writes small cheques."],
-  ["eli","Eli Brooks","Product Manager","Google Cloud","X",["Advice","Intros"],[],"","A move to a startup","Cloud AI|GTM for dev tools","Priya's former teammate on Vertex AI."],
+  ["eli","Eli Brooks","Product Manager","Google","X",["Advice","Intros"],[],"","A move to a startup","Cloud AI|GTM for dev tools","Priya's former teammate on the AI platform team."],
   ["mira","Mira Kovac","Founder","Loop, pre-seed","MX",["Cofounder conversations","Product advice"],["Investing"],"2 slots left this month","A technical cofounder","Consumer AI|Early user research","Building an AI study partner. Needs a technical cofounder."],
-  ["jake","Jake Morales","Senior PM","Rivian","M",["Product advice","Referrals"],[],"2 slots left this week","","Hardware PM|Automotive software","Michigan '15. PM on Rivian's in-car software."],
+  ["jake","Jake Morales","Senior PM","Velomark","M",["Product advice","Referrals"],[],"2 slots left this week","","Hardware PM|Automotive software","Michigan '15. PM on Velomark's in-car software."],
   ["aisha","Aisha Bello","Head of Product","Fairlane","M",["Hiring conversations","Product advice"],[],"2 slots left this week","Senior PMs for AI finance tools","Fintech|Hiring PMs","Michigan '12. Hiring two senior PMs."],
   ["ben","Ben Carter","Product Manager","Larkspur","M",["Advice","Referrals"],[],"3 slots left this week","","Growth experiments|Referrals at Larkspur","Michigan '19. Growth PM, works with Kate."],
-  ["clara","Clara Jensen","Principal PM","Altamira","M",["Product advice","Office hours"],["Cold pitches"],"1 slot left this week","","Assistants|Enterprise AI","Michigan '10. Leads Copilot for Outlook."],
+  ["clara","Clara Jensen","Principal PM","Altamira","M",["Product advice","Office hours"],["Cold pitches"],"1 slot left this week","","Assistants|Enterprise AI","Michigan '10. Leads AI in email at Altamira."],
   ["diego","Diego Alvarez","Founder","Fieldwork, seed","M",["Hiring conversations","Intros"],["Investing"],"2 slots left this week","A founding designer","Vertical SaaS|Seed hiring","Michigan '14. Software for construction crews."],
   ["emma","Emma Walsh","VP Product","Searchwell","M",["Product advice","Hiring conversations"],[],"1 slot left this week","A group PM for search","Enterprise search|Managing PMs","Michigan '09. Runs product at Searchwell."],
   ["farah","Farah Siddiqui","Product Manager","Fernhill","M",["Advice","Intros"],[],"2 slots left this week","A role at an AI startup","Feed ranking|Switching to startups","Michigan '20. Wants to leave big tech for AI."],
@@ -18641,7 +18643,7 @@ const MORE_PEOPLE = [
   ["divya","Divya Krishnan","Chief of Staff","Sarvam AI","D",["Intros","Advice"],[],"2 slots left this week","","Indian LLMs|Operating in Bengaluru","Ops and hiring for Sarvam."],
   ["yusuf","Yusuf Ali","Founder","Brisk, pre-seed","D",["Cofounder conversations","Intros"],[],"2 slots left this month","A growth-minded PM cofounder","Consumer AI|Creator tools","Building AI video editing for creators."],
   ["lina","Lina Morales","Talent Partner","Northfield Ventures","XM",["Hiring conversations","Intros"],["Investing"],"4 slots left this week","PMs for portfolio AI companies","Portfolio hiring|Comp benchmarks","Places PMs across Northfield Ventures's AI portfolio."],
-  ["paul","Paul Nguyen","Staff PM","Google","X",["Product advice","Referrals"],[],"2 slots left this week","","Search quality|Staff PM promo","Still at Google. Knows every AI Overviews PM."],
+  ["paul","Paul Nguyen","Staff PM","Google","X",["Product advice","Referrals"],[],"2 slots left this week","","Search quality|Staff PM promo","Still at Google. Knows every AI search PM."],
   ["asha","Asha Varma","Founder","Nudge, seed","DM",["Hiring conversations","Product advice"],[],"2 slots left this week","A senior PM with AI experience","Behavioural AI|Seed hiring","Michigan '13. Building AI coaching for managers. Hiring a senior PM."]
 ];
 const MORE_FAM = { X:"Xoogler", M:"Michigan Product Alumni", D:"Desi Founders" };
@@ -22094,15 +22096,15 @@ function askSheet(id) {
   const drafts = {
     o1: "Hi Rahul, good to see you at the dinner last month. I'm starting to look at senior PM roles at AI companies and saw your #jobs post. Could I get twenty minutes before Thursday to hear what you're building?",
     o2: "Hi Daniel, you mentioned Maya Chen in #cofounders a few weeks back. I'm looking for a technical cofounder for an agents idea and Maya's infra work is exactly the shape I need. Would you be up for connecting us? No worries at all if not.",
-    o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google Cloud and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
+    o3: "Hi Sana, I saw your #jobs post for the senior PM on agents. I've shipped two AI features at Google and I'm looking for exactly this. Would you be willing to refer me? Happy to send anything that helps."
   };
   const to = via||p;
-  if (!drafts[id]) drafts[id] = !!o.roleTitle ? `Hi ${to.name.split(" ")[0]}, I saw your post about the ${o.roleTitle} role at ${o.roleCompany}. I've shipped two AI features at Google Cloud and this is exactly the kind of work I'm looking for. Would you be willing to refer me? Happy to send anything that helps.` : via ? `Hi ${to.name.split(" ")[0]}, would you be up for connecting me with ${p.name.split(" ")[0]}? ${o.receipts[0][1]}. No worries at all if not.` : `Hi ${to.name.split(" ")[0]}, ${o.receipts[0][1].toLowerCase()}. I'd love twenty minutes if you're open to it.`;
+  if (!drafts[id]) drafts[id] = !!o.roleTitle ? `Hi ${to.name.split(" ")[0]}, I saw your post about the ${o.roleTitle} role at ${o.roleCompany}. I've shipped two AI features at Google and this is exactly the kind of work I'm looking for. Would you be willing to refer me? Happy to send anything that helps.` : via ? `Hi ${to.name.split(" ")[0]}, would you be up for connecting me with ${p.name.split(" ")[0]}? ${o.receipts[0][1]}. No worries at all if not.` : `Hi ${to.name.split(" ")[0]}, ${o.receipts[0][1].toLowerCase()}. I'd love twenty minutes if you're open to it.`;
   return `<h2>${!!o.roleTitle?`Ask ${to.name.split(" ")[0]} to refer you`:via?`Ask ${to.name.split(" ")[0]} to introduce you to ${p.name.split(" ")[0]}`:`Say hi to ${to.name.split(" ")[0]}`}</h2>
     <p class="sm muted">To ${to.name}. This is the only place a message to a person starts. Nothing is sent until you tap Send.</p>
     <div class="lbl">Your note</div>
     <div class="draftbox"><textarea id="draft">${drafts[id]}</textarea><div class="drow"><span class="xs faint">Kai drafted this in your voice. Edit anything.</span><button type="button" class="chip" style="font-size:11px" onclick="toast('Kai rewrote it shorter.')">Shorter</button></div></div>
-    ${via&&!o.roleTitle?`<div class="lbl">Note for ${p.name.split(" ")[0]}, so ${to.name.split(" ")[0]} can forward it</div><textarea class="input" rows="2">Priya Sharma, senior PM at Google Cloud, shipped two AI features, looking for a technical cofounder for an agents product.</textarea>`:""}
+    ${via&&!o.roleTitle?`<div class="lbl">Note for ${p.name.split(" ")[0]}, so ${to.name.split(" ")[0]} can forward it</div><textarea class="input" rows="2">Priya Sharma, senior PM at Google, shipped two AI features, looking for a technical cofounder for an agents product.</textarea>`:""}
     <div class="row" style="margin-top:12px"><div class="mic" onclick="document.getElementById('draft').value='(Spoken) Hey ${to.name.split(" ")[0]}, it\\'s Priya. Quick one: ' + document.getElementById('draft').value.split('. ').slice(1).join('. ')"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg></div><span class="sm muted">Hold to say it in your own words instead</span></div>
     
     <button class="btn" data-send="${id}">Send to ${to.name.split(" ")[0]}</button>
@@ -22293,7 +22295,7 @@ function createMission(name) {
   STATE.sheet=null; toast(`Mission created: ${name}`); go("home");
 }
 function sourceSheet(src) {
-  const map = { calendar:["Calendar","Three entries with Rahul Mehta: Mar 12 (1:1), Jun 3 (1:1), Aug 21 (Xoogler dinner). Read from your device calendar. Nobody else sees these."], "#jobs, Sep 9":["#jobs in Xoogler","Rahul Mehta, Sep 9: “We're hiring senior PMs for a new product line. AI features shipped is the bar. DM me.”"], "#jobs, Sep 12":["#jobs in Xoogler","Sana Iqbal, Sep 12: “Senior PM, agents team at Brightwell. I'm on the panel. Referrals go to the top.”"], "#cofounders, Aug 21":["#cofounders in Xoogler","Daniel Reyes, Aug 21: “If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. The real thing.”"], xoogler:["Xoogler membership","Both members. Daniel nominated you."], LinkedIn:["LinkedIn","Both listed Google Cloud, overlapping 2019 to 2022. From your own profiles."], events:["Events","Xoogler dinner (Aug) and AI meetup (Jul). Both checked in at both."], rules:["Maya's rules","Open to cofounder conversations. 2 slots left this month. Read from Maya's rules, shown to you in aggregate only."], mission:["Your mission","Senior PM role at an AI company, Bay Area. From your intake call."], people:["People at Brightwell","Two Xoogler members work there. Names on the role screen."] };
+  const map = { calendar:["Calendar","Three entries with Rahul Mehta: Mar 12 (1:1), Jun 3 (1:1), Aug 21 (Xoogler dinner). Read from your device calendar. Nobody else sees these."], "#jobs, Sep 9":["#jobs in Xoogler","Rahul Mehta, Sep 9: “We're hiring senior PMs for a new product line. AI features shipped is the bar. DM me.”"], "#jobs, Sep 12":["#jobs in Xoogler","Sana Iqbal, Sep 12: “Senior PM, agents team at Brightwell. I'm on the panel. Referrals go to the top.”"], "#cofounders, Aug 21":["#cofounders in Xoogler","Daniel Reyes, Aug 21: “If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. The real thing.”"], xoogler:["Xoogler membership","Both members. Daniel nominated you."], LinkedIn:["LinkedIn","Both listed Google, overlapping 2019 to 2022. From your own profiles."], events:["Events","Xoogler dinner (Aug) and AI meetup (Jul). Both checked in at both."], rules:["Maya's rules","Open to cofounder conversations. 2 slots left this month. Read from Maya's rules, shown to you in aggregate only."], mission:["Your mission","Senior PM role at an AI company, Bay Area. From your intake call."], people:["People at Brightwell","Two Xoogler members work there. Names on the role screen."] };
   const [t,d] = map[src]||["Source","This receipt's source would open here."];
   return `<h2>${t}</h2><p>${d}</p><p class="xs faint">Not right? Tap here to correct the Context line it came from. (Out of scope)</p><button class="btn sec" onclick="closeSheet()">Close</button>`;
 }
@@ -27933,7 +27935,7 @@ function rsDayOnePicks(){
   const m1 = DB.missions.find(m=>m.type==="Looking");
   DB.opps.splice(0, DB.opps.length);
   if (!STATE.intakeDone || !STATE.member || !m1) return;
-  DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", [["Role","Posted in #jobs: hiring senior PMs for a new product line","#jobs, Sep 9"], ["Shared","Both worked at Google Cloud","your profile"]], "Say hi to Rahul", "new"));
+  DB.opps.push(opp("o1", m1.id, "person", "rahul", "direct", [["Role","Posted in #jobs: hiring senior PMs for a new product line","#jobs, Sep 9"], ["Shared","Both worked at Google","your profile"]], "Say hi to Rahul", "new"));
   DB.opps.push(opp("o3", m1.id, "role", "sana", "connector", [["Role","Posted in #jobs: Senior PM, agents, at Brightwell","#jobs, Sep 12"], ["Fit","Senior PM, agents team. Matches your mission","mission"]], "Ask Sana to refer you", "new",
     { via:"sana", roleTitle:"Senior PM, agents", roleCompany:"Brightwell", timeline:[["Interested","today",true],["Asked","",false],["Referred","",false],["Screen","",false],["Interview","",false],["Decision","",false]] }));
 }
@@ -28034,7 +28036,7 @@ function rsSeedFresh(m){
   const os = DB.opps.filter(o=>o.missionId===m.id && isNewOf(o));
   const paths = os.map(o=>{ const F = rsF(o), sub = o.roleTitle ? `${o.roleCompany} · ${F} posted it in ${((o.receipts||[])[0]||[])[2]||"#jobs"}` : (o.receipts||[]).map(r=>r[1]).join(". ");
     return o.roleTitle ? m2P(o.personId, o.personId, "New pick", sub, `Ask ${F} to refer`, `Hi ${F}, I saw the ${o.roleTitle} role you posted in #jobs. Would you be willing to refer me? Happy to send anything that helps.`, { name:o.roleTitle, ini:(o.roleCompany||"?").charAt(0), sq:true, opp:o.id, to:o.via||o.personId })
-      : m2P(o.personId, o.personId, "New pick", sub, "Say hi", `Hi ${F}, I saw your post in #jobs about the senior PM role on your team. We both worked at Google Cloud. Would you have 20 minutes before I apply?`, { opp:o.id }); });
+      : m2P(o.personId, o.personId, "New pick", sub, "Say hi", `Hi ${F}, I saw your post in #jobs about the senior PM role on your team. We both worked at Google. Would you have 20 minutes before I apply?`, { opp:o.id }); });
   const R = rsRead(m), chat = [{ t:"day", x:"Today" }, { t:"sys", who:"you", x:"You started this mission", time:"Today" }, { t:"bot", x:"Here's the mission. Change any of it under Edit mission, or tell me here." }];
   if (paths.length) chat.push({ t:"bot", x:`First pass. Read ${R.n} ${R.what} in ${R.where}, kept ${paths.length}. ${paths[0].sq ? paths[0].name : m2F(paths[0].pid)} first.` }, { t:"turn", cards:[paths[0].id], more:paths.slice(1).map(p=>p.id) });
   else chat.push({ t:"bot", x:R.thin ? `Read ${R.n} posts in ${R.where}, none fit both must-haves. Nothing open yet. Next pass Friday.` : `Read ${R.n} ${R.what} in ${R.where}. Nothing fit yet. Next pass Friday.` });
@@ -28356,7 +28358,7 @@ const _rsMtSend = mtSend; mtSend = function(id){
 
 /* ---- Kai-suggested profile updates: only from sources this world has ---- */
 const RS_UPD0 = typeof P2_UPD!=="undefined" ? P2_UPD.slice() : [];
-const RS_UPD_LI = { id:"li", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Senior PM, Vertex AI · Google Cloud", src:"From your LinkedIn headline", why:"from your LinkedIn headline", apply:(o,v)=>{ o.work[0][1] = v.split(" · ")[0].trim(); } };
+const RS_UPD_LI = { id:"li", lbl:"Work", ico:"briefcase", was:o=>`${o.work[0][1]} · ${o.work[0][0]}`, ch:"Senior PM, AI platform · Google", src:"From your LinkedIn headline", why:"from your LinkedIn headline", apply:(o,v)=>{ o.work[0][1] = v.split(" · ")[0].trim(); } };
 function rsProfileUpd(){
   if (typeof P2_UPD==="undefined") return;
   const call = STATE.intakeDone, hasM = n => DB.missions.some(m=>m.name===n && m.status!=="closed"), journal = (DB.episodes||[]).some(e=>e.t==="journal") || DB.opps.some(o=>o.journal);
@@ -29930,7 +29932,7 @@ m2IdeasHTML = function(){ return _vocIdeasSheet.apply(this, arguments).replace(/
 #phone .kim-why { display:flex; gap:6px; align-items:center; margin-top:6px; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
 #phone .kim-why svg { flex:0 0 auto; }
 #phone .kim-rp { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-#phone .kim-chip { min-height:44px; padding:0 16px; border-radius:999px; border:1px solid var(--border-default); background:var(--surface-card, #fff); color:var(--text-primary); font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .kim-chip { min-height:44px; padding:0 16px; border-radius:999px; border:1px solid var(--border-default); background:var(--sf-card, #fff); color:var(--text-primary); font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); cursor:pointer; }
 #phone .kim-chip:focus-visible { outline:2px solid var(--text-primary); outline-offset:2px; }
 #phone .kim-foot { padding:8px 4px 0; font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); text-align:center; }
 #phone .kim-seg > span { min-height:44px; display:flex; align-items:center; justify-content:center; padding:0 10px; white-space:nowrap; }
@@ -29939,7 +29941,7 @@ m2IdeasHTML = function(){ return _vocIdeasSheet.apply(this, arguments).replace(/
 #phone .kim-empty .b { font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-secondary); max-width:280px; }
 #phone .kim-empty .hg-btn { margin-top:8px; }
 #phone .kim-w { flex:0 0 auto; min-width:64px; font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-primary); }
-#phone .kim-rcpt { position:relative; margin:4px 0 16px; padding:14px 44px 14px 14px; border-radius:var(--radius-absolute-16, 16px); background:var(--surface-card, #fff); box-shadow:var(--elevation-1); }
+#phone .kim-rcpt { position:relative; margin:4px 0 16px; padding:14px 44px 14px 14px; border-radius:var(--radius-absolute-16, 16px); background:var(--sf-card, #fff); box-shadow:var(--elevation-1); }
 #phone .kim-rh { display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:var(--text-primary); font:var(--type-body-m-strong, 600 14px/1.5 Manrope, system-ui, sans-serif); }
 #phone .kim-rh span { font:var(--type-caption, 500 12px/1.3 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
 #phone .kim-rb { margin-top:4px; font:var(--type-body-m, 400 14px/1.5 Manrope, system-ui, sans-serif); color:var(--text-secondary); }
@@ -29992,7 +29994,7 @@ function kimNext(){
   kimSay(`${kimShort(m)}: ${fresh.length>1?fresh.length+" new opportunities. ":""}${v ? `${who} looks like the best way in. ${o.action}?` : `${who.charAt(0).toUpperCase()+who.slice(1)} looks like the best way in. Want me to check if they're open to it?`}`,
     { opp:o.id, why:r ? `${r[0]}: ${r[2]}` : "", replies:[o.route==="connector"||!v?"Yes, check with them":"Yes, draft it","Not now",v ? "Why "+who+"?" : "Why this one?"] });
 }
-const kimClean = t => String(t).replace(/Both worked at Google Cloud/g,"You both worked at the same company").replace(/ at (Google Cloud|Brightwell|Halvern|Tessel|Google)\b/g,"");
+const kimClean = t => String(t).replace(/Both worked at Google/g,"You both worked at the same company").replace(/ at (Google|Brightwell|Halvern|Tessel|Google)\b/g,"");
 function kimDraft(o){
   const who = kimFirst(o.via||o.personId), r = (o.receipts||[])[0], m = DB.missions.find(x=>x.id===o.missionId);
   const ch = r && (r[2].match(/^#[\w-]+/)||[])[0], topic = r && r[1].includes(":") ? kimClean(r[1].split(":").slice(1).join(":").trim()).replace(/[,\s]+$/,"") : "";
@@ -31654,6 +31656,447 @@ const _cgCtlRender = render; render = function(){ const r = _cgCtlRender.apply(t
 cgCtl();
 
 </script>
+<style>
+/* B1: the guest finder on Manage > Guests, the full list, the invite sheet's picks */
+#phone .b1-sec { margin:20px 0 8px; }
+#phone .b1-hd { display:flex; align-items:center; gap:8px; font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .b1-lead { margin:6px 0 0; font:500 14px/1.45 var(--type-family, Manrope, system-ui, sans-serif); opacity:.86; }
+#phone .b1-chips { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px; }
+#phone .b1-chip { display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:0 14px; border-radius:22px; border:1px solid currentColor; background:transparent; color:inherit; font:600 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; opacity:.9; }
+#phone .b1-chip.on { opacity:1; }
+#phone .b1-chip.on { color:var(--b1-on-fg, var(--sf-card, #fff)); background:var(--b1-on-bg, var(--text-primary)); border-color:var(--b1-on-bg, var(--text-primary)); }
+#phone .b1-list { margin-top:4px; }
+#phone .b1-row { display:flex; align-items:center; gap:12px; width:100%; min-height:64px; padding:10px 0; border:0; border-bottom:1px solid color-mix(in srgb, currentColor 14%, transparent); background:none; color:inherit; text-align:left; cursor:pointer; }
+#phone .b1-row:last-child { border-bottom:0; }
+#phone .b1-box { flex:0 0 24px; width:24px; height:24px; border-radius:6px; border:2px solid currentColor; display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; }
+#phone .b1-box.on { background:var(--b1-on-bg, var(--text-primary)); border-color:var(--b1-on-bg, var(--text-primary)); }
+#phone .b1-box.on svg { color:var(--b1-on-fg, var(--sf-card, #fff)); }
+#phone .b1-m { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .b1-m b { display:flex; align-items:center; flex-wrap:wrap; gap:6px; font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .b1-m > span { font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); opacity:.86; }
+#phone .b1-best { font-style:normal; font:700 11px/1 var(--type-family, Manrope, system-ui, sans-serif); letter-spacing:.02em; padding:4px 8px; border-radius:10px; border:1px solid currentColor; }
+#phone .b1-acts { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; }
+#phone .b1-acts .btn { min-height:44px; margin:0; }
+#phone .b1-all { min-height:44px; padding:0 4px; border:0; background:none; color:inherit; font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .b1-note { margin:8px 0 0; font:500 13px/1.4 var(--type-family, Manrope, system-ui, sans-serif); opacity:.86; }
+#phone .b1-empty { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px; }
+#phone .b1-empty p { margin:0; font:500 14px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .b1-empty .btn { min-height:44px; margin:0; flex:0 0 auto; }
+/* the full list */
+#phone .b1-h { display:flex; align-items:center; height:56px; min-height:56px; padding:0 8px; }
+#phone .b1-h .back { width:44px; height:44px; display:flex; align-items:center; justify-content:center; color:var(--text-primary); cursor:pointer; }
+#phone .b1-h .t { flex:1; min-width:0; color:var(--text-primary); }
+#phone .b1-body { background:var(--sf-ground); color:var(--text-primary); padding:0 16px 120px; }
+#phone .b1-t { margin:4px 0 0; font:800 22px/1.2 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .b1-body .b1-lead, #phone .b1-body .b1-m > span, #phone .b1-sheetall { opacity:1; color:var(--text-secondary); }
+#phone .b1-selrow { display:flex; align-items:center; justify-content:space-between; margin-top:12px; font:500 14px/1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .b1-selrow .b1-all { color:var(--text-primary); }
+#phone .b1-card { background:var(--sf-card); border-radius:16px; padding:0 16px; }
+#phone .b1-foot { background:var(--sf-ground); border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .b1-foot .btn { background:var(--text-primary); color:var(--sf-card, #fff); border:0; }
+#phone .b1-foot .btn[disabled] { opacity:.45; }
+#phone .b1-sheetall { display:block; margin:4px 0 8px; color:var(--text-primary); }
+/* the invite sheet kept a white surface in dark while its text turned light */
+.dark #phone #sheet:has(.evc2-q) { background:var(--sf-card) !important; color:var(--text-primary); }
+#phone .g7-kc .kim-chip { min-height:44px; }
+#phone .b1-sec .b1-lead, #phone .b1-sec .b1-note, #phone .b1-sec .b1-m > span { opacity:1; }
+#phone .evc2-all { display:block; margin:4px 0 0 auto; }
+
+</style>
+<script>
+/* ==== B1 (v2-change-plan/hifi-specs/SPEC-B1-guest-finder.md; Apoorv 6 Oct 09:00 "guest finder first", 7 Oct 19:22). The host's
+   picks rank by criteria the host can see and change: format, place, topic. Each row says what matched, never a score. Top 3, the
+   first ticked as Best match; See all opens the full list. Invites only go on the host's tap. The pool is the host's communities
+   and past guests, so every row is someone the host can already see. Loads after chatgate.js. ---- */
+const B1_BAY = ["San Francisco", "Oakland", "Berkeley", "Palo Alto", "Mountain View", "San Jose", "Sunnyvale", "Los Altos"];
+const B1_NEAR = ["Mountain View", "Palo Alto", "San Jose", "Sunnyvale", "Los Altos"];
+const b1City = pid => ((typeof C_MM!=="undefined" ? C_MM : []).find(m=>m.id===pid) || {}).city || "";
+const b1Topic = e => /product/i.test(e.name) ? "Product" : /design/i.test(e.name) ? "Design" : /engineer|infra/i.test(e.name) ? "Engineering" : "";
+function b1S(eid){ const S = STATE.b1 = STATE.b1 || {}; return S[eid] || (S[eid] = { off:{}, sel:null }); }
+function b1Crit(e){
+  const c = [];
+  c.push({ k:"fmt", l:e.fmt==="virtual" ? "Virtual" : "In person", test:pid => { if (e.fmt==="virtual") return "online"; const city = b1City(pid);
+    return B1_BAY.includes(city) ? "in the area" : EV_INVITE_POOL.past.includes(pid) ? "came last time" : ""; } });
+  if (e.fmt!=="virtual" && e.where) c.push({ k:"city", l:e.where, test:pid => B1_NEAR.includes(b1City(pid)) ? "near " + e.where : "" });
+  const t = b1Topic(e), re = { Product:/\bproduct\b|\bPMs?\b/i, Design:/\bdesign/i, Engineering:/\bengineer/i }[t];
+  if (t) c.push({ k:"topic", l:t, test:pid => { const p = DB.people[pid]; return re.test([p.title, p.line].concat(p.help||[]).join(" ")) ? t.toLowerCase() : ""; } });
+  return c;
+}
+/* the host's communities plus people who came to the host's events, minus anyone already on the guest list */
+function b1Pool(e){
+  const host = DB.people[e.host] || {}, fams = host.families || [], S = b1S(e.id);
+  const taken = new Set(evGuests(e).map(g=>g.pid).concat([e.host], e.cohosts || []));
+  const seed = EV_INVITE_POOL.suggested.concat(EV_INVITE_POOL.past);
+  const ids = seed.concat(Object.keys(DB.people).filter(id=>!seed.includes(id) && (DB.people[id].families||[]).some(f=>fams.some(h=>f===h || f.startsWith(h+" ")))));
+  return ids.filter((id, i)=>ids.indexOf(id)===i && DB.people[id] && !DB.people[id].offKey && !taken.has(id) && !(e.kaiSkipped || []).includes(id) && id!=="cq");
+}
+function b1Rank(e){
+  const S = b1S(e.id), crit = b1Crit(e), on = crit.filter(c=>!S.off[c.k]);
+  const rows = b1Pool(e).map((pid, i)=>{ const w = on.map(c=>c.test(pid)).filter(Boolean); return { pid, n:w.length, of:on.length, w:w.filter((x, j)=>w.indexOf(x)===j), i }; })
+    .filter(r=>r.n > 0).sort((a, b)=>b.n - a.n || a.i - b.i).slice(0, 25);
+  if (!S.sel && rows.length) { S.sel = {}; S.sel[rows[0].pid] = 1; }
+  if (S.sel) Object.keys(S.sel).forEach(pid=>{ if (!rows.some(r=>r.pid===pid)) delete S.sel[pid]; });
+  return { crit, rows, off:on.length < crit.length, none:!on.length };
+}
+/* one selection: Manage, See all and the invite sheet all read and tick S.sel, and only ranked people are in it; anyone else gets the link */
+const b1Sel = eid => Object.keys(b1S(eid).sel || {});
+function b1Chips(e, crit){ const S = b1S(e.id);
+  return `<div class="b1-chips" role="group" aria-label="What fits this event">${crit.map(c=>`<button type="button" class="b1-chip${S.off[c.k] ? "" : " on"}" aria-pressed="${!S.off[c.k]}" onclick="b1Chip('${e.id}','${c.k}')">${S.off[c.k] ? "" : evIc("check",14)}${c.l}</button>`).join("")}</div>`; }
+function b1Row(e, r, best){ const p = DB.people[r.pid], on = !!(b1S(e.id).sel || {})[r.pid];
+  return `<button type="button" class="b1-row" aria-pressed="${on}" onclick="b1Tick('${e.id}','${r.pid}')" data-kc="KeyGuestPick"><span class="b1-box${on ? " on" : ""}" aria-hidden="true">${on ? evIc("check",16) : ""}</span>${av(p.initials)}<span class="b1-m"><b>${p.name}${best ? `<em class="b1-best">Best match</em>` : ""}</b><span>${r.n} of ${r.of} · ${r.w.join(" · ")}</span></span></button>`; }
+const b1Fit = n => `${n} ${n===1 ? "person fits" : "people fit"}`;
+function b1Empty(e, none){ return `<div class="b1-empty"><p>${none ? "Tick at least one to see who fits." : "No one new fits these. Tick another to see more, or share the invite link."}</p><button type="button" class="btn sm sec" onclick="openSheet('evshare','${e.id}')">${evIc("share",15)} Share</button></div>`; }
+function b1Section(e){
+  if (e.draft) return "";
+  const { crit, rows, off, none } = b1Rank(e), n = b1Sel(e.id).length;
+  if (!rows.length && !off) return "";
+  const head = `<div class="b1-hd">${typeof kaiMark==="function" ? kaiMark(24) : ""}<b>Picked for you</b></div>`;
+  if (!rows.length) return `<section class="b1-sec" data-kc="KeyGuestFinder" data-kv="state=empty">${head}${b1Chips(e, crit)}${b1Empty(e, none)}</section>`;
+  return `<section class="b1-sec" id="b1-sec" data-kc="KeyGuestFinder" data-kv="rows=${rows.length}">${head}<p class="b1-lead">${b1Fit(rows.length)} this event. Ranked by what you see ticked.</p>${b1Chips(e, crit)}
+    <div class="b1-list">${rows.filter((r, i)=>i < 3 || b1S(e.id).sel[r.pid]).map((r, i)=>b1Row(e, r, i===0)).join("")}</div>
+    <div class="b1-acts"><button type="button" class="btn sm" ${n ? "" : "disabled"} onclick="b1Send('${e.id}')">${n ? `Invite ${n}` : "Choose who to invite"}</button>${rows.length > 3 ? `<button type="button" class="b1-all" onclick="go('b1picks:${e.id}')">See all ${rows.length}</button>` : ""}</div>
+    <p class="b1-note">Nobody is invited until you tap Invite.</p></section>`;
+}
+function b1Chip(eid, k){ const S = b1S(eid); S.off[k] = !S.off[k]; render(); }
+function b1Tick(eid, pid){ const S = b1S(eid); S.sel = S.sel || {}; if (S.sel[pid]) delete S.sel[pid]; else S.sel[pid] = 1; render(); }
+function b1SelAll(eid){ const e = evE(eid), S = b1S(eid), rows = b1Rank(e).rows, every = rows.every(r=>S.sel[r.pid]); S.sel = {}; if (!every) rows.forEach(r=>{ S.sel[r.pid] = 1; }); render(); }
+function b1Send(eid){
+  const e = evE(eid), S = b1S(eid), taken = evGuests(e).map(g=>g.pid), ids = b1Sel(eid).filter(pid=>DB.people[pid] && !taken.includes(pid)); if (!ids.length) return;
+  ids.forEach(pid=>evInvite(eid, pid, { kai:true, log:false })); e.log.unshift(["mail", `You invited ${ids.length}`, "Just now"]);
+  S.sel = {}; STATE.evPick = []; STATE.evc2Q = ""; STATE.sheet = null; toast(`Invited ${ids.length}. The invite comes from you.`);
+  if (STATE.screen==="b1picks:"+eid) { STATE.backNav = true; go("eventd:manage."+eid); } else render();
+}
+function b1Page(eid){
+  const e = evE(eid); if (!e || e.draft) return "";
+  const { crit, rows, none } = b1Rank(e), S = b1S(eid), n = b1Sel(eid).length, every = rows.length && rows.every(r=>S.sel[r.pid]);
+  const fams = ((DB.people[e.host] || {}).families || []).map(h=>((DB.families||[]).find(f=>f.name===h || f.name.startsWith(h+" ")) || { name:h }).name).join(", ");
+  return `<div class="hdr b1-h"><div class="back" role="button" tabindex="0" aria-label="Back" onclick="STATE.backNav=true;goBack()">${LI("chevron-left",22)}</div><div class="t">Who to invite</div></div>
+  <div class="body b1-body"><h1 class="b1-t">${rows.length ? `${b1Fit(rows.length)} ${e.name}` : none ? "Tick what fits" : `No one new fits ${e.name}`}</h1><p class="b1-lead">From ${fams} and your past guests. Nothing is sent until you tap Invite.</p>
+    ${b1Chips(e, crit)}
+    ${rows.length ? `<div class="b1-selrow"><span>${n} selected</span><button type="button" class="b1-all" onclick="b1SelAll('${eid}')">${every ? "Clear" : "Select all"}</button></div><div class="b1-list b1-card">${rows.map((r, i)=>b1Row(e, r, i===0)).join("")}</div>` : b1Empty(e, none)}</div>
+  <div class="foot b1-foot"><button type="button" class="btn" ${n ? "" : "disabled"} onclick="b1Send('${eid}')">${n ? `Invite ${n}` : "Choose who to invite"}</button></div>`;
+}
+/* the host's event page: one Kai card while picks are unsent */
+const _b1CardFor = g7CardFor;
+g7CardFor = function(scr){
+  const m = /^eventd:([^.:]+)$/.exec(scr || ""), e = m && evE(m[1]);
+  if (e && (e.reg==="hosting" || e.host===EV_ME) && !e.past && !e.draft) { const n = b1Rank(e).rows.length, K = g7K(), key = "b1:"+e.id;
+    return n && !K.not[key] ? { key, scr, h:`${b1Fit(n)} this event.`, rc:"From your communities and past guests", acts:[["Review", `b1Review('${e.id}')`]] } : null; }
+  return _b1CardFor.apply(this, arguments);
+};
+function b1Review(eid){ STATE.evMtab = "guests"; STATE.evGf = "all"; go("eventd:manage."+eid); setTimeout(()=>{ const s = phone.querySelector("#b1-sec"); if (s) s.scrollIntoView({ behavior:"smooth", block:"start" }); }, 80); }
+/* Manage > Guests: the section replaces the old three picks, See all and note */
+function b1Mount(){
+  const m = /^eventd:manage\.(.+)$/.exec(STATE.screen || ""); if (!m || (STATE.evMtab||"guests")!=="guests" || phone.querySelector(".b1-sec")) return;
+  const e = evE(m[1]); if (!e) return; const hd = phone.querySelector(".evt-kaihd"), at = hd || phone.querySelector(".view .evt-search"); if (!at) return;
+  if (hd) { let x = hd.nextElementSibling; while (x && !x.classList.contains("evt-search")) { const nx = x.nextElementSibling; const stop = x.classList.contains("evt-kainote"); x.remove(); x = stop ? null : nx; } }
+  at.insertAdjacentHTML("beforebegin", b1Section(e)); if (hd) hd.remove();
+  /* on the event's own colours the ticked state is the inverse of the text, like the guest filter chips */
+  const sec = phone.querySelector(".b1-sec"), c = sec && getComputedStyle(sec).color.match(/\d+/g);
+  if (c && (+c[0] + +c[1] + +c[2]) / 3 > 140) { sec.style.setProperty("--b1-on-bg", "#fff"); sec.style.setProperty("--b1-on-fg", "#141414"); }
+}
+/* the invite sheet is the same ranking and the same ticks: search narrows who fits, the footer counts S.sel as it renders, Send is
+   b1Send. Someone outside the ranking, or an email, goes through the share link below. */
+const _b1Sheet = evSheet;
+evSheet = function(type, id){
+  if (type!=="evinvite") return _b1Sheet.apply(this, arguments);
+  const e = evE(id); if (!e || e.draft) return _b1Sheet.apply(this, arguments);
+  const q0 = STATE.evc2Q; STATE.evc2Q = ""; const h = String(_b1Sheet.apply(this, arguments)); STATE.evc2Q = q0;
+  const rows = b1Rank(e).rows, sel = b1S(id).sel || {}, q = (STATE.evc2Q || "").trim(), ql = q.toLowerCase(), n = b1Sel(id).length;
+  const shown = q ? rows.filter(r=>DB.people[r.pid].name.toLowerCase().includes(ql)) : rows.slice(0, 3).concat(rows.slice(3).filter(r=>sel[r.pid]));
+  const guest = q && !shown.length && evGuests(e).find(x=>DB.people[x.pid] && DB.people[x.pid].name.toLowerCase().includes(ql));
+  const row = r => { const p = DB.people[r.pid], on = !!sel[r.pid];
+    return `<button type="button" class="rowitem evc2-pr" aria-pressed="${on}" onclick="event.stopPropagation();b1Tick('${id}','${r.pid}')">${av(p.initials)}<span class="m"><span class="a">${p.name}</span><span class="b">${b1Why(r)}</span></span><span class="evc2-box ${on ? "on" : ""}" aria-hidden="true">${on ? evIc("check",16) : ""}</span></button>`; };
+  const share = (/<div class="lbl evc2-sec">Or share the link<\/div>\s*<div class="evc2-share">[\s\S]*?<\/div>(?=\s*<div class="evc2-foot">)/.exec(h) || [""])[0];
+  return `<h2>Invite guests</h2>
+    <div class="evt-search evc2-q"><span>${evIc("search",17)}</span><input id="evc2q" placeholder="Search who fits" aria-label="Search who fits" autocomplete="off" value="${g7Esc(q)}"></div>
+    ${rows.length ? `<div class="evc2-ksec">${typeof kaiMark==="function" ? kaiMark(24) : ""}<b>Picked for you</b></div><p class="evc2-lead">${b1Fit(rows.length)} this event. Choose who gets an invite.</p>` : ""}
+    ${shown.map(row).join("")}
+    ${!q && rows.length > 3 ? `<button type="button" class="b1-all evc2-all" onclick="event.stopPropagation();STATE.sheet=null;go('b1picks:${id}')">See all ${rows.length}</button>` : ""}
+    ${q && !shown.length ? `<p class="evc2-lead">${guest ? `${DB.people[guest.pid].name} is already on your guest list.` : `No one called “${g7Esc(q)}” fits this event. Share the link instead.`}</p>` : ""}
+    ${share}
+    <div class="evc2-foot"><button type="button" class="btn" ${n ? "" : "disabled"} onclick="event.stopPropagation();b1Send('${id}')">${n ? `Send ${n} invite${n > 1 ? "s" : ""}` : "Choose who to invite"}</button></div>`;
+};
+const _b1Render = render;
+render = function(){ const r = _b1Render.apply(this, arguments); if (typeof phone!=="undefined" && phone) { try { b1Mount(); } catch (e) { console.warn("b1", e); } } return r; };
+/* 5 + 7: every older surface (With Kai, Fill N open seats, the hosting goal, Home) counts and explains from the same ranking, so one number
+   everywhere and no line says what a member is looking for */
+const b1Why = r => `${r.n} of ${r.of} · ${r.w.join(" · ")}`;
+evKaiPicks = e => e.draft ? [] : b1Rank(e).rows.map(r=>({ pid:r.pid, why:b1Why(r) }));
+Object.keys(EV_KAI_PICKS).forEach(k=>EV_KAI_PICKS[k].forEach(p=>{ p[1] = "Fits this event"; }));
+if (typeof dHostRows==="function") { const _b1HR = dHostRows; dHostRows = function(m){ const r = _b1HR.apply(this, arguments), e = r.e;
+  if (e && !e.draft) { r.todo = b1Rank(e).rows.map(x=>({ pid:x.pid, why:b1Why(x) }));
+    const had = new Set(r.sent.map(c=>c.pid)), going = e.goingList || [];
+    (e.invitedList || []).concat(going).forEach(pid=>{ if (!had.has(pid) && DB.people[pid] && pid!==e.host) { had.add(pid); r.sent.push({ pid, why:"Invited by you", going:going.includes(pid) }); } }); }
+  return r; }; }
+
+</script>
+<style>
+/* ==== CATCH UP: Home's fixed-height brief card and the Catch up screen (spec HIFI-SPEC-n41-brief-catchup, 22:11 refinements) ==== */
+#phone .cu-hcard { background:var(--sf-card); border-radius:16px; overflow:hidden; }
+#phone .cu-hcard .g9-row { border-top:0; }
+#phone .cu-hcard .g9-rt b { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .cu-line { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:48px; padding:0 12px 0 16px; border:0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08));
+  background:none; color:var(--text-primary); font:600 15px/1.2 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; text-align:left; }
+#phone .cu-zero p { display:flex; align-items:center; gap:8px; min-height:56px; margin:0; padding:0 16px; color:var(--text-primary); font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cu-hcard .cu-comp { margin:0 12px 12px; }
+#phone .cu-in .g9-row, #phone .cu-card.cu-in { animation:cuIn .28s cubic-bezier(.2,.8,.2,1); }
+@keyframes cuIn { from { opacity:0; transform:translateX(24px); } }
+
+/* the screen */
+#phone .cu-hdr { display:flex; align-items:center; gap:4px; height:56px; padding:0 12px 0 4px; }
+#phone .cu-hdr .t { flex:1; font:700 17px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cu-x { display:grid; place-items:center; width:44px; height:44px; border:0; border-radius:22px; background:none; color:var(--text-primary); cursor:pointer; }
+#phone .cu-left { font:600 13px/1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-body { background:var(--sf-ground); padding:8px 16px 32px; }
+#phone .cu-gl { margin:0 0 -4px; font:700 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-card { background:var(--sf-card); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:12px; touch-action:pan-y; }
+#phone .cu-h { display:flex; align-items:flex-start; gap:10px; }
+#phone .cu-h > .avatar, #phone .cu-h > .g9-tile { margin-top:2px; }
+#phone .cu-link { margin-top:-12px; }
+#phone .cu-h .avatar, #phone .cu-h > .g9-tile { width:40px !important; height:40px !important; min-width:40px; font-size:14px !important; }
+#phone .cu-hm { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .cu-hm b { font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .cu-hm > span { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-tag { font:600 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); font-style:normal; color:var(--text-secondary); }
+#phone .cu-link { flex:0 0 auto; min-height:44px; padding:0 4px; border:0; background:none; color:var(--text-primary); font:600 13px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .cu-msg { font:500 16px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); white-space:pre-wrap; }
+#phone .cu-bub { align-self:flex-start; max-width:88%; padding:10px 14px; border-radius:18px 18px 18px 6px; background:var(--sf-inset, #EEF0F3); color:var(--text-primary); font:500 16px/1.4 var(--type-family, Manrope, system-ui, sans-serif); display:-webkit-box; -webkit-line-clamp:8; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .cu-msg.cut { display:-webkit-box; -webkit-line-clamp:8; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .cu-all { align-self:flex-start; min-height:44px; padding:0; border:0; background:none; color:var(--text-primary); font:600 14px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; cursor:pointer; }
+#phone .cu-note { display:flex; gap:8px; align-items:flex-start; margin:0; font:500 13px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-note > :first-child { flex:0 0 auto; margin-top:1px; }
+#phone .cu-comp { border:1px solid var(--border-default, rgb(0 0 0 / .12)); border-radius:16px; background:var(--bg-surface-default, #fff); padding:10px 10px 8px 12px; }
+#phone .cu-ta { display:block; width:100%; min-height:66px; border:0; outline:0; resize:none; field-sizing:content; background:none; color:var(--text-primary); font:500 15px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cu-cr { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px; }
+#phone .cu-kd { font:600 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-send { min-width:72px; min-height:44px; padding:0 18px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .cu-chips { display:flex; flex-wrap:wrap; gap:8px; }
+#phone .cu-chip { min-height:44px; padding:0 16px; border:1px solid var(--border-default, rgb(0 0 0 / .12)); border-radius:22px; background:none; color:var(--text-primary); font:600 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .cu-chip.pri { border-color:transparent; background:var(--text-primary); color:var(--sf-card, #fff); }
+#phone .cu-done { display:flex; align-items:center; gap:6px; min-height:44px; color:var(--text-primary); font:700 15px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cu-under { display:flex; padding:4px 0 0; }
+#phone .cu-later { min-height:44px; padding:0 4px; border:0; background:none; color:var(--text-primary); font:600 15px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .cu-later:disabled { color:var(--text-secondary); cursor:default; }
+#phone .cu-end { display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:16px 0 0; }
+#phone .cu-ei { display:grid; place-items:center; width:56px; height:56px; border-radius:28px; background:var(--sf-card); color:var(--text-primary); }
+#phone .cu-end h2 { margin:0; font:700 24px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cu-said { margin:0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-watch { align-self:stretch; background:var(--sf-card); border-radius:16px; padding:12px 16px 4px; }
+#phone .cu-watch .cu-gl { margin:0 0 4px; }
+#phone .cu-wr { display:flex; align-items:center; gap:10px; min-height:48px; font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cu-home { align-self:stretch; min-height:48px; margin-top:8px; border:0; border-radius:24px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 15px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+/* the hero's name links: 44px targets without moving the sentence */
+#phone .g8-hn { position:relative; }
+#phone .g8-hn::after { content:""; position:absolute; left:50%; top:50%; width:max(100%, 44px); height:44px; transform:translate(-50%, -50%); }
+@media (prefers-reduced-motion: reduce) { #phone .cu-in .g9-row, #phone .cu-card.cu-in { animation:cuFade .2s linear; } @keyframes cuFade { from { opacity:0; } } }
+/* the hero holds two lines at any volume, so the goal cards never move */
+#phone .g8-hl.cu-hero { min-height:calc(2 * 1.45em); }
+
+</style>
+<script>
+/* ==== CATCH UP (goals-mentor/how-goals-changes/HIFI-SPEC-n41-brief-catchup-2026-10-07.md; Apoorv 20:29, 20:31, 22:11). Loads after goals9,
+   chatgate and guestfinder. Home's brief is one card of fixed height: the top item with its action in place, then "Catch up · N".
+   Catch up is a full screen, one item at a time, top-aligned: the real message first, then the action in the card itself (a composer
+   with Kai's draft and Send, or chips). Later moves an item to the end; nothing advances on a timer and there is no progress bar.
+   The end screen says what was done and what Kai is watching. Every action writes back to its goal. ==== */
+const CU_TEXTED = { "b:dev":"9:12" };  // when Kai texted Dev's reply (Kai in Messages): the tag shows only while Kai's texts hold one about Dev
+/* the replies' own words (the goal's paths only keep Kai's summary of them) and the short form Home's one line uses */
+const CU_MSG = { jordan:["Thanks for reaching out! Happy to chat. Could you send your deck first?", "wants your deck"],
+  dev:["Free Thursday for a coffee? Anywhere near Palo Alto works for me.", "free Thursday for coffee"] };
+const CU_GROUP = ["Needs you", "Moved", "Worth a look"];
+function cuK(){ const K = g7K(); return K.cu || (K.cu = { at:null, later:[], open:{}, text:{}, full:{}, log:[], watch:[], byText:{}, flash:null, home:null }); }
+/* one set, fixed in the morning: every action drops the count and nothing joins until the next set (Play or Time starts it), even
+   when a goal card stops naming someone who was already outstanding. What Kai texted and the member answered by text is gone here too.
+   While chat is locked, anything sourced from chat stays out: channel posts, and any item or role that cites a channel. */
+const _cuItems = g7DeckItems;
+const cuChat = x => { if (/^[up]:/.test(x.key) || /#[a-z]/i.test(`${x.h} ${x.rc}`)) return true;
+  const mid = cuMid(x), p = x.pid && mid && m2Path(mid, x.pid), o = p && p.opp && DB.opps.find(y=>y.id===p.opp); return !!(o && o.roleTitle && (o.receipts || []).some(r=>/^#/.test(r[2] || ""))); };
+g7DeckItems = function(){ const C = cuK(), lock = typeof cgLocked==="function" && cgLocked(), its = _cuItems.apply(this, arguments);
+  if (!C.set && STATE.member && STATE.intakeDone) C.set = its.map(x=>x.key);
+  return its.filter(x=>(!C.set || C.set.includes(x.key)) && !C.byText[x.key] && !(lock && cuChat(x))); };
+function cuItems(){ const C = cuK(), its = g7DeckItems(), back = C.later.map(k=>its.find(x=>x.key===k)).filter(Boolean);
+  return its.filter(x=>!C.later.includes(x.key)).concat(back); }
+const cuMid = it => { const m = it.mid ? m2Mis(it.mid) : m2DeckM(); return m && m.id; };
+const cuFirst = pid => ((DB.people[pid] || {}).name || "").split(" ")[0];
+/* what the card shows and how it finishes: compose (Send), chips, or a fit (Ask for intro, then compose) */
+function cuModel(it){
+  const k = it.key, mid = cuMid(it), m = mid && m2Mis(mid), g = m ? g7Short(m) : "", p = it.pid && mid ? m2Path(mid, it.pid) : null;
+  const face = it.pid ? m2Face(it.pid, "m2-a40") : g9Tile(m ? m2Theme(m) : k==="b:dinner" ? "dusk" : "harbour", k==="b:dinner" ? "utensils" : "sparkles", 40);
+  const who = it.pid ? (DB.people[it.pid] || {}).name || "" : g || "Key";
+  const base = { face, who, where:it.rc || "", tag:CU_TEXTED[k] && kim().on && kim().msgs.some(x=>x.who!=="u" && it.pid && x.text.includes(cuFirst(it.pid))) ? `Texted you ${CU_TEXTED[k]}` : "", link:mid ? ["Open goal", `cuLeave("g7Chat('${mid}')")`] : null, mid, p };
+  if (/^b:/.test(k) && it.acts[0] && it.acts[0][0]==="Reply" && p)
+    return Object.assign(base, { kind:"compose", msg:(CU_MSG[it.pid] || [])[0], body:m2Lc(it.h.replace(/^[^:]+:\s*/, "")).replace(/^./, c=>c.toUpperCase()), draft:p.draft || `Hi ${cuFirst(it.pid)}, `, verb:"Reply" });
+  if (/^d:/.test(k)) { const li = +k.split(":")[2], e = STATE.m2.story[mid].chat[li];
+    return Object.assign(base, { kind:"compose", li, body:p && p.sub ? p.sub : it.h, draft:e ? e.text : "", verb:"Draft" }); }
+  if (/^n:/.test(k)) return Object.assign(base, { kind:"compose", msg:(p && p.sub || "").replace(/^Replied:\s*/, ""), body:(p && p.sub || "").replace(/^Replied:\s*/, ""), draft:p && p.draft || `Hi ${cuFirst(it.pid)}, `, verb:"Reply" });
+  if (/^b:/.test(k) && it.pid && p && p.stage==="New pick")
+    return Object.assign(base, { kind:"fit", where:`${g} · New pick`, body:cuSrc(it, p), draft:p.draft || `Hi ${cuFirst(it.pid)}, `, verb:"Draft", ask:it.acts[0][0]==="Say hi" ? "Say hi" : "Ask for intro" });
+  if (/^[up]:/.test(k)) { const id = k.slice(2), x = DB.pool.find(y=>y.id===id) || {}, b = (typeof US_BRIEF!=="undefined" ? US_BRIEF : []).find(y=>y.id===id), P = (typeof US_PUSH!=="undefined" ? US_PUSH : []).find(y=>y.id===id);
+    const post = x.title ? `Hiring a ${x.title} at ${x.org}.${x.why ? " " + x.why + "." : ""}` : it.h, why = (b || P || {}).why || "";
+    return Object.assign(base, { kind:"fit", who:(DB.people[x.via || it.pid] || {}).name || who, where:[x.fam, (x.when || "today").toLowerCase()].filter(Boolean).join(" · "), body:post, note:why.replace(/\s*Posted in [^.]+\.$/, ""),
+      draft:`Hi ${cuFirst(x.via || it.pid)}, I saw your post about the ${x.title || "role"}${x.org ? " at " + x.org : ""}. I'd love to hear more about it.`, verb:"Open", ask:"Ask for intro", post:id,
+      link:["Open post", `cuLeave("usBriefSee('${id}')")`] }); }
+  if (k==="b:dinner") return Object.assign(base, { kind:"chips", who:"Thursday's dinner", body:it.h.replace(/^Start a goal: /, "Start a goal: ").replace(/^./, c=>c.toUpperCase()), link:["Open event", `cuLeave("g7Visit('eventd:e1')")`],
+    chips:[["Start it", "m2StartDinner()", "started"], ["Not for me", "", "passed"]], verb:"Start" });
+  /* questions and "how did it go": the goal's own chips, answered in place */
+  const q = /^q:/.test(k) && m ? { face:g9Tile(m2Theme(m), "sparkles", 40), who:g, where:`A question from Kai · ${(it.rc || "").split(" · ").pop()}` } : {};
+  return Object.assign(base, q, { kind:"chips", body:it.h, chips:it.acts.map(([l, js])=>[l, js, it.k==="question" || it.out ? "logged" : "done"]).concat(it.out ? [] : [["Not for me", "", "passed"]]), verb:"Open" });
+}
+/* a fit's own source: the role as posted with who vouches, or Kai's full reason (the brief row only has room for a cut one) */
+function cuSrc(it, p){ const o = p.opp && DB.opps.find(y=>y.id===p.opp), why = ((typeof m2DeckItems==="function" ? m2DeckItems() : []).find(x=>x.t==="item" && x.pid===it.pid) || {}).why;
+  if (o && o.roleTitle) return `${o.roleTitle} at ${o.roleCompany}. ${(o.receipts || []).filter(r=>r[0]!=="Fit").map(r=>r[1]).join(". ")}.`;
+  return (why || p.sub || it.rc || "").replace(/([^.])$/, "$1."); }
+function cuLeave(js){ STATE.backNav = true; (new Function(js))(); }
+function cuOpen(key){ STATE.sheet = null; const C = cuK(); C.at = key || null; C.flash = null; if (STATE.screen!=="catchup") go("catchup"); else render(); }
+function cuClose(){ const C = cuK(); C.at = null; C.flash = null; STATE.backNav = true; go("home"); }
+function cuType(key, v){ cuK().text[key] = v; }
+function cuDone(key, what, watch){ const C = cuK(); g7K().deck[key] = 1; C.later = C.later.filter(k=>k!==key); if (what) C.log.push(what);
+  if (watch && !C.watch.some(w=>w[1]===watch[1])) C.watch.unshift(watch); if (C.at===key) C.at = null; }
+/* the card shows what happened for a moment, then the next one comes in */
+function cuFinish(key, flash, fn){ const C = cuK(), onHome = STATE.screen!=="catchup";
+  C.flash = { key, t:flash }; if (onHome) C.home = null; render();
+  setTimeout(()=>{ fn(); C.flash = null; C.next = key; render(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 700 : 1100); }
+function cuSend(key){
+  const it = g7DeckItems().find(x=>x.key===key), M = it && cuModel(it); if (!M) return;
+  const C = cuK(), t = (C.text[key]!=null ? C.text[key] : M.draft).trim(); if (!t) return;
+  const F = cuFirst(M.post ? (DB.pool.find(y=>y.id===M.post) || {}).via : it.pid);
+  cuFinish(key, `Sent to ${F}`, ()=>{
+    const s = M.mid && STATE.m2.story[M.mid], had = new Set(_cuItems().map(x=>x.key));
+    const _t = toast; toast = ()=>{};
+    try {
+    if (M.post) { if (M.mid) m2Say(M.mid, { t:"sys", who:"you", x:`You asked ${F} about the ${(DB.pool.find(y=>y.id===M.post) || {}).title || "role"}: "${t}"`, time:"Now" }); }
+    else if (s) { let li = M.li!=null ? M.li : s.chat.findIndex(e=>e.t==="draft" && e.path===M.p.id && !e.sent);
+      if (li < 0) { const n = s.chat.length; s.chat.push({ t:"draft", path:M.p.id, text:t }); li = n; }
+      s.chat[li].text = t; m2DraftSend(M.mid, li); }
+    } finally { toast = _t; }
+    _cuItems().filter(x=>/^d:/.test(x.key) && !had.has(x.key)).forEach(x=>{ g7K().deck[x.key] = 1; });
+    cuDone(key, "sent", [it.pid || (DB.pool.find(y=>y.id===M.post) || {}).via, `I'll tell you when ${F} replies`]); });
+}
+function cuChip(key, i){
+  const it = g7DeckItems().find(x=>x.key===key), M = it && cuModel(it), c = M && M.chips[i]; if (!c) return;
+  const [l, js, what] = c;
+  cuFinish(key, what==="passed" ? "Set aside" : what==="started" ? "Started" : `Logged: ${l}`, ()=>{
+    if (js) (new Function(js.replace(/^g7DeckDo\('[^']*',"([\s\S]*)"\)$/, "$1")))();
+    if (what==="passed") g7K().not[key] = 1;
+    cuDone(key, what, what==="started" ? [null, "I'll draft the dinner intros before Thursday"] : null); });
+}
+function cuAsk(key){ cuK().open[key] = 1; render(); setTimeout(()=>{ const ta = phone.querySelector(`.cu-ta[data-key="${key}"]`); if (ta) ta.focus(); }, 30); }
+function cuLater(key){ const C = cuK(), its = cuItems(), i = its.findIndex(x=>x.key===key); C.later = C.later.filter(k=>k!==key).concat(key);
+  const nx = its[i+1] || its.find(x=>x.key!==key); C.at = nx ? nx.key : null; C.next = key; render(); }
+function cuComposer(it, M){ const C = cuK(), v = C.text[it.key]!=null ? C.text[it.key] : M.draft;
+  return `<div class="cu-comp"><textarea class="cu-ta" data-key="${it.key}" rows="${Math.min(8, Math.max(3, Math.ceil(v.length / 28)))}" aria-label="Your note to ${g7Esc(cuFirst(it.pid) || M.who)}" oninput="cuType('${it.key}',this.value)">${g7Esc(v)}</textarea>
+    <div class="cu-cr"><span class="cu-kd">Kai drafted this</span><button type="button" class="cu-send" onclick="cuSend('${it.key}')">Send</button></div></div>`; }
+function cuAction(it, M){
+  const C = cuK();
+  if (C.flash && C.flash.key===it.key) return `<div class="cu-done" role="status">${LI("check",18)}${g7Esc(C.flash.t)}</div>`;
+  if (M.kind==="compose" || (M.kind==="fit" && C.open[it.key])) return cuComposer(it, M);
+  if (M.kind==="fit") return `<div class="cu-chips"><button type="button" class="cu-chip pri" onclick="cuAsk('${it.key}')">${M.ask}</button><button type="button" class="cu-chip" onclick="cuChipPass('${it.key}')">Not for me</button></div>`;
+  return `<div class="cu-chips">${M.chips.map(([l], i)=>`<button type="button" class="cu-chip${i ? "" : " pri"}" onclick="cuChip('${it.key}',${i})">${g7Esc(l)}</button>`).join("")}</div>`;
+}
+function cuChipPass(key){ cuFinish(key, "Set aside", ()=>{ g7K().not[key] = 1; const id = key.slice(2); if (/^p:/.test(key) && typeof usPushNo==="function") usPushNo(id); cuDone(key, "passed"); }); }
+function cuCard(it, group){
+  const M = cuModel(it), C = cuK(), long = M.body.length > 320 && !C.full[it.key];
+  return `<article class="cu-card${C.next ? " cu-in" : ""}" data-key="${it.key}" data-kc="KeyCatchUpCard" data-kv="kind=${M.kind}">${group ? `<div class="cu-gl">${group}</div>` : ""}
+    <header class="cu-h">${M.face}<span class="cu-hm"><b>${g7Esc(M.who)}</b><span>${g7Esc(M.where)}</span>${M.tag ? `<em class="cu-tag">${M.tag}</em>` : ""}</span>${M.link ? `<button type="button" class="cu-link" onclick="${g7Esc(M.link[1])}">${M.link[0]}</button>` : ""}</header>
+    ${M.msg ? `<div class="cu-bub">${g7Esc(M.msg)}</div>` : `<div class="cu-msg${long ? " cut" : ""}">${g7Esc(M.body)}</div>`}${long ? `<button type="button" class="cu-all" onclick="cuK().full['${it.key}']=1;render()">Show all</button>` : ""}
+    ${M.note ? `<p class="cu-note">${kaiMark(16)}<span>${g7Esc(M.note)}</span></p>` : ""}
+    ${cuAction(it, M)}</article>`;
+}
+function cuNext(){ const ids = ["e1","e0","e4","e10","e13"].map(id=>typeof evE==="function" && evE(id)).filter(e=>e && !e.past && !e.draft && (e.reg==="going" || e.reg==="hosting"));
+  return ids[0] ? `Next: ${ids[0].name}, ${ids[0].day || ids[0].when || ""}`.replace(/, $/, "") : ""; }
+function cuEnd(){
+  const C = cuK(), n = w => C.log.filter(x=>x===w).length;
+  const said = [[n("sent"), "sent"], [n("rsvp"), "RSVP"], [n("logged"), "logged"], [n("started"), "started"], [n("passed"), "set aside"]].filter(([c])=>c).map(([c, w])=>`${c} ${w}`).join(", ");
+  const watch = C.watch.slice(0, 3), next = cuNext();
+  return `<div class="cu-end" data-kc="KeyCatchUpEnd"><div class="cu-ei" aria-hidden="true">${LI("check",28)}</div><h2>You're caught up</h2>${said ? `<p class="cu-said">${said}</p>` : ""}
+    ${watch.length || next ? `<div class="cu-watch"><div class="cu-gl">Kai is watching</div>${watch.map(([pid, t])=>`<div class="cu-wr">${pid ? m2Face(pid, "m2-a32") : kaiMark(32)}<span>${g7Esc(t)}</span></div>`).join("")}${next ? `<div class="cu-wr">${g9Tile("dusk", "utensils", 32)}<span>${g7Esc(next)}</span></div>` : ""}</div>` : ""}
+    <button type="button" class="btn cu-home" onclick="cuClose()">Back to Home</button></div>`;
+}
+function cuPage(){
+  const C = cuK(), its = cuItems(), n = its.length, it = its.find(x=>x.key===C.at) || its[0];
+  const hdr = `<div class="hdr cu-hdr"><button type="button" class="cu-x" aria-label="Close Catch up" onclick="cuClose()">${LI("x",22)}</button><div class="t">Catch up</div><span class="cu-left">${n ? `${n} left` : ""}</span></div>`;
+  const body = it ? `${cuCard(it, CU_GROUP[Math.max(0, Math.min(2, it.cat || 0))])}<div class="cu-under"><button type="button" class="cu-later" onclick="cuLater('${it.key}')" ${n > 1 ? "" : "disabled"}>Later</button></div>` : cuEnd();
+  C.next = null;
+  return `${hdr}<div class="body cu-body" data-kc="KeyCatchUp">${body}</div>`;
+}
+/* swipe left is Later; swipe right does nothing, a card is only finished by its action */
+(function(){ let x0 = null, y0 = 0, key = null;
+  document.addEventListener("pointerdown", e=>{ const c = e.target.closest && e.target.closest("#phone .cu-card"); if (!c || e.target.closest("textarea, button")) return; x0 = e.clientX; y0 = e.clientY; key = c.dataset.key; }, true);
+  document.addEventListener("pointerup", e=>{ if (x0==null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null; if (dx < -64 && Math.abs(dy) < 48 && cuItems().length > 1) cuLater(key); }, true); })();
+
+/* ---- Home: one card, the same height for 2 items or 300; at 0, one line ---- */
+function cuHomeRow(it){
+  const M = cuModel(it), C = cuK(), compose = M.kind==="compose", open = C.home===it.key;
+  const verb = compose ? M.verb : "Open", act = compose ? `cuK().home=cuK().home==='${it.key}'?null:'${it.key}';render()` : `cuOpen('${it.key}')`;
+  const flash = C.flash && C.flash.key===it.key;
+  return `<div class="g9-row cu-top" data-key="${it.key}" data-kc="KeyBriefRow"><button type="button" class="g9-rb" onclick="cuOpen('${it.key}')">${/^q:/.test(it.key) && M.mid ? g9Tile(m2Theme(m2Mis(M.mid)), "sparkles", 32) : it.pid ? m2Face(it.pid, "m2-a32") : g9Tile("dusk", it.key==="b:dinner" ? "utensils" : "sparkles", 32)}${(()=>{ const sh = M.msg && CU_MSG[it.pid]; /* a reply reads "Jordan replied" over "Wants your deck · …": nothing that matters is cut at 360 */
+      const t = sh ? `${cuFirst(it.pid)} replied` : it.h, sub = sh ? [sh[1].replace(/^./, c=>c.toUpperCase()), (it.rc || "").split(" · ").pop()].filter(Boolean).join(" · ") : it.rc;
+      return `<span class="g9-rt"><b>${g7Esc(t)}</b>${sub ? `<span>${g7Esc(sub)}</span>` : ""}</span>`; })()}</button>
+    ${flash ? `<span class="g9-done" role="status">${LI("check",16)}${g7Esc(C.flash.t)}</span>` : `<button type="button" class="g9-vb" aria-expanded="${compose ? open : "false"}" onclick="${act}">${verb}</button>`}</div>
+    ${open && !flash ? cuComposer(it, M) : ""}`;
+}
+g7DeckHTML = function(){
+  const its = cuItems(), n = its.length, C = cuK();
+  if (!n) return `<section class="g7-deck cu-hcard cu-zero" aria-label="Your brief" data-kc="KeyBriefCard" data-kv="items=0"><p>${LI("check",18)}You're caught up. More tomorrow morning.</p></section>`;
+  const top = its[0], fresh = C.next; C.next = null;
+  return `<section class="g7-deck cu-hcard${fresh ? " cu-in" : ""}" aria-label="Your brief" data-kc="KeyBriefCard" data-kv="items=${n}">${cuHomeRow(top)}
+    ${n > 1 ? `<button type="button" class="cu-line" onclick="cuOpen()"><span>Catch up · ${n}</span>${LI("chevron-right",20)}</button>` : ""}</section>`;
+};
+/* the hero's count is the same set; at 0 the card says it, so the hero doesn't repeat it */
+const _cuSim = simulate, _cuWeek = advanceWeek;
+simulate = function(){ cuK().set = null; return _cuSim.apply(this, arguments); };
+advanceWeek = function(){ cuK().set = null; return _cuWeek.apply(this, arguments); };
+/* the hero is one sentence of at most two lines at any volume, and it always adds up to the count: replies and people hiring as clauses,
+   everything else as "and N more" ("Jordan and Dev replied, Ana is hiring, and 1 more. 4 since yesterday."). Names only when every clause
+   can name everyone in it (2 at most) and the line fits about 74 characters (two lines at 360 with the longest names); otherwise every clause is a count. At 0 the card says it. */
+g8Hero = function(its){
+  const n = its.length; if (!n) return "";
+  const R = [], H = [], O = [];
+  its.forEach(x=>{ const m = /^(<button[^>]*>[^<]*<\/button>) (replied|is hiring)$/.exec(x.say || ""); if (!m) O.push(x.say || ""); else (m[2]==="replied" ? R : H).push(m[1]); });
+  const say = names => { const cl = [];
+    if (R.length) cl.push(`${names ? g7And(R) : `${R.length} ${R.length===1 ? "person" : "people"}`} replied`);
+    if (H.length) cl.push(names ? `${g7And(H)} ${H.length > 1 ? "are" : "is"} hiring` : `${H.length} ${H.length===1 ? "role is" : "roles are"} open`);
+    let rest = O.length;
+    if (!cl.length) { const one = O[0]; if (names && one) { cl.push(/^an idea\b/.test(one) ? `there's ${one}` : one); rest--; } else { cl.push(`${n} ${n===1 ? "update is" : "updates are"} waiting`); rest = 0; } }
+    const parts = cl.concat(rest ? [`${rest} more`] : []);
+    return parts.length===1 ? parts[0] : `${parts.slice(0, -1).join(", ")}, and ${parts[parts.length-1]}`; };
+  const plain = t => t.replace(/<[^>]+>/g, "").length + `. ${n} ${g8Since()}.`.length;
+  const nm = R.length <= 2 && H.length <= 2 && say(true), t = nm && plain(nm) <= 74 ? nm : say(false);
+  return `<p class="g8-hl cu-hero">${t.charAt(0)==="<" ? t : t.charAt(0).toUpperCase()+t.slice(1)}. <span class="g8-hc">${n} ${g8Since()}.</span></p>`;
+};
+/* a name in the hero opens Catch up at that item; the Kai sheet's brief row opens Catch up */
+g8DeckTo = function(key){ cuOpen(key); };
+g8Story = function(){ cuOpen(); };
+const _cuDeckOpen = m2DeckOpen;
+m2DeckOpen = function(){ if (STATE.member && STATE.intakeDone) return cuOpen(); return _cuDeckOpen.apply(this, arguments); };
+
+</script>
+<style>
+/* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
+   One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
+   grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
+   along the bottom edges, where there is no text, and fades out before the chat starts, so text keeps AA (n45 M2, n49 M3). ==== */
+.sheet.ks { isolation:isolate; }
+.sheet.ks::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
+  background:
+    radial-gradient(75% 170px at 82% 100%, rgba(220,184,84,.62), rgba(220,184,84,.26) 45%, rgba(220,184,84,0) 100%),
+    radial-gradient(85% 200px at 14% 100%, rgba(74,108,176,.46), rgba(74,108,176,.18) 45%, rgba(74,108,176,0) 100%),
+    radial-gradient(22px 48% at 0% 100%, rgba(74,108,176,.34), rgba(74,108,176,0) 100%),
+    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.40), rgba(220,184,84,0) 100%);
+  transform-origin:50% 100%; animation:kwBreathe 9s ease-in-out infinite alternate; }
+.dark .sheet.ks::before { background:
+    radial-gradient(75% 170px at 82% 100%, rgba(220,184,84,.46), rgba(220,184,84,.18) 45%, rgba(220,184,84,0) 100%),
+    radial-gradient(85% 200px at 14% 100%, rgba(98,134,210,.72), rgba(98,134,210,.28) 45%, rgba(98,134,210,0) 100%),
+    radial-gradient(22px 48% at 0% 100%, rgba(98,134,210,.5), rgba(98,134,210,0) 100%),
+    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.38), rgba(220,184,84,0) 100%); }
+.sheet.ks.g7-ks .ks-hd, .sheet.ks.g7-ks .ks-body, .sheet.ks.g7-ks .ks-thread, .sheet.ks.g7-ks .ks-comp,
+.sheet.ks .ks-hd, .sheet.ks .ks-body, .sheet.ks .ks-thread, .sheet.ks .ks-comp { background:transparent; }
+.sheet.ks .ks-comp { border-top-color:transparent; }
+@keyframes kwBreathe { from { opacity:.78; transform:scaleY(.94); } to { opacity:1; transform:scaleY(1.04); } }
+@media (prefers-reduced-motion: reduce) { .sheet.ks::before { animation:none; opacity:.85; } }
+
+</style>
 <script>
 /* ==== STATUS BAR, NO BLUR (7 Oct 09:01, Apoorv: "the weird blurry gradient coming from the status bar onto the app header ... on every
    screen"). None of our layers blur there any more (6 Oct 00:39 took the glass blur off phones). What is left is iOS 26 Safari's own
@@ -31692,7 +32135,7 @@ cgCtl();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-0840";
+window.KEY_BUILD = "2.hifi-078d";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
