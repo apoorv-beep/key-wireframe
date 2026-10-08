@@ -32484,7 +32484,7 @@ function kkBusy(){ const me = ((DB.people.priya || {}).families || ["Xoogler"]).
       ex:[["them", "Earlier", `Asked if you're open to ${yes}.`],["you", "Earlier", `Shared: ${line}.`, [s[0], F[0]]]].concat(st==="matched" ? [["you", "Earlier", "Matched: both said yes. Names shown to both."]] : st==="closed" ? [["them", "Earlier", "They didn't take it further."]] : []) }); }
   return out; }
 STATE.kk = STATE.kk || { rows:null, vol:"demo", more:false, old:false, stop:null };
-function kkRows(){ const B = STATE.kk; if (!B.rows) B.rows = B.vol==="busy" ? kkBusy() : B.vol==="none" ? [] : KK_ROWS(); return B.rows; }
+function kkRows(){ const B = STATE.kk || (STATE.kk = { rows:null, vol:"demo", more:false, old:false, stop:null }); if (!B.rows) B.rows = B.vol==="busy" ? kkBusy() : B.vol==="none" ? [] : KK_ROWS(); return B.rows; }
 /* Rahul's why line on the goal holds only while the two Kais are matched */
 function kkWhy(){ if (typeof PL_WHY==="undefined") return; const r = kkRows().find(x=>x.id==="rahul");
   if (r && r.st==="matched") PL_WHY.rahul = ["Rahul's Kai: open to referrals this month", "Referred"]; else delete PL_WHY.rahul; }
@@ -33207,7 +33207,7 @@ html.dark #phone .c2-yes, body.dark #phone .c2-yes { background:#fff; color:#111
 #phone .c2-kn b { font:800 28px/1.1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
 /* fold: a fourth row when the stage has room for it */
 /* narrow phones: the goal name keeps one line on plates (the chip above names it too) */
-@container (max-width:340px) { #phone .c2-goal b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
+@container (max-width:340px) { #phone .c2-goal b { display:block; min-width:0; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
 /* reply cards: your whole ask above their reply when it fits */
 #phone .c2-card:has(.c2-dd) .c2-me > span { -webkit-line-clamp:4; }
 #phone .c2-fold .c2-fl { gap:24px; }
@@ -33505,11 +33505,19 @@ render = function(){
 
 </script>
 <style>
+.stagebar .sgrp[hidden] { display:none; }
 .stagebar .ctl2 { padding-top:8px; border-top:1px solid rgb(128 128 128 / .3); }
-.stagebar .ctl2 .sgl { font-size:12px; font-weight:700; color:#6b6b6b; letter-spacing:0; margin-top:0; }
-.stagebar .ctl2-h { width:100%; margin:-2px 0 2px; font-size:11px; color:#8a8a8a; }
-.stagebar .ctl2 label, .stagebar .ctl2 .rs-nx { display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#f2f2f2; border:1px solid #444; background:#2a2a2a; border-radius:8px; padding:2px 4px 2px 10px; }
-.stagebar .ctl2 select { font:inherit; font-size:11px; color:#f2f2f2; background:#2a2a2a; border:0; min-height:26px; padding:0 4px; }
+.stagebar .ctl2 .sgl { font-size:12px; font-weight:700; color:var(--ink, #141414); letter-spacing:0; margin-top:0; }
+.stagebar .ctl2-h { width:100%; margin:-2px 0 2px; font-size:11px; color:color-mix(in srgb, var(--ink, #141414) 72%, transparent); }
+.stagebar .ctl2 label, .stagebar .ctl2 .rs-nx { display:inline-flex; align-items:center; gap:6px; font-size:11px; line-height:1.5; color:#f2f2f2; border:1px solid #444; background:#2a2a2a; border-radius:8px; padding:0 4px 0 10px; }
+.stagebar .ctl2 .rs-nx select, .stagebar .ctl2 label select { font:inherit; font-size:11px; color:#f2f2f2; background:#2a2a2a; border:0; min-height:28px; padding:0 4px; }
+#weekLbl:empty { display:none; }
+@media (max-width:500px) {
+  .stage .stagebar .ctl2 .sgl { color:#f2f2f2; }
+  .stage .stagebar .ctl2-h { color:#b8b8b8; }
+}
+html.dark .stagebar .ctl2 .sgl { color:#f2f2f2; }
+html.dark .stagebar .ctl2 .ctl2-h { color:#b8b8b8; }
 
 </style>
 <script>
@@ -33522,9 +33530,8 @@ const CTL2_SECT = [
   ["Go to screen", "Open a screen directly."],
   ["Time and replies", "Move the world forward and choose how people answer."],
   ["View as", "See the app as someone else."],
-  ["Demo states", "Put a goal, Catch up or a join request into a state to show."],
-  ["Money", "Payments and paid membership."],
-  ["Overview", "Walkthroughs of the whole product."]];
+  ["Demo states", "Put a goal, Catch up or a join ask into a state to show."],
+  ["Money", "Payments and paid membership."]];
 /* [match on the original label or handler, section, new label (null keeps it), or "x" to remove] */
 const CTL2_MAP = [
   [/^Restart$/, 0], [/^Skip to home$/, 0, "Skip to Home"], [/^Day one$/, 0, "First day on Key"], [/^Skip to family$/, 0, "Pick a family"],
@@ -33532,11 +33539,11 @@ const CTL2_MAP = [
   [/^Messages$/, 1], [/^Chat$/, 1, "A chat"], [/^Channel$/, 1, "A channel"], [/^Notifications$/, 1], [/^Goal ideas$/, 1, "New goal"],
   [/^Texts with Kai$/, 1], [/^Organizer: new family$/, 1, "Start a family (organizer)"],
   [/^Advance a week/, 2, "Advance a week"], [/^Simulate next/, 2, "Next thing happens"], [/^Next reply/, 2], [/^Network:/, 2],
-  [/^Organizer$/, 3, "Organizer"], [/persona/, 3],
+  [/^Organizer$/, 3, "View as organizer"], [/persona/, 3],
   [/^Plan: stuck$/, -1], [/^Plan: offer logged$/, 4, "Offer logged"], [/^Plan: Sana call happened$/, 4, "Sana call happened"], [/^Plan: new goal$/, 4, "Dinner goal started"],
-  [/^Catch up: /, 4], [/^Between Kais: /, 4], [/^Thin family/, 4], [/^B6: reset join$/, 4, "Join request: start over"], [/^B6: organizer approves$/, 4, "Join request: approved"],
+  [/^Catch up: /, 4, "Catch up with 300 items"], [/^Between Kais: none$/, 4, "Kai-to-Kai asks: none"], [/^Between Kais: busy$/, 4, "Kai-to-Kai asks: many"], [/^Between Kais: demo$/, 4, "Kai-to-Kai asks: sample"], [/^Thin family/, 4], [/^B6: reset join$/, 4, "Join request: start over"], [/^B6: organizer approves$/, 4, "Join request: approved"],
   [/^A match arrives$/, 4, "Search: a match arrives"], [/^Search, first time$/, 4, "Search: first time"],
-  [/^(You|Buy a ticket|Price a ticket|Paid membership|Insights)$/, 5], [/^(Launch day|First week)$/, 6]];
+  [/^(You|Buy a ticket|Price a ticket|Paid membership|Insights)$/, 5]];
 function ctl2Key(e){ return e.tagName==="LABEL" ? (e.firstChild && e.firstChild.textContent || "").trim() : e.id==="personaBtn" ? "persona" : e.textContent.trim(); }
 function ctl2Sort(){
   const bar = document.querySelector(".stagebar"); if (!bar) return;
@@ -33549,6 +33556,15 @@ function ctl2Sort(){
     secs[m[1]].appendChild(e); });
   [...bar.children].forEach(g=>{ if (!g.classList.contains("ctl2") && g.querySelector(".sgl")) g.hidden = !g.querySelector("button, label, select"); });
   secs.forEach(g=>{ g.hidden = !g.querySelector("button, label, select"); });
+  /* Overview keeps its own group (its click handler lives there), styled and placed like the others, last */
+  const ov = bar.querySelector(".ov-sgrp"); if (ov) { if (!ov.classList.contains("ctl2")) { ov.classList.add("ctl2"); ov.querySelector(".sgl").insertAdjacentHTML("afterend", `<span class="ctl2-h">Walkthroughs of the whole product.</span>`); } bar.appendChild(ov); }
+  const wk = document.getElementById("weekLbl"); if (wk && !wk.closest(".ctl2")) { wk.classList.add("ctl2-h"); secs[2].querySelector(".ctl2-h").after(wk); } if (wk) wk.style.removeProperty("color");
+  const pb = document.getElementById("personaBtn"); if (pb && !/^(Back|View as)/.test(pb.textContent)) pb.textContent = `View as ${pb.textContent} (member)`;
+  /* toggles show when they're on */
+  bar.querySelectorAll(".ctl2 button").forEach(b=>{ const k = b.dataset.k || "";
+    if (k==="Organizer") { b.classList.toggle("on", !!STATE.asOrganizer); if (b.textContent!=="View as organizer") b.textContent = "View as organizer"; } else if (/^Network:/.test(k)) b.classList.toggle("on", !!STATE.offline);
+    else if (/^Thin family/.test(k)) b.classList.toggle("on", /on$/.test(b.textContent.trim())); else if (/^Catch up: /.test(k)) b.classList.toggle("on", !!STATE.csVol);
+    else if (/^Between Kais: /.test(k)) b.classList.toggle("on", !!STATE.kk && k.endsWith(STATE.kk.vol) && STATE.kk.vol!=="demo"); });
   const lb = bar.querySelector(".sgl"); if (lb && !lb.closest(".ctl2")) lb.remove();
 }
 const _ctl2Render = render;
@@ -33614,7 +33630,7 @@ ctl2Sort();
     return `rgb(${[0, 1, 2].map(i=>Math.round(t[i] * t[3] + u[i] * (1 - t[3]))).join(",")})`; };
   /* n58 check: a goal's plate band runs up under the strip at 170deg, so it is already lighter than its first stop where the strip ends.
      The strip takes the band's colour at that line, so the two meet without a step */
-  function band(){ const y = bar.offsetHeight; if (typeof phone==="undefined" || !phone) return "";
+  function band(){ const y = bar.offsetHeight; if (typeof phone==="undefined" || !phone || STATE.screen==="home") return "";  /* n79 check: scrolled Home cards are not a band */
     const pr = phone.getBoundingClientRect(), x = pr.left + pr.width / 2;
     for (const e of document.elementsFromPoint(x, pr.top + y + 1)) { if (!phone.contains(e)) break; const bi = getComputedStyle(e).backgroundImage;
       if (bi==="none") continue; const g = bi.match(/^linear-gradient\((-?[\d.]+)deg, (rgb\([^)]+\)), (rgb\([^)]+\))\)$/); if (!g) return "";
@@ -33682,7 +33698,7 @@ ctl2Sort();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-7541";
+window.KEY_BUILD = "2.hifi-df4c";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

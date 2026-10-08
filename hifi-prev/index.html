@@ -32874,6 +32874,11 @@ html.dark #phone .rt-c, body.dark #phone .rt-c { border-left-color:color-mix(in 
 #phone .mh-pane .rt .rt-st small { display:none; }
 #phone .mh-pane .rt .mt-card .mt-row > .m > .b { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 #phone .mh-pane .rt .mt-card .mt-row > .m > .pl-wl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+/* shorter phones: the goal header plate keeps its title to one line so the first action clears the composer */
+@media (max-height:800px) {
+  #phone.g7-gp .g8-bh .g8-bt, #phone .g9-bt { -webkit-line-clamp:1; font-size:20px; }
+  #phone.g7-gp .g8-bh .g8-bd, #phone .g9-bd { margin-top:6px; }
+}
 
 </style>
 <script>
@@ -33183,15 +33188,31 @@ html.dark #phone .c2-yes, body.dark #phone .c2-yes { background:#fff; color:#111
 #phone .c2-plan { display:flex; flex-direction:column; gap:12px; margin:0; padding:0; list-style:none; }
 #phone .c2-plan li { display:flex; align-items:center; gap:12px; font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
 #phone .c2-plan svg { flex:0 0 auto; color:var(--text-secondary); }
-#phone .c2-fold .c2-fl { flex:1 1 auto; justify-content:space-evenly; max-height:260px; }
-#phone .c2-fold .c2-c { flex:1 1 auto; }
+#phone .c2-fold .c2-fl { gap:16px; }
+
 /* spare height goes to the answers and Kai's plan, never to a block */
 #phone .c2-d.c2-dr { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
 #phone .c2-dr .c2-rows { flex:1 1 auto; }
-#phone .c2-dr .c2-row { flex:1 1 56px; max-height:80px; }
+#phone .c2-dr .c2-row { flex:1 1 56px; max-height:96px; }
 #phone .c2-card:has(.c2-plan) .c2-c { flex:1 1 auto; }
 #phone .c2-plan { flex:1 1 auto; justify-content:space-evenly; max-height:240px; }
 @container (max-height:600px) { #phone .c2-card .c2-old { display:none; } }
+#phone .c2-fr { grid-template-columns:48px 1fr; min-height:56px; }
+#phone .c2-ask > span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+@container (max-height:600px) { #phone .c2-card .c2-ask { display:none; } }
+#phone .c2-stl { margin:0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .c2-dd .c2-comp { max-height:280px; }
+#phone .c2-kn { display:flex; gap:24px; }
+#phone .c2-kn span { display:flex; flex-direction:column; gap:2px; font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-kn b { font:800 28px/1.1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+/* fold: a fourth row when the stage has room for it */
+/* narrow phones: the goal name keeps one line on plates (the chip above names it too) */
+@container (max-width:340px) { #phone .c2-goal b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } }
+/* reply cards: your whole ask above their reply when it fits */
+#phone .c2-card:has(.c2-dd) .c2-me > span { -webkit-line-clamp:4; }
+#phone .c2-fold .c2-fl { gap:24px; }
+#phone .c2-fold .c2-kn { margin-top:8px; }
+@container (max-height:620px) { #phone .c2-fold .c2-fr:nth-child(4) { display:none; } #phone .c2-fold .c2-fl { gap:28px; } #phone .c2-fold .c2-kn { margin-top:16px; } }
 
 </style>
 <script>
@@ -33201,13 +33222,20 @@ html.dark #phone .c2-yes, body.dark #phone .c2-yes { background:#fff; color:#111
    Every card has four zones: what it's about (a chip), what happened (22/700), the evidence (the messages, the goal it would start, the
    person), and only what the action needs (Kai's draft). The buttons live in one bar under the card: Undo far left, Skip, the yes, Later
    far right. Right = yes, left = skip. Anything outward holds for 5 seconds with Undo before it goes. ==== */
-const C2_ASK = { jordan:"Hi Jordan, I'm also looking at AI PM roles. Swap notes sometime?", dev:"Hi Dev, how's the new company going?" };
+const C2_ASK = { jordan:"Hi Jordan, I'm also looking at AI PM roles. Swap notes sometime?", dev:"Hi Dev, how's the new company going?",
+  priti:"Hi Priti, I'm looking at senior PM roles. Is your team hiring?" };
+/* Kai's draft answers the reply it sits under (n75 check F2) */
+const C2_DRAFT = { priti:"Tuesday works. Morning or afternoon?", tom:"Thanks, Tom. If someone comes to mind, I'd be glad of a name." };
+const _c2Model = cuModel;
+cuModel = function(it){ const M = _c2Model.apply(this, arguments); if (M && M.kind==="compose" && C2_DRAFT[it.pid]) M.draft = C2_DRAFT[it.pid]; return M; };
 const c2K = () => { const C = csK(); C.stack = C.stack || []; C.pend = C.pend || {}; C.c2r = C.c2r || {}; return C; };
 const c2E = s => g7Esc(s == null ? "" : String(s));
 const c2F = pid => ((DB.people[pid] || {}).name || "").split(" ")[0];
 /* a send that's holding is out of the set already, so the counts move with the swipe */
 const _c2Deck = g7DeckItems;
-g7DeckItems = function(){ const its = _c2Deck.apply(this, arguments), P = (cuK().stack && cuK().pend) || {}; return STATE.c2raw ? its : its.filter(x=>!P[x.key]); };
+g7DeckItems = function(){ const its = _c2Deck.apply(this, arguments), P = (cuK().stack && cuK().pend) || {};
+  const rp = new Set(its.filter(x=>/^n:/.test(x.key)).map(x=>x.pid)), one = its.filter(x=>!(/^q:/.test(x.key) && rp.has(x.pid)));  /* one card per person (n75 check nit) */
+  return STATE.c2raw ? one : one.filter(x=>!P[x.key]); };
 /* the card's yes: its word, whether it goes outward (holds 5 seconds), and how it's done */
 function c2Yes(it, M){
   if (M.kind==="compose") return { w:"Send", send:1, out:1, to:c2F(it.pid) || M.who };
@@ -33236,34 +33264,48 @@ function c2Plate(th, ini, name, chg){ const p = g7Plate(th);
 function c2Ctx(mis, pid, M, head){
   if (!mis) return "";
   const r = typeof RT!=="undefined" && RT[mis.id] && RT[mis.id].routes.find(x=>Array.isArray(x[2]) && x[2].includes(pid));
-  let st = c2Sent(M.p && M.p.sub); if (!st || head && st.replace(/\.$/, "")===String(head).replace(/[.?]$/, "")) st = M.p && M.p.stage || "";
-  const chg = [r && r[0], st].filter(Boolean).join(" · ") || [M.p && M.p.name, M.p && M.p.stage].filter(Boolean).join(" · ") || head;
+  const h = String(head || "").toLowerCase(), st = c2St(M, head), same = t => h.includes(t.toLowerCase().replace(/^not /, "")) || t===st;
+  const ss = String(M.p && M.p.sub || "").replace(/^Replied:\s*/, "Replied. ").split(/(?<=\.)\s/).map(x=>x.replace(/\.$/, "")).filter(x=>x && !same(x));
+  const chg = [r && r[0], ss[0]].filter(Boolean).join(" · ") || (M.p && M.p.name ? `${M.p.name} logged · ${/done|went well/.test(h) ? "Ready to close" : "Your call"}` : "");
   return c2Plate(m2Theme(mis), g7Short(mis).charAt(0), mis.name, chg);
 }
 /* the answers as full-width rows, the yes first, each with what happens next in one line */
-const C2_THEN = [[/^Went well$/, "Kai logs it and plans the next step"], [/^Not a fit$/, "Kai logs it and looks elsewhere on this goal"], [/^Not yet$/, "Kai asks again after you meet"],
+const C2_THEN = [[/^Went well$/, "Kai logs it and plans the next step"], [/^Not a fit$/, "Kai logs it and looks elsewhere"], [/^Not yet$/, "Kai asks again after you meet"],
   [/^Ask (\w+) instead$/, "Kai drafts the ask to $1"], [/^Wait for (\w+)$/, "Kai checks with $1 again next week"], [/^(Close|Set aside)$/, "Kai stops asking about this one"],
   [/^Another (route|way in)$/, "Kai tries a different route"], [/^Ask in a month$/, "Kai asks again in a month"], [/^Ask someone else$/, "Kai finds someone else on this route"],
-  [/^Keep waiting$/, "Kai checks again next week"], [/^(Close it|Mark done)$/, "The goal closes with the outcome logged"]];
-const c2Then = l => { const m = C2_THEN.find(([re])=>re.test(l)); return m ? l.replace(m[0], m[1]) : ""; };
+  [/^Keep waiting$/, "Kai checks again next week"], [/^(Close it|Mark done)$/, "Closes with the outcome logged"]];
+const c2Then = (l, done) => { if (done && l==="Not yet") return "The goal stays open. Kai asks next week";
+  const m = C2_THEN.find(([re])=>re.test(l)); return m ? l.replace(m[0], m[1]) : ""; };
 function c2Rows(key, rows){ return `<div class="c2-rows">${rows.map(([l, then, go], j)=>`<button type="button" class="c2-row${j ? "" : " c2-ry"}" onclick="${go}">${j ? "" : LI("check", 18)}<span><b>${c2E(l)}</b>${then ? `<small>${c2E(then)}</small>` : ""}</span></button>`).join("")}</div>`; }
+/* what's behind a question: what you sent (and to whom), their reply, or the one real status line */
+/* the one status line under the exchange: the first sentence unless the headline already says it */
+function c2St(M, head){ const x = M.p || {}, sub = String(x.sub || ""); if (!sub || /^Replied:/.test(sub)) return "";
+  const ss = sub.split(/(?<=\.)\s/).map(t=>t.replace(/\.$/, "")), h = String(head || "").toLowerCase();
+  return h.includes(ss[0].toLowerCase().replace(/^not /, "")) ? (x.draft ? "" : ss.slice(1).join(". ")) : ss[0]; }
+function c2Ex(M, head){ const x = M.p || {}, sub = String(x.sub || ""), to = x.to && x.to!==x.pid && c2F(x.to);
+  const rep = /^Replied:\s*/.test(sub) && sub.replace(/^Replied:\s*/, ""), st = c2St(M, head);
+  return (x.draft ? `<div class="c2-bub c2-me c2-ask"><small>You${to ? ` · to ${c2E(to)}` : ""}</small><span>${c2E(x.draft)}</span></div>` : "")
+    + (rep ? `<div class="c2-bub c2-them">${c2E(rep)}</div>` : st ? `<p class="c2-stl">${c2E(st)}</p>` : ""); }
+/* a goal that looks done and names no one: how far it came, from the goal's own numbers */
+function c2Done(mis){ const c = m2Cfg(mis.id) || {}, wk = c.by ? m2Week(mis.id, c) : 0, n = DB.opps.filter(o=>o.missionId===mis.id && (o.log||[]).length).length;
+  return `<div class="c2-kn">${wk ? `<span><b>${wk}</b>of ${c.weeks} weeks</span>` : ""}${n ? `<span><b>${n}</b>${n===1 ? "conversation" : "conversations"}</span>` : ""}</div>`; }
 /* the four zones for each kind of item */
 function c2Zones(it, M){
   const mis = M.mid && m2Mis(M.mid), p = it.pid && DB.people[it.pid], when = (it.rc || M.where || "").split(" · ").pop();
   if (it.key==="b:dinner" && typeof evE==="function") { const v = evE("e1") || {}, th = g7Plate("dusk");
     return { a:c2Event(v) + c2Line([["calendar-clock", `${v.day || ""} ${(v.when || "").split(", ").pop()}`.trim()], ["map-pin", v.where], ["users", v.going >= 5 ? `${v.going} going` : ""]]),
       b:`<h2 class="c2-h" tabindex="-1">Make the dinner count</h2>`,
-      c:`<div class="c2-goal c2-g120" style="background:linear-gradient(120deg, ${th[0]} 20%, ${th[1]})"><span class="c2-wm" aria-hidden="true">P</span><b>People to meet at Thursday's dinner</b><span class="c2-chg">New goal · Kai finds 3 people worth meeting</span></div>${c2Plan([["users", v.going >= 5 ? `Picks 3 people from the ${v.going} going` : "Picks 3 people from the guests"], ["message-square", "Drafts a hello to each. You send it"], ["bell", "Reminds you Thursday before you go"]])}${v.details ? `<p class="c2-det">${c2E(v.details)}</p>` : ""}` }; }
+      c:`<div class="c2-goal c2-g120" style="background:linear-gradient(120deg, ${th[0]} 20%, ${th[1]})"><span class="c2-wm" aria-hidden="true">P</span><b>People to meet at Thursday's dinner</b><span class="c2-chg">New goal · Starts when you say yes</span></div>${c2Plan([["users", v.going >= 5 ? `Picks 3 people from the ${v.going} going` : "Picks 3 people from the guests"], ["message-square", "Drafts a hello to each. You send it"], ["bell", "Reminds you Thursday before you go"]])}${v.details ? `<p class="c2-det">${c2E(v.details)}</p>` : ""}` }; }
   if (it.bk) { const r = kkRows().find(x=>x.id===it.bk);
     return { a:c2Fam(r.fam, `go('you:context:bk:${r.id}')`), b:`<h2 class="c2-h" tabindex="-1">${c2E(kkKai(r))} asks for your help</h2>`,
-      d:"rows", rows:[["Share this", `${kkKai(r)} hears you'll do ${r.yes}`, `c2Go('${it.key}')`], ["Not now", "Nothing about you is shared", `c2Skip('${it.key}')`]],
+      d:"rows", rows:[["Share this", `${kkKai(r)} hears you said yes`, `c2Go('${it.key}')`], ["Not now", "Nothing about you is shared", `c2Skip('${it.key}')`]],
       c:`${r.ex.slice(0, -1).slice(-2).map(([w, t, x])=>`<div class="c2-bub ${w==="you" ? "c2-me c2-mine" : "c2-them c2-old"}"><small>${w==="you" ? "Your Kai" : c2E(kkKai(r))} · ${c2E(t)}</small><span>${c2E(x)}</span></div>`).join("")}<div class="c2-bub c2-them c2-reply">${c2E(r.ask)}</div>${c2Line([["lock", r.pid ? "" : "Their name shows only if you both say yes"]])}` }; }
   if (/^[up]:/.test(it.key)) { const x = DB.pool.find(y=>y.id===it.key.slice(2)) || {}, via = x.via || it.pid;
     return { a:mis ? c2Goal(mis) : c2Fam(x.fam || "Your community", "go('home')"), b:`<div class="c2-who">${via ? c2Face(via, 48) : ""}<span><h2 class="c2-h" tabindex="-1">${c2E(c2F(via) || M.who)} is hiring</h2><small>${c2E(M.where)}</small></span></div>`,
       c:`<div class="c2-bub c2-them">${c2E(String(M.body).replace(/\bmission\b/g, "goal"))}</div>${M.note ? `<p class="c2-kai">${kaiMark(16)}<span>${c2E(M.note)}</span></p>` : ""}`, d:"draft" }; }
   const head = p ? `<div class="c2-who">${c2Face(it.pid, 48)}<span><h2 class="c2-h" tabindex="-1">HEAD</h2><small>${c2E(p.title || "")}${when ? ` · ${c2E(when)}` : ""}</small></span></div>` : `<h2 class="c2-h" tabindex="-1">HEAD</h2>`;
   const A = mis ? c2Goal(mis) : p ? `<button type="button" class="c2-chip" onclick="c2Leave(&quot;go('dm:${it.pid}')&quot;)">${c2Face(it.pid, 20)}<span class="c2-cl">Message</span></button>` : "";
-  if (M.kind==="compose") { const ask = C2_ASK[it.pid], reply = M.msg || M.body;
+  if (M.kind==="compose") { const ask = C2_ASK[it.pid] || (M.mid && (m2Path(M.mid, it.pid) || {}).draft), reply = M.msg || M.body;
     return { a:A, b:head.replace("HEAD", c2E(/^d:/.test(it.key) ? `Your note to ${c2F(it.pid)}` : `${c2F(it.pid)} replied`)),
       c:`${ask ? `<div class="c2-bub c2-me"><span>${c2E(ask)}</span></div>` : ""}<div class="c2-bub c2-them c2-reply">${c2E(reply)}</div>`, d:"draft" }; }
   if (M.kind==="fit") return { a:A, b:`<h2 class="c2-h" tabindex="-1">${c2E(it.h || `A new pick for ${g7Short(mis)}`)}</h2>`,
@@ -33272,8 +33314,8 @@ function c2Zones(it, M){
   const hd = it.h || M.body, nm = c2F(it.pid);
   return { a:A, b:`<h2 class="c2-h" tabindex="-1">${c2E(nm && !hd.includes(nm) ? `${nm}: ${hd}` : hd)}</h2>`,
     c:(p ? `<div class="c2-pick">${c2Face(it.pid, 64)}<span><b>${c2E(p.name)}</b><small>${c2E(c2Desc(p))}</small></span></div>` : "")
-      + (mis ? c2Ctx(mis, it.pid, M, hd) : ""),
-    d:"rows", rows:(M.chips || []).map((c, i)=>[c, i]).filter(([c, i])=>!i || c[2]!=="passed").map(([c, i])=>{ const l = i ? ({ "Close":"Set aside", "Close it":"Mark done" })[c[0]] || c[0] : c2Yes(it, M).w; return [l, c2Then(c[0]), i ? `c2Alt('${it.key}',${i})` : `c2Go('${it.key}')`]; }) };
+      + c2Ex(M, hd) + (!p && mis && /done/i.test(hd) ? c2Done(mis) : "") + (mis ? c2Ctx(mis, it.pid, M, hd) : ""),
+    d:"rows", rows:(M.chips || []).map((c, i)=>[c, i]).filter(([c, i])=>!i || c[2]!=="passed").map(([c, i])=>{ const l = i ? ({ "Close":"Set aside", "Close it":"Mark done" })[c[0]] || c[0] : c2Yes(it, M).w; return [l, c2Then(c[0], /done/i.test(hd)), i ? `c2Alt('${it.key}',${i})` : `c2Go('${it.key}')`]; }) };
 }
 const c2Plan = xs => `<ul class="c2-plan">${xs.map(([i, t])=>`<li>${LI(i, 18)}<span>${c2E(t)}</span></li>`).join("")}</ul>`;
 function c2Card(it, done){
@@ -33289,13 +33331,13 @@ function c2Card(it, done){
     <span class="c2-hint c2-hl" aria-hidden="true">${LI("x", 18)}Skip</span><span class="c2-hint c2-hr" aria-hidden="true">${LI("check", 18)}${c2E(done ? "Next" : y.w)}</span></article>`;
 }
 function c2Kinds(rest){ const n = { u:0, p:0, x:0 }; rest.forEach(it=>{ const h = it.h || ""; n[/posted a role|is hiring/.test(h) ? "u" : /posted/.test(h) ? "p" : "x"]++; });
-  return `<p class="c2-sub">${[[n.u, "role", "roles"], [n.p, "post", "posts"], [n.x, "goal update", "goal updates"]].filter(x=>x[0]).map(x=>`${x[0]} ${x[0]===1 ? x[1] : x[2]}`).join(" · ")}</p>`; }
+  return `<div class="c2-kn">${[[n.u, "role", "roles"], [n.p, "post", "posts"], [n.x, "goal update", "goal updates"]].filter(x=>x[0]).map(x=>`<span><b>${x[0]}</b>${x[0]===1 ? x[1] : x[2]}</span>`).join("")}</div>`; }
 function c2Fold(rest){
   return `<article class="c2-card c2-fold" data-key="fold"><div class="c2-a"><span class="c2-chip c2-static">Worth a look</span></div>
     <div class="c2-b"><h2 class="c2-h" tabindex="-1">${rest.length} more for your goals</h2></div>
     <div class="c2-c"><p class="c2-sub">Kai kept these for when you have a minute. Nothing here needs you today.</p>
-    <div class="c2-fl">${rest.filter(it=>it.pid && DB.people[it.pid]).slice(0, 3).map(it=>{ const M = cuModel(it), mis = M.mid && m2Mis(M.mid);
-      return `<div class="c2-fr">${c2Face(it.pid, 32)}<span><b>${c2E(it.h || M.who || M.body || "")}</b></span></div>`; }).join("")}</div>${c2Kinds(rest)}</div>
+    <div class="c2-fl">${rest.filter(it=>it.pid && DB.people[it.pid]).slice(0, 4).map(it=>{ const M = cuModel(it), mis = M.mid && m2Mis(M.mid);
+      return `<div class="c2-fr">${c2Face(it.pid, 48)}<span><b>${c2E(it.h || M.who || M.body || "")}</b></span></div>`; }).join("")}</div>${c2Kinds(rest)}<p class="c2-stl">Kai adds new ones each morning and drops the ones that close.</p></div>
     <span class="c2-hint c2-hl" aria-hidden="true">${LI("x", 18)}Skip all</span><span class="c2-hint c2-hr" aria-hidden="true">${LI("check", 18)}Go through</span></article>`;
 }
 /* the yes, Skip, Later and Undo; Undo steps back one card per tap */
@@ -33425,6 +33467,8 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 #phone .ng-go { min-height:44px; padding:0 18px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
 #phone .ng-or { margin-top:24px; }
 #phone .voc-ideas.ng-home { margin:24px 0; }
+/* scrolled Home: the header's colour covers the inset above it, so nothing shows through the status strip */
+#phone .kh-glass:not(.kh-tint) { box-shadow:0 calc(-1 * env(safe-area-inset-top, 0px)) 0 0 var(--kh-bg, var(--bg-page)); }
 
 </style>
 <script>
@@ -33436,7 +33480,7 @@ g7IdeasPage = function(){
   const groups = G7_GROUPS.map(([t, l])=>{ const k = G9_KIND[t]; return `<h2 class="g7-gt g9-gt">${g9Tile(k[0], k[1] || "hand-heart", 24)}<span>${t}</span></h2><div class="g7-card g7-irs">${l.map(i=>g9IdeaRow(i, i.line)).join("")}</div>`; }).join("");
   return `<div class="ks-page g7-page g7-ideas g9-ideas"><div class="hdr g9-dh" data-kc="KeyDetailHeader"><div class="back" role="button" tabindex="0" aria-label="Back" onclick="STATE.backNav=true;goBack()">${LI("chevron-left",22)}</div><div class="t">New goal</div></div>
     <div class="body ks-pbody g7-body"><form class="ng-ask" onsubmit="event.preventDefault();ngAsk(this)"><label for="ng-q">What do you want to make happen?</label>
-      <textarea id="ng-q" rows="2" placeholder="Say it in your words. Kai drafts the plan."></textarea>
+      <textarea id="ng-q" rows="2" placeholder="Say it in your words. Kai drafts the plan." oninput="STATE.ngText=this.value">${g7Esc(STATE.ngText || "")}</textarea>
       <div class="ng-bar"><button type="button" class="ng-mic" aria-label="Say it" onclick="ngAsk(this.form)">${LI("mic",20)}</button><button type="submit" class="ng-go">Start with Kai</button></div></form>
       ${forYou}<h2 class="g7-gt ng-or">Or start from an idea</h2>${groups}</div></div>`;
 };
@@ -33444,6 +33488,9 @@ function ngAsk(f){ const t = f.querySelector("textarea").value.trim(); STATE.she
 const _ngRender = render;
 render = function(){
   const r = _ngRender.apply(this, arguments);
+  const plus = phone.querySelector('.hdr .icon[onclick*="newmission"]'); if (plus) { plus.setAttribute("role", "button"); plus.setAttribute("aria-label", "New goal"); plus.tabIndex = 0; }
+  /* the inset above a goal preview takes the hero's colour, so the hero runs to the top edge */
+  const sc = phone.querySelector(".screen"), ph = /^gpreview:/.test(STATE.screen) && phone.querySelector(".g9-ph"); if (sc) sc.style.backgroundColor = ph ? getComputedStyle(ph).backgroundColor : "";
   const sec = STATE.screen==="home" && phone.querySelector(".screen .voc-ideas:not(.ng-home)");
   if (sec) {
     const list = vocIdeasLeft().slice(0, 3).map(x=>g7Idea(x.id)).filter(Boolean);
@@ -33455,6 +33502,58 @@ render = function(){
   }
   return r;
 };
+
+</script>
+<style>
+.stagebar .ctl2 { padding-top:8px; border-top:1px solid rgb(128 128 128 / .3); }
+.stagebar .ctl2 .sgl { font-size:12px; font-weight:700; color:#6b6b6b; letter-spacing:0; margin-top:0; }
+.stagebar .ctl2-h { width:100%; margin:-2px 0 2px; font-size:11px; color:#8a8a8a; }
+.stagebar .ctl2 label, .stagebar .ctl2 .rs-nx { display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#f2f2f2; border:1px solid #444; background:#2a2a2a; border-radius:8px; padding:2px 4px 2px 10px; }
+.stagebar .ctl2 select { font:inherit; font-size:11px; color:#f2f2f2; background:#2a2a2a; border:0; min-height:26px; padding:0 4px; }
+
+</style>
+<script>
+/* 8 Oct 07:19 (Apoorv): "standardise and refine these controls ... whichever ones are redundant now clean them up, so that it's easier
+   for my team to understand and follow them". Loads last. Every control is sorted into one of seven plain sections, in one order, each
+   with a one-line hint; build codes leave the labels; controls the goal routes replaced go. Re-sorts on every render, so a control
+   another module adds later still lands in its section. */
+const CTL2_SECT = [
+  ["Start", "Begin the demo again, or jump past onboarding."],
+  ["Go to screen", "Open a screen directly."],
+  ["Time and replies", "Move the world forward and choose how people answer."],
+  ["View as", "See the app as someone else."],
+  ["Demo states", "Put a goal, Catch up or a join request into a state to show."],
+  ["Money", "Payments and paid membership."],
+  ["Overview", "Walkthroughs of the whole product."]];
+/* [match on the original label or handler, section, new label (null keeps it), or "x" to remove] */
+const CTL2_MAP = [
+  [/^Restart$/, 0], [/^Skip to home$/, 0, "Skip to Home"], [/^Day one$/, 0, "First day on Key"], [/^Skip to family$/, 0, "Pick a family"],
+  [/^Invite$/, 0, "Arrive by invite"], [/^Event$/, 0, "Arrive from an event"], [/^Cold$/, 0, "Arrive with no invite"],
+  [/^Messages$/, 1], [/^Chat$/, 1, "A chat"], [/^Channel$/, 1, "A channel"], [/^Notifications$/, 1], [/^Goal ideas$/, 1, "New goal"],
+  [/^Texts with Kai$/, 1], [/^Organizer: new family$/, 1, "Start a family (organizer)"],
+  [/^Advance a week/, 2, "Advance a week"], [/^Simulate next/, 2, "Next thing happens"], [/^Next reply/, 2], [/^Network:/, 2],
+  [/^Organizer$/, 3, "Organizer"], [/persona/, 3],
+  [/^Plan: stuck$/, -1], [/^Plan: offer logged$/, 4, "Offer logged"], [/^Plan: Sana call happened$/, 4, "Sana call happened"], [/^Plan: new goal$/, 4, "Dinner goal started"],
+  [/^Catch up: /, 4], [/^Between Kais: /, 4], [/^Thin family/, 4], [/^B6: reset join$/, 4, "Join request: start over"], [/^B6: organizer approves$/, 4, "Join request: approved"],
+  [/^A match arrives$/, 4, "Search: a match arrives"], [/^Search, first time$/, 4, "Search: first time"],
+  [/^(You|Buy a ticket|Price a ticket|Paid membership|Insights)$/, 5], [/^(Launch day|First week)$/, 6]];
+function ctl2Key(e){ return e.tagName==="LABEL" ? (e.firstChild && e.firstChild.textContent || "").trim() : e.id==="personaBtn" ? "persona" : e.textContent.trim(); }
+function ctl2Sort(){
+  const bar = document.querySelector(".stagebar"); if (!bar) return;
+  if (!bar.dataset.ctl2) { bar.dataset.ctl2 = "1"; bar.insertAdjacentHTML("beforeend", CTL2_SECT.map(([t, h], i)=>`<div class="sgrp ctl2" data-s="${i}"><span class="sgl">${t}</span><span class="ctl2-h">${h}</span></div>`).join("")); }
+  const secs = bar.querySelectorAll(".ctl2");
+  bar.querySelectorAll(".sgrp:not(.ctl2) > button, .sgrp:not(.ctl2) > label, .sgrp:not(.ctl2) > .rs-nx").forEach(e=>{
+    const k = ctl2Key(e), m = CTL2_MAP.find(([r])=>r.test(k)); if (!m) return;
+    if (m[1] < 0 || [...secs[m[1]].children].some(x=>x.dataset.k===k)) { e.remove(); return; }
+    e.dataset.k = k; if (m[2] && e.tagName==="BUTTON") e.textContent = m[2];
+    secs[m[1]].appendChild(e); });
+  [...bar.children].forEach(g=>{ if (!g.classList.contains("ctl2") && g.querySelector(".sgl")) g.hidden = !g.querySelector("button, label, select"); });
+  secs.forEach(g=>{ g.hidden = !g.querySelector("button, label, select"); });
+  const lb = bar.querySelector(".sgl"); if (lb && !lb.closest(".ctl2")) lb.remove();
+}
+const _ctl2Render = render;
+render = function(){ const r = _ctl2Render.apply(this, arguments); ctl2Sort(); return r; };
+ctl2Sort();
 
 </script>
 <style>
@@ -33583,7 +33682,7 @@ render = function(){
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-9138";
+window.KEY_BUILD = "2.hifi-7541";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
