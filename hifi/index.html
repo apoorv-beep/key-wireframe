@@ -7610,11 +7610,11 @@ const DB = {
   family: { name: "Xoogler", proof: "38 intros and 6 hires last quarter", members: 412 },
   intents: [ "Hiring", "Looking", "Cofounder", "Raising", "Investing", "Learning", "The people" ],
   people: {
-    rahul: { id:"rahul", name:"Rahul Mehta", initials:"RM", title:"Engineering Director", company:"Halvern", line:"Building the eng team for a new product line. Ex-Google Search.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:["Investing"], slots:"2 slots left this week", lookingFor:"Senior PMs who have shipped AI features", help:["Interview prep for AI companies","Eng and PM partnership","Hiring senior ICs"], shared:["Xoogler dinner, August","Met three times this year"] },
+    rahul: { id:"rahul", name:"Rahul Mehta", initials:"RM", title:"Engineering Director", company:"Halvern", line:"Building the eng team for a new product line. Ex-Google.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:["Investing"], slots:"2 slots left this week", lookingFor:"Senior PMs who have shipped AI features", help:["Interview prep for AI companies","Eng and PM partnership","Hiring senior ICs"], shared:["Xoogler dinner, August","Met three times this year"] },
     maya:  { id:"maya", name:"Maya Chen", initials:"MC", title:"Head of Engineering", company:"Seed-stage, stealth", line:"Building infra for agents. Looking for a product partner.", families:["Xoogler","Michigan"], openTo:["Cofounder conversations","Product advice"], notNow:["Hiring"], slots:"2 slots left this month", lookingFor:"A product cofounder with AI experience", help:["Infra for agents","Fundraising a seed round","Early hiring"], shared:["Xoogler dinner, August","AI meetup, July"] },
     chris: { id:"chris", name:"Daniel Reyes", initials:"DR", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
     priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google Cloud", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
-    dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google Legal. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
+    dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google legal team. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
     ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Corvana", line:"Runs platform at Corvana. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Corvana"], shared:["Xoogler dinner, August","Met twice this year"] },
     jordan:{ id:"jordan", name:"Jordan Tan", initials:"JT", title:"Product Manager", company:"Ex-Google", line:"Six years at Google. Looking at AI PM roles.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"AI PM roles", help:["Maps org intros"], shared:["Both ex-Google"] },
     kate:  { id:"kate", name:"Kate Lin", initials:"KL", title:"Product Manager", company:"Larkspur", line:"Growth PM. Michigan alum.", families:["Michigan"], openTo:["Referrals"], notNow:[], slots:"", lookingFor:"", help:["Larkspur referrals"], shared:["Both in Michigan"] },
@@ -13639,7 +13639,7 @@ function evStateRow(e, live, locked){
   if (e.past) return "";
   return "";
 }
-const EV_ADDR = { e1:"Il Fornaio, 520 Cowper St", e0:"Computer History Museum", e4:"Google Visitor Center, Charleston Rd", e10:"Blue Bottle, 456 University Ave" };
+const EV_ADDR = { e1:"Il Fornaio, 520 Cowper St", e0:"Computer History Museum", e4:"Shoreline Hall, Mountain View", e10:"Blue Bottle, 456 University Ave" };
 function evFacts(e, live, locked){ const d=evDate(e); const inn=["going","hosting"].includes(e.reg)||live; const t=evTime(e);
   const day = `${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()]}, ${["January","February","March","April","May","June","July","August","September","October","November","December"][d.getMonth()]} ${d.getDate()}`;
   const online = e.fmt==="online"; const addr = EV_ADDR[e.id];
@@ -16122,7 +16122,7 @@ const C_ASKS = {
   ]
 };
 const C_ASK_TAGS = ["Intro","Hiring","Advice","Cofounder","Feedback"];
-const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Lumora"],["karan","PM at Lumora"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at Northfield Ventures"],["tom","Recruiter at Tessel"],["pooja","Hires engineers at Rydell"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Plinth"]], Cofounder:[["felix","CTO at Corlis, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Plinth"],["hana","Design Lead at Inkwell"],["paul","Staff PM at Google Search"]] };
+const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Lumora"],["karan","PM at Lumora"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at Northfield Ventures"],["tom","Recruiter at Tessel"],["pooja","Hires engineers at Rydell"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Plinth"]], Cofounder:[["felix","CTO at Corlis, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Plinth"],["hana","Design Lead at Inkwell"],["paul","Staff PM at Google"]] };
 const cAskGuess = t => /hir|recruit|engineer|candidate/i.test(t) ? "Hiring" : /cofounder|co-founder/i.test(t) ? "Cofounder" : /intro|meet|someone (at|on|from)/i.test(t) ? "Intro" : /feedback|review|look at/i.test(t) ? "Feedback" : "Advice";
 const cAsks = f => [...(STATE.cMyAsks||[]).filter(a=>a.fam===f.id), ...(C_ASKS[f.id]||[])].map(a=>Object.assign({}, a, (STATE.cAskSt||{})[a.id] ? { st:STATE.cAskSt[a.id] } : {}));
 const cAskOf = id => cAsks(cF()).find(a=>a.id===id);
@@ -17337,7 +17337,7 @@ const P2 = {
     kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for two founding engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
   rahul: { now:"Building the eng team for a new product line",
     needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google Cloud", a:"offer"}],
-    work:[["A","#C96442","Halvern","Eng Director · now"],["G","#1A73E8","Google Search","2012 – 2021","Google, like you"]],
+    work:[["A","#C96442","Halvern","Eng Director · now"],["G","#1A73E8","Google","2012 – 2021","Google, like you"]],
     school:[], note:"", kaiPre:"Direct is fine. You've met 3 times", digest:"Rahul now leads Halvern's eval team", digestAct:"Say congrats" },
   chris: { now:"Runs Xoogler and hosts most of its events", needs:[], work:[["X","#121316","Xoogler","President · now"],["G","#1A73E8","Google","2008 – 2016","Google, like you"]],
     school:[], note:"", kaiPre:"Introduced you to Jordan", digest:"Daniel posted the October dinner list", digestAct:"Join" }
@@ -18605,17 +18605,17 @@ const MORE_PEOPLE = [
   // id, name, title, company, families (X=Xoogler, M=Michigan, D=Desi), openTo, notNow, slots, lookingFor, help, line
   ["lena","Lena Park","Staff Engineer","Lumora","X",["Product advice","Referrals"],["Cofounder"],"2 slots left this week","","Payments infra|Staff eng promo","Ex-Google payments. Builds money movement at Lumora."],
   ["omar","Omar Haddad","Founder","Penwick, seed","X",["Hiring conversations","Intros"],["Investing"],"3 slots left this week","A founding PM","Seed fundraising|First ten hires","Building AI bookkeeping for small businesses. Hiring a founding PM."],
-  ["grace","Grace Liu","VP Product","Plinth","X",["Product advice","Office hours"],["Cold pitches"],"1 slot left this week","","PM career ladders|Design and PM partnership","Ex-Google Docs. Runs product for Plinth's AI features."],
+  ["grace","Grace Liu","VP Product","Plinth","X",["Product advice","Office hours"],["Cold pitches"],"1 slot left this week","","PM career ladders|Design and PM partnership","Ex-Google, docs and collaboration. Runs product for Plinth's AI features."],
   ["tom","Tom Becker","Recruiter, AI","Tessel","X",["Hiring conversations","Referrals"],[],"4 slots left this week","Senior PMs for applied AI","Offer negotiation|AI PM interview loops","Recruits PMs for applied AI teams."],
   ["ines","Ines Duarte","Product Manager","Kestrel","X",["Advice","Intros"],[],"2 slots left this week","A switch into AI agents","Autonomy PM|Hardware plus software roadmaps","PM on rider experience. Exploring agents startups."],
-  ["kofi","Kofi Mensah","Partner","Gradient Ventures","X",["Investing","Office hours"],["Hiring"],"2 slots left this month","AI infra founders at pre-seed","Pitch feedback|Seed term sheets","Invests pre-seed in AI infrastructure. Ex-Google Brain PM."],
+  ["kofi","Kofi Mensah","Partner","Gradient Ventures","X",["Investing","Office hours"],["Hiring"],"2 slots left this month","AI infra founders at pre-seed","Pitch feedback|Seed term sheets","Invests pre-seed in AI infrastructure. Ex-Google AI research PM."],
   ["hana","Hana Sato","Design Lead","Inkwell","X",["Product advice","Advice"],["Hiring"],"2 slots left this week","","Design critique|Portfolio reviews","Leads design for Inkwell's AI features."],
   ["felix","Felix Wagner","CTO","Corlis, Series A","X",["Hiring conversations","Cofounder conversations"],[],"2 slots left this week","A head of product","Scaling eng teams|Agent infra","Building agent orchestration. Looking for a head of product."],
   ["priti","Priti Nair","Group PM","Google","X",["Product advice","Referrals"],["Investing"],"1 slot left this week","","Kestrel APIs|PM to GPM","Still at Google. Runs developer products for Kestrel."],
-  ["marco","Marco Rossi","Founder","Stealth, legal agents","X",["Cofounder conversations","Intros"],["Investing"],"3 slots left this month","A product cofounder who has shipped AI","Legal tech|Pre-seed fundraising","Ex-Google Search. Starting an agents company for law firms."],
+  ["marco","Marco Rossi","Founder","Stealth, legal agents","X",["Cofounder conversations","Intros"],["Investing"],"3 slots left this month","A product cofounder who has shipped AI","Legal tech|Pre-seed fundraising","Ex-Google. Starting an agents company for law firms."],
   ["zoe","Zoe Adams","Chief of Staff","Halvern","X",["Intros","Advice"],["Cold pitches"],"2 slots left this week","","Operating cadences|Hiring at Halvern","Ex-Google Cloud strategy."],
   ["sam","Sam Okafor","Engineering Manager","Datavane","X",["Hiring conversations","Product advice"],[],"2 slots left this week","PMs for the AI platform team","Data platforms|Eng and PM partnership","Hiring a PM for Vane AI."],
-  ["ruth","Ruth Klein","Angel investor","Independent","X",["Investing","Office hours"],["Hiring"],"3 slots left this month","Consumer AI at pre-seed","First cheques|Consumer growth","Former Google Photos lead. Writes small cheques."],
+  ["ruth","Ruth Klein","Angel investor","Independent","X",["Investing","Office hours"],["Hiring"],"3 slots left this month","Consumer AI at pre-seed","First cheques|Consumer growth","Former Google consumer apps lead. Writes small cheques."],
   ["eli","Eli Brooks","Product Manager","Google Cloud","X",["Advice","Intros"],[],"","A move to a startup","Cloud AI|GTM for dev tools","Priya's former teammate on Vertex AI."],
   ["mira","Mira Kovac","Founder","Loop, pre-seed","MX",["Cofounder conversations","Product advice"],["Investing"],"2 slots left this month","A technical cofounder","Consumer AI|Early user research","Building an AI study partner. Needs a technical cofounder."],
   ["jake","Jake Morales","Senior PM","Rivian","M",["Product advice","Referrals"],[],"2 slots left this week","","Hardware PM|Automotive software","Michigan '15. PM on Rivian's in-car software."],
@@ -18641,7 +18641,7 @@ const MORE_PEOPLE = [
   ["divya","Divya Krishnan","Chief of Staff","Sarvam AI","D",["Intros","Advice"],[],"2 slots left this week","","Indian LLMs|Operating in Bengaluru","Ops and hiring for Sarvam."],
   ["yusuf","Yusuf Ali","Founder","Brisk, pre-seed","D",["Cofounder conversations","Intros"],[],"2 slots left this month","A growth-minded PM cofounder","Consumer AI|Creator tools","Building AI video editing for creators."],
   ["lina","Lina Morales","Talent Partner","Northfield Ventures","XM",["Hiring conversations","Intros"],["Investing"],"4 slots left this week","PMs for portfolio AI companies","Portfolio hiring|Comp benchmarks","Places PMs across Northfield Ventures's AI portfolio."],
-  ["paul","Paul Nguyen","Staff PM","Google Search","X",["Product advice","Referrals"],[],"2 slots left this week","","Search quality|Staff PM promo","Still at Google. Knows every AI Overviews PM."],
+  ["paul","Paul Nguyen","Staff PM","Google","X",["Product advice","Referrals"],[],"2 slots left this week","","Search quality|Staff PM promo","Still at Google. Knows every AI Overviews PM."],
   ["asha","Asha Varma","Founder","Nudge, seed","DM",["Hiring conversations","Product advice"],[],"2 slots left this week","A senior PM with AI experience","Behavioural AI|Seed hiring","Michigan '13. Building AI coaching for managers. Hiring a senior PM."]
 ];
 const MORE_FAM = { X:"Xoogler", M:"Michigan Product Alumni", D:"Desi Founders" };
@@ -27255,7 +27255,7 @@ function m2SeedM1(m){
     m2P("ravi","ravi","New pick","via Daniel · Not on Key. Daniel sends your note over","Ask Daniel","Hi Daniel, would you introduce me to Ravi? I'm going after a senior PM role at an AI company, and twenty minutes with Ravi would help a lot.", { opp:"o6", to:"chris" }),
     m2P("maya","maya","In conversation","Said yes. Wants a call this week","Reply","Thursday 3pm or Friday 2pm works for me. Which suits you?"),
     m2P("jordan","jordan","In conversation","Replied to your intro. Asked for your deck","Reply","Hi Jordan, great to hear from you. Here's the deck. Would Thursday or Friday work for a 20-minute call?"),
-    m2P("dev","dev","In conversation","Replied. Free Thursday for a coffee","Reply","Thursday works. 10am at Coupa on Ramona?"),
+    m2P("dev","dev","In conversation","Replied. Free Thursday for a coffee","Reply","Thursday works. 10am at Larkspur Café on Ramona?"),
     m2P("priti","priti","Waiting","Said hi on Tuesday. No reply yet","",""),
     m2P("openai","tom","Set aside","Role closed Sep 28. Tessel filled it","","", { name:"Senior PM, applied AI", ini:"O", sq:true, opp:"o5" }),
     m2P("ana","ana","Went well","Final round done. Decision next week","","")
@@ -31660,19 +31660,31 @@ cgCtl();
    top-edge effect: with no fixed, opaque bar touching the top of the viewport, Safari blurs whatever scrolls under the status bar, and
    the blur runs into the header row. A fixed strip the height of the status bar, painted the header's colour (khTint's theme colour),
    gives Safari that bar; the header under it is opaque on phones. Phones only; over a cover photo there is no strip, as before. ==== */
+/* 7 Oct 22:10, third report: the strip alone did not do it. WebKit skips the iOS 26 edge blur only when the box at the top edge sits in a
+   fixed container spanning the viewport with an opaque background. pointer-events:none took the strip out of that hit test and the shell
+   (#phone) was in flow, so Safari blurred the header. Phones now get a fixed, opaque shell and a strip that hit-tests.
+   n44 check: as a child of body the strip sat over the shell's own overlays (the handshake, the story viewer). It lives inside #phone
+   now, re-attached after each render, at z 14: over the nav, under the sheet scrim and every full-screen overlay.
+   n44b check: render() detached the strip before khTint measured it, so a goal page read the gradient band as a cover photo and lost
+   the strip for good. The strip is re-attached before khTint runs, and a hidden strip keeps its safe-area height (visibility, not
+   display), so khTint always samples just under the status bar. */
 (function(){
   const css = document.createElement("style");
   css.textContent = `#kh-sbar { display:none; }
 @media (max-width:500px) {
-  #kh-sbar { display:block; position:fixed; top:0; left:0; right:0; height:env(safe-area-inset-top, 0px); z-index:60; pointer-events:none; }
-  #kh-sbar[hidden] { display:none; }
+  #kh-sbar { display:block; position:fixed; top:0; left:0; right:0; height:env(safe-area-inset-top, 0px); z-index:14; }
+  html { background:var(--paper); }
+  #phone.phone { position:fixed; inset:0; }
+  #kh-sbar[hidden] { visibility:hidden; }
   #phone.phone .kh-glass:not(.kh-tint)::after { background:var(--kh-bg, var(--bg-page)); }
 }`;
   document.head.append(css);
-  const bar = document.createElement("div"); bar.id = "kh-sbar"; bar.setAttribute("aria-hidden", "true"); document.body.append(bar);
+  const bar = document.createElement("div"); bar.id = "kh-sbar"; bar.setAttribute("aria-hidden", "true"); (typeof phone!=="undefined" && phone ? phone : document.body).append(bar);
   /* 7 Oct n31 check: the strip takes the header's own colour (--kh-bg), so a scrolled page never paints content into it */
-  function paint(){ const m = document.querySelector('meta[name="theme-color"]'), h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
+  const attach = () => { if (typeof phone!=="undefined" && phone && bar.parentNode!==phone) phone.append(bar); };
+  function paint(){ attach(); const m = document.querySelector('meta[name="theme-color"]'), h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
     const c = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content; }
+  if (typeof khTint==="function") { const _t = khTint; khTint = function(){ attach(); return _t.apply(this, arguments); }; }
   if (typeof render==="function") { const _r = render; render = function(){ const r = _r.apply(this, arguments); paint(); return r; }; }
   new MutationObserver(paint).observe(document.head, { childList:true, subtree:true, attributes:true, attributeFilter:["content"] });
   paint();
@@ -31680,7 +31692,7 @@ cgCtl();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-1cf8";
+window.KEY_BUILD = "2.hifi-0840";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
