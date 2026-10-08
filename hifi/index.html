@@ -7615,7 +7615,7 @@ const DB = {
     chris: { id:"chris", name:"Daniel Reyes", initials:"DR", title:"President", company:"Xoogler", line:"Runs Xoogler. Hosts most of the events.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"", help:["Xoogler intros","Events"], shared:["Nominated you"] },
     priya: { id:"priya", name:"Priya Sharma", initials:"PS", title:"Senior Product Manager", company:"Google", line:"Shipped two AI features at Cloud. Looking at what's next.", families:["Xoogler","Michigan"], openTo:["Intros via connector","Product advice","PM hiring"], notNow:["Investing"], slots:"3 slots left this week", lookingFor:"Senior PM role at an AI company, Bay Area", help:["Product reviews","PM hiring","Getting into Google"], shared:[] },
     dev:   { id:"dev", name:"Dev Patel", initials:"DP", title:"Founder", company:"Legal-tech agents, stealth", line:"Ex-Google legal team. Building agents for contract review.", families:["Xoogler"], openTo:["Intros","Product advice"], notNow:[], slots:"3 slots left this week", lookingFor:"", help:["Legal tech","O-1 visas, painfully"], shared:["Greeted together in #introductions"] },
-    ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Corvana", line:"Runs platform at Corvana. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Corvana"], shared:["Xoogler dinner, August","Met twice this year"] },
+    ana:   { id:"ana", name:"Ana Ruiz", initials:"AR", title:"Head of Platform", company:"Tovrena", line:"Runs platform at Tovrena. Hiring a PM in October.", families:["Xoogler"], openTo:["Hiring conversations","Product advice"], notNow:[], slots:"2 slots left this week", lookingFor:"A platform PM", help:["Platform PM hiring","Tovrena"], shared:["Xoogler dinner, August","Met twice this year"] },
     jordan:{ id:"jordan", name:"Jordan Tan", initials:"JT", title:"Product Manager", company:"Ex-Google", line:"Six years at Google. Looking at AI PM roles.", families:["Xoogler"], openTo:["Intros","Advice"], notNow:[], slots:"", lookingFor:"AI PM roles", help:["Maps org intros"], shared:["Both ex-Google"] },
     kate:  { id:"kate", name:"Kate Lin", initials:"KL", title:"Product Manager", company:"Larkspur", line:"Growth PM. Michigan alum.", families:["Michigan"], openTo:["Referrals"], notNow:[], slots:"", lookingFor:"", help:["Larkspur referrals"], shared:["Both in Michigan"] },
     neha:  { id:"neha", name:"Neha Rao", initials:"NR", title:"Partner", company:"Lattice Ventures", line:"Runs Desi Founders. Seed investor, office hours weekly.", families:["Desi Founders"], openTo:["Office hours","Intros"], notNow:["Cold pitches"], slots:"", lookingFor:"", help:["Seed fundraising","Investor intros"], shared:["Runs the family"] },
@@ -7668,12 +7668,12 @@ const DB = {
   messages: {
     jobs: [
       { who:"Rahul Mehta", ini:"RM", when:"Sep 9", text:"We're hiring senior PMs for a new product line. AI features shipped is the bar. DM me.", intent:"hiring", role:{ title:"Senior PM, new product line", company:"Halvern", poster:"rahul", rel:"Hiring manager's peer", link:null } },
-      { who:"Sana Iqbal", ini:"SI", when:"Sep 12", text:"Senior PM, agents team at Brightwell. I'm on the panel. Referrals go to the top. Link in thread.", intent:"hiring", role:{ title:"Senior PM, agents", company:"Brightwell", poster:"sana", rel:"On the hiring panel", link:"lumora.ai/careers/…" } },
+      { who:"Sana Iqbal", ini:"SI", when:"Sep 12", text:"Senior PM, agents team at Brightwell. I'm on the panel. Referrals go to the top. Link in thread.", intent:"hiring", role:{ title:"Senior PM, agents", company:"Brightwell", poster:"sana", rel:"On the hiring panel", link:"quenlit.ai/careers/…" } },
       { who:"Dev Patel", ini:"DP", when:"Sep 15", text:"Anyone know a good immigration lawyer for an O-1? Startup is sponsoring.", intent:"help" },
-      { who:"Ana Ruiz", ini:"AR", when:"Today", text:"Corvana is opening a platform PM role in October. Happy to talk to anyone thinking about it.", intent:"hiring", role:{ title:"Platform PM", company:"Corvana", poster:"ana", rel:"Hiring manager", link:null } }
+      { who:"Ana Ruiz", ini:"AR", when:"Today", text:"Tovrena is opening a platform PM role in October. Happy to talk to anyone thinking about it.", intent:"hiring", role:{ title:"Platform PM", company:"Tovrena", poster:"ana", rel:"Hiring manager", link:null } }
     ],
     introductions: [
-      { who:"Daniel Reyes", ini:"DR", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Corvana. Say hi.", replies:6 }
+      { who:"Daniel Reyes", ini:"DR", when:"Today", ritual:"New here", text:"Welcome Priya Sharma, Dev Patel, and Ana Ruiz. Priya's a senior PM from Cloud looking at AI companies. Dev's building in legal tech. Ana runs platform at Tovrena. Say hi.", replies:6 }
     ],
     cofounders: [
       { who:"Daniel Reyes", ini:"DR", when:"Aug 21", text:"If anyone's looking for a technical cofounder in agents infra, talk to Maya Chen. The real thing.", intent:"vouch" },
@@ -7716,11 +7716,11 @@ const DB = {
     { id:"g-dinner", group:"Xoogler dinner · event chat", last:"Daniel: Break's over, back in five", when:"Thu", unread:0, event:true }
   ],
   pool: [
-    { kind:"role", title:"Senior PM, new product line", org:"Halvern", via:"rahul", fam:"Xoogler", when:"Sep 9", why:"Matches your role mission" },
-    { kind:"role", title:"Senior PM, agents", org:"Brightwell", via:"sana", fam:"Xoogler", when:"Sep 12", why:"Matches your role mission" },
-    { kind:"role", title:"Platform PM", org:"Corvana", via:"ana", fam:"Xoogler", when:"Today", why:"Opens in October" },
+    { kind:"role", title:"Senior PM, new product line", org:"Halvern", via:"rahul", fam:"Xoogler", when:"Sep 9", why:"Rahul can refer you" },
+    { kind:"role", title:"Senior PM, agents", org:"Brightwell", via:"sana", fam:"Xoogler", when:"Sep 12", why:"Sana can refer you" },
+    { kind:"role", title:"Platform PM", org:"Tovrena", via:"ana", fam:"Xoogler", when:"Today", why:"Opens in October" },
     { kind:"role", title:"PM, growth", org:"Larkspur", via:"kate", fam:"Michigan", when:"Sep 10", why:"Outside your constraints: not AI" },
-    { kind:"role", title:"Head of Product", org:"Stealth, agents infra", via:"maya", fam:"Xoogler", when:"Sep 14", why:"Cofounder-adjacent" },
+    { kind:"role", title:"Head of Product", org:"Stealth, agents infra", via:"maya", fam:"Xoogler", when:"Sep 14", why:"Maya leads engineering there" },
     { kind:"person", title:"Looking for a product cofounder", org:"Maya Chen", via:"chris", fam:"Xoogler", when:"Aug 21", why:"Mutual intent" },
     { kind:"person", title:"Looking for AI PM roles", org:"Jordan Tan", via:"chris", fam:"Xoogler", when:"Mon", why:"Same path as you, a few months behind" },
     { kind:"person", title:"Hiring a platform PM", org:"Ana Ruiz", via:null, fam:"Xoogler", when:"Today", why:"Met twice" },
@@ -7762,11 +7762,11 @@ const DB = {
   posts: [
     { kind:"Update", who:"Daniel Reyes", when:"Today", title:"Where I've been this month", text:"Three cities, two hackathons, one very good dinner. What I keep hearing: everyone's hiring PMs who've shipped AI, and nobody can find them. If that's you, say so in #jobs." },
     { kind:"Digest", who:"Kai, published by Daniel", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. Maya's looking for eval-tooling folks. Six new members, all greeted." },
-    { kind:"Feature", who:"Ana Ruiz, approved by Daniel", when:"Last week", title:"How I got into Corvana", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know." }
+    { kind:"Feature", who:"Ana Ruiz, approved by Daniel", when:"Last week", title:"How I got into Tovrena", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know." }
   ],
   asks: [
     { id:"a1", to:"priya", kind:"connector", from:"dev", target:"rahul", what:"wants an intro to Rahul Mehta through you", note:"Hi Priya, Daniel mentioned you and Rahul have worked together. I'm building legal-tech agents and would love 20 minutes with Rahul on how Halvern thinks about tool use. Totally fine if it's a no.", forward:"Dev Patel, ex-Google, building legal-tech agents. Wants 20 min on tool-use design.", receipts:[["Shared","Both in Xoogler. Daniel greeted you both in #introductions","#introductions"],["Standing","Replies to asks. Has made 2 intros","ledger"]], state:"open", when:"2h" },
-    { id:"a2", to:"priya", kind:"direct", from:"ana", what:"wants 20 minutes on PM interview loops", note:"You listed PM hiring as something you can help with. I'm hiring a platform PM at Corvana and want to sanity-check my loop. Happy to return the favor.", receipts:[["Rule","Under your Product advice rule, via connector: Daniel greeted you together","rules"],["Shared","Both at Xoogler dinner in August","events"]], state:"open", when:"1d" },
+    { id:"a2", to:"priya", kind:"direct", from:"ana", what:"wants 20 minutes on PM interview loops", note:"You listed PM hiring as something you can help with. I'm hiring a platform PM at Tovrena and want to sanity-check my loop. Happy to return the favor.", receipts:[["Rule","Under your Product advice rule, via connector: Daniel greeted you together","rules"],["Shared","Both at Xoogler dinner in August","events"]], state:"open", when:"1d" },
     { id:"a3", to:"priya", kind:"forwarded", from:"jordan", via:"chris", what:"Daniel introduced Jordan to you", note:"Priya, meet Jordan. Ex-Google PM, just joined Xoogler, thinking about AI PM roles. You're two months ahead of Jordan on exactly this. Jordan, Priya's the one to ask. Over to you both.", receipts:[["Vouched","Daniel made the intro and nominated Jordan last week","#introductions"],["Shared","Both ex-Google, both in Xoogler","xoogler"]], state:"open", when:"3h" },
     { id:"a4", to:"priya", kind:"help", from:"maya", channel:"cofounders", what:"asked about eval tooling for agents in #cofounders", note:"Anyone building eval tooling for agents? Would love to compare notes.", receipts:[["Why you","You shipped eval features at Cloud. Kai flagged this to you and one other member","context"]], state:"open", when:"5h" },
     { id:"a5", to:"priya", kind:"direct", from:"kate", what:"wants a referral to Google", note:"Saw you're at Cloud. Any chance of a referral for the AI platform PM role?", receipts:[["Rule","Cold ask from Michigan. You're at capacity this week","rules"]], state:"passed", when:"2d" },
@@ -7955,7 +7955,7 @@ const THREAD_SUGGESTIONS = {
   m1: [
     { t:"Why these picks?", r:"Rahul because you've actually met three times and Rahul posted the role directly, so it's a direct path with a real reason. The Brightwell role because Sana is on the panel and two Xooglers already work there, which makes a referral cheap to ask for. I skipped four other roles: two were outside the Bay Area, two had no path through anyone you know." },
     { t:"Only companies under 200 people", r:"Done. Added \"under 200 people\" to this mission. Halvern is bigger than that, so I've moved Rahul to candidates and I'll surface Rahul again only if you say so. Next search Friday will use the new constraint.", effect:"constraint" },
-    { t:"Show me more like Rahul", r:"Two more people you've met who are hiring PMs: Ana Ruiz at Corvana, met twice, hiring for platform. Dev Patel at Pellam, met once at the AI meetup, hiring in October. Want either as a path?", mini:["Ana Ruiz, Corvana. Met twice. Hiring platform PMs.","Dev Patel, Pellam. Met once. Hiring in October."] },
+    { t:"Show me more like Rahul", r:"Two more people you've met who are hiring PMs: Ana Ruiz at Tovrena, met twice, hiring for platform. Dev Patel at Pellam, met once at the AI meetup, hiring in October. Want either as a path?", mini:["Ana Ruiz, Tovrena. Met twice. Hiring platform PMs.","Dev Patel, Pellam. Met once. Hiring in October."] },
     { t:"What's the next step?", r:"Say hi to Rahul. It's the strongest path you have, it costs nothing, and Rahul is going Thursday so you can follow up in person. The draft is ready on Rahul's card." }
   ],
   m2: [
@@ -7972,7 +7972,7 @@ const OPP_SUGGESTIONS = {
 };
 const KAI_COMPOSER = [
   { t:"Start a mission", flow:"newmission" },
-  { t:"Who's hiring PMs in Xoogler?", r:"Three people this month: Rahul at Halvern (you've met), Sana at Brightwell (posted in #jobs), and Ana Ruiz at Corvana (met twice). Rahul and Sana are already in your role mission. Want Ana as a path?", mini:["Ana Ruiz, Corvana. Platform PM. Met twice."] },
+  { t:"Who's hiring PMs in Xoogler?", r:"Three people this month: Rahul at Halvern (you've met), Sana at Brightwell (posted in #jobs), and Ana Ruiz at Tovrena (met twice). Rahul and Sana are already in your role mission. Want Ana as a path?", mini:["Ana Ruiz, Tovrena. Platform PM. Met twice."] },
   { t:"Add a constraint to my role mission", r:"Say the constraint and I'll add it. For example: only companies under 200 people, or remote is fine.", chips:["Under 200 people","Remote is fine","Nothing before November"] },
   { t:"Catch me up on #jobs", r:"Out of scope for this proof of concept. In the product this returns a read-only summary with receipts." }
 ];
@@ -8955,7 +8955,7 @@ function sProfile(pid) {
   const mutual = pid==="maya" && STATE.intent.includes("Cofounder");
   const self = pid==="priya";
   const profTop = profileHTML({ noHeader:true, self:false,
-      facts:[["◎",`${p.title} at ${p.company}${pid==="maya"?", ex-Lumora":""}`],["◆","Bay Area"],["✦",(p.openTo||[]).length?`Open to ${(p.openTo||[]).join(", ").toLowerCase()}`:"Takes intros through a connector"]],
+      facts:[["◎",`${p.title} at ${p.company}${pid==="maya"?", ex-Quenlit":""}`],["◆","Bay Area"],["✦",(p.openTo||[]).length?`Open to ${(p.openTo||[]).join(", ").toLowerCase()}`:"Takes intros through a connector"]],
       prompts:[["Can help with", (p.help||[]).length?(p.help||[]).map(h=>h.charAt(0).toUpperCase()+h.slice(1)).join(". ")+".":"Not listed yet."], ...(pid==="maya"?[["Looking for","A product partner who has shipped, for an agents idea I've been circling. Intros from people I trust only."]]:pid==="rahul"?[["Hiring","Senior PMs for a new product line. I'd rather meet people at a dinner than read a cold note."]]:[])],
       connection:{ route: o?routeOf(o)+`<span style="margin-left:8px">${routeWords(o)}</span>`:"", lines:[["#", o&&o.receipts?o.receipts.filter(r=>r[0]==="Shared").map(r=>r[1]).join(". ")||"Both in Xoogler":"Both in Xoogler"],["◔", (o&&(o.met||o.state==="conversation"))?"You've met":(pid==="rahul"?"You've met three times this year, from your calendar":"You haven't met yet")]] },
       outcomes: pid==="maya"?["Two cofounder conversations on Key this year. One became a company."]:pid==="rahul"?["Referred four members. Two were hired."]:[] });
@@ -9607,7 +9607,7 @@ function sYouSection(id) {
       <div class="card" style="background:var(--fill)"><div class="rc" style="margin:0"><span class="ty">Open</span><span>Priya takes intros via a connector. ${Math.max(0,R.capacity-1)} of ${R.capacity} slots left this week.</span></div><div class="rc"><span class="ty">Can help</span><span>Product reviews, PM hiring.</span></div><div class="xs faint" style="margin-top:8px">That's all. Never your rules in detail, never your capacity as a number they can plan around, never who you've declined.</div></div>`],
     people: ["Connectors", `<p class="sm muted" style="margin-top:6px">Kai routes your requests through these people, and routes others' through you. Keep them warm and your paths stay warm.</p>
       <div class="seg" style="margin-top:8px"><div class="${(STATE.connSeg||'vouch')==='vouch'?'on':''}" data-connseg="vouch">Can vouch for you · 4</div><div class="${STATE.connSeg==='you'?'on':''}" data-connseg="you">You vouched for · 2</div><div class="${STATE.connSeg==='quiet'?'on':''}" data-connseg="quiet">Going quiet · 2</div></div>
-      ${((STATE.connSeg||'vouch')==='vouch' ? [["chris","Nominated you · 1 intro made for you · strongest route","strong"],["rahul","Met 3 times this year · can vouch at Halvern","strong"],["maya","Talked at AI meetup · path in motion","warm"],["ana","Met twice · can vouch at Corvana","warm"]] : STATE.connSeg==='you' ? [["jordan","You replied to Daniel's intro · Jordan's in","landed"],["dev","You forwarded Dev to Rahul · waiting","waiting"]] : [["rahul","80 days since you talked · Kai drafts a hello at 90","quiet"],["ana","75 days · drafts a hello at 90","quiet"]]).map(([pid,l,t])=>{const p=DB.people[pid];return `<div class="prow" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${l}</div></div><span class="tag">${t}</span></div>`}).join("")}
+      ${((STATE.connSeg||'vouch')==='vouch' ? [["chris","Nominated you · 1 intro made for you · strongest route","strong"],["rahul","Met 3 times this year · can vouch at Halvern","strong"],["maya","Talked at AI meetup · path in motion","warm"],["ana","Met twice · can vouch at Tovrena","warm"]] : STATE.connSeg==='you' ? [["jordan","You replied to Daniel's intro · Jordan's in","landed"],["dev","You forwarded Dev to Rahul · waiting","waiting"]] : [["rahul","80 days since you talked · Kai drafts a hello at 90","quiet"],["ana","75 days · drafts a hello at 90","quiet"]]).map(([pid,l,t])=>{const p=DB.people[pid];return `<div class="prow" data-profile="${pid}">${av(p.initials)}<div class="m"><div class="a">${p.name}</div><div class="b">${l}</div></div><span class="tag">${t}</span></div>`}).join("")}
       <div class="xs faint" style="margin-top:12px">${(STATE.connSeg||'vouch')==='vouch'?"Strength comes from meetings, events, and paths. It's what decides direct versus via a connector.":STATE.connSeg==='you'?"Every intro you make is tracked to what came of it, and you're told.":"Warm ties fade. A hello now costs nothing and keeps the route open."}</div>`],
     sources: ["Sources", `<p class="sm muted" style="margin-top:6px">What feeds Context, and what each one contributed. Revoke any; the lines it produced leave with it.</p>
       ${[["Contacts","granted · 412 people · 38 overlap with your families","Revoke"],["Device calendar","granted · 61 meetings read · briefs on","Revoke"],["LinkedIn","sign-in · name, photo, employment verified","Disconnect"],["Xoogler channels","#jobs, #introductions, #cofounders, #general · organizer's choice","See"],["Desi Founders (WhatsApp)","#general, #cities, #hiring · not #raising","See"],["Your drafts","how Kai writes as you · 6 samples","Reset"]].map(([k,v,a])=>`<div class="prow" style="cursor:default"><div class="m"><div class="a">${k}</div><div class="b">${v}</div></div><span class="chip" style="font-size:11px" onclick="toast('${a}: lines from this source are removed from Context.')">${a}</span></div>`).join("")}
@@ -9807,7 +9807,7 @@ function seedChats() {
     M("maya","Thursday 3pm, see you then",{day:"Today",time:"8:55 AM",att:[{t:"link",site:"cal.com",title:"Maya Chen · 30 min",desc:"Thu, Sep 24 · 3:00 PM · 1 Hacker Way",url:"cal.com/maya-chen/30min"}]}),
     M(me,"Also sharing my eval notes from Cloud",{day:"Today",time:"9:02 AM",failed:true,att:[{t:"file",name:"cloud-eval-notes.docx",ext:"DOCX",size:"340 KB"}]}) ] };
   DB.chat["g-pm"] = { id:"g-pm", kind:"group", title:"PM loop prep", ini:"PL", memberIds:["priya","jordan","kate","sana"], createdBy:"jordan", created:"Sep 2, 2026", desc:"Loop notes, take-homes and who's hiring. Three of us are interviewing this month.", msgs:[
-    M("jordan","Sharing my notes from the Brightwell loop. The product sense round is the hard one.",{day:"Sep 22, 2026",time:"6:20 PM",att:[{t:"file",name:"lumora-loop-notes.docx",ext:"DOCX",size:"88 KB"}],react:{"🔥":["kate","priya"],"🙏":["sana"]}}),
+    M("jordan","Sharing my notes from the Brightwell loop. The product sense round is the hard one.",{day:"Sep 22, 2026",time:"6:20 PM",att:[{t:"file",name:"quenlit-loop-notes.docx",ext:"DOCX",size:"88 KB"}],react:{"🔥":["kate","priya"],"🙏":["sana"]}}),
     M("kate","These are gold. Adding the Larkspur ones, whiteboard photos from last week",{day:"Sep 22, 2026",time:"7:02 PM",att:[{t:"img",n:5}]}),
     M(me,"Anyone done the Halvern take-home?",{day:"Yesterday",time:"4:11 PM",thread:[M("jordan","Not yet. Rahul said it's a written product review, two hours, open book.",{day:"Yesterday",time:"4:30 PM"}),M("sana","Do it in one sitting. They read how you cut scope.",{day:"Yesterday",time:"5:02 PM"})]}),
     M("kate","Mock loop Saturday? I'll host.",{day:"Today",time:"8:40 AM"}),
@@ -9832,7 +9832,7 @@ function seedChats() {
   });
   const jobs = DB.chat.jobs; if (jobs) {
     jobs.msgs.unshift({ id:mid(), sys:"<b>Jordan Tan</b>, <b>Dev Patel</b> and 3 others joined.", day:"Sep 9, 2026" });
-    const sana = jobs.msgs.find(m=>m.from==="sana"); if (sana) { sana.react={"🔥":["rahul","ana"],"👍🏻":["jordan"]}; sana.thread=[ M("sana","lumora.ai/careers/senior-pm-agents",{day:"Sep 12, 2026",time:"3:20 PM",att:[{t:"link",site:"lumora.ai",title:"Senior Product Manager, Agents",desc:"San Francisco · Hybrid · Product",url:"lumora.ai/careers/senior-pm-agents"}]}), M("jordan","Is this remote-friendly?",{day:"Sep 12, 2026",time:"4:02 PM"}), M("sana","Hybrid, SF three days a week.",{day:"Today",time:"8:30 AM"}) ]; sana.threadCount=3; }
+    const sana = jobs.msgs.find(m=>m.from==="sana"); if (sana) { sana.react={"🔥":["rahul","ana"],"👍🏻":["jordan"]}; sana.thread=[ M("sana","quenlit.ai/careers/senior-pm-agents",{day:"Sep 12, 2026",time:"3:20 PM",att:[{t:"link",site:"quenlit.ai",title:"Senior Product Manager, Agents",desc:"San Francisco · Hybrid · Product",url:"quenlit.ai/careers/senior-pm-agents"}]}), M("jordan","Is this remote-friendly?",{day:"Sep 12, 2026",time:"4:02 PM"}), M("sana","Hybrid, SF three days a week.",{day:"Today",time:"8:30 AM"}) ]; sana.threadCount=3; }
     const dev = jobs.msgs.find(m=>m.from==="dev"); if (dev) { dev.thread=[ M("rahul","Used Fragomen for mine. Slow but thorough.",{day:"Sep 15, 2026",time:"6:10 PM"}), M("ana","Seconding Fragomen. Ask for Lisa.",{day:"Sep 15, 2026",time:"7:44 PM"}) ]; dev.threadCount=2; }
     const ana = jobs.msgs.find(m=>m.from==="ana"); if (ana) { ana.text += " @Priya Sharma you'd be great for this, happy to talk."; ana.react={"👀":["jordan"]}; }
   }
@@ -10384,7 +10384,7 @@ function seedNotifs() {
   if (DB.notifs) return;
   DB.notifs = [
     { id:"n1", type:"kai", fam:"xoogler", ava:"kai", title:"Three new paths for your role mission", body:"Kai found them in #jobs and at Xoogler dinner. Nothing was sent.", when:"12m", unread:true, to:"home", filt:"paths" },
-    { id:"n2", type:"mention", fam:"xoogler", ini:"AR", title:"Ana Ruiz mentioned you in #jobs", body:"@Priya Sharma you'd be great for this, happy to talk.", when:"1h", unread:true, to:"channel:jobs", hlText:"Corvana is opening" },
+    { id:"n2", type:"mention", fam:"xoogler", ini:"AR", title:"Ana Ruiz mentioned you in #jobs", body:"@Priya Sharma you'd be great for this, happy to talk.", when:"1h", unread:true, to:"channel:jobs", hlText:"Tovrena is opening" },
     { id:"n3", type:"invite", fam:"xoogler", ini:"DR", title:"Daniel Reyes introduced you to Jordan Tan", body:"Say hi when you have a minute.", when:"2h", unread:true, to:"req:a3", filt:"paths" },
     { id:"n4", type:"thread", fam:"xoogler", ini:"SI", title:"Sana Iqbal and others replied to a thread", body:"Hybrid, SF three days a week.", when:"3h", unread:true, to:"thread:jobs:SANA" },
     { id:"n5", type:"message", fam:null, ini:"PL", sq:true, title:"Kate Lin sent a message in PM loop prep", body:"image", when:"1h", unread:true, count:2, to:"dm:g-pm" },
@@ -10501,12 +10501,12 @@ const PKIND = {
 DB.pool.push(
   { kind:"deal", title:"Seed round, agents for logistics", org:"Arjun Mehta", via:"arjun", fam:"Desi Founders", when:"Sep 13", why:"Logistics AI is a space you asked Kai about", facts:[["Raising","$2.5M seed"],["Lead","Committed, not named"],["Closes","October"]] },
   { kind:"deal", title:"Pre-seed, contract review agents", org:"Dev Patel", via:"dev", fam:"Xoogler", when:"Sep 6", why:"Two Xooglers you know are already in", facts:[["Raising","$1M pre-seed"],["In so far","Two angels from Xoogler"],["Deck","On request"]] },
-  { kind:"ask", title:"Intro to someone on Lumora's payments team", org:"Jordan Tan", via:"jordan", fam:"Xoogler", when:"Today", why:"You worked with two Lumora PMs at Cloud", facts:[["Wants","20 minutes on payments PM roles"],["By","End of September"]] },
+  { kind:"ask", title:"Intro to someone on Quenlit's payments team", org:"Jordan Tan", via:"jordan", fam:"Xoogler", when:"Today", why:"You worked with two Quenlit PMs at Cloud", facts:[["Wants","20 minutes on payments PM roles"],["By","End of September"]] },
   { kind:"ask", title:"A PM to review an onboarding flow", org:"Dev Patel", via:"dev", fam:"Xoogler", when:"Sep 14", why:"You listed product reviews as help you give", facts:[["Wants","One hour, this week or next"],["For","Legal agents, pre-launch"]] },
   { kind:"offer", title:"Resume and portfolio reviews for PMs", org:"Ana Ruiz", via:"ana", fam:"Xoogler", when:"Sep 10", why:"Matches your role mission", facts:[["For","Members moving into AI"],["Slots","3 left this month"]] },
   { kind:"offer", title:"Office hours for first-time founders", org:"Neha Rao", via:"neha", fam:"Desi Founders", when:"Weekly", why:"Useful for your cofounder mission", facts:[["When","Wednesdays, 30 minutes"],["For","Pre-seed and seed founders"]] },
   { kind:"resource", title:"$5k cloud credits for member startups", org:"Program", via:"chris", fam:"Xoogler", when:"Sep 1", why:"Worth having once your cofounder mission lands", facts:[["What","$5k credits for 12 months"],["How","Daniel sends the code"]] },
-  { kind:"post", ptype:"article", title:"How I got into Corvana", org:"Article", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Daniel"]] },
+  { kind:"post", ptype:"article", title:"How I got into Tovrena", org:"Article", via:"ana", fam:"Xoogler", when:"Last week", why:"Same path you're on", facts:[["In","#jobs, featured by Daniel"]] },
   { kind:"post", ptype:"announcement", title:"Xoogler dinners move to Thursdays from October", org:"Announcement", via:"chris", fam:"Xoogler", when:"Yesterday", why:"You're going Thursday", facts:[["From","the organizers"]] },
   { kind:"post", ptype:"win", title:"Signed my first two design partners", org:"Win", via:"maya", fam:"Xoogler", when:"2 days ago", why:"Maya is on one of your paths", facts:[["In","#wins"]] },
   { kind:"post", ptype:"question", title:"Which AI companies actually let PMs ship?", org:"Question", via:"sana", fam:"Michigan", when:"3 days ago", why:"Matches your mission", facts:[["In","#jobs"]] }
@@ -11523,7 +11523,7 @@ const _dStatus = scMissionStatus; scMissionStatus = function(m, ps){ const r=_dS
 const _dIntake = applyIntake; applyIntake = function(){
   _dIntake();
   if (!STATE.member) return;
-  if (!DB.people.ravi) DB.people.ravi = { id:"ravi", name:"Ravi Menon", initials:"RM", title:"CTO", company:"Lumora", line:"Ex-Google payments. Not on Key; Daniel reaches Ravi on WhatsApp.", families:[], openTo:[], notNow:[], slots:"", help:[], lookingFor:"", shared:[], offKey:true };
+  if (!DB.people.ravi) DB.people.ravi = { id:"ravi", name:"Ravi Menon", initials:"RM", title:"CTO", company:"Quenlit", line:"Ex-Google payments. Not on Key; Daniel reaches Ravi on WhatsApp.", families:[], openTo:[], notNow:[], slots:"", help:[], lookingFor:"", shared:[], offKey:true };
   const m1 = DB.missions.find(m=>m.type==="Looking");
   if (m1) {
     m1.brief = dCopy(m1.brief||"");
@@ -11871,7 +11871,7 @@ const O_PEOPLE = {
                 { pid:"ben",   why:"Asked for a Larkspur-to-startup story yesterday. Kate has one", draft:"Kate, Ben is asking exactly the move you made. Ten minutes?" } ],
   thank:      [ { pid:"grace", why:"Answered four asks and hosted the Plinth teardown", draft:"Grace, four answers and a full room. Thank you. Anything you want back from the community?" },
                 { pid:"sana",  why:"Referred two members this month", draft:"Sana, two referrals this month. That is the thing this place is for. Thank you." } ],
-  meet:       [ { pid:"omar",  pid2:"lena", why:"Omar is hiring a founding PM in payments; Lena builds payments infra at Lumora and asked for founders", draft:"Omar, Lena: you asked for each other without knowing it. Payments, founding team, Lumora. I'll leave you to it." },
+  meet:       [ { pid:"omar",  pid2:"lena", why:"Omar is hiring a founding PM in payments; Lena builds payments infra at Quenlit and asked for founders", draft:"Omar, Lena: you asked for each other without knowing it. Payments, founding team, Quenlit. I'll leave you to it." },
                 { pid:"mira",  pid2:"kofi", why:"Mira is raising a pre-seed; Kofi asked Kai for founders in Mira's space", draft:"Mira, Kofi: agents for ops, pre-seed. Kofi asked to meet founders here; Mira is the one." } ],
   host:       [ { pid:"grace", why:"Full room last time. Asked what to run next", draft:"Grace, the Plinth teardown filled. Want to run the November one? Kai fills the room." } ]
 };
@@ -12048,7 +12048,7 @@ const _bPortSheet = portSheet; portSheet = function(type, id){ if (type==="bshee
 Object.assign(LUCIDE, { "calendar-check":'<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>', "moon":'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>', "hand":'<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>', "repeat":'<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>' });
 
 const EVM_B = { e4: { going:["rahul","ana","maya","chris","kate"], after:{ rahul:"confirmed", ana:"confirmed", chris:"confirmed", maya:"quiet", kate:"no" }, wait:["felix","priti"], excluded:"Not asked: Ana co-hosts; Marco already said no." } };
-const EVM_C = { e4: [ { a:"rahul", b:"maya", why:"Rahul hires ML engineers; Maya leads engineering at a seed startup and asked for hiring advice" }, { a:"kate", b:"arjun", why:"Kate ships learning loops at Larkspur; Arjun builds agents for logistics and asked for a PM's eye" }, { a:"ana", b:"jordan", why:"Ana runs platform at Corvana; Jordan is looking for a PM role in agents" }, { a:"sana", b:"dev", why:"Both asked about legal-tech agents this month" } ] };
+const EVM_C = { e4: [ { a:"rahul", b:"maya", why:"Rahul hires ML engineers; Maya leads engineering at a seed startup and asked for hiring advice" }, { a:"kate", b:"arjun", why:"Kate ships learning loops at Larkspur; Arjun builds agents for logistics and asked for a PM's eye" }, { a:"ana", b:"jordan", why:"Ana runs platform at Tovrena; Jordan is looking for a PM role in agents" }, { a:"sana", b:"dev", why:"Both asked about legal-tech agents this month" } ] };
 const EVM_D = { e10p: { name:"Coffee with new PMs", day:"Thu, Sep 17", going:5, came:4, met:3, rating:"4.8 by 4", shared:[["kate","jordan","Kate met Jordan. Both let you know"]], asks:[ { pid:"jordan", what:"asked to be at the next one", act:"Invite Oct 1", kind:"invite" }, { pid:"kate", what:"asked for the reading list you mentioned", act:"Send", kind:"send" } ], noshow:["sana"] } };
 const EVM_E = { e4: [ { pid:"rahul", why:"Co-runs PM Teardowns with you. Five for five. Hosts nothing yet", draft:"Rahul, five for five and you already co-run the calendar. Co-host Oct 23 with me? Kai fills the room." }, { pid:"kate", why:"Came to three of five and asked about hosting in the chat", draft:"Kate, you asked about hosting. The Plinth teardown on Oct 23 is yours if you want it; I'll be there and Kai fills the room." } ] };
 const EVM_S = { "s-coffee": { name:"Coffee with new PMs", cadence:"Every other Thursday, 8am", next:"e10", dates:5, show:78, back:62, fresh:2,
@@ -13401,7 +13401,7 @@ const EV_ME = "priya";
   add(Object.assign({ id:"e1b", when:"Thu, Oct 22, 7pm", day:"Oct 22", going:21, bucket:"upcoming", reg:"none", sort:1022, meet:["rahul"] }, sx));
   add(Object.assign({ id:"e1c", when:"Thu, Nov 19, 7pm", day:"Nov 19", going:6, bucket:"upcoming", reg:"none", sort:1119, moved:"A week early, for Thanksgiving" }, sx));
   X("e1", { seriesId:"s-xd", askConfirm:true, pairs:[{ a:EV_ME, b:"sana", why:"Sana is on Brightwell's hiring panel; you're tracking the role", ok:true }, { a:"rahul", b:"maya", why:"Maya wants a technical cofounder; Rahul advises two", ok:true }] });
-  X("e4", { cohostHints:[["kate","Came to three of five and asked about hosting in the chat"]], pairs:[{ a:"rahul", b:"maya", why:"Rahul hires ML engineers; Maya leads engineering at a seed startup and asked for hiring advice", ok:null }, { a:"kate", b:"arjun", why:"Kate ships learning loops at Larkspur; Arjun builds agents for logistics and asked for a PM's eye", ok:null }, { a:"ana", b:"jordan", why:"Ana runs platform at Corvana; Jordan is looking for a PM role in agents", ok:null }, { a:"sana", b:"dev", why:"Both asked about legal-tech agents this month", ok:null }] });
+  X("e4", { cohostHints:[["kate","Came to three of five and asked about hosting in the chat"]], pairs:[{ a:"rahul", b:"maya", why:"Rahul hires ML engineers; Maya leads engineering at a seed startup and asked for hiring advice", ok:null }, { a:"kate", b:"arjun", why:"Kate ships learning loops at Larkspur; Arjun builds agents for logistics and asked for a PM's eye", ok:null }, { a:"ana", b:"jordan", why:"Ana runs platform at Tovrena; Jordan is looking for a PM role in agents", ok:null }, { a:"sana", b:"dev", why:"Both asked about legal-tech agents this month", ok:null }] });
   DB.series = DB.series || [];
   const S = o => { if (!DB.series.some(x=>x.id===o.id)) DB.series.push(o); };
   S({ id:"s-coffee", name:"Coffee with new PMs", host:EV_ME, cal:"cal-me", cadence:"2w", cover:{ kind:"coffee", v:0, seed:"s-coffee" }, eventIds:["e10j","e10k","e10m","e10a","e10p","e10","e10c","e10d"], every:["jordan"] });
@@ -13809,7 +13809,7 @@ function evManage(id){
       <div class="evt-frow" data-evset="${id}|waitOn"><i>${evIc("hourglass",20)}</i><div><b>Waitlist when full</b></div><span class="evt-tog ${e.waitOn!==false?'on':''}"></span></div>
       <div class="evt-frow" data-evset="${id}|closed"><i>${evIc("ban",20)}</i><div><b>Close registration</b></div><span class="evt-tog ${e.closed?'on':''}"></span></div></div>
     <div class="evt-sec2">Questions at sign-up</div><div class="evt-rows">${e.questions.map((q,i)=>`<div class="evt-frow" data-evsheet="evq|${id}|${i}"><i>${evIc("message-square-text",20)}</i><div><b>${q.q}</b><span>${q.type}${q.req?", required":""}</span></div><em>›</em></div>`).join("")}<div class="evt-frow" data-evsheet="evq|${id}|new"><i>${evIc("plus",20)}</i><div><b>Add a question</b></div></div></div>
-    <div class="evt-rows" style="margin-top:14px"><div class="evt-frow" onclick="toast('${e.price?"Lumora: connected. Payouts arrive 2 days after the event.":"Connect Lumora when you add a paid ticket."}')"><i>${evIc("credit-card",20)}</i><div><b>Payouts</b><span>${e.price?"Lumora connected":"Free event"}</span></div><em>›</em></div></div>`; }
+    <div class="evt-rows" style="margin-top:14px"><div class="evt-frow" onclick="toast('${e.price?"Quenlit: connected. Payouts arrive 2 days after the event.":"Connect Quenlit when you add a paid ticket."}')"><i>${evIc("credit-card",20)}</i><div><b>Payouts</b><span>${e.price?"Quenlit connected":"Free event"}</span></div><em>›</em></div></div>`; }
   else if (t==="broadcast") body = `<div class="lbl">To</div><div class="seg">${[["going","Going"],["all","Going and waiting"]].map(([k,l])=>`<div class="${(STATE.evAud||"going")===k?'on':''}" data-evaud="${k}">${l}</div>`).join("")}</div>
     <textarea class="input" id="evbc" rows="3" placeholder="Room moved to the second floor.">${STATE.evBcDraft||""}</textarea>
     <div class="evt-links" style="margin-top:8px"><span data-evkaibc="1">${evIc("sparkles",15)} Kai: draft a reminder</span></div>
@@ -14312,7 +14312,7 @@ function evSheet(type, id){
     <button class="btn" style="margin-top:16px" onclick="closeSheet()">Done</button>`; }
   if (type==="evtix") { const d=evDraft();
     return `<h2>Tickets</h2><div class="seg">${[["0","Free"],["1","Paid"]].map(([k,l])=>`<div class="${(d.paid?"1":"0")===k?'on':''}" data-evpaid="${k}">${l}</div>`).join("")}</div>
-    ${d.paid?`<div class="lbl">Price</div><div class="evt-fxrow">${[10,20,40,75].map(v=>`<span class="chip ${d.price===v?'on':''}" data-evprice="${v}">$${v}</span>`).join("")}</div><p class="xs faint">Payouts go to your Lumora account, set up once.</p>`:""}
+    ${d.paid?`<div class="lbl">Price</div><div class="evt-fxrow">${[10,20,40,75].map(v=>`<span class="chip ${d.price===v?'on':''}" data-evprice="${v}">$${v}</span>`).join("")}</div><p class="xs faint">Payouts go to your Quenlit account, set up once.</p>`:""}
     <div class="lbl">Spots</div><div class="evt-fxrow">${[10,20,40,80,0].map(v=>`<span class="chip ${d.cap===v?'on':''}" data-evcapset="${v}">${v||"No limit"}</span>`).join("")}</div>
     ${d.cap?`<div class="evx-tog" data-evtog="waitlist"><span>Waitlist when full</span><i class="${d.waitlist?'on':''}"></i></div>`:""}
     <button class="btn" style="margin-top:16px" onclick="closeSheet()">Done</button>`; }
@@ -15572,9 +15572,9 @@ function evCta(e, live, locked){
     DB.posts = [
       P({ id:"p1", cat:"Announcements", who:"Daniel Reyes", ini:"DR", sub:"President, Xoogler", when:"Today", title:"Where I've been this month", text:"Three cities, two hackathons, one very good dinner. What I keep hearing: everyone's hiring PMs who've shipped AI, and nobody can find them. If that's you, say so in #jobs.", pinned:true, up:41, cm:12, tags:["Community"] }),
       P({ id:"p6", cat:"Hiring", who:"Sana Iqbal", ini:"SI", sub:"Product Lead, Brightwell", when:"2d", title:"What Brightwell's PM loop actually tests", text:"Four rounds, one of them a live teardown. What I look for, and the answer most people miss.", read:"6 min read", up:52, cm:14, tags:["Interviews","AI"], refs:["#jobs on Slack, Sep 12"], kai:"Four rounds. The teardown round decides it: pick one Brightwell feature, say what you'd cut and why. Sana says most people describe, few decide." }),
-      P({ id:"p3", cat:"Playbooks", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Corvana", when:"Last week", title:"How I got into Corvana", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know.", read:"5 min read", featured:true, img:true, up:64, cm:21, tags:["Interviews"] }),
+      P({ id:"p3", cat:"Playbooks", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Tovrena", when:"Last week", title:"How I got into Tovrena", text:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one honest conversation about what I didn't know.", read:"5 min read", featured:true, img:true, up:64, cm:21, tags:["Interviews"] }),
       P({ id:"p4", cat:"Wins", who:"Rahul Mehta", ini:"RM", sub:"Engineering Director, Halvern", when:"Tuesday", title:"Hired our first PM through #jobs", text:"Sana referred, Daniel vouched. Offer to signed in eleven days.", read:"1 min read", up:37, cm:9 }),
-      P({ id:"p5", cat:"Questions", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Corvana", when:"Monday", title:"Who knows Plinth's PM bar?", text:"Interviewing a candidate from Plinth next week. What does a strong PM there look like?", read:"1 min read", up:12, cm:7 }),
+      P({ id:"p5", cat:"Questions", who:"Ana Ruiz", ini:"AR", sub:"Head of Platform, Tovrena", when:"Monday", title:"Who knows Plinth's PM bar?", text:"Interviewing a candidate from Plinth next week. What does a strong PM there look like?", read:"1 min read", up:12, cm:7 }),
       P({ id:"p2", cat:"Announcements", who:"Kai, published by Daniel", ini:"kai", sub:"Weekly recap", when:"Monday", title:"This week in Xoogler", text:"Four roles posted in #jobs, three with a referrer. Fourteen people in SF this week, lunch is Wednesday. 28 joined this month: 21 greeted, 7 still waiting for a hello.", read:"1 min read", up:18, cm:3 }),
       P({ id:"p7", cat:"Playbooks", who:"Dev Patel", ini:"DP", sub:"Founder, Legal-tech agents", when:"2h", title:"Shipping tool use in legal agents: what broke", text:"Three months in production. Where the model over-called tools, and the eval that caught it.", read:"7 min read", st:"pending" }),
       P({ id:"p8", cat:"Questions", who:"Jordan Tan", ini:"JT", sub:"Product Manager, Ex-Google", when:"5h", title:"Google PM to AI PM: where would you start?", text:"Six years on Maps, two on ML ranking. Which of that counts in an AI PM loop?", read:"1 min read", st:"pending" }),
@@ -15780,7 +15780,7 @@ function cTier(p){ return p.shared.some(x=>/Met|Talked|Nominated|Greeted/.test(x
 function cVia(p){ const o=DB.opps.find(x=>x.personId===p.id&&x.via&&x.via!==p.id); const v=o&&DB.people[o.via]; return v ? v.name.split(" ")[0] : ({maya:"Daniel",jordan:"Rahul",dev:"Rahul"})[p.id]||"a member"; }
 const cHead = (t, link, attr) => `<div class="cm-h"><span>${t}</span>${link?`<span class="cm-more" ${attr}>${link}</span>`:''}</div>`;
 /* A pick is someone Kai put forward for one of your missions that you haven't acted on: no path yet, or a path still in its New pick state. */
-const C_PICK_WHY = { maya:["Daniel vouched for Maya in #cofounders","Technical cofounder"], ana:["Hiring a platform PM at Corvana","Senior PM role"], sana:["On the panel for Brightwell's PM role","Senior PM role"] };
+const C_PICK_WHY = { maya:["Daniel vouched for Maya in #cofounders","Technical cofounder"], ana:["Hiring a platform PM at Tovrena","Senior PM role"], sana:["On the panel for Brightwell's PM role","Senior PM role"] };
 const cPicks = (f, pool) => ["maya","ana","sana"].map(id=>DB.people[id]).filter(p=>p && pool.includes(p) && !DB.opps.some(o=>o.personId===p.id && !isNewOf(o)));
 const cFamPeople = f => Object.values(DB.people).filter(p=>p.id!=="priya" && p.families.includes(f.name));
 const cIsNew = p => ["dev","jordan"].includes(p.id);
@@ -16116,7 +16116,7 @@ function cPostRow(p, mode){
    member-posts-research.md). Kai drafts; nothing is sent without a tap. ---- */
 const C_ASKS = {
   xoogler:[
-    {id:"a1", k:"ask", pid:"omar", tag:"Intro", text:"Trying to close our first enterprise pilot. Intro to someone on Lumora's payments risk team?", when:"3h", n:1},
+    {id:"a1", k:"ask", pid:"omar", tag:"Intro", text:"Trying to close our first enterprise pilot. Intro to someone on Quenlit's payments risk team?", when:"3h", n:1},
     {id:"a2", k:"offer", pid:"sana", tag:"Interviews", text:"Two mock PM interviews this Thursday for anyone prepping for an AI lab loop.", when:"1d", n:5},
     {id:"a3", k:"ask", pid:"maya", tag:"Cofounder", text:"Want a technical cofounder who has scaled infra by December. Warm intros welcome.", when:"2d", n:2},
     {id:"a4", k:"offer", pid:"kofi", tag:"Advice", text:"Office hours for pre-seed founders this week. 20 minutes, bring the deck.", when:"4d", n:3},
@@ -16124,7 +16124,7 @@ const C_ASKS = {
   ]
 };
 const C_ASK_TAGS = ["Intro","Hiring","Advice","Cofounder","Feedback"];
-const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Lumora"],["karan","PM at Lumora"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at Northfield Ventures"],["tom","Recruiter at Tessel"],["pooja","Hires engineers at Rydell"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Plinth"]], Cofounder:[["felix","CTO at Corlis, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Plinth"],["hana","Design Lead at Inkwell"],["paul","Staff PM at Google"]] };
+const C_ASK_MATCH = { Intro:[["lena","Staff Engineer at Quenlit"],["karan","PM at Quenlit"],["rahul","You've met; knows payments leads"]], Hiring:[["lina","Talent Partner at Northfield Ventures"],["tom","Recruiter at Tessel"],["pooja","Hires engineers at Rydell"]], Advice:[["kofi","Partner at Gradient Ventures"],["ruth","Angel investor"],["grace","VP Product at Plinth"]], Cofounder:[["felix","CTO at Corlis, has scaled infra"],["marco","Founder, legal agents"],["maya","Looking for the same"]], Feedback:[["grace","VP Product at Plinth"],["hana","Design Lead at Inkwell"],["paul","Staff PM at Google"]] };
 const cAskGuess = t => /hir|recruit|engineer|candidate/i.test(t) ? "Hiring" : /cofounder|co-founder/i.test(t) ? "Cofounder" : /intro|meet|someone (at|on|from)/i.test(t) ? "Intro" : /feedback|review|look at/i.test(t) ? "Feedback" : "Advice";
 const cAsks = f => [...(STATE.cMyAsks||[]).filter(a=>a.fam===f.id), ...(C_ASKS[f.id]||[])].map(a=>Object.assign({}, a, (STATE.cAskSt||{})[a.id] ? { st:STATE.cAskSt[a.id] } : {}));
 const cAskOf = id => cAsks(cF()).find(a=>a.id===id);
@@ -16347,7 +16347,7 @@ const C_MM = [
   { id:"rahul", n:"Rahul Mehta", e:"rahul@mail.com", st:"active", role:"admin", joined:"Apr 2023", city:"San Francisco", wa:true, notes:[["Daniel Reyes","Aug 30","Hosts the AI roundtable. Ask before adding to panels."],["Daniel Reyes","Jul 12","Hiring senior PMs through Q4."],["Sana Iqbal","Jun 2","Great first call with Dev.",true]], tags:["Investor","Speaker","Mentor"], atm:"Engineering Director, Halvern. Hiring senior PMs." },
   { id:"sana", n:"Sana Iqbal", e:"sana@mail.com", st:"active", role:"member", joined:"Jan 2024", city:"San Francisco", notes:[], tags:["Speaker","Hiring"], atm:"Product Lead, Brightwell. On the PM panel." },
   { id:"maya", n:"Maya Chen", e:"maya@stealth.dev", st:"active", role:"member", joined:"Feb 2024", city:"San Francisco", wa:true, notes:[["Daniel Reyes","Aug 21","Looking for a PM cofounder. Vouched in #cofounders."],["Rahul Mehta","Jul 3","Eval tooling. Knows everyone in agents infra."]], tags:["Software Engineer","Speaker"], atm:"Head of Engineering, seed-stage stealth. Agents infra." },
-  { id:"ana", n:"Ana Ruiz", e:"ana@mail.com", st:"active", role:"member", joined:"May 2024", city:"San Francisco", notes:[], tags:["Hiring"], atm:"Head of Platform, Corvana. Hiring a platform PM." },
+  { id:"ana", n:"Ana Ruiz", e:"ana@mail.com", st:"active", role:"member", joined:"May 2024", city:"San Francisco", notes:[], tags:["Hiring"], atm:"Head of Platform, Tovrena. Hiring a platform PM." },
   { id:"dev", n:"Dev Patel", e:"dev@lexagents.com", st:"active", role:"member", joined:"Sep 2026", city:"Palo Alto", notes:[], tags:[], atm:"Founder, legal-tech agents. Joined Monday." },
   { id:"eli", n:"Eli Brooks", e:"eli.brooks@gmail.com", st:"active", role:"member", joined:"Sep 2026", city:"Oakland", notes:[], tags:[], atm:"Ex-Google. Joined Wednesday." },
   { id:"ines", n:"Ines Duarte", e:"ines@duarte.dev", st:"active", role:"member", joined:"Sep 2026", city:"San Francisco", notes:[], tags:[], atm:"PM at Kestrel. Joined Tuesday." },
@@ -17333,9 +17333,9 @@ const P2 = {
     needs:[{t:"A product partner", s:"Someone who has shipped AI features", fit:"You shipped two AI features at Google", a:"offer"},
            {t:"Seed investors in agent infra", s:"Raising this quarter", a:"suggest"},
            {t:"Two founding engineers", s:"Backend, Go or Rust", a:"suggest"}],
-    work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Lumora","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
+    work:[["S","#121316","Stealth","Founder · now"],["S","#635BFF","Quenlit","2019 – 2023"],["G","#1A73E8","Google","2014 – 2019","Google, like you"]],
     school:[["M","#00274C","U of Michigan","MS CS · 2014","Michigan, like you"]],
-    note:"Wants a PM who has shipped agents. Ask about the Lumora years.",
+    note:"Wants a PM who has shipped agents. Ask about the Quenlit years.",
     kaiPre:"Daniel is your warmest way in", digest:"Maya is looking for two founding engineers", digestAct:"Suggest", vouch:["chris","#cofounders, Aug 21"] },
   rahul: { now:"Building the eng team for a new product line",
     needs:[{t:"Senior PMs who have shipped AI features", s:"Hiring for a new product line", fit:"You shipped two AI features at Google", a:"offer"}],
@@ -18605,7 +18605,7 @@ brOpen = function(fromEl){
    Kai questions and asks land on real matches. Fictional people; adds only, never edits a seeded person. ==== */
 const MORE_PEOPLE = [
   // id, name, title, company, families (X=Xoogler, M=Michigan, D=Desi), openTo, notNow, slots, lookingFor, help, line
-  ["lena","Lena Park","Staff Engineer","Lumora","X",["Product advice","Referrals"],["Cofounder"],"2 slots left this week","","Payments infra|Staff eng promo","Ex-Google payments. Builds money movement at Lumora."],
+  ["lena","Lena Park","Staff Engineer","Quenlit","X",["Product advice","Referrals"],["Cofounder"],"2 slots left this week","","Payments infra|Staff eng promo","Ex-Google payments. Builds money movement at Quenlit."],
   ["omar","Omar Haddad","Founder","Penwick, seed","X",["Hiring conversations","Intros"],["Investing"],"3 slots left this week","A founding PM","Seed fundraising|First ten hires","Building AI bookkeeping for small businesses. Hiring a founding PM."],
   ["grace","Grace Liu","VP Product","Plinth","X",["Product advice","Office hours"],["Cold pitches"],"1 slot left this week","","PM career ladders|Design and PM partnership","Ex-Google, docs and collaboration. Runs product for Plinth's AI features."],
   ["tom","Tom Becker","Recruiter, AI","Tessel","X",["Hiring conversations","Referrals"],[],"4 slots left this week","Senior PMs for applied AI","Offer negotiation|AI PM interview loops","Recruits PMs for applied AI teams."],
@@ -18639,7 +18639,7 @@ const MORE_PEOPLE = [
   ["pooja","Pooja Reddy","Director of Engineering","Rydell","DX",["Hiring conversations","Product advice"],[],"2 slots left this week","PMs for the AI platform","ML platforms|Eng leadership","Ex-Google. Runs ML platform at Rydell."],
   ["arun","Arun Pillai","Founder","Setu Labs, seed","D",["Cofounder conversations","Hiring conversations"],["Investing"],"2 slots left this week","A product cofounder","APIs for Indian banks|Seed fundraising","Building open banking APIs."],
   ["sneha","Sneha Das","Product Designer","Cred","D",["Advice","Product advice"],[],"3 slots left this week","","Fintech design|Portfolio reviews","Designs Cred's rewards experience."],
-  ["karan","Karan Malhotra","Product Manager","Lumora","DX",["Referrals","Advice"],[],"2 slots left this week","","Lumora referrals|Payments PM","Ex-Google payments. PM on Lumora Connect."],
+  ["karan","Karan Malhotra","Product Manager","Quenlit","DX",["Referrals","Advice"],[],"2 slots left this week","","Quenlit referrals|Payments PM","Ex-Google payments. PM on Quenlit Connect."],
   ["divya","Divya Krishnan","Chief of Staff","Sarvam AI","D",["Intros","Advice"],[],"2 slots left this week","","Indian LLMs|Operating in Bengaluru","Ops and hiring for Sarvam."],
   ["yusuf","Yusuf Ali","Founder","Brisk, pre-seed","D",["Cofounder conversations","Intros"],[],"2 slots left this month","A growth-minded PM cofounder","Consumer AI|Creator tools","Building AI video editing for creators."],
   ["lina","Lina Morales","Talent Partner","Northfield Ventures","XM",["Hiring conversations","Intros"],["Investing"],"4 slots left this week","PMs for portfolio AI companies","Portfolio hiring|Comp benchmarks","Places PMs across Northfield Ventures's AI portfolio."],
@@ -20004,7 +20004,7 @@ function mxTray() { document.querySelectorAll("#phone .swr").forEach(sw => { con
 if (typeof LUCIDE!=="undefined" && !LUCIDE["pin-off"]) LUCIDE["pin-off"] = '<path d="M12 17v5"/><path d="M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89"/><path d="m2 2 20 20"/><path d="M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11"/>';
 /* Catch me up (Apoorv 28 Sep 01:45): the channel's Kai line opens Kai with a catch-up of the latest posts, each as the member who
    posted, one line on what it says, and one action (open the post or its thread). Read-only; channels Kai doesn't read get no button. */
-const MX_CU_GIST = { m29:"Hiring senior PMs. Shipped AI is the bar.", m30:"Hiring a senior PM for Brightwell's agents team.", m31:"Needs an O-1 immigration lawyer.", m32:"Corvana opens a platform PM role in October. Ana named you." };
+const MX_CU_GIST = { m29:"Hiring senior PMs. Shipped AI is the bar.", m30:"Hiring a senior PM for Brightwell's agents team.", m31:"Needs an O-1 immigration lawyer.", m32:"Tovrena opens a platform PM role in October. Ana named you." };
 const mxCuWord = n => ["No","One","Two","Three","Four","Five"][n] || String(n);
 function mxCatchUp(cid) {
   const c = convOf(cid); if (!c) return;
@@ -20573,7 +20573,7 @@ Object.entries({
 }).forEach(([k,v])=>{ if (!LUCIDE[k]) LUCIDE[k] = v; });
 const MH_JOB = {
   o3: { pay:"$200–280k", where:"San Francisco", mode:"Hybrid, 3 days a week", short:"SF, hybrid", level:"Senior, 5+ years", equity:"Included", posted:"Sep 25",
-        chan:"#jobs on the Xoogler Slack", link:"lumora.ai/careers",
+        chan:"#jobs on the Xoogler Slack", link:"quenlit.ai/careers",
         words:"We're hiring a senior PM for the agents team at Brightwell. You'd own how agents plan and act inside the product, from the first query to the finished task. Looking for 5+ years as a PM and something you've shipped with LLMs. I'm on the panel and happy to refer Xooglers, DM me.",
         about:"The agents team builds the part of Brightwell that finishes tasks for people, not just answers. It's a small team of engineers and researchers shipping every week.",
         does:["Own the agents roadmap from research to launch","Decide what agents do on their own and when they ask","Measure whether tasks actually get done"] },
@@ -21007,7 +21007,7 @@ sWelcome = function() {
       <div class="nm"><div class="n">${nameTxt || "Your card"}</div>${line?`<div class="t ob3edit" onclick="STATE.ob3Edit=true;render()">${line}</div>`:''}</div>
     </div>
     <div style="padding:6px 16px 20px">
-      ${matched ? `<div class="ob3logos"><b>G</b><b>S</b><b>M</b><span>Google · Lumora · Michigan</span></div>
+      ${matched ? `<div class="ob3logos"><b>G</b><b>S</b><b>M</b><span>Google · Quenlit · Michigan</span></div>
         <div class="ob3src"><span class="ob3li">in · From LinkedIn</span><span class="ob3not" onclick="STATE.ob3Cleared=true;STATE.ob3Edit=false;STATE.ob3Role='';STATE.ob3Co='';render()">Not you?</span></div>` : ''}
       ${editing || !matched ? fields : ''}
     </div>
@@ -23690,7 +23690,7 @@ function kySheet(type, id) {
     return `<p class="ky-p">${e.name} · 1 seat</p><div class="ky-total" data-kc="KeyPriceTotal">$${e.price}.00</div>
       ${kyBar(e.price,"free",evFirst(e.host))}
       <p class="ky-fine">The price you see is the price you pay. Full refund if the host cancels.</p>
-      ${kyBtn("Pay with Apple Pay",`openSheet('kyapple','${id}')`,"primary")}${kyBtn("Pay by card","toast('Card form from Lumora, saved for next time.')","ghost","credit-card")}`; }
+      ${kyBtn("Pay with Apple Pay",`openSheet('kyapple','${id}')`,"primary")}${kyBtn("Pay by card","toast('Card form from Quenlit, saved for next time.')","ghost","credit-card")}`; }
   if (type==="kyapple") { const e=evE(id);
     return `<div class="ky-store" data-kc="KeyStoreSheet" data-kv="store=applepay"><div class="ky-sth"><b>Apple Pay</b><button onclick="closeSheet()">Cancel</button></div>
       ${kyFact("Card","Visa ··· 4412")}${kyFact(`Pay ${evFirst(e.host)} via Key`,`$${e.price}.00`)}
@@ -23701,7 +23701,7 @@ function kySheet(type, id) {
       <div class="ky-facts">${kyFact("Paid to",`${evFirst(e.host)}, the host`)}${kyFact("Card","Visa ··· 4412")}${kyFact("Refunds","Until the day before")}</div>
       <div class="ky-two">${kyBtn("Wallet","toast('Added to Apple Wallet.')","secondary","wallet")}${kyBtn("Refund","toast('Refund requested. The host sees it now.')","secondary","rotate-ccw")}</div>`; }
   if (type==="kypayout") return `<h2 class="ky-h">Where should your ticket money go?</h2>
-    <div class="hg-list">${kyRow("landmark","Your bank","Set up with Lumora in about 2 minutes")}${kyRow("layers","Every community you host","One payout account")}${kyRow("calendar","Paid out","2 days after each event")}</div>
+    <div class="hg-list">${kyRow("landmark","Your bank","Set up with Quenlit in about 2 minutes")}${kyRow("layers","Every community you host","One payout account")}${kyRow("calendar","Paid out","2 days after each event")}</div>
     ${kyBtn("Set up payouts","KY.payouts=true;STATE.sheet=null;render();toast('Payouts are on.');setTimeout(()=>{ if(!KY.proSeen&&!kyPaid()){ KY.proSeen=true; openSheet('kypro','fee'); } },1200)","primary")}${kyBtn("Later","closeSheet()","ghost")}`;
   return null;
 }
@@ -28880,13 +28880,13 @@ const ovSaved = id => !!(STATE.cSave||{})[id];
 const OV_CONV = { xoogler:[
   { id:"jobs", sub:"14 replies today · last reply 12m", text:"Who's hiring PMs for AI products right now? Four roles so far, three with someone who'll refer.", who:["rahul","sana","ana","lena","omar","karan"], t:1 },
   { id:"cofounders", sub:"6 replies today · last reply 1h", text:"Technical cofounders for agents infra: two founders looking, one engineer open to it.", who:["maya","dev","felix","marco","zoe"], t:3 },
-  { id:"introductions", sub:"9 replies today · last reply 25m", text:"Seven new members this month, from Kestrel, Gradient and Lumora, each saying what they're after.", who:["ines","kofi","eli","ruth","zoe","felix","dev"], t:6 } ] };
+  { id:"introductions", sub:"9 replies today · last reply 25m", text:"Seven new members this month, from Kestrel, Gradient and Quenlit, each saying what they're after.", who:["ines","kofi","eli","ruth","zoe","felix","dev"], t:6 } ] };
 /* asks and offers beyond the page's own C_ASKS: a closed one, and Ana's question from the library */
 const OV_ASK_X = { xoogler:[ { id:"a6", k:"ask", pid:"ana", tag:"Hiring", text:"Need a platform PM with agents experience by October.", when:"3w", n:4, closed:"Got help · Hired through Rahul's intro" },
   { id:"a7", k:"ask", pid:"ana", tag:"Advice", text:"Interviewing a candidate from Plinth next week. What does a strong PM there look like?", when:"Monday", n:2, by:"By Friday" } ] };
 const OV_BY = { a1:"By Friday", a2:"This Thursday", a3:"By December", a4:"This week" };
 /* why an ask fits you (Kai line on fill) */
-const OV_FIT = { a1:"You know Lena, who works at Lumora", a3:"You're after the same thing: a cofounder for agents", a2:"You're prepping for AI lab loops" };
+const OV_FIT = { a1:"You know Lena, who works at Quenlit", a3:"You're after the same thing: a cofounder for agents", a2:"You're prepping for AI lab loops" };
 /* reads: Kai's weekly read, the organizer's announcement, a member article, the library digest (production Library: summary, Kai's notes, own words) */
 const OV_READS = { xoogler:[
   { id:"r-week", post:"p2", kind:"weekly", src:"Kai", sub:"Weekly read · Monday", title:"This week in Xoogler", sum:"Four roles in #jobs, three with a referrer. Fourteen people in SF this week. Two new cofounder threads.", read:"1 min read", photo:5638730, t:4,
@@ -28899,7 +28899,7 @@ const OV_READS = { xoogler:[
     bullets:["Searches that named the stage and the first hire matched in about a month","Warm intros through a member who'd worked with both people beat cold posts","Most matches met in person first, at a dinner or a teardown"],
     quotes:[["Maya Chen","#cofounders","Say what you'll own and what you won't. It saves everyone a call."],["Rahul Mehta","#cofounders","The best intros here came with one line on why the two of you, not a CV."]] } ] };
 /* older posts, the next page */
-const OV_OLD = [ { k:"ask", id:"a4" }, { k:"read", r:{ id:"r-play", post:"p3", kind:"article", pid:"ana", sub:"Head of Platform, Corvana · Last week", title:"How I got into Corvana", sum:"A referral from a Xoogler, a take-home I over-invested in, and one question I'd ask again.", read:"5 min read", photo:6954471,
+const OV_OLD = [ { k:"ask", id:"a4" }, { k:"read", r:{ id:"r-play", post:"p3", kind:"article", pid:"ana", sub:"Head of Platform, Tovrena · Last week", title:"How I got into Tovrena", sum:"A referral from a Xoogler, a take-home I over-invested in, and one question I'd ask again.", read:"5 min read", photo:6954471,
   body:"Short version: a referral from a Xoogler, a take-home I over-invested in, and one question I'd ask again: what would you cut from this product tomorrow?" } },
   { k:"read", r:{ id:"r-win", post:"p4", kind:"article", pid:"rahul", sub:"Engineering Director, Halvern · Tuesday", title:"Hired our first PM through #jobs", sum:"Sana referred, Daniel vouched. Offer to signed in eleven days.", read:"1 min read", body:"Sana referred, Daniel vouched. Offer to signed in eleven days. Thank you, Xoogler." } } ];
 /* launch day: what already exists, never an empty state */
@@ -28907,7 +28907,7 @@ const OV_LAUNCH_READ = { id:"r-hello", kind:"article", pid:"chris", sub:"Organiz
   body:"Welcome. Xoogler is on Key now: channels for the talk, events for the dinners, and Key to find the people here worth meeting. Start with a line in #introductions about what you're working on." };
 const OV_LAUNCH_CONV = { id:"jobs", sub:"Imported from Slack", text:"From Xoogler's Slack last month: 72 roles were shared in #jobs. 6 are still open.", who:["rahul","sana","ana","lena","omar"] };
 const OV_LAUNCH_LIB = { id:"r-lib2", kind:"digest", src:"Kai", sub:"Library read · from #jobs on Slack", title:"Where Xooglers found their last role", sum:"From a year of #jobs: referrals, the companies that hired most, and what people asked first.", read:"3 min read", photo:6955659, open:"jobs", n:58,
-  bullets:["Most hires in #jobs came with a referral from someone who'd worked with them","Halvern, Brightwell and Corvana hired the most Xooglers this year","The first question that worked: what would you cut from this product"],
+  bullets:["Most hires in #jobs came with a referral from someone who'd worked with them","Halvern, Brightwell and Tovrena hired the most Xooglers this year","The first question that worked: what would you cut from this product"],
   quotes:[["Sana Iqbal","#jobs","A referral with one line on why gets read the same day."],["Rahul Mehta","#jobs","Tell me the team you want, not just the title."]] };
 const OV_EXAMPLES = ["Who's hiring a senior PM for an AI product?","Looking for a technical cofounder for agents infra. Who should I meet?","Happy to do mock PM interviews this week."];
 
@@ -28979,7 +28979,7 @@ function ovWho(){
   const d = STATE.ovWho||{}, f = cF(), asks = ovAsks(f), a1 = asks.find(a=>a.id==="a1");
   const rows = [
     !d.rahul && DB.people.rahul && STATE.persona!=="rahul" ? ["rahul", av(DB.people.rahul.initials, "ov-av"), "Rahul hires PMs at Halvern and you've met 3 times. Ask Rahul about Kate's team.", `<button type="button" class="ov-btn" data-ovwho="rahul">Message</button>`] : null,
-    !d.help && a1 && !(STATE.cHelped||{}).a1 && DB.people.omar ? ["help", av(DB.people.omar.initials, "ov-av"), "Omar needs someone on Lumora's risk team. Lena can help, and you know Lena.", `<button type="button" class="ov-btn" data-ovwho="help">I can help</button>`] : null,
+    !d.help && a1 && !(STATE.cHelped||{}).a1 && DB.people.omar ? ["help", av(DB.people.omar.initials, "ov-av"), "Omar needs someone on Quenlit's risk team. Lena can help, and you know Lena.", `<button type="button" class="ov-btn" data-ovwho="help">I can help</button>`] : null,
     !d.jobs ? ["jobs", `<span class="ov-hash" aria-hidden="true">${LI("hash",20)}</span>`, "#jobs has 4 PM roles with referrers today.", `<button type="button" class="ov-btn" data-ovwho="jobs">Join</button>`] : null ].filter(Boolean);
   if (!rows.length) return "";
   return `<section class="ov-who" aria-label="Who to talk to this week"><h3>Here's who to talk to in ${f.name} this week</h3>${(STATE.ovVisits||1)<=1 && !Object.keys(d).length ? `<p>Start with these three.</p>` : ""}
@@ -29429,7 +29429,7 @@ function usRecRow(x, i){
   if (typeof x==="string") return `<div class="us-rr"><button type="button" class="us-row us-q" data-q="${usEsc(x)}" onclick="usFill(this.dataset.q)"><span class="us-lead us-gl" aria-hidden="true">${LI("history",20)}</span><span class="m"><span class="a">${usEsc(x)}</span></span></button>${xb}</div>`;
   const r = usEntry(x); return r ? `<div class="us-rr">${usRow(r)}${xb}</div>` : "";
 }
-const US_TRY = [["Rahul","search"],["#jobs","hash"],["someone who has hired PMs at Lumora","kai"]];
+const US_TRY = [["Rahul","search"],["#jobs","hash"],["someone who has hired PMs at Quenlit","kai"]];
 function usEmpty(){
   const rec = usRecs().map((x,i)=>[x,i]);
   const faces = rec.filter(([x])=>typeof x==="object" && x.k==="person" && usPeople().some(p=>p.id===x.id)).slice(0, 8);
@@ -29619,7 +29619,7 @@ function usPF(k){ usU().pf = k; render(); }
 
 /* ---- Kai pushes a match: a new posting that fits a live mission's ask. One push per posting, one card at a time ---- */
 const US_PUSH = [
-  { id:"pl2", mission:"m1", head:"Ana Ruiz is hiring a platform PM at Corvana.", why:"It fits your Senior PM mission, and you met Ana in August." },
+  { id:"pl2", mission:"m1", head:"Ana Ruiz is hiring a platform PM at Tovrena.", why:"It fits your Senior PM mission, and you met Ana in August." },
   { id:"us-p2", mission:"m1", head:"Maya Chen is hiring a founding PM for an agents startup.", why:"It fits your Senior PM mission, and Maya is in Xoogler with you.",
     make:{ kind:"role", title:"Founding PM, agent infrastructure", org:"Seed-stage, stealth", via:"maya", selfHire:true, fam:"Xoogler", when:"Just now", why:"Fits your Senior PM mission", facts:[["Team","Agent infrastructure"],["Where","Palo Alto"]] } }
 ];
@@ -29676,7 +29676,7 @@ poolSheet = function(id){
 
 /* ---- one a day you didn't ask for: a card in the brief deck, after the people waiting, before the end ---- */
 const US_BRIEF = [
-  { id:"pl2", face:"ana", head:"Ana Ruiz is hiring a platform PM at Corvana", why:"You met Ana at the August dinner and told me you'd go back to platform work one day. Posted in Xoogler today." },
+  { id:"pl2", face:"ana", head:"Ana Ruiz is hiring a platform PM at Tovrena", why:"You met Ana at the August dinner and told me you'd go back to platform work one day. Posted in Xoogler today." },
   { id:"mp16", face:"grace", head:"Grace Liu is offering portfolio reviews for PMs moving to AI", why:"You told me your case studies need an AI story, and Grace runs these on Fridays. Posted in Xoogler this week." }
 ];
 function usBriefPick(){
@@ -30571,7 +30571,7 @@ function g7GoalItems(){
     });
     s.paths.forEach(p=>{
       if (/^Replied:/.test(p.sub||"") && !p.g7seen) out.push({ key:`n:${id}:${p.id}`, scr, mid:id, pid:p.pid, k:"notice", h:`${p.name.split(" ")[0]} replied about ${g}`, rc:`${g} · today`, acts:[["Open", `g7Seen('${id}','${p.id}')`]] });
-      if (p.stage==="In conversation" && /^Met\b/.test(p.sub||"") && !p.g7out) out.push({ key:`o:${id}:${p.id}`, scr, mid:id, pid:p.pid, k:"question", out:true, h:`How did it go with ${p.name.split(" ")[0]}?`, rc:`${g} · ${p.sub.split(".")[0]}`, acts:["Went well","Not a fit","Not yet"].map(c=>[c, `g7Out('${id}','${p.id}','${c}')`]) });
+      if (p.stage==="In conversation" && /^Met\b/.test(p.sub||"") && !p.g7out) out.push({ key:`o:${id}:${p.id}`, scr, mid:id, pid:p.pid, k:"question", out:true, h:`How did it go with ${((DB.people[p.pid] || {}).name || p.name).split(" ")[0]}?`, rc:`${g} · ${p.sub.split(".")[0]}`, acts:["Went well","Not a fit","Not yet"].map(c=>[c, `g7Out('${id}','${p.id}','${c}')`]) });
     });
   });
   return out.filter(x=>!g7K().not[x.key]);
@@ -32073,6 +32073,310 @@ m2DeckOpen = function(){ if (STATE.member && STATE.intakeDone) return cuOpen(); 
 
 </script>
 <style>
+/* ==== THE PLAN ON EVERY GOAL (HIFI-SPEC-n51-goal-plan): one card under the tabs, 200px or less; steps joined by a 2px line ==== */
+#phone .pl-card, #phone .pl-list { --pl-t:var(--pl); --pl-f:var(--pl); --pl-on:#fff; }
+#phone .pl-card { margin:0 0 16px; padding:12px 16px 10px; border-radius:16px; background:var(--sf-card); }
+#phone .pl-why { margin:0 0 8px; font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .pl-steps { position:relative; display:flex; justify-content:space-between; gap:2px; margin:0 -6px; }
+#phone .pl-steps::before { content:""; position:absolute; left:calc(50% / var(--n, 5)); right:calc(50% / var(--n, 5)); top:18px; height:2px; background:var(--border-default, rgb(0 0 0 / .12)); }
+#phone .pl-st { position:relative; flex:1 1 0; min-width:0; min-height:44px; display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 0 2px; border:0; background:none; cursor:pointer; color:var(--text-secondary); }
+#phone .pl-st b { position:relative; z-index:1; display:grid; place-items:center; min-width:34px; height:26px; padding:0 6px; border-radius:8px; background:var(--sf-inset); font:800 15px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .pl-st span { font:600 12px/1.2 var(--type-family, Manrope, system-ui, sans-serif); text-align:center; overflow-wrap:normal; word-break:keep-all; max-width:calc(100% + 14px); }
+#phone .pl-st.done b { background:var(--pl-f); color:var(--pl-on); }
+#phone .pl-st.done span { color:var(--text-primary); }
+/* the next step: a ring outside the chip, on a filled or empty step */
+#phone .pl-st.cur b { box-shadow:0 0 0 2px var(--sf-card), 0 0 0 4px var(--pl-t); }
+#phone .pl-st.cur span { color:var(--text-primary); }
+/* event steps are read-only */
+#phone .pl-ro { cursor:default; }
+#phone .pl-st.on span { text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:2px; }
+/* the line is the plate colour up to the current step */
+#phone .pl-st.ln:not(:last-child)::after { content:""; position:absolute; left:50%; width:calc(100% + 2px); top:18px; height:2px; background:var(--pl-f); }
+#phone .pl-nx { display:flex; align-items:center; gap:12px; margin-top:8px; padding-top:8px; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); min-height:44px; }
+#phone .pl-nxo { flex-direction:column; align-items:stretch; gap:8px; }
+#phone .pl-nt { flex:1; min-width:0; margin:0; font:500 14px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .pl-nt b { font:700 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--pl-t); }
+#phone .pl-go { flex:0 0 auto; min-height:44px; padding:0 16px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; white-space:nowrap; }
+/* why lines on the cards */
+#phone .pl-wl { margin-top:8px; }
+#phone .pl-wl b { font:700 12px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--pl-t, var(--text-primary)); white-space:nowrap; }
+#phone .pl-more { display:block; min-height:44px; margin:0 0 8px; padding:0 4px; border:0; background:none; color:var(--text-primary); font:600 14px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .pl-after, #phone .pl-none { margin:4px 4px 12px; font:500 14px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+/* dark: the plate colour lifted for text and fills, the count dark on the lifted fill */
+html.dark #phone .pl-card, html.dark #phone .pl-list, .dark #phone .pl-card, .dark #phone .pl-list { --pl-t:color-mix(in srgb, var(--pl) 45%, #fff); --pl-f:color-mix(in srgb, var(--pl) 55%, #fff); --pl-on:#10131a; }
+
+</style>
+<script>
+/* ==== THE PLAN ON EVERY GOAL (goals-mentor/how-goals-changes/HIFI-SPEC-n51-goal-plan-2026-10-08.md; Apoorv 8 Oct 00:07: "What next step
+   are we building towards? Why should I reach out to this person or this job role?"). Loads after catchup.js.
+   The first block under the tabs is one card: the goal's plan in a sentence of facts, the steps for its kind as a funnel (each step counts
+   the picks that have reached it, so the numbers only go down), and the one next step with its verb, which opens Kai's draft in place.
+   The same next step is the goal's line on Home and the verb on that pick's card. A step only counts what Key has seen (a yes in Key, a
+   meeting, an outcome the member logged); Kai never guesses one. ==== */
+const PL_STEPS = { role:["Lined up","Introduced","Talked","Referred","Offer"], team:["Lined up","Introduced","Talked","Offer out"], raise:["Lined up","Introduced","Met","Term sheet"],
+  advice:["Lined up","Introduced","First call","Meeting regularly"], give:["Guests picked","Invited","Said yes","Hosted"], other:["Lined up","Introduced","Talked","Done"] };
+/* the step each path stage has reached: a pick, a yes in Key, a conversation that happened */
+const PL_AT = { "New pick":0, "Next step":0, "Waiting":0, "In conversation":1, "Went well":2 };
+/* why this person or role: facts from their profile, the role and the receipts, and the step they can actually get you to (none when
+   they can't move this goal: a peer, a founder with no opening, a resource) */
+const PL_WHY = { rahul:["Engineering Director at Halvern, hiring senior PMs for a new product line", "Referred"], sana:["On the hiring panel for Senior PM, agents at Brightwell", "Referred"],
+  ravi:["CTO at Quenlit, hiring a PM lead. Daniel worked with Ravi on payments", "Talked"], priti:["Group PM, open to referrals", "Referred"],
+  maya:["Head of Engineering at a seed-stage startup, building infra for agents"], jordan:["Also looking at AI PM roles"], dev:["Founder building agents for contract review"],
+  ana:["Head of Platform at Tovrena, hiring a platform PM in October", "Offer"],
+  o2:["Wants a product cofounder with AI experience", "Talked"], o7:["$5k in cloud credits for 12 months, for member startups"], o8:["Office hours for first-time founders, two slots this month"] };
+/* the roles a referral can be for; "How did it go?" asks about a referral only for these */
+const PL_ROLE = { rahul:"Senior PM, new product line at Halvern", sana:"Senior PM, agents at Brightwell", ravi:"PM lead at Quenlit", ana:"Platform PM at Tovrena" };
+const PL_STRAT = { m1:"Get referred at Halvern and Brightwell. Rahul and Sana can refer you.", m2:"Through people who already know your work, starting with Maya.",
+  m3:"Invite product people in the area, and the ones who came last time." };
+/* drafts for the cofounder goal's cards, the same notes its Ask sheet holds */
+const PL_DRAFT = { o2:"Hi Maya, separate from the PM chat: I'm also looking for a technical cofounder for an agents idea, and your infra work is exactly the shape I need. Open to a coffee about that too?",
+  o7:"Hi Daniel, I saw the cloud credits in #resources. Could you send me the code? I'm building an agents product.", o8:"Hi Neha, I'd love to take you up on the office hours. Is a Wednesday slot still open?" };
+STATE.pl = STATE.pl || { f:{}, more:{}, open:{}, text:{}, stuck:{}, done:{}, sent:{} };
+const plEsc = s => g7Esc(s);
+const plF = pid => ((DB.people[pid] || {}).name || "").split(" ")[0];
+const plToday = () => new Date().toLocaleDateString("en-US", { month:"short", day:"numeric" });  /* the same clock Home's date line reads */
+/* someone already talking with you on another goal: asked directly, not through an intro */
+function plKnown(pid){ const m = DB.missions.find(y=>{ const s = m2Story(y.id); return s && s.paths.some(p=>p.pid===pid && /In conversation|Went well/.test(p.stage)); });
+  return m && (m.type==="Looking" ? "PM goal" : `${m.name} goal`); }
+function plKind(m){ return m.type==="Looking" ? "role" : m.type==="Hosting" && m.ev && !m.evKind ? "give" : "other"; }
+/* the picks and where each one is: story paths (role goals, goals started here), the cofounder goal's cards, or a dinner's guests */
+function plPicks(m, pane){
+  const s = m2Story(m.id), out = [];
+  if (s) s.paths.forEach(p=>{ if (!(p.stage in PL_AT)) return;
+    out.push({ key:p.id, step:p.plStep!=null ? p.plStep : PL_AT[p.stage], el:pane && pane.querySelector(`.m2-card[data-m2p="${p.id}"]`), p, why:PL_WHY[p.id] }); });
+  else if (plKind(m)==="give" && typeof dHostRows==="function") { const { todo, sent } = dHostRows(m), row = pid => pane && [...pane.querySelectorAll(".row")].find(r=>(r.getAttribute("onclick") || "").includes(`'${pid}'`));
+    todo.forEach(c=>out.push({ key:c.pid, step:0, el:row(c.pid), host:c }));
+    sent.forEach(c=>out.push({ key:c.pid, step:c.going ? 2 : 1, el:row(c.pid), host:c })); }
+  else DB.opps.filter(o=>o.missionId===m.id && (o.state==="new" || o.state==="waiting")).forEach(o=>out.push({ key:o.id, step:0, o, why:PL_WHY[o.id],
+    el:pane && pane.querySelector(`.mt-card[data-opp="${o.id}"]`) }));
+  return out;
+}
+function plModel(m, pane){
+  if (m.evKind) return plEvModel(m);
+  const kind = plKind(m), steps = PL_STEPS[kind], picks = plPicks(m, pane), done = STATE.pl.done[m.id];
+  const n = steps.map((_, i)=>picks.filter(x=>x.step >= i && !(x.p && (x.p.plSkip || []).includes(i))).length), top = Math.max(-1, ...picks.map(x=>x.step));
+  const next = plNext(m, picks, steps, done), at = next ? steps.indexOf(next.lab) : -1;
+  return { kind, steps, picks, n, top, cur:at, done, next };
+}
+/* what one pick's next move is: its verb, the step it moves the goal to, and Kai's draft */
+function plMove(m, x, steps){
+  const lab = steps[Math.min(x.step + 1, steps.length - 1)];
+  if (x.o) { const o = x.o, known = o.kind==="person" && plKnown(o.personId);
+    if (known) { const to = plF(o.personId); return { key:x.key, lab:steps[Math.min(2, steps.length - 1)], text:`Ask ${to} about cofounding too`, btn:`Ask ${to}`, short:`Ask ${to}`, draft:PL_DRAFT[o.id] || `Hi ${to}, `, to }; }
+    const via = o.via && plF(o.via), to = via || plF(o.personId);
+    return { key:x.key, lab, text:via && o.kind==="person" ? `Ask ${via} to introduce you to ${plF(o.personId)}` : o.action, btn:via ? `Ask ${via}` : o.action, short:via ? `Ask ${via}` : o.action, draft:PL_DRAFT[o.id] || `Hi ${to}, `, to }; }
+  const p = x.p, o = p.opp && DB.opps.find(y=>y.id===p.opp), to = plF(p.to || p.pid);
+  if (p.stage==="In conversation") return { key:p.id, lab, text:`${plF(p.pid)} ${m2Lc(p.sub).replace(/\bintro\b/g, "ask")}`, btn:"Reply", short:`Reply to ${plF(p.pid)}`, draft:p.draft || `Hi ${to}, `, to };
+  const co = PL_ROLE[p.pid] && DB.people[p.pid] && DB.people[p.pid].company, ref = x.why && x.why[1]==="Referred";
+  const text = p.to && o && o.roleTitle ? `Ask ${to} to refer you for ${o.roleTitle} at ${o.roleCompany}` : p.to ? `Ask ${to} to introduce you to ${plF(p.pid)}`
+    : co ? `Ask ${to} about the role at ${co}` : ref ? `Ask ${to} about a referral` : `Say hi to ${to}`;
+  return { key:p.id, lab:p.to && o && o.roleTitle ? steps[Math.min(3, steps.length - 1)] : lab, text, btn:`Ask ${to}`, short:`Ask ${to}`, draft:p.draft || `Hi ${to}, `, to };
+}
+/* the next step, one per goal: the replies that are waiting come first, in the brief's order, then the new picks. Home says the same. */
+function plNext(m, picks, steps, done){
+  if (done) { const x = picks.find(y=>y.step===steps.length - 1);
+    return { lab:steps[steps.length - 1], text:`${x ? plF(x.p ? x.p.pid : x.key) + "'s team made an offer. " : ""}Logged ${done}`, btn:"Close goal", go:`openSheet('close','${m.id}')`, short:"Close the goal" }; }
+  if (STATE.pl.stuck[m.id]) { const c = m2Cfg(m.id), f = (DB.families || []).find(x=>!(c.where || []).includes(x.id));
+    return f ? { lab:steps[0], text:`No replies in a week. Widen to ${f.name}?`, btn:"Widen", go:`plWiden('${m.id}','${f.id}')`, short:`Widen to ${f.name}?` } : { lab:steps[0], text:"No replies in a week. Kai keeps looking.", short:"Kai keeps looking" }; }
+  if (!picks.length) { const c = m2Cfg(m.id), fams = (c && c.where || []).map(f=>((DB.families || []).find(x=>x.id===f) || {}).name).filter(Boolean);
+    const tonight = c && c.by===new Date().toLocaleDateString("en-US", { weekday:"long" });
+    return { lab:steps[0], text:`Kai is looking through ${g7And(fams) || "your families"}. First picks ${tonight ? "before the dinner tonight" : "by tomorrow morning"}.`, short:tonight ? "First picks before tonight" : "First picks tomorrow morning" }; }
+  if (plKind(m)==="give") { const t = picks.filter(x=>x.step===0); if (!t.length) return null; const F = plF(t[0].key);
+    return { key:t[0].key, lab:steps[1], text:`Invite ${F}, the closest match of the ${t.length}`, btn:`Invite ${F}`, go:`dInvite('${m.id}','${t[0].key}')` }; }
+  const sent = STATE.pl.sent, order = typeof cuItems==="function" ? cuItems().map(x=>x.pid) : [], pos = x=>{ const i = order.indexOf(x.p ? x.p.pid : x.key); return i < 0 ? 99 : i; };
+  const conv = picks.filter(x=>x.p && x.p.stage==="In conversation" && !sent[`${m.id}:${x.key}`]);
+  /* the next step is a pick who can move the goal; a peer's reply still sits in the brief, just not here (check, 01:11) */
+  const moves = x=>x.why && x.why[1] && steps.indexOf(x.why[1]) > x.step, gated = picks.some(x=>x.why);
+  const pick = conv.concat(picks.filter(x=>x.p ? x.p.stage==="New pick" : x.o && x.o.state==="new")).filter(x=>!gated || moves(x))
+    .sort((a, b)=>(conv.includes(b) - conv.includes(a)) || pos(a) - pos(b))[0];
+  if (!pick) { const wl = picks.filter(x=>(x.p ? x.p.stage==="Waiting" : x.o && x.o.state==="waiting") && (!gated || moves(x))), w = wl.length;
+    return w ? { lab:wl[0].o ? plMove(m, wl[0], steps).lab : steps[1], text:`Waiting on ${w} ${w===1 ? "reply" : "replies"}. Kai tells you when one comes in.`, short:`Waiting on ${w} ${w===1 ? "reply" : "replies"}` } : null; }
+  return Object.assign(plMove(m, pick, steps), { go:`plOpen('${m.id}','${pick.key}')` });
+}
+/* the event jobs (re-confirm, introductions, how it went, co-host, a series): the same card over their own pages, counted as a funnel from
+   the RSVP and attendance data; the next step is the job's own first action (Goals and Kai, 00:31). A page that already has its own
+   numbers (how it went, the series) gets the strategy and the next step only. */
+const PL_EV = { b:["Invited","Said yes","Confirmed","Showed up"], c:["Paired","Asked","Both said yes","Met"], e:["Asked","Said yes","Planned","Hosted"] };
+const PL_EVWHY = { b:"Kai asks every guest to confirm. A no frees the seat for the waitlist.", c:"Kai pairs guests who asked for each other without knowing it.",
+  d:"Bring back who asked to come again, and who said yes and didn't come.", e:"Ask the people who come to every teardown or asked about hosting.",
+  f:"Bring back who's going quiet, and invite the new faces again." };
+const PL_NUDGE = pid => `Hi ${plF(pid)}, missed you at the last two coffees. Coffee with new PMs is on again next Thursday. Come?`;
+function plEvModel(m){
+  const k = m.evKind, steps = PL_EV[k] || [], n = steps.map(()=>0), s = evmS(), F = pid => f1(evmP(pid)); let next = null;
+  if (k==="b") { const d = EVM_B.e4, e = evmEv("e4") || {}, no = pid => s.b.ok && d.after[pid]==="no";
+    const yes = d.going.filter(pid=>!no(pid)).length; n[0] = (e.invitedList || []).length + d.going.length; n[1] = yes;
+    n[2] = s.b.ok ? d.going.filter(pid=>d.after[pid]==="confirmed").length : 0; n[3] = Object.keys(e.checked || {}).length;
+    const freed = s.b.ok ? Object.values(d.after).filter(x=>x==="no").length : 0, w = d.wait.find((pid, i)=>!s.b.offered[pid] && i < freed);
+    next = !s.b.ok ? { lab:steps[2], text:`Kai asks the ${d.going.length} going to confirm, today`, btn:"Set it", go:"evmB('ok')" }
+      : w ? { lab:steps[1], text:`A seat is free. Offer it to ${F(w)}, first on the waitlist`, btn:`Offer ${F(w)}`, go:`evmB('offer','${w}')` }
+      : { lab:steps[3], text:"Kai asks once more before it starts and tells you who's coming" }; }
+  if (k==="c") { const ps = EVM_C.e4; n[0] = ps.length; n[1] = ps.filter((_, i)=>s.c[i]===true).length;
+    const i = ps.findIndex((_, j)=>s.c[j]===undefined);
+    next = i >= 0 ? { lab:steps[1], text:`Introduce ${F(ps[i].a)} and ${F(ps[i].b)}`, btn:"Ask both", go:`evmC(${i},true)` } : { lab:steps[2], text:"Each hears only if both say yes" }; }
+  if (k==="d") { const d = EVM_D.e10p, a = d.asks.find(x=>!s.d.done[x.pid]), ns = d.noshow.find(pid=>!s.d.done["ns:" + pid]);
+    next = a ? { text:`${F(a.pid)} ${a.what}`, btn:a.kind==="invite" ? "Invite" : a.act, go:`evmD('${a.pid}','${a.kind}')` }
+      : ns ? { text:`${F(ns)} said yes and didn't come`, btn:"Ask again", go:`evmD('${ns}','noshow')` } : { text:"Every ask is answered" }; }
+  if (k==="e") { const cs = EVM_E.e4.map(c=>c.pid); n[0] = cs.filter(pid=>s.e.sent[pid]).length;
+    const c = cs.find(pid=>!s.e.sent[pid]);
+    next = c ? { lab:steps[0], text:`Ask ${F(c)} to co-host Oct 23`, btn:`Ask ${F(c)}`, go:`STATE.evm.e.open='${c}';render()` } : { lab:steps[1], text:"Kai tells you when they answer" }; }
+  if (k==="f") { const ppl = evmAttendance(m.ev), l = ppl.find(p=>p.tag==="lapsed" && !s.f.nudged[p.pid]), w = ppl.find(p=>p.tag==="new" && !s.f.invited[p.pid]);
+    next = l ? { key:"nudge:" + l.pid, text:`${F(l.pid)} has gone quiet since ${l.last}`, btn:"Reach out", go:`plOpen('${m.id}','nudge:${l.pid}')`, draft:PL_NUDGE(l.pid), to:F(l.pid), short:`Reach out to ${F(l.pid)}` }
+      : w ? { text:`${F(w.pid)} came for the first time last time`, btn:"Invite again", go:`evmF('invite','${w.pid}')`, short:`Invite ${F(w.pid)} again` } : { text:"Kai tells you who says yes", short:"Kai tells you who says yes" }; }
+  const at = next && next.lab ? steps.indexOf(next.lab) : -1;
+  return { kind:"ev-" + k, ev:true, steps, picks:[], n, top:Math.max(-1, ...n.map((v, i)=>v ? i : -1)), cur:at, done:null, next };
+}
+/* the plan card: the funnel is one track filled to the furthest step reached; the step the next move goes to is marked */
+function plCard(m, M){
+  const pl = (M2_PLATE[m2Theme(m)] || M2_PLATE.harbour)[0], f = STATE.pl.f[m.id], key = STATE.pl.open[m.id];
+  const mv = key && (M.next && M.next.key===key ? M.next : (()=>{ const x = M.picks.find(y=>y.key===key); return x && plMove(m, x, M.steps); })());
+  const steps = M.steps.map((l, i)=>{ const st = (M.done || i <= M.top) && M.n[i] ? "done" : "next", nx = i===M.cur ? " cur" : "", tap = !M.ev;
+    const inner = `<b>${M.n[i]}</b><span>${plEsc(l)}</span>`, lab = `${plEsc(l)}, ${M.n[i]}${i===M.cur ? ", next step" : ""}`;
+    return tap ? `<button type="button" class="pl-st ${st}${nx}${i < M.top || M.done ? " ln" : ""}${f===i ? " on" : ""}" aria-pressed="${f===i}" aria-label="${lab}. Show who reached it" onclick="plFilter('${m.id}',${i})">${inner}</button>`
+      : `<div class="pl-st pl-ro ${st}${nx}${i < M.top ? " ln" : ""}" role="listitem" aria-label="${lab}">${inner}</div>`; }).join("");
+  const nx = M.next, lab = x => x.lab ? `<b>${plEsc(x.lab)}</b> · ` : "";
+  let row = "";
+  if (mv && mv.draft!=null) { const v = STATE.pl.text[m.id]!=null ? STATE.pl.text[m.id] : mv.draft;
+    row = `<div class="pl-nx pl-nxo"><p class="pl-nt">${lab(mv)}${plEsc(mv.text)}</p><div class="cu-comp"><textarea class="cu-ta pl-ta" rows="3" aria-label="Your note to ${plEsc(mv.to || "")}" oninput="STATE.pl.text['${m.id}']=this.value">${plEsc(v)}</textarea>
+      <div class="cu-cr"><span class="cu-kd">Kai drafted this</span><button type="button" class="cu-send" onclick="plSend('${m.id}','${key}')">Send</button></div></div></div>`; }
+  else if (nx) row = `<div class="pl-nx"><p class="pl-nt">${lab(nx)}${plEsc(nx.text)}</p>${nx.btn ? `<button type="button" class="pl-go" onclick="${nx.go}">${plEsc(nx.btn)}</button>` : ""}</div>`;
+  const strat = PL_STRAT[m.id] || m.evKind && PL_EVWHY[m.evKind] || (/dinner/i.test(m.name) ? "Kai picks the guests who fit your goal, before the dinner." : "Through people who already know your work.");
+  return `<section class="pl-card" style="--pl:${pl}" aria-label="The plan" data-novocab data-kc="KeyGoalPlan" data-kv="kind=${M.kind}">
+    <p class="pl-why">${plEsc(strat)}</p>${M.steps.length ? `<div class="pl-steps" role="${M.ev ? "list" : "group"}" aria-label="Steps" style="--n:${M.steps.length}">${steps}</div>` : ""}${row}</section>`;
+}
+/* the list under the plan: grouped by where each pick is now, the next step's group first; a step tapped above shows who reached it */
+function plList(m, pane, M){
+  const f = STATE.pl.f[m.id], give = M.kind==="give", hint = [...pane.querySelectorAll(".m12")].find(e=>/Nobody sees who you leave out/.test(e.textContent));
+  pane.querySelectorAll(":scope .m2-grp").forEach(e=>e.remove());
+  pane.querySelectorAll(".sl").forEach(e=>{ if (!/^(To invite|Invited)/.test(e.textContent.trim())) return; const r = e.nextElementSibling; if (r && r.classList.contains("rows")) r.remove(); e.remove(); });
+  const host = pane.querySelector(".ml-unit") || pane, watch = pane.querySelector(":scope > .g8-watch");
+  const lead = M.next && M.next.key ? (M.picks.find(x=>x.key===M.next.key) || {}).step : null, at = i => M.picks.filter(x=>x.step===i && x.el), html = [];
+  const order = lead!=null ? [lead].concat(M.steps.map((_, i)=>i).filter(i=>i!==lead)) : M.steps.map((_, i)=>i);
+  const grp = (i, l, h) => `<section class="m2-grp pl-grp" data-pl="${i}" aria-label="${plEsc(h)}"><h3 class="m2-gh">${plEsc(h)}<b>${l.length}</b></h3>${give ? `<div class="rows"></div>` : ""}</section>`;
+  if (f!=null) { const l = M.picks.filter(x=>x.step >= f && x.el); html.push(l.length ? grp("f", l, `Reached ${M.steps[f]}`) : `<p class="pl-none">No one has reached ${plEsc(M.steps[f])} yet.</p>`); }
+  else { order.forEach(i=>{ const l = at(i); if (l.length) html.push(grp(i, l, `Now at ${M.steps[i]}`)); });
+    const after = M.steps.filter((_, i)=>i > Math.max(M.top, M.cur) && !at(i).length); if (after.length && M.picks.length) html.push(`<p class="pl-after">${after.map(plEsc).join(" · ")}: nothing yet</p>`); }
+  const box = document.createElement("div"); box.className = "pl-list"; box.style.setProperty("--pl", (M2_PLATE[m2Theme(m)] || M2_PLATE.harbour)[0]); box.innerHTML = html.join("");
+  const kai = host.querySelector(".sl"); if (kai && host!==pane) kai.before(box); else if (watch) watch.before(box); else host.appendChild(box);
+  if (host!==pane && !host.children.length) host.remove();
+  pane.querySelectorAll(".m2-empty").forEach(e=>e.remove());  /* the watch line is the empty state */
+  box.querySelectorAll(".pl-grp").forEach(g=>{ const i = g.dataset.pl, l = i==="f" ? M.picks.filter(x=>x.step >= f && x.el) : at(+i), into = g.querySelector(".rows") || g, k = `${m.id}:${i}`;
+    l.forEach((x, j)=>{ into.appendChild(x.el); x.el.style.display = j >= 3 && !STATE.pl.more[k] ? "none" : ""; if (!give) plCardFix(m, x, M); });
+    if (l.length > 3 && !STATE.pl.more[k]) g.insertAdjacentHTML("beforeend", `<button type="button" class="pl-more" onclick="STATE.pl.more['${k}']=1;render()">${l.length - 3} more</button>`);
+    if (give && i==="0" && hint) g.appendChild(hint); });
+}
+/* each card: the step header already says where it is, so the stage chip goes; the verb is the plan's; one why line of facts */
+function plCardFix(m, x, M){
+  const el = x.el; el.querySelectorAll(".m2-lab").forEach(e=>e.remove());
+  const b = el.querySelector(".r button"), live = x.p ? /New pick|In conversation/.test(x.p.stage) && !STATE.pl.sent[`${m.id}:${x.key}`] : x.o && x.o.state==="new";
+  if (b && STATE.pl.stuck[m.id] && x.p && x.p.stage==="In conversation") b.remove();  /* a quiet week: nothing is owed back */
+  else if (b && live) { const mv = plMove(m, x, M.steps); b.textContent = mv.btn; b.removeAttribute("data-act"); b.setAttribute("onclick", `event.stopPropagation();plOpen('${m.id}','${x.key}')`); }
+  const kn = x.o && x.o.kind==="person" && plKnown(x.o.personId), sb = kn && el.querySelector(".m .b"); if (sb) sb.textContent = x.o.state==="new" ? `Said yes on your ${kn}` : "Sent today. No reply yet";  /* asked directly, not via */
+  if (!x.why || el.querySelector(".pl-wl")) return; const box = el.querySelector(".m"); if (!box) return;
+  const adv = x.why[1] && M.steps.indexOf(x.why[1]) > x.step ? x.why[1] : null;
+  box.insertAdjacentHTML("beforeend", `<div class="g8-oy pl-wl" data-novocab>${plEsc(x.why[0])}${adv ? ` <b>· can get you ${plEsc(adv)}</b>` : ""}</div>`);
+}
+function plApply(id){
+  const m = m2Mis(id), body = phone.querySelector(".view .body.sc"), pane = body && body.querySelector(':scope > .m2-pane[aria-labelledby="m2t-paths"]');
+  if (!m || !pane || pane.dataset.pl) return; pane.dataset.pl = "1";
+  const M = plModel(m, pane); pane.insertAdjacentHTML("afterbegin", plCard(m, M));
+  if (M.ev) return;
+  plList(m, pane, M);
+  const kc = pane.querySelector(".pl-list .g7-kc"); if (kc) pane.querySelector(".pl-card").after(kc);
+}
+function plFilter(id, i){ const f = STATE.pl.f; f[id] = f[id]===i ? null : i; render(); }
+function plOpen(id, key){ STATE.pl.open[id] = key; STATE.pl.text[id] = null; render();
+  setTimeout(()=>{ const ta = phone.querySelector(".pl-ta"), c = phone.querySelector(".pl-card"); if (c) c.scrollIntoView({ block:"nearest" }); if (ta) ta.focus({ preventScroll:true }); }, 30); }
+/* Send is the member's yes: the note goes as the goal's own draft would; a reply keeps the pick where it is, and the brief's item for
+   that person is done too, so the brief, Home and the plan move on together */
+function plSend(id, key){
+  const m = m2Mis(id), t = (STATE.pl.text[id] || "").trim(), _t = toast; let to = "";
+  const M = plModel(m, null), mv = M.next && M.next.key===key ? M.next : (()=>{ const x = M.picks.find(y=>y.key===key); return x && plMove(m, x, M.steps); })();
+  const text = t || (mv && mv.draft || "").trim(); if (!text) return;
+  toast = ()=>{};
+  try {
+    if (/^nudge:/.test(key)) { const pid = key.slice(6); to = plF(pid); const ok = STATE.mtSendOk; STATE.mtSendOk = true; try { evmF("nudge", pid); } finally { STATE.mtSendOk = ok; } const l = m.mlog && m.mlog[m.mlog.length - 1]; if (l) l[1] = `reached out to ${evmP(pid).name}: "${text}"`; }
+    else if (/^o\d/.test(key)) { const o = DB.opps.find(y=>y.id===key); to = mv && mv.to || plF(o.via || o.personId); sendAsk(key); STATE.sheet = null; }
+    else { const s = m2Story(id), p = m2Path(id, key); if (!s || !p) return; to = plF(p.to || p.pid); const was = p.stage;
+      let li = s.chat.findIndex(e=>e.t==="draft" && e.path===key && !e.sent); if (li < 0) { s.chat.push({ t:"draft", path:key, text }); li = s.chat.length - 1; }
+      s.chat[li].text = text; m2DraftSend(id, li); if (was==="In conversation") { p.stage = was; STATE.pl.sent[`${id}:${key}`] = 1; }
+      m2Ui(id).toEnd = false; [`b:${p.pid}`, `n:${id}:${p.id}`].forEach(k=>{ g7K().deck[k] = 1; }); }
+  } finally { toast = _t; }
+  STATE.pl.open[id] = null; STATE.pl.text[id] = null; toast(`Sent to ${to}.`); render();
+}
+function plWiden(id, fam){ const c = m2Cfg(id), f = (DB.families || []).find(x=>x.id===fam); if (!c || !f) return;
+  c.where = (c.where || []).concat(fam); plStuck(id, false); m2Say(id, { t:"sys", who:"you", x:`You widened this goal to ${f.name}`, time:"Now" });
+  toast(`Widened to ${f.name}. New picks from there by tomorrow morning.`); render(); }
+/* Home: the goal card's line is the plan's next step, said as the action */
+function plHome(body){
+  body.querySelectorAll(".hc-card [data-mission]").forEach(b=>{ const m = m2Mis(b.dataset.mission), bs = b.querySelector(".mh-bs"); if (!m || !bs) return;
+    const M = plModel(m, null), nx = M.next, x = nx && M.picks.find(y=>y.key===nx.key); if (!nx) return;
+    if (M.kind==="give" && nx.btn) { bs.textContent = `${nx.btn} · ${M.n[1]} invited`; return; }
+    if (M.ev) { if (nx.short) bs.textContent = nx.short; return; }
+    if (!nx.short) return;
+    const who = x && (x.p ? (nx.btn==="Reply" ? x.p.pid : x.p.to || x.p.pid) : x.o && (plKnown(x.o.personId) ? x.o.personId : x.o.via || x.o.personId)), fs = b.querySelector(".hc-faces");
+    bs.textContent = nx.short; if (fs) fs.innerHTML = who && DB.people[who] ? m2Face(who, "") : ""; });
+}
+const _plRender = render;
+render = function(){
+  const r = _plRender.apply(this, arguments);
+  if (typeof phone==="undefined" || !phone || !STATE.member || !STATE.intakeDone) return r;
+  const s = STATE.screen || "", body = phone.querySelector(".view .body") || phone.querySelector(".screen .body");
+  if (s.startsWith("mission:")) { try { plApply(s.slice(8)); } catch (e) { console.warn("plApply", e); } }
+  if (s==="home" && body) { try { plHome(body); } catch (e) { console.warn("plHome", e); } }
+  return r;
+};
+/* stuck: a week with no replies, so the picks say so too; off puts them back */
+function plStuck(id, on){
+  const s = m2Story(id); if (!s) return; const P = STATE.pl;
+  if (on && !P.stuck[id]) { P.saved = JSON.stringify(s.paths.map(p=>[p.id, p.stage, p.sub]));
+    s.paths.forEach(p=>{ if (p.stage==="New pick") { p.stage = "Waiting"; p.sub = "Said hi 8 days ago. No reply yet"; } else if (p.stage==="In conversation") { p.sub = "Last reply 9 days ago. Nothing since"; P.sent[`${id}:${p.id}`] = 1; } });
+    cuK().set = []; }
+  if (!on && P.stuck[id] && P.saved) { JSON.parse(P.saved).forEach(([pid, st, sub])=>{ const p = m2Path(id, pid); if (p) { p.stage = st; p.sub = sub; delete P.sent[`${id}:${pid}`]; } }); cuK().set = null; }
+  P.stuck[id] = !!on;
+}
+/* controls for the plan's volume states */
+function plCtl(){
+  const g = [...document.querySelectorAll(".stagebar .sgrp")].find(x=>{ const l = x.querySelector(".sgl"); return l && l.textContent==="Screens"; });
+  if (!g || g.querySelector("[data-plctl]")) return;
+  g.insertAdjacentHTML("beforeend", `<button type="button" data-plctl="1" onclick="plCtlGo('stuck')">Plan: stuck</button><button type="button" data-plctl="2" onclick="plCtlGo('done')">Plan: offer logged</button><button type="button" data-plctl="3" onclick="plCtlGo('new')">Plan: new goal</button><button type="button" data-plctl="4" onclick="plCtlGo('met')">Plan: Sana call happened</button>`);
+}
+function plCtlGo(k){
+  if (!STATE.member || !STATE.intakeDone) jump("home"); STATE.sheet = null; STATE.pl.open.m1 = null; STATE.pl.text.m1 = null;
+  if (k==="new") { m2StartDinner(); const m = DB.missions.find(x=>x.m2 && x.name==="People to meet at Thursday's dinner"); if (m) go("mission:" + m.id); return; }
+  if (k==="met") { const p = m2Path("m1", "sana"); if (p) { p.stage = "In conversation"; p.sub = "Met Thursday for a call"; p.plStep = 2; } cuK().set = null; cuOpen("o:m1:sana"); return; }
+  if (k==="stuck") plStuck("m1", !STATE.pl.stuck.m1);
+  if (k==="done") { const a = m2Path("m1", "ana"), on = !STATE.pl.done.m1;
+    /* the offer settles Ana's "is hiring" item, so the hero and Catch up stop saying it; off puts it back */
+    if (on) { STATE.pl.anaKeys = g7DeckItems().filter(x=>x.pid==="ana").map(x=>x.key); STATE.pl.anaKeys.forEach(k=>{ g7K().deck[k] = 1; }); }
+    else (STATE.pl.anaKeys || []).forEach(k=>{ delete g7K().deck[k]; }); STATE.pl.done.m1 = on ? plToday() : null;
+    if (a) { if (on) { a.plWas = [a.stage, a.sub]; a.stage = "Went well"; a.plStep = 4; a.plSkip = [3]; a.sub = `Offer for ${PL_ROLE.ana}, logged ${plToday()}`; } else if (a.plWas) { [a.stage, a.sub] = a.plWas; delete a.plStep; delete a.plSkip; } }
+ }
+  go("mission:m1");
+}
+const _plCtlRender = render; render = function(){ const r = _plCtlRender.apply(this, arguments); plCtl(); return r; };
+plCtl();
+
+/* Catch up: when "How did it go?" about someone who can refer you for a role is answered Went well, the same card asks one more thing.
+   "Referred me" moves the pick to Referred and logs the role; either answer then logs Went well as before (Goals and Kai, 00:31) */
+const _plCuAction = cuAction;
+cuAction = function(it, M){ const C = cuK(), pid = /^o:/.test(it.key) && it.key.split(":")[2];
+  if (STATE.pl.fu===it.key && !(C.flash && C.flash.key===it.key)) return `<p class="cu-msg pl-fq">Did ${plEsc(plF(pid))} refer you for ${plEsc(PL_ROLE[pid])}?</p><div class="cu-chips"><button type="button" class="cu-chip pri" onclick="plFu('${it.key}',1)">Referred me</button><button type="button" class="cu-chip" onclick="plFu('${it.key}',0)">Not yet</button></div>`;
+  return _plCuAction.apply(this, arguments); };
+const _plCuChip = cuChip;
+cuChip = function(key, i){
+  const it = g7DeckItems().find(x=>x.key===key), M = it && cuModel(it), c = M && M.chips[i], m = /^o:/.test(key) && m2Mis(key.split(":")[1]);
+  if (c && c[0]==="Went well" && m && plKind(m)==="role" && PL_ROLE[key.split(":")[2]] && (PL_WHY[key.split(":")[2]] || [])[1]==="Referred") { STATE.pl.fu = key; STATE.pl.fuI = i; render(); return; }
+  return _plCuChip.apply(this, arguments); };
+function plFu(key, ref){ const [, mid, pid] = key.split(":"), i = STATE.pl.fuI; STATE.pl.fu = null;
+  const it = g7DeckItems().find(x=>x.key===key), M = it && cuModel(it); if (!M) return;
+  cuK().flash = null;
+  cuFinish(key, ref ? "Logged: Referred" : "Logged: Went well", ()=>{ (new Function(M.chips[i][1].replace(/^g7DeckDo\('[^']*',"([\s\S]*)"\)$/, "$1")))();
+    const p = m2Path(mid, pid); if (p && ref) { p.plStep = 3; p.sub = `Referred you for ${PL_ROLE[pid]}`; m2Say(mid, { t:"sys", who:p.pid, x:`${plF(p.pid)} referred you for ${PL_ROLE[pid]}`, time:"Now" }); }
+    cuDone(key, "logged"); });
+}
+
+</script>
+<style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
    One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
@@ -32126,7 +32430,10 @@ m2DeckOpen = function(){ if (STATE.member && STATE.intakeDone) return cuOpen(); 
   /* 7 Oct n31 check: the strip takes the header's own colour (--kh-bg), so a scrolled page never paints content into it */
   const attach = () => { if (typeof phone!=="undefined" && phone && bar.parentNode!==phone) phone.append(bar); };
   function paint(){ attach(); const m = document.querySelector('meta[name="theme-color"]'), h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
-    const c = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content; }
+    const c = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
+    /* 8 Oct 03:36, Apoorv: the status bar went solid black. Safari tints the status bar from the fixed box at the top edge, and outside
+       the home-screen app the strip has no height there, so it read the fixed shell's own near-black. The shell takes the strip's colour */
+    if (typeof phone!=="undefined" && phone) phone.style.backgroundColor = m && matchMedia("(max-width:500px)").matches ? (c || m.content) : ""; }
   if (typeof khTint==="function") { const _t = khTint; khTint = function(){ attach(); return _t.apply(this, arguments); }; }
   if (typeof render==="function") { const _r = render; render = function(){ const r = _r.apply(this, arguments); paint(); return r; }; }
   new MutationObserver(paint).observe(document.head, { childList:true, subtree:true, attributes:true, attributeFilter:["content"] });
@@ -32135,7 +32442,7 @@ m2DeckOpen = function(){ if (STATE.member && STATE.intakeDone) return cuOpen(); 
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-078d";
+window.KEY_BUILD = "2.hifi-9e09";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
