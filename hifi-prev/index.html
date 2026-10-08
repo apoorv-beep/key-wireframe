@@ -18441,7 +18441,7 @@ function brBackBar(){
 }
 /* one thing at a time: a push that lands while you're in the brief (the viewer, or an action's screen with the Back to brief bar)
    waits, and shows once you've left the brief; both would otherwise take the top slot */
-const brHeld = [], brInBrief = () => !!phone.querySelector(".bs-vw") || !!(STATE.brRun && STATE.brRun.out);
+const brHeld = [], brInBrief = () => !!phone.querySelector(".bs-vw") || !!(STATE.brRun && STATE.brRun.out) || STATE.screen==="catchup";  /* Catch up holds banners too (n74 check) */
 const _brPush = pushNote; pushNote = function(title, body, actions){ if (brInBrief()) { brHeld.push([title, body, actions]); return; } return _brPush.apply(this, arguments); };
 const _brbRender = render; render = function(){
   if (STATE.push && brInBrief()) { brHeld.push([STATE.push.title, STATE.push.body, STATE.push.actions]); STATE.push = null; }
@@ -33007,6 +33007,391 @@ g7DeckItems = function(){ return _rtDeck.apply(this, arguments).filter(x=>x.key!
 
 </script>
 <style>
+/* ==== CATCH UP V2 (HIFI-SPEC-catchup-v2): four zones per card, the bar under it, the finish screen ==== */
+#phone .c2-body { display:flex; flex-direction:column; gap:12px; padding:8px 16px calc(12px + env(safe-area-inset-bottom, 0px)); overflow:hidden; }
+#phone .c2-body.c2-over { overflow:auto; gap:0; padding-bottom:32px; }
+#phone .c2-stage { position:relative; flex:1 1 auto; min-height:0; display:grid; grid-template-areas:"c"; align-content:start; container-type:size; }
+#phone .c2-card { color:var(--text-primary); position:relative; z-index:1; display:flex; flex-direction:column; gap:20px; grid-area:c; height:100cqh; overflow-y:auto; padding:16px 16px 20px; border-radius:20px; background:var(--sf-card); box-shadow:var(--elevation-2); touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+#phone .c2-card textarea { user-select:text; -webkit-user-select:text; }
+#phone .c2-card > :not(.c2-c) { flex-shrink:0; }
+#phone .c2-peek { grid-area:c; align-self:stretch; transform:translateY(10px) scale(.95); transform-origin:50% 100%; border-radius:20px; background:var(--sf-card); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .08)); opacity:.6; }
+#phone .c2-card.c2-in { animation:c2Up .26s cubic-bezier(.2,.8,.2,1); }
+@keyframes c2Up { from { opacity:.3; transform:translateY(10px); } }
+#phone .c2-drag { transition:none; }
+/* zone A: what it's about */
+#phone .c2-a { opacity:calc(1 - var(--c2-r, 0)); display:flex; flex-direction:column; align-items:flex-start; gap:8px; }
+#phone .c2-chip { display:inline-flex; align-items:center; gap:8px; max-width:100%; min-height:28px; padding:4px 12px 4px 4px; border:0; border-radius:14px; background:var(--sf-inset, rgb(0 0 0 / .05)); color:var(--text-primary); font:600 13px/1.2 var(--type-family, Manrope, system-ui, sans-serif); white-space:nowrap; overflow:visible; cursor:pointer; position:relative; }
+#phone .c2-cl { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone .c2-chip::after { content:""; position:absolute; inset:-8px -4px; }  /* a 44 target around the 28 pill */
+#phone .c2-chip.c2-static { padding-left:12px; cursor:default; }
+#phone .c2-gc { background:color-mix(in srgb, var(--c2p) 12%, transparent); color:color-mix(in srgb, var(--c2p) 82%, #000); }
+html.dark #phone .c2-gc, body.dark #phone .c2-gc { background:color-mix(in srgb, var(--c2p) 30%, transparent); color:color-mix(in srgb, var(--c2p) 35%, #fff); }
+#phone .c2-gm, #phone .c2-cm, #phone .c2-em { flex:0 0 20px; display:grid; place-items:center; width:20px; height:20px; border-radius:6px; background:var(--c2p, var(--text-secondary)); color:#fff; font:700 11px/1 var(--type-family, Manrope, system-ui, sans-serif); background-size:cover; background-position:center; }
+#phone .c2-cm { background:var(--text-primary); color:var(--sf-card, #fff); }
+#phone .c2-facts { display:flex; flex-wrap:wrap; gap:4px 12px; margin:0; font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-facts > span { display:inline-flex; align-items:center; gap:4px; }
+#phone .c2-facts svg { flex:0 0 auto; }
+/* zone B: what happened */
+#phone .c2-h { margin:0; outline:0; font:700 22px/1.25 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .c2-who { display:flex; align-items:center; gap:12px; }
+#phone .c2-who > span { display:flex; flex-direction:column; gap:2px; min-width:0; }
+#phone .c2-who small { font:400 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-f { flex:0 0 auto; display:grid; place-items:center; border-radius:50%; background:var(--sf-inset, #e9ebee) center 25% / cover no-repeat; color:var(--text-secondary); font-weight:700; }
+#phone .c2-f.ph-cover { color:transparent; }
+#phone .c2-f20 { width:20px; height:20px; font-size:9px; }
+#phone .c2-f32 { width:32px; height:32px; font-size:12px; }
+#phone .c2-f48 { width:48px; height:48px; font-size:16px; }
+#phone .c2-f64 { width:64px; height:64px; font-size:20px; }
+/* zone C: the evidence */
+#phone .c2-c { flex:0 0 auto; min-height:0; display:flex; flex-direction:column; gap:10px; }
+#phone .c2-bub { max-width:88%; padding:10px 14px; border-radius:18px; font:400 16px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-them { align-self:flex-start; border-bottom-left-radius:6px; background:var(--sf-inset, #eef0f3); color:var(--text-primary); }
+#phone .c2-reply { font-size:17px; }
+#phone .c2-me { align-self:flex-end; border-bottom-right-radius:6px; background:rgb(17 17 20 / .6); color:#fff; }
+#phone .c2-me > span { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .c2-bub > small { display:block; margin-bottom:2px; font:600 12px/1.2 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-them > small { color:var(--text-secondary); }
+#phone .c2-mine > span { -webkit-line-clamp:3; }
+#phone .c2-old { color:var(--text-secondary); }
+#phone .c2-det { margin:0; font:400 16px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+html.dark #phone .c2-me, body.dark #phone .c2-me { background:rgb(255 255 255 / .16); }
+#phone .c2-kai { display:flex; gap:8px; align-items:flex-start; margin:0; font:400 16px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-pick { display:flex; align-items:center; gap:14px; }
+#phone .c2-pick > span { display:flex; flex-direction:column; gap:2px; min-width:0; }
+#phone .c2-pick b { font:700 17px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-pick small { font:400 16px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-goal { position:relative; flex:0 0 auto; display:flex; flex-direction:column; justify-content:flex-end; align-items:flex-start; gap:4px; height:120px; padding:14px 16px; overflow:hidden; border-radius:16px; color:#fff; }
+#phone .c2-goal:not(.c2-g120) { height:auto; min-height:88px; max-height:120px; }
+#phone .c2-chg { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; position:relative; font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:#fff; }
+#phone .c2-goal b { position:relative; font:700 18px/1.25 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-wm { position:absolute; right:-6px; bottom:-34px; font:800 150px/1 var(--type-family, Manrope, system-ui, sans-serif); color:rgb(0 0 0 / .12); }
+#phone .c2-sub { margin:0; font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-faces { display:flex; } #phone .c2-faces .c2-f { margin-left:-10px; border:3px solid var(--sf-card); } #phone .c2-faces .c2-f:first-child { margin-left:0; }
+/* zone D: only what the action needs */
+#phone .c2-d { max-height:none; }
+#phone .c2-card > .c2-c + .c2-d { padding-top:0; }
+#phone .c2-comp { display:flex; flex-direction:column; gap:6px; padding:12px 14px; border-radius:16px; border:1px solid var(--border-default, rgb(0 0 0 / .1)); }
+#phone .c2-ta { width:100%; min-height:44px; border:0; padding:0; resize:none; background:none; color:var(--text-primary); font:400 16px/1.45 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-ta:focus { outline:0; }
+#phone .c2-comp:focus-within { border-color:var(--text-primary); }
+#phone .c2-kd { font:600 12px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-alt { display:flex; flex-wrap:wrap; gap:8px; }
+#phone .c2-ac { min-height:44px; padding:0 16px; border:1px solid var(--border-default, rgb(0 0 0 / .12)); border-radius:22px; background:none; color:var(--text-primary); font:600 15px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .c2-done { display:flex; align-items:center; gap:8px; font:600 16px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+/* the drag labels, at the edge the card moves towards */
+#phone .c2-hint { position:absolute; top:14px; display:inline-flex; align-items:center; gap:6px; min-height:32px; padding:0 12px; border-radius:16px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); pointer-events:none; opacity:0; }
+#phone .c2-hl { right:14px; opacity:var(--c2-l, 0); }
+#phone .c2-hr { left:14px; opacity:var(--c2-r, 0); }
+/* the bar: Undo far left, Skip and the yes in the middle (each on its swipe side), Later far right */
+#phone .c2-bar { flex:0 0 auto; display:grid; grid-template-columns:56px 56px minmax(0,1fr) 56px; align-items:center; gap:12px; min-height:68px; }
+#phone .c2-tb { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; min-width:44px; min-height:56px; padding:0; border:0; background:none; color:var(--text-secondary); font:600 12px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .c2-tb:disabled { opacity:.4; cursor:default; }
+#phone .c2-skip { display:flex; flex-direction:column; align-items:center; gap:2px; font:600 12px/1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-x { display:grid; place-items:center; width:56px; height:56px; padding:0; border:1.5px solid var(--border-strong, rgb(0 0 0 / .18)); border-radius:50%; background:var(--sf-card); color:var(--text-primary); cursor:pointer; }
+#phone .c2-x:disabled { opacity:.4; cursor:default; }
+#phone .c2-skip { margin-top:14px; }
+#phone .c2-yes { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:56px; padding:0 18px; border:0; border-radius:28px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 16px/1.1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+html.dark #phone .c2-yes, body.dark #phone .c2-yes { background:#fff; color:#111114; }
+/* the hold: "Sending to Jordan · Undo", above the bar */
+#phone .c2-toast { flex:0 0 auto; align-self:center; display:inline-flex; align-items:center; gap:4px; padding:0 4px 0 16px; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:500 13px/1 var(--type-family, Manrope, system-ui, sans-serif); animation:cuFadeIn .2s linear; }
+#phone .c2-toast button { min-height:44px; padding:0 12px; border:0; background:none; color:inherit; font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; cursor:pointer; }
+#phone .c2-over > .c2-toast { margin:0 auto 12px; }
+/* the finish */
+#phone .c2-end { display:flex; flex-direction:column; gap:16px; }
+#phone .c2-moment { display:flex; flex-direction:column; align-items:center; gap:8px; padding:20px 0 4px; text-align:center; }
+#phone .c2-stack { position:relative; display:flex; justify-content:center; align-items:center; min-height:72px; padding:0 24px; margin-bottom:8px; }
+#phone .c2-sw { margin-left:-14px; animation:c2Fly .42s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--i) * 60ms); }
+#phone .c2-sw:first-child { margin-left:0; }
+#phone .c2-st { display:grid; place-items:center; width:56px !important; height:56px !important; border-radius:16px; border:3px solid var(--sf-ground, #f2f3f5); background-size:cover; background-position:center; color:#fff; font:700 16px/1 var(--type-family, Manrope, system-ui, sans-serif); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .1)); }
+#phone .c2-st.c2-f { border-radius:50%; color:var(--text-secondary); }
+#phone .c2-st.c2-f.ph-cover { color:transparent; }
+@keyframes c2Fly { from { opacity:0; transform:translateY(28px) scale(.8); } }
+#phone .c2-ck { position:absolute; right:calc(50% - 64px); bottom:-10px; width:36px; height:36px; }
+#phone .c2-stack:empty, #phone .c2-stack:not(:has(.c2-sw)) .c2-ck { position:static; width:56px; height:56px; }
+#phone .c2-ck circle { fill:var(--text-primary); }
+#phone .c2-ck path { fill:none; stroke:var(--sf-card, #fff); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:32; stroke-dashoffset:32; animation:c2Draw .32s ease-out forwards; animation-delay:.42s; }
+@keyframes c2Draw { to { stroke-dashoffset:0; } }
+#phone .c2-moment h2 { margin:0; outline:0; font:800 28px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .c2-said { margin:0; max-width:32ch; font:500 16px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-watch, #phone .c2-up { display:flex; flex-direction:column; gap:4px; padding:14px 16px; border-radius:20px; background:var(--sf-card); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .08)); }
+#phone .c2-wt { display:flex; align-items:center; gap:8px; margin-bottom:4px; font:700 15px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .c2-wr { display:flex; align-items:center; gap:12px; min-height:48px; }
+#phone .c2-wr > span:not(.c2-f):not(.g9-tile) { flex:1; min-width:0; font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .c2-wr small { font:500 13px/1 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-wr .c2-sq { background:none; }
+#phone .c2-wr > .g9-tile { flex:0 0 32px; }
+#phone .c2-gl { font:700 15px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); margin-bottom:6px; }
+#phone .c2-uc { display:flex; flex-direction:column; gap:8px; width:100%; padding:0; border:0; background:none; text-align:left; color:var(--text-primary); cursor:pointer; }
+#phone .c2-us { position:relative; display:flex; align-items:flex-end; width:100%; height:100px; padding:12px 14px; border-radius:14px; background-size:cover; background-position:center; overflow:hidden; }
+#phone .c2-us::before { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgb(11 14 17 / .66), rgb(11 14 17 / 0) 70%); }
+#phone .c2-us b { position:relative; font:700 17px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:#fff; }
+#phone .c2-upg { margin-top:6px; }
+#phone .c2-home { width:100%; min-height:52px; margin-top:4px; }
+#phone .c2-link { align-self:center; min-height:44px; padding:0 12px; border:0; background:none; color:var(--text-primary); font:600 13px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; cursor:pointer; }
+/* the went-through sheet */
+#phone .c2-scrim { position:absolute; inset:0; z-index:40; background:rgb(11 14 17 / .45); }
+#phone .c2-sheet { position:absolute; left:0; right:0; bottom:0; z-index:41; max-height:72%; overflow:auto; padding:8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); border-radius:20px 20px 0 0; background:var(--sf-card); }
+#phone .c2-sh { display:flex; align-items:center; justify-content:space-between; min-height:52px; font:700 16px/1.2 var(--type-family, Manrope, system-ui, sans-serif); }
+@media (prefers-reduced-motion: reduce) {
+  #phone .c2-card.c2-in, #phone .c2-sw { animation:cuFadeIn .2s linear; }
+  #phone .c2-ck path { animation:none; stroke-dashoffset:0; }
+  #phone .c2-card { transition:none !important; transform:none !important; }
+}
+#phone .c2-wr .c2-fam { background:var(--text-primary); color:var(--sf-card, #fff); border-radius:10px; }
+#phone .c2-fl { display:flex; flex-direction:column; gap:12px; margin-top:20px; }
+#phone .c2-fr { display:grid; grid-template-columns:32px 1fr; gap:12px; align-items:center; }
+#phone .c2-fr > span { min-width:0; display:flex; flex-direction:column; }
+#phone .c2-fr b { font:600 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .c2-fr small { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-fl { margin-top:4px; }
+#phone .c2-yes.c2-long { padding:0 12px; font-size:15px; }
+#phone .c2-yes.c2-long { white-space:normal; line-height:1.15; text-align:center; padding:0 14px; }
+/* zone D grows: Kai's draft takes the card's spare height; answers are full-width rows */
+#phone .c2-d.c2-dd { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
+#phone .c2-dd .c2-comp { flex:1 1 auto; }
+#phone .c2-dd .c2-ta { flex:1 1 auto; }
+#phone .c2-rows { display:flex; flex-direction:column; gap:8px; }
+#phone .c2-row { display:flex; align-items:center; gap:10px; width:100%; min-height:56px; padding:8px 16px; border:1px solid var(--border-default, rgb(0 0 0 / .12)); border-radius:16px; background:none; color:var(--text-primary); text-align:left; cursor:pointer; }
+#phone .c2-row > span { display:flex; flex-direction:column; gap:2px; min-width:0; }
+#phone .c2-row b { font:600 15px/1.25 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .c2-row small { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .c2-ry { border-color:var(--text-primary); border-width:1.5px; }
+#phone .c2-plan { display:flex; flex-direction:column; gap:12px; margin:0; padding:0; list-style:none; }
+#phone .c2-plan li { display:flex; align-items:center; gap:12px; font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .c2-plan svg { flex:0 0 auto; color:var(--text-secondary); }
+#phone .c2-fold .c2-fl { flex:1 1 auto; justify-content:space-evenly; max-height:260px; }
+#phone .c2-fold .c2-c { flex:1 1 auto; }
+/* spare height goes to the answers and Kai's plan, never to a block */
+#phone .c2-d.c2-dr { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; }
+#phone .c2-dr .c2-rows { flex:1 1 auto; }
+#phone .c2-dr .c2-row { flex:1 1 56px; max-height:80px; }
+#phone .c2-card:has(.c2-plan) .c2-c { flex:1 1 auto; }
+#phone .c2-plan { flex:1 1 auto; justify-content:space-evenly; max-height:240px; }
+@container (max-height:600px) { #phone .c2-card .c2-old { display:none; } }
+
+</style>
+<script>
+/* ==== CATCH UP V2 (goals-mentor/how-goals-changes/HIFI-SPEC-catchup-v2-2026-10-08.md; Apoorv 05:27: "photo is taking up so much space ...
+   no architecture, no structure", "left is for reject, right is for positive", "the undo button and the cross button ... the most confusing
+   thing ever", "let the completion feel alive"). Loads after cuswipe.js and keeps its set, history and volume card.
+   Every card has four zones: what it's about (a chip), what happened (22/700), the evidence (the messages, the goal it would start, the
+   person), and only what the action needs (Kai's draft). The buttons live in one bar under the card: Undo far left, Skip, the yes, Later
+   far right. Right = yes, left = skip. Anything outward holds for 5 seconds with Undo before it goes. ==== */
+const C2_ASK = { jordan:"Hi Jordan, I'm also looking at AI PM roles. Swap notes sometime?", dev:"Hi Dev, how's the new company going?" };
+const c2K = () => { const C = csK(); C.stack = C.stack || []; C.pend = C.pend || {}; C.c2r = C.c2r || {}; return C; };
+const c2E = s => g7Esc(s == null ? "" : String(s));
+const c2F = pid => ((DB.people[pid] || {}).name || "").split(" ")[0];
+/* a send that's holding is out of the set already, so the counts move with the swipe */
+const _c2Deck = g7DeckItems;
+g7DeckItems = function(){ const its = _c2Deck.apply(this, arguments), P = (cuK().stack && cuK().pend) || {}; return STATE.c2raw ? its : its.filter(x=>!P[x.key]); };
+/* the card's yes: its word, whether it goes outward (holds 5 seconds), and how it's done */
+function c2Yes(it, M){
+  if (M.kind==="compose") return { w:"Send", send:1, out:1, to:c2F(it.pid) || M.who };
+  if (M.kind==="fit") return { w:M.ask || "Ask for intro", send:1, out:1, to:c2F(M.post ? (DB.pool.find(y=>y.id===M.post) || {}).via : it.pid) };
+  if (it.bk) return { w:"Share", i:0, out:1, to:"their Kai" };
+  if (it.key==="b:dinner") return { w:"Start goal", i:0 };
+  const c = (M.chips || [])[0]; return c ? { w:({ "Close":"Set aside", "Close it":"Mark done" })[c[0]] || c[0], i:0 } : { w:"Done", i:-1 };
+}
+/* zone A: what this belongs to, as a chip that opens it */
+function c2Goal(m){ const p = g7Plate(m2Theme(m)), n = g7Short(m);
+  return `<button type="button" class="c2-chip c2-gc" style="--c2p:${p[0]}" onclick="c2Leave(&quot;g7Chat('${m.id}')&quot;)"><span class="c2-gm" aria-hidden="true">${c2E(n.charAt(0))}</span><span class="c2-cl">${c2E(n)}</span></button>`; }
+function c2Event(v){ const ph = typeof PH_COVER!=="undefined" && PH_COVER[v.cal];
+  return `<button type="button" class="c2-chip" onclick="c2Leave(&quot;g7Visit('eventd:${v.id}')&quot;)"><span class="c2-em c2-ph" style="background:${typeof evBg==="function" ? evBg(v.theme) : "var(--sf-inset)"}"${ph ? ` data-csph="${phUrl(ph, 80, 80)}"` : ""} aria-hidden="true"></span><span class="c2-cl">${c2E(v.name)}</span></button>`; }
+function c2Fam(name, go){ return `<button type="button" class="c2-chip" onclick="c2Leave(&quot;${go}&quot;)"><span class="c2-cm" aria-hidden="true">${c2E(name.charAt(0))}</span><span class="c2-cl">${c2E(name)}</span></button>`; }
+const c2Face = (pid, s) => { const p = DB.people[pid] || {}, ph = typeof PH_FACE!=="undefined" && PH_FACE[pid];
+  return `<span class="c2-f c2-f${s} c2-ph"${ph ? ` data-csph="${p2PhUrl(ph)}"` : ""} aria-hidden="true">${c2E(p.initials || "")}</span>`; };
+const c2Line = xs => `<p class="c2-facts">${xs.filter(x=>x[1]).map(([i, t])=>`<span>${LI(i, 14)}${c2E(t)}</span>`).join("")}</p>`;
+if (typeof LUCIDE!=="undefined" && !LUCIDE["calendar-clock"]) LUCIDE["calendar-clock"] = '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>';
+/* no company names on a card: the title, or the line when it names none */
+const c2Desc = p => (p.line && !/Google/.test(p.line) ? p.line : p.title) || "";
+const c2Sent = t => String(t || "").replace(/^Replied:\s*/, "Replied. ").split(/(?<=\.)\s/)[0].replace(/\.$/, "");
+/* the goal plate, only on goal ideas, goal moves and check-ins (owner, 06:31): the goal, the route it's on and what changed, in 15/600, at
+   most 120 high. It never shows without the what-changed line */
+function c2Plate(th, ini, name, chg){ const p = g7Plate(th);
+  return `<div class="c2-goal" style="background:linear-gradient(120deg, ${p[0]} 20%, ${p[1]})"><span class="c2-wm" aria-hidden="true">${c2E(ini)}</span><b>${c2E(name)}</b>${chg ? `<span class="c2-chg">${c2E(chg)}</span>` : ""}</div>`; }
+function c2Ctx(mis, pid, M, head){
+  if (!mis) return "";
+  const r = typeof RT!=="undefined" && RT[mis.id] && RT[mis.id].routes.find(x=>Array.isArray(x[2]) && x[2].includes(pid));
+  let st = c2Sent(M.p && M.p.sub); if (!st || head && st.replace(/\.$/, "")===String(head).replace(/[.?]$/, "")) st = M.p && M.p.stage || "";
+  const chg = [r && r[0], st].filter(Boolean).join(" · ") || [M.p && M.p.name, M.p && M.p.stage].filter(Boolean).join(" · ") || head;
+  return c2Plate(m2Theme(mis), g7Short(mis).charAt(0), mis.name, chg);
+}
+/* the answers as full-width rows, the yes first, each with what happens next in one line */
+const C2_THEN = [[/^Went well$/, "Kai logs it and plans the next step"], [/^Not a fit$/, "Kai logs it and looks elsewhere on this goal"], [/^Not yet$/, "Kai asks again after you meet"],
+  [/^Ask (\w+) instead$/, "Kai drafts the ask to $1"], [/^Wait for (\w+)$/, "Kai checks with $1 again next week"], [/^(Close|Set aside)$/, "Kai stops asking about this one"],
+  [/^Another (route|way in)$/, "Kai tries a different route"], [/^Ask in a month$/, "Kai asks again in a month"], [/^Ask someone else$/, "Kai finds someone else on this route"],
+  [/^Keep waiting$/, "Kai checks again next week"], [/^(Close it|Mark done)$/, "The goal closes with the outcome logged"]];
+const c2Then = l => { const m = C2_THEN.find(([re])=>re.test(l)); return m ? l.replace(m[0], m[1]) : ""; };
+function c2Rows(key, rows){ return `<div class="c2-rows">${rows.map(([l, then, go], j)=>`<button type="button" class="c2-row${j ? "" : " c2-ry"}" onclick="${go}">${j ? "" : LI("check", 18)}<span><b>${c2E(l)}</b>${then ? `<small>${c2E(then)}</small>` : ""}</span></button>`).join("")}</div>`; }
+/* the four zones for each kind of item */
+function c2Zones(it, M){
+  const mis = M.mid && m2Mis(M.mid), p = it.pid && DB.people[it.pid], when = (it.rc || M.where || "").split(" · ").pop();
+  if (it.key==="b:dinner" && typeof evE==="function") { const v = evE("e1") || {}, th = g7Plate("dusk");
+    return { a:c2Event(v) + c2Line([["calendar-clock", `${v.day || ""} ${(v.when || "").split(", ").pop()}`.trim()], ["map-pin", v.where], ["users", v.going >= 5 ? `${v.going} going` : ""]]),
+      b:`<h2 class="c2-h" tabindex="-1">Make the dinner count</h2>`,
+      c:`<div class="c2-goal c2-g120" style="background:linear-gradient(120deg, ${th[0]} 20%, ${th[1]})"><span class="c2-wm" aria-hidden="true">P</span><b>People to meet at Thursday's dinner</b><span class="c2-chg">New goal · Kai finds 3 people worth meeting</span></div>${c2Plan([["users", v.going >= 5 ? `Picks 3 people from the ${v.going} going` : "Picks 3 people from the guests"], ["message-square", "Drafts a hello to each. You send it"], ["bell", "Reminds you Thursday before you go"]])}${v.details ? `<p class="c2-det">${c2E(v.details)}</p>` : ""}` }; }
+  if (it.bk) { const r = kkRows().find(x=>x.id===it.bk);
+    return { a:c2Fam(r.fam, `go('you:context:bk:${r.id}')`), b:`<h2 class="c2-h" tabindex="-1">${c2E(kkKai(r))} asks for your help</h2>`,
+      d:"rows", rows:[["Share this", `${kkKai(r)} hears you'll do ${r.yes}`, `c2Go('${it.key}')`], ["Not now", "Nothing about you is shared", `c2Skip('${it.key}')`]],
+      c:`${r.ex.slice(0, -1).slice(-2).map(([w, t, x])=>`<div class="c2-bub ${w==="you" ? "c2-me c2-mine" : "c2-them c2-old"}"><small>${w==="you" ? "Your Kai" : c2E(kkKai(r))} · ${c2E(t)}</small><span>${c2E(x)}</span></div>`).join("")}<div class="c2-bub c2-them c2-reply">${c2E(r.ask)}</div>${c2Line([["lock", r.pid ? "" : "Their name shows only if you both say yes"]])}` }; }
+  if (/^[up]:/.test(it.key)) { const x = DB.pool.find(y=>y.id===it.key.slice(2)) || {}, via = x.via || it.pid;
+    return { a:mis ? c2Goal(mis) : c2Fam(x.fam || "Your community", "go('home')"), b:`<div class="c2-who">${via ? c2Face(via, 48) : ""}<span><h2 class="c2-h" tabindex="-1">${c2E(c2F(via) || M.who)} is hiring</h2><small>${c2E(M.where)}</small></span></div>`,
+      c:`<div class="c2-bub c2-them">${c2E(String(M.body).replace(/\bmission\b/g, "goal"))}</div>${M.note ? `<p class="c2-kai">${kaiMark(16)}<span>${c2E(M.note)}</span></p>` : ""}`, d:"draft" }; }
+  const head = p ? `<div class="c2-who">${c2Face(it.pid, 48)}<span><h2 class="c2-h" tabindex="-1">HEAD</h2><small>${c2E(p.title || "")}${when ? ` · ${c2E(when)}` : ""}</small></span></div>` : `<h2 class="c2-h" tabindex="-1">HEAD</h2>`;
+  const A = mis ? c2Goal(mis) : p ? `<button type="button" class="c2-chip" onclick="c2Leave(&quot;go('dm:${it.pid}')&quot;)">${c2Face(it.pid, 20)}<span class="c2-cl">Message</span></button>` : "";
+  if (M.kind==="compose") { const ask = C2_ASK[it.pid], reply = M.msg || M.body;
+    return { a:A, b:head.replace("HEAD", c2E(/^d:/.test(it.key) ? `Your note to ${c2F(it.pid)}` : `${c2F(it.pid)} replied`)),
+      c:`${ask ? `<div class="c2-bub c2-me"><span>${c2E(ask)}</span></div>` : ""}<div class="c2-bub c2-them c2-reply">${c2E(reply)}</div>`, d:"draft" }; }
+  if (M.kind==="fit") return { a:A, b:`<h2 class="c2-h" tabindex="-1">${c2E(it.h || `A new pick for ${g7Short(mis)}`)}</h2>`,
+    c:`<div class="c2-pick">${c2Face(it.pid, 64)}<span><b>${c2E(M.who)}</b><small>${c2E(String(M.body).replace(/\bmission\b/g, "goal"))}</small></span></div>`, d:"draft" };
+  /* questions and "how did it go": the person or the goal it's about, then the other answers */
+  const hd = it.h || M.body, nm = c2F(it.pid);
+  return { a:A, b:`<h2 class="c2-h" tabindex="-1">${c2E(nm && !hd.includes(nm) ? `${nm}: ${hd}` : hd)}</h2>`,
+    c:(p ? `<div class="c2-pick">${c2Face(it.pid, 64)}<span><b>${c2E(p.name)}</b><small>${c2E(c2Desc(p))}</small></span></div>` : "")
+      + (mis ? c2Ctx(mis, it.pid, M, hd) : ""),
+    d:"rows", rows:(M.chips || []).map((c, i)=>[c, i]).filter(([c, i])=>!i || c[2]!=="passed").map(([c, i])=>{ const l = i ? ({ "Close":"Set aside", "Close it":"Mark done" })[c[0]] || c[0] : c2Yes(it, M).w; return [l, c2Then(c[0]), i ? `c2Alt('${it.key}',${i})` : `c2Go('${it.key}')`]; }) };
+}
+const c2Plan = xs => `<ul class="c2-plan">${xs.map(([i, t])=>`<li>${LI(i, 18)}<span>${c2E(t)}</span></li>`).join("")}</ul>`;
+function c2Card(it, done){
+  const M = cuModel(it), Z = c2Zones(it, M), C = c2K();
+  let d = "";
+  if (done) d = `<div class="c2-done" role="status">${LI("check", 18)}${c2E(done)}</div>`;
+  else if (Z.d==="draft") { const v = C.text[it.key]!=null ? C.text[it.key] : M.draft;
+    d = `<div class="c2-comp"><textarea class="c2-ta" data-key="${it.key}" rows="${Math.min(6, Math.max(3, Math.ceil(v.length / 34)))}" aria-label="Your note" oninput="cuType('${it.key}',this.value)">${c2E(v)}</textarea><span class="c2-kd">Kai drafted this</span></div>`; }
+  else if (Z.d==="rows" && Z.rows.length) d = c2Rows(it.key, Z.rows);
+  const y = c2Yes(it, M);
+  return `<article class="c2-card${C.next ? " c2-in" : ""}" data-key="${it.key}" data-kc="KeyCatchUpCard" data-kv="kind=${M.kind}">
+    <div class="c2-a">${Z.a}</div><div class="c2-b">${Z.b}</div><div class="c2-c">${Z.c}</div>${d ? `<div class="c2-d${Z.d==="draft" ? " c2-dd" : Z.d==="rows" ? " c2-dr" : ""}">${d}</div>` : ""}
+    <span class="c2-hint c2-hl" aria-hidden="true">${LI("x", 18)}Skip</span><span class="c2-hint c2-hr" aria-hidden="true">${LI("check", 18)}${c2E(done ? "Next" : y.w)}</span></article>`;
+}
+function c2Kinds(rest){ const n = { u:0, p:0, x:0 }; rest.forEach(it=>{ const h = it.h || ""; n[/posted a role|is hiring/.test(h) ? "u" : /posted/.test(h) ? "p" : "x"]++; });
+  return `<p class="c2-sub">${[[n.u, "role", "roles"], [n.p, "post", "posts"], [n.x, "goal update", "goal updates"]].filter(x=>x[0]).map(x=>`${x[0]} ${x[0]===1 ? x[1] : x[2]}`).join(" · ")}</p>`; }
+function c2Fold(rest){
+  return `<article class="c2-card c2-fold" data-key="fold"><div class="c2-a"><span class="c2-chip c2-static">Worth a look</span></div>
+    <div class="c2-b"><h2 class="c2-h" tabindex="-1">${rest.length} more for your goals</h2></div>
+    <div class="c2-c"><p class="c2-sub">Kai kept these for when you have a minute. Nothing here needs you today.</p>
+    <div class="c2-fl">${rest.filter(it=>it.pid && DB.people[it.pid]).slice(0, 3).map(it=>{ const M = cuModel(it), mis = M.mid && m2Mis(M.mid);
+      return `<div class="c2-fr">${c2Face(it.pid, 32)}<span><b>${c2E(it.h || M.who || M.body || "")}</b></span></div>`; }).join("")}</div>${c2Kinds(rest)}</div>
+    <span class="c2-hint c2-hl" aria-hidden="true">${LI("x", 18)}Skip all</span><span class="c2-hint c2-hr" aria-hidden="true">${LI("check", 18)}Go through</span></article>`;
+}
+/* the yes, Skip, Later and Undo; Undo steps back one card per tap */
+let c2Toast = null;
+function c2Next(key){ const its = cuItems(), i = its.findIndex(x=>x.key===key), nx = its.slice(i + 1).concat(its.slice(0, Math.max(0, i))).find(x=>x.key!==key); return nx ? nx.key : null; }
+function c2Say(t, key){ c2Toast = { t, key }; clearTimeout(c2Say.t); c2Say.t = setTimeout(()=>{ c2Toast = null; const e = phone.querySelector(".c2-toast"); if (e) e.remove(); }, 5000); }
+function c2Do(key, y){ const f = cuFinish; STATE.c2raw = 1; cuFinish = (k, fl, fn)=>fn();
+  try { if (y.send) cuSend(key); else if (y.i >= 0) cuChip(key, y.i); else cuDone(key, "done"); } finally { cuFinish = f; STATE.c2raw = 0; } }
+function c2Go(key){ const C = c2K(); if (key==="fold") { C.expand = true; C.focus = 1; return render(); }
+  const it = g7DeckItems().find(x=>x.key===key); if (!it) return; const M = cuModel(it), y = c2Yes(it, M), at = c2Next(key), who = M.who;
+  C.snap[key] = it; C.stack.push({ key, t:"yes", y }); C.at = at; C.next = key; C.view = null; C.focus = 1;
+  C.c2r[key] = { k:M.kind==="compose" ? "replied" : M.kind==="fit" ? "asked" : it.bk ? "shared" : key==="b:dinner" ? "started" : "logged", n:y.to || who, l:y.w };
+  /* everything holds 5 seconds so Undo can take it back; outward ones say "Sending", the rest read as done at once. Leaving flushes */
+  C.pend[key] = setTimeout(()=>c2Commit(key), 5000);
+  const lab = y.send ? `Sending to ${y.to}` : it.bk ? `Sharing with ${y.to}` : key==="b:dinner" ? "Goal started" : `Logged: ${y.w}`;
+  C.res[key] = y.out ? (y.send ? "Sending" : "Sharing") : key==="b:dinner" ? "Started" : `Logged: ${y.w}`; c2Say(lab, key);
+  c2Buzz(); render(); }
+function c2Commit(key){ const C = c2K(); if (!(key in C.pend)) return; clearTimeout(C.pend[key]); delete C.pend[key];
+  const it = C.snap[key], M = it && cuModel(it), st = [...C.stack].reverse().find(u=>u.key===key), y = st && st.y && st.y.alt ? st.y : it && c2Yes(it, M); if (!y) return;
+  c2Do(key, y); C.res[key] = y.send ? `Sent ${csNow()}` : it.bk ? "Shared" : key==="b:dinner" ? "Started" : `Logged: ${y.w}`; if (it.bk) C.watch.unshift([`fam:${(kkRows().find(x=>x.id===it.bk) || {}).fam || "Key"}`, "I'll tell you when they pick a time"]);
+  if (STATE.screen==="catchup") render(); }
+function c2Flush(){ Object.keys(c2K().pend).forEach(c2Commit); }
+function c2Skip(key){ const C = c2K();
+  if (key==="fold") { const keys = cuItems().filter(x=>csCat(x) > 0).map(x=>x.key); keys.forEach(k=>{ g7K().deck[k] = 1; C.res[k] = "Skipped"; }); C.stack.push({ keys, t:"skipall" }); C.at = null; C.focus = 1; c2Say(`Skipped ${keys.length}`); return render(); }
+  const at = c2Next(key), it = g7DeckItems().find(x=>x.key===key); if (it) C.snap[key] = it;
+  g7K().deck[key] = 1; C.later = C.later.filter(k=>k!==key); C.res[key] = "Skipped"; C.stack.push({ key, t:"skip" }); C.at = at; C.next = key; C.view = null; C.focus = 1; c2Buzz(); render(); }
+function c2Later(key){ const C = c2K(); if (cuItems().length < 2) return; C.stack.push({ key, t:"later", was:C.later.slice() }); C.res[key] = "Later"; C.view = null; C.focus = 1; c2Buzz(); cuLater(key); }
+function c2Alt(key, i){ const C = c2K(), it = g7DeckItems().find(x=>x.key===key); if (!it) return; const M = cuModel(it), l = M.chips[i][0];
+  C.snap[key] = it; C.stack.push({ key, t:"yes", y:{ i, w:l } }); C.at = c2Next(key); C.next = key; C.c2r[key] = { k:"logged", n:M.who, l };
+  C.stack[C.stack.length - 1].y = { i, w:l, alt:1 }; C.pend[key] = setTimeout(()=>c2Commit(key), 5000); C.res[key] = `Logged: ${l}`; c2Say(`Logged: ${l}`, key); C.focus = 1; render(); }
+function c2Undo(){ const C = c2K(), u = C.stack.pop(); if (!u) return; c2Toast = null; C.view = null; C.focus = 1;
+  if (u.t==="skipall") { u.keys.forEach(k=>{ delete g7K().deck[k]; delete C.res[k]; }); C.at = null; return render(); }
+  const k = u.key;
+  if (u.t==="skip") { delete g7K().deck[k]; delete C.res[k]; C.at = k; }
+  else if (u.t==="later") { C.later = u.was; delete C.res[k]; C.at = k; }
+  else if (k in C.pend) { clearTimeout(C.pend[k]); delete C.pend[k]; delete C.res[k]; delete C.c2r[k]; C.at = k; }
+  else C.view = k;  /* it already went: the card shows what was done */
+  render(); }
+function c2Fwd(){ const C = c2K(); C.view = null; C.focus = 1; render(); }
+function c2Leave(js){ c2Flush(); cuLeave(js); }
+const c2Buzz = () => { try { navigator.vibrate && navigator.vibrate(10); } catch (e) {} };
+const _c2Close = cuClose; cuClose = function(){ c2Flush(); c2K().sheet = 0; return _c2Close.apply(this, arguments); };
+const _c2Go = csGo; csGo = function(k){ const C = c2K(); C.sheet = 0; if (C.res[k]==="Skipped") { delete g7K().deck[k]; delete C.res[k]; C.at = k; C.view = null; C.focus = 1; return STATE.screen!=="catchup" ? go("catchup") : render(); } return _c2Go.apply(this, arguments); };
+/* the screen: close, the title with the group, N left; the card; the bar */
+cuPage = function(){
+  const C = c2K(), cards = csCards(), n = cuItems().length;
+  const view = C.view && C.snap[C.view] ? { it:C.snap[C.view], done:C.res[C.view] || "Done" } : null;
+  const ci = Math.max(0, cards.findIndex(c=>c.it && c.it.key===C.at)), cur = view || cards[ci], nxt = view ? null : cards[ci + 1];
+  if (cur && cur.it && !view) csSeen(cur.it.key);
+  const grp = cur ? cur.fold ? "Worth a look" : CU_GROUP[Math.min(2, csCat(cur.it))] : "";
+  const hdr = `<div class="hdr cu-hdr cs-hdr c2-hdr"><button type="button" class="cu-x" aria-label="Close Catch up" onclick="cuClose()">${LI("x", 22)}</button>
+    <div class="t"><span>Catch up</span>${grp && n ? `<small>${grp}</small>` : ""}</div><span class="cu-left">${n ? `${n} left` : ""}</span></div>`;
+  const toast = c2Toast ? `<div class="c2-toast" role="status"><span>${c2E(c2Toast.t)}</span><button type="button" onclick="c2Undo()">Undo</button></div>` : "";
+  let body;
+  if (cur) { const key = view ? C.view : cur.fold ? "fold" : cur.it.key, M = cur.it && cuModel(cur.it), y = view ? { w:"Next" } : cur.fold ? { w:"Go through" } : c2Yes(cur.it, M);
+    const yes = view ? "c2Fwd()" : `c2Go('${key}')`, card = cur.fold ? c2Fold(cur.fold) : c2Card(cur.it, cur.done || (view && view.done));
+    const bar = `<div class="c2-bar" role="toolbar" aria-label="Card actions">
+      <button type="button" class="c2-tb" onclick="c2Undo()" ${C.stack.length ? "" : "disabled"}>${LI("undo-2", 20)}<span>Undo</span></button>
+      <span class="c2-skip"><button type="button" class="c2-x" aria-label="Skip" onclick="c2Skip('${key}')" ${view ? "disabled" : ""}>${LI("x", 24)}</button><span aria-hidden="true">${cur.fold ? "Skip all" : "Skip"}</span></span>
+      <button type="button" class="c2-yes${y.w.length > 12 ? " c2-long" : ""}" onclick="${yes}">${view || y.w.length > 12 ? "" : LI("check", 18)}${c2E(y.w)}</button>
+      <button type="button" class="c2-tb" onclick="c2Later('${key}')" ${!view && !cur.fold && n > 1 ? "" : "disabled"}>${LI("clock", 20)}<span>Later</span></button></div>`;
+    body = `<div class="c2-stage">${nxt ? `<div class="c2-peek" aria-hidden="true"></div>` : ""}${card}</div>${toast}${bar}`; }
+  else body = `${toast}${c2End()}`;
+  C.next = null;
+  return `${hdr}<div class="body cu-body cs-body c2-body${cur ? "" : " cs-over c2-over"}" data-kc="KeyCatchUp">${body}</div>${C.sheet ? c2Sheet() : ""}`;
+};
+/* the finish: the handled cards land in a stack and a check draws over it; what you did in words; Kai is watching; what's next */
+const c2Tile = it => { const r = it.bk && kkRows().find(x=>x.id===it.bk);
+  if (it.key==="b:dinner" && typeof evE==="function") { const v = evE("e1") || {}, ph = typeof PH_COVER!=="undefined" && PH_COVER[v.cal];
+    return `<span class="c2-st c2-ph" style="background:${typeof evBg==="function" ? evBg(v.theme) : "var(--sf-inset)"}"${ph ? ` data-csph="${phUrl(ph, 120, 120)}"` : ""}></span>`; }
+  if (it.pid && DB.people[it.pid]) return c2Face(it.pid, 48).replace("c2-f48", "c2-f48 c2-st");
+  const th = g7Plate(r ? "ink" : "harbour"); return `<span class="c2-st c2-sq" style="background:linear-gradient(120deg, ${th[0]} 20%, ${th[1]})">${c2E(r ? r.ini : "K")}</span>`; };
+const c2And = xs => xs.length < 2 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+function c2Said(){ const C = c2K(), R = Object.entries(C.c2r), by = t => R.filter(([, r])=>r.k===t).map(([, r])=>r.n);
+  const parts = [], rep = by("replied"), ask = by("asked"), sh = by("shared"), st = by("started"), lg = R.filter(([, r])=>r.k==="logged");
+  if (rep.length) parts.push(`replied to ${c2And(rep)}`); if (ask.length) parts.push(`reached out to ${c2And(ask)}`);
+  if (sh.length) parts.push(`said yes to ${sh.length===1 ? "a Kai" : "two Kais"} asking for help`); if (st.length) parts.push("started a goal for Thursday's dinner");
+  if (lg.length) parts.push(`logged how it went with ${c2And(lg.map(([, r])=>r.n))}`);
+  if (parts.length) return `You ${c2And(parts)}.`;
+  return Object.values(C.res).some(x=>x==="Skipped") ? "You skipped what didn't need you today." : "Nothing needed you today."; }
+function c2End(){
+  const C = c2K(), done = C.hist.filter(k=>C.snap[k] && C.res[k] && C.res[k]!=="Later").slice(-5), still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const stack = done.map((k, i)=>`<span class="c2-sw" style="--i:${i}">${c2Tile(C.snap[k])}</span>`).join("");
+  const watch = C.watch.slice(0, 3).map(([pid, t])=>`<div class="c2-wr">${/^fam:/.test(pid || "") ? `<span class="c2-f c2-f32 c2-sq c2-fam">${c2E(pid.charAt(4))}</span>` : pid ? c2Face(pid, 32) : /dinner/.test(t) ? g9Tile("dusk", "utensils", 32) : `<span class="c2-f c2-f32 c2-sq">${kaiMark(32)}</span>`}<span>${c2E(t)}</span><small>${/dinner/.test(t) ? "Thu" : ""}</small></div>`).join("");
+  const v = typeof evE==="function" && evE("e1"), gm = DB.missions.find(x=>x.m2 && x.name==="People to meet at Thursday's dinner"), ph = v && typeof PH_COVER!=="undefined" && PH_COVER[v.cal];
+  const up = v && !v.past ? `<div class="c2-up"><div class="c2-gl">Up next</div><button type="button" class="c2-uc" onclick="c2Leave(&quot;g7Visit('eventd:e1')&quot;)"><span class="c2-us c2-ph" style="background:${typeof evBg==="function" ? evBg(v.theme) : "var(--sf-inset)"}"${ph ? ` data-csph="${phUrl(ph, 720, 240)}"` : ""}><b>${c2E(v.name)}</b></span>
+    ${c2Line([["calendar-clock", `${v.day} ${(v.when || "").split(", ").pop()}`], ["map-pin", v.where]])}</button>${gm ? `<div class="c2-upg">${c2Goal(gm)}</div>` : ""}</div>` : "";
+  return `<div class="c2-end${still ? " c2-still" : ""}" data-kc="KeyCatchUpEnd">
+    <div class="c2-moment"><div class="c2-stack" aria-hidden="true">${stack}<svg class="c2-ck" viewBox="0 0 48 48" width="48" height="48"><circle cx="24" cy="24" r="24"/><path d="M14 25l7 7 13-15"/></svg></div>
+      <h2 tabindex="-1">You're caught up</h2><p class="c2-said">${c2E(c2Said())}</p></div>
+    ${watch ? `<div class="c2-watch"><div class="c2-wt">${kaiMark(20)}<b>Kai is watching</b></div>${watch}</div>` : ""}${up}
+    <button type="button" class="btn cu-home c2-home" onclick="cuClose()">Back to Home</button>${C.hist.some(k=>C.snap[k]) ? `<button type="button" class="c2-link" onclick="c2K().sheet=1;render()">See what you went through</button>` : ""}</div>`;
+}
+function c2Sheet(){ const C = c2K(), rows = C.hist.filter(k=>C.snap[k]).map(k=>{ const it = C.snap[k], M = cuModel(it);
+    return `<button type="button" class="cs-wr" onclick="csGo('${k}')">${csIcon(it)}<span class="cs-wt"><b>${c2E(M.who)}</b><small>${c2E(C.res[k] || "Open")}</small></span>${LI("chevron-right", 18)}</button>`; }).join("");
+  return `<div class="c2-scrim" onclick="c2K().sheet=0;render()"></div><div class="c2-sheet" role="dialog" aria-label="What you went through"><div class="c2-sh"><b>What you went through</b><button type="button" class="cu-x" aria-label="Close" onclick="c2K().sheet=0;render()">${LI("x", 22)}</button></div>${rows}</div>`; }
+/* photos and focus after each render */
+const _c2Render = render;
+render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2Render.apply(this, arguments);
+  if (STATE.screen==="catchup" && typeof phPaint==="function") phone.querySelectorAll(".c2-ph[data-csph]:not(.ph-cover)").forEach(el=>phPaint(el, el.dataset.csph, "ph-cover"));
+  if (fz) { const f = phone.querySelector(".c2-stage > .c2-card .c2-h, .c2-end h2"); if (f) f.focus({ preventScroll:true }); c2K().focus = 0; }
+  return r; };
+/* the swipe: right does the yes, left skips; past 35% of the width it commits, below it springs back. Never from the draft or a button */
+(function(){ let s = null;
+  const card = () => phone.querySelector(".c2-stage > .c2-card");
+  document.addEventListener("pointerdown", ev=>{ const c = ev.target.closest && ev.target.closest("#phone .c2-stage > .c2-card"); if (!c || ev.target.closest("textarea, button, a, input")) return;
+    s = { x:ev.clientX, y:ev.clientY, key:c.dataset.key, w:c.offsetWidth, on:false }; }, true);
+  document.addEventListener("pointermove", ev=>{ if (!s) return; const dx = ev.clientX - s.x, dy = ev.clientY - s.y, c = card(); if (!c) return;
+    if (!s.on) { if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { s = null; return; } if (Math.abs(dx) < 8) return; s.on = true; c.classList.add("c2-drag"); }
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    c.style.transform = `translateX(${dx}px)`; c.style.setProperty("--c2-l", Math.max(0, Math.min(1, -dx / (s.w * .35)))); c.style.setProperty("--c2-r", Math.max(0, Math.min(1, dx / (s.w * .35)))); }, true);
+  document.addEventListener("pointerup", ev=>{ if (!s) return; const dx = ev.clientX - s.x, k = s.key, on = s.on, w = s.w; s = null; const c = card(); if (!c || !on) return;
+    const view = c2K().view;
+    if (Math.abs(dx) > w * .35 && !(view && dx < 0)) { const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; c.style.transition = "transform .18s ease-out"; c.style.transform = `translateX(${dx > 0 ? w * 1.2 : -w * 1.2}px)`;
+      setTimeout(()=>view ? c2Fwd() : dx > 0 ? c2Go(k) : c2Skip(k), rm ? 0 : 180); }
+    else { c.classList.remove("c2-drag"); c.style.transition = "transform .2s cubic-bezier(.2,.8,.2,1)"; c.style.transform = ""; c.style.removeProperty("--c2-l"); c.style.removeProperty("--c2-r"); } }, true);
+  document.addEventListener("pointercancel", ()=>{ const c = card(); s = null; if (c) { c.style.transform = ""; c.classList.remove("c2-drag"); } }, true); })();
+
+</script>
+<style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
    One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
@@ -33133,7 +33518,7 @@ g7DeckItems = function(){ return _rtDeck.apply(this, arguments).filter(x=>x.key!
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-3009";
+window.KEY_BUILD = "2.hifi-cd4b";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
