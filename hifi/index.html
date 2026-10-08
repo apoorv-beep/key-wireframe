@@ -32580,7 +32580,7 @@ kkCtl();
 /* content scrolls inside the card; the action stays at the foot */
 #phone .cs-content { flex:1 1 auto; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:12px 16px 8px; }
 #phone .cs-top { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; margin:-8px 0 -8px; }
-#phone .cs-top .cu-link { margin:0 -4px 0 auto; }
+#phone .cs-top .cu-link { margin:0 -4px 0 auto; min-width:44px; min-height:44px; justify-content:center; }
 #phone .cs-content .cu-bub { -webkit-line-clamp:unset; display:block; }
 #phone .cs-act { flex:0 0 auto; padding:0 16px 4px; }
 #phone .cs-act .cu-ta { min-height:44px; max-height:132px; }
@@ -32642,6 +32642,7 @@ kkCtl();
 #phone .cs-fold .cs-media { max-height:62%; }
 #phone .cs-fold .cs-content { flex:0 1 auto; }
 #phone .cs-fold .cs-act { margin-top:auto; padding-bottom:16px; }
+#phone .cs-card .cu-link { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; }  /* n67 check nit 6: every link on a card is a 44 target */
 
 </style>
 <script>
@@ -32788,6 +32789,224 @@ csCtl();
 
 </script>
 <style>
+/* ==== GOAL ROUTES (HIFI-SPEC-goal-routes): Kai's line, the chips, then each route's header and its cards on a rail ==== */
+#phone .rt { display:flex; flex-direction:column; gap:10px; margin-bottom:8px; }
+#phone .rt-kai { display:flex; align-items:flex-start; gap:10px; margin:0; font:500 15px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .rt-kai .kn { flex:0 0 20px; margin-top:1px; }
+#phone .rt-chips { display:flex; flex-wrap:wrap; gap:8px; }
+#phone .rt-chip { display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:0 14px; border:0; border-radius:22px; background:var(--sf-card); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .08)); color:var(--text-primary); font:500 13px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .rt-chip b { font-weight:700; }
+#phone .rt-chip.on { background:var(--text-primary); color:var(--sf-card, #fff); }
+#phone .rt-nx { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+#phone .rt-nx p { margin:0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .rt-go { flex:0 0 auto; min-height:44px; padding:0 16px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .rt-r { display:flex; flex-direction:column; }
+#phone .rt-h { display:grid; grid-template-columns:24px minmax(0,1fr) auto; grid-template-areas:"n t t" ". w s"; column-gap:10px; row-gap:2px; align-items:start; width:100%; min-height:44px; padding:2px 0 4px; border:0; background:none; color:var(--text-primary); text-align:left; }
+#phone .rt-hb { cursor:pointer; }
+#phone .rt-n { grid-area:n; display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:var(--pl); color:#fff; font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .rt-t { display:contents; }
+#phone .rt-t b { grid-area:t; align-self:center; font:700 17px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .rt-t small { grid-area:w; font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .rt-s { grid-area:s; font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); white-space:nowrap; }
+#phone .rt-s.now { font-weight:700; color:var(--text-primary); }
+/* the rail: solid, the plate colour at 30%, from the number tile down the left of the route's cards */
+#phone .rt-c { display:flex; flex-direction:column; gap:8px; margin:-4px 0 4px 11px; padding:4px 0 0 12px; border-left:2px solid color-mix(in srgb, var(--pl) 30%, transparent); }
+#phone .rt-one .rt-c { margin-left:0; padding-left:0; border-left:0; }
+#phone .rt-c.rows { gap:0; }
+#phone .rt-c > .mt-card { margin:0; }
+#phone .rt .rt-more { align-self:flex-start; }
+/* each card's status in words, top right */
+#phone .mh-pane .rt .mt-card > .row.mt-row { row-gap:4px; }
+#phone .mh-pane .rt .mt-card .mt-row > .m { display:contents; }
+#phone .mh-pane .rt .mt-card .mt-row > .avatar { grid-row:1 / span 2; align-self:start; }
+#phone .mh-pane .rt .mt-card .mt-row > .m > * { grid-column:2 / -1; min-width:0; }
+#phone .mh-pane .rt .mt-card .mt-row > .m > .a { grid-column:2; grid-row:1; align-self:center; }
+#phone .mh-pane .rt .mt-card .mt-row > .r { grid-column:2 / -1; grid-row:auto; margin-top:8px; }
+#phone .rt-st { grid-column:3; grid-row:1; align-self:start; justify-self:end; display:flex; flex-direction:column; align-items:flex-end; gap:2px; text-align:right; font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); white-space:nowrap; }
+#phone .rt-st b { font-weight:500; }
+#phone .rt-st small { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .rt-st.rt-need b { font-weight:700; color:var(--text-primary); }
+#phone .rt-st.rt-well b { font-weight:700; color:var(--pl); }
+html.dark #phone .rt-st.rt-well b, body.dark #phone .rt-st.rt-well b { color:color-mix(in srgb, var(--pl) 45%, #fff); }
+#phone .rt-comp { display:flex; flex-direction:column; gap:8px; padding:12px; border-radius:16px; background:var(--sf-card); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .08)); }
+#phone .rt-comp .pl-nt { margin:0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .rt-none { margin:8px 0; font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .rt-kc .g7-kch > b { flex:1 1 auto; margin-top:0; }
+html.dark #phone .rt-c, body.dark #phone .rt-c { border-left-color:color-mix(in srgb, color-mix(in srgb, var(--pl) 55%, #fff) 35%, transparent); }
+/* a card with nothing to do is a compact row: small face, name, its why line on one line, the status */
+#phone .mh-pane .rt .mt-card.rt-row { padding-top:10px; padding-bottom:10px; }
+#phone .mh-pane .rt .mt-card.rt-row .mt-row { grid-template-columns:32px minmax(0,1fr) auto; row-gap:2px; }
+#phone .mh-pane .rt .mt-card.rt-row .mt-row > .avatar { width:32px !important; height:32px !important; min-width:32px; font-size:12px !important; align-self:center; }
+#phone .mh-pane .rt .mt-card.rt-row .mt-row > .m > .g8-oy { margin:0; padding:0; background:none; color:var(--text-secondary); font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .mh-pane .rt .mt-card.rt-row .mt-row > .r:empty { display:none; }
+/* the goal line already says what done means, so the hero's "Done when" line folds on a goal with routes */
+#phone .view:has(.rt) .mh-band:has(.g7-pr) .g8-bd { display:none; }
+/* on the Opportunities tab the composer's scope row shows once you start typing, so the plan gets the room */
+#phone .view:has(.rt) .mt-comp:not(:focus-within) .mt-ctxrow { display:none; }
+/* a card you can act on: the move sits top right under its status, so the action is in reach on the first screen */
+#phone .mh-pane .rt .mt-card.rt-act .mt-row > .m > .b { grid-column:2; grid-row:2; align-self:start; -webkit-line-clamp:4; }
+#phone .mh-pane .rt .mt-card.rt-act .mt-row > .r { grid-column:3; grid-row:2; align-self:start; justify-self:end; margin-top:2px; }
+#phone .mh-pane .rt .mt-card.rt-act .mt-row > .m > .g8-oy { grid-row:3; }
+#phone .rt-chip.rt-stat { box-shadow:none; background:color-mix(in srgb, var(--pl) 10%, var(--sf-card)); cursor:default; }
+#phone .view:has(.rt) .m2-pane .sl { font:600 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); letter-spacing:0; text-transform:none; color:var(--text-secondary); }
+#phone .view:has(.rt) .m2-pane .k { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); letter-spacing:0; text-transform:none; background:none; padding:0; color:var(--text-secondary); }
+
+</style>
+<script>
+/* ==== GOAL ROUTES (goals-mentor/how-goals-changes/HIFI-SPEC-goal-routes-2026-10-08.md; Apoorv 04:45, P0: "show me how the plan you've
+   created directly results in the opportunities you're presenting"). Loads after plan.js and replaces its card and its "Now at" groups.
+   Kai's plan is 2 to 4 routes, each a way to the goal in plain words, and every pick sits under the route it serves, joined by a rail.
+   One line says what Kai is thinking, one row of chips says what needs to move, and each card says where it is in words.
+   Event jobs keep their own card. The next step (plNext), the drafts and Home's line stay; Home says the card's own move. ==== */
+const RT = {
+  m1:{ line:"Most senior PM roles fill through referrals, so that's where I'm working.",
+    routes:[["Land Tovrena", "Final round done. Decision next week.", ["ana"]],
+      ["Get referred where they're hiring", "Halvern and Brightwell both hire senior PMs through referrals", ["rahul", "sana", "priti"]],
+      ["Meet people who are hiring", "Ravi is hiring a PM lead at Quenlit. Daniel worked with Ravi", ["ravi", "maya"]],
+      ["Stay close to people building in AI", "They know who's hiring before it's posted", ["jordan", "dev", "tom"]]],
+    wait:{ ana:"Tovrena" }, doneLine:"Tovrena made an offer. Close the goal once you've said yes." },
+  m2:{ line:"The best cofounders already know your work, so I'm starting with Maya.",
+    routes:[["People who already know your work", "Maya knows your work from your PM goal, and builds infra for agents", ["o2"]],
+      ["Help for founders", "Offered in the Xoogler Slack and the Desi Founders group", ["o7", "o8"]]] },
+  m3:{ line:"I'm inviting product people nearby first, then the ones who came last time.",
+    routes:[["Product people nearby", "Closest matches first, by area and what they work on", x=>!x.step && !/came last time/.test(x.host.why)],
+      ["People who came last time", "They came to the last one", x=>!x.step && /came last time/.test(x.host.why)],
+      ["People you invited", "You asked them yourself", x=>x.step > 0]] }
+};
+STATE.rt = STATE.rt || { f:{} };
+const RT_DAY = { Mon:1, Tue:1, Wed:1, Thu:1, Fri:1, Sat:1, Sun:1 };
+/* where one pick is, in words: need (your move, or a reply you owe), wait, talk (they owe it), well */
+function rtSt(m, x){
+  const P = STATE.pl, F = s => plF(s), give = plKind(m)==="give";
+  if (give) return x.step===0 ? { k:"need" } : x.step===1 ? { k:"wait" } : { k:"well" };
+  if (x.o) return x.o.state==="new" ? { k:"need", w:"Your move" } : { k:"wait", w:`Waiting on ${F(x.o.via || x.o.personId)}` };
+  const p = x.p, who = F(p.to || p.pid), owed = !P.stuck[m.id] && !P.sent[`${m.id}:${x.key}`];
+  const d = (p.sub || "").match(/\bon (Mon|Tue|Wed|Thu|Fri|Sat|Sun)[a-z]*day\b/), since = d && RT_DAY[d[1]] ? `since ${d[1]}` : "";
+  if (p.stage==="Went well") { const w = (RT[m.id] || {}).wait, on = w && !P.done[m.id] && w[x.key]; return { k:"well", w:"Went well", sub:on ? `Waiting on ${on}` : "", hold:!!on }; }
+  if (p.stage==="In conversation") return owed ? { k:"need", w:"Your reply", talk:1 } : { k:"wait", w:`Waiting on ${who}`, sub:since };
+  if (p.stage==="Waiting") return { k:"wait", w:`Waiting on ${who}`, sub:since };
+  return { k:"need", w:"Your move", move:1 };
+}
+/* the routes in order: a route with a Went well card leads, then Your move, Waiting, In progress, Done; Your move cards first inside */
+function rtRoutes(m, picks){
+  const c = RT[m.id], all = picks.map(x=>Object.assign(x, { st:rtSt(m, x) }));
+  let rs = c ? c.routes.map(([name, why, of], i)=>({ i, name, why, cards:all.filter(typeof of==="function" ? of : x=>of.includes(x.key)) })).filter(r=>r.cards.length)
+    : all.length ? [{ i:0, name:"", why:"", cards:all }] : [];
+  rs.forEach(r=>{ const k = r.cards.map(x=>x.st.k), w = c && c.wait && STATE.pl.done[m.id] && r.cards.find(x=>x.p && c.wait[x.key]);
+    if (w) r.why = w.p.sub;  /* the offer is logged: the route says so */
+    const rk = x => x.st.k!=="need" ? 2 : x.st.talk ? 0 : 1; r.cards.sort((a, b)=>rk(a) - rk(b)); r.cards.forEach(x=>{ x.rw = r.why; });
+    r.well = k.includes("well");
+    r.s = k.includes("need") ? 0 : plKind(m)==="give" && k.includes("wait") && k.includes("well") ? 2 : k.includes("wait") || r.cards.some(x=>x.st.hold) ? 1 : r.cards.some(x=>x.st.k!=="well") ? 2 : 3;
+    r.word = ["Your move", "Waiting", "In progress", "Done"][r.s]; });
+  if (plKind(m)!=="give") rs.sort((a, b)=>(b.well - a.well) || (a.s - b.s) || (a.i - b.i));
+  return rs;
+}
+const rtCount = (rs, k) => rs.reduce((n, r)=>n + r.cards.filter(x=>x.st.k===k).length, 0);
+/* the next step is the first Your move card in the first route; a goal without one keeps plNext's own line */
+const _rtNext = plNext;
+plNext = function(m, picks, steps, done){
+  const nx = _rtNext.apply(this, arguments);
+  if (done || STATE.pl.stuck[m.id] || !picks.length || plKind(m)==="give" || !nx || !nx.key) return nx;
+  const x = rtRoutes(m, picks.slice()).flatMap(r=>r.cards).find(y=>y.st.move || y.o && y.st.k==="need");
+  return x ? Object.assign(plMove(m, x, steps), { go:`plOpen('${m.id}','${x.key}')` }) : nx;
+};
+function plApply(id){
+  const m = m2Mis(id), body = phone.querySelector(".view .body.sc"), pane = body && body.querySelector(':scope > .m2-pane[aria-labelledby="m2t-paths"]');
+  if (!m || !pane || pane.dataset.pl) return; pane.dataset.pl = "1";
+  const M = plModel(m, pane);
+  if (M.ev) { pane.insertAdjacentHTML("afterbegin", M.steps.length ? rtEv(m, M) : plCard(m, M)); return; }
+  rtList(m, pane, M);
+}
+function rtEv(m, M){
+  const k = m.evKind, s = evmS(), pl = (M2_PLATE[m2Theme(m)] || M2_PLATE.harbour)[0], nx = M.next;
+  const n = k==="b" ? [[M.n[1], "going"], [M.n[2], "confirmed"], [EVM_B.e4.wait.length, "on the waitlist"]]
+    : k==="c" ? [[EVM_C.e4.filter((_, i)=>s.c[i]===undefined).length, "pairs to ask"], [EVM_C.e4.filter((_, i)=>s.c[i]!==undefined).length, "asked"]]
+    : [[EVM_E.e4.filter(c=>!s.e.sent[c.pid]).length, "could co-host"], [M.n[0], "asked"]];
+  const chips = n.filter(x=>x[0]).map(([v, l])=>`<span class="rt-chip rt-stat"><b>${v}</b> ${l}</span>`).join("");
+  return `<div class="rt rt-ev" style="--pl:${pl}" data-kc="KeyGoalRoutes" data-novocab><p class="rt-kai">${kaiMark(20)}<span>${plEsc(PL_EVWHY[k])}</span></p>${chips ? `<div class="rt-chips">${chips}</div>` : ""}${nx ? `<div class="rt-nx"><p>${plEsc(nx.text)}</p>${nx.btn ? `<button type="button" class="rt-go" onclick="${nx.go}">${plEsc(nx.btn)}</button>` : ""}</div>` : ""}</div>`;
+}
+function rtList(m, pane, M){
+  const give = M.kind==="give", pl = (M2_PLATE[m2Theme(m)] || M2_PLATE.harbour)[0], f = STATE.rt.f[m.id];
+  const hint = [...pane.querySelectorAll(".m12")].find(e=>/Nobody sees who you leave out/.test(e.textContent));
+  pane.querySelectorAll(":scope .m2-grp").forEach(e=>e.remove());
+  pane.querySelectorAll(".sl").forEach(e=>{ if (!/^(To invite|Invited)/.test(e.textContent.trim())) return; const r = e.nextElementSibling; if (r && r.classList.contains("rows")) r.remove(); e.remove(); });
+  const picks = M.picks.filter(x=>x.el), rs = rtRoutes(m, picks), inR = new Set(rs.flatMap(r=>r.cards));
+  picks.forEach(x=>{ if (!inR.has(x)) x.el.remove(); });  /* a pick Kai hasn't put on a route isn't shown (Tom: "nothing else to go on yet") */
+  const nx = M.next, kai = nx && !picks.length ? nx.text.replace(/^Kai is looking/, "I'm looking") : M.done && (RT[m.id] || {}).doneLine || (RT[m.id] || {}).line || PL_STRAT[m.id] || "I'm working through people who already know your work.";
+  const n = { need:rtCount(rs, "need"), wait:rtCount(rs, "wait"), well:rtCount(rs, "well") };
+  const lab = { need:give ? "to invite" : "need you", wait:give ? "invited" : "waiting", well:give ? "going" : "went well" };
+  const chips = picks.length ? Object.keys(n).filter(k=>n[k]).map(k=>`<button type="button" class="rt-chip${f===k ? " on" : ""}" aria-pressed="${f===k}" onclick="rtFilter('${m.id}','${k}')"><b>${n[k]}</b> ${lab[k]}</button>`).join("") : "";
+  const act = nx && nx.btn && !nx.key ? `<div class="rt-nx"><p>${plEsc(M.done ? `Logged ${M.done}` : nx.text)}</p><button type="button" class="rt-go" onclick="${nx.go}">${plEsc(nx.btn)}</button></div>` : "";
+  const one = rs.length < 2, show = rs.map(r=>({ r, cards:f ? r.cards.filter(x=>x.st.k===f) : r.cards })).filter(o=>o.cards.length);
+  const head = (r, j) => { const done = r.s===3, open = STATE.pl.more[`${m.id}:d${r.i}`];
+    const t = `<span class="rt-n" aria-hidden="true">${done ? LI("check", 14) : j + 1}</span><span class="rt-t"><b>${plEsc(r.name)}</b><small>${plEsc(r.why)}</small></span><span class="rt-s${r.s===0 ? " now" : ""}">${r.word}</span>`;
+    return done && !f ? `<button type="button" class="rt-h rt-hb" aria-expanded="${!!open}" onclick="STATE.pl.more['${m.id}:d${r.i}']=${open ? 0 : 1};render()">${t}</button>` : `<div class="rt-h">${t}</div>`; };
+  const html = show.map((o, j)=>`<section class="rt-r${one ? " rt-one" : ""}" aria-label="${plEsc(o.r.name || "Picks")}">${one ? "" : head(o.r, j)}<div class="rt-c${give ? " rows" : ""}" data-rt="${o.r.i}"></div></section>`).join("");
+  const box = document.createElement("div"); box.className = "rt"; box.style.setProperty("--pl", pl); box.dataset.kc = "KeyGoalRoutes"; box.setAttribute("data-novocab", "");
+  box.innerHTML = `<p class="rt-kai">${kaiMark(20)}<span>${plEsc(kai)}</span></p>${chips ? `<div class="rt-chips" role="group" aria-label="What needs to move">${chips}</div>` : ""}${act}${html}`
+    + (f && !show.length ? `<p class="rt-none">Nothing ${lab[f]} right now.</p>` : "");
+  const host = pane.querySelector(".ml-unit"); pane.prepend(box); if (host && !host.children.length) host.remove();
+  pane.querySelectorAll(".m2-empty").forEach(e=>e.remove());  /* the watch line is the empty state */
+  const kc = pane.querySelector(".g7-kc"); if (kc) { box.after(kc); if (!picks.length) { kc.classList.add("rt-kc"); kc.querySelectorAll(".kn").forEach(e=>e.remove()); } }  /* one Kai mark: the line */
+  show.forEach(({ r, cards })=>{ const into = box.querySelector(`.rt-c[data-rt="${r.i}"]`), k = `${m.id}:r${r.i}`, shut = r.s===3 && !f && !STATE.pl.more[`${m.id}:d${r.i}`];
+    if (shut) { into.remove(); return; }
+    cards.forEach((x, j)=>{ into.appendChild(x.el); x.el.style.display = j >= 3 && !STATE.pl.more[k] ? "none" : ""; if (!give) { plCardFix(m, x, M); rtCompose(m, x, M); } });
+    if (cards.length > 3 && !STATE.pl.more[k]) into.insertAdjacentHTML("beforeend", `<button type="button" class="pl-more rt-more" onclick="STATE.pl.more['${k}']=1;render()">${cards.length - 3} more</button>`);
+    if (give && hint && r.i===1) into.after(hint); });
+  if (give && hint && !hint.isConnected) box.appendChild(hint);
+}
+/* each card: the plan's verb, the why line without the step tail, and where it is in words at the top right */
+const _rtFix = plCardFix;
+plCardFix = function(m, x, M){
+  _rtFix.apply(this, arguments);
+  const el = x.el; el.querySelectorAll(".pl-wl b, .rt-st").forEach(e=>e.remove());
+  const sb = el.querySelector(".m .b"), rw = x.rw && x.rw.replace(/\.$/, ""); if (sb && rw && sb.textContent.trim().replace(/\.$/, "")===rw) sb.remove();  /* the route already says it */
+  const s = x.st, row = el.querySelector(".mt-row"); if (!s || !row || !s.w) return;
+  const b = el.querySelector(".r button"); el.classList.toggle("rt-row", !b); el.classList.toggle("rt-act", !!b);  /* nothing to do here: a compact row, not a full card */
+  row.insertAdjacentHTML("beforeend", `<span class="rt-st rt-${s.k}${s.talk ? " rt-tk" : ""}"><b>${plEsc(s.w)}</b>${s.sub ? `<small>${plEsc(s.sub)}</small>` : ""}</span>`);
+};
+const _rtMove = plMove;
+plMove = function(){ const mv = _rtMove.apply(this, arguments); if (mv && /^Say hi to /.test(mv.text || "")) { mv.btn = "Say hi"; mv.short = mv.text; } return mv; };
+/* Kai's draft opens in place, under the card it's for */
+function rtCompose(m, x, M){
+  if (STATE.pl.open[m.id]!==x.key) return;
+  const mv = M.next && M.next.key===x.key ? M.next : plMove(m, x, M.steps); if (!mv || mv.draft==null) return;
+  const v = STATE.pl.text[m.id]!=null ? STATE.pl.text[m.id] : mv.draft;
+  x.el.insertAdjacentHTML("afterend", `<div class="rt-comp"><p class="pl-nt">${plEsc(mv.text)}</p><div class="cu-comp"><textarea class="cu-ta pl-ta" rows="3" aria-label="Your note to ${plEsc(mv.to || "")}" oninput="STATE.pl.text['${m.id}']=this.value">${plEsc(v)}</textarea>
+    <div class="cu-cr"><span class="cu-kd">Kai drafted this</span><button type="button" class="cu-send" onclick="plSend('${m.id}','${x.key}')">Send</button></div></div></div>`);
+}
+function rtFilter(id, k){ const f = STATE.rt.f; f[id] = f[id]===k ? null : k; render(); }
+function plOpen(id, key){ STATE.pl.open[id] = key; STATE.pl.text[id] = null; render();
+  setTimeout(()=>{ const ta = phone.querySelector(".pl-ta"); if (ta) { ta.closest(".rt-comp, .pl-card").scrollIntoView({ block:"nearest" }); ta.focus({ preventScroll:true }); } }, 30); }
+/* Home: the goal's line is the card's own move ("Ask Rahul about the role at Halvern") */
+const _rtHome = plHome;
+plHome = function(body){
+  _rtHome.apply(this, arguments);
+  body.querySelectorAll(".hc-card [data-mission]").forEach(b=>{ const m = m2Mis(b.dataset.mission), bs = b.querySelector(".mh-bs"); if (!m || !bs || m.evKind || plKind(m)==="give") return;
+    const nx = plModel(m, null).next; if (nx && nx.key && nx.text) bs.textContent = nx.text; });
+  body.querySelectorAll(".hc-card [data-mission]").forEach(b=>{ const m = m2Mis(b.dataset.mission), bs = b.querySelector(".mh-bs"); if (!m || !bs || plKind(m)!=="give") return;
+    const M = plModel(m, null), nx = M.next, rs = rtRoutes(m, M.picks.slice()), g = rtCount(rs, "well"), w = rtCount(rs, "wait"); if (!nx || !nx.btn) return;
+    bs.textContent = `${nx.btn} · ${[g && `${g} going`, w && `${w} invited`].filter(Boolean).join(", ")}`; });
+};
+/* Catch up keeps its referral question, in plain words */
+const _rtCuA = cuAction;
+cuAction = function(){ return _rtCuA.apply(this, arguments).replace(">Referred me</button>", ">Yes</button>"); };
+function plFu(key, ref){ const [, mid, pid] = key.split(":"), i = STATE.pl.fuI; STATE.pl.fu = null;
+  const it = g7DeckItems().find(x=>x.key===key), M = it && cuModel(it); if (!M) return;
+  cuK().flash = null;
+  cuFinish(key, ref ? "Logged: they put you forward" : "Logged: Went well", ()=>{ (new Function(M.chips[i][1].replace(/^g7DeckDo\('[^']*',"([\s\S]*)"\)$/, "$1")))();
+    const p = m2Path(mid, pid); if (p && ref) { p.plStep = 3; p.sub = `Put you forward for ${PL_ROLE[pid]}`; m2Say(mid, { t:"sys", who:p.pid, x:`${plF(p.pid)} put you forward for ${PL_ROLE[pid]}`, time:"Now" }); }
+    cuDone(key, "logged"); });
+}
+const _rtCtl = plCtlGo;
+plCtlGo = function(k){ const r = _rtCtl.apply(this, arguments), a = k==="done" && m2Path("m1", "ana");
+  if (a && STATE.pl.done.m1) { a.sub = `Made an offer for ${PL_ROLE.ana}, logged ${plToday()}`; render(); } return r; };
+/* Ana's "is hiring" post is behind the member now (final round done, decision next week), so Home and Catch up don't offer it */
+const _rtDeck = g7DeckItems;
+g7DeckItems = function(){ return _rtDeck.apply(this, arguments).filter(x=>x.key!=="u:pl2"); };
+
+</script>
+<style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
    One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
@@ -32857,12 +33076,20 @@ csCtl();
          edge and skips gradients, so it read the page ground under the band. The band carries its own colour under the gradient */
       if (e.style.backgroundColor!==k) e.style.setProperty("background-color", k, "important"); return k; }
     return ""; }
-  function paint(){ attach(); const all = document.querySelector('meta[name="theme-color"]'), cover = all && all.dataset.cover!=null, m = cover ? null : all;
+  /* n67 check nit 2: an event opened from a profile was themed while the profile's cover still left the screen unpadded, so it never
+     slid under the strip and a white band sat over its cover. It takes the pull-up once the screen has its padding */
+  function evPad(){ const scr = document.querySelector("#phone .evt-screen"), sc = document.querySelector("#phone .screen"); if (!scr || !sc || scr.style.marginTop) return;
+    const pad = parseFloat(getComputedStyle(sc).paddingTop) || 0; if (pad) { scr.style.marginTop = -pad + "px"; scr.style.paddingTop = pad + "px"; } }
+  function paint(){ attach(); evPad(); const all = document.querySelector('meta[name="theme-color"]'), cover = all && all.dataset.cover!=null, m = cover ? null : all;
     const h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
     const bk = band(), kc = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(), c = bk || kc;
     /* scrolled, the header itself is what sits at the top edge; it is opaque on phones, so it carries its colour as a real background
        (Safari skips the pseudo-element that paints it). Over a band, the band shows through it as before */
-    if (h && matchMedia("(max-width:500px)").matches) { const v = !bk && kc ? kc : ""; if (h.style.backgroundColor!==v) h.style.setProperty("background-color", v, v ? "important" : ""); } bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
+    if (h && matchMedia("(max-width:500px)").matches) { const v = !bk && kc ? kc : ""; if (h.style.backgroundColor!==v) h.style.setProperty("background-color", v, v ? "important" : ""); } bar.hidden = !m;
+    /* n67 check nit 1: over a band the meta follows the band's colour at the strip line too; off the band it goes back to khTint's */
+    if (m && bk && !(rgb(m.content)[3] < 1)) { if (m.dataset.base==null) m.dataset.base = m.content; if (m.content!==bk) m.content = bk; }
+    else if (m && !bk && m.dataset.base!=null) { m.content = m.dataset.base; delete m.dataset.base; }
+    if (m) bar.style.backgroundColor = c || m.content;
     /* 8 Oct 03:36, Apoorv: the status bar went solid black. Safari tints the status bar from the fixed box at the top edge, and outside
        the home-screen app the strip has no height there, so it read the fixed shell's own near-black. The shell takes the strip's colour,
        and over a cover photo the cover's own top edge */
@@ -32890,6 +33117,7 @@ csCtl();
     let m = all; if (!m) { m = document.createElement("meta"); m.name = "theme-color"; m.dataset.cover = ""; document.head.append(m); }
     if (m.content!==k) m.content = k; document.documentElement.style.backgroundColor = k; document.body.style.backgroundColor = k; }
   if (typeof khTint==="function") { const _t = khTint; khTint = function(){ attach(); const cm = document.querySelector('meta[name="theme-color"][data-cover]'); if (cm) cm.remove();
+    document.querySelectorAll('meta[name="theme-color"][data-base]').forEach(x=>{ delete x.dataset.base; });
     const r = _t.apply(this, arguments); coverTint(); return r; }; }
   let pq = 0; document.addEventListener("scroll", ()=>{ if (!pq) pq = requestAnimationFrame(()=>{ pq = 0; paint(); }); }, { capture:true, passive:true });
   /* a theme toggle repaints at once, without waiting for a render */
@@ -32905,7 +33133,7 @@ csCtl();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-d7ec";
+window.KEY_BUILD = "2.hifi-3009";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
