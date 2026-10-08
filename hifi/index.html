@@ -33534,11 +33534,11 @@ const CTL2_SECT = [
   ["Money", "Payments and paid membership."]];
 /* [match on the original label or handler, section, new label (null keeps it), or "x" to remove] */
 const CTL2_MAP = [
-  [/^Restart$/, 0], [/^Skip to home$/, 0, "Skip to Home"], [/^Day one$/, 0, "First day on Key"], [/^Skip to family$/, 0, "Pick a family"],
+  [/^Restart$/, 0], [/^Skip to home$/, 0, "Skip to Home"], [/^Day one$/, -1], [/^Skip to family$/, -1],  /* 8 Oct 08:48, Apoorv: remove these, Network and Overview */
   [/^Invite$/, 0, "Arrive by invite"], [/^Event$/, 0, "Arrive from an event"], [/^Cold$/, 0, "Arrive with no invite"],
   [/^Messages$/, 1], [/^Chat$/, 1, "A chat"], [/^Channel$/, 1, "A channel"], [/^Notifications$/, 1], [/^Goal ideas$/, 1, "New goal"],
   [/^Texts with Kai$/, 1], [/^Organizer: new family$/, 1, "Start a family (organizer)"],
-  [/^Advance a week/, 2, "Advance a week"], [/^Simulate next/, 2, "Next thing happens"], [/^Next reply/, 2], [/^Network:/, 2],
+  [/^Advance a week/, 2, "Advance a week"], [/^Simulate next/, 2, "Next thing happens"], [/^Next reply/, 2], [/^Network:/, -1],
   [/^Organizer$/, 3, "View as organizer"], [/persona/, 3],
   [/^Plan: stuck$/, -1], [/^Plan: offer logged$/, 4, "Offer logged"], [/^Plan: Sana call happened$/, 4, "Sana call happened"], [/^Plan: new goal$/, 4, "Dinner goal started"],
   [/^Catch up: /, 4, "Catch up with 300 items"], [/^Between Kais: none$/, 4, "Kai-to-Kai asks: none"], [/^Between Kais: busy$/, 4, "Kai-to-Kai asks: many"], [/^Between Kais: demo$/, 4, "Kai-to-Kai asks: sample"], [/^Thin family/, 4], [/^B6: reset join$/, 4, "Join request: start over"], [/^B6: organizer approves$/, 4, "Join request: approved"],
@@ -33555,14 +33555,16 @@ function ctl2Sort(){
     e.dataset.k = k; if (m[2] && e.tagName==="BUTTON") e.textContent = m[2];
     secs[m[1]].appendChild(e); });
   [...bar.children].forEach(g=>{ if (!g.classList.contains("ctl2") && g.querySelector(".sgl")) g.hidden = !g.querySelector("button, label, select"); });
+  /* controls another module re-adds straight into a section (Day one lands next to Restart) */
+  bar.querySelectorAll(".ctl2 > button, .ctl2 > label").forEach(e=>{ const m = CTL2_MAP.find(([r])=>r.test(e.dataset.k || ctl2Key(e))); if (m && m[1] < 0) e.remove(); });
   secs.forEach(g=>{ g.hidden = !g.querySelector("button, label, select"); });
   /* Overview keeps its own group (its click handler lives there), styled and placed like the others, last */
-  const ov = bar.querySelector(".ov-sgrp"); if (ov) { if (!ov.classList.contains("ctl2")) { ov.classList.add("ctl2"); ov.querySelector(".sgl").insertAdjacentHTML("afterend", `<span class="ctl2-h">Walkthroughs of the whole product.</span>`); } bar.appendChild(ov); }
+  const ov = bar.querySelector(".ov-sgrp"); if (ov) ov.hidden = true;
   const wk = document.getElementById("weekLbl"); if (wk && !wk.closest(".ctl2")) { wk.classList.add("ctl2-h"); secs[2].querySelector(".ctl2-h").after(wk); } if (wk) wk.style.removeProperty("color");
   const pb = document.getElementById("personaBtn"); if (pb && !/^(Back|View as)/.test(pb.textContent)) pb.textContent = `View as ${pb.textContent} (member)`;
   /* toggles show when they're on */
   bar.querySelectorAll(".ctl2 button").forEach(b=>{ const k = b.dataset.k || "";
-    if (k==="Organizer") { b.classList.toggle("on", !!STATE.asOrganizer); if (b.textContent!=="View as organizer") b.textContent = "View as organizer"; } else if (/^Network:/.test(k)) b.classList.toggle("on", !!STATE.offline);
+    if (k==="Organizer") { b.classList.toggle("on", !!STATE.asOrganizer); if (b.textContent!=="View as organizer") b.textContent = "View as organizer"; }
     else if (/^Thin family/.test(k)) b.classList.toggle("on", /on$/.test(b.textContent.trim())); else if (/^Catch up: /.test(k)) b.classList.toggle("on", !!STATE.csVol);
     else if (/^Between Kais: /.test(k)) b.classList.toggle("on", !!STATE.kk && k.endsWith(STATE.kk.vol) && STATE.kk.vol!=="demo"); });
   const lb = bar.querySelector(".sgl"); if (lb && !lb.closest(".ctl2")) lb.remove();
@@ -33698,7 +33700,7 @@ ctl2Sort();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-df4c";
+window.KEY_BUILD = "2.hifi-6749";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
