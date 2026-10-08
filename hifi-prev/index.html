@@ -33416,6 +33416,48 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 
 </script>
 <style>
+#phone .ng-ask { display:flex; flex-direction:column; gap:12px; margin:8px 0 4px; padding:16px; border-radius:16px; background:var(--sf-card, #fff); box-shadow:var(--elevation-1, 0 1px 2px rgb(0 0 0 / .08)); }
+#phone .ng-ask label { font:800 20px/1.25 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .ng-ask textarea { width:100%; min-height:64px; padding:12px; border:1px solid var(--border-default, rgba(0,0,0,.12)); border-radius:12px; background:var(--bg-page); color:var(--text-primary); font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); resize:none; box-sizing:border-box; }
+#phone .ng-ask textarea::placeholder { color:var(--text-secondary); }
+#phone .ng-bar { display:flex; align-items:center; justify-content:flex-end; gap:8px; }
+#phone .ng-mic { display:grid; place-items:center; width:44px; height:44px; border:0; border-radius:22px; background:none; color:var(--text-primary); cursor:pointer; }
+#phone .ng-go { min-height:44px; padding:0 18px; border:0; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:700 14px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .ng-or { margin-top:24px; }
+#phone .voc-ideas.ng-home { margin:24px 0; }
+
+</style>
+<script>
+/* 8 Oct 07:25 (P0, Apoorv): one tap to start a goal. "+" opens New goal: say it to Kai first, ideas under it.
+   Home shows Goal ideas right after your goals, three at a time. */
+g7IdeasPage = function(){
+  const mine = (typeof vocIdeasLeft==="function" ? vocIdeasLeft() : []).slice(0, 3).map(i=>g7Idea(i.id)).filter(Boolean);
+  const forYou = mine.length ? `<h2 class="g7-gt">For you</h2><div class="g7-card g7-irs">${mine.map(i=>g9IdeaRow(i, i.why, i.rc)).join("")}</div>` : "";
+  const groups = G7_GROUPS.map(([t, l])=>{ const k = G9_KIND[t]; return `<h2 class="g7-gt g9-gt">${g9Tile(k[0], k[1] || "hand-heart", 24)}<span>${t}</span></h2><div class="g7-card g7-irs">${l.map(i=>g9IdeaRow(i, i.line)).join("")}</div>`; }).join("");
+  return `<div class="ks-page g7-page g7-ideas g9-ideas"><div class="hdr g9-dh" data-kc="KeyDetailHeader"><div class="back" role="button" tabindex="0" aria-label="Back" onclick="STATE.backNav=true;goBack()">${LI("chevron-left",22)}</div><div class="t">New goal</div></div>
+    <div class="body ks-pbody g7-body"><form class="ng-ask" onsubmit="event.preventDefault();ngAsk(this)"><label for="ng-q">What do you want to make happen?</label>
+      <textarea id="ng-q" rows="2" placeholder="Say it in your words. Kai drafts the plan."></textarea>
+      <div class="ng-bar"><button type="button" class="ng-mic" aria-label="Say it" onclick="ngAsk(this.form)">${LI("mic",20)}</button><button type="submit" class="ng-go">Start with Kai</button></div></form>
+      ${forYou}<h2 class="g7-gt ng-or">Or start from an idea</h2>${groups}</div></div>`;
+};
+function ngAsk(f){ const t = f.querySelector("textarea").value.trim(); STATE.sheet = null; mcStart(t ? { text:t } : undefined); render(); }
+const _ngRender = render;
+render = function(){
+  const r = _ngRender.apply(this, arguments);
+  const sec = STATE.screen==="home" && phone.querySelector(".screen .voc-ideas:not(.ng-home)");
+  if (sec) {
+    const list = vocIdeasLeft().slice(0, 3).map(x=>g7Idea(x.id)).filter(Boolean);
+    sec.classList.add("ng-home");
+    sec.innerHTML = `<div class="voc-ihd"><h2 id="voc-ih">${LI("lightbulb",20)}<span>Goal ideas</span></h2><button type="button" class="voc-all" onclick="go('goalideas')">See all</button></div>
+      <div class="g7-card g7-irs">${list.map(i=>g9IdeaRow(i, i.why || i.line)).join("")}</div>`;
+    const cards = sec.parentElement.querySelectorAll(":scope > .hc-card"), last = cards[cards.length-1];
+    if (last) last.after(sec);
+  }
+  return r;
+};
+
+</script>
+<style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
    One soft wash rising behind the composer in Kai's own colours: a soft gold glow from the foil tokens only (Apoorv 8 Oct 06:49: "not our brand color, use subtle and clean gold gradients"), on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
@@ -33541,7 +33583,7 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-ad14";
+window.KEY_BUILD = "2.hifi-9138";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
