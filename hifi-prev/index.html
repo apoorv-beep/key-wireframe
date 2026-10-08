@@ -32518,7 +32518,7 @@ sContextSection = function(id){
     : r.st==="matched" && r.mid ? `<button type="button" class="kk-link" onclick="g7Chat('${r.mid}')">Open goal</button>` : "";
   const stop = r.st==="closed" ? "" : STATE.kk.stop===r.id ? `<div class="kk-stopc"><p>Stop sharing with ${e(r.pid ? f1(DB.people[r.pid]) : "this person")}? Your family settings stay as they are.</p><div class="cu-chips"><button type="button" class="cu-chip pri" onclick="kkStop('${r.id}')">Stop sharing</button><button type="button" class="cu-chip" onclick="STATE.kk.stop=null;render()">Keep</button></div></div>`
     : `<button type="button" class="kk-link kk-stop" onclick="STATE.kk.stop='${r.id}';render()">Stop sharing with this person</button>`;
-  return `<div class="hdr kk-hdr"><div class="back" onclick="goBack()" role="button" aria-label="Back">‹</div><div class="t">${e(kkName(r))}</div>${kkLabel(r)}</div>
+  return `<div class="hdr kk-hdr"><div class="back" onclick="goBack()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goBack()}" aria-label="Back">‹</div><div class="t">${e(kkName(r))}</div>${kkLabel(r)}</div>
     <div class="body kk-body" data-novocab><p class="kk-for">For: ${e(r.forT)}</p><ol class="kk-exs">${ex}</ol>${act}${stop}</div>`;
 };
 function kkAnswer(id, yes){ const r = kkRows().find(x=>x.id===id); if (!r || r.st!=="you") return;
@@ -32536,8 +32536,10 @@ cuModel = function(it){ const M = _kkCuModel.apply(this, arguments); if (!it.bk)
     body:`${kkKai(r)} asks: ${r.ask.charAt(0).toLowerCase()}${r.ask.slice(1)}` }); };
 /* the goal: Rahul's matched exchange is his why line; one Chat activity line per exchange, no details */
 kkWhy();
-function kkChat(){ const said = { m1:["Your Kai asked Lena's Kai about a referral call.", "Your Kai and Rahul's Kai talked about referrals.", "Your Kai asked Sana's Kai about referrals."] };
-  Object.entries(said).forEach(([mid, ls])=>{ const s = m2Story(mid); if (!s || s.kk) return; s.kk = 1; ls.forEach(x=>s.chat.push({ t:"sys", who:"kai", x, time:"This week" })); }); }
+/* at their own dates, ahead of the recent days rather than after today's card */
+function kkChat(){ const said = { m1:[["Sep 20", "Your Kai asked Lena's Kai about a referral call.", /^Last week$/], ["Tue", "Your Kai and Rahul's Kai talked about referrals.", /^(Yesterday|Today)$/], ["Wed", "Your Kai asked Sana's Kai about referrals.", /^(Yesterday|Today)$/]] };
+  Object.entries(said).forEach(([mid, ls])=>{ const s = m2Story(mid); if (!s || s.kk) return; s.kk = 1;
+    ls.forEach(([time, x, before])=>{ let i = s.chat.findIndex(e=>e.t==="day" && before.test(e.x || e.text || e.title || "")); if (i < 0) i = s.chat.length; s.chat.splice(i, 0, { t:"sys", who:"kai", x, time }); }); }); }
 /* controls: volume states */
 function kkCtl(){ const g = [...document.querySelectorAll(".stagebar .sgrp")].find(x=>{ const l = x.querySelector(".sgl"); return l && l.textContent==="Screens"; });
   if (!g || g.querySelector("[data-kkctl]")) return;
@@ -32600,12 +32602,58 @@ kkCtl();
   const bar = document.createElement("div"); bar.id = "kh-sbar"; bar.setAttribute("aria-hidden", "true"); (typeof phone!=="undefined" && phone ? phone : document.body).append(bar);
   /* 7 Oct n31 check: the strip takes the header's own colour (--kh-bg), so a scrolled page never paints content into it */
   const attach = () => { if (typeof phone!=="undefined" && phone && bar.parentNode!==phone) phone.append(bar); };
-  function paint(){ attach(); const m = document.querySelector('meta[name="theme-color"]'), h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
-    const c = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
+  const rgb = k => (k.match(/rgba?\(([^)]+)\)/) || [, ""])[1].split(",").map(x=>parseFloat(x));
+  /* a translucent theme colour (the Kai sheet's scrim) is what shows over the page: the shell takes it composited, not the bare page */
+  const over = (top, under) => { const t = rgb(top), u = rgb(under); if (t.length < 4 || t[3] >= 1 || u.length < 3) return top;
+    return `rgb(${[0, 1, 2].map(i=>Math.round(t[i] * t[3] + u[i] * (1 - t[3]))).join(",")})`; };
+  /* n58 check: a goal's plate band runs up under the strip at 170deg, so it is already lighter than its first stop where the strip ends.
+     The strip takes the band's colour at that line, so the two meet without a step */
+  function band(){ const y = bar.offsetHeight; if (!y || typeof phone==="undefined" || !phone) return "";
+    const pr = phone.getBoundingClientRect(), x = pr.left + pr.width / 2;
+    for (const e of document.elementsFromPoint(x, pr.top + y + 1)) { if (!phone.contains(e)) break; const bi = getComputedStyle(e).backgroundImage;
+      if (bi==="none") continue; const g = bi.match(/^linear-gradient\((-?[\d.]+)deg, (rgb\([^)]+\)), (rgb\([^)]+\))\)$/); if (!g) return "";
+      const r = e.getBoundingClientRect(); if (r.top >= pr.top + y) return ""; const a = g[1] * Math.PI / 180, s1 = Math.sin(a), c1 = Math.cos(a);
+      const L = Math.abs(r.width * s1) + Math.abs(r.height * c1), t = Math.max(0, Math.min(1, ((x - r.left - r.width / 2) * s1 - (pr.top + y - r.top - r.height / 2) * c1) / L + .5));
+      const p = rgb(g[2]), q = rgb(g[3]); return `rgb(${[0, 1, 2].map(i=>Math.round(p[i] + (q[i] - p[i]) * t)).join(", ")})`; }
+    return ""; }
+  function paint(){ attach(); const all = document.querySelector('meta[name="theme-color"]'), cover = all && all.dataset.cover!=null, m = cover ? null : all;
+    const h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
+    const c = band() || h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
     /* 8 Oct 03:36, Apoorv: the status bar went solid black. Safari tints the status bar from the fixed box at the top edge, and outside
-       the home-screen app the strip has no height there, so it read the fixed shell's own near-black. The shell takes the strip's colour */
-    if (typeof phone!=="undefined" && phone) phone.style.backgroundColor = m && matchMedia("(max-width:500px)").matches ? (c || m.content) : ""; }
-  if (typeof khTint==="function") { const _t = khTint; khTint = function(){ attach(); return _t.apply(this, arguments); }; }
+       the home-screen app the strip has no height there, so it read the fixed shell's own near-black. The shell takes the strip's colour,
+       and over a cover photo the cover's own top edge */
+    const under = c || getComputedStyle(document.body).backgroundColor;
+    if (typeof phone!=="undefined" && phone) phone.style.backgroundColor = all && matchMedia("(max-width:500px)").matches ? (cover ? all.content : rgb(m.content)[3] < 1 ? over(m.content, under) : c || m.content) : ""; }
+  /* 8 Oct n58 check: on a cover (a profile photo, an event's cover) khTint drops the theme colour, so the shell fell back to near-black.
+     The cover's top edge gives it one: a gradient's first stop, the photo's top rows once it loads, the placeholder colour until then */
+  const seen = {};
+  function coverColour(){ const ph = document.getElementById("phone"); if (!ph) return "";
+    const r = ph.getBoundingClientRect(), y = r.top + (bar.offsetHeight || 0) + 2;
+    for (const e of document.elementsFromPoint(r.left + r.width / 2, y)) { if (!ph.contains(e)) break; const cs = getComputedStyle(e), bi = cs.backgroundImage;
+      const k = cs.backgroundColor, solid = k!=="transparent" && !/,\s*0\)$/.test(k) ? k : "";
+      const url = (bi.match(/url\("?([^")]+)"?\)/) || [])[1] || (e.tagName==="IMG" ? e.currentSrc || e.src : "");
+      if (url) { if (seen[url]) return seen[url]; if (seen[url]===undefined) { seen[url] = null; sample(url); } if (solid) return solid; continue; }
+      const g = bi!=="none" && bi.match(/rgba?\([^)]+\)/); if (g && !(rgb(g[0])[3] < 1)) return g[0]; if (solid) return solid; }
+    return ""; }
+  function sample(url){ const im = new Image(); im.crossOrigin = "anonymous";
+    im.onload = () => { try { const w = 24, h = 3, cv = document.createElement("canvas"); cv.width = w; cv.height = h; const x = cv.getContext("2d");
+        x.drawImage(im, 0, 0, im.naturalWidth, Math.max(1, im.naturalHeight * .04), 0, 0, w, h); const d = x.getImageData(0, 0, w, h).data, t = [0, 0, 0];
+        for (let i = 0; i < d.length; i += 4) { t[0] += d[i]; t[1] += d[i+1]; t[2] += d[i+2]; } const n = d.length / 4;
+        seen[url] = `rgb(${t.map(v=>Math.round(v / n)).join(",")})`; } catch (e) { seen[url] = false; } coverTint(); };
+    im.onerror = () => { seen[url] = false; }; im.src = url; }
+  function coverTint(){ if (!matchMedia("(max-width:500px)").matches) return; const all = document.querySelector('meta[name="theme-color"]');
+    if (all && all.dataset.cover==null) return; const k = coverColour(); if (!k) { if (all) all.remove(); return; }
+    let m = all; if (!m) { m = document.createElement("meta"); m.name = "theme-color"; m.dataset.cover = ""; document.head.append(m); }
+    if (m.content!==k) m.content = k; document.documentElement.style.backgroundColor = k; document.body.style.backgroundColor = k; }
+  if (typeof khTint==="function") { const _t = khTint; khTint = function(){ attach(); const cm = document.querySelector('meta[name="theme-color"][data-cover]'); if (cm) cm.remove();
+    const r = _t.apply(this, arguments); coverTint(); return r; }; }
+  let pq = 0; document.addEventListener("scroll", ()=>{ if (!pq) pq = requestAnimationFrame(()=>{ pq = 0; paint(); }); }, { capture:true, passive:true });
+  /* a theme toggle repaints at once, without waiting for a render */
+  /* the header's colour is fixed at render, so a theme change re-renders once; only when dark actually flips, so nothing loops */
+  const isDark = () => document.documentElement.classList.contains("dark") || !!(document.body && document.body.classList.contains("dark"));
+  let dk = isDark(); const retheme = () => { const d = isDark(); if (d===dk) return; dk = d; if (typeof render==="function") render(); else paint(); };
+  new MutationObserver(retheme).observe(document.documentElement, { attributes:true, attributeFilter:["class", "data-theme"] });
+  if (document.body) new MutationObserver(retheme).observe(document.body, { attributes:true, attributeFilter:["class"] });
   if (typeof render==="function") { const _r = render; render = function(){ const r = _r.apply(this, arguments); paint(); return r; }; }
   new MutationObserver(paint).observe(document.head, { childList:true, subtree:true, attributes:true, attributeFilter:["content"] });
   paint();
@@ -32613,7 +32661,7 @@ kkCtl();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-90bd";
+window.KEY_BUILD = "2.hifi-53f7";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
