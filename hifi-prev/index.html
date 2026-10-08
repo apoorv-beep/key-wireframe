@@ -25229,6 +25229,17 @@ try { new MutationObserver(() => meApply()).observe(document.getElementById("pho
   #phone .kh-glass:not(.kh-tint)::after { background:color-mix(in srgb, var(--kh-bg, var(--bg-page)) 94%, transparent); }
   #phone .pscreen .pbar::after { bottom:0; background:color-mix(in srgb, var(--bg-page) 94%, transparent); }
 }
+/* 8 Oct 06:51 (Apoorv: "wasn't the app header a little translucent? bring that back ... at least the glass effect a little"). The solid
+   status strip (sbar.js) now owns the screen's top edge, so the blur starts at the header's own top, under the strip, and the 6 Oct halo
+   can't come back. Page colour at 86% over a soft blur; tinted headers keep their plate. Reduced transparency keeps the plain bar. */
+@media (max-width:500px) {
+  #phone .kh-glass:not(.kh-tint)::before { display:block; top:0; -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4); }
+  #phone .kh-glass:not(.kh-tint)::after { background:color-mix(in srgb, var(--kh-bg, var(--bg-page)) 86%, transparent); }
+}
+@media (max-width:500px) and (prefers-reduced-transparency: reduce) {
+  #phone .kh-glass:not(.kh-tint)::before { display:none; }
+  #phone .kh-glass:not(.kh-tint)::after { background:var(--kh-bg, var(--bg-page)); }
+}
 
 </style>
 <script>
@@ -33393,22 +33404,22 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 </script>
 <style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
-   One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
+   One soft wash rising behind the composer in Kai's own colours: a soft gold glow from the foil tokens only (Apoorv 8 Oct 06:49: "not our brand color, use subtle and clean gold gradients"), on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
    along the bottom edges, where there is no text, and fades out before the chat starts, so text keeps AA (n45 M2, n49 M3). ==== */
 .sheet.ks { isolation:isolate; }
 .sheet.ks::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
   background:
-    radial-gradient(75% 170px at 82% 100%, rgba(220,184,84,.62), rgba(220,184,84,.26) 45%, rgba(220,184,84,0) 100%),
-    radial-gradient(85% 200px at 14% 100%, rgba(74,108,176,.46), rgba(74,108,176,.18) 45%, rgba(74,108,176,0) 100%),
-    radial-gradient(22px 48% at 0% 100%, rgba(74,108,176,.34), rgba(74,108,176,0) 100%),
-    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.40), rgba(220,184,84,0) 100%);
+    radial-gradient(80% 170px at 80% 100%, rgba(220,184,84,.30), rgba(220,184,84,.12) 45%, rgba(220,184,84,0) 100%),
+    radial-gradient(90% 200px at 18% 100%, rgba(247,231,184,.70), rgba(247,231,184,.28) 45%, rgba(247,231,184,0) 100%),
+    radial-gradient(22px 44% at 0% 100%, rgba(220,184,84,.22), rgba(220,184,84,0) 100%),
+    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.26), rgba(220,184,84,0) 100%);
   transform-origin:50% 100%; animation:kwBreathe 9s ease-in-out infinite alternate; }
 .dark .sheet.ks::before { background:
-    radial-gradient(75% 170px at 82% 100%, rgba(220,184,84,.46), rgba(220,184,84,.18) 45%, rgba(220,184,84,0) 100%),
-    radial-gradient(85% 200px at 14% 100%, rgba(98,134,210,.72), rgba(98,134,210,.28) 45%, rgba(98,134,210,0) 100%),
-    radial-gradient(22px 48% at 0% 100%, rgba(98,134,210,.5), rgba(98,134,210,0) 100%),
-    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.38), rgba(220,184,84,0) 100%); }
+    radial-gradient(80% 170px at 80% 100%, rgba(220,184,84,.24), rgba(220,184,84,.09) 45%, rgba(220,184,84,0) 100%),
+    radial-gradient(90% 200px at 18% 100%, rgba(168,127,42,.40), rgba(168,127,42,.15) 45%, rgba(168,127,42,0) 100%),
+    radial-gradient(22px 44% at 0% 100%, rgba(168,127,42,.30), rgba(168,127,42,0) 100%),
+    radial-gradient(22px 40% at 100% 100%, rgba(220,184,84,.24), rgba(220,184,84,0) 100%); }
 .sheet.ks.g7-ks .ks-hd, .sheet.ks.g7-ks .ks-body, .sheet.ks.g7-ks .ks-thread, .sheet.ks.g7-ks .ks-comp,
 .sheet.ks .ks-hd, .sheet.ks .ks-body, .sheet.ks .ks-thread, .sheet.ks .ks-comp { background:transparent; }
 .sheet.ks .ks-comp { border-top-color:transparent; }
@@ -33438,7 +33449,6 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
   html { background:var(--paper); }
   #phone.phone { position:fixed; inset:0; }
   #kh-sbar[hidden] { visibility:hidden; }
-  #phone.phone .kh-glass:not(.kh-tint)::after { background:var(--kh-bg, var(--bg-page)); }
 }`;
   document.head.append(css);
   const bar = document.createElement("div"); bar.id = "kh-sbar"; bar.setAttribute("aria-hidden", "true"); (typeof phone!=="undefined" && phone ? phone : document.body).append(bar);
@@ -33468,9 +33478,9 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
   function paint(){ attach(); evPad(); const all = document.querySelector('meta[name="theme-color"]'), cover = all && all.dataset.cover!=null, m = cover ? null : all;
     const h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
     const bk = band(), kc = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(), c = bk || kc;
-    /* scrolled, the header itself is what sits at the top edge; it is opaque on phones, so it carries its colour as a real background
-       (Safari skips the pseudo-element that paints it). Over a band, the band shows through it as before */
-    if (h && matchMedia("(max-width:500px)").matches) { const v = !bk && kc ? kc : ""; if (h.style.backgroundColor!==v) h.style.setProperty("background-color", v, v ? "important" : ""); } bar.hidden = !m;
+    /* 8 Oct 06:51, Apoorv: "wasn't the app header a little translucent? bring that back". The header is glass again (page colour at 88%
+       with a blur, translucent-header.css); Safari tints from the solid strip and the fixed shell, both still the header's colour */
+    if (h && h.style.backgroundColor) h.style.removeProperty("background-color"); bar.hidden = !m;
     /* n67 check nit 1: over a band the meta follows the band's colour at the strip line too; off the band it goes back to khTint's */
     if (m && bk && !(rgb(m.content)[3] < 1)) { if (m.dataset.base==null) m.dataset.base = m.content; if (m.content!==bk) m.content = bk; }
     else if (m && !bk && m.dataset.base!=null) { m.content = m.dataset.base; delete m.dataset.base; }
@@ -33518,7 +33528,7 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-cd4b";
+window.KEY_BUILD = "2.hifi-c37d";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>

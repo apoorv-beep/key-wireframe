@@ -32861,6 +32861,19 @@ html.dark #phone .rt-c, body.dark #phone .rt-c { border-left-color:color-mix(in 
 #phone .rt-chip.rt-stat { box-shadow:none; background:color-mix(in srgb, var(--pl) 10%, var(--sf-card)); cursor:default; }
 #phone .view:has(.rt) .m2-pane .sl { font:600 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); letter-spacing:0; text-transform:none; color:var(--text-secondary); }
 #phone .view:has(.rt) .m2-pane .k { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); letter-spacing:0; text-transform:none; background:none; padding:0; color:var(--text-secondary); }
+/* room to scan (his 06:55): 32 between routes, sub-line and status on their own lines, 12 between cards */
+#phone .rt { gap:12px; }
+#phone .rt-r + .rt-r { margin-top:20px; }
+#phone .rt-h { grid-template-areas:"n t t" ". w w" ". s s"; row-gap:4px; }
+#phone .rt-s { white-space:normal; }
+#phone .rt-c { gap:12px; margin-top:4px; }
+/* less to read (his 07:21 "still cluttered"): one status per card, the route keeps its title and one sub-line */
+#phone .rt-h .rt-s { display:none; }
+#phone .rt-h { grid-template-areas:"n t t" ". w w"; }
+#phone .rt-t small { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .mh-pane .rt .rt-st small { display:none; }
+#phone .mh-pane .rt .mt-card .mt-row > .m > .b { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .mh-pane .rt .mt-card .mt-row > .m > .pl-wl { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 </style>
 <script>
@@ -32934,7 +32947,7 @@ function rtEv(m, M){
     : k==="c" ? [[EVM_C.e4.filter((_, i)=>s.c[i]===undefined).length, "pairs to ask"], [EVM_C.e4.filter((_, i)=>s.c[i]!==undefined).length, "asked"]]
     : [[EVM_E.e4.filter(c=>!s.e.sent[c.pid]).length, "could co-host"], [M.n[0], "asked"]];
   const chips = n.filter(x=>x[0]).map(([v, l])=>`<span class="rt-chip rt-stat"><b>${v}</b> ${l}</span>`).join("");
-  return `<div class="rt rt-ev" style="--pl:${pl}" data-kc="KeyGoalRoutes" data-novocab><p class="rt-kai">${kaiMark(20)}<span>${plEsc(PL_EVWHY[k])}</span></p>${chips ? `<div class="rt-chips">${chips}</div>` : ""}${nx ? `<div class="rt-nx"><p>${plEsc(nx.text)}</p>${nx.btn ? `<button type="button" class="rt-go" onclick="${nx.go}">${plEsc(nx.btn)}</button>` : ""}</div>` : ""}</div>`;
+  return `<div class="rt rt-ev" style="--pl:${pl}" data-kc="KeyGoalRoutes" data-novocab>${chips ? `<div class="rt-chips">${chips}</div>` : ""}${nx ? `<div class="rt-nx"><p>${plEsc(nx.text)}</p>${nx.btn ? `<button type="button" class="rt-go" onclick="${nx.go}">${plEsc(nx.btn)}</button>` : ""}</div>` : ""}</div>`;
 }
 function rtList(m, pane, M){
   const give = M.kind==="give", pl = (M2_PLATE[m2Theme(m)] || M2_PLATE.harbour)[0], f = STATE.rt.f[m.id];
@@ -32943,7 +32956,7 @@ function rtList(m, pane, M){
   pane.querySelectorAll(".sl").forEach(e=>{ if (!/^(To invite|Invited)/.test(e.textContent.trim())) return; const r = e.nextElementSibling; if (r && r.classList.contains("rows")) r.remove(); e.remove(); });
   const picks = M.picks.filter(x=>x.el), rs = rtRoutes(m, picks), inR = new Set(rs.flatMap(r=>r.cards));
   picks.forEach(x=>{ if (!inR.has(x)) x.el.remove(); });  /* a pick Kai hasn't put on a route isn't shown (Tom: "nothing else to go on yet") */
-  const nx = M.next, kai = nx && !picks.length ? nx.text.replace(/^Kai is looking/, "I'm looking") : M.done && (RT[m.id] || {}).doneLine || (RT[m.id] || {}).line || PL_STRAT[m.id] || "I'm working through people who already know your work.";
+  const nx = M.next, kai = nx && !picks.length && nx.text.replace(/^Kai is looking/, "I'm looking");
   const n = { need:rtCount(rs, "need"), wait:rtCount(rs, "wait"), well:rtCount(rs, "well") };
   const lab = { need:give ? "to invite" : "need you", wait:give ? "invited" : "waiting", well:give ? "going" : "went well" };
   const chips = picks.length ? Object.keys(n).filter(k=>n[k]).map(k=>`<button type="button" class="rt-chip${f===k ? " on" : ""}" aria-pressed="${f===k}" onclick="rtFilter('${m.id}','${k}')"><b>${n[k]}</b> ${lab[k]}</button>`).join("") : "";
@@ -32954,7 +32967,7 @@ function rtList(m, pane, M){
     return done && !f ? `<button type="button" class="rt-h rt-hb" aria-expanded="${!!open}" onclick="STATE.pl.more['${m.id}:d${r.i}']=${open ? 0 : 1};render()">${t}</button>` : `<div class="rt-h">${t}</div>`; };
   const html = show.map((o, j)=>`<section class="rt-r${one ? " rt-one" : ""}" aria-label="${plEsc(o.r.name || "Picks")}">${one ? "" : head(o.r, j)}<div class="rt-c${give ? " rows" : ""}" data-rt="${o.r.i}"></div></section>`).join("");
   const box = document.createElement("div"); box.className = "rt"; box.style.setProperty("--pl", pl); box.dataset.kc = "KeyGoalRoutes"; box.setAttribute("data-novocab", "");
-  box.innerHTML = `<p class="rt-kai">${kaiMark(20)}<span>${plEsc(kai)}</span></p>${chips ? `<div class="rt-chips" role="group" aria-label="What needs to move">${chips}</div>` : ""}${act}${html}`
+  box.innerHTML = `${kai ? `<p class="rt-kai">${kaiMark(20)}<span>${plEsc(kai)}</span></p>` : ""}${chips ? `<div class="rt-chips" role="group" aria-label="What needs to move">${chips}</div>` : ""}${act}${html}`
     + (f && !show.length ? `<p class="rt-none">Nothing ${lab[f]} right now.</p>` : "");
   const host = pane.querySelector(".ml-unit"); pane.prepend(box); if (host && !host.children.length) host.remove();
   pane.querySelectorAll(".m2-empty").forEach(e=>e.remove());  /* the watch line is the empty state */
@@ -33528,7 +33541,7 @@ render = function(){ const fz = STATE.screen==='catchup' && c2K().focus, r = _c2
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-c37d";
+window.KEY_BUILD = "2.hifi-ad14";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
