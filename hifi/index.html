@@ -32377,6 +32377,177 @@ function plFu(key, ref){ const [, mid, pid] = key.split(":"), i = STATE.pl.fuI; 
 
 </script>
 <style>
+/* ==== BETWEEN KAIS (HIFI-SPEC-between-kais): rows with hairlines, not cards; the exchange as timeline rows, not bubbles ==== */
+#phone { --kk-pl:#3A5E96; }
+html.dark #phone, .dark #phone { --kk-pl:color-mix(in srgb, #3A5E96 45%, #fff); }
+#phone .kk-row { display:flex; align-items:flex-start; gap:12px; width:100%; min-height:44px; padding:12px 0; border:0; border-bottom:1px solid var(--border-default, rgb(0 0 0 / .08)); background:none; text-align:left; cursor:pointer; color:var(--text-primary); }
+#phone .kk-a40 { flex:0 0 40px; width:40px; height:40px; }
+#phone .kk-av .avatar { width:100%; height:100%; font-size:13px; font-weight:700; }
+#phone .kk-tile { display:grid; place-items:center; border-radius:12px; background:var(--sf-inset, rgb(0 0 0 / .06)); color:var(--text-secondary); font:700 15px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .kk-m { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .kk-n { font:700 15px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .kk-h { display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+#phone .kk-l { font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+#phone .kk-f { font:700 12px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kk-st { flex:0 0 auto; font:700 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); white-space:nowrap; }
+#phone .kk-you { color:var(--kk-pl); }
+#phone .kk-them { color:var(--text-secondary); }
+#phone .kk-match { color:var(--text-primary); }
+#phone .kk-closed { color:var(--text-secondary); }
+#phone .kk-fold, #phone .kk-link { display:block; min-height:44px; padding:0 2px; border:0; background:none; color:var(--text-primary); font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+#phone .kk-fold { width:100%; text-align:left; border-bottom:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .kk-seg > .lbl { margin-top:20px; }
+#phone .kk-empty { display:flex; flex-direction:column; align-items:center; gap:8px; padding:24px 12px 8px; text-align:center; }
+#phone .kk-ei { display:grid; place-items:center; width:48px; height:48px; border-radius:16px; background:var(--sf-inset, rgb(0 0 0 / .06)); color:var(--text-secondary); }
+#phone .kk-empty p { margin:0; font:500 13px/1.45 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kk-now { cursor:pointer; }
+#phone .kk-now .chev { color:var(--text-secondary); font-size:20px; }
+/* the exchange */
+#phone .kk-hdr { display:flex; align-items:center; gap:8px; }
+#phone .kk-hdr .t { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#phone .kk-hdr .kk-st { padding:0 4px 0 0; }
+#phone .kk-for { margin:8px 0 8px; font:500 13px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kk-exs { list-style:none; margin:0; padding:0; }
+#phone .kk-ex { display:flex; flex-direction:column; gap:2px; padding:12px 0; border-bottom:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .kk-who { font:700 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .kk-x { font:500 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .kk-set { font:700 12px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--kk-pl); }
+#phone .kk-act, #phone .kk-stopc { margin-top:16px; }
+#phone .kk-q, #phone .kk-stopc p { margin:0 0 8px; font:700 15px/1.4 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .kk-stop { margin-top:16px; }
+/* the tabs size to their label on one line, 44px tall (n57 check M2, M3) */
+#phone .seg.kk-tabs > div { flex:1 1 auto; display:grid; place-items:center; min-height:44px; padding:0 8px; white-space:nowrap; }
+#phone .seg.kk-tabs > div[data-cseg="bk"] { flex-grow:1.6; }
+
+</style>
+<script>
+/* ==== BETWEEN KAIS (goals-mentor/how-goals-changes/HIFI-SPEC-between-kais-2026-10-08.md; Apoorv 00:09 "where are we showing what
+   Kai to Kai interactions have been done?", "go" 03:16). Loads after plan.js.
+   Context's segments become Now | Between Kais · N | Timeline. One row per person (or per match not yet named): both directions, the
+   goal it served, a status. A row opens the exchange on a full screen, oldest first, each share citing the setting that allowed it.
+   The old Shared segment's family chips move to the bottom as "What Kai may share". No name or face before the other side's yes. ==== */
+const KK_ST = { you:["Waiting on you","kk-you"], them:["Waiting on them","kk-them"], matched:["Matched","kk-match"], closed:["Closed","kk-closed"] };
+const KK_ORDER = ["you","them","matched","closed"];
+/* the demo member's exchanges. A share line carries [setting row, family] from "What Kai may share" (DB.contextV2.shared), and the
+   citation is read from those chips, so nothing claims a setting that doesn't allow it. Someone else's Kai asking about the member stays
+   "Someone in <community>"; a person is named only when matched, or when the member's Kai asked a pick in a shared community */
+const KK_ROWS = () => [
+  { id:"xoo", fam:"Xoogler", ini:"X", st:"you", forT:"Helping others", when:"Tue", age:2,
+    shared:"can help with product reviews", asked:"a 30-minute review of a first PM spec",
+    ex:[["them","Mon 10:02","Asked who in Xoogler helps first-time PMs with product reviews."],["you","Mon 10:02","Shared: can help with product reviews.",[1,"xoogler"]],
+      ["them","Tue 09:40","Asked if you'd do a 30-minute review of a first PM spec."]],
+    note:"Your settings don't cover a yes to a specific ask.", ask:"Would you do a 30-minute review of a first PM spec?", yes:"a 30-minute review of a first PM spec" },
+  { id:"sana", pid:"sana", st:"them", mid:"m1", forT:"Senior PM role · Brightwell", when:"Wed", age:1,
+    shared:"open to asks, 3 a week", asked:"is Sana open to referrals this month",
+    ex:[["you","Wed 09:15","Shared: open to asks, 3 a week.",[0,"xoogler"]],["you","Wed 09:15","Asked if Sana is open to referrals this month."]] },
+  { id:"rahul", pid:"rahul", st:"matched", mid:"m1", forT:"Senior PM role · Halvern", when:"Tue", age:2,
+    shared:"open to asks, 3 a week", asked:"open to PM roles at Halvern",
+    ex:[["them","Mon 10:02","Asked if you're open to talking about PM roles at Halvern."],["you","Mon 10:02","Shared: open to asks, 3 a week.",[0,"xoogler"]],
+      ["them","Tue 09:40","Rahul is open to referring, 2 a month."],["you","Tue 09:41","Matched: Rahul can refer you. Names shown to both."]] },
+  { id:"daniel", pid:"chris", st:"matched", mid:"m2", forT:"Technical cofounder", when:"Sep 19", age:19,
+    shared:"open to asks, 3 a week", asked:"who you'd want to meet for an agents idea",
+    ex:[["them","Sep 19 18:20","Asked who you'd want to meet for an agents idea."],["you","Sep 19 18:20","Shared: open to asks, 3 a week.",[0,"xoogler"]],
+      ["you","Sep 19 18:31","You answered: Maya. You wrote how you know each other yourself."]] },
+  { id:"mich", fam:"Michigan Product Alumni", ini:"M", st:"closed", forT:"Helping others", when:"Sep 30", age:8,
+    shared:"location, Bay Area", asked:"who's in the Bay Area",
+    ex:[["them","Sep 29 14:10","Asked who's in the Bay Area."],["you","Sep 29 14:10","Shared: location, Bay Area.",[3,"michigan"]],["them","Sep 30 08:30","They didn't take it further."]] },
+  { id:"lena", pid:"lena", st:"closed", mid:"m1", forT:"Senior PM role", when:"Sep 21", age:17,
+    shared:"open to asks, 3 a week", asked:"is Lena open to a referral call this month",
+    ex:[["you","Sep 20 11:05","Shared: open to asks, 3 a week.",[0,"xoogler"]],["you","Sep 20 11:05","Asked if Lena is open to a referral call this month."],["them","Sep 21 09:10","Not this month."]] }
+];
+const KK_FAM = { Xoogler:["xoogler","X"], Michigan:["michigan","M"], "Michigan Product Alumni":["michigan","M"], "Desi Founders":["desi","D"] };
+const kkShares = fid => DB.contextV2.shared.map((x, i)=>[i, x[0], x[1]]).filter(([, t, fm])=>fm.includes(fid) && !/^Looking for/.test(t));
+const kkShareLine = t => t.replace(/^Open to intros via connector, /, "open to asks, ").replace(/^Can help with: (.+)$/, "can help with $1").replace(/^Location: /, "location, ");
+/* the citation, from the chips as they are now */
+const kkCite = ([i, fid]) => { const x = DB.contextV2.shared[i], f = Object.entries(KK_FAM).find(([, v])=>v[0]===fid)[0].split(" ")[0];
+  return x && x[1].includes(fid) ? `Allowed by your ${f} setting` : `Your ${f} setting has changed since`; };
+/* busy (Chris, 40+): the same rows at volume, only in the member's own communities; open rows past 10 and closed rows older than 30 days
+   fold into one row each. Closed and inbound rows stay nameless; matched rows name someone who shares the community and isn't blocked */
+function kkBusy(){ const me = ((DB.people.priya || {}).families || ["Xoogler"]).map(f=>f==="Michigan" ? "Michigan Product Alumni" : f), blk = (typeof hgSet==="function" && hgSet().blocked) || [], out = KK_ROWS();
+  const ppl = f => Object.keys(DB.people).filter(k=>k!=="priya" && k!==STATE.persona && !blk.includes(k) && ((DB.people[k] || {}).families || []).some(x=>x.split(" ")[0]===f.split(" ")[0]));
+  for (let i = 0; i < 38; i++) { const st = i < 5 ? "you" : i < 11 ? "them" : i < 16 ? "matched" : "closed", fam = me[i % me.length], F = KK_FAM[fam] || ["xoogler","X"];
+    const sh = kkShares(F[0]), s = sh[i % sh.length] || [0, DB.contextV2.shared[0][0]], line = kkShareLine(s[1]), pool = ppl(fam), pid = st==="matched" && pool.length ? pool[i % pool.length] : null;
+    const yes = st==="you" ? "a 20-minute call this month" : "a short call";
+    out.push({ id:"b" + i, pid, fam, ini:F[1], st, forT:i % 2 ? "Helping others" : "Senior PM role", when:i < 16 ? "this week" : `${30 + i} days ago`, age:i < 16 ? 3 : 30 + i,
+      shared:line, asked:yes, yes, ask:`Would you take ${yes}?`, note:st==="you" ? "Your settings don't cover a yes to a specific ask." : "",
+      ex:[["them", "Earlier", `Asked if you're open to ${yes}.`],["you", "Earlier", `Shared: ${line}.`, [s[0], F[0]]]].concat(st==="matched" ? [["you", "Earlier", "Matched: both said yes. Names shown to both."]] : st==="closed" ? [["them", "Earlier", "They didn't take it further."]] : []) }); }
+  return out; }
+STATE.kk = STATE.kk || { rows:null, vol:"demo", more:false, old:false, stop:null };
+function kkRows(){ const B = STATE.kk; if (!B.rows) B.rows = B.vol==="busy" ? kkBusy() : B.vol==="none" ? [] : KK_ROWS(); return B.rows; }
+/* Rahul's why line on the goal holds only while the two Kais are matched */
+function kkWhy(){ if (typeof PL_WHY==="undefined") return; const r = kkRows().find(x=>x.id==="rahul");
+  if (r && r.st==="matched") PL_WHY.rahul = ["Rahul's Kai: open to referrals this month", "Referred"]; else delete PL_WHY.rahul; }
+const kkOpen = () => kkRows().filter(r=>r.st==="you" || r.st==="them");
+const kkPaused = r => { const m = r.mid && DB.missions.find(x=>x.id===r.mid); return !!(m && m.status==="paused"); };
+const kkName = r => r.pid && (DB.people[r.pid] || {}).name || `Someone in ${r.fam}`;
+const kkKai = r => r.pid ? `${f1(DB.people[r.pid])}'s Kai` : "Their Kai";
+const kkFace = (r, sz) => r.pid && DB.people[r.pid] ? `<span class="kk-av kk-a${sz}">${m2Face(r.pid, "")}</span>` : `<span class="kk-tile kk-a${sz}" aria-hidden="true">${r.ini}</span>`;
+function kkLabel(r){ if (kkPaused(r)) return `<span class="kk-st kk-them">Paused</span>`; const s = KK_ST[r.st]; return `<span class="kk-st ${s[1]}">${s[0]}</span>`; }
+function kkRow(r){ const e = g7Esc;
+  return `<button type="button" class="kk-row" onclick="go('you:context:bk:${r.id}')">${kkFace(r, 40)}
+    <span class="kk-m"><span class="kk-h"><b class="kk-n">${e(kkName(r))}</b>${kkLabel(r)}</span><span class="kk-l">Shared: ${e(r.shared)}</span><span class="kk-l">Asked: ${e(r.asked)}</span><span class="kk-f">For: ${e(r.forT)} · ${e(r.when)}</span></span></button>`; }
+/* the segment: open rows (10, then "N more"), matched, closed (older than 30 days fold), then the settings that govern them */
+function kkSeg(sharedTop, sources){ const rs = kkRows().slice().sort((a, b)=>KK_ORDER.indexOf(a.st) - KK_ORDER.indexOf(b.st) || a.age - b.age), B = STATE.kk;
+  let h = "";
+  if (!rs.length) h = `<div class="kk-empty"><span class="kk-ei" aria-hidden="true">${LI("users", 22)}</span><p>When another member's Kai asks about you, or yours asks for a goal, it shows here. Kai only shares what you allow below.</p></div>`;
+  else { const open = rs.filter(r=>r.st==="you" || r.st==="them"), rest = rs.filter(r=>r.st==="matched" || r.st==="closed" && r.age <= 30), old = rs.filter(r=>r.st==="closed" && r.age > 30);
+    const shown = B.more ? open : open.slice(0, 10);
+    h = `<div class="kk-list">${shown.map(kkRow).join("")}${open.length > shown.length ? `<button type="button" class="kk-fold" onclick="STATE.kk.more=true;render()">${open.length - shown.length} more</button>` : ""}
+      ${rest.map(kkRow).join("")}${old.length ? (B.old ? old.map(kkRow).join("") : `<button type="button" class="kk-fold" onclick="STATE.kk.old=true;render()">${old.length} closed earlier</button>`) : ""}</div>`; }
+  return `<div class="kk-seg">${h}<div class="lbl">What Kai may share</div>${sharedTop}${sources}</div>`; }
+/* the hub: rename the segments, swap Shared for Between Kais, add the Now row */
+const _kkHub = sContextHub;
+sContextHub = function(){
+  if (STATE.ctxSeg==="shared") STATE.ctxSeg = "bk";
+  const seg = STATE.ctxSeg || "now", n = kkOpen().length, y = kkRows().filter(r=>r.st==="you").length;
+  let h = _kkHub.apply(this, arguments);
+  h = h.replace(/<div class="seg"([^>]*)>[\s\S]*?data-cseg="shared">Shared<\/div><\/div>/, (m0, a)=>`<div class="seg kk-tabs"${a}><div class="${seg==="now" ? "on" : ""}" data-cseg="now">Now</div><div class="${seg==="bk" ? "on" : ""}" data-cseg="bk" data-novocab>Between Kais${n ? ` · ${n}` : ""}</div><div class="${seg==="timeline" ? "on" : ""}" data-cseg="timeline">Timeline · ${DB.episodes.length}</div></div>`);
+  if (seg==="bk") { const i = h.indexOf('<p class="sm muted" style="margin-top:8px">What leaves this page.'), j = h.indexOf(`<div class="lbl">What Kai has told others' Kai</div>`), k = h.indexOf('<div class="lbl">Sources</div>');
+    if (i > 0 && j > i && k > j) { const end = h.lastIndexOf("</div>"); h = h.slice(0, i) + kkSeg(h.slice(i, j), h.slice(k, end)) + h.slice(end); } }
+  if (seg==="now" && n) { const row = `<div class="ctxline p2c kk-now" role="button" tabindex="0" onclick="STATE.ctxSeg='bk';render()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}" data-novocab><span class="p2ct">${LI("users", 18)}</span><div class="m"><div class="a">Between Kais · ${n}</div><div class="b">${y ? `${y} waiting on you` : ""}${y && n - y ? ", " : ""}${n - y ? `${n - y} waiting on them` : ""}</div></div><span class="chev" aria-hidden="true">›</span></div>`;
+    h = h.replace('<div class="prow" onclick="openSheet(\'kai\')"', row + '<div class="prow" onclick="openSheet(\'kai\')"'); }
+  return h;
+};
+/* the exchange, full screen: oldest first, as timeline rows; the one action in place; Stop sharing at the foot */
+const _kkSection = sContextSection;
+sContextSection = function(id){
+  if (id!=="bk") return _kkSection.apply(this, arguments);
+  const r = kkRows().find(x=>x.id===(STATE.screen || "").split(":")[3]), e = g7Esc; if (!r) return _kkSection.call(this, "told");
+  const ex = r.ex.map(([w, t, x, set])=>`<li class="kk-ex"><span class="kk-who">${w==="you" ? "Your Kai" : e(kkKai(r))} · ${e(t)}</span><span class="kk-x">${e(x)}</span>${set ? `<span class="kk-set">${kkCite(set)}</span>` : ""}</li>`).join("");
+  const act = r.st==="you" && !kkPaused(r) ? `<div class="kk-act">${r.note ? `<p class="kk-for">${e(r.note)}</p>` : ""}<p class="kk-q">${e(r.ask)}</p><div class="cu-chips"><button type="button" class="cu-chip pri" onclick="kkAnswer('${r.id}',1)">Share this</button><button type="button" class="cu-chip" onclick="kkAnswer('${r.id}',0)">Not now</button></div></div>`
+    : r.st==="matched" && r.mid ? `<button type="button" class="kk-link" onclick="g7Chat('${r.mid}')">Open goal</button>` : "";
+  const stop = r.st==="closed" ? "" : STATE.kk.stop===r.id ? `<div class="kk-stopc"><p>Stop sharing with ${e(r.pid ? f1(DB.people[r.pid]) : "this person")}? Your family settings stay as they are.</p><div class="cu-chips"><button type="button" class="cu-chip pri" onclick="kkStop('${r.id}')">Stop sharing</button><button type="button" class="cu-chip" onclick="STATE.kk.stop=null;render()">Keep</button></div></div>`
+    : `<button type="button" class="kk-link kk-stop" onclick="STATE.kk.stop='${r.id}';render()">Stop sharing with this person</button>`;
+  return `<div class="hdr kk-hdr"><div class="back" onclick="goBack()" role="button" aria-label="Back">‹</div><div class="t">${e(kkName(r))}</div>${kkLabel(r)}</div>
+    <div class="body kk-body" data-novocab><p class="kk-for">For: ${e(r.forT)}</p><ol class="kk-exs">${ex}</ol>${act}${stop}</div>`;
+};
+function kkAnswer(id, yes){ const r = kkRows().find(x=>x.id===id); if (!r || r.st!=="you") return;
+  r.st = yes ? "them" : "closed"; r.ex.push(yes ? ["you", "now", `Shared your yes to ${r.yes}. Their Kai tells you when they pick a time.`, null] : ["you", "now", "You said not now.", null]);
+  g7K().deck["k:" + id] = 1; if (STATE.screen!=="catchup") { toast(yes ? "Shared. Their Kai has your yes." : "Not now. Nothing more is shared."); render(); } }
+function kkStop(id){ const r = kkRows().find(x=>x.id===id); if (!r) return; r.st = "closed"; r.ex.push(["you", "now", "You stopped sharing.", null]); g7K().deck["k:" + id] = 1; STATE.kk.stop = null; kkWhy(); render(); }
+/* Catch up: a new "Waiting on you" exchange is one item in Needs you, answered in place; answering either place clears both */
+const _kkDeck = g7DeckItems;
+g7DeckItems = function(){ const its = _kkDeck.apply(this, arguments); if (!STATE.member || !STATE.intakeDone) return its;
+  return its.concat(kkRows().filter(r=>r.st==="you" && !kkPaused(r) && !g7K().deck["k:" + r.id] && !g7K().not["k:" + r.id])
+    .map(r=>({ key:"k:" + r.id, k:"question", out:true, bk:r.id, h:r.ask, rc:`Between Kais · ${r.when}`, acts:[["Share this", `kkAnswer('${r.id}',1)`], ["Not now", `kkAnswer('${r.id}',0)`]] }))); };
+const _kkCuModel = cuModel;
+cuModel = function(it){ const M = _kkCuModel.apply(this, arguments); if (!it.bk) return M; const r = kkRows().find(x=>x.id===it.bk);
+  return Object.assign(M, { face:kkFace(r, 40), who:kkName(r), where:`Between Kais · ${r.forT}`, mid:null, p:null, link:["Open", `cuLeave("go('you:context:bk:${r.id}')")`],
+    body:`${kkKai(r)} asks: ${r.ask.charAt(0).toLowerCase()}${r.ask.slice(1)}` }); };
+/* the goal: Rahul's matched exchange is his why line; one Chat activity line per exchange, no details */
+kkWhy();
+function kkChat(){ const said = { m1:["Your Kai asked Lena's Kai about a referral call.", "Your Kai and Rahul's Kai talked about referrals.", "Your Kai asked Sana's Kai about referrals."] };
+  Object.entries(said).forEach(([mid, ls])=>{ const s = m2Story(mid); if (!s || s.kk) return; s.kk = 1; ls.forEach(x=>s.chat.push({ t:"sys", who:"kai", x, time:"This week" })); }); }
+/* controls: volume states */
+function kkCtl(){ const g = [...document.querySelectorAll(".stagebar .sgrp")].find(x=>{ const l = x.querySelector(".sgl"); return l && l.textContent==="Screens"; });
+  if (!g || g.querySelector("[data-kkctl]")) return;
+  g.insertAdjacentHTML("beforeend", `<button type="button" data-kkctl="1" onclick="kkVol('none')">Between Kais: none</button><button type="button" data-kkctl="2" onclick="kkVol('busy')">Between Kais: busy</button><button type="button" data-kkctl="3" onclick="kkVol('demo')">Between Kais: demo</button>`); }
+function kkVol(v){ if (!STATE.member || !STATE.intakeDone) jump("home"); STATE.sheet = null; Object.assign(STATE.kk, { vol:v, rows:null, more:false, old:false, stop:null }); kkWhy(); if (typeof cuK==="function") cuK().set = null; STATE.ctxSeg = "bk"; go("you:context"); }
+const _kkRender = render; render = function(){ if (STATE.member && STATE.intakeDone && typeof m2Story==="function") kkChat(); const r = _kkRender.apply(this, arguments); kkCtl(); return r; };
+kkCtl();
+
+</script>
+<style>
 /* ==== KAI WASH (Apoorv 7 Oct 22:07: "make this look a little fancy, like how Kestrel chat used gradients ... coming from the bottom").
    One soft wash rising behind the composer in Kai's own colours: night ink with a whisper of the foil, on the sheet and the chat it
    grows into. It breathes slowly; with reduced motion it stays still. No lines, no glow band. It glows strongest behind the composer and
@@ -32442,7 +32613,7 @@ function plFu(key, ref){ const [, mid, pid] = key.split(":"), i = STATE.pl.fuI; 
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-9e09";
+window.KEY_BUILD = "2.hifi-90bd";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
