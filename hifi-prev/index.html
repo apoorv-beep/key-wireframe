@@ -32477,8 +32477,8 @@ function kkRows(){ const B = STATE.kk; if (!B.rows) B.rows = B.vol==="busy" ? kk
 /* Rahul's why line on the goal holds only while the two Kais are matched */
 function kkWhy(){ if (typeof PL_WHY==="undefined") return; const r = kkRows().find(x=>x.id==="rahul");
   if (r && r.st==="matched") PL_WHY.rahul = ["Rahul's Kai: open to referrals this month", "Referred"]; else delete PL_WHY.rahul; }
-const kkOpen = () => kkRows().filter(r=>r.st==="you" || r.st==="them");
 const kkPaused = r => { const m = r.mid && DB.missions.find(x=>x.id===r.mid); return !!(m && m.status==="paused"); };
+const kkOpen = () => kkRows().filter(r=>(r.st==="you" || r.st==="them") && !kkPaused(r));  // a paused goal sends nothing, so its rows aren't open (Goals and Kai, 04:06)
 const kkName = r => r.pid && (DB.people[r.pid] || {}).name || `Someone in ${r.fam}`;
 const kkKai = r => r.pid ? `${f1(DB.people[r.pid])}'s Kai` : "Their Kai";
 const kkFace = (r, sz) => r.pid && DB.people[r.pid] ? `<span class="kk-av kk-a${sz}">${m2Face(r.pid, "")}</span>` : `<span class="kk-tile kk-a${sz}" aria-hidden="true">${r.ini}</span>`;
@@ -32499,7 +32499,7 @@ function kkSeg(sharedTop, sources){ const rs = kkRows().slice().sort((a, b)=>KK_
 const _kkHub = sContextHub;
 sContextHub = function(){
   if (STATE.ctxSeg==="shared") STATE.ctxSeg = "bk";
-  const seg = STATE.ctxSeg || "now", n = kkOpen().length, y = kkRows().filter(r=>r.st==="you").length;
+  const seg = STATE.ctxSeg || "now", n = kkOpen().length, y = kkOpen().filter(r=>r.st==="you").length;
   let h = _kkHub.apply(this, arguments);
   h = h.replace(/<div class="seg"([^>]*)>[\s\S]*?data-cseg="shared">Shared<\/div><\/div>/, (m0, a)=>`<div class="seg kk-tabs"${a}><div class="${seg==="now" ? "on" : ""}" data-cseg="now">Now</div><div class="${seg==="bk" ? "on" : ""}" data-cseg="bk" data-novocab>Between Kais${n ? ` · ${n}` : ""}</div><div class="${seg==="timeline" ? "on" : ""}" data-cseg="timeline">Timeline · ${DB.episodes.length}</div></div>`);
   if (seg==="bk") { const i = h.indexOf('<p class="sm muted" style="margin-top:8px">What leaves this page.'), j = h.indexOf(`<div class="lbl">What Kai has told others' Kai</div>`), k = h.indexOf('<div class="lbl">Sources</div>');
@@ -32547,6 +32547,244 @@ function kkCtl(){ const g = [...document.querySelectorAll(".stagebar .sgrp")].fi
 function kkVol(v){ if (!STATE.member || !STATE.intakeDone) jump("home"); STATE.sheet = null; Object.assign(STATE.kk, { vol:v, rows:null, more:false, old:false, stop:null }); kkWhy(); if (typeof cuK==="function") cuK().set = null; STATE.ctxSeg = "bk"; go("you:context"); }
 const _kkRender = render; render = function(){ if (STATE.member && STATE.intakeDone && typeof m2Story==="function") kkChat(); const r = _kkRender.apply(this, arguments); kkCtl(); return r; };
 kkCtl();
+
+</script>
+<style>
+/* ==== CATCH UP AS FULL-HEIGHT SWIPE CARDS (HIFI-SPEC-catchup-swipe): one card fills the screen, the next one's edge under it ==== */
+#phone .cs-hdr { background:var(--sf-ground); }  /* the page colour, so the compact nav and the card ground read as one surface in both themes */
+#phone .cs-hdr .t { display:flex; flex-direction:column; gap:1px; min-width:0; }
+#phone .cs-hdr .t > span { font:700 16px/1.2 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cs-hdr .t small { font:500 13px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cu-x:disabled { color:var(--text-secondary); opacity:.45; cursor:default; }
+#phone .cs-body { display:flex; flex-direction:column; padding:8px 16px calc(16px + env(safe-area-inset-bottom, 0px)); overflow:hidden; }
+#phone .cs-body.cs-over { overflow:auto; padding-bottom:32px; }
+#phone .cs-stage { position:relative; flex:1 1 auto; min-height:460px; }
+#phone .cs-card { position:absolute; inset:0 0 8px; display:flex; flex-direction:column; overflow:hidden; border-radius:20px; background:var(--sf-card); box-shadow:var(--elevation-2); touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+#phone .cs-card textarea { user-select:text; -webkit-user-select:text; }
+#phone .cs-peek { position:absolute; inset:8px 0 0; pointer-events:none; transform:scale(.96); transform-origin:50% 100%; opacity:.6; }
+#phone .cs-peek .cs-card { inset:0; animation:none; }
+#phone .cs-card.cs-in { animation:csUp .28s cubic-bezier(.2,.8,.2,1); }
+@keyframes csUp { from { opacity:.4; transform:translateY(8px) scale(.96); } }
+#phone .cs-drag { transition:none; }
+
+/* the media header: photo, cover or plate, 38% of the card; name and where on a scrim */
+#phone .cs-media { position:relative; flex:1 0 38%; min-height:38%; max-height:56%; display:grid; place-items:center; overflow:hidden; background-size:cover; background-position:center 25%; color:#fff; }
+#phone .cs-big { font:700 64px/1 var(--type-family, Manrope, system-ui, sans-serif); color:rgb(255 255 255 / .9); letter-spacing:-.02em; margin-bottom:28px; }
+#phone .cs-media.ph-cover .cs-big { display:none; }
+#phone .cs-ghost { position:absolute; right:-24px; bottom:-28px; color:rgb(255 255 255 / .14); line-height:0; }
+#phone .cs-ghost svg { width:160px; height:160px; }
+#phone .cs-scrim { position:absolute; left:0; right:0; bottom:0; display:flex; flex-direction:column; gap:2px; padding:32px 16px 12px; background:linear-gradient(to top, rgb(11 14 17 / .72), rgb(11 14 17 / 0)); text-align:left; }
+#phone .cs-scrim .cs-name { margin:0; outline:0; font:700 22px/1.2 var(--type-family, Manrope, system-ui, sans-serif); color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .cs-scrim span { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:rgb(255 255 255 / .92); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* content scrolls inside the card; the action stays at the foot */
+#phone .cs-content { flex:1 1 auto; min-height:0; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding:12px 16px 8px; }
+#phone .cs-top { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; margin:-8px 0 -8px; }
+#phone .cs-top .cu-link { margin:0 -4px 0 auto; }
+#phone .cs-content .cu-bub { -webkit-line-clamp:unset; display:block; }
+#phone .cs-act { flex:0 0 auto; padding:0 16px 4px; }
+#phone .cs-act .cu-ta { min-height:44px; max-height:132px; }
+#phone .cs-under { flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 8px 4px; }
+#phone .cs-btn { display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:0 8px; border:0; background:none; color:var(--text-primary); font:700 16px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .cs-btn:disabled { color:var(--text-secondary); opacity:.5; cursor:default; }
+#phone .cs-was { padding-top:4px; }
+#phone .cs-og { margin:0 0 4px -4px; }
+
+/* while dragging: the edge label fades in, Later on the left, Clear on the right */
+#phone .cs-hint { position:absolute; top:16px; display:inline-flex; align-items:center; gap:6px; min-height:32px; padding:0 12px; border-radius:16px; background:var(--sf-card); color:var(--text-primary); font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); pointer-events:none; opacity:0; }
+#phone .cs-hl { right:16px; opacity:var(--cs-l, 0); }
+#phone .cs-hr { left:16px; opacity:var(--cs-r, 0); }
+
+/* Undo, between Later and Clear */
+#phone .cs-undo { display:inline-flex; align-items:center; gap:4px; min-width:0; padding:0 4px 0 12px; border-radius:22px; background:var(--text-primary); color:var(--sf-card, #fff); font:500 13px/1 var(--type-family, Manrope, system-ui, sans-serif); animation:cuFadeIn .2s linear; }
+#phone .cs-undo > span { white-space:nowrap; }
+#phone .cs-undo button { display:inline-flex; align-items:center; gap:4px; min-height:44px; padding:0 10px; border:0; background:none; color:inherit; font:700 13px/1 var(--type-family, Manrope, system-ui, sans-serif); cursor:pointer; }
+#phone .cs-over > .cs-undo { align-self:flex-start; margin-bottom:8px; }
+@keyframes cuFadeIn { from { opacity:0; } }
+
+/* the folded card and the end list */
+#phone .cs-faces { display:flex; gap:8px; }
+#phone .cs-faces .avatar, #phone .cs-faces .g9-tile { width:40px !important; height:40px !important; min-width:40px; font-size:14px !important; }
+#phone .cs-went { margin-top:4px; }
+#phone .cs-wr { display:flex; align-items:center; gap:10px; width:100%; min-height:52px; padding:0; border:0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); background:none; color:var(--text-primary); text-align:left; cursor:pointer; }
+#phone .cs-wr:first-of-type { border-top:0; }
+#phone .cs-wr .avatar, #phone .cs-wr .g9-tile { width:32px !important; height:32px !important; min-width:32px; font-size:12px !important; }
+#phone .cs-wr .cs-kt { flex:0 0 32px; width:32px; height:32px; border-radius:10px; font-size:13px; }
+#phone .cs-wr > .cs-wt { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#phone .cs-wr b { font:700 16px/1.3 var(--type-family, Manrope, system-ui, sans-serif); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#phone .cs-wr small { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cs-wr > svg { color:var(--text-secondary); }
+
+@media (prefers-reduced-motion: reduce) {
+  #phone .cs-card.cs-in { animation:cuFadeIn .2s linear; }
+  #phone .cs-card { transition:none !important; transform:none !important; }
+}
+/* three sizes (22 / 16 / 13) and two weights (500 / 700) on the Catch up screen; the plate initials are a graphic */
+#phone .cs-body .cu-msg, #phone .cs-body .cu-bub, #phone .cs-body .cu-ta, #phone .cs-body .cu-said, #phone .cs-body .cu-wr { font-size:16px; font-weight:500; }
+#phone .cs-body .cu-send, #phone .cs-body .cu-chip, #phone .cs-body .cu-done, #phone .cs-body .cu-home { font-size:16px; font-weight:700; }
+#phone .cs-body .cu-kd, #phone .cs-body .cu-tag, #phone .cs-body .cu-note, #phone .cs-hdr .cu-left { font-size:13px; font-weight:500; }
+#phone .cs-body .cu-link, #phone .cs-body .cu-gl { font-size:13px; font-weight:700; }
+#phone .cs-body .cu-end h2 { font-size:22px; font-weight:700; }
+#phone .cs-body .cu-end h2:focus { outline:0; }
+/* context under the message: label over value, rows with hairlines; it fills what the capped header leaves */
+#phone .cs-ctx { margin:4px 0 0; padding:0; }
+#phone .cs-ctx > div { display:flex; flex-direction:column; gap:2px; padding:10px 0; border-top:1px solid var(--border-default, rgb(0 0 0 / .08)); }
+#phone .cs-ctx dt { font:500 13px/1.3 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-secondary); }
+#phone .cs-ctx dd { margin:0; font:500 16px/1.35 var(--type-family, Manrope, system-ui, sans-serif); color:var(--text-primary); }
+#phone .cs-fold .cs-ctx > div { flex-direction:row; justify-content:space-between; align-items:baseline; }
+#phone .cs-fold .cs-ctx dd { font-weight:700; }
+/* the fold card's header: the faces of what's inside, overlapping, over the plate */
+#phone .cs-collage { display:flex; margin-bottom:40px; }
+#phone .cs-cf { display:grid; place-items:center; width:72px; height:72px; margin-left:-14px; border-radius:50%; border:3px solid rgb(255 255 255 / .9); background:color-mix(in srgb, #fff 22%, transparent) center 25% / cover no-repeat; color:#fff; font:700 22px/1 var(--type-family, Manrope, system-ui, sans-serif); }
+#phone .cs-cf:first-child { margin-left:0; }
+#phone .cs-cf.ph-cover { color:transparent; }
+#phone .cs-content > * { flex-shrink:0; }
+#phone .cs-fold .cs-media { max-height:62%; }
+#phone .cs-fold .cs-content { flex:0 1 auto; }
+#phone .cs-fold .cs-act { margin-top:auto; padding-bottom:16px; }
+
+</style>
+<script>
+/* ==== CATCH UP AS FULL-HEIGHT SWIPE CARDS (goals-mentor/how-goals-changes/HIFI-SPEC-catchup-swipe-2026-10-08.md; Apoorv 03:34 "it looks
+   like a low-fidelity wireframe ... why don't we do swipe cards? ... how can I come back to my previous one", 03:35 "an entire empty screen,
+   and just a small card"). Loads after bkai.js. Overrides the Catch up screen only; Home's brief card is unchanged.
+   One card fills the screen with the next card's edge under it. Every card opens with a media header (the person's photo, the event's
+   cover, the goal's plate), the content scrolls inside, the action is pinned at the foot with Later and Clear under it. Swipe right
+   clears, left is Later; a swipe never sends. A back arrow steps through this session's cards, Undo restores the last swipe, and the end
+   screen lists what you went through. ==== */
+const CS_RES = { sent:"Sent", rsvp:"Going", logged:"Logged", started:"Started", passed:"Set aside", cleared:"Cleared", later:"Later" };
+const csK = () => { const C = cuK(); C.hist = C.hist || []; C.res = C.res || {}; C.snap = C.snap || {}; return C; };
+const csCat = it => it.bk ? 0 : it.cat!=null ? it.cat : typeof g8Kind==="function" ? Math.max(0, g8Kind(it)[0]) : 2;
+/* the set in group order (Needs you, Moved, Worth a look) so the nav's group label only ever steps forward; Later still goes to the end */
+const _csItems = cuItems;
+cuItems = function(){ const its = _csItems.apply(this, arguments), L = cuK().later, head = its.filter(x=>!L.includes(x.key));
+  return head.map((x, i)=>[csCat(x), i, x]).sort((a, b)=>a[0] - b[0] || a[1] - b[1]).map(z=>z[2]).concat(its.filter(x=>L.includes(x.key))); };
+const csNow = () => new Date().toLocaleTimeString("en-US", { hour:"numeric", minute:"2-digit" });
+/* the set as cards: Needs you one at a time; 8 or more Moved / Worth a look fold into one card after the last Needs you */
+function csCards(){ const its = cuItems(), C = csK(), rest = its.filter(x=>csCat(x) > 0), need = its.filter(x=>csCat(x)===0);
+  if (rest.length < 8 || C.expand) return its.map(it=>({ it }));
+  return need.filter(x=>!C.later.includes(x.key)).map(it=>({ it })).concat([{ fold:rest }], need.filter(x=>C.later.includes(x.key)).map(it=>({ it }))); }
+/* the media header: a photo, a cover or a plate, about 38% of the card; name and where on a scrim. Only images the demo already has */
+function csMedia(it, M){ const e = g7Esc, scrim = (t, s)=>`<span class="cs-scrim"><h2 class="cs-name" tabindex="-1">${e(t)}</h2>${s ? `<span>${e(s)}</span>` : ""}</span>`;
+  const mis = M.mid && m2Mis(M.mid), plate = th => { const p = g7Plate(th); return `background:linear-gradient(120deg, ${p[0]} 20%, ${p[1]})`; };
+  if (it.bk) { const r = kkRows().find(x=>x.id===it.bk); return `<div class="cs-media cs-plate" style="${plate("ink")}"><span class="cs-big" aria-hidden="true">${e(r.ini)}</span>${scrim(M.who, M.where)}</div>`; }
+  if (it.key==="b:dinner" && typeof evE==="function") { const v = evE("e1") || {}, ph = typeof PH_COVER!=="undefined" && PH_COVER[v.cal];
+    return `<div class="cs-media" style="background:${typeof evBg==="function" ? evBg(v.theme) : "var(--sf-inset)"}"${ph ? ` data-csph="${phUrl(ph, 860, 560)}"` : ""}>${scrim(v.name || "Thursday's dinner", M.where || v.when || "")}</div>`; }
+  if (/^[up]:/.test(it.key)) { const x = DB.pool.find(y=>y.id===it.key.slice(2)) || {}, fam = x.fam || "Your community";
+    return `<div class="cs-media cs-plate" style="${plate("sage")}"><i class="cs-ghost" aria-hidden="true">${LI("users", 160)}</i>${scrim(fam, M.who ? `Posted by ${M.who}` : "")}</div>`; }
+  if (it.pid && DB.people[it.pid]) { const p = DB.people[it.pid], ph = typeof PH_FACE!=="undefined" && PH_FACE[it.pid];
+    return `<div class="cs-media cs-plate" style="${plate(mis ? m2Theme(mis) : "harbour")}"${ph ? ` data-csph="${p2PhUrl(ph)}"` : ""}><span class="cs-big" aria-hidden="true">${e(p.initials)}</span>${scrim(M.who, M.where)}</div>`; }
+  if (mis) { const L = typeof mhLook==="function" ? mhLook(mis) : { icon:"flag" };
+    return `<div class="cs-media cs-plate" style="${plate(m2Theme(mis))}"><i class="cs-ghost" aria-hidden="true">${LI(L.icon || "flag", 160)}</i>${scrim(mis.name, M.where)}</div>`; }
+  return `<div class="cs-media cs-plate" style="${plate("harbour")}">${scrim(M.who, M.where)}</div>`; }
+/* the card's context, under the message: facts the demo already holds about the person, the ask, the event or the post */
+function csCtx(it, M){ const e = g7Esc, rows = [], add = (l, v)=>{ if (v) rows.push([l, v]); };
+  const r = it.bk && kkRows().find(x=>x.id===it.bk), mine = (DB.people.priya || {}).families || [];
+  if (r) { add("Your Kai shared", r.shared.replace(/^./, c=>c.toUpperCase())); add("Community", r.fam); if (!r.pid) add("Their name", "Shown only if you both say yes"); }
+  else if (it.key==="b:dinner" && typeof evE==="function") { const v = evE("e1") || {}; add("When", v.when); add("Where", v.where); if (v.going >= 5) add("Going", `${v.going} members`); }
+  else if (/^[up]:/.test(it.key)) { const x = DB.pool.find(y=>y.id===it.key.slice(2)) || {}; add("Role", x.title && `${x.title}${x.org ? " at " + x.org : ""}`); add("Posted by", x.via && (DB.people[x.via] || {}).name); add("Timing", x.why); }
+  else if (it.pid && DB.people[it.pid]) { const p = DB.people[it.pid]; add("Goal", M.mid && g7Short(m2Mis(M.mid))); add("Looking for", p.lookingFor && p.lookingFor.replace(/^./, c=>c.toUpperCase()));
+    add("Open to", (p.openTo || []).join(", ")); add("Community", (p.families || []).filter(f=>mine.includes(f)).join(", ")); }
+  else if (M.mid) add("Goal", g7Short(m2Mis(M.mid)));
+  return rows.length ? `<dl class="cs-ctx">${rows.slice(0, M.kind==="compose" ? 1 : 3).map(([l, v])=>`<div><dt>${e(l)}</dt><dd>${e(v)}</dd></div>`).join("")}</dl>` : ""; }
+function csCard(it, done){ const M = cuModel(it), e = g7Esc;
+  const top = `${M.tag || M.link ? `<div class="cs-top">${M.tag ? `<em class="cu-tag">${M.tag}</em>` : "<span></span>"}${M.link ? `<button type="button" class="cu-link" onclick="${e(M.link[1])}">${M.link[0]}</button>` : ""}</div>` : ""}`;
+  const body = M.msg ? `<div class="cu-bub">${e(M.msg)}</div>` : `<div class="cu-msg">${e(M.body)}</div>`;
+  const act = done ? `<div class="cu-done cs-was" role="status">${LI("check", 18)}${e(done)}</div>` : cuAction(it, M);
+  const under = done ? `<div class="cs-under"><span></span><button type="button" class="cs-btn" onclick="csFwd()">Next${LI("chevron-right", 18)}</button></div>` : `<div class="cs-under"><button type="button" class="cs-btn" onclick="csLater('${it.key}')" ${cuItems().length > 1 ? "" : "disabled"}>${LI("clock", 18)}Later</button>${csUndoHTML()}<button type="button" class="cs-btn" onclick="csClear('${it.key}')">Clear${LI("check", 18)}</button></div>`;
+  return `<article class="cs-card${csK().next ? " cs-in" : ""}" data-key="${it.key}" data-kc="KeyCatchUpCard" data-kv="kind=${M.kind}">${csMedia(it, M)}
+    <div class="cs-content">${top}${body}${M.note ? `<p class="cu-note">${kaiMark(16)}<span>${e(M.note)}</span></p>` : ""}${csCtx(it, M)}</div><div class="cs-act">${act}</div>${under}
+    <span class="cs-hint cs-hl" aria-hidden="true">${LI("clock", 18)}Later</span><span class="cs-hint cs-hr" aria-hidden="true">${LI("check", 18)}Clear</span></article>`; }
+function csFoldCard(rest){ const ppl = [...new Set(rest.map(x=>x.pid || (/^[up]:/.test(x.key) && (DB.pool.find(y=>y.id===x.key.slice(2)) || {}).via)).filter(p=>p && DB.people[p]))];
+  const faces = ppl.slice(0, 5).map(p=>`<span class="cs-cf" data-csph="${typeof PH_FACE!=="undefined" && PH_FACE[p] ? p2PhUrl(PH_FACE[p]) : ""}">${g7Esc(DB.people[p].initials)}</span>`).join("");
+  const kinds = {}; rest.forEach(x=>{ const k = /^[zup]:/.test(x.key) ? "Roles and posts" : x.key==="b:dinner" || /^e/.test(x.key) ? "Event ideas" : "Goal updates"; kinds[k] = (kinds[k] || 0) + 1; });
+  return `<article class="cs-card cs-fold" data-key="fold"><div class="cs-media cs-plate" style="background:linear-gradient(120deg, ${g7Plate("harbour")[0]} 20%, ${g7Plate("harbour")[1]})"><div class="cs-collage" aria-hidden="true">${faces}</div><span class="cs-scrim"><h2 class="cs-name" tabindex="-1">${rest.length} more worth a look</h2><span>Moved and new for your goals</span></span></div>
+    <div class="cs-content"><p class="cu-msg">Kai kept these for when you have a minute. Nothing here needs you today.</p><dl class="cs-ctx">${Object.entries(kinds).map(([k, n])=>`<div><dt>${k}</dt><dd>${n}</dd></div>`).join("")}</dl></div>
+    <div class="cs-act"><div class="cu-chips"><button type="button" class="cu-chip pri" onclick="csK().expand=true;render()">Go through them</button><button type="button" class="cu-chip" onclick="csClearAll()">Clear all</button></div></div></article>`; }
+/* what happened, for back, Undo and the end screen */
+const _csDone = cuDone;
+cuDone = function(key, what){ const C = csK(); C.focus = 1; if (what && !C.res[key]) C.res[key] = what==="sent" ? `Sent ${csNow()}` : CS_RES[what] || "Done"; return _csDone.apply(this, arguments); };
+function csSeen(key){ const C = csK(), it = g7DeckItems().find(x=>x.key===key); if (!it) return; C.snap[key] = it; if (!C.hist.includes(key)) C.hist.push(key); }
+/* Undo sits between Later and Clear for 4 seconds, so it never covers a button; it leaves without a render (the composer keeps focus) */
+function csUndoSet(u){ const C = csK(); C.undo = u; clearTimeout(C.undoT); C.undoT = setTimeout(()=>{ if (C.undo===u) { C.undo = null; phone.querySelectorAll(".cs-undo").forEach(x=>x.remove()); } }, 4000); }
+let csPeeking = false;
+const csUndoHTML = () => { const u = csK().undo; return u && !csPeeking ? `<span class="cs-undo" role="status"><span>${g7Esc(u.t)}</span><button type="button" onclick="csUndo()">${LI("undo-2", 18)}Undo</button></span>` : ""; };
+function csClear(key){ const C = csK(), its = cuItems(), i = its.findIndex(x=>x.key===key), nx = its[i+1] || its[i-1];
+  g7K().deck[key] = 1; C.later = C.later.filter(k=>k!==key); C.res[key] = "Cleared"; C.at = nx && nx.key!==key ? nx.key : null; C.next = key; C.view = null;
+  csUndoSet({ keys:[key], t:"Cleared", at:key }); csBuzz(); C.focus = 1; render(); }
+function csLater(key){ const C = csK(); if (cuItems().length < 2) return; C.res[key] = "Later"; C.view = null; csUndoSet({ later:key, t:"Later", at:key }); C.focus = 1; cuLater(key); csBuzz(); }
+function csClearAll(){ const C = csK(), keys = cuItems().filter(x=>csCat(x) > 0).map(x=>x.key); keys.forEach(k=>{ g7K().deck[k] = 1; C.res[k] = "Cleared"; }); C.at = null; csUndoSet({ keys, t:`${keys.length} cleared`, at:null }); C.focus = 1; render(); }
+function csUndo(){ const C = csK(), u = C.undo; if (!u) return; C.undo = null;
+  (u.keys || []).forEach(k=>{ delete g7K().deck[k]; delete C.res[k]; }); if (u.later) { C.later = C.later.filter(k=>k!==u.later); delete C.res[u.later]; }
+  C.at = u.at; C.view = null; C.focus = 1; render(); }
+/* back: the card before this one in this session, as it was; one already acted on shows what was done */
+const csTrail = C => { C.trail = C.trail || []; return C.trail[C.pos]===C.cur ? C.pos : C.trail.length; };
+function csBack(){ const C = csK(), i = csTrail(C) - 1, k = C.trail[i]; if (!k) return; C.pos = i; C.undo = null; csGo(k); }
+function csGo(k){ const C = csK(); C.undo = null; const live = cuItems().some(x=>x.key===k);
+  if (live) { C.at = k; C.view = null; } else if (/^(Cleared|Later)$/.test(C.res[k] || "")) { delete g7K().deck[k]; delete C.res[k]; C.at = k; C.view = null; } else C.view = k;
+  C.focus = 1; if (STATE.screen!=="catchup") go("catchup"); else render(); }
+/* 3: a card already acted on shows what was done; Next (or a swipe either way) returns to where you were */
+function csFwd(){ const C = csK(); C.view = null; C.focus = 1; render(); }
+const _csOpen = cuOpen, _csClose = cuClose;
+cuOpen = function(){ csK().view = null; return _csOpen.apply(this, arguments); };
+cuClose = function(){ csK().view = null; return _csClose.apply(this, arguments); };
+const csBuzz = () => { try { navigator.vibrate && navigator.vibrate(8); } catch (e) {} };
+cuPage = function(){
+  const C = csK(), cards = csCards(), its = cuItems(), n = its.length, e = g7Esc;
+  const view = C.view && C.snap[C.view] ? { it:C.snap[C.view], done:C.res[C.view] || "Done" } : null;
+  const ci = Math.max(0, cards.findIndex(c=>c.it && c.it.key===C.at)), cur = view || cards[ci], nxt = view ? null : cards[ci + 1];
+  if (cur && cur.it && !view) csSeen(cur.it.key);
+  const curKey = view ? C.view : cur && cur.it ? cur.it.key : cur ? "fold" : null; C.cur = curKey; C.trail = C.trail || [];
+  if (curKey && curKey!=="fold" && C.trail[C.pos]!==curKey) { C.trail = C.trail.slice(0, (C.pos ?? -1) + 1); if (C.trail[C.trail.length - 1]!==curKey) C.trail.push(curKey); C.pos = C.trail.length - 1; }
+  const canBack = csTrail(C) > 0;
+  const grp = cur ? cur.fold ? "Worth a look" : CU_GROUP[Math.min(2, csCat(cur.it))] : "";
+  const hdr = `<div class="hdr cu-hdr cs-hdr"><button type="button" class="cu-x" aria-label="Close Catch up" onclick="cuClose()">${LI("x", 22)}</button><button type="button" class="cu-x" aria-label="Previous card" onclick="csBack()" ${canBack ? "" : "disabled"}>${LI("chevron-left", 24)}</button>
+    <div class="t"><span>Catch up</span>${grp && n ? `<small>${grp}</small>` : ""}</div><span class="cu-left">${n ? `${n} left` : ""}</span></div>`;
+  const card = c => c.fold ? csFoldCard(c.fold) : csCard(c.it, c.done);
+  const body = cur ? `<div class="cs-stage">${nxt ? `<div class="cs-peek" aria-hidden="true" inert>${(csPeeking = true, card(nxt))}</div>` : ""}${(csPeeking = false, "")}${card(cur)}</div>` : csEnd();
+  C.next = null;
+  return `${hdr}<div class="body cu-body cs-body${cur ? "" : " cs-over"}" data-kc="KeyCatchUp">${cur ? "" : csUndoHTML()}${body}</div>`;
+};
+/* the end: what got done, what Kai is watching, and every card you went through, each one reopens */
+const csIcon = it => { const r = it.bk && kkRows().find(x=>x.id===it.bk);
+  return r && !r.pid ? `<span class="kk-tile cs-kt" aria-hidden="true">${r.ini}</span>` : it.pid && DB.people[it.pid] ? m2Face(it.pid, "m2-a32") : r ? m2Face(r.pid, "m2-a32")
+    : it.key==="b:dinner" ? g9Tile("dusk", "utensils", 32) : g9Tile("harbour", "sparkles", 32); };
+function csEnd(){ const C = csK(), h = cuEnd(), rows = C.hist.filter(k=>C.snap[k]).map(k=>{ const it = C.snap[k], M = cuModel(it);
+    return `<button type="button" class="cs-wr" onclick="csGo('${k}')">${csIcon(it)}<span class="cs-wt"><b>${g7Esc(M.who)}</b><small>${g7Esc(C.res[k] || "Open")}</small></span>${LI("chevron-right", 18)}</button>`; }).join("");
+  return rows ? h.replace('<button type="button" class="btn cu-home"', `<div class="cu-watch cs-went"><div class="cu-gl">What you went through</div>${rows}</div><button type="button" class="btn cu-home"`) : h; }
+/* photos paint after render, over the plate and initials, so a missing image still leaves a designed header */
+const _csRender = render;
+render = function(){ const r = _csRender.apply(this, arguments), C = csK();
+  if (STATE.screen==="catchup" && C.focus) { C.focus = 0; const f = phone.querySelector(".cs-stage > .cs-card .cs-name, .cu-end h2"); if (f) { if (!f.hasAttribute("tabindex")) f.tabIndex = -1; f.focus({ preventScroll:true }); } }
+  if (STATE.screen==="catchup" && typeof phPaint==="function") phone.querySelectorAll(".cs-media[data-csph]:not(.ph-cover), .cs-cf[data-csph]:not([data-csph='']):not(.ph-cover)").forEach(el=>phPaint(el, el.dataset.csph, "ph-cover"));
+  return r; };
+/* the swipe: the card follows the finger; past 35% of the width it commits, below it springs back. Never from the composer or a button */
+(function(){ let s = null;
+  const card = () => phone.querySelector(".cs-stage > .cs-card");
+  document.addEventListener("pointerdown", ev=>{ const c = ev.target.closest && ev.target.closest("#phone .cs-stage > .cs-card"); if (!c || c.classList.contains("cs-fold") || ev.target.closest("textarea, button, a, input")) return;
+    s = { x:ev.clientX, y:ev.clientY, key:c.dataset.key, w:c.offsetWidth, on:false }; }, true);
+  document.addEventListener("pointermove", ev=>{ if (!s) return; const dx = ev.clientX - s.x, dy = ev.clientY - s.y, c = card(); if (!c) return;
+    if (!s.on) { if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { s = null; return; } if (Math.abs(dx) < 8) return; s.on = true; c.classList.add("cs-drag"); }
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    c.style.transform = `translateX(${dx}px)`; c.style.setProperty("--cs-l", Math.max(0, Math.min(1, -dx / (s.w * .35)))); c.style.setProperty("--cs-r", Math.max(0, Math.min(1, dx / (s.w * .35)))); }, true);
+  document.addEventListener("pointerup", ev=>{ if (!s) return; const dx = ev.clientX - s.x, k = s.key, on = s.on, w = s.w; s = null; const c = card(); if (!c || !on) return;
+    const last = !csK().view && dx < 0 && cuItems().length < 2;
+    if (Math.abs(dx) > w * .35 && !last) { if (csK().view) { c.style.transform = ""; return csFwd(); } c.style.transition = "transform .18s ease-out"; c.style.transform = `translateX(${dx > 0 ? w * 1.2 : -w * 1.2}px)`; setTimeout(()=>dx > 0 ? csClear(k) : csLater(k), matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 180); }
+    else { c.classList.remove("cs-drag"); c.style.transition = "transform .2s cubic-bezier(.2,.8,.2,1)"; c.style.transform = ""; c.style.removeProperty("--cs-l"); c.style.removeProperty("--cs-r"); } }, true);
+  document.addEventListener("pointercancel", ()=>{ const c = card(); s = null; if (c) { c.style.transform = ""; c.classList.remove("cs-drag"); } }, true); })();
+/* Chris's volume: 300 in the set; the Moved / Worth a look ones fold into one card */
+const _csDeck = g7DeckItems;
+g7DeckItems = function(){ const its = _csDeck.apply(this, arguments); if (!STATE.csVol) return its; const ppl = Object.keys(PH_FACE || {}).filter(k=>DB.people[k]), K = g7K();
+  if (STATE.csVol===true) STATE.csVol = Math.max(0, 300 - its.length);  // a fixed set: clearing one never pulls in another
+  const add = []; for (let i = 0; i < STATE.csVol; i++) { const pid = ppl[i % ppl.length], key = `z:${i}`; if (K.deck[key]) continue;
+    add.push({ key, pid, cat:2, h:`${f1(DB.people[pid])} posted a role that fits your goal`, rc:"Xoogler · this week", acts:[["See it", ""]] }); }
+  return its.concat(add); };
+function csCtl(){ const g = [...document.querySelectorAll(".stagebar .sgrp")].find(x=>{ const l = x.querySelector(".sgl"); return l && l.textContent==="Screens"; });
+  if (!g || g.querySelector("[data-csctl]")) return;
+  g.insertAdjacentHTML("beforeend", `<button type="button" data-csctl="1" onclick="csVol()">Catch up: 300</button>`); }
+function csVol(){ if (!STATE.member || !STATE.intakeDone) jump("home"); STATE.sheet = null; STATE.csVol = !STATE.csVol; const C = csK(); C.expand = false; C.at = null; go("catchup"); }
+const _csCtlRender = render; render = function(){ const r = _csCtlRender.apply(this, arguments); csCtl(); return r; };
+csCtl();
 
 </script>
 <style>
@@ -32608,17 +32846,23 @@ kkCtl();
     return `rgb(${[0, 1, 2].map(i=>Math.round(t[i] * t[3] + u[i] * (1 - t[3]))).join(",")})`; };
   /* n58 check: a goal's plate band runs up under the strip at 170deg, so it is already lighter than its first stop where the strip ends.
      The strip takes the band's colour at that line, so the two meet without a step */
-  function band(){ const y = bar.offsetHeight; if (!y || typeof phone==="undefined" || !phone) return "";
+  function band(){ const y = bar.offsetHeight; if (typeof phone==="undefined" || !phone) return "";
     const pr = phone.getBoundingClientRect(), x = pr.left + pr.width / 2;
     for (const e of document.elementsFromPoint(x, pr.top + y + 1)) { if (!phone.contains(e)) break; const bi = getComputedStyle(e).backgroundImage;
       if (bi==="none") continue; const g = bi.match(/^linear-gradient\((-?[\d.]+)deg, (rgb\([^)]+\)), (rgb\([^)]+\))\)$/); if (!g) return "";
       const r = e.getBoundingClientRect(); if (r.top >= pr.top + y) return ""; const a = g[1] * Math.PI / 180, s1 = Math.sin(a), c1 = Math.cos(a);
       const L = Math.abs(r.width * s1) + Math.abs(r.height * c1), t = Math.max(0, Math.min(1, ((x - r.left - r.width / 2) * s1 - (pr.top + y - r.top - r.height / 2) * c1) / L + .5));
-      const p = rgb(g[2]), q = rgb(g[3]); return `rgb(${[0, 1, 2].map(i=>Math.round(p[i] + (q[i] - p[i]) * t)).join(", ")})`; }
+      const p = rgb(g[2]), q = rgb(g[3]), k = `rgb(${[0, 1, 2].map(i=>Math.round(p[i] + (q[i] - p[i]) * t)).join(", ")})`;
+      /* 8 Oct 04:45 (his m1 screenshot, grey bar over the blue goal header): Safari tints from the first background COLOUR at the top
+         edge and skips gradients, so it read the page ground under the band. The band carries its own colour under the gradient */
+      if (e.style.backgroundColor!==k) e.style.setProperty("background-color", k, "important"); return k; }
     return ""; }
   function paint(){ attach(); const all = document.querySelector('meta[name="theme-color"]'), cover = all && all.dataset.cover!=null, m = cover ? null : all;
     const h = document.querySelector("#phone .view > .kh-glass, #phone .screen > .kh-glass, #phone .kh-glass");
-    const c = band() || h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(); bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
+    const bk = band(), kc = h && getComputedStyle(h).getPropertyValue("--kh-bg").trim(), c = bk || kc;
+    /* scrolled, the header itself is what sits at the top edge; it is opaque on phones, so it carries its colour as a real background
+       (Safari skips the pseudo-element that paints it). Over a band, the band shows through it as before */
+    if (h && matchMedia("(max-width:500px)").matches) { const v = !bk && kc ? kc : ""; if (h.style.backgroundColor!==v) h.style.setProperty("background-color", v, v ? "important" : ""); } bar.hidden = !m; if (m) bar.style.backgroundColor = c || m.content;
     /* 8 Oct 03:36, Apoorv: the status bar went solid black. Safari tints the status bar from the fixed box at the top edge, and outside
        the home-screen app the strip has no height there, so it read the fixed shell's own near-black. The shell takes the strip's colour,
        and over a cover photo the cover's own top edge */
@@ -32632,8 +32876,8 @@ kkCtl();
     for (const e of document.elementsFromPoint(r.left + r.width / 2, y)) { if (!ph.contains(e)) break; const cs = getComputedStyle(e), bi = cs.backgroundImage;
       const k = cs.backgroundColor, solid = k!=="transparent" && !/,\s*0\)$/.test(k) ? k : "";
       const url = (bi.match(/url\("?([^")]+)"?\)/) || [])[1] || (e.tagName==="IMG" ? e.currentSrc || e.src : "");
-      if (url) { if (seen[url]) return seen[url]; if (seen[url]===undefined) { seen[url] = null; sample(url); } if (solid) return solid; continue; }
-      const g = bi!=="none" && bi.match(/rgba?\([^)]+\)/); if (g && !(rgb(g[0])[3] < 1)) return g[0]; if (solid) return solid; }
+      if (url) { if (seen[url]) { if (e.style.backgroundColor!==seen[url]) e.style.backgroundColor = seen[url]; return seen[url]; } if (seen[url]===undefined) { seen[url] = null; sample(url); } if (solid) return solid; continue; }
+      const g = bi!=="none" && bi.match(/rgba?\([^)]+\)/); if (g && !(rgb(g[0])[3] < 1)) { if (!solid) e.style.backgroundColor = g[0]; return g[0]; } if (solid) return solid; }
     return ""; }
   function sample(url){ const im = new Image(); im.crossOrigin = "anonymous";
     im.onload = () => { try { const w = 24, h = 3, cv = document.createElement("canvas"); cv.width = w; cv.height = h; const x = cv.getContext("2d");
@@ -32661,7 +32905,7 @@ kkCtl();
 
 </script>
 <script>
-window.KEY_BUILD = "2.hifi-53f7";
+window.KEY_BUILD = "2.hifi-d7ec";
 const _verYouSection = sYouSection;
 sYouSection = function(id){ let h = _verYouSection.apply(this, arguments); if (id==="settings") { const i = h.lastIndexOf("</div>"); h = h.slice(0, i) + `<div class="xs faint" style="text-align:center;padding:8px 0 28px">${window.KEY_BUILD}</div>` + h.slice(i); } return h; };
 </script>
