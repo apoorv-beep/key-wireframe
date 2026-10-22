@@ -2244,6 +2244,40 @@ button.bk8-c{font-weight:600;color:var(--k950)}
 .pt8 button.pill[aria-selected="true"]{border-color:transparent!important}
 .k7-go{justify-content:space-between;width:100%;align-self:stretch}
 .k7-go>span:first-child{text-decoration:none}
+
+/* ===================== v7.5 ===================== */
+/* heading icon is a plain mark; list rows keep their tiles, so they stop competing */
+.s4i:not(.k){width:20px!important;height:20px!important;background:none!important;border-radius:0!important;color:var(--k700,#404040)}
+.s4i:not(.k) svg{width:18px;height:18px}
+.s4h{gap:8px}
+/* You're both in */
+.b9w{margin-top:20px}
+.b9c{font-weight:700;font-size:16px}
+.b9d{flex-direction:column;gap:0;line-height:1;font-weight:700;font-size:16px;background:var(--k0)!important;border:1px solid var(--k200)}
+.b9d small{font-size:10px;font-weight:600;color:var(--k500,#737373);letter-spacing:.04em}
+/* Book a time screen */
+.bk9{padding-top:8px}
+.bk9-h{display:flex;gap:12px;align-items:center;margin-bottom:20px}
+.bk9-h b{display:block;font-size:18px;line-height:1.3;font-weight:600}
+.bk9-h .grow>span{display:block;font-size:14px;color:var(--k600,#525252);line-height:1.4;margin-top:2px}
+.wp4-r>section.bk9{border-top:0!important;background:none!important}
+/* web: sections sit on the page like mobile, no card per section */
+.wp6 .wp4-r>div>.s4,.wp6 .wp4-r>.s4{background:none!important;border:0!important;border-top:1px solid var(--k200,#eee)!important;border-radius:0!important;padding:28px 0!important;margin:0!important;box-shadow:none!important}
+.wp6 .wp4-r>.s4:first-child,.wp6 .wp4-r>div>.s4:first-child{border-top:0!important;padding-top:8px!important}
+.wp6 .wp4-r .lf7{display:block!important}
+.wp6 .wp4-r .lf7r+.lf7r{border-top:1px solid var(--k200)!important}
+.wp6 .wp4-r>.pt8+.s4{border-top:0!important}
+/* no tilt or glare on profile photos */
+.bh-ph[data-tilt]{transform:none!important}
+.bh-ph[data-tilt] .scd-sh{display:none!important}
+/* Key footnote on the card: small but clearly there */
+.bdg-k9{height:13px!important;opacity:.7!important;margin-left:4px}
+.bdg.th-ink .bdg-k9,.bdg.th-forest .bdg-k9,.bdg.th-cobalt .bdg-k9{opacity:.8!important}
+/* swipeable deck */
+.ki9 .ki4c[style*="--i:0"]{touch-action:pan-y;cursor:grab;user-select:none}
+.ki9 .ki4c[style*="--i:0"]:active{cursor:grabbing}
+.ki9.drag .ki4c[style*="--i:1"]{opacity:1;transform:none}
+.ki9.drag .ki4c[style*="--i:1"]>*{visibility:visible}
 </style>
 <style>
 /* phone web app: the mobile prototype fills the screen, no frame, no controls */
@@ -5523,6 +5557,83 @@ document.addEventListener('click',e=>{
   }
 });
 document.addEventListener('keydown',e=>{const t=e.target; if((e.key==='Enter'||e.key===' ')&&t.classList?.contains('wl-c')){e.preventDefault(); wlToggle(t.dataset.id)}});
+
+/* ===================== v7.5 ===================== */
+/* ---------- You're both in: shared communities and events, plain rows under Education. No Book section ---------- */
+function both9(p){
+  const c=(p.comms||[]).filter(k=>ME.comms.includes(k)), e=(p.events||[]).filter(k=>EVENTS[k]&&EVENTS[k].going);
+  if(!c.length&&!e.length) return '';
+  const row=(act,k,pic,b,s)=>`<button class="hp5r" data-act="${act}" data-k="${k}">${pic}<span class="grow"><b>${b}</b><span>${s}</span></span>${I('chev','s')}</button>`;
+  return `<div class="bw5 b9w"><div class="bw5-l">You're both in</div><div class="hp5">${[
+   ...c.map(k=>row('comm',k,`<span class="hp5i b9c" style="background:${COMMS[k].c};color:${COMMS[k].fg||'#fff'}">${COMMS[k].l}</span>`,COMMS[k].n,'Community')),
+   ...e.map(k=>row('event',k,`<span class="hp5i b9d"><small>${EVENTS[k].m}</small>${EVENTS[k].d}</span>`,EVENTS[k].t,`${EVENTS[k].when} · You're both going`))].join('')}</div></div>`;
+}
+function aboutBody(p,quick){
+  if(quick) return quickBody(p);
+  return `${now4(p)}${both6(p)}
+   ${p.look.length?S4('look',look4(p)):''}
+   ${p.ask&&p.ask.length?S4('help',ask4(p)):''}
+   ${S4('exp',fixExp(expHTML(p,p.preview),p)+both9(p))}
+   ${secNews4(p)}${notes8(p)}`;
+}
+
+/* ---------- Book a time: its own screen on mobile, in place on web ---------- */
+const bk9Body=p=>`<div class="bk9-h">${av(p,'s40')}<span class="grow"><b>Book a short chat with ${p.first}</b><span>In hours ${p.first} set. ${p.first} says yes before it's booked.</span></span></div><div data-meet>${meetInner(p)}</div>`;
+SCREENS.bk9=id=>`<div class="scroll"><div class="nb"><button class="ib" data-act="pop" aria-label="Back">${I('back')}</button><span class="t">Book a time</span><span class="ib" aria-hidden="true"></span></div><div class="pb bk9">${bk9Body(PEOPLE[id])}</div></div>`;
+
+/* ---------- Kai's ideas: swipe the deck left or right ---------- */
+S.ki9o=0;
+/* rebuild with all cards so any card can come to the front */
+function ki9Cards(){
+  const left=ideasLeft(), nw=(NEWS.me||[]).filter(n=>n.pending&&!S.nwx);
+  const x=(act,k)=>`<button class="ki7x" data-act="${act}" ${k} aria-label="Not for me">${I('x','s')}</button>`;
+  return [...left.map(k=>`<div class="ki4c" data-idea="${k}">${x('ki4-no',`data-k="${k}"`)}<span class="ki4i">${I(IDEA_SHORT[k][0])}</span><b>${IDEA_SHORT[k][1]}</b><span class="ki4s">${IDEA_WHY[k]}</span>
+    <div class="ki4a"><button class="btn sm pri" data-act="ki4-add" data-k="${k}">${IDEAS[k].diff?'Use this':'Add it'}</button><button class="btn sm sec" data-act="idea-edit" data-k="${k}">Edit first</button></div></div>`),
+   ...nw.map(q=>`<div class="ki4c">${x('nw-hide',`data-id="${q.id}"`)}<span class="ki4i">${I('news')}</span><b>Kai found you in ${q.o}</b><span class="ki4s">"${q.t}", ${q.d}. Show it under In the news?</span>
+    <div class="ki4a"><button class="btn sm pri" data-act="nw-show" data-id="${q.id}">Show it</button></div></div>`)];
+}
+ideas4=(i4=>function(){
+  const h=i4(); if(!h) return h;
+  const cs=ki9Cards(), n=cs.length; if(n<2) return h;
+  const o=((S.ki9o%n)+n)%n, ord=[...cs.slice(o),...cs.slice(0,o)].slice(0,3);
+  const deck=ord.map((c,i)=>c.replace('class="ki4c"',`class="ki4c" style="--i:${i}"${i?' aria-hidden="true" inert':''}`)).join('');
+  return h.replace(/>1 of (\d+)</,`>${o+1} of $1<`).replace(/(<div class="ki9"[^>]*>)[\s\S]*<\/div><\/section>$/,(_,a)=>`${a}${deck}</div></section>`);
+})(ideas4);
+function ki9Go(d){
+  S.ki9o+=d; rr('section[data-sec="ideas"]',()=>ideas4().replace(/^<section[^>]*>|<\/section>$/g,''));
+}
+(()=>{let drag=null;
+  document.addEventListener('pointerdown',e=>{
+    const c=e.target.closest&&e.target.closest('.ki9 .ki4c[style*="--i:0"]'); if(!c||e.target.closest('button')) return;
+    if(c.parentNode.querySelectorAll('.ki4c').length<2) return;
+    drag={c,x:e.clientX,y:e.clientY,dx:0,on:false};
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    if(!drag.on){ if(Math.abs(dx)<8) return; if(Math.abs(dy)>Math.abs(dx)){drag=null; return} drag.on=true; drag.c.style.transition='none'; drag.c.parentNode.classList.add('drag'); drag.c.setPointerCapture?.(e.pointerId) }
+    drag.dx=dx; drag.c.style.transform=`translateX(${dx}px) rotate(${dx/22}deg)`;
+  });
+  const end=()=>{
+    if(!drag) return; const {c,dx,on}=drag; drag=null; if(!on) return; if(Math.abs(dx)<=70) c.parentNode.classList.remove('drag');
+    c.style.transition='';
+    if(Math.abs(dx)>70){ c.style.transform=`translateX(${dx<0?-420:420}px) rotate(${dx<0?-14:14}deg)`; c.style.opacity='0'; setTimeout(()=>ki9Go(1),RM()?0:220) }
+    else c.style.transform='';
+  };
+  document.addEventListener('pointerup',end); document.addEventListener('pointercancel',end);
+  document.addEventListener('keydown',e=>{ if(!e.target.closest?.('.ki9')) return; if(e.key==='ArrowRight') ki9Go(1); if(e.key==='ArrowLeft') ki9Go(-1) });
+})();
+
+/* ---------- v7.5 clicks ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]'); if(!t) return;
+  switch(t.dataset.act){
+   case 'bk-jump': {
+     if(S.mode==='web'){ const r=W.querySelector('#w-main .wp4-r'); if(r){ r.innerHTML=`<button class="md9b" data-act="bk9-back">${I('back','s')}Back to profile</button><section class="s4 bk9">${bk9Body(MAYA)}</section>`; W.querySelector('#w-main .wbento').scrollTop=0 } }
+     else push('bk9','maya');
+     break;}
+   case 'bk9-back': { const r=W.querySelector('#w-main .wp4-r'); if(r) r.innerHTML=ptab8(MAYA); break;}
+  }
+});
 
 /* ================= routing helpers ================= */
 function curPerson(){ if(S.mode==='web'){const id=W.querySelector('#w-panel')?.dataset.id; const u=W.querySelector('#w-url')?.textContent||''; if(u.includes('@jordanlee'))return ME; return PEOPLE[id]&&W.querySelector('#w-panel').classList.contains('on')?PEOPLE[id]:MAYA} return PEOPLE[topProfileId()] }
