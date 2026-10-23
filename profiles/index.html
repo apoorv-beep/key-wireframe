@@ -2278,6 +2278,65 @@ button.bk8-c{font-weight:600;color:var(--k950)}
 .ki9 .ki4c[style*="--i:0"]:active{cursor:grabbing}
 .ki9.drag .ki4c[style*="--i:1"]{opacity:1;transform:none}
 .ki9.drag .ki4c[style*="--i:1"]>*{visibility:visible}
+
+/* ===================== v7.6: web profile card follows the space it has (Kai open or not) ===================== */
+.wbento{container-type:inline-size;container-name:wb}
+.wp4-l{container-type:inline-size;container-name:idc}
+/* the two-column page only when there is room for it */
+@container wb (max-width:780px){
+  .wp4,#w-main.p1:has(~#w-kai.on) .wp4{grid-template-columns:minmax(0,1fr)!important;gap:16px;padding:20px 16px}
+  .wp4-l{position:static!important}
+}
+/* the card: side by side when wide, stacked when narrow */
+.wp4-id .bh-acts .cta{display:flex!important;flex-direction:row;flex-wrap:nowrap;gap:8px;width:100%}
+.wp4-id .bh-acts .cta .btn.grow{flex:1 1 auto;min-width:0}
+.wp4-id .bh-acts .cta .ic8{flex:0 0 48px}
+.wp4-id .hlinks,.wp4-id .hl6s{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:8px}
+.wp4-id .bh-n{overflow-wrap:anywhere}
+@container idc (min-width:520px){
+  .wp4-id,#w-main.p1:has(~#w-kai.on) .wp4-id{display:grid!important;grid-template-columns:minmax(180px,38%) minmax(0,1fr)!important}
+  .wp4-id .bh-ph,#w-main.p1:has(~#w-kai.on) .wp4-id .bh-ph{aspect-ratio:auto!important;height:100%;min-height:260px}
+  .wp4-id .bh-b{justify-content:center}
+}
+@container idc (max-width:519px){
+  .wp4-id,#w-main.p1:has(~#w-kai.on) .wp4-id{display:block!important}
+  .wp4-id .bh-ph,#w-main.p1:has(~#w-kai.on) .wp4-id .bh-ph{aspect-ratio:4/3!important;height:auto!important;max-height:360px;width:100%}
+}
+/* Kai panel: beside the page when there's room, over it when there isn't */
+#web{container-type:inline-size;container-name:web}
+@container web (max-width:960px){
+  #w-main.p1:has(~#w-kai.on){padding-right:0!important}
+  #w-kai.panel{width:min(400px,calc(100% - 24px))}
+}
+@container idc (max-width:519px){ .wp4-id .bh-ph,#w-main.p1:has(~#w-kai.on) .wp4-id .bh-ph{max-height:300px} }
+
+/* Book a time */
+.bk9{padding:8px 16px 32px;display:flex;flex-direction:column;gap:24px}
+.bk9>*{margin:0}
+.bk9-p{display:flex;align-items:center;gap:12px}
+.bk9-p .av{width:56px;height:56px;border-radius:14px;flex:none}
+.bk9-p b{display:block;font-size:18px;line-height:1.3;font-weight:600}
+.bk9-p .grow>span{display:block;font-size:14px;line-height:1.4;color:var(--k600,#525252)}
+.bk9-s{display:flex;flex-direction:column;gap:12px}
+.bk9-l{display:flex;align-items:baseline;justify-content:space-between;font-size:16px;font-weight:600;line-height:1.3}
+.bk9-l small{font-size:13px;font-weight:400;color:var(--k600,#525252)}
+.bk9-days{display:flex;flex-direction:column}
+.bk9-d{display:flex;flex-direction:column;gap:8px;padding:12px 0}
+.bk9-d+.bk9-d{border-top:1px solid var(--k200)}
+.bk9-d b{font-size:14px;font-weight:600}
+.bk9-t{display:flex;flex-wrap:wrap;gap:8px}
+.bk9-t .pill{height:40px;padding:0 16px;font-size:14px;font-weight:600;background:var(--k0);border:1px solid var(--k300)}
+.bk9-more{align-self:flex-start;font-size:14px;font-weight:600}
+.bk9-g{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:var(--k100)}
+.bk9-g>svg,.bk9-g>img{width:24px;height:24px;flex:none}
+.bk9-g b{display:block;font-size:14px;font-weight:600}
+.bk9-g .grow>span{display:block;font-size:13px;color:var(--k600,#525252);line-height:1.4}
+.bk9-n{display:flex;gap:8px;font-size:13px;line-height:1.4;color:var(--k600,#525252)}
+.bk9-n svg{flex:none;margin-top:1px}
+.wp4-r>section.bk9{padding:8px 0 32px!important;max-width:560px}
+.screen .bk9{padding:20px 16px 64px}
+.wp4-r .bk9-p{display:none}
+.wp4-r .bk9 .segc{max-width:360px}
 </style>
 <style>
 /* phone web app: the mobile prototype fills the screen, no frame, no controls */
@@ -5632,6 +5691,28 @@ document.addEventListener('click',e=>{
      else push('bk9','maya');
      break;}
    case 'bk9-back': { const r=W.querySelector('#w-main .wp4-r'); if(r) r.innerHTML=ptab8(MAYA); break;}
+  }
+});
+
+/* ===================== v7.6: Book a time, laid out properly ===================== */
+function bk9Inner(p){
+  const n=S.bkLen||20, cal=S.apps.gcal==='on', days=[];
+  ALLS.forEach(s=>{const d=days.find(x=>x[0]===s.dl); d?d[1].push(s):days.push([s.dl,[s]])});
+  return `<div class="bk9-p">${av(p,'s56')}<span class="grow"><b>${p.name}</b><span>${p.role}</span></span></div>
+   <div class="bk9-s"><div class="bk9-l">How long</div><div class="segc" role="group" aria-label="How long">${LENS.map(x=>`<button aria-pressed="${n===x}" data-act="bk9-len" data-n="${x}">${x} min</button>`).join('')}</div></div>
+   <div class="bk9-s"><div class="bk9-l"><span>Pick a time</span><small>Pacific time</small></div>
+    <div class="bk9-days">${days.slice(0,4).map(([dl,ss])=>`<div class="bk9-d"><b>${dl}</b><div class="bk9-t">${ss.map(s=>`<button class="pill" data-act="bk-pick" data-i="${ALLS.indexOf(s)}">${s.t}</button>`).join('')}</div></div>`).join('')}</div>
+    <button class="lnk bk9-more" data-act="bk-more">More times</button></div>
+   <div class="bk9-g">${B('gcal')}<span class="grow"><b>${cal?'Free for you both':'See when you\'re both free'}</b><span>${cal?'Checked against your Google Calendar':'Connect Google Calendar to hide times you\'re busy'}</span></span>${cal?I('check','s'):`<button class="btn sm sec" data-act="bk9-gcal">Connect</button>`}</div>
+   <div class="bk9-n">${I('lock','s')}<span>${p.first} says yes before it's booked. The video link is added then.</span></div>`;
+}
+SCREENS.bk9=id=>`<div class="scroll"><div class="nb"><button class="ib" data-act="pop" aria-label="Back">${I('back')}</button><span class="t">Book a time</span><span class="ib" aria-hidden="true"></span></div><div class="pb bk9" data-bk9>${bk9Inner(PEOPLE[id])}</div></div>`;
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]'); if(!t) return;
+  switch(t.dataset.act){
+   case 'bk-jump': if(S.mode==='web'){ const r=W.querySelector('#w-main .wp4-r'); if(r) r.innerHTML=`<button class="md9b" data-act="bk9-back">${I('back','s')}Back to profile</button><section class="s4 bk9" data-bk9>${bk9Inner(MAYA)}</section>` } break;
+   case 'bk9-len': S.bkLen=+t.dataset.n; rr('[data-bk9]',()=>bk9Inner(MAYA)); break;
+   case 'bk9-gcal': S.apps.gcal='on'; rr('[data-bk9]',()=>bk9Inner(MAYA)); toast('Google Calendar connected'); break;
   }
 });
 
